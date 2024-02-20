@@ -32,7 +32,7 @@ You can also install MaxFrame client from source code:
 
 .. code:: bash
 
-   pip install git+https://github.com/aliyun/aliyun-odps-maxframe.git
+   pip install git+https://github.com/aliyun/alibabacloud-odps-maxframe-client.git
 
 Getting started
 ---------------

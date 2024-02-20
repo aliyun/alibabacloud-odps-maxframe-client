@@ -117,8 +117,21 @@ extensions = cythonize(cy_extensions, **cythonize_kw) + [
     )
 ]
 
+long_description = None
+readme_files = [
+    f"{repo_root}/../README.rst",
+    f"{repo_root}/../README.md",
+]
+for readme_file in readme_files:
+    if os.path.exists(readme_file):
+        with open(readme_file) as f:
+            long_description = f.read()
+        break
+
 
 setup_options = dict(
+    long_description=long_description,
     ext_modules=extensions,
 )
 setup(**setup_options)
+
