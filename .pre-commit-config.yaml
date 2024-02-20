@@ -1,0 +1,79 @@
+minimum_pre_commit_version: 2.15.0
+exclude: ^LICENSES/|\.(html|csv|svg)$
+# reserve "manual" for relatively slow hooks which we still want to run in CI
+default_stages: [
+  commit,
+  merge-commit,
+  push,
+  prepare-commit-msg,
+  commit-msg,
+  post-checkout,
+  post-commit,
+  post-merge,
+  post-rewrite
+]
+ci:
+    autofix_prs: false
+repos:
+- repo: local
+  hooks:
+  - id: check-yaml
+    name: check-yaml
+    entry: check-yaml
+    language: python
+    exclude: ^operators/
+    types_or: [yaml]
+    additional_dependencies: [pre-commit-hooks==4.4.0]
+  - id: end-of-file-fixer
+    name: end-of-file-fixer
+    entry: end-of-file-fixer
+    language: python
+    additional_dependencies: [pre-commit-hooks==4.4.0]
+  - id: trailing-whitespace
+    name: trailing-whitespace
+    entry: trailing-whitespace-fixer
+    language: python
+    additional_dependencies: [pre-commit-hooks==4.4.0]
+- repo: local
+  hooks:
+  # NOTE: we make `black` a local hook because if it's installed from
+  # PyPI (rather than from source) then it'll run twice as fast thanks to mypyc
+  - id: black
+    name: black
+    description: "Black"
+    entry: black
+    language: python
+    require_serial: true
+    types_or: [python, pyi]
+    additional_dependencies: [black>=23.3.0]
+- repo: local
+  hooks:
+    - id: flake8
+      name: flake8
+      description: "Flake8"
+      entry: flake8
+      language: python
+      require_serial: true
+      types_or: [python, pyi]
+      additional_dependencies: [flake8==5.0.4]
+- repo: local
+  hooks:
+    - id: isort
+      name: isort
+      description: "isort"
+      entry: isort
+      language: python
+      require_serial: true
+      types_or: [python, pyi]
+      args: [--profile, black]
+      additional_dependencies: [isort==5.11.0]
+- repo: local
+  hooks:
+    - id: codespell
+      name: codespell
+      description: "codespell"
+      entry: codespell
+      language: python
+      require_serial: true
+      types_or: [python, rst, markdown, cython, c]
+      additional_dependencies: [codespell==2.2.4,tomli]

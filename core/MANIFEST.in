@@ -1,0 +1,8 @@
+global-include LICENSE
+global-include *.pyx
+global-include *.pxd
+global-exclude *.c
+global-exclude *.cpp
+include pyproject.toml
+include maxframe/lib/mmh3_src/*
+global-exclude .DS_Store
