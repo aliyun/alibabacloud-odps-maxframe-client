@@ -2,8 +2,11 @@ Data input and output
 ---------------------
 .. currentmodule:: maxframe.dataframe
 
-MaxCompute tables
-~~~~~~~~~~~~~~~~~
+MaxCompute
+~~~~~~~~~~
+
+Read and convert to tables
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 Users can create MaxFrame DataFrame objects from MaxCompute tables with :func:`read_odps_table`
 , and store computed results into MaxCompute tables with :func:`DataFrame.to_odps_table`.
 
@@ -79,6 +82,22 @@ decide the partition the row will be written to.
 .. code-block:: python
 
     df.to_odps_table("parted_table", partition_col=["pt_col"]).execute()
+
+Read from SQL queries
+^^^^^^^^^^^^^^^^^^^^^
+Users can create MaxFrame DataFrame objects with MaxCompute queries with :func:`read_odps_query`.
+MaxFrame will retrieve DataFrame schema with `EXPLAIN
+<https://www.alibabacloud.com/help/zh/maxcompute/user-guide/explain>`_ statement and execute
+queries in MaxCompute.
+
+For instance, you can create a DataFrame with SQL statement below.
+
+.. code-block:: python
+
+    md_df = md.read_odps_query(
+        "SELECT a.shop_name AS ashop, b.shop_name AS bshop FROM sale_detail_jt a "
+        "RIGHT OUTER JOIN sale_detail b ON a.shop_name=b.shop_name"
+    )
 
 pandas objects
 ~~~~~~~~~~~~~~

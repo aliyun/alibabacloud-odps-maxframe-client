@@ -71,6 +71,8 @@ Function application, groupby & window
    Series.agg
    Series.aggregate
    Series.groupby
+   Series.map
+   Series.transform
 
 .. _generated.series.stats:
 

@@ -86,11 +86,8 @@ Function application, GroupBy & window
    DataFrame.apply
    DataFrame.agg
    DataFrame.aggregate
-   DataFrame.transform
    DataFrame.groupby
-   DataFrame.rolling
-   DataFrame.expanding
-   DataFrame.ewm
+   DataFrame.transform
 
 .. _generated.dataframe.stats:
 

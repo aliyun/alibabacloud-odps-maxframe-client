@@ -19,6 +19,7 @@ import warnings
 from copy import deepcopy
 from typing import Any, Dict, Optional, Union
 
+from ..utils import get_python_tag
 from .validators import (
     ValidatorType,
     all_validator,
@@ -298,6 +299,9 @@ default_options = Config()
 
 default_options.register_option(
     "execution_mode", "trigger", validator=is_in(["trigger", "eager"])
+)
+default_options.register_option(
+    "python_tag", get_python_tag(), validator=is_string, remote=True
 )
 default_options.register_option(
     "client.task_start_timeout", _DEFAULT_TASK_START_TIMEOUT, validator=is_integer

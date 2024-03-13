@@ -1081,3 +1081,9 @@ def arrow_type_from_str(type_str: str) -> pa.DataType:
     if len(value_stack) > 1:
         raise ValueError(f"Cannot parse type {type_str}")
     return value_stack[-1]
+
+
+def get_python_tag():
+    # todo add implementation suffix for non-GIL tags when PEP703 is ready
+    version_info = sys.version_info
+    return f"cp{version_info[0]}{version_info[1]}"

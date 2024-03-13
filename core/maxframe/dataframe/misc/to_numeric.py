@@ -29,6 +29,10 @@ class DataFrameToNumeric(DataFrameOperator, DataFrameOperatorMixin):
     def __init__(self, errors="raise", downcast=None, **kw):
         super().__init__(errors=errors, downcast=downcast, **kw)
 
+    @property
+    def input(self):
+        return self.inputs[0]
+
     def __call__(self, arg):
         if isinstance(arg, pd.Series):
             arg = asseries(arg)

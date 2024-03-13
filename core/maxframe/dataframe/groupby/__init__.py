@@ -25,6 +25,7 @@ def _install():
     from .fill import bfill, ffill, fillna
     from .getitem import df_groupby_getitem
     from .head import head
+    from .sample import groupby_sample
     from .transform import groupby_transform
 
     for cls in DATAFRAME_TYPE:
@@ -64,6 +65,8 @@ def _install():
         setattr(cls, "cumsum", cumsum)
 
         setattr(cls, "head", head)
+
+        setattr(cls, "sample", groupby_sample)
 
         setattr(cls, "ffill", ffill)
         setattr(cls, "bfill", bfill)
