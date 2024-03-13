@@ -87,6 +87,10 @@ Series API
      - P
      - Y
      - SQL engine: argument ``level`` and ``fill_value`` not supported.
+   * - :func:`map`
+     - P
+     - Y
+     - SQL engine: argument ``arg`` only supports functions and non-derivative dicts with simple scalars.
    * - :func:`max`
      - P
      - Y

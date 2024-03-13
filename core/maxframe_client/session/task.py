@@ -22,12 +22,18 @@ import msgpack
 from odps import ODPS
 from odps import options as odps_options
 from odps import serializers
+from odps.errors import parse_instance_error
 from odps.models import Instance, Task
 
 from maxframe.config import options
 from maxframe.core import TileableGraph
 from maxframe.protocol import DagInfo, JsonSerializable, ResultInfo, SessionInfo
 from maxframe.utils import deserialize_serializable, serialize_serializable, to_str
+
+try:
+    from maxframe import __version__ as mf_version
+except ImportError:
+    mf_version = None
 
 from .consts import (
     MAXFRAME_DEFAULT_PROTOCOL,
@@ -91,6 +97,8 @@ class MaxFrameTask(Task):
             "odps.maxframe.output_format": self._output_format,
             "odps.service.endpoint": self._service_endpoint,
         }
+        if mf_version:
+            mf_opts["odps.maxframe.client_version"] = mf_version
         settings.update(mf_opts)
         self.properties["settings"] = json.dumps(settings)
         return super().serial()
@@ -126,9 +134,12 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
             self._instance = odps_entry.get_instance(nested_instance_id)
 
     def _deserial_task_info_result(
-        self, content: Union[bytes, str], target_cls: Type[JsonSerializable]
+        self, content: Union[bytes, str, dict], target_cls: Type[JsonSerializable]
     ):
-        json_data = json.loads(to_str(content))
+        if isinstance(content, (str, bytes)):
+            json_data = json.loads(to_str(content))
+        else:
+            json_data = content
         result_data = base64.b64decode(json_data["result"])
         if self._output_format == MAXFRAME_OUTPUT_MAXFRAME_FORMAT:
             return deserialize_serializable(result_data)
@@ -166,12 +177,22 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
             )
             return self._deserial_task_info_result(result, SessionInfo)
 
+    def _parse_instance_result_error(self):
+        result_data = self._instance.get_task_result(self._task_name)
+        try:
+            info = self._deserial_task_info_result({"result": result_data}, SessionInfo)
+        except:
+            raise parse_instance_error(result_data)
+        info.error_info.reraise()
+
     def _wait_instance_task_ready(
         self, interval: float = 0.1, max_interval: float = 5.0, timeout: int = None
     ):
         check_time = time.time()
         timeout = timeout or options.client.task_start_timeout
         while True:
+            if self._instance.is_terminated(retry=True):
+                self._parse_instance_result_error()
             status_json = json.loads(
                 self._instance.get_task_info(self._task_name, "status") or "{}"
             )

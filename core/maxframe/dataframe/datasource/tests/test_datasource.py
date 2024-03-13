@@ -22,7 +22,7 @@ from odps import ODPS
 from .... import tensor as mt
 from ....tests.utils import tn
 from ....utils import lazy_import
-from ... import read_odps_table
+from ... import read_odps_query, read_odps_table
 from ...core import DatetimeIndex, Float64Index, IndexValue, Int64Index, MultiIndex
 from ..dataframe import from_pandas as from_pandas_df
 from ..date_range import date_range
@@ -290,6 +290,67 @@ def test_from_odps_table():
 
     test_table.drop()
     test_parted_table.drop()
+
+
+def test_from_odps_query():
+    odps_entry = ODPS.from_environments()
+    table1_name = tn("test_from_odps_query_src1")
+    table2_name = tn("test_from_odps_query_src2")
+    odps_entry.delete_table(table1_name, if_exists=True)
+    odps_entry.delete_table(table2_name, if_exists=True)
+    test_table = odps_entry.create_table(
+        table1_name, "col1 string, col2 bigint, col3 double", lifecycle=1
+    )
+    # need some data to produce complicated plans
+    odps_entry.write_table(test_table, [["A", 10, 3.5]])
+    test_table2 = odps_entry.create_table(
+        table2_name, "col1 string, col2 bigint, col3 double", lifecycle=1
+    )
+    odps_entry.write_table(test_table2, [["A", 10, 4.5]])
+
+    with pytest.raises(ValueError) as err_info:
+        read_odps_query(f"CREATE TABLE dummy_table AS SELECT * FROM {table1_name}")
+    assert "instant query" in err_info.value.args[0]
+
+    query1 = f"SELECT * FROM {table1_name} WHERE col1 > 10"
+    df = read_odps_query(query1)
+    assert df.op.query == query1
+    assert df.index_value.name is None
+    assert isinstance(df.index_value.value, IndexValue.RangeIndex)
+    pd.testing.assert_series_equal(
+        df.dtypes,
+        pd.Series(
+            [np.dtype("O"), np.dtype("int64"), np.dtype("float64")],
+            index=["col1", "col2", "col3"],
+        ),
+    )
+
+    df = read_odps_query(query1, index_col="col1")
+    assert df.op.query == query1
+    assert df.index_value.name == "col1"
+    assert isinstance(df.index_value.value, IndexValue.Index)
+    pd.testing.assert_series_equal(
+        df.dtypes,
+        pd.Series([np.dtype("int64"), np.dtype("float64")], index=["col2", "col3"]),
+    )
+
+    query2 = (
+        f"SELECT t1.col1, t1.col2, t1.col3 as c31, t2.col3 as c32 "
+        f"FROM {table1_name} t1 "
+        f"INNER JOIN {table2_name} t2 "
+        f"ON t1.col1 = t2.col1 AND t1.col2 = t2.col2"
+    )
+    df = read_odps_query(query2, index_col=["col1", "col2"])
+    assert df.op.query == query2
+    assert df.index_value.names == ["col1", "col2"]
+    assert isinstance(df.index_value.value, IndexValue.MultiIndex)
+    pd.testing.assert_series_equal(
+        df.dtypes,
+        pd.Series([np.dtype("float64"), np.dtype("float64")], index=["c31", "c32"]),
+    )
+
+    test_table.drop()
+    test_table2.drop()
 
 
 def test_date_range():

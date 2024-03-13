@@ -18,14 +18,7 @@ from collections.abc import Iterable
 import numpy as np
 import pandas as pd
 
-from ...serialization.serializables import (
-    AnyField,
-    BoolField,
-    DictField,
-    Int32Field,
-    Int64Field,
-    StringField,
-)
+from ...serialization.serializables import AnyField, BoolField, Int32Field, Int64Field
 from ..core import DATAFRAME_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_df, build_empty_series, parse_index
@@ -40,22 +33,6 @@ class BaseDataFrameExpandingAgg(DataFrameOperator, DataFrameOperatorMixin):
     count_always_valid = BoolField("count_always_valid", default=None)
     # True if function name is treated as new index
     append_index = BoolField("append_index", default=None)
-
-    # chunk params
-    output_agg = BoolField("output_agg", default=None)
-
-    map_groups = DictField("map_groups", default=None)
-    map_sources = DictField("map_sources", default=None)
-    combine_sources = DictField("combine_sources", default=None)
-    combine_columns = DictField("combine_columns", default=None)
-    combine_funcs = DictField("combine_funcs", default=None)
-    key_to_funcs = DictField("keys_to_funcs", default=None)
-
-    min_periods_func_name = StringField("min_periods_func_name", default=None)
-
-    @property
-    def output_limit(self):
-        return 2 if self.output_agg else 1
 
     def __call__(self, expanding):
         inp = expanding.input

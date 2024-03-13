@@ -23,9 +23,6 @@ def test_ewm():
     df = pd.DataFrame(np.random.rand(4, 3), columns=list("abc"))
     df2 = md.DataFrame(df)
 
-    with pytest.raises(NotImplementedError):
-        _ = df2.ewm(2, adjust=False, ignore_na=False)
-
     with pytest.raises(ValueError):
         _ = df2.ewm()
 
@@ -58,9 +55,6 @@ def test_ewm():
 def test_ewm_agg():
     df = pd.DataFrame(np.random.rand(4, 3), columns=list("abc"))
     df2 = md.DataFrame(df, chunk_size=3)
-
-    with pytest.raises(NotImplementedError):
-        _ = df2.ewm(span=3, axis=1).agg("mean")
 
     r = df2.ewm(span=3).agg("mean")
     expected = df.ewm(span=3).agg("mean")

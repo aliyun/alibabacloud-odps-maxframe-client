@@ -38,6 +38,10 @@ class DataFrameFromRecords(DataFrameOperator, DataFrameOperatorMixin):
             raise NotImplementedError("Specifying index value is not supported for now")
         super().__init__(columns=columns, _output_types=[OutputType.dataframe], **kw)
 
+    @property
+    def input(self):
+        return self._inputs[0]
+
     def __call__(self, data):
         if self.nrows is None:
             nrows = data.shape[0]

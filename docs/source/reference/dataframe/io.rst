@@ -9,6 +9,7 @@ MaxCompute
 .. autosummary::
    :toctree: generated/
 
+   read_odps_query
    read_odps_table
    DataFrame.to_odps_table
 

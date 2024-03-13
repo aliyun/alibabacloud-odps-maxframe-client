@@ -209,7 +209,10 @@ class ErrorInfo(JsonSerializable):
         kw["raw_error_source"] = ErrorSource(serialized["raw_error_source"])
         if kw.get("raw_error_data"):
             bufs = [base64.b64decode(s) for s in kw["raw_error_data"]]
-            kw["raw_error_data"] = pickle.loads(bufs[0], buffers=bufs[1:])
+            try:
+                kw["raw_error_data"] = pickle.loads(bufs[0], buffers=bufs[1:])
+            except:
+                kw["raw_error_data"] = None
         return cls(**kw)
 
     def to_json(self) -> dict:
@@ -278,12 +281,18 @@ class CreateSessionRequest(Serializable):
 
 class SessionInfo(JsonSerializable):
     session_id: str = StringField("session_id")
-    settings: Dict[str, Any] = DictField("settings", key_type=FieldTypes.string)
-    start_timestamp: float = Float64Field("start_timestamp")
-    idle_timestamp: float = Float64Field("idle_timestamp")
-    dag_infos: Dict[str, Optional[DagInfo]] = DictField(
-        "dag_infos", key_type=FieldTypes.string, value_type=FieldTypes.reference
+    settings: Dict[str, Any] = DictField(
+        "settings", key_type=FieldTypes.string, default=None
     )
+    start_timestamp: float = Float64Field("start_timestamp", default=None)
+    idle_timestamp: float = Float64Field("idle_timestamp", default=None)
+    dag_infos: Dict[str, Optional[DagInfo]] = DictField(
+        "dag_infos",
+        key_type=FieldTypes.string,
+        value_type=FieldTypes.reference,
+        default=None,
+    )
+    error_info: Optional[ErrorInfo] = ReferenceField("error_info", default=None)
 
     @classmethod
     def from_json(cls, serialized: dict) -> "SessionInfo":
@@ -292,6 +301,8 @@ class SessionInfo(JsonSerializable):
             kw["dag_infos"] = {
                 k: DagInfo.from_json(v) for k, v in kw["dag_infos"].items()
             }
+        if kw.get("error_info"):
+            kw["error_info"] = ErrorInfo.from_json(kw["error_info"])
         return SessionInfo(**kw)
 
     def to_json(self) -> dict:
@@ -303,6 +314,8 @@ class SessionInfo(JsonSerializable):
         }
         if self.dag_infos:
             ret["dag_infos"] = {k: v.to_json() for k, v in self.dag_infos.items()}
+        if self.error_info:
+            ret["error_info"] = self.error_info.to_json()
         return ret
 
 

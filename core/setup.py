@@ -134,4 +134,3 @@ setup_options = dict(
     ext_modules=extensions,
 )
 setup(**setup_options)
-

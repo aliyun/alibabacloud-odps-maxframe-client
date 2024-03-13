@@ -26,9 +26,7 @@ from .serialization.serializables import (
 
 class MarkedFunction(Serializable):
     func = FunctionField("func")
-    resource_libraries = ListField(
-        "resource_libraries", FieldTypes.string, default_factory=list
-    )
+    resources = ListField("resources", FieldTypes.string, default_factory=list)
 
     def __init__(self, func: Optional[Callable] = None, **kw):
         super().__init__(func=func, **kw)
@@ -43,33 +41,34 @@ class MarkedFunction(Serializable):
         return f"<MarkedFunction {self.func!r}>"
 
 
-def with_resource_libraries(
-    *resources: Union[str, Resource], use_wrapper_class: bool = True
-):
+def with_resources(*resources: Union[str, Resource], use_wrapper_class: bool = True):
     def res_to_str(res: Union[str, Resource]) -> str:
         if isinstance(res, str):
             return res
-        res_parts = [res.project]
+        res_parts = [res.project.name]
         if res.schema:
-            res_parts.append(res.schema)
-        res_parts.append(res.name)
-        return ".".join(res_parts)
+            res_parts.extend(["schemas", res.schema])
+        res_parts.extend(["resources", res.name])
+        return "/".join(res_parts)
 
     def func_wrapper(func):
         str_resources = [res_to_str(r) for r in resources]
         if not use_wrapper_class:
-            func.resource_libraries = str_resources
+            func.resources = str_resources
             return func
 
         if isinstance(func, MarkedFunction):
-            func.resource_libraries = str_resources
+            func.resources = str_resources
             return func
-        return MarkedFunction(func, resource_libraries=list(resources))
+        return MarkedFunction(func, resources=list(str_resources))
 
     return func_wrapper
 
 
-def get_udf_resource_libraries(
+with_resource_libraries = with_resources
+
+
+def get_udf_resources(
     func: Callable,
-) -> Optional[List[Union[Resource, str]]]:
-    return getattr(func, "resource_libraries", None)
+) -> List[Union[Resource, str]]:
+    return getattr(func, "resources", None) or []

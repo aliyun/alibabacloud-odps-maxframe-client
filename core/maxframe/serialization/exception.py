@@ -16,13 +16,14 @@ import logging
 import traceback
 from typing import Dict, List
 
+from ..errors import MaxFrameError
 from ..lib import wrapped_pickle as pickle
 from .core import Serializer, buffered, pickle_buffers, unpickle_buffers
 
 logger = logging.getLogger(__name__)
 
 
-class RemoteException(Exception):
+class RemoteException(MaxFrameError):
     def __init__(
         self, messages: List[str], tracebacks: List[List[str]], buffers: List[bytes]
     ):

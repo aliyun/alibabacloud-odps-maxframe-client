@@ -404,10 +404,10 @@ cdef class DirectedGraph:
 
         Fusion(self).decompose(nodes=nodes)
 
-    def view(self, filename='default', graph_attrs=None, node_attrs=None, result_chunk_keys=None, show_columns=False):  # pragma: no cover
+    def view(self, filename='default', graph_attrs=None, trunc_key=5, node_attrs=None, result_chunk_keys=None, show_columns=False):  # pragma: no cover
         from graphviz import Source
 
-        g = Source(self.to_dot(graph_attrs, node_attrs, result_chunk_keys=result_chunk_keys, show_columns=show_columns))
+        g = Source(self.to_dot(graph_attrs, node_attrs, trunc_key=trunc_key, result_chunk_keys=result_chunk_keys, show_columns=show_columns))
         g.view(filename=filename, cleanup=True)
 
     def to_dag(self):

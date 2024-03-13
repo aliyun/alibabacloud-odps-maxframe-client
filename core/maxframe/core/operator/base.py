@@ -287,6 +287,20 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
             self.check_inputs(inputs)
         setattr(self, "_inputs", inputs)
 
+    def replace_input(self, index: int, replaced_input: ENTITY_TYPE):
+        """
+        Replace the input[index] with replaced_input.
+
+        Parameters
+        ----------
+        index : int
+            The input to be replaced index.
+        replaced_input : ENTITY_TYPE
+            The replaced input object.
+        """
+        self.inputs[index] = replaced_input
+        self._set_inputs(self.inputs)
+
     @property
     def inputs(self) -> List[Union[ENTITY_TYPE]]:
         inputs = self._inputs

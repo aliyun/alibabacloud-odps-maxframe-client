@@ -233,13 +233,6 @@ def ewm(
     if alpha <= 0 or alpha > 1:
         raise ValueError("alpha must satisfy: 0 < alpha <= 1")
 
-    if not adjust and not ignore_na:
-        raise NotImplementedError(
-            "adjust == False when ignore_na == False not implemented"
-        )
-    if axis == 1:
-        raise NotImplementedError("axis other than 0 is not supported")
-
     if alpha == 1:
         return obj.expanding(min_periods=min_periods, axis=axis)
 
