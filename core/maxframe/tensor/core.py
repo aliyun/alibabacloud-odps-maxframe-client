@@ -43,7 +43,7 @@ from ..serialization.serializables import (
     StringField,
     TupleField,
 )
-from ..utils import on_deserialize_shape, on_serialize_shape
+from ..utils import on_deserialize_shape, on_serialize_shape, skip_na_call
 from .utils import fetch_corner_data, get_chunk_slices
 
 logger = logging.getLogger(__name__)
@@ -181,8 +181,8 @@ class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
     _chunks = ListField(
         "chunks",
         FieldTypes.reference(TensorChunkData),
-        on_serialize=lambda x: [it.data for it in x] if x is not None else x,
-        on_deserialize=lambda x: [TensorChunk(it) for it in x] if x is not None else x,
+        on_serialize=skip_na_call(lambda x: [it.data for it in x]),
+        on_deserialize=skip_na_call(lambda x: [TensorChunk(it) for it in x]),
     )
 
     def __init__(

@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+import json
 import time
 
 import pytest
@@ -29,28 +31,32 @@ from ..serialization import RemoteException
 from ..utils import deserialize_serializable, serialize_serializable
 
 
+def _json_round_trip(json_data: dict) -> dict:
+    return json.loads(json.dumps(json_data))
+
+
 def test_result_info_json_serialize():
-    ri = ResultInfo.from_json(ResultInfo().to_json())
+    ri = ResultInfo.from_json(_json_round_trip(ResultInfo().to_json()))
     assert type(ri) is ResultInfo
 
     ri = ODPSTableResultInfo(
         full_table_name="table_name", partition_specs=["pt=partition"]
     )
-    deserial_ri = ResultInfo.from_json(ri.to_json())
+    deserial_ri = ResultInfo.from_json(_json_round_trip(ri.to_json()))
     assert type(ri) is ODPSTableResultInfo
     assert ri.result_type == deserial_ri.result_type
     assert ri.full_table_name == deserial_ri.full_table_name
     assert ri.partition_specs == deserial_ri.partition_specs
 
     ri = ODPSTableResultInfo(full_table_name="table_name")
-    deserial_ri = ResultInfo.from_json(ri.to_json())
+    deserial_ri = ResultInfo.from_json(_json_round_trip(ri.to_json()))
     assert type(ri) is ODPSTableResultInfo
     assert ri.result_type == deserial_ri.result_type
     assert ri.full_table_name == deserial_ri.full_table_name
     assert ri.partition_specs == deserial_ri.partition_specs
 
     ri = ODPSVolumeResultInfo(volume_name="vol_name", volume_path="vol_path")
-    deserial_ri = ResultInfo.from_json(ri.to_json())
+    deserial_ri = ResultInfo.from_json(_json_round_trip(ri.to_json()))
     assert type(ri) is ODPSVolumeResultInfo
     assert ri.result_type == deserial_ri.result_type
     assert ri.volume_name == deserial_ri.volume_name
@@ -63,7 +69,7 @@ def test_error_info_json_serialize():
     except ValueError as ex:
         err_info = ErrorInfo.from_exception(ex)
 
-    deserial_err_info = ErrorInfo.from_json(err_info.to_json())
+    deserial_err_info = ErrorInfo.from_json(_json_round_trip(err_info.to_json()))
     assert deserial_err_info.error_messages == err_info.error_messages
     assert isinstance(deserial_err_info.raw_error_data, ValueError)
 
@@ -73,7 +79,7 @@ def test_error_info_json_serialize():
     with pytest.raises(RemoteException):
         mf_err_info.reraise()
 
-    deserial_err_info = ErrorInfo.from_json(mf_err_info.to_json())
+    deserial_err_info = ErrorInfo.from_json(_json_round_trip(mf_err_info.to_json()))
     assert isinstance(deserial_err_info.raw_error_data, ValueError)
     with pytest.raises(ValueError):
         deserial_err_info.reraise()
@@ -94,7 +100,9 @@ def test_dag_info_json_serialize():
         },
         error_info=err_info,
     )
-    deserial_info = DagInfo.from_json(info.to_json())
+    json_info = info.to_json()
+    json_info["non_existing_field"] = "non_existing"
+    deserial_info = DagInfo.from_json(_json_round_trip(json_info))
     assert deserial_info.session_id == info.session_id
     assert deserial_info.dag_id == info.dag_id
     assert deserial_info.status == info.status
@@ -121,7 +129,7 @@ def test_session_info_json_serialize():
         idle_timestamp=None,
         dag_infos={"test_dag_id": dag_info},
     )
-    deserial_info = SessionInfo.from_json(info.to_json())
+    deserial_info = SessionInfo.from_json(_json_round_trip(info.to_json()))
     assert deserial_info.session_id == info.session_id
     assert deserial_info.settings == info.settings
     assert deserial_info.start_timestamp == info.start_timestamp

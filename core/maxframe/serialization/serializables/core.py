@@ -112,6 +112,7 @@ class Serializable(metaclass=SerializableMeta):
     __slots__ = ("__weakref__",)
 
     _cache_primitive_serial = False
+    _ignore_non_existing_keys = False
 
     _FIELDS: Dict[str, Field]
     _FIELD_ORDER: List[str]
@@ -128,7 +129,11 @@ class Serializable(metaclass=SerializableMeta):
         else:
             values = kwargs
         for k, v in values.items():
-            fields[k].set(self, v)
+            try:
+                fields[k].set(self, v)
+            except KeyError:
+                if not self._ignore_non_existing_keys:
+                    raise
 
     def __on_deserialize__(self):
         pass

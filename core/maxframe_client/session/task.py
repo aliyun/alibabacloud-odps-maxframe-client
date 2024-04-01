@@ -112,13 +112,19 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
         odps_entry: ODPS,
         task_name: Optional[str] = None,
         project: Optional[str] = None,
-        priority: Optional[str] = None,
+        priority: Optional[int] = None,
         running_cluster: Optional[str] = None,
         nested_instance_id: Optional[str] = None,
         major_version: Optional[str] = None,
         output_format: Optional[str] = None,
         **kwargs,
     ):
+        if callable(odps_options.get_priority):
+            default_priority = odps_options.get_priority(odps_entry)
+        else:
+            default_priority = odps_options.priority
+        priority = priority if priority is not None else default_priority
+
         self._odps_entry = odps_entry
         self._task_name = task_name
         self._project = project
@@ -126,6 +132,7 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
         self._running_cluster = running_cluster
         self._major_version = major_version
         self._output_format = output_format or MAXFRAME_OUTPUT_MSGPACK_FORMAT
+
         if nested_instance_id is None:
             self._nested = False
             self._instance = None

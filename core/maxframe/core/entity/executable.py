@@ -66,6 +66,7 @@ class DecrefRunner:
         if self._decref_thread:  # pragma: no branch
             self._queue.put_nowait((None, None, None))
             self._decref_thread.join(1)
+        self._decref_thread = None
 
     def put(self, key: str, session_ref: ref):
         if self._decref_thread is None:

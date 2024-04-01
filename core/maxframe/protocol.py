@@ -46,6 +46,8 @@ BodyType = TypeVar("BodyType", bound="Serializable")
 
 
 class JsonSerializable(Serializable):
+    _ignore_non_existing_keys = True
+
     @classmethod
     def from_json(cls, serialized: dict) -> "JsonSerializable":
         raise NotImplementedError
@@ -245,6 +247,8 @@ class DagInfo(JsonSerializable):
         default_factory=dict,
     )
     error_info: Optional[ErrorInfo] = ReferenceField("error_info", default=None)
+    start_timestamp: Optional[float] = Float64Field("start_timestamp", default=None)
+    end_timestamp: Optional[float] = Float64Field("end_timestamp", default=None)
 
     @classmethod
     def from_json(cls, serialized: dict) -> "DagInfo":
@@ -265,7 +269,10 @@ class DagInfo(JsonSerializable):
             "dag_id": self.dag_id,
             "status": self.status.value,
             "progress": self.progress,
+            "start_timestamp": self.start_timestamp,
+            "end_timestamp": self.end_timestamp,
         }
+        ret = {k: v for k, v in ret.items() if v is not None}
         if self.tileable_to_result_infos:
             ret["tileable_to_result_infos"] = {
                 k: v.to_json() for k, v in self.tileable_to_result_infos.items()

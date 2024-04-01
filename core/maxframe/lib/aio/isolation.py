@@ -14,11 +14,14 @@
 
 import asyncio
 import atexit
+import itertools
 import threading
 from typing import Dict, Optional
 
 
 class Isolation:
+    _counter = itertools.count().__next__
+
     loop: asyncio.AbstractEventLoop
     _stopped: Optional[asyncio.Event]
     _thread: Optional[threading.Thread]
@@ -38,7 +41,9 @@ class Isolation:
 
     def start(self):
         if self._threaded:
-            self._thread = thread = threading.Thread(target=self._run)
+            self._thread = thread = threading.Thread(
+                name=f"IsolationThread-{self._counter()}", target=self._run
+            )
             thread.daemon = True
             thread.start()
             self._thread_ident = thread.ident

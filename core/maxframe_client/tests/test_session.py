@@ -24,6 +24,7 @@ from odps import ODPS
 import maxframe.dataframe as md
 import maxframe.remote as mr
 from maxframe.core import ExecutableTuple, TileableGraph
+from maxframe.lib.aio import stop_isolation
 from maxframe.protocol import ResultInfo
 from maxframe.serialization import RemoteException
 from maxframe.session import new_session
@@ -52,6 +53,7 @@ def start_mock_session(framedriver_app):  # noqa: F811
             time.sleep(5)  # Wait for temp table deleted
         else:
             session.reset_default()
+        stop_isolation()
 
 
 def test_simple_run_dataframe(start_mock_session):

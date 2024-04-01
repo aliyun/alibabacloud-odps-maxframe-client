@@ -17,7 +17,7 @@ import base64
 import dataclasses
 import logging
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Type, Union
 
 from odps.types import OdpsSchema
 from odps.utils import camel_to_underline
@@ -30,6 +30,7 @@ from .odpsio import build_dataframe_table_meta
 from .odpsio.schema import pandas_to_odps_schema
 from .protocol import DataFrameTableMeta, ResultInfo
 from .serialization import PickleContainer
+from .serialization.serializables import Serializable, StringField
 from .typing_ import PandasObjectTypes
 from .udf import MarkedFunction
 
@@ -48,8 +49,11 @@ class CodeGenResult:
     constants: Dict[str, Any]
 
 
-class AbstractUDF(abc.ABC):
-    _session_id: str
+class AbstractUDF(Serializable):
+    _session_id: str = StringField("session_id")
+
+    def __init__(self, session_id: Optional[str] = None, **kw):
+        super().__init__(_session_id=session_id, **kw)
 
     @property
     def name(self) -> str:
@@ -74,7 +78,66 @@ class AbstractUDF(abc.ABC):
 
 class UserCodeMixin:
     @classmethod
-    def generate_pickled_codes(cls, code_to_pickle: Any) -> List[str]:
+    def obj_to_python_expr(cls, obj: Any = None) -> str:
+        """
+        Parameters
+        ----------
+        obj
+            The object to convert to python expr.
+        Returns
+        -------
+        str :
+            The str type content equals to the object when use in the python code directly.
+        """
+        if obj is None:
+            return "None"
+
+        if isinstance(obj, (int, float)):
+            return repr(obj)
+
+        if isinstance(obj, bool):
+            return "True" if obj else "False"
+
+        if isinstance(obj, bytes):
+            base64_bytes = base64.b64encode(obj)
+            return f"base64.b64decode({base64_bytes})"
+
+        if isinstance(obj, str):
+            return repr(obj)
+
+        if isinstance(obj, list):
+            return (
+                f"[{', '.join([cls.obj_to_python_expr(element) for element in obj])}]"
+            )
+
+        if isinstance(obj, dict):
+            items = (
+                f"{repr(key)}: {cls.obj_to_python_expr(value)}"
+                for key, value in obj.items()
+            )
+            return f"{{{', '.join(items)}}}"
+
+        if isinstance(obj, tuple):
+            return f"({', '.join([cls.obj_to_python_expr(sub_obj) for sub_obj in obj])}{',' if len(obj) == 1 else ''})"
+
+        if isinstance(obj, set):
+            return (
+                f"{{{', '.join([cls.obj_to_python_expr(sub_obj) for sub_obj in obj])}}}"
+                if obj
+                else "set()"
+            )
+
+        if isinstance(obj, PickleContainer):
+            return UserCodeMixin.generate_pickled_codes(obj, None)
+
+        raise ValueError(f"not support arg type {type(obj)}")
+
+    @classmethod
+    def generate_pickled_codes(
+        cls,
+        code_to_pickle: Any,
+        unpicked_data_var_name: Union[str, None] = "pickled_data",
+    ) -> str:
         """
         Generate pickled codes. The final pickled variable is called 'pickled_data'.
 
@@ -82,20 +145,20 @@ class UserCodeMixin:
         ----------
         code_to_pickle: Any
             The code to be pickled.
+        unpicked_data_var_name: str
+            The variables in code used to hold the loads object from the cloudpickle
 
         Returns
         -------
-        List[str] :
-            The code snippets of pickling, the final variable is called 'pickled_data'.
+        str :
+            The code snippets of pickling, the final variable is called 'pickled_data' by default.
         """
         pickled, buffers = cls.dump_pickled_data(code_to_pickle)
-        pickled = base64.b64encode(pickled)
-        buffers = [base64.b64encode(b) for b in buffers]
-        buffers_str = ", ".join(f"base64.b64decode(b'{b.decode()}')" for b in buffers)
-        return [
-            f"base64_data = base64.b64decode(b'{pickled.decode()}')",
-            f"pickled_data = cloudpickle.loads(base64_data, buffers=[{buffers_str}])",
-        ]
+        pickle_loads_expr = f"cloudpickle.loads({cls.obj_to_python_expr(pickled)}, buffers={cls.obj_to_python_expr(buffers)})"
+        if unpicked_data_var_name:
+            return f"{unpicked_data_var_name} = {pickle_loads_expr}"
+
+        return pickle_loads_expr
 
     @staticmethod
     def dump_pickled_data(
@@ -114,8 +177,9 @@ class UserCodeMixin:
 
 
 class BigDagCodeContext(metaclass=abc.ABCMeta):
-    def __init__(self, session_id: str = None):
+    def __init__(self, session_id: str = None, subdag_id: str = None):
         self._session_id = session_id
+        self._subdag_id = subdag_id
         self._tileable_key_to_variables = dict()
         self.constants = dict()
         self._data_table_meta_cache = dict()
@@ -142,9 +206,13 @@ class BigDagCodeContext(metaclass=abc.ABCMeta):
         except KeyError:
             var_name = self._tileable_key_to_variables[
                 tileable.key
-            ] = f"var_{self._next_var_id}"
-            self._next_var_id += 1
+            ] = self.next_var_name()
             return var_name
+
+    def next_var_name(self) -> str:
+        var_name = f"var_{self._next_var_id}"
+        self._next_var_id += 1
+        return var_name
 
     def get_odps_schema(
         self, data: PandasObjectTypes, unknown_as_string: bool = False
@@ -275,9 +343,10 @@ class BigDagCodeGenerator(metaclass=abc.ABCMeta):
     engine_priority: int = 0
     _extension_loaded = False
 
-    def __init__(self, session_id: str):
+    def __init__(self, session_id: str, subdag_id: str = None):
         self._session_id = session_id
-        self._context = self._init_context(session_id)
+        self._subdag_id = subdag_id
+        self._context = self._init_context(session_id, subdag_id)
 
     @classmethod
     def _load_engine_extensions(cls):
@@ -307,7 +376,7 @@ class BigDagCodeGenerator(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _init_context(self, session_id: str) -> BigDagCodeContext:
+    def _init_context(self, session_id: str, subdag_id: str) -> BigDagCodeContext:
         raise NotImplementedError
 
     def _generate_comments(

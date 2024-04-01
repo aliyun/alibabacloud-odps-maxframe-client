@@ -69,7 +69,7 @@ class DataFrameReadODPSTable(
         return getattr(self, "partition_spec", None)
 
     def get_columns(self):
-        return self.columns
+        return self.columns or list(self.dtypes.index)
 
     def set_pruned_columns(self, columns, *, keep_order=None):  # pragma: no cover
         self.columns = columns

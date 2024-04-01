@@ -15,6 +15,7 @@
 from typing import Any, Dict
 
 from ...serialization.serializables import FieldTypes, ListField
+from ...utils import skip_na_call
 from .chunks import Chunk, ChunkData
 from .core import Entity
 from .executable import _ToObjectMixin
@@ -62,8 +63,8 @@ class ObjectData(TileableData, _ToObjectMixin):
     _chunks = ListField(
         "chunks",
         FieldTypes.reference(ObjectChunkData),
-        on_serialize=lambda x: [it.data for it in x] if x is not None else x,
-        on_deserialize=lambda x: [ObjectChunk(it) for it in x] if x is not None else x,
+        on_serialize=skip_na_call(lambda x: [it.data for it in x]),
+        on_deserialize=skip_na_call(lambda x: [ObjectChunk(it) for it in x]),
     )
 
     def __init__(self, op=None, nsplits=None, **kw):

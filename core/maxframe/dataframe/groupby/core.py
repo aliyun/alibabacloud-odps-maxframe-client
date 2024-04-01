@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections import namedtuple
+
 import pandas as pd
 
 from ... import opcodes
@@ -28,6 +30,9 @@ cudf = lazy_import("cudf")
 
 _GROUP_KEYS_NO_DEFAULT = pd_release_version >= (1, 5, 0)
 _default_group_keys = no_default if _GROUP_KEYS_NO_DEFAULT else True
+
+
+NamedAgg = namedtuple("NamedAgg", ["column", "aggfunc"])
 
 
 class DataFrameGroupByOperator(MapReduceOperator, DataFrameOperatorMixin):
