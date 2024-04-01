@@ -14,6 +14,7 @@
 
 # noinspection PyUnresolvedReferences
 from ..core import DataFrameGroupBy, GroupBy, SeriesGroupBy
+from .core import NamedAgg
 
 
 def _install():

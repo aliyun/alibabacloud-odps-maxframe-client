@@ -39,6 +39,7 @@ from .datasource.read_odps_query import read_odps_query
 from .datasource.read_odps_table import read_odps_table
 from .datasource.read_parquet import read_parquet
 from .datastore.to_odps import to_odps_table
+from .groupby import NamedAgg
 from .initializer import DataFrame, Index, Series, read_pandas
 from .merge import concat, merge
 from .misc.cut import cut
@@ -52,7 +53,7 @@ from .reduction import CustomReduction, unique
 from .tseries.to_datetime import to_datetime
 
 try:
-    from pandas import NA, NamedAgg, Timestamp
+    from pandas import NA, Timestamp
 except ImportError:  # pragma: no cover
     pass
 

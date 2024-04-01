@@ -46,7 +46,7 @@ _EXPLAIN_TASK_SCHEMA_REGEX = re.compile(
     r"In Task ([^:]+)[\S\s]+FS: output: ([^\n #]+)[\s\S]+schema:\s+([\S\s]+)$",
     re.MULTILINE,
 )
-_EXPLAIN_COLUMN_REGEX = re.compile(r"([^ ]+) \(([^)]+)\)(?:| AS ([^ ]+))(?:\n|$)")
+_EXPLAIN_COLUMN_REGEX = re.compile(r"([^\(]+) \(([^)]+)\)(?:| AS ([^ ]+))(?:\n|$)")
 
 
 @dataclasses.dataclass

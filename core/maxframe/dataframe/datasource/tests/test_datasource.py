@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 from collections import OrderedDict
 
 import numpy as np
@@ -33,6 +34,7 @@ from ..from_tensor import (
 )
 from ..index import from_pandas as from_pandas_index
 from ..index import from_tileable
+from ..read_odps_query import ColumnSchema, _resolve_task_sector
 from ..series import from_pandas as from_pandas_series
 
 ray = lazy_import("ray")
@@ -228,6 +230,7 @@ def test_from_odps_table():
     assert df.op.table_name == test_table.full_table_name
     assert df.index_value.name is None
     assert isinstance(df.index_value.value, IndexValue.RangeIndex)
+    assert df.op.get_columns() == ["col1", "col2", "col3"]
     pd.testing.assert_series_equal(
         df.dtypes,
         pd.Series(
@@ -247,6 +250,7 @@ def test_from_odps_table():
     assert df.op.table_name == test_table.full_table_name
     assert df.index_value.name is None
     assert isinstance(df.index_value.value, IndexValue.RangeIndex)
+    assert df.op.get_columns() == ["col1", "col2"]
     pd.testing.assert_series_equal(
         df.dtypes,
         pd.Series([np.dtype("O"), np.dtype("int64")], index=["col1", "col2"]),
@@ -257,6 +261,7 @@ def test_from_odps_table():
     assert df.index_value.name == "col1"
     assert isinstance(df.index_value.value, IndexValue.Index)
     assert df.index.dtype == np.dtype("O")
+    assert df.op.get_columns() == ["col2", "col3"]
     pd.testing.assert_series_equal(
         df.dtypes,
         pd.Series([np.dtype("int64"), np.dtype("float64")], index=["col2", "col3"]),
@@ -267,6 +272,7 @@ def test_from_odps_table():
 
     df = read_odps_table(test_parted_table, append_partitions=True)
     assert df.op.append_partitions is True
+    assert df.op.get_columns() == ["col1", "col2", "col3", "pt"]
     pd.testing.assert_series_equal(
         df.dtypes,
         pd.Series(
@@ -280,6 +286,7 @@ def test_from_odps_table():
     )
     assert df.op.append_partitions is True
     assert df.op.partitions == ["pt=20240103"]
+    assert df.op.get_columns() == ["col1", "col2", "pt"]
     pd.testing.assert_series_equal(
         df.dtypes,
         pd.Series(
@@ -377,3 +384,18 @@ def test_date_range():
     assert dr.index_value.is_unique == expected.is_unique
     assert dr.index_value.is_monotonic_increasing == expected.is_monotonic_increasing
     assert dr.name == expected.name
+
+
+def test_resolve_task_sector():
+    input_path = os.path.join(os.path.dirname(__file__), "test-data", "task-input.txt")
+    with open(input_path, "r") as f:
+        sector = f.read()
+    actual_sector = _resolve_task_sector("job0", sector)
+
+    assert actual_sector.job_name == "job0"
+    assert actual_sector.task_name == "M1"
+    assert actual_sector.output_target == "Screen"
+    assert len(actual_sector.schema) == 78
+    assert actual_sector.schema[0] == ColumnSchema("unnamed: 0", "bigint", "")
+    assert actual_sector.schema[1] == ColumnSchema("id", "bigint", "id_alias")
+    assert actual_sector.schema[2] == ColumnSchema("listing_url", "string", "")

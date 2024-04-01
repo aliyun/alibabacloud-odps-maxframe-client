@@ -507,12 +507,14 @@ class ReferenceField(Field):
         tag: str,
         reference_type: Union[str, Type] = None,
         default: Any = no_default,
+        default_factory: Optional[Callable] = None,
         on_serialize: Callable[[Any], Any] = None,
         on_deserialize: Callable[[Any], Any] = None,
     ):
         super().__init__(
             tag,
             default=default,
+            default_factory=default_factory,
             on_serialize=on_serialize,
             on_deserialize=on_deserialize,
         )

@@ -338,6 +338,14 @@ def deserialize_serializable(ser_serializable: bytes):
     return deserialize(header2, buffers2)
 
 
+def skip_na_call(func: Callable):
+    @functools.wraps(func)
+    def new_func(x):
+        return func(x) if x is not None else None
+
+    return new_func
+
+
 def url_path_join(*pieces):
     """Join components of url into a relative url
 
@@ -450,6 +458,9 @@ _ToThreadRetType = TypeVar("_ToThreadRetType")
 
 
 class ToThreadMixin:
+    _thread_pool_size = 1
+    _counter = itertools.count().__next__
+
     def __del__(self):
         if hasattr(self, "_pool"):
             kw = {"wait": False}
@@ -466,7 +477,10 @@ class ToThreadMixin:
         **kwargs,
     ) -> _ToThreadRetType:
         if not hasattr(self, "_pool"):
-            self._pool = concurrent.futures.ThreadPoolExecutor(1)
+            self._pool = concurrent.futures.ThreadPoolExecutor(
+                self._thread_pool_size,
+                thread_name_prefix=f"{type(self).__name__}Pool-{self._counter()}",
+            )
 
         task = asyncio.create_task(
             to_thread_pool(func, *args, **kwargs, pool=self._pool)

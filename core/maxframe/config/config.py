@@ -340,6 +340,12 @@ default_options.register_option(
     validator=is_integer,
     remote=True,
 )
+default_options.register_option(
+    "session.subinstance_priority",
+    None,
+    validator=any_validator(is_null, is_integer),
+    remote=True,
+)
 
 default_options.register_option("warn_duplicated_execution", False, validator=is_bool)
 default_options.register_option("dataframe.use_arrow_dtype", True, validator=is_bool)

@@ -104,6 +104,7 @@ def run_app_in_thread(app_func):
         q = queue.Queue()
         exit_event = asyncio.Event(loop=app_loop)
         app_thread = Thread(
+            name="TestAppThread",
             target=app_thread_func,
             args=(app_loop, q, exit_event, args, kwargs),
         )

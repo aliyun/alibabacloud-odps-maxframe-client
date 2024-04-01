@@ -14,6 +14,7 @@
 
 from typing import Any, Dict, List
 
+import msgpack
 from tornado import httpclient
 
 from maxframe.core import TileableGraph
@@ -28,7 +29,6 @@ from maxframe.protocol import (
 )
 from maxframe.typing_ import TimeoutType
 from maxframe.utils import (
-    deserialize_serializable,
     format_timeout_params,
     serialize_serializable,
     wait_http_response,
@@ -47,12 +47,12 @@ class FrameDriverClient:
         resp = await httpclient.AsyncHTTPClient().fetch(
             req_url, method="POST", body=serialize_serializable(req_body)
         )
-        return deserialize_serializable(resp.body).body
+        return SessionInfo.from_json(msgpack.loads(resp.body))
 
     async def get_session(self, session_id: str) -> SessionInfo:
         req_url = f"{self._endpoint}/api/sessions/{session_id}"
         resp = await httpclient.AsyncHTTPClient().fetch(req_url, method="GET")
-        return deserialize_serializable(resp.body).body
+        return SessionInfo.from_json(msgpack.loads(resp.body))
 
     async def delete_session(self, session_id: str):
         req_url = f"{self._endpoint}/api/sessions/{session_id}"
@@ -71,12 +71,12 @@ class FrameDriverClient:
             method="POST",
             body=serialize_serializable(ProtocolBody(body=req_body)),
         )
-        return deserialize_serializable(resp.body).body
+        return DagInfo.from_json(msgpack.loads(resp.body))
 
     async def get_dag_info(self, session_id: str, dag_id: str) -> DagInfo:
         req_url = f"{self._endpoint}/api/sessions/{session_id}/dags/{dag_id}"
         resp = await httpclient.AsyncHTTPClient().fetch(req_url, method="GET")
-        return deserialize_serializable(resp.body).body
+        return DagInfo.from_json(msgpack.loads(resp.body))
 
     async def wait_dag(self, session_id: str, dag_id: str, timeout: TimeoutType = None):
         query_part = format_timeout_params(timeout)
@@ -87,7 +87,7 @@ class FrameDriverClient:
             resp = await wait_http_response(
                 req_url, method="GET", request_timeout=timeout
             )
-            info = deserialize_serializable(resp.body).body
+            info = DagInfo.from_json(msgpack.loads(resp.body))
         except TimeoutError:
             info = await self.get_dag_info(session_id, dag_id)
         return info
@@ -103,7 +103,7 @@ class FrameDriverClient:
             resp = await wait_http_response(
                 req_url, method="DELETE", request_timeout=timeout
             )
-            info = deserialize_serializable(resp.body).body
+            info = DagInfo.from_json(msgpack.loads(resp.body))
         except TimeoutError:
             info = await self.get_dag_info(session_id, dag_id)
         return info

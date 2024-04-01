@@ -18,6 +18,7 @@ import os
 import mock
 from defusedxml import ElementTree
 from odps import ODPS
+from odps import options as odps_options
 
 from ...session.consts import MAXFRAME_OUTPUT_JSON_FORMAT
 from ...session.task import MaxFrameInstanceCaller, MaxFrameTask
@@ -27,17 +28,20 @@ expected_file_dir = os.path.join(os.path.dirname(__file__), "expected-data")
 
 def test_maxframe_instance_caller_creating_session():
     o = ODPS.from_environments()
-    task_caller = MaxFrameInstanceCaller(
-        odps_entry=o,
-        task_name="task_test",
-        major_version="test_version",
-        output_format=MAXFRAME_OUTPUT_JSON_FORMAT,
-        priority="100",
-        running_cluster="test_cluster",
-    )
+
+    def create_caller(**kwargs):
+        kw = dict(
+            odps_entry=o,
+            task_name="task_test",
+            major_version="test_version",
+            output_format=MAXFRAME_OUTPUT_JSON_FORMAT,
+            running_cluster="test_cluster",
+        )
+        kw.update(**kwargs)
+        return MaxFrameInstanceCaller(**kw)
 
     def mock_create(self, task: MaxFrameTask, priority=None, running_cluster=None):
-        assert priority == "100"
+        assert priority == 100
         assert running_cluster == "test_cluster"
         root = ElementTree.parse(
             os.path.join(expected_file_dir, "create_session.xml")
@@ -62,6 +66,20 @@ def test_maxframe_instance_caller_creating_session():
         target="maxframe_client.session.task.MaxFrameInstanceCaller",
         _wait_instance_task_ready=mock.DEFAULT,
         get_session=mock.DEFAULT,
-    ):
-        with mock.patch("odps.models.instances.BaseInstances.create", mock_create):
+    ), mock.patch("odps.models.instances.BaseInstances.create", mock_create):
+        task_caller = create_caller(priority=100)
+        task_caller.create_session()
+
+        old_priority = odps_options.priority
+        old_get_priority = odps_options.get_priority
+        try:
+            task_caller = create_caller(priority=100)
+            odps_options.priority = 100
             task_caller.create_session()
+
+            odps_options.priority = None
+            odps_options.get_priority = lambda _: 100
+            task_caller.create_session()
+        finally:
+            odps_options.priority = old_priority
+            odps_options.get_priority = old_get_priority
