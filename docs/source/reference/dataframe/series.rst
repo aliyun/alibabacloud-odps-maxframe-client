@@ -110,6 +110,7 @@ Reindexing / selection / label manipulation
    Series.head
    Series.isin
    Series.rename
+   Series.reset_index
    Series.sample
    Series.set_axis
 

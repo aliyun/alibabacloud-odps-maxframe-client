@@ -358,6 +358,9 @@ default_options.register_option(
 default_options.register_option(
     "show_progress", "auto", validator=any_validator(is_bool, is_string)
 )
+default_options.register_option(
+    "dag.settings", value=dict(), validator=is_dict, remote=True
+)
 
 ################
 # SPE Settings #

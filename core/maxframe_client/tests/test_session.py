@@ -28,6 +28,7 @@ from maxframe.lib.aio import stop_isolation
 from maxframe.protocol import ResultInfo
 from maxframe.serialization import RemoteException
 from maxframe.session import new_session
+from maxframe.tests.utils import tn
 from maxframe.utils import build_temp_table_name
 from maxframe_framedriver.app.tests.test_framedriver_webapp import (  # noqa: F401
     framedriver_app,
@@ -113,6 +114,26 @@ def test_simple_run_dataframe(start_mock_session):
         build_temp_table_name(start_mock_session, intermediate_key)
     )
     assert not odps_entry.exist_table(build_temp_table_name(start_mock_session, key))
+
+
+def test_run_empty_table(start_mock_session):
+    odps_entry = ODPS.from_environments()
+
+    table_name = tn("test_session_empty_table")
+    odps_entry.delete_table(table_name, if_exists=True)
+    empty_table = odps_entry.create_table(
+        table_name, "_idx_0 bigint, a double, b double", lifecycle=1
+    )
+    df = md.read_odps_table(table_name, index_col="_idx_0")
+    df["d"] = df["a"] + df["b"]
+
+    executed = df.execute()
+    assert "Index: []" in str(executed)
+
+    fetched = executed.fetch()
+    assert 0 == len(fetched)
+
+    empty_table.drop()
 
 
 def test_run_dataframe_with_pd_source(start_mock_session):

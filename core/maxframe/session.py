@@ -1211,7 +1211,7 @@ def new_session(
     # load third party extensions.
     ensure_isolation_created(kwargs)
 
-    odps_entry = odps_entry or ODPS.from_environments()
+    odps_entry = odps_entry or ODPS.from_global() or ODPS.from_environments()
     if address is None:
         from maxframe_client.session.consts import ODPS_SESSION_INSECURE_SCHEME
 
@@ -1255,7 +1255,9 @@ def get_default_or_create(**kwargs):
         if session is None:
             # no session attached, try to create one
             warnings.warn(warning_msg)
-            session = new_session(ODPS.from_environments(), **kwargs)
+            session = new_session(
+                ODPS.from_global() or ODPS.from_environments(), **kwargs
+            )
             session.as_default()
     if isinstance(session, IsolatedAsyncSession):
         session = SyncSession.from_isolated_session(session)

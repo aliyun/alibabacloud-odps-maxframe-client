@@ -164,6 +164,8 @@ def read_odps_table(
         DataFrame read from MaxCompute (ODPS) table
     """
     odps_entry = odps_entry or ODPS.from_global() or ODPS.from_environments()
+    if odps_entry is None:
+        raise ValueError("Missing odps_entry parameter")
     if isinstance(table_name, Table):
         table = table_name
     else:

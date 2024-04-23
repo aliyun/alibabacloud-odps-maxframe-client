@@ -32,13 +32,13 @@ from ...serialization.serializables import (
 )
 from ...typing_ import TileableType
 from ..core import DataFrame  # noqa: F401
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import parse_index
+from .core import DataFrameDataStore
 
 logger = logging.getLogger(__name__)
 
 
-class DataFrameToODPSTable(DataFrameOperator, DataFrameOperatorMixin):
+class DataFrameToODPSTable(DataFrameDataStore):
     _op_type_ = opcodes.TO_ODPS_TABLE
 
     dtypes = SeriesField("dtypes")

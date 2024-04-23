@@ -57,6 +57,11 @@ try:
 except ImportError:  # pragma: no cover
     pass
 
+try:
+    from . import _internal
+except ImportError:  # pragma: no cover
+    pass
+
 del (
     arithmetic,
     datasource,

@@ -263,7 +263,9 @@ def read_odps_query(
     result: DataFrame
         DataFrame read from MaxCompute (ODPS) table
     """
-    odps_entry = odps_entry or ODPS.from_environments()
+    odps_entry = odps_entry or ODPS.from_global() or ODPS.from_environments()
+    if odps_entry is None:
+        raise ValueError("Missing odps_entry parameter")
     inst = odps_entry.execute_sql(f"EXPLAIN {query}")
     explain_str = list(inst.get_task_results().values())[0]
 

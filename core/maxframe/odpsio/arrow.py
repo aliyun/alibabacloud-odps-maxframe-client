@@ -65,14 +65,19 @@ def arrow_to_pandas(
         raise ValueError(f"Does not support meta type {table_meta.type!r}")
 
 
-def pandas_to_arrow(df: Any, nthreads=1) -> Tuple[ArrowTableType, DataFrameTableMeta]:
-    table_meta = build_dataframe_table_meta(df)
+def pandas_to_arrow(
+    df: Any, nthreads=1, ignore_index=False
+) -> Tuple[ArrowTableType, DataFrameTableMeta]:
+    table_meta = build_dataframe_table_meta(df, ignore_index)
     df = df.copy() if callable(getattr(df, "copy", None)) else df
     if table_meta.type in (OutputType.dataframe, OutputType.series):
         if table_meta.type == OutputType.series:
             df = df.to_frame("_data" if df.name is None else df.name)
         df.columns = pd.Index(table_meta.table_column_names)
-        df = df.rename_axis(table_meta.table_index_column_names).reset_index()
+        if not ignore_index:
+            df = df.rename_axis(table_meta.table_index_column_names).reset_index()
+    elif ignore_index:
+        df = pd.DataFrame([], columns=[])
     elif table_meta.type == OutputType.index:
         names = [f"_idx_{idx}" for idx in range(len(df.names))]
         df = df.to_frame(name=names[0] if len(names) == 1 else names)

@@ -23,11 +23,11 @@ from ...serialization.serializables import (
     ListField,
     StringField,
 )
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import parse_index
+from .core import DataFrameDataStore
 
 
-class DataFrameToCSV(DataFrameOperator, DataFrameOperatorMixin):
+class DataFrameToCSV(DataFrameDataStore):
     _op_type_ = opcodes.TO_CSV
 
     input = KeyField("input")
