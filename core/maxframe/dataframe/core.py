@@ -960,7 +960,9 @@ class BaseSeriesData(HasShapeTileableData, _ToPandasMixin):
             buf = StringIO()
             max_rows = pd.get_option("display.max_rows")
             corner_max_rows = (
-                max_rows if self.shape[0] <= max_rows else corner_data.shape[0] - 1
+                max_rows
+                if self.shape[0] <= max_rows or corner_data.shape[0] == 0
+                else corner_data.shape[0] - 1
             )  # make sure max_rows < corner_data
 
             with pd.option_context("display.max_rows", corner_max_rows):
@@ -1605,7 +1607,7 @@ class DataFrameData(_BatchedFetcher, BaseDataFrameData):
             buf = StringIO()
             max_rows = pd.get_option("display.max_rows")
 
-            if self.shape[0] <= max_rows:
+            if self.shape[0] <= max_rows or corner_data.shape[0] == 0:
                 buf.write(repr(corner_data) if representation else str(corner_data))
             else:
                 # remember we cannot directly call repr(df),

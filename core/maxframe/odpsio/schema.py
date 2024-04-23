@@ -175,7 +175,9 @@ def _scalar_as_index(df_obj: Any) -> pd.Index:
 
 
 def pandas_to_odps_schema(
-    df_obj: Any, unknown_as_string: bool = False
+    df_obj: Any,
+    unknown_as_string: bool = False,
+    ignore_index=False,
 ) -> Tuple[odps_types.OdpsSchema, DataFrameTableMeta]:
     from .. import dataframe as md
     from .arrow import pandas_to_arrow
@@ -209,7 +211,7 @@ def pandas_to_odps_schema(
     else:
         empty_df_obj = df_obj
 
-    arrow_data, table_meta = pandas_to_arrow(empty_df_obj)
+    arrow_data, table_meta = pandas_to_arrow(empty_df_obj, ignore_index=ignore_index)
     return (
         arrow_schema_to_odps_schema(
             arrow_data.schema, unknown_as_string=unknown_as_string
@@ -268,7 +270,9 @@ def build_table_column_name(
     return col_name
 
 
-def build_dataframe_table_meta(df_obj: Any) -> DataFrameTableMeta:
+def build_dataframe_table_meta(
+    df_obj: Any, ignore_index: bool = False
+) -> DataFrameTableMeta:
     from .. import dataframe as md
 
     col_to_count = defaultdict(lambda: 0)
@@ -284,6 +288,8 @@ def build_dataframe_table_meta(df_obj: Any) -> DataFrameTableMeta:
         obj_type = OutputType.scalar
     else:  # pragma: no cover
         raise TypeError(f"Cannot accept type {type(df_obj)}")
+
+    assert not ignore_index or obj_type in (OutputType.dataframe, OutputType.series)
 
     if obj_type == OutputType.scalar:
         pd_dtypes = pd.Series([])
@@ -340,12 +346,19 @@ def build_dataframe_table_meta(df_obj: Any) -> DataFrameTableMeta:
     else:
         index_dtypes = pd.Series([pd_index_val.dtype], index=pd_index_val.names)
 
+    if ignore_index:
+        table_index_column_names = []
+        pd_index_dtypes = pd.Series([], index=[])
+    else:
+        table_index_column_names = [f"_idx_{i}" for i in range(len(index_obj.names))]
+        pd_index_dtypes = index_dtypes
+
     return DataFrameTableMeta(
         table_name=table_name,
         type=obj_type,
         table_column_names=final_sql_columns,
-        table_index_column_names=[f"_idx_{i}" for i in range(len(index_obj.names))],
+        table_index_column_names=table_index_column_names,
         pd_column_dtypes=pd_dtypes,
         pd_column_level_names=column_index_names,
-        pd_index_dtypes=index_dtypes,
+        pd_index_dtypes=pd_index_dtypes,
     )

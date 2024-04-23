@@ -107,7 +107,6 @@ def df_reset_index(
     inplace=False,
     col_level=0,
     col_fill="",
-    incremental_index=False,
 ):
     """
     Reset the index, or a level of it.
@@ -133,12 +132,6 @@ def df_reset_index(
     col_fill : object, default ''
         If the columns have multiple levels, determines how the other
         levels are named. If None then the index name is repeated.
-    incremental_index: bool, default False
-        Ensure RangeIndex incremental, when output DataFrame has multiple chunks,
-        ensuring index incremental costs more computation,
-        so by default, each chunk will have index which starts from 0,
-        setting incremental_index=True，reset_index will guarantee that
-        output DataFrame's index is from 0 to n - 1.
 
     Returns
     -------
@@ -264,7 +257,6 @@ def df_reset_index(
         drop=drop,
         col_level=col_level,
         col_fill=col_fill,
-        incremental_index=incremental_index,
         output_types=[OutputType.dataframe],
     )
     ret = op(df)
@@ -280,7 +272,6 @@ def series_reset_index(
     drop=False,
     name=no_default,
     inplace=False,
-    incremental_index=False,
 ):
     """
     Generate a new DataFrame or Series with the index reset.
@@ -303,12 +294,6 @@ def series_reset_index(
         when `drop` is True.
     inplace : bool, default False
         Modify the Series in place (do not create a new object).
-    incremental_index: bool, default False
-        Ensure RangeIndex incremental, when output Series has multiple chunks,
-        ensuring index incremental costs more computation,
-        so by default, each chunk will have index which starts from 0,
-        setting incremental_index=True，reset_index will guarantee that
-        output Series's index is from 0 to n - 1.
 
     Returns
     -------
@@ -406,8 +391,7 @@ def series_reset_index(
         level=level,
         drop=drop,
         name=name,
-        incremental_index=incremental_index,
-        output_types=[OutputType.series],
+        output_types=[OutputType.series if drop else OutputType.dataframe],
     )
     ret = op(series)
     if not inplace:

@@ -381,6 +381,11 @@ def build_temp_table_name(session_id: str, tileable_key: str) -> str:
     return f"tmp_mf_{session_id}_{tileable_key}"
 
 
+def build_temp_intermediate_table_name(session_id: str, tileable_key: str) -> str:
+    temp_table = build_temp_table_name(session_id, tileable_key)
+    return f"{temp_table}_intermediate"
+
+
 def build_session_volume_name(session_id: str) -> str:
     return f"mf_vol_{session_id}"
 

@@ -61,6 +61,16 @@ def test_pandas_to_odps_schema_dataframe(wrap_obj):
     assert meta.pd_column_level_names == [None]
     assert meta.pd_index_level_names == [None]
 
+    test_df = _wrap_maxframe_obj(data, wrap=wrap_obj)
+    schema, meta = pandas_to_odps_schema(test_df, ignore_index=True)
+    assert [c.name for c in schema.columns] == list(test_df.dtypes.index.str.lower())
+    assert [c.type.name for c in schema.columns] == ["double"] * len(test_df.columns)
+    assert meta.type == OutputType.dataframe
+    assert meta.table_column_names == list(test_df.dtypes.index.str.lower())
+    assert meta.table_index_column_names == []
+    assert meta.pd_column_level_names == [None]
+    assert meta.pd_index_level_names == []
+
     data.columns = pd.MultiIndex.from_tuples(
         [("A", "A"), ("A", "B"), ("A", "C"), ("B", "A"), ("B", "B")], names=["c1", "c2"]
     )
@@ -99,6 +109,15 @@ def test_pandas_to_odps_schema_series(wrap_obj):
     assert meta.pd_column_level_names == [None]
     assert meta.pd_index_level_names == [None]
 
+    schema, meta = pandas_to_odps_schema(test_s, ignore_index=True)
+    assert [c.name for c in schema.columns] == ["_data"]
+    assert [c.type.name for c in schema.columns] == ["double"]
+    assert meta.type == OutputType.series
+    assert meta.table_column_names == ["_data"]
+    assert meta.table_index_column_names == []
+    assert meta.pd_column_level_names == [None]
+    assert meta.pd_index_level_names == []
+
     data.index = pd.MultiIndex.from_arrays(
         [np.random.choice(list("ABC"), 100), np.random.randint(0, 10, 100)],
         names=["c1", "c2"],
@@ -130,6 +149,9 @@ def test_pandas_to_odps_schema_index(wrap_obj):
     assert meta.pd_column_level_names == []
     assert meta.pd_index_level_names == [None]
 
+    with pytest.raises(AssertionError):
+        pandas_to_odps_schema(test_idx, unknown_as_string=True, ignore_index=True)
+
     data = pd.MultiIndex.from_arrays(
         [np.random.choice(list("ABC"), 100), np.random.randint(0, 10, 100)],
         names=["c1", "c2"],
@@ -158,6 +180,9 @@ def test_pandas_to_odps_schema_scalar(wrap_obj):
     assert meta.table_index_column_names == ["_idx_0"]
     assert meta.pd_column_level_names == []
     assert meta.pd_index_level_names == [None]
+
+    with pytest.raises(AssertionError):
+        pandas_to_odps_schema(test_scalar, unknown_as_string=True, ignore_index=True)
 
 
 def test_odps_arrow_schema_conversion():

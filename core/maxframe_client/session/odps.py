@@ -115,7 +115,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
     ):
         super().__init__(address, session_id)
         self.timeout = timeout
-        self._odps_entry = odps_entry or ODPS.from_environments()
+        self._odps_entry = odps_entry or ODPS.from_global() or ODPS.from_environments()
         self._tileable_to_infos = weakref.WeakKeyDictionary()
 
         self._caller = self._create_caller(odps_entry, address, **kwargs)
@@ -147,15 +147,16 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         data = t.op.get_data()
         batch_size = options.session.upload_batch_size
 
-        halo_client = HaloTableIO(self._odps_entry)
-        with halo_client.open_writer(table_obj.full_table_name) as writer:
-            for batch_start in range(0, len(data), batch_size):
-                if isinstance(data, pd.Index):
-                    batch = data[batch_start : batch_start + batch_size]
-                else:
-                    batch = data.iloc[batch_start : batch_start + batch_size]
-                arrow_batch, _ = pandas_to_arrow(batch)
-                writer.write(arrow_batch)
+        if len(data):
+            halo_client = HaloTableIO(self._odps_entry)
+            with halo_client.open_writer(table_obj.full_table_name) as writer:
+                for batch_start in range(0, len(data), batch_size):
+                    if isinstance(data, pd.Index):
+                        batch = data[batch_start : batch_start + batch_size]
+                    else:
+                        batch = data.iloc[batch_start : batch_start + batch_size]
+                    arrow_batch, _ = pandas_to_arrow(batch)
+                    writer.write(arrow_batch)
 
         read_tileable = read_odps_table(
             table_obj.full_table_name,
