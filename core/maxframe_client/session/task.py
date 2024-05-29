@@ -21,9 +21,8 @@ from typing import Dict, List, Optional, Type, Union
 import msgpack
 from odps import ODPS
 from odps import options as odps_options
-from odps import serializers
 from odps.errors import parse_instance_error
-from odps.models import Instance, Task
+from odps.models import Instance, MaxFrameTask
 
 from maxframe.config import options
 from maxframe.core import TileableGraph
@@ -53,55 +52,6 @@ from .consts import (
 from .odps import MaxFrameServiceCaller, MaxFrameSession
 
 logger = logging.getLogger(__name__)
-
-
-class MaxFrameTask(Task):
-    __slots__ = ("_output_format", "_major_version", "_service_endpoint")
-    _root = "MaxFrame"
-    _anonymous_task_name = "AnonymousMaxFrameTask"
-
-    command = serializers.XMLNodeField("Command", default="CREATE_SESSION")
-
-    def __init__(self, **kwargs):
-        kwargs["name"] = kwargs.get("name") or self._anonymous_task_name
-        self._output_format = kwargs.pop(
-            "output_format", MAXFRAME_OUTPUT_MSGPACK_FORMAT
-        )
-        self._major_version = kwargs.pop("major_version", None)
-        self._service_endpoint = kwargs.pop("service_endpoint", None)
-        super().__init__(**kwargs)
-
-    def serial(self):
-        if self.properties is None:
-            self.properties = dict()
-
-        if odps_options.default_task_settings:
-            settings = odps_options.default_task_settings
-        else:
-            settings = dict()
-
-        if self._major_version is not None:
-            settings["odps.task.major.version"] = self._major_version
-
-        if "settings" in self.properties:
-            settings.update(json.loads(self.properties["settings"]))
-
-        # merge sql options
-        sql_settings = (odps_options.sql.settings or {}).copy()
-        sql_settings.update(options.sql.settings or {})
-
-        mf_settings = dict(options.to_dict(remote_only=True).items())
-        mf_settings["sql.settings"] = sql_settings
-        mf_opts = {
-            "odps.maxframe.settings": json.dumps(mf_settings),
-            "odps.maxframe.output_format": self._output_format,
-            "odps.service.endpoint": self._service_endpoint,
-        }
-        if mf_version:
-            mf_opts["odps.maxframe.client_version"] = mf_version
-        settings.update(mf_opts)
-        self.properties["settings"] = json.dumps(settings)
-        return super().serial()
 
 
 class MaxFrameInstanceCaller(MaxFrameServiceCaller):
@@ -159,13 +109,31 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
                 f"Serialization format {self._output_format} not supported"
             )
 
-    def create_session(self) -> SessionInfo:
+    def _create_maxframe_task(self) -> MaxFrameTask:
         task = MaxFrameTask(
             name=self._task_name,
             major_version=self._major_version,
-            output_format=self._output_format,
             service_endpoint=self._odps_entry.endpoint,
         )
+
+        # merge sql options
+        sql_settings = (odps_options.sql.settings or {}).copy()
+        sql_settings.update(options.sql.settings or {})
+
+        mf_settings = dict(options.to_dict(remote_only=True).items())
+        mf_settings["sql.settings"] = sql_settings
+
+        mf_opts = {
+            "odps.maxframe.settings": json.dumps(mf_settings),
+            "odps.maxframe.output_format": self._output_format,
+        }
+        if mf_version:
+            mf_opts["odps.maxframe.client_version"] = mf_version
+        task.update_settings(mf_opts)
+        return task
+
+    def create_session(self) -> SessionInfo:
+        task = self._create_maxframe_task()
         if not self._nested:
             self._task_name = task.name
             project = self._odps_entry.get_project(self._project)
@@ -277,6 +245,11 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
         self._instance.put_task_info(
             self._task_name, MAXFRAME_TASK_DECREF_METHOD, json.dumps(req_data)
         )
+
+    def get_logview_address(self, dag_id=None, hours=None) -> Optional[str]:
+        hours = hours or options.session.logview_hours
+        subquery_suffix = f"&subQuery={dag_id}" if dag_id else ""
+        return self._instance.get_logview_address(hours) + subquery_suffix
 
 
 class MaxFrameTaskSession(MaxFrameSession):

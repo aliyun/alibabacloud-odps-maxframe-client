@@ -365,6 +365,15 @@ class AbstractAsyncSession(AbstractSession, metaclass=ABCMeta):
         Stop server.
         """
 
+    @abstractmethod
+    async def get_logview_address(self, hours=None) -> Optional[str]:
+        """
+        Get Logview address
+        Returns
+        -------
+            Logview address
+        """
+
     def close(self):
         asyncio.run(self.destroy())
 
@@ -549,6 +558,15 @@ class AbstractSyncSession(AbstractSession, metaclass=ABCMeta):
 
         return fetch(tileables, self, offsets=offsets, sizes=sizes)
 
+    @abstractmethod
+    def get_logview_address(self, hours=None) -> Optional[str]:
+        """
+        Get logview address
+        Returns
+        -------
+            logview address
+        """
+
 
 def _delegate_to_isolated_session(func: Union[Callable, Coroutine]):
     if asyncio.iscoroutinefunction(func):
@@ -727,6 +745,11 @@ class AsyncSession(AbstractAsyncSession):
         coro = self._isolated_session.stop_server()
         await asyncio.wrap_future(asyncio.run_coroutine_threadsafe(coro, self._loop))
         stop_isolation()
+
+    @implements(AbstractAsyncSession.get_logview_address)
+    @_delegate_to_isolated_session
+    async def get_logview_address(self, hours=None) -> Optional[str]:
+        pass  # pragma: no cover
 
 
 class ProgressBar:
@@ -947,6 +970,11 @@ class SyncSession(AbstractSyncSession):
     @implements(AbstractSyncSession.get_cluster_versions)
     @_delegate_to_isolated_session
     def get_cluster_versions(self) -> List[str]:
+        pass  # pragma: no cover
+
+    @implements(AbstractSyncSession.get_logview_address)
+    @_delegate_to_isolated_session
+    def get_logview_address(self, hours=None) -> Optional[str]:
         pass  # pragma: no cover
 
     def destroy(self):

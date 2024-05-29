@@ -12,16 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
+import json
 from abc import ABC, abstractmethod
 from numbers import Integral
-from typing import Any, Dict, List, Type, Union
+from typing import Any, Dict, List, Optional, Type, Union
 
+import pandas as pd
 import pyarrow as pa
 from odps import ODPS
 from odps.models import ExternalVolume, PartedVolume
+from odps.tunnel import TableTunnel
 from tornado import httpclient
 
 from maxframe.core import OBJECT_TYPE
+from maxframe.dataframe.core import DATAFRAME_TYPE
 from maxframe.lib import wrapped_pickle as pickle
 from maxframe.odpsio import HaloTableIO, arrow_to_pandas, build_dataframe_table_meta
 from maxframe.protocol import (
@@ -31,8 +36,9 @@ from maxframe.protocol import (
     ResultInfo,
     ResultType,
 )
+from maxframe.tensor.core import TENSOR_TYPE
 from maxframe.typing_ import PandasObjectTypes, TileableType
-from maxframe.utils import ToThreadMixin
+from maxframe.utils import ToThreadMixin, deserialize_serializable
 
 _result_fetchers: Dict[ResultType, Type["ResultFetcher"]] = dict()
 
@@ -53,6 +59,14 @@ class ResultFetcher(ABC):
         self._odps_entry = odps_entry
 
     @abstractmethod
+    async def update_tileable_meta(
+        self,
+        tileable: TileableType,
+        info: ResultInfo,
+    ) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
     async def fetch(
         self,
         tileable: TileableType,
@@ -66,6 +80,13 @@ class ResultFetcher(ABC):
 class NullFetcher(ResultFetcher):
     result_type = ResultType.NULL
 
+    async def update_tileable_meta(
+        self,
+        tileable: TileableType,
+        info: ResultInfo,
+    ) -> None:
+        return
+
     async def fetch(
         self,
         tileable: TileableType,
@@ -78,6 +99,40 @@ class NullFetcher(ResultFetcher):
 @register_fetcher
 class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
     result_type = ResultType.ODPS_TABLE
+
+    def _get_table_comment(self, table_name: str) -> Optional[str]:
+        table = self._odps_entry.get_table(table_name)
+        return getattr(table, "comment", None)
+
+    async def update_tileable_meta(
+        self,
+        tileable: TileableType,
+        info: ODPSTableResultInfo,
+    ) -> None:
+        if isinstance(tileable, DATAFRAME_TYPE) and tileable.dtypes is None:
+            tb_comment = await self.to_thread(
+                self._get_table_comment, info.full_table_name
+            )
+            if tb_comment:  # pragma: no branch
+                comment_data = json.loads(tb_comment)
+
+                table_meta: DataFrameTableMeta = deserialize_serializable(
+                    base64.b64decode(comment_data["table_meta"])
+                )
+                tileable.refresh_from_table_meta(table_meta)
+
+        if tileable.shape and any(pd.isna(x) for x in tileable.shape):
+            part_specs = [None] if not info.partition_specs else info.partition_specs
+            tunnel = TableTunnel(self._odps_entry)
+            total_records = 0
+            for part_spec in part_specs:
+                session = tunnel.create_download_session(
+                    info.full_table_name, part_spec
+                )
+                total_records += session.count
+            new_shape_list = list(tileable.shape)
+            new_shape_list[-1] = total_records
+            tileable.params = {"shape": tuple(new_shape_list)}
 
     def _read_single_source(
         self,
@@ -149,6 +204,13 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
 class ODPSVolumeFetcher(ToThreadMixin, ResultFetcher):
     result_type = ResultType.ODPS_VOLUME
 
+    async def update_tileable_meta(
+        self,
+        tileable: TileableType,
+        info: ODPSVolumeResultInfo,
+    ) -> None:
+        return
+
     async def _read_parted_volume_data(
         self, volume: PartedVolume, partition: str, file_name: str
     ) -> bytes:
@@ -197,6 +259,6 @@ class ODPSVolumeFetcher(ToThreadMixin, ResultFetcher):
         info: ODPSVolumeResultInfo,
         indexes: List[Union[Integral, slice]],
     ) -> Any:
-        if isinstance(tileable, OBJECT_TYPE):
+        if isinstance(tileable, (OBJECT_TYPE, TENSOR_TYPE)):
             return await self._fetch_object(info)
         raise NotImplementedError(f"Fetching {type(tileable)} not implemented")

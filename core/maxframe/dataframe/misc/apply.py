@@ -225,7 +225,7 @@ class ApplyOperator(
                 else:  # pragma: no cover
                     index_value = parse_index(infer_series.index)
             else:
-                index_value = parse_index(None, series)
+                index_value = parse_index(series.index_value)
 
             if output_type == OutputType.dataframe:
                 if dtypes is None:

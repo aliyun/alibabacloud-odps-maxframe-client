@@ -20,6 +20,7 @@ from ...serialization.serializables import (
     AnyField,
     FieldTypes,
     NDArrayField,
+    StringField,
     TupleField,
 )
 from ...utils import on_deserialize_shape, on_serialize_shape
@@ -37,8 +38,9 @@ class ArrayDataSource(TensorNoInput):
 
     _op_type_ = opcodes.TENSOR_DATA_SOURCE
 
-    data = NDArrayField("data")
-    chunk_size = AnyField("chunk_size")
+    data = NDArrayField("data", default=None)
+    chunk_size = AnyField("chunk_size", default=None)
+    order = StringField("order", default=None)
 
     def __init__(self, data=None, dtype=None, gpu=None, **kw):
         if dtype is not None:

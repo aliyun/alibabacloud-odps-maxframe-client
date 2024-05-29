@@ -21,6 +21,7 @@ from ....core import OutputType
 from ....tensor.core import TENSOR_TYPE
 from ... import eval as maxframe_eval
 from ... import get_dummies, to_numeric
+from ...arithmetic import DataFrameGreater, DataFrameLess
 from ...core import CATEGORICAL_TYPE, DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
 from ...datasource.dataframe import from_pandas as from_pandas_df
 from ...datasource.index import from_pandas as from_pandas_index
@@ -405,3 +406,63 @@ def test_to_numeric():
 
     with pytest.raises(ValueError):
         _ = to_numeric([])
+
+
+def test_case_when():
+    rs = np.random.RandomState(0)
+    raw = pd.DataFrame(
+        rs.randint(1000, size=(20, 8)), columns=["c" + str(i + 1) for i in range(8)]
+    )
+    df = from_pandas_df(raw, chunk_size=8)
+
+    with pytest.raises(TypeError):
+        df.c1.case_when(df.c2)
+    with pytest.raises(ValueError):
+        df.c1.case_when([])
+    with pytest.raises(TypeError):
+        df.c1.case_when([[]])
+    with pytest.raises(ValueError):
+        df.c1.case_when([()])
+
+    col = df.c1.case_when([(df.c2 < 10, 10), (df.c2 > 20, df.c3)])
+    assert len(col.inputs) == 4
+    assert isinstance(col.inputs[1].op, DataFrameLess)
+    assert isinstance(col.inputs[2].op, DataFrameGreater)
+
+
+def test_pivot_table():
+    from ...groupby.aggregation import DataFrameGroupByAgg
+    from ...misc.pivot_table import DataFramePivotTable
+
+    raw = pd.DataFrame(
+        {
+            "A": "foo foo foo foo foo bar bar bar bar".split(),
+            "B": "one one one two two one one two two".split(),
+            "C": "small large large small small large small small large".split(),
+            "D": [1, 2, 2, 3, 3, 4, 5, 6, 7],
+            "E": [2, 4, 5, 5, 6, 6, 8, 9, 9],
+        }
+    )
+    df = from_pandas_df(raw, chunk_size=8)
+    with pytest.raises(ValueError):
+        df.pivot_table(index=123)
+    with pytest.raises(ValueError):
+        df.pivot_table(index=["F"])
+    with pytest.raises(ValueError):
+        df.pivot_table(values=["D", "E"], aggfunc="sum")
+
+    t = df.pivot_table(index="A")
+    assert isinstance(t.op, DataFrameGroupByAgg)
+    t = df.pivot_table(index="A", values=["D", "E"], aggfunc="sum")
+    assert isinstance(t.op, DataFrameGroupByAgg)
+
+    t = df.pivot_table(index=["A", "B"], values=["D", "E"], aggfunc="sum", margins=True)
+    assert isinstance(t.op, DataFramePivotTable)
+
+    t = df.pivot_table(index="A", columns=["B", "C"], aggfunc="sum")
+    assert isinstance(t.op, DataFramePivotTable)
+    assert t.shape == (np.nan, np.nan)
+
+    t = df.pivot_table(index=["A", "B"], columns="C", aggfunc="sum")
+    assert isinstance(t.op, DataFramePivotTable)
+    assert t.shape == (np.nan, np.nan)

@@ -30,7 +30,7 @@ from ...serialization.serializables import (
     StringField,
 )
 from ...typing_ import TileableType
-from ...utils import pd_release_version, tokenize
+from ...utils import get_item_if_scalar, pd_release_version, tokenize
 from ..operators import DATAFRAME_TYPE, DataFrameOperator, DataFrameOperatorMixin
 from ..utils import (
     build_df,
@@ -715,6 +715,7 @@ class ReductionCompiler:
                 keys_to_vars = {inp.key: local_key_to_var[inp.key] for inp in t.inputs}
 
                 def _interpret_var(v):
+                    v = get_item_if_scalar(v)
                     # get representation for variables
                     if hasattr(v, "key"):
                         return keys_to_vars[v.key]

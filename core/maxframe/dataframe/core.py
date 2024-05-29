@@ -35,6 +35,7 @@ from ..core import (
     register_output_types,
 )
 from ..core.entity.utils import refresh_tileable_shape
+from ..protocol import DataFrameTableMeta
 from ..serialization.serializables import (
     AnyField,
     BoolField,
@@ -59,7 +60,13 @@ from ..utils import (
     on_serialize_numpy_type,
     tokenize,
 )
-from .utils import ReprSeries, fetch_corner_data, merge_index_value, parse_index
+from .utils import (
+    ReprSeries,
+    apply_if_callable,
+    fetch_corner_data,
+    merge_index_value,
+    parse_index,
+)
 
 
 class IndexValue(Serializable):
@@ -616,6 +623,9 @@ class IndexData(HasShapeTileableData, _ToPandasMixin):
         if self._name is None:
             self._name = self.chunks[0].name
 
+    def refresh_from_table_meta(self, table_meta: DataFrameTableMeta) -> None:
+        pass
+
     def _to_str(self, representation=False):
         if is_build_mode() or len(self._executed_sessions) == 0:
             # in build mode, or not executed, just return representation
@@ -945,6 +955,9 @@ class BaseSeriesData(HasShapeTileableData, _ToPandasMixin):
         if self._name is None:
             self._name = self.chunks[0].name
 
+    def refresh_from_table_meta(self, table_meta: DataFrameTableMeta) -> None:
+        pass
+
     def _to_str(self, representation=False):
         if is_build_mode() or len(self._executed_sessions) == 0:
             # in build mode, or not executed, just return representation
@@ -978,7 +991,7 @@ class BaseSeriesData(HasShapeTileableData, _ToPandasMixin):
         return self._to_str(representation=False)
 
     def __repr__(self):
-        return self._to_str(representation=False)
+        return self._to_str(representation=True)
 
     @property
     def dtype(self):
@@ -1501,6 +1514,15 @@ class BaseDataFrameData(HasShapeTileableData, _ToPandasMixin):
         refresh_index_value(self)
         refresh_dtypes(self)
 
+    def refresh_from_table_meta(self, table_meta: DataFrameTableMeta) -> None:
+        dtypes = table_meta.pd_column_dtypes
+        self._dtypes = dtypes
+        self._columns_value = parse_index(dtypes.index, store_data=True)
+        self._dtypes_value = DtypesValue(key=tokenize(dtypes), value=dtypes)
+        new_shape = list(self._shape)
+        new_shape[0] = len(dtypes)
+        self._shape = tuple(new_shape)
+
     @property
     def dtypes(self):
         dt = getattr(self, "_dtypes", None)
@@ -1997,12 +2019,6 @@ class DataFrame(HasShapeTileable, _ToPandasMixin):
         Berkeley    25.0    77.0  298.15
         """
 
-        def apply_if_callable(maybe_callable, obj, **kwargs):
-            if callable(maybe_callable):
-                return maybe_callable(obj, **kwargs)
-
-            return maybe_callable
-
         data = self.copy()
 
         for k, v in kwargs.items():
@@ -2197,6 +2213,9 @@ class CategoricalData(HasShapeTileableData, _ToPandasMixin):
                 pd.Categorical(categories).categories, store_data=True
             )
 
+    def refresh_from_table_meta(self, table_meta: DataFrameTableMeta) -> None:
+        pass
+
     def _to_str(self, representation=False):
         if is_build_mode() or len(self._executed_sessions) == 0:
             # in build mode, or not executed, just return representation
@@ -2346,6 +2365,9 @@ class DataFrameOrSeriesData(HasShapeTileableData, _ToPandasMixin):
             data_params["dtype"] = self.chunks[0].dtype
             data_params["name"] = self.chunks[0].name
         self._data_params.update(data_params)
+
+    def refresh_from_table_meta(self, table_meta: DataFrameTableMeta) -> None:
+        pass
 
     def ensure_data(self):
         from .fetch.core import DataFrameFetch

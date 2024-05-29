@@ -183,6 +183,28 @@ class HaloTableIO(MCTableIO):
             for pt in partitions
         ]
 
+    def get_table_record_count(
+        self, full_table_name: str, partitions: PartitionsType = None
+    ):
+        from odps.apis.storage_api import SplitOptions, TableBatchScanRequest
+
+        table = self._odps.get_table(full_table_name)
+        client = StorageApiArrowClient(
+            self._odps, table, rest_endpoint=self._storage_api_endpoint
+        )
+
+        split_option = SplitOptions.SplitMode.SIZE
+
+        scan_kw = {
+            "required_partitions": self._convert_partitions(partitions),
+            "split_options": SplitOptions.get_default_options(split_option),
+        }
+
+        # todo add more options for partition column handling
+        req = TableBatchScanRequest(**scan_kw)
+        resp = client.create_read_session(req)
+        return resp.record_count
+
     @contextmanager
     def open_reader(
         self,

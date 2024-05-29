@@ -99,9 +99,12 @@ def test_simple_run_dataframe(start_mock_session):
     corner_top, corner_bottom = ExecutableTuple([df.iloc[:10], df.iloc[-10:]]).fetch()
     assert len(corner_top) == len(corner_bottom) == 10
 
-    # check ellipsis mark in DataFrame errors
+    # check ellipsis mark in DataFrame reprs
     df_str_repr = str(df)
     assert ".." in df_str_repr
+    # check ellipsis mark in Series reprs
+    series_str_repr = str(df.A.execute())
+    assert ".." in series_str_repr
 
     key = df.key
     assert odps_entry.exist_table(
@@ -226,3 +229,27 @@ def test_run_remote_error(start_mock_session):
 
     with pytest.raises((ValueError, RemoteException)):
         v.execute()
+
+
+def test_pivot_dataframe(start_mock_session):
+    pd_df = pd.DataFrame(
+        {
+            "A": "foo foo foo foo foo bar bar bar bar".split(),
+            "B": "one one one two two one one two two".split(),
+            "C": "small large large small small large small small large".split(),
+            "D": [1, 2, 2, 3, 3, 4, 5, 6, 7],
+            "E": [2, 4, 5, 5, 6, 6, 8, 9, 9],
+        }
+    )
+    df = md.DataFrame(pd_df)
+    pivot = df.pivot_table(values="D", index=["A", "B"], columns=["C"], aggfunc="sum")
+    executed = pivot.execute()
+    assert pivot.shape == (2, 4)
+    pd.testing.assert_index_equal(
+        pivot.dtypes.index, pd.Index(["large", "small"], name="C")
+    )
+
+    expected = pd_df.pivot_table(
+        values="D", index=["A", "B"], columns=["C"], aggfunc="sum"
+    )
+    pd.testing.assert_frame_equal(executed.to_pandas(), expected)

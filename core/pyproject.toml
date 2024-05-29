@@ -1,11 +1,11 @@
 [project]
 name = "maxframe"
 description = "MaxFrame operator-based data analyze framework"
-version = "0.1.0b4"
+dynamic = ["version"]
 dependencies = [
     "numpy>=1.19.0",
     "pandas>=1.0.0",
-    "pyodps>=0.11.5",
+    "pyodps>=0.11.6.1",
     "scipy>=1.0",
     "pyarrow>=1.0.0",
     "msgpack>=1.0.0",
@@ -21,7 +21,8 @@ dependencies = [
 
 [build-system]
 requires = [
-    "setuptools<64",
+    "setuptools>=60,<64",
+    "setuptools_scm>=7.0",
     "wheel",
     "cython>=0.29",
     "oldest-supported-numpy",
@@ -33,7 +34,7 @@ dev = [
     "black>=22.3.0",
     "flake8>=5.0.4",
     "pre-commit>=2.15.0",
-    "graphviz>=0.20.1"
+    "graphviz>=0.20.1",
 ]
 
 # Test dependencies.
@@ -51,3 +52,7 @@ py-modules = []
 
 [tool.setuptools.packages.find]
 where = ["./"]
+
+[tool.setuptools_scm]
+root = ".."
+version_scheme = "release-branch-semver"

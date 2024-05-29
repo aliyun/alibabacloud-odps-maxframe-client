@@ -1106,3 +1106,9 @@ def get_python_tag():
     # todo add implementation suffix for non-GIL tags when PEP703 is ready
     version_info = sys.version_info
     return f"cp{version_info[0]}{version_info[1]}"
+
+
+def get_item_if_scalar(val: Any) -> Any:
+    if isinstance(val, np.ndarray) and val.shape == ():
+        return val.item()
+    return val

@@ -46,6 +46,7 @@ from .misc.cut import cut
 from .misc.eval import maxframe_eval as eval  # pylint: disable=redefined-builtin
 from .misc.get_dummies import get_dummies
 from .misc.melt import melt
+from .misc.pivot_table import pivot_table
 from .misc.qcut import qcut
 from .misc.to_numeric import to_numeric
 from .missing import isna, isnull, notna, notnull

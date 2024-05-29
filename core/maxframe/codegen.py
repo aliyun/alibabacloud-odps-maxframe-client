@@ -16,6 +16,7 @@ import abc
 import base64
 import dataclasses
 import logging
+from collections import defaultdict
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Type, Union
 
@@ -32,7 +33,7 @@ from .protocol import DataFrameTableMeta, ResultInfo
 from .serialization import PickleContainer
 from .serialization.serializables import Serializable, StringField
 from .typing_ import PandasObjectTypes
-from .udf import MarkedFunction
+from .udf import MarkedFunction, PythonPackOptions
 
 if TYPE_CHECKING:
     from odpsctx import ODPSSessionContext
@@ -73,6 +74,14 @@ class AbstractUDF(Serializable):
 
     @abc.abstractmethod
     def unregister(self, odps: "ODPSSessionContext"):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def collect_pythonpack(self) -> List[PythonPackOptions]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def load_pythonpack_resources(self, odps_ctx: "ODPSSessionContext") -> None:
         raise NotImplementedError
 
 
@@ -468,6 +477,42 @@ class BigDagCodeGenerator(metaclass=abc.ABCMeta):
             constants=self._context.constants,
             output_key_to_result_infos=self._context.get_tileable_result_infos(),
         )
+
+    def run_pythonpacks(
+        self,
+        odps_ctx: "ODPSSessionContext",
+        python_tag: str,
+        is_production: bool = False,
+        schedule_id: Optional[str] = None,
+        hints: Optional[dict] = None,
+        priority: Optional[int] = None,
+    ) -> Dict[str, PythonPackOptions]:
+        key_to_packs = defaultdict(list)
+        for udf in self._context.get_udfs():
+            for pack in udf.collect_pythonpack():
+                key_to_packs[pack.key].append(pack)
+        distinct_packs = []
+        for packs in key_to_packs.values():
+            distinct_packs.append(packs[0])
+
+        inst_id_to_req = {}
+        for pack in distinct_packs:
+            inst = odps_ctx.run_pythonpack(
+                requirements=pack.requirements,
+                prefer_binary=pack.prefer_binary,
+                pre_release=pack.pre_release,
+                force_rebuild=pack.force_rebuild,
+                python_tag=python_tag,
+                is_production=is_production,
+                schedule_id=schedule_id,
+                hints=hints,
+                priority=priority,
+            )
+            # fulfill instance id of pythonpacks with same keys
+            for same_pack in key_to_packs[pack.key]:
+                same_pack.pack_instance_id = inst.id
+            inst_id_to_req[inst.id] = pack
+        return inst_id_to_req
 
     def register_udfs(self, odps_ctx: "ODPSSessionContext"):
         for udf in self._context.get_udfs():

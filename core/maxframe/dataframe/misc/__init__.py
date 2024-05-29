@@ -14,6 +14,7 @@
 
 from .apply import df_apply, series_apply
 from .astype import astype, index_astype
+from .case_when import case_when
 from .check_monotonic import (
     check_monotonic,
     is_monotonic,
@@ -37,6 +38,7 @@ from .map import index_map, series_map
 from .melt import melt
 from .memory_usage import df_memory_usage, index_memory_usage, series_memory_usage
 from .pct_change import pct_change
+from .pivot_table import pivot_table
 from .qcut import qcut
 from .select_dtypes import select_dtypes
 from .shift import shift, tshift
@@ -69,6 +71,7 @@ def _install():
         setattr(t, "melt", melt)
         setattr(t, "memory_usage", df_memory_usage)
         setattr(t, "pct_change", pct_change)
+        setattr(t, "pivot_table", pivot_table)
         setattr(t, "pop", df_pop)
         setattr(t, "query", df_query)
         setattr(t, "select_dtypes", select_dtypes)
@@ -81,6 +84,7 @@ def _install():
     for t in SERIES_TYPE:
         setattr(t, "apply", series_apply)
         setattr(t, "astype", astype)
+        setattr(t, "case_when", case_when)
         setattr(t, "check_monotonic", check_monotonic)
         setattr(t, "describe", describe)
         setattr(t, "diff", series_diff)

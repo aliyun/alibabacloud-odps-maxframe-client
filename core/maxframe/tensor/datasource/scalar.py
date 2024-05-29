@@ -33,7 +33,7 @@ class Scalar(TensorNoInput):
 def scalar(data, dtype=None, gpu=None):
     try:
         arr = np.array(data, dtype=dtype)
-        op = Scalar(arr, dtype=arr.dtype, gpu=gpu)
+        op = Scalar(data=arr, dtype=arr.dtype, gpu=gpu)
         shape = ()
         return op(shape)
     except ValueError:
