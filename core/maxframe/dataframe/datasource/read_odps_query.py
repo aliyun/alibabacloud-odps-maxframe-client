@@ -216,7 +216,9 @@ class DataFrameReadODPSQuery(
             index_value = parse_index(pd.RangeIndex(0))
         elif len(self.index_columns) == 1:
             index_value = parse_index(
-                pd.Index([], name=self.index_columns[0]).astype(self.index_dtypes[0])
+                pd.Index([], name=self.index_columns[0]).astype(
+                    self.index_dtypes.iloc[0]
+                )
             )
         else:
             idx = pd.MultiIndex.from_frame(

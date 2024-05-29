@@ -11,24 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-from .astype import TensorAstype
-from .atleast_1d import atleast_1d
-from .broadcast_to import TensorBroadcastTo, broadcast_to
-from .ravel import ravel
-from .transpose import transpose
-from .unique import unique
-from .where import TensorWhere, where
-
-
-def _install():
-    from ..core import Tensor, TensorData
-    from .astype import _astype
-
-    for cls in (Tensor, TensorData):
-        setattr(cls, "astype", _astype)
-        setattr(cls, "ravel", ravel)
-
-
-_install()
-del _install

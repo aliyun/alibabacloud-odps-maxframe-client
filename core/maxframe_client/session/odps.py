@@ -84,6 +84,9 @@ class MaxFrameServiceCaller(metaclass=abc.ABCMeta):
     def decref(self, tileable_keys: List[str]) -> None:
         raise NotImplementedError
 
+    def get_logview_address(self, dag_id=None, hours=None) -> Optional[str]:
+        return None
+
 
 class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
     _odps_entry: Optional[ODPS]
@@ -129,6 +132,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
     async def _init(self, _address: str):
         session_info = await self.ensure_async_call(self._caller.create_session)
         self._session_id = session_info.session_id
+        await self._show_logview_address()
 
     def _upload_and_get_read_tileable(self, t: TileableType) -> Optional[TileableType]:
         if (
@@ -142,7 +146,9 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         if self._odps_entry.exist_table(table_meta.table_name):
             self._odps_entry.delete_table(table_meta.table_name)
         table_name = build_temp_table_name(self.session_id, t.key)
-        table_obj = self._odps_entry.create_table(table_name, schema)
+        table_obj = self._odps_entry.create_table(
+            table_name, schema, lifecycle=options.session.temp_table_lifecycle
+        )
 
         data = t.op.get_data()
         batch_size = options.session.upload_batch_size
@@ -239,6 +245,8 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             self._caller.submit_dag, tileable_graph, replaced_infos
         )
 
+        await self._show_logview_address(dag_info.dag_id)
+
         progress = Progress()
         profiling = Profiling()
         aio_task = asyncio.create_task(
@@ -294,6 +302,8 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
 
             for key, result_info in dag_info.tileable_to_result_infos.items():
                 t = key_to_tileables[key]
+                fetcher = get_fetcher_cls(result_info.result_type)(self._odps_entry)
+                await fetcher.update_tileable_meta(t, result_info)
                 self._tileable_to_infos[t] = result_info
 
     def _get_data_tileable_and_indexes(
@@ -387,6 +397,25 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
 
     async def get_mutable_tensor(self, name: str):
         raise NotImplementedError
+
+    async def get_logview_address(self, hours=None) -> Optional[str]:
+        return await self.get_dag_logview_address(None, hours)
+
+    async def get_dag_logview_address(self, dag_id=None, hours=None) -> Optional[str]:
+        return await self.ensure_async_call(
+            self._caller.get_logview_address, dag_id, hours
+        )
+
+    async def _show_logview_address(self, dag_id=None, hours=None):
+        identity = f"Session ID: {self._session_id}"
+        if dag_id:
+            identity += f", DAG ID: {dag_id}"
+
+        logview_addr = await self.get_dag_logview_address(dag_id, hours)
+        if logview_addr:
+            logger.info("%s, Logview: %s", identity, logview_addr)
+        else:
+            logger.info("%s, Logview address does not exist", identity)
 
 
 class MaxFrameRestCaller(MaxFrameServiceCaller):

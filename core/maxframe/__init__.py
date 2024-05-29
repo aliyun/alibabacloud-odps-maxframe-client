@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from . import dataframe, learn, remote, tensor
+from .config import options
 from .session import execute, fetch, new_session, stop_server
 
 

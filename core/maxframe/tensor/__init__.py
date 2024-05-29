@@ -114,7 +114,7 @@ from .arithmetic import (
 )
 from .arithmetic import truediv as true_divide
 from .arithmetic import trunc
-from .base import broadcast_to, transpose, where
+from .base import broadcast_to, transpose, unique, where
 from .core import Tensor
 from .datasource import (
     arange,

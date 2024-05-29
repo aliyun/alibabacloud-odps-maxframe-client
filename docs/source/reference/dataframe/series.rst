@@ -105,6 +105,7 @@ Reindexing / selection / label manipulation
 
    Series.add_prefix
    Series.add_suffix
+   Series.case_when
    Series.drop
    Series.drop_duplicates
    Series.head

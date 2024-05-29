@@ -12,23 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .astype import TensorAstype
-from .atleast_1d import atleast_1d
-from .broadcast_to import TensorBroadcastTo, broadcast_to
-from .ravel import ravel
-from .transpose import transpose
-from .unique import unique
-from .where import TensorWhere, where
+import pandas as pd
+
+from ...dataframe import DataFrame, Series
+from ...dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+from ...tensor import tensor as astensor
 
 
-def _install():
-    from ..core import Tensor, TensorData
-    from .astype import _astype
-
-    for cls in (Tensor, TensorData):
-        setattr(cls, "astype", _astype)
-        setattr(cls, "ravel", ravel)
-
-
-_install()
-del _install
+def convert_to_tensor_or_dataframe(item):
+    if isinstance(item, (DATAFRAME_TYPE, pd.DataFrame)):
+        item = DataFrame(item)
+    elif isinstance(item, (SERIES_TYPE, pd.Series)):
+        item = Series(item)
+    else:
+        item = astensor(item)
+    return item

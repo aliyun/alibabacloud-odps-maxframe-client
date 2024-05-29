@@ -1136,6 +1136,13 @@ def concat_on_columns(objs: List) -> Any:
     return result
 
 
+def apply_if_callable(maybe_callable, obj, **kwargs):
+    if callable(maybe_callable):
+        return maybe_callable(obj, **kwargs)
+
+    return maybe_callable
+
+
 def patch_sa_engine_execute():
     """
     pandas did not resolve compatibility issue of sqlalchemy 2.0, the issue

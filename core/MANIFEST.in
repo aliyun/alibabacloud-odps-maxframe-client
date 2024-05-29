@@ -5,4 +5,7 @@ global-exclude *.c
 global-exclude *.cpp
 include pyproject.toml
 include maxframe/lib/mmh3_src/*
+exclude **/tests/**/*
+exclude **/tests/*
+global-exclude conftest.py
 global-exclude .DS_Store

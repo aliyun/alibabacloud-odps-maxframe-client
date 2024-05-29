@@ -40,6 +40,7 @@ _DEFAULT_SPE_OPERATION_TIMEOUT_SECONDS = 120
 _DEFAULT_UPLOAD_BATCH_SIZE = 4096
 _DEFAULT_TEMP_LIFECYCLE = 1
 _DEFAULT_TASK_START_TIMEOUT = 60
+_DEFAULT_LOGVIEW_HOURS = 24 * 60
 
 
 class OptionError(Exception):
@@ -296,12 +297,14 @@ class Config:
 
 
 default_options = Config()
-
 default_options.register_option(
     "execution_mode", "trigger", validator=is_in(["trigger", "eager"])
 )
 default_options.register_option(
     "python_tag", get_python_tag(), validator=is_string, remote=True
+)
+default_options.register_option(
+    "session.logview_hours", _DEFAULT_LOGVIEW_HOURS, validator=is_integer, remote=True
 )
 default_options.register_option(
     "client.task_start_timeout", _DEFAULT_TASK_START_TIMEOUT, validator=is_integer
@@ -311,6 +314,9 @@ default_options.register_option(
     "sql.generate_comments", True, validator=is_bool, remote=True
 )
 default_options.register_option("sql.settings", {}, validator=is_dict, remote=True)
+
+default_options.register_option("is_production", False, validator=is_bool, remote=True)
+default_options.register_option("schedule_id", "", validator=is_string, remote=True)
 
 default_options.register_option(
     "session.max_alive_seconds",
@@ -374,6 +380,10 @@ default_options.register_option(
 
 default_options.register_option(
     "spe.task.settings", dict(), validator=is_dict, remote=True
+)
+
+default_options.register_option(
+    "pythonpack.task.settings", {}, validator=is_dict, remote=True
 )
 
 _options_ctx_var = contextvars.ContextVar("_options_ctx_var")

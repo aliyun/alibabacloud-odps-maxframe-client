@@ -17,10 +17,9 @@ from typing import Any, Tuple, Union
 import pandas as pd
 import pyarrow as pa
 
-import maxframe.tensor as mt
-
 from ..core import OutputType
 from ..protocol import DataFrameTableMeta
+from ..tensor.core import TENSOR_TYPE
 from ..typing_ import ArrowTableType, PandasObjectTypes
 from .schema import build_dataframe_table_meta
 
@@ -83,7 +82,7 @@ def pandas_to_arrow(
         df = df.to_frame(name=names[0] if len(names) == 1 else names)
     elif table_meta.type == OutputType.scalar:
         names = ["_idx_0"]
-        if isinstance(df, mt.Tensor):
+        if isinstance(df, TENSOR_TYPE):
             df = pd.DataFrame([], columns=names).astype({names[0]: df.dtype})
         else:
             df = pd.DataFrame([[df]], columns=names)

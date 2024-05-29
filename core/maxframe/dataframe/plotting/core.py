@@ -17,7 +17,7 @@ from collections import OrderedDict
 import pandas as pd
 
 from ...core import ENTITY_TYPE, ExecutableTuple
-from ...utils import adapt_docstring
+from ...utils import adapt_docstring, get_item_if_scalar
 
 
 class PlotAccessor:
@@ -34,7 +34,7 @@ class PlotAccessor:
             .fetch(session=session)
         )
         for p, v in zip(to_executes, executed):
-            result[p] = v
+            result[p] = get_item_if_scalar(v)
 
         data = result.pop("__object__")
         pd_kwargs = kwargs.copy()

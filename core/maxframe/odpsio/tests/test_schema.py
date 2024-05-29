@@ -30,20 +30,23 @@ from ..schema import (
 )
 
 
-def _wrap_maxframe_obj(obj, wrap=True):
-    if not wrap:
+def _wrap_maxframe_obj(obj, wrap="no"):
+    if wrap == "no":
         return obj
     if isinstance(obj, pd.DataFrame):
-        return md.DataFrame(obj)
+        obj = md.DataFrame(obj)
     elif isinstance(obj, pd.Series):
-        return md.Series(obj)
+        obj = md.Series(obj)
     elif isinstance(obj, pd.Index):
-        return md.Index(obj)
+        obj = md.Index(obj)
     else:
-        return mt.scalar(obj)
+        obj = mt.scalar(obj)
+    if wrap == "data":
+        return obj.data
+    return obj
 
 
-@pytest.mark.parametrize("wrap_obj", [False, True])
+@pytest.mark.parametrize("wrap_obj", ["no", "yes", "data"])
 def test_pandas_to_odps_schema_dataframe(wrap_obj):
     data = pd.DataFrame(np.random.rand(100, 5), columns=list("ABCDE"))
 
@@ -94,7 +97,7 @@ def test_pandas_to_odps_schema_dataframe(wrap_obj):
     assert meta.pd_index_level_names == [None, None]
 
 
-@pytest.mark.parametrize("wrap_obj", [False, True])
+@pytest.mark.parametrize("wrap_obj", ["no", "yes", "data"])
 def test_pandas_to_odps_schema_series(wrap_obj):
     data = pd.Series(np.random.rand(100))
 
@@ -135,7 +138,7 @@ def test_pandas_to_odps_schema_series(wrap_obj):
     assert meta.pd_index_level_names == ["c1", "c2"]
 
 
-@pytest.mark.parametrize("wrap_obj", [False, True])
+@pytest.mark.parametrize("wrap_obj", ["no", "yes", "data"])
 def test_pandas_to_odps_schema_index(wrap_obj):
     data = pd.Index(np.random.randint(0, 100, 100))
 
@@ -167,11 +170,13 @@ def test_pandas_to_odps_schema_index(wrap_obj):
     assert meta.pd_index_level_names == ["c1", "c2"]
 
 
-@pytest.mark.parametrize("wrap_obj", [False, True])
+@pytest.mark.parametrize("wrap_obj", ["no", "yes", "data"])
 def test_pandas_to_odps_schema_scalar(wrap_obj):
     data = 1234.56
 
     test_scalar = _wrap_maxframe_obj(data, wrap=wrap_obj)
+    if wrap_obj != "no":
+        test_scalar.op.data = None
     schema, meta = pandas_to_odps_schema(test_scalar, unknown_as_string=True)
     assert schema.columns[0].name == "_idx_0"
     assert schema.columns[0].type.name == "double"
@@ -279,7 +284,7 @@ def test_build_column_name():
     assert build_table_column_name(4, ("A", 1), records) == "a_1"
 
 
-@pytest.mark.parametrize("wrap_obj", [False, True])
+@pytest.mark.parametrize("wrap_obj", ["no", "yes", "data"])
 def test_build_table_meta(wrap_obj):
     data = pd.DataFrame(
         np.random.rand(100, 7),
