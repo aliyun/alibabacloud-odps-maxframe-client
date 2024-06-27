@@ -18,6 +18,9 @@ from libc.stdint cimport int32_t, uint64_t
 cdef class Serializer:
     cdef int _serializer_id
 
+    cpdef bint is_public_data_exist(self, dict context, object key)
+    cpdef put_public_data(self, dict context, object key, object value)
+    cpdef get_public_data(self, dict context, object key)
     cpdef serial(self, object obj, dict context)
     cpdef deserial(self, list serialized, dict context, list subs)
     cpdef on_deserial_error(

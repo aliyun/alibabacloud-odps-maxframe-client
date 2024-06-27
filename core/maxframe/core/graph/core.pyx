@@ -354,10 +354,10 @@ cdef class DirectedGraph:
                         sio.write(f'"Chunk:{self._gen_chunk_key(input_chunk, trunc_key)}" {chunk_style}\n')
                         visited.add(input_chunk.key)
                     if op.key not in visited:
-                        sio.write(f'"{op_name}:{op.key[:trunc_key]}" {operator_style}\n')
+                        sio.write(f'"{op_name}:{op.key[:trunc_key]}_{id(op)}" {operator_style}\n')
                         visited.add(op.key)
                     sio.write(f'"Chunk:{self._gen_chunk_key(input_chunk, trunc_key)}" -> '
-                              f'"{op_name}:{op.key[:trunc_key]}"\n')
+                              f'"{op_name}:{op.key[:trunc_key]}_{id(op)}"\n')
 
                 for output_chunk in (op.outputs or []):
                     if output_chunk.key not in visited:
@@ -367,9 +367,9 @@ cdef class DirectedGraph:
                         sio.write(f'"Chunk:{self._gen_chunk_key(output_chunk, trunc_key)}" {tmp_chunk_style}\n')
                         visited.add(output_chunk.key)
                     if op.key not in visited:
-                        sio.write(f'"{op_name}:{op.key[:trunc_key]}" {operator_style}\n')
+                        sio.write(f'"{op_name}:{op.key[:trunc_key]}_{id(op)}" {operator_style}\n')
                         visited.add(op.key)
-                    sio.write(f'"{op_name}:{op.key[:trunc_key]}" -> '
+                    sio.write(f'"{op_name}:{op.key[:trunc_key]}_{id(op)}" -> '
                               f'"Chunk:{self._gen_chunk_key(output_chunk, trunc_key)}"')
                     if show_columns:
                         sio.write(f' [ label={get_col_names(output_chunk)} ]')

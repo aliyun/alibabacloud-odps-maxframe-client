@@ -85,6 +85,40 @@ def test_error_info_json_serialize():
         deserial_err_info.reraise()
 
 
+class CannotPickleException(Exception):
+    def __reduce__(self):
+        raise ValueError
+
+
+class CannotUnpickleException(Exception):
+    @classmethod
+    def load_from_pk(cls, _):
+        raise ValueError
+
+    def __reduce__(self):
+        return type(self).load_from_pk, (0,)
+
+
+def test_error_info_fallback_json_serialize():
+    try:
+        raise CannotPickleException
+    except CannotPickleException as ex:
+        err_info1 = ErrorInfo.from_exception(ex)
+
+    try:
+        raise CannotUnpickleException
+    except CannotUnpickleException as ex:
+        err_info2 = ErrorInfo.from_exception(ex)
+
+    for err_info in (err_info1, err_info2):
+        deserial_err_info = ErrorInfo.from_json(err_info.to_json())
+        assert deserial_err_info.raw_error_source is None
+        assert deserial_err_info.raw_error_data is None
+
+        with pytest.raises(RemoteException):
+            deserial_err_info.reraise()
+
+
 def test_dag_info_json_serialize():
     try:
         raise ValueError("ERR_DATA")

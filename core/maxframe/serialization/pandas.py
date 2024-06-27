@@ -176,11 +176,16 @@ class PdTimestampSerializer(Serializer):
 
 class PdTimedeltaSerializer(Serializer):
     def serial(self, obj: pd.Timedelta, context: Dict):
-        return [int(obj.seconds), obj.microseconds, obj.nanoseconds], [], True
+        return [int(obj.seconds), obj.microseconds, obj.nanoseconds, obj.days], [], True
 
     def deserial(self, serialized: List, context: Dict, subs: List):
+        days = 0 if len(serialized) < 4 else serialized[3]
+        seconds, microseconds, nanoseconds = serialized[:3]
         return pd.Timedelta(
-            seconds=serialized[0], microseconds=serialized[1], nanoseconds=serialized[2]
+            days=days,
+            seconds=seconds,
+            microseconds=microseconds,
+            nanoseconds=nanoseconds,
         )
 
 

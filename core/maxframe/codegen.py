@@ -86,6 +86,8 @@ class AbstractUDF(Serializable):
 
 
 class UserCodeMixin:
+    __slots__ = ()
+
     @classmethod
     def obj_to_python_expr(cls, obj: Any = None) -> str:
         """
@@ -203,8 +205,12 @@ class BigDagCodeContext(metaclass=abc.ABCMeta):
         return self._session_id
 
     def register_udf(self, udf: AbstractUDF):
+        from maxframe_framedriver.services.session import SessionManager
+
         udf.session_id = self._session_id
         self._udfs[udf.name] = udf
+        if self._session_id and SessionManager.initialized():
+            SessionManager.instance().register_udf(self._session_id, udf)
 
     def get_udfs(self) -> List[AbstractUDF]:
         return list(self._udfs.values())
@@ -343,6 +349,8 @@ def register_engine_codegen(type_: Type["BigDagCodeGenerator"]):
 
 BUILTIN_ENGINE_SPE = "SPE"
 BUILTIN_ENGINE_MCSQL = "MCSQL"
+
+FAST_RANGE_INDEX_ENABLED = "codegen.fast_range_index_enabled"
 
 
 class BigDagCodeGenerator(metaclass=abc.ABCMeta):
@@ -516,12 +524,12 @@ class BigDagCodeGenerator(metaclass=abc.ABCMeta):
 
     def register_udfs(self, odps_ctx: "ODPSSessionContext"):
         for udf in self._context.get_udfs():
-            logger.info("[Session %s] Registering UDF %s", self._session_id, udf.name)
+            logger.info("[Session=%s] Registering UDF %s", self._session_id, udf.name)
             udf.register(odps_ctx, True)
 
     def unregister_udfs(self, odps_ctx: "ODPSSessionContext"):
         for udf in self._context.get_udfs():
-            logger.info("[Session %s] Unregistering UDF %s", self._session_id, udf.name)
+            logger.info("[Session=%s] Unregistering UDF %s", self._session_id, udf.name)
             udf.unregister(odps_ctx)
 
     def get_udfs(self) -> List[AbstractUDF]:

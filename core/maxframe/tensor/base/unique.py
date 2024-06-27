@@ -75,7 +75,7 @@ class TensorUnique(TensorHasInput, TensorOperatorMixin):
         if self.return_counts:
             kw = {
                 "shape": (np.nan,),
-                "dtype": np.dtype(np.int_),
+                "dtype": np.dtype(int),
                 "gpu": input_obj.op.gpu,
                 "type": "counts",
             }

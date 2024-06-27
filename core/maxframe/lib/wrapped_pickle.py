@@ -120,7 +120,8 @@ class _UnpickleSwitch:
             @functools.wraps(func)
             async def wrapped(*args, **kwargs):
                 with _UnpickleSwitch(forbidden=self._forbidden):
-                    return await func(*args, **kwargs)
+                    ret = await func(*args, **kwargs)
+                return ret
 
         else:
 

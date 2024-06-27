@@ -130,10 +130,29 @@ cdef Serializer get_deserializer(int32_t deserializer_id):
 
 cdef class Serializer:
     serializer_id = None
+    _public_data_context_key = 0x7fffffff - 1
 
     def __cinit__(self):
         # make the value can be referenced with C code
         self._serializer_id = self.serializer_id
+
+    cpdef bint is_public_data_exist(self, dict context, object key):
+        cdef dict public_dict = context.get(self._public_data_context_key, None)
+        if public_dict is None:
+            return False
+        return key in public_dict
+
+    cpdef put_public_data(self, dict context, object key, object value):
+        cdef dict public_dict = context.get(self._public_data_context_key, None)
+        if public_dict is None:
+            public_dict = context[self._public_data_context_key] = {}
+        public_dict[key] = value
+
+    cpdef get_public_data(self, dict context, object key):
+        cdef dict public_dict = context.get(self._public_data_context_key, None)
+        if public_dict is None:
+            return None
+        return public_dict.get(key)
 
     cpdef serial(self, object obj, dict context):
         """
@@ -993,17 +1012,20 @@ def serialize(obj, dict context = None):
     cdef list subs
     cdef bint final
     cdef _IdContextHolder id_context_holder = _IdContextHolder()
+    cdef tuple result
 
     context = context if context is not None else dict()
     serialized, subs, final = _serial_single(obj, context, id_context_holder)
     if final or not subs:
         # marked as a leaf node, return directly
-        return [{}, serialized], subs
-
-    serial_stack.append(_SerialStackItem(serialized, subs))
-    return _serialize_with_stack(
-        serial_stack, None, context, id_context_holder, result_bufs_list
-    )
+        result = [{}, serialized], subs
+    else:
+        serial_stack.append(_SerialStackItem(serialized, subs))
+        result = _serialize_with_stack(
+            serial_stack, None, context, id_context_holder, result_bufs_list
+        )
+    result[0][0]["_PUB"] = context.get(Serializer._public_data_context_key)
+    return result
 
 
 async def serialize_with_spawn(
@@ -1036,31 +1058,38 @@ async def serialize_with_spawn(
     cdef list subs
     cdef bint final
     cdef _IdContextHolder id_context_holder = _IdContextHolder()
+    cdef tuple result
 
     context = context if context is not None else dict()
     serialized, subs, final = _serial_single(obj, context, id_context_holder)
     if final or not subs:
         # marked as a leaf node, return directly
-        return [{}, serialized], subs
+        result = [{}, serialized], subs
+    else:
+        serial_stack.append(_SerialStackItem(serialized, subs))
 
-    serial_stack.append(_SerialStackItem(serialized, subs))
-
-    try:
-        result = _serialize_with_stack(
-            serial_stack, None, context, id_context_holder, result_bufs_list, spawn_threshold
-        )
-    except _SerializeObjectOverflow as ex:
-        result = await asyncio.get_running_loop().run_in_executor(
-            executor,
-            _serialize_with_stack,
-            serial_stack,
-            ex.cur_serialized,
-            context,
-            id_context_holder,
-            result_bufs_list,
-            0,
-            ex.num_total_serialized,
-        )
+        try:
+            result = _serialize_with_stack(
+                serial_stack,
+                None,
+                context,
+                id_context_holder,
+                result_bufs_list,
+                spawn_threshold,
+            )
+        except _SerializeObjectOverflow as ex:
+            result = await asyncio.get_running_loop().run_in_executor(
+                executor,
+                _serialize_with_stack,
+                serial_stack,
+                ex.cur_serialized,
+                context,
+                id_context_holder,
+                result_bufs_list,
+                0,
+                ex.num_total_serialized,
+            )
+    result[0][0]["_PUB"] = context.get(Serializer._public_data_context_key)
     return result
 
 

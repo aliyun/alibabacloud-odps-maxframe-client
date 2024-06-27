@@ -35,6 +35,10 @@ Series API
      - P
      - Y
      - SQL engine: converting to categorical types not supported.
+   * - :func:`case_when`
+     - Y
+     - Y
+     -
    * - :func:`count`
      - P
      - Y

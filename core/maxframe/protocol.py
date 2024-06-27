@@ -32,6 +32,7 @@ from .serialization.serializables import (
     EnumField,
     FieldTypes,
     Float64Field,
+    Int32Field,
     ListField,
     ReferenceField,
     Serializable,
@@ -70,6 +71,9 @@ class DagStatus(enum.Enum):
     FAILED = 3
     CANCELLING = 4
     CANCELLED = 5
+
+    def is_terminated(self):
+        return self in (DagStatus.CANCELLED, DagStatus.SUCCEEDED, DagStatus.FAILED)
 
 
 class DimensionIndex(Serializable):
@@ -190,9 +194,9 @@ class ErrorInfo(JsonSerializable):
         "error_tracebacks", FieldTypes.list
     )
     raw_error_source: ErrorSource = EnumField(
-        "raw_error_source", ErrorSource, FieldTypes.int8
+        "raw_error_source", ErrorSource, FieldTypes.int8, default=None
     )
-    raw_error_data: Optional[Exception] = AnyField("raw_error_data")
+    raw_error_data: Optional[Exception] = AnyField("raw_error_data", default=None)
 
     @classmethod
     def from_exception(cls, exc: Exception):
@@ -201,20 +205,29 @@ class ErrorInfo(JsonSerializable):
         return cls(messages, tracebacks, ErrorSource.PYTHON, exc)
 
     def reraise(self):
-        if self.raw_error_source == ErrorSource.PYTHON:
+        if (
+            self.raw_error_source == ErrorSource.PYTHON
+            and self.raw_error_data is not None
+        ):
             raise self.raw_error_data
         raise RemoteException(self.error_messages, self.error_tracebacks, [])
 
     @classmethod
     def from_json(cls, serialized: dict) -> "ErrorInfo":
         kw = serialized.copy()
-        kw["raw_error_source"] = ErrorSource(serialized["raw_error_source"])
+        if kw.get("raw_error_source") is not None:
+            kw["raw_error_source"] = ErrorSource(serialized["raw_error_source"])
+        else:
+            kw["raw_error_source"] = None
+
         if kw.get("raw_error_data"):
             bufs = [base64.b64decode(s) for s in kw["raw_error_data"]]
             try:
                 kw["raw_error_data"] = pickle.loads(bufs[0], buffers=bufs[1:])
             except:
-                kw["raw_error_data"] = None
+                # both error source and data shall be None to make sure
+                # RemoteException is raised.
+                kw["raw_error_source"] = kw["raw_error_data"] = None
         return cls(**kw)
 
     def to_json(self) -> dict:
@@ -227,7 +240,12 @@ class ErrorInfo(JsonSerializable):
         if isinstance(self.raw_error_data, (PickleContainer, RemoteException)):
             err_data_bufs = self.raw_error_data.get_buffers()
         elif isinstance(self.raw_error_data, BaseException):
-            err_data_bufs = pickle_buffers(self.raw_error_data)
+            try:
+                err_data_bufs = pickle_buffers(self.raw_error_data)
+            except:
+                err_data_bufs = None
+                ret["raw_error_source"] = None
+
         if err_data_bufs:
             ret["raw_error_data"] = [
                 base64.b64encode(s).decode() for s in err_data_bufs
@@ -249,9 +267,17 @@ class DagInfo(JsonSerializable):
     error_info: Optional[ErrorInfo] = ReferenceField("error_info", default=None)
     start_timestamp: Optional[float] = Float64Field("start_timestamp", default=None)
     end_timestamp: Optional[float] = Float64Field("end_timestamp", default=None)
+    subdag_infos: Dict[str, "SubDagInfo"] = DictField(
+        "subdag_infos",
+        key_type=FieldTypes.string,
+        value_type=FieldTypes.reference,
+        default_factory=dict,
+    )
 
     @classmethod
-    def from_json(cls, serialized: dict) -> "DagInfo":
+    def from_json(cls, serialized: dict) -> Optional["DagInfo"]:
+        if serialized is None:
+            return None
         kw = serialized.copy()
         kw["status"] = DagStatus(kw["status"])
         if kw.get("tileable_to_result_infos"):
@@ -261,6 +287,10 @@ class DagInfo(JsonSerializable):
             }
         if kw.get("error_info"):
             kw["error_info"] = ErrorInfo.from_json(kw["error_info"])
+        if kw.get("subdag_infos"):
+            kw["subdag_infos"] = {
+                k: SubDagInfo.from_json(v) for k, v in kw["subdag_infos"].items()
+            }
         return DagInfo(**kw)
 
     def to_json(self) -> dict:
@@ -279,6 +309,8 @@ class DagInfo(JsonSerializable):
             }
         if self.error_info:
             ret["error_info"] = self.error_info.to_json()
+        if self.subdag_infos:
+            ret["subdag_infos"] = {k: v.to_json() for k, v in self.subdag_infos.items()}
         return ret
 
 
@@ -302,7 +334,9 @@ class SessionInfo(JsonSerializable):
     error_info: Optional[ErrorInfo] = ReferenceField("error_info", default=None)
 
     @classmethod
-    def from_json(cls, serialized: dict) -> "SessionInfo":
+    def from_json(cls, serialized: dict) -> Optional["SessionInfo"]:
+        if serialized is None:
+            return None
         kw = serialized.copy()
         if kw.get("dag_infos"):
             kw["dag_infos"] = {
@@ -320,7 +354,10 @@ class SessionInfo(JsonSerializable):
             "idle_timestamp": self.idle_timestamp,
         }
         if self.dag_infos:
-            ret["dag_infos"] = {k: v.to_json() for k, v in self.dag_infos.items()}
+            ret["dag_infos"] = {
+                k: v.to_json() if v is not None else None
+                for k, v in self.dag_infos.items()
+            }
         if self.error_info:
             ret["error_info"] = self.error_info.to_json()
         return ret
@@ -342,7 +379,25 @@ class ExecuteDagRequest(Serializable):
     )
 
 
-class SubDagInfo(Serializable):
+class SubDagSubmitInstanceInfo(JsonSerializable):
+    submit_reason: str = StringField("submit_reason")
+    instance_id: str = StringField("instance_id")
+    subquery_id: Optional[int] = Int32Field("subquery_id", default=None)
+
+    @classmethod
+    def from_json(cls, serialized: dict) -> "SubDagSubmitInstanceInfo":
+        return SubDagSubmitInstanceInfo(**serialized)
+
+    def to_json(self) -> dict:
+        ret = {
+            "submit_reason": self.submit_reason,
+            "instance_id": self.instance_id,
+            "subquery_id": self.subquery_id,
+        }
+        return ret
+
+
+class SubDagInfo(JsonSerializable):
     subdag_id: str = StringField("subdag_id")
     status: DagStatus = EnumField("status", DagStatus, FieldTypes.int8, default=None)
     progress: float = Float64Field("progress", default=None)
@@ -355,9 +410,52 @@ class SubDagInfo(Serializable):
         FieldTypes.reference,
         default_factory=dict,
     )
+    start_timestamp: Optional[float] = Float64Field("start_timestamp", default=None)
+    end_timestamp: Optional[float] = Float64Field("end_timestamp", default=None)
+    submit_instances: List[SubDagSubmitInstanceInfo] = ListField(
+        "submit_instances",
+        FieldTypes.reference,
+        default_factory=list,
+    )
+
+    @classmethod
+    def from_json(cls, serialized: dict) -> "SubDagInfo":
+        kw = serialized.copy()
+        kw["status"] = DagStatus(kw["status"])
+        if kw.get("tileable_to_result_infos"):
+            kw["tileable_to_result_infos"] = {
+                k: ResultInfo.from_json(s)
+                for k, s in kw["tileable_to_result_infos"].items()
+            }
+        if kw.get("error_info"):
+            kw["error_info"] = ErrorInfo.from_json(kw["error_info"])
+        if kw.get("submit_instances"):
+            kw["submit_instances"] = [
+                SubDagSubmitInstanceInfo.from_json(s) for s in kw["submit_instances"]
+            ]
+        return SubDagInfo(**kw)
+
+    def to_json(self) -> dict:
+        ret = {
+            "subdag_id": self.subdag_id,
+            "status": self.status.value,
+            "progress": self.progress,
+            "start_timestamp": self.start_timestamp,
+            "end_timestamp": self.end_timestamp,
+        }
+        if self.error_info:
+            ret["error_info"] = self.error_info.to_json()
+        if self.tileable_to_result_infos:
+            ret["tileable_to_result_infos"] = {
+                k: v.to_json() for k, v in self.tileable_to_result_infos.items()
+            }
+        if self.submit_instances:
+            ret["submit_instances"] = [i.to_json() for i in self.submit_instances]
+        return ret
 
 
 class ExecuteSubDagRequest(Serializable):
+    subdag_id: str = StringField("subdag_id")
     dag: TileableGraph = ReferenceField(
         "dag",
         on_serialize=SerializableGraph.from_graph,

@@ -23,7 +23,10 @@ from odps import ODPS
 
 import maxframe.dataframe as md
 import maxframe.remote as mr
+from maxframe.config import options
+from maxframe.config.config import option_context
 from maxframe.core import ExecutableTuple, TileableGraph
+from maxframe.errors import NoTaskServerResponseError
 from maxframe.lib.aio import stop_isolation
 from maxframe.protocol import ResultInfo
 from maxframe.serialization import RemoteException
@@ -35,6 +38,7 @@ from maxframe_framedriver.app.tests.test_framedriver_webapp import (  # noqa: F4
 )
 
 from ..clients.framedriver import FrameDriverClient
+from ..session.odps import MaxFrameRestCaller
 
 pytestmark = pytest.mark.maxframe_engine(["MCSQL", "SPE"])
 
@@ -86,11 +90,25 @@ def test_simple_run_dataframe(start_mock_session):
         assert len(dag) == 2
         return await original_submit_dag(self, session_id, dag, managed_input_infos)
 
+    no_task_server_raised = False
+    original_get_dag_info = MaxFrameRestCaller.get_dag_info
+
+    async def patched_get_dag_info(self, dag_id: str):
+        nonlocal no_task_server_raised
+
+        if not no_task_server_raised:
+            no_task_server_raised = True
+            raise NoTaskServerResponseError
+        return await original_get_dag_info(self, dag_id)
+
     df["H"] = "extra_content"
 
     with mock.patch(
         "maxframe_client.clients.framedriver.FrameDriverClient.submit_dag",
         new=patched_submit_dag,
+    ), mock.patch(
+        "maxframe_client.session.odps.MaxFrameRestCaller.get_dag_info",
+        new=patched_get_dag_info,
     ):
         result = df.execute().fetch()
         assert len(result) == 1000
@@ -182,6 +200,24 @@ def test_run_dataframe_from_to_odps_table(start_mock_session):
         assert len(df.columns) == 5
     finally:
         odps_entry.delete_table(table_name, if_exists=True)
+
+
+def test_create_session_with_options(framedriver_app):  # noqa: F811
+    odps_entry = ODPS.from_environments()
+    framedriver_addr = f"mf://localhost:{framedriver_app.port}"
+    old_value = options.session.max_alive_seconds
+    session = None
+    try:
+        options.session.max_alive_seconds = 10
+        session = new_session(framedriver_addr, odps_entry=odps_entry)
+        session_id = session.session_id
+        session_conf = framedriver_app.session_manager.get_session_settings(session_id)
+        with option_context(session_conf) as session_options:
+            assert session_options.session.max_alive_seconds == 10
+    finally:
+        options.session.max_alive_seconds = old_value
+        if session is not None:
+            session.destroy()
 
 
 def test_run_and_fetch_series(start_mock_session):

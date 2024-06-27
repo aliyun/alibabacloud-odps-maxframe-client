@@ -33,7 +33,6 @@ import sys
 import threading
 import time
 import tokenize as pytokenize
-import traceback
 import types
 import weakref
 import zlib
@@ -396,18 +395,6 @@ def build_tileable_dir_name(tileable_key: str) -> str:
     return m.hexdigest()
 
 
-def extract_messages_and_stacks(exc: Exception) -> Tuple[List[str], List[str]]:
-    cur_exc = exc
-    messages, stacks = [], []
-    while True:
-        messages.append(str(cur_exc))
-        stacks.append("".join(traceback.format_tb(cur_exc.__traceback__)))
-        if exc.__cause__ is None:
-            break
-        cur_exc = exc.__cause__
-    return messages, stacks
-
-
 async def wait_http_response(
     url: str, *, request_timeout: TimeoutType = None, **kwargs
 ) -> httpclient.HTTPResponse:
@@ -447,6 +434,21 @@ async def to_thread_pool(func, *args, pool=None, **kwargs):
     ctx = contextvars.copy_context()
     func_call = functools.partial(ctx.run, func, *args, **kwargs)
     return await loop.run_in_executor(pool, func_call)
+
+
+def create_event(loop: asyncio.AbstractEventLoop) -> asyncio.Event:
+    """
+    Create an asyncio.Event in a certain event loop.
+    """
+    if sys.version_info[1] < 10 or loop is None:
+        return asyncio.Event(loop=loop)
+
+    # From Python3.10 the loop parameter has been removed. We should work around here.
+    old_loop = asyncio.get_running_loop()
+    asyncio.set_event_loop(loop)
+    event = asyncio.Event()
+    asyncio.set_event_loop(old_loop)
+    return event
 
 
 class ToThreadCancelledError(asyncio.CancelledError):
@@ -519,6 +521,7 @@ def config_odps_default_options():
         "metaservice.client.cache.enable": "false",
         "odps.sql.session.result.cache.enable": "false",
         "odps.sql.submit.mode": "script",
+        "odps.sql.job.max.time.hours": 72,
     }
 
 

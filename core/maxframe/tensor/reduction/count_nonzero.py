@@ -77,5 +77,5 @@ def count_nonzero(a, axis=None):
     array([2, 3])
 
     """
-    op = TensorCountNonzero(axis=axis, dtype=np.dtype(np.int_), keepdims=None)
+    op = TensorCountNonzero(axis=axis, dtype=np.dtype(int), keepdims=None)
     return op(a)
