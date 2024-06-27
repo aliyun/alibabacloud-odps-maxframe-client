@@ -18,10 +18,12 @@ import logging
 from typing import List, Optional, Union
 
 from odps.models import Table as ODPSTable
+from odps.types import PartitionSpec
 
 from ... import opcodes
 from ...config import options
 from ...core import OutputType
+from ...odpsio import build_dataframe_table_meta
 from ...serialization.serializables import (
     BoolField,
     FieldTypes,
@@ -147,6 +149,25 @@ def to_odps_table(
             f"index_label needs {len(df.index.nlevels)} labels "
             f"but it only have {len(index_label)}"
         )
+    table_cols = set(build_dataframe_table_meta(df).table_column_names)
+    if partition:
+        partition_intersect = (
+            set(x.lower() for x in PartitionSpec(partition).keys()) & table_cols
+        )
+        if partition_intersect:
+            raise ValueError(
+                f"Data column(s) {partition_intersect} in the dataframe"
+                " cannot be used in parameter 'partition'."
+                " Use 'partition_col' instead."
+            )
+
+    if partition_col:
+        partition_diff = set(x.lower() for x in partition_col) - table_cols
+        if partition_diff:
+            raise ValueError(
+                f"Partition column(s) {partition_diff}"
+                " is not the data column(s) of the input dataframe."
+            )
 
     op = DataFrameToODPSTable(
         dtypes=df.dtypes,

@@ -16,14 +16,7 @@ from .chunks import CHUNK_TYPE, Chunk, ChunkData
 from .core import ENTITY_TYPE, Entity, EntityData
 from .executable import ExecutableTuple, _ExecuteAndFetchMixin
 from .fuse import FUSE_CHUNK_TYPE, FuseChunk, FuseChunkData
-from .objects import (
-    OBJECT_CHUNK_TYPE,
-    OBJECT_TYPE,
-    Object,
-    ObjectChunk,
-    ObjectChunkData,
-    ObjectData,
-)
+from .objects import OBJECT_TYPE, Object, ObjectData
 from .output_types import (
     OutputType,
     get_fetch_class,

@@ -18,6 +18,7 @@ import pytest
 
 from .... import opcodes
 from ....core import OutputType
+from ....dataframe import DataFrame
 from ....tensor.core import TENSOR_TYPE
 from ... import eval as maxframe_eval
 from ... import get_dummies, to_numeric
@@ -428,6 +429,28 @@ def test_case_when():
     assert len(col.inputs) == 4
     assert isinstance(col.inputs[1].op, DataFrameLess)
     assert isinstance(col.inputs[2].op, DataFrameGreater)
+
+
+def test_apply():
+    df = DataFrame({"a": [1, 2, 3], "b": [1, 2, 3], "c": [1, 2, 3]})
+
+    keys = [1, 2]
+
+    def f(x, keys):
+        if x["a"] in keys:
+            return [1, 0]
+        else:
+            return [0, 1]
+
+    apply_df = df[["a"]].apply(
+        f,
+        output_type="dataframe",
+        dtypes=pd.Series(["int64", "int64"]),
+        axis=1,
+        result_type="expand",
+        keys=keys,
+    )
+    assert apply_df.shape == (3, 2)
 
 
 def test_pivot_table():

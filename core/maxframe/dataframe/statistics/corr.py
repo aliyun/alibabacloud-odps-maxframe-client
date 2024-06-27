@@ -43,7 +43,7 @@ class DataFrameCorr(DataFrameOperator, DataFrameOperatorMixin):
     def __call__(self, df_or_series):
         if isinstance(df_or_series, SERIES_TYPE):
             inputs = filter_inputs([df_or_series, self.other])
-            return self.new_scalar(inputs, dtype=np.dtype(np.float_))
+            return self.new_scalar(inputs, dtype=np.dtype(float))
         else:
 
             def _filter_numeric(obj):
@@ -60,7 +60,7 @@ class DataFrameCorr(DataFrameOperator, DataFrameOperatorMixin):
             inputs = filter_inputs([df_or_series, self.other])
             if self.axis is None:
                 dtypes = pd.Series(
-                    [np.dtype(np.float_)] * len(df_or_series.dtypes),
+                    [np.dtype(float)] * len(df_or_series.dtypes),
                     index=df_or_series.dtypes.index,
                 )
                 return self.new_dataframe(
@@ -85,7 +85,7 @@ class DataFrameCorr(DataFrameOperator, DataFrameOperatorMixin):
                 return self.new_series(
                     inputs,
                     shape=shape,
-                    dtype=np.dtype(np.float_),
+                    dtype=np.dtype(float),
                     index_value=new_index_value,
                 )
 

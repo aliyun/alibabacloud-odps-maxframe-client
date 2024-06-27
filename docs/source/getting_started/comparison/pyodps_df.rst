@@ -97,7 +97,7 @@ Note that you need to read API documents of these functions before rewriting you
    "DataFrame.split", "Not implemented yet"
    "DataFrame.std_scale", "Not implemented yet"
    "DataFrame.sort", "DataFrame.sort_values"
-   "DataFrame.switch", "Not implemented yet"
+   "DataFrame.switch", "maxframe.dataframe.case_when"
    "DataFrame.to_kv", "Not implemented yet"
    "DataFrame.union", "maxframe.dataframe.concat"
    "DatetimeSequenceExpr.date", "Series.dt.date"

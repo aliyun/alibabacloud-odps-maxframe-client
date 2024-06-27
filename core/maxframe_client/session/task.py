@@ -26,6 +26,7 @@ from odps.models import Instance, MaxFrameTask
 
 from maxframe.config import options
 from maxframe.core import TileableGraph
+from maxframe.errors import NoTaskServerResponseError, SessionAlreadyClosedError
 from maxframe.protocol import DagInfo, JsonSerializable, ResultInfo, SessionInfo
 from maxframe.utils import deserialize_serializable, serialize_serializable, to_str
 
@@ -82,6 +83,7 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
         self._running_cluster = running_cluster
         self._major_version = major_version
         self._output_format = output_format or MAXFRAME_OUTPUT_MSGPACK_FORMAT
+        self._deleted = False
 
         if nested_instance_id is None:
             self._nested = False
@@ -94,10 +96,18 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
         self, content: Union[bytes, str, dict], target_cls: Type[JsonSerializable]
     ):
         if isinstance(content, (str, bytes)):
+            if len(content) == 0:
+                content = "{}"
             json_data = json.loads(to_str(content))
         else:
             json_data = content
-        result_data = base64.b64decode(json_data["result"])
+        encoded_result = json_data.get("result")
+        if not encoded_result:
+            if self._deleted:
+                return None
+            else:
+                raise SessionAlreadyClosedError(self._instance.id)
+        result_data = base64.b64decode(encoded_result)
         if self._output_format == MAXFRAME_OUTPUT_MAXFRAME_FORMAT:
             return deserialize_serializable(result_data)
         elif self._output_format == MAXFRAME_OUTPUT_JSON_FORMAT:
@@ -178,6 +188,14 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
             time.sleep(interval)
             interval = min(max_interval, interval * 2)
 
+    def _put_task_info(self, method_name: str, json_data: dict):
+        resp_data = self._instance.put_task_info(
+            self._task_name, method_name, json.dumps(json_data)
+        )
+        if not resp_data:
+            raise NoTaskServerResponseError(f"No response for request {method_name}")
+        return resp_data
+
     def get_session(self) -> SessionInfo:
         req_data = {"output_format": self._output_format}
         serialized = self._instance.put_task_info(
@@ -192,11 +210,8 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
             self._instance.stop()
         else:
             req_data = {"output_format": self._output_format}
-            self._instance.put_task_info(
-                self._task_name,
-                MAXFRAME_TASK_DELETE_SESSION_METHOD,
-                json.dumps(req_data),
-            )
+            self._put_task_info(MAXFRAME_TASK_DELETE_SESSION_METHOD, req_data)
+        self._deleted = True
 
     def submit_dag(
         self,
@@ -211,9 +226,7 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
             ).decode(),
             "output_format": self._output_format,
         }
-        res = self._instance.put_task_info(
-            self._task_name, MAXFRAME_TASK_SUBMIT_DAG_METHOD, json.dumps(req_data)
-        )
+        res = self._put_task_info(MAXFRAME_TASK_SUBMIT_DAG_METHOD, req_data)
         return self._deserial_task_info_result(res, DagInfo)
 
     def get_dag_info(self, dag_id: str) -> DagInfo:
@@ -222,9 +235,7 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
             "dag_id": dag_id,
             "output_format": self._output_format,
         }
-        res = self._instance.put_task_info(
-            self._task_name, MAXFRAME_TASK_GET_DAG_INFO_METHOD, json.dumps(req_data)
-        )
+        res = self._put_task_info(MAXFRAME_TASK_GET_DAG_INFO_METHOD, req_data)
         return self._deserial_task_info_result(res, DagInfo)
 
     def cancel_dag(self, dag_id: str) -> DagInfo:
@@ -233,23 +244,33 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
             "dag_id": dag_id,
             "output_format": self._output_format,
         }
-        res = self._instance.put_task_info(
-            self._task_name, MAXFRAME_TASK_CANCEL_DAG_METHOD, json.dumps(req_data)
-        )
+        res = self._put_task_info(MAXFRAME_TASK_CANCEL_DAG_METHOD, req_data)
         return self._deserial_task_info_result(res, DagInfo)
 
     def decref(self, tileable_keys: List[str]) -> None:
         req_data = {
             "tileable_keys": ",".join(tileable_keys),
         }
-        self._instance.put_task_info(
-            self._task_name, MAXFRAME_TASK_DECREF_METHOD, json.dumps(req_data)
-        )
+        self._put_task_info(MAXFRAME_TASK_DECREF_METHOD, req_data)
 
     def get_logview_address(self, dag_id=None, hours=None) -> Optional[str]:
+        """
+        Generate logview address
+
+        Parameters
+        ----------
+            dag_id: id of dag for which dag logview detail page to access
+            hours: hours of the logview address auth limit
+        Returns
+        -------
+            Logview address
+        """
         hours = hours or options.session.logview_hours
-        subquery_suffix = f"&subQuery={dag_id}" if dag_id else ""
-        return self._instance.get_logview_address(hours) + subquery_suffix
+        # notice: maxframe can't reuse subQuery else will conflict with mcqa when fetch resource data,
+        #         added dagId for maxframe so logview backend will return maxframe data format if
+        #         instance and dagId is provided.
+        dag_suffix = f"&dagId={dag_id}" if dag_id else ""
+        return self._instance.get_logview_address(hours) + dag_suffix
 
 
 class MaxFrameTaskSession(MaxFrameSession):

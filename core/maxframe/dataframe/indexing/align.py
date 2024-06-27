@@ -138,7 +138,7 @@ class DataFrameAlign(DataFrameOperator, DataFrameOperatorMixin):
                 series_index = rhs.index_value.to_pandas()
                 dtypes = lhs.dtypes.reindex(
                     lhs.dtypes.index.join(series_index, how=self.join)
-                ).fillna(np.dtype(np.float_))
+                ).fillna(np.dtype(float))
                 l_shape[1] = r_size = len(dtypes)
                 col_val = r_idx_val = parse_index(dtypes.index, store_data=True)
 

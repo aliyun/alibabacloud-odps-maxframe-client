@@ -94,6 +94,11 @@ class MySimpleSerializable(Serializable):
     _ref_val = ReferenceField("ref_val", "MySimpleSerializable")
 
 
+class MySubSerializable(MySimpleSerializable):
+    _m_int_val = Int64Field("m_int_val", default=250)
+    _m_str_val = StringField("m_str_val", default="SUB_STR")
+
+
 class MySerializable(Serializable):
     _id = IdentityField("id")
     _any_val = AnyField("any_val")
@@ -141,7 +146,7 @@ class MySerializable(Serializable):
 
 
 @pytest.mark.parametrize("set_is_ci", [False, True], indirect=True)
-@switch_unpickle
+@switch_unpickle(forbidden=False)
 def test_serializable(set_is_ci):
     my_serializable = MySerializable(
         _id="1",
@@ -165,7 +170,9 @@ def test_serializable(set_is_ci):
         _key_val=MyHasKey("aaa"),
         _ndarray_val=np.random.rand(4, 3),
         _datetime64_val=pd.Timestamp(123),
-        _timedelta64_val=pd.Timedelta(days=1),
+        _timedelta64_val=pd.Timedelta(
+            days=1, seconds=123, microseconds=345, nanoseconds=132
+        ),
         _datatype_val=np.dtype(np.int32),
         _index_val=pd.Index([1, 2]),
         _series_val=pd.Series(["a", "b"]),
@@ -187,9 +194,44 @@ def test_serializable(set_is_ci):
     _assert_serializable_eq(my_serializable, my_serializable2)
 
 
+@pytest.mark.parametrize("set_is_ci", [False, True], indirect=True)
+@switch_unpickle
+def test_compatible_serializable(set_is_ci):
+    global MySimpleSerializable, MySubSerializable
+
+    old_base, old_sub = MySimpleSerializable, MySubSerializable
+
+    try:
+        my_sub_serializable = MySubSerializable(
+            _id="id_val",
+            _list_val=["abcd", "wxyz"],
+            _ref_val=MyHasKey(),
+            _m_int_val=3412,
+            _m_str_val="dfgghj",
+        )
+        header, buffers = serialize(my_sub_serializable)
+
+        class MySimpleSerializable(Serializable):
+            _id = IdentityField("id")
+            _int_val = Int64Field("int_val", default=1000)
+            _list_val = ListField("list_val", default_factory=list)
+            _ref_val = ReferenceField("ref_val", "MySimpleSerializable")
+            _dict_val = DictField("dict_val")
+
+        class MySubSerializable(MySimpleSerializable):
+            _m_int_val = Int64Field("m_int_val", default=250)
+            _m_str_val = StringField("m_str_val", default="SUB_STR")
+
+        my_sub_serializable2 = deserialize(header, buffers)
+        assert type(my_sub_serializable) is not type(my_sub_serializable2)
+        _assert_serializable_eq(my_sub_serializable, my_sub_serializable2)
+    finally:
+        MySimpleSerializable, MySubSerializable = old_base, old_sub
+
+
 def _assert_serializable_eq(my_serializable, my_serializable2):
     for field_name, field in my_serializable._FIELDS.items():
-        if not hasattr(my_serializable, field.tag):
+        if not hasattr(my_serializable, field.name):
             continue
         expect_value = getattr(my_serializable, field_name)
         actual_value = getattr(my_serializable2, field_name)
@@ -208,7 +250,7 @@ def _assert_serializable_eq(my_serializable, my_serializable2):
         elif callable(expect_value):
             assert expect_value(1) == actual_value(1)
         else:
-            assert expect_value == actual_value
+            assert expect_value == actual_value, f"Field {field_name}"
 
 
 @pytest.mark.parametrize("set_is_ci", [True], indirect=True)

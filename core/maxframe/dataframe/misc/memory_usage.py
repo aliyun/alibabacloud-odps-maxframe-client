@@ -58,7 +58,7 @@ class DataFrameMemoryUsage(DataFrameOperator, DataFrameOperatorMixin):
         """
         if df_or_series.ndim == 1:
             # the input data is a series, a Scalar will be returned
-            return self.new_scalar([df_or_series], dtype=np.dtype(np.int_))
+            return self.new_scalar([df_or_series], dtype=np.dtype(int))
         else:
             # the input data is a DataFrame, a Scalar will be returned
             # calculate shape of returning series given ``op.index``
@@ -71,7 +71,7 @@ class DataFrameMemoryUsage(DataFrameOperator, DataFrameOperatorMixin):
                 [df_or_series],
                 index_value=self._adapt_index(df_or_series.columns_value),
                 shape=new_shape,
-                dtype=np.dtype(np.int_),
+                dtype=np.dtype(int),
             )
 
 

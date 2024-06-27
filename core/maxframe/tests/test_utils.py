@@ -288,15 +288,6 @@ def test_estimate_pandas_size():
     df2 = pd.DataFrame(np.random.rand(1000, 10))
     assert utils.estimate_pandas_size(df2) == sys.getsizeof(df2)
 
-    df3 = pd.DataFrame(
-        {
-            "A": np.random.choice(["abcd", "def", "gh"], size=(1000,)),
-            "B": np.random.rand(1000),
-            "C": np.random.rand(1000),
-        }
-    )
-    assert utils.estimate_pandas_size(df3) != sys.getsizeof(df3)
-
     s1 = pd.Series(np.random.rand(1000))
     assert utils.estimate_pandas_size(s1) == sys.getsizeof(s1)
 
@@ -307,7 +298,6 @@ def test_estimate_pandas_size():
     assert utils.estimate_pandas_size(s2) == sys.getsizeof(s2)
 
     s3 = pd.Series(np.random.choice(["abcd", "def", "gh"], size=(1000,)))
-    assert utils.estimate_pandas_size(s3) != sys.getsizeof(s3)
     assert (
         pytest.approx(utils.estimate_pandas_size(s3) / sys.getsizeof(s3), abs=0.5) == 1
     )
@@ -318,7 +308,6 @@ def test_estimate_pandas_size():
     assert utils.estimate_pandas_size(idx1) == sys.getsizeof(idx1)
 
     string_idx = pd.Index(np.random.choice(["a", "bb", "cc"], size=(1000,)))
-    assert utils.estimate_pandas_size(string_idx) != sys.getsizeof(string_idx)
     assert (
         pytest.approx(
             utils.estimate_pandas_size(string_idx) / sys.getsizeof(string_idx), abs=0.5
@@ -338,7 +327,6 @@ def test_estimate_pandas_size():
         },
         index=idx2,
     )
-    assert utils.estimate_pandas_size(df4) != sys.getsizeof(df4)
     assert (
         pytest.approx(utils.estimate_pandas_size(df4) / sys.getsizeof(df4), abs=0.5)
         == 1

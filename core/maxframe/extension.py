@@ -49,6 +49,18 @@ class MaxFrameExtension(metaclass=abc.ABCMeta):
         pass
 
     @classmethod
+    async def reload_session(cls, session_id: str) -> None:
+        """
+        Reload the session state when the session is recovered from failover.
+
+        Parameters
+        ----------
+        session_id : str
+            The session id.
+        """
+        pass
+
+    @classmethod
     def init_service_extension(cls) -> None:
         """
         Init the services of the extension before the app is actually run and will be

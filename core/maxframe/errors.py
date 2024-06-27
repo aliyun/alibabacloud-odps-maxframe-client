@@ -17,5 +17,18 @@ class MaxFrameError(Exception):
     pass
 
 
+class MaxFrameIntentionalError(MaxFrameError):
+    pass
+
+
 class MaxFrameUserError(MaxFrameError):
     pass
+
+
+class NoTaskServerResponseError(MaxFrameError):
+    pass
+
+
+class SessionAlreadyClosedError(MaxFrameError):
+    def __init__(self, session_id: str):
+        super().__init__(f"Session {session_id} is already closed")

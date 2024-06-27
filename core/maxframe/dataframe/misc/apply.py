@@ -170,6 +170,8 @@ class ApplyOperator(
         elif self.output_types[0] == OutputType.dataframe:
             shape = [np.nan, np.nan]
             shape[1 - self.axis] = df.shape[1 - self.axis]
+            if self.axis == 1:
+                shape[1] = len(dtypes)
             shape = tuple(shape)
         else:
             shape = (df.shape[1 - self.axis],)

@@ -31,6 +31,11 @@ from maxframe.dataframe import read_odps_table
 from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
 from maxframe.dataframe.datasource import PandasDataSourceOperator
 from maxframe.dataframe.datasource.read_odps_table import DataFrameReadODPSTable
+from maxframe.errors import (
+    MaxFrameError,
+    NoTaskServerResponseError,
+    SessionAlreadyClosedError,
+)
 from maxframe.odpsio import HaloTableIO, pandas_to_arrow, pandas_to_odps_schema
 from maxframe.protocol import (
     DagInfo,
@@ -144,10 +149,15 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
 
         schema, table_meta = pandas_to_odps_schema(t, unknown_as_string=True)
         if self._odps_entry.exist_table(table_meta.table_name):
-            self._odps_entry.delete_table(table_meta.table_name)
+            self._odps_entry.delete_table(
+                table_meta.table_name, hints=options.sql.settings
+            )
         table_name = build_temp_table_name(self.session_id, t.key)
         table_obj = self._odps_entry.create_table(
-            table_name, schema, lifecycle=options.session.temp_table_lifecycle
+            table_name,
+            schema,
+            lifecycle=options.session.temp_table_lifecycle,
+            hints=options.sql.settings,
         )
 
         data = t.op.get_data()
@@ -264,8 +274,10 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         self, dag_info: DagInfo, tileables: List, progress: Progress
     ):
         start_time = time.time()
+        session_id = dag_info.session_id
         dag_id = dag_info.dag_id
         wait_timeout = 10
+        server_no_response_time = None
         with enter_mode(build=True, kernel=True):
             key_to_tileables = {t.key: t for t in tileables}
 
@@ -280,9 +292,37 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
                     if timeout_val <= 0:
                         raise TimeoutError("Running DAG timed out")
 
-                    dag_info: DagInfo = await self.ensure_async_call(
-                        self._caller.get_dag_info, dag_id
-                    )
+                    try:
+                        dag_info: DagInfo = await self.ensure_async_call(
+                            self._caller.get_dag_info, dag_id
+                        )
+                        server_no_response_time = None
+                    except (NoTaskServerResponseError, SessionAlreadyClosedError) as ex:
+                        # when we receive SessionAlreadyClosedError after NoTaskServerResponseError
+                        #  is received, it is possible that task server is restarted and
+                        #  SessionAlreadyClosedError might be flaky. Otherwise, the error
+                        #  should be raised.
+                        if (
+                            isinstance(ex, SessionAlreadyClosedError)
+                            and not server_no_response_time
+                        ):
+                            raise
+                        server_no_response_time = server_no_response_time or time.time()
+                        if (
+                            time.time() - server_no_response_time
+                            > options.client.task_restart_timeout
+                        ):
+                            raise MaxFrameError(
+                                "Failed to get valid response from service. "
+                                f"Session {self._session_id}."
+                            ) from None
+                        await asyncio.sleep(timeout_val)
+                        continue
+
+                    if dag_info is None:
+                        raise SystemError(
+                            f"Cannot find DAG with ID {dag_id} in session {session_id}"
+                        )
                     progress.value = dag_info.progress
                     if dag_info.status != DagStatus.RUNNING:
                         break

@@ -35,7 +35,7 @@ class RemoteException(MaxFrameError):
     def from_exception(cls, exc: Exception):
         try:
             buffers = pickle_buffers(exc)
-        except (TypeError, pickle.PicklingError):
+        except:
             logger.exception("Cannot pickle exception %s", exc)
             buffers = []
 

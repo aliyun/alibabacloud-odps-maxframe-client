@@ -14,58 +14,17 @@
 
 from typing import Any, Dict
 
-from ...serialization.serializables import FieldTypes, ListField
-from ...utils import skip_na_call
-from .chunks import Chunk, ChunkData
 from .core import Entity
 from .executable import _ToObjectMixin
 from .tileables import TileableData
 
 
-class ObjectChunkData(ChunkData):
-    # chunk whose data could be any serializable
-    __slots__ = ()
-    type_name = "Object"
-
-    def __init__(self, op=None, index=None, **kw):
-        super().__init__(_op=op, _index=index, **kw)
-
-    @property
-    def params(self) -> Dict[str, Any]:
-        # params return the properties which useful to rebuild a new chunk
-        return {
-            "index": self.index,
-        }
-
-    @params.setter
-    def params(self, new_params: Dict[str, Any]):
-        params = new_params.copy()
-        params.pop("index", None)  # index not needed to update
-        if params:  # pragma: no cover
-            raise TypeError(f"Unknown params: {list(params)}")
-
-    @classmethod
-    def get_params_from_data(cls, data: Any) -> Dict[str, Any]:
-        return dict()
-
-
-class ObjectChunk(Chunk):
-    __slots__ = ()
-    _allow_data_type_ = (ObjectChunkData,)
-    type_name = "Object"
-
-
 class ObjectData(TileableData, _ToObjectMixin):
     __slots__ = ()
     type_name = "Object"
-
-    # optional fields
-    _chunks = ListField(
-        "chunks",
-        FieldTypes.reference(ObjectChunkData),
-        on_serialize=skip_na_call(lambda x: [it.data for it in x]),
-        on_deserialize=skip_na_call(lambda x: [ObjectChunk(it) for it in x]),
-    )
+    # workaround for removed field since v0.1.0b5
+    # todo remove this when all versions below v0.1.0b5 is eliminated
+    _legacy_deprecated_non_primitives = ["_chunks"]
 
     def __init__(self, op=None, nsplits=None, **kw):
         super().__init__(_op=op, _nsplits=nsplits, **kw)
@@ -97,4 +56,3 @@ class Object(Entity, _ToObjectMixin):
 
 
 OBJECT_TYPE = (Object, ObjectData)
-OBJECT_CHUNK_TYPE = (ObjectChunk, ObjectChunkData)

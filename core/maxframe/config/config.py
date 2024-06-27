@@ -40,6 +40,7 @@ _DEFAULT_SPE_OPERATION_TIMEOUT_SECONDS = 120
 _DEFAULT_UPLOAD_BATCH_SIZE = 4096
 _DEFAULT_TEMP_LIFECYCLE = 1
 _DEFAULT_TASK_START_TIMEOUT = 60
+_DEFAULT_TASK_RESTART_TIMEOUT = 300
 _DEFAULT_LOGVIEW_HOURS = 24 * 60
 
 
@@ -308,6 +309,9 @@ default_options.register_option(
 )
 default_options.register_option(
     "client.task_start_timeout", _DEFAULT_TASK_START_TIMEOUT, validator=is_integer
+)
+default_options.register_option(
+    "client.task_restart_timeout", _DEFAULT_TASK_RESTART_TIMEOUT, validator=is_integer
 )
 default_options.register_option("sql.enable_mcqa", True, validator=is_bool, remote=True)
 default_options.register_option(
