@@ -14,6 +14,7 @@
 
 import os
 import platform
+import shutil
 import sys
 from sysconfig import get_config_vars
 
@@ -121,6 +122,8 @@ long_description = None
 readme_files = [
     f"{repo_root}/../README.rst",
     f"{repo_root}/../README.md",
+    f"{repo_root}/README.rst",
+    f"{repo_root}/README.md",
 ]
 for readme_file in readme_files:
     if os.path.exists(readme_file):
@@ -130,7 +133,13 @@ for readme_file in readme_files:
 
 
 setup_options = dict(
-    long_description=long_description,
+    long_description=long_description or "",
     ext_modules=extensions,
 )
-setup(**setup_options)
+try:
+    if os.path.exists(f"{repo_root}/../README.rst"):
+        shutil.copy(f"{repo_root}/../README.rst", f"{repo_root}/README.rst")
+    setup(**setup_options)
+finally:
+    if os.path.exists(f"{repo_root}/README.rst"):
+        os.unlink(f"{repo_root}/README.rst")
