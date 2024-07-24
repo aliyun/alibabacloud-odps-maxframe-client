@@ -328,18 +328,26 @@ class SerializableSerializer(Serializer):
                         #  at server side
                         pass
         else:
+            # handle legacy serialization style, with all fields sorted by name
             # todo remove this branch when all versions below v0.1.0b5 is eliminated
             from .field import AnyField
 
-            # legacy serialization style, with all fields sorted by name
             if is_primitive:
-                field_attr = "_legacy_deprecated_primitives"
+                new_field_attr = "_legacy_new_primitives"
+                deprecated_field_attr = "_legacy_deprecated_primitives"
             else:
-                field_attr = "_legacy_deprecated_non_primitives"
+                new_field_attr = "_legacy_new_non_primitives"
+                deprecated_field_attr = "_legacy_deprecated_non_primitives"
+
+            # remove fields added on later releases
+            new_names = set(getattr(obj_class, new_field_attr, None) or [])
+            server_fields = [f for f in server_fields if f.name not in new_names]
+
+            # fill fields deprecated on later releases
             deprecated_fields = []
             deprecated_names = set()
-            if hasattr(obj_class, field_attr):
-                deprecated_names = set(getattr(obj_class, field_attr))
+            if hasattr(obj_class, deprecated_field_attr):
+                deprecated_names = set(getattr(obj_class, deprecated_field_attr))
                 for field_name in deprecated_names:
                     field = AnyField(tag=field_name)
                     field.name = field_name

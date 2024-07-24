@@ -19,16 +19,14 @@ from typing import Any, Dict, List, Optional, Tuple, Type, Union
 import pandas as pd
 import pyarrow as pa
 from odps import ODPS
-from odps.lib import tzlocal
 from odps.models import ExternalVolume, PartedVolume
 from odps.tunnel import TableTunnel
 from tornado import httpclient
 
-from maxframe.config import options
 from maxframe.core import OBJECT_TYPE
 from maxframe.dataframe.core import DATAFRAME_TYPE
 from maxframe.lib import wrapped_pickle as pickle
-from maxframe.odpsio import HaloTableIO, arrow_to_pandas, build_dataframe_table_meta
+from maxframe.odpsio import ODPSTableIO, arrow_to_pandas, build_dataframe_table_meta
 from maxframe.protocol import (
     DataFrameTableMeta,
     ODPSTableResultInfo,
@@ -158,7 +156,7 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
         indexes: List[Union[None, Integral, slice]],
         shape: Tuple[Optional[int], ...],
     ):
-        table_io = HaloTableIO(self._odps_entry)
+        table_io = ODPSTableIO(self._odps_entry)
         read_kw = {}
         row_step = None
         if indexes:
@@ -186,8 +184,8 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
         with table_io.open_reader(
             info.full_table_name, info.partition_specs, **read_kw
         ) as reader:
-            reader_count = reader.count
             result = reader.read_all()
+            reader_count = result.num_rows
 
         if not row_step:
             return result
@@ -210,18 +208,7 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
         arrow_table: pa.Table = await self.to_thread(
             self._read_single_source, table_meta, info, indexes, tileable.shape
         )
-        # deal datetime timezone convert
-        res = arrow_to_pandas(arrow_table, table_meta)
-        timezone = options.local_timezone or tzlocal.get_localzone()
-        for index, col_type in table_meta.pd_column_dtypes.items():
-            if pd.api.types.is_datetime64_any_dtype(
-                col_type
-            ) and not pd.api.types.is_datetime64_ns_dtype(col_type):
-                if index is None:
-                    res = res.dt.tz_convert(timezone)
-                else:
-                    res[index] = res[index].dt.tz_convert(timezone)
-        return res
+        return arrow_to_pandas(arrow_table, table_meta)
 
 
 @register_fetcher

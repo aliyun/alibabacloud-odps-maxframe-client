@@ -17,19 +17,32 @@ import uuid
 import numpy as np
 import pandas as pd
 import pyarrow as pa
+import pytest
 from odps import ODPS
 
 import maxframe.dataframe as md
-from maxframe.odpsio import HaloTableIO
+from maxframe.config import options
+from maxframe.odpsio import ODPSTableIO
 from maxframe.protocol import ODPSTableResultInfo, ResultType
 from maxframe.tests.utils import tn
 
 from ..fetcher import ODPSTableFetcher
 
 
-async def test_table_fetcher():
+@pytest.fixture
+def switch_table_io(request):
+    old_use_common_table = options.use_common_table
+    try:
+        options.use_common_table = request.param
+        yield
+    finally:
+        options.use_common_table = old_use_common_table
+
+
+@pytest.mark.parametrize("switch_table_io", [False, True], indirect=True)
+async def test_table_fetcher(switch_table_io):
     odps_entry = ODPS.from_environments()
-    halo_table_io = HaloTableIO(odps_entry)
+    halo_table_io = ODPSTableIO(odps_entry)
     fetcher = ODPSTableFetcher(odps_entry)
 
     data = pd.DataFrame(

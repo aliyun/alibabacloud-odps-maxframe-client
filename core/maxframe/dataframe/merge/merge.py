@@ -273,6 +273,10 @@ class SkewJoinHint(JoinHint):
 class DataFrameMerge(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.DATAFRAME_MERGE
 
+    # workaround for new field since v1.0.0rc2
+    # todo remove this when all versions below v1.0.0rc1 is eliminated
+    _legacy_new_non_primitives = ["left_hint", "right_hint"]
+
     how = StringField("how")
     on = AnyField("on")
     left_on = AnyField("left_on")
