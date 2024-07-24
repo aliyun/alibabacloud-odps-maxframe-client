@@ -47,6 +47,7 @@ _EXPLAIN_TASK_SCHEMA_REGEX = re.compile(
     re.MULTILINE,
 )
 _EXPLAIN_COLUMN_REGEX = re.compile(r"([^\(]+) \(([^)]+)\)(?:| AS ([^ ]+))(?:\n|$)")
+_ANONYMOUS_COL_REGEX = re.compile(r"^_c\d+$")
 
 
 @dataclasses.dataclass
@@ -272,6 +273,11 @@ def read_odps_query(
     explain_str = list(inst.get_task_results().values())[0]
 
     odps_schema = _parse_explained_schema(explain_str)
+
+    for col in odps_schema.columns:
+        if _ANONYMOUS_COL_REGEX.match(col.name) and col.name not in query:
+            raise ValueError("Need to specify names for all columns in SELECT clause.")
+
     dtypes = odps_schema_to_pandas_dtypes(odps_schema)
 
     if not index_col:

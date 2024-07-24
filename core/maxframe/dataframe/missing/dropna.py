@@ -234,7 +234,7 @@ def series_dropna(series, axis=0, inplace=False, how=None):
     Empty strings are not considered NA values. ``None`` is considered an
     NA value.
 
-    >>> ser = md.Series([np.NaN, 2, md.NaT, '', None, 'I stay'])
+    >>> ser = md.Series([np.NaN, '2', md.NaT, '', None, 'I stay'])
     >>> ser.execute()
     0       NaN
     1         2

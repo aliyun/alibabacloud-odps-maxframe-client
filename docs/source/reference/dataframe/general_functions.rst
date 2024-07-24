@@ -28,3 +28,10 @@ Top-level dealing with datetimelike
    :toctree: generated/
 
    to_datetime
+
+Top-level evaluation
+~~~~~~~~~~~~~~~~~~~~
+.. autosummary::
+   :toctree: generated/
+
+   eval

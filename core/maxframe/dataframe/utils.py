@@ -26,7 +26,6 @@ import numpy as np
 import pandas as pd
 from pandas.api.extensions import ExtensionDtype
 from pandas.api.types import is_string_dtype
-from pandas.core.dtypes.cast import find_common_type
 from pandas.core.dtypes.inference import is_dict_like, is_list_like
 
 from ..core import Entity, ExecutableTuple
@@ -477,11 +476,11 @@ def build_df(df_obj, fill_value=1, size=1, ensure_string=False):
     else:
         fill_values = fill_value
 
-    from .core import SERIES_TYPE
+    from .core import INDEX_TYPE, SERIES_TYPE
 
     dtypes = (
         pd.Series([df_obj.dtype], index=[df_obj.name])
-        if isinstance(df_obj, SERIES_TYPE)
+        if isinstance(df_obj, (INDEX_TYPE, SERIES_TYPE))
         else df_obj.dtypes
     )
     for size, fill_value in zip(sizes, fill_values):
@@ -593,7 +592,7 @@ def build_series(
     return ret_series
 
 
-def infer_index_value(left_index_value, right_index_value):
+def infer_index_value(left_index_value, right_index_value, level=None):
     from .core import IndexValue
 
     if isinstance(left_index_value.value, IndexValue.RangeIndex) and isinstance(
@@ -616,9 +615,7 @@ def infer_index_value(left_index_value, right_index_value):
 
     left_index = left_index_value.to_pandas()
     right_index = right_index_value.to_pandas()
-    out_index = pd.Index(
-        [], dtype=find_common_type([left_index.dtype, right_index.dtype])
-    )
+    out_index = left_index.join(right_index, level=level)[:0]
     return parse_index(out_index, left_index_value, right_index_value)
 
 

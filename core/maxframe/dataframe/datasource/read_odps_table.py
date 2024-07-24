@@ -119,9 +119,10 @@ class DataFrameReadODPSTable(
             return self.new_tileable(
                 [],
                 None,
-                shape=shape,
+                shape=shape[:1],
                 name=getattr(index_value, "name", None),
                 names=getattr(index_value, "names", None),
+                dtype=self.index_dtypes.iloc[0],
                 index_value=index_value,
                 chunk_bytes=chunk_bytes,
                 chunk_size=chunk_size,

@@ -17,7 +17,7 @@ import warnings
 from ... import opcodes
 from ...core import get_output_types
 from ...serialization.serializables import AnyField, StringField
-from ..core import SERIES_TYPE
+from ..core import INDEX_TYPE, SERIES_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_df, build_series, parse_index, validate_axis
 
@@ -73,6 +73,8 @@ class DataFrameRename(DataFrameOperator, DataFrameOperatorMixin):
             params["index_value"] = parse_index(new_index)
         if df.ndim == 1:
             params["name"] = new_df.name
+            if isinstance(df, INDEX_TYPE):
+                params["names"] = new_df.names
         return self.new_tileable([df], **params)
 
 
@@ -303,11 +305,6 @@ def series_rename(
     1    2
     2    3
     Name: my_name, dtype: int64
-    >>> s.rename(lambda x: x ** 2).execute()  # function, changes labels.execute()
-    0    1
-    1    2
-    4    3
-    dtype: int64
     >>> s.rename({1: 3, 2: 5}).execute()  # mapping, changes labels.execute()
     0    1
     3    2
@@ -410,37 +407,6 @@ def index_set_names(index, names, level=None, inplace=False):
     See Also
     --------
     Index.rename : Able to set new names without level.
-
-    Examples
-    --------
-    >>> import maxframe.dataframe as md
-    >>> idx = md.Index([1, 2, 3, 4])
-    >>> idx.execute()
-    Int64Index([1, 2, 3, 4], dtype='int64')
-    >>> idx.set_names('quarter').execute()
-    Int64Index([1, 2, 3, 4], dtype='int64', name='quarter')
-
-    >>> idx = md.MultiIndex.from_product([['python', 'cobra'],
-    ...                                   [2018, 2019]])
-    >>> idx.execute()
-    MultiIndex([('python', 2018),
-                ('python', 2019),
-                ( 'cobra', 2018),
-                ( 'cobra', 2019)],
-               )
-    >>> idx.set_names(['kind', 'year'], inplace=True)
-    >>> idx.execute()
-    MultiIndex([('python', 2018),
-                ('python', 2019),
-                ( 'cobra', 2018),
-                ( 'cobra', 2019)],
-               names=['kind', 'year'])
-    >>> idx.set_names('species', level=0).execute()
-    MultiIndex([('python', 2018),
-                ('python', 2019),
-                ( 'cobra', 2018),
-                ( 'cobra', 2019)],
-               names=['species', 'year'])
     """
     op = DataFrameRename(
         index_mapper=names, level=level, output_types=get_output_types(index)

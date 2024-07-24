@@ -11,12 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 import logging
+from abc import abstractmethod
 from collections import namedtuple
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
 import numpy as np
+from pandas import Index
 
 from ... import opcodes
 from ...core import OutputType
@@ -28,6 +29,7 @@ from ...serialization.serializables import (
     Int32Field,
     KeyField,
     NamedTupleField,
+    Serializable,
     StringField,
     TupleField,
 )
@@ -73,6 +75,201 @@ class DataFrameMergeAlign(MapReduceOperator, DataFrameOperatorMixin):
 MergeSplitInfo = namedtuple("MergeSplitInfo", "split_side, split_index, nsplits")
 
 
+class JoinHint(Serializable):
+    @abstractmethod
+    def verify_params(
+        self,
+        hint_on_df: Union[DataFrame, Series],
+        on: str,
+        is_on_index: bool,
+        how: str,
+        is_hint_for_left: bool,
+    ):
+        pass
+
+    @abstractmethod
+    def verify_can_work_with(self, other: "JoinHint"):
+        pass
+
+
+class MapJoinHint(JoinHint):
+    def verify_params(
+        self,
+        hint_on_df: Union[DataFrame, Series],
+        on: str,
+        is_on_index: bool,
+        how: str,
+        is_hint_for_left: bool,
+    ):
+        if how in ("cross", "outer"):
+            raise ValueError(
+                "Invalid join hint, MapJoinHint is not support in cross and outer join"
+            )
+
+    def verify_can_work_with(self, other: JoinHint):
+        if isinstance(other, SkewJoinHint):
+            raise ValueError(
+                "Invalid join hint, SkewJoinHint cannot work with MapJoinHint"
+            )
+
+
+class DistributedMapJoinHint(JoinHint):
+    shard_count = Int32Field("shard_count")
+    replica_count = Int32Field("replica_count", default=1)
+
+    def verify_params(
+        self,
+        hint_on_df: Union[DataFrame, Series],
+        on: str,
+        is_on_index: bool,
+        how: str,
+        is_hint_for_left: bool,
+    ):
+        if how in ("cross", "outer"):
+            raise ValueError(
+                "Invalid join hint, DistributedMapJoinHint is not support in cross and outer join"
+            )
+        if not hasattr(self, "shard_count"):
+            raise ValueError(
+                "Invalid DistributedMapJoinHint, shard_count must be specified"
+            )
+        if self.shard_count <= 0 or self.replica_count <= 0:
+            raise ValueError(
+                "Invalid DistributedMapJoinHint, shard_count and replica_count must be greater than 0"
+            )
+
+    def verify_can_work_with(self, other: JoinHint):
+        pass
+
+
+class SkewJoinHint(JoinHint):
+    columns = AnyField("columns", default=None)
+
+    @staticmethod
+    def _check_index_levels(index, level_list):
+        selected_levels = set()
+        valid_levels = set(range(index.nlevels))
+        valid_level_names = set(index.names)
+
+        for item in level_list:
+            if isinstance(item, int):
+                if item not in valid_levels:
+                    raise ValueError(f"Level {item} is not a valid index level")
+                if item in selected_levels:
+                    raise ValueError(f"Level {item} is selected multiple times")
+                selected_levels.add(item)
+            elif isinstance(item, str):
+                if item not in valid_level_names:
+                    raise ValueError(f"'{item}' is not a valid index level name")
+                level = index.names.index(item)
+                if level in selected_levels:
+                    raise ValueError(
+                        f"'{item}' (Level {level}) is selected multiple times"
+                    )
+                selected_levels.add(level)
+            else:
+                raise ValueError(f"Invalid input type: {type(item)}")
+
+    @staticmethod
+    def _check_columns(join_on_columns, column_list):
+        selected_columns = set()
+        valid_columns = set(join_on_columns)
+
+        for item in column_list:
+            if isinstance(item, int):
+                if item < 0 or item >= len(join_on_columns):
+                    raise ValueError(f"Column index {item} is out of range")
+                col_name = join_on_columns[item]
+                if col_name in selected_columns:
+                    raise ValueError(
+                        f"Column '{col_name}' (index {item}) is selected multiple times"
+                    )
+                selected_columns.add(col_name)
+            elif isinstance(item, str):
+                if item not in valid_columns:
+                    raise ValueError(f"'{item}' is not a valid column name")
+                if item in selected_columns:
+                    raise ValueError(f"Column '{item}' is selected multiple times")
+                selected_columns.add(item)
+            else:
+                raise ValueError(f"Invalid input type: {type(item)}")
+
+    def verify_params(
+        self,
+        hint_on_df: Union[DataFrame, Series],
+        on: str,
+        is_on_index: bool,
+        how: str,
+        is_hint_for_left: bool,
+    ):
+        if how in ("cross", "outer"):
+            raise ValueError(
+                "Invalid join hint, map join is not support in cross and outer join"
+            )
+        if is_hint_for_left and how == "right":
+            raise ValueError(
+                "Invalid join hint, right join can only use SkewJoinHint on right frame"
+            )
+        elif not is_hint_for_left and how == "left":
+            raise ValueError(
+                "Invalid join hint, left join can only use SkewJoinHint on left frame"
+            )
+
+        # check columns
+        if self.columns is None:
+            return
+
+        if not isinstance(self.columns, list):
+            raise TypeError("Invalid SkewJoinHint, `columns` must be a list")
+
+        if all(isinstance(item, (int, str)) for item in self.columns):
+            # if elements are int (levels) or str (index names or column names)
+            self._verify_valid_index_or_columns(
+                self.columns, hint_on_df.index_value.to_pandas(), on, is_on_index
+            )
+        elif all(isinstance(c, dict) for c in self.columns):
+            # dict with column names and values
+            cols_set = set(self.columns[0].keys())
+            if any(cols_set != set(c.keys()) for c in self.columns):
+                raise ValueError(
+                    "Invalid SkewJoinHint, all values in `columns` need to have same columns"
+                )
+
+            self._verify_valid_index_or_columns(
+                cols_set, hint_on_df.index_value.to_pandas(), on, is_on_index
+            )
+        else:
+            raise TypeError("Invalid SkewJoinHint, annot accept `columns` type")
+
+    def verify_can_work_with(self, other: JoinHint):
+        if isinstance(other, SkewJoinHint):
+            raise ValueError(
+                "Invalid join hint, SkewJoinHint cannot work with MapJoinHint"
+            )
+
+    @staticmethod
+    def _verify_valid_index_or_columns(
+        skew_join_columns: Iterable[Union[int, str]],
+        frame_index: Index,
+        on: Union[str, List[str]],
+        is_on_index: bool,
+    ):
+        if isinstance(on, str):
+            on = [on]
+        on_columns = set(frame_index.names if is_on_index else on)
+        for col in skew_join_columns:
+            if isinstance(col, int):
+                if col < 0 or col >= len(on_columns):
+                    raise ValueError(
+                        f"Invalid, SkeJoinHint, `{col}` is out of join on columns range"
+                    )
+            else:
+                if col not in on_columns:
+                    raise ValueError(
+                        f"Invalid, SkeJoinHint, '{col}' is not a valid column name"
+                    )
+
+
 class DataFrameMerge(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.DATAFRAME_MERGE
 
@@ -95,6 +292,8 @@ class DataFrameMerge(DataFrameOperator, DataFrameOperatorMixin):
 
     # only for broadcast merge
     split_info = NamedTupleField("split_info")
+    left_hint = AnyField("left_hint", default=None)
+    right_hint = AnyField("right_hint", default=None)
 
     def __init__(self, copy=None, **kwargs):
         super().__init__(copy_=copy, **kwargs)
@@ -165,6 +364,8 @@ def merge(
     auto_merge_threshold: int = 8,
     bloom_filter: Union[bool, str] = "auto",
     bloom_filter_options: Dict[str, Any] = None,
+    left_hint: JoinHint = None,
+    right_hint: JoinHint = None,
 ) -> DataFrame:
     """
     Merge DataFrame or named Series objects with a database-style join.
@@ -267,6 +468,12 @@ def merge(
           when chunk size of left and right is greater than this threshold, apply bloom filter
         * "filter": "large", "small", "both", default "large"
           decides to filter on large, small or both DataFrames.
+    left_hint: JoinHint, default None
+        Join strategy to use for left frame. When data skew occurs, consider these strategies to avoid long-tail issues,
+        but use them cautiously to prevent OOM and unnecessary overhead.
+    right_hint: JoinHint, default None
+        Join strategy to use for right frame.
+
 
     Returns
     -------
@@ -381,6 +588,18 @@ def merge(
                 raise ValueError(
                     f"Invalid filter {k}, available: {BLOOM_FILTER_ON_OPTIONS}"
                 )
+
+    if left_hint:
+        if not isinstance(left_hint, JoinHint):
+            raise TypeError(f"left_hint must be a JoinHint, got {type(left_hint)}")
+        left_hint.verify_can_work_with(right_hint)
+        left_hint.verify_params(df, on or left_on, left_index, how, True)
+
+    if right_hint:
+        if not isinstance(right_hint, JoinHint):
+            raise TypeError(f"right_hint must be a JoinHint, got {type(right_hint)}")
+        right_hint.verify_params(right, on or right_on, right_index, how, False)
+
     op = DataFrameMerge(
         how=how,
         on=on,
@@ -399,6 +618,8 @@ def merge(
         bloom_filter=bloom_filter,
         bloom_filter_options=bloom_filter_options,
         output_types=[OutputType.dataframe],
+        left_hint=left_hint,
+        right_hint=right_hint,
     )
     return op(df, right)
 
@@ -416,6 +637,8 @@ def join(
     auto_merge_threshold: int = 8,
     bloom_filter: Union[bool, Dict] = True,
     bloom_filter_options: Dict[str, Any] = None,
+    left_hint: JoinHint = None,
+    right_hint: JoinHint = None,
 ) -> DataFrame:
     """
     Join columns of another DataFrame.
@@ -480,6 +703,11 @@ def join(
           when chunk size of left and right is greater than this threshold, apply bloom filter
         * "filter": "large", "small", "both", default "large"
           decides to filter on large, small or both DataFrames.
+    left_hint: JoinHint, default None
+        Join strategy to use for left frame. When data skew occurs, consider these strategies to avoid long-tail issues,
+        but use them cautiously to prevent OOM and unnecessary overhead.
+    right_hint: JoinHint, default None
+        Join strategy to use for right frame.
 
     Returns
     -------
@@ -590,4 +818,6 @@ def join(
         auto_merge_threshold=auto_merge_threshold,
         bloom_filter=bloom_filter,
         bloom_filter_options=bloom_filter_options,
+        left_hint=left_hint,
+        right_hint=right_hint,
     )

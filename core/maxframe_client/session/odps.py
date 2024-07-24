@@ -188,7 +188,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
                 read_tileable.name = t.name
         else:  # INDEX_TYPE
             if list(read_tileable.names) != list(t.names):
-                read_tileable.names = t.names
+                read_tileable.rename(t.names, inplace=True)
         read_tileable._key = t.key
         read_tileable.params = t.params
         return read_tileable.data
@@ -384,7 +384,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
                 data_tileable, indexes = self._get_data_tileable_and_indexes(tileable)
                 info = self._tileable_to_infos[data_tileable]
                 fetcher = get_fetcher_cls(info.result_type)(self._odps_entry)
-                results.append(await fetcher.fetch(tileable, info, indexes))
+                results.append(await fetcher.fetch(data_tileable, info, indexes))
         return results
 
     async def decref(self, *tileable_keys):

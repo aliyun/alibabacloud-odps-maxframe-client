@@ -39,7 +39,7 @@ class DataFrameBinOpMixin(DataFrameOperatorMixin):
         raise NotImplementedError
 
     @classmethod
-    def _calc_properties(cls, x1, x2=None, axis="columns"):
+    def _calc_properties(cls, x1, x2=None, axis="columns", level=None):
         if isinstance(x1, DATAFRAME_TYPE) and (
             x2 is None or pd.api.types.is_scalar(x2) or isinstance(x2, TENSOR_TYPE)
         ):
@@ -108,7 +108,9 @@ class DataFrameBinOpMixin(DataFrameOperatorMixin):
                     index = copy.copy(x1.index_value)
                     index_shape = x1.shape[0]
                 else:
-                    index = infer_index_value(x1.index_value, x2.index_value)
+                    index = infer_index_value(
+                        x1.index_value, x2.index_value, level=level
+                    )
                     if index.key == x1.index_value.key == x2.index_value.key and (
                         not np.isnan(x1.shape[0]) or not np.isnan(x2.shape[0])
                     ):
@@ -141,7 +143,9 @@ class DataFrameBinOpMixin(DataFrameOperatorMixin):
                         column_shape = len(dtypes)
                     else:  # pragma: no cover
                         dtypes = x1.dtypes  # FIXME
-                        columns = infer_index_value(x1.columns_value, x2.index_value)
+                        columns = infer_index_value(
+                            x1.columns_value, x2.index_value, level=level
+                        )
                         column_shape = np.nan
             else:
                 assert axis == "index" or axis == 0
@@ -169,7 +173,9 @@ class DataFrameBinOpMixin(DataFrameOperatorMixin):
                                 ],
                                 index=x1.dtypes.index,
                             )
-                        index = infer_index_value(x1.index_value, x2.index_value)
+                        index = infer_index_value(
+                            x1.index_value, x2.index_value, level=level
+                        )
                         index_shape = np.nan
             return {
                 "shape": (index_shape, column_shape),
@@ -187,7 +193,9 @@ class DataFrameBinOpMixin(DataFrameOperatorMixin):
                     index = copy.copy(x1.index_value)
                     index_shape = x1.shape[0]
                 else:
-                    index = infer_index_value(x1.index_value, x2.index_value)
+                    index = infer_index_value(
+                        x1.index_value, x2.index_value, level=level
+                    )
                     if index.key == x1.index_value.key == x2.index_value.key and (
                         not np.isnan(x1.shape[0]) or not np.isnan(x2.shape[0])
                     ):
@@ -237,14 +245,14 @@ class DataFrameBinOpMixin(DataFrameOperatorMixin):
         self._check_inputs(x1, x2)
         if isinstance(x1, DATAFRAME_TYPE) or isinstance(x2, DATAFRAME_TYPE):
             df1, df2 = (x1, x2) if isinstance(x1, DATAFRAME_TYPE) else (x2, x1)
-            kw = self._calc_properties(df1, df2, axis=self.axis)
+            kw = self._calc_properties(df1, df2, axis=self.axis, level=self.level)
             if not pd.api.types.is_scalar(df2):
                 return self.new_dataframe([x1, x2], **kw)
             else:
                 return self.new_dataframe([df1], **kw)
         if isinstance(x1, SERIES_TYPE) or isinstance(x2, SERIES_TYPE):
             s1, s2 = (x1, x2) if isinstance(x1, SERIES_TYPE) else (x2, x1)
-            kw = self._calc_properties(s1, s2)
+            kw = self._calc_properties(s1, s2, level=self.level)
             if not pd.api.types.is_scalar(s2):
                 return self.new_series([x1, x2], **kw)
             else:

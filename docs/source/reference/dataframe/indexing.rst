@@ -27,6 +27,7 @@ Modifying and computations
 
    Index.all
    Index.any
+   Index.drop
    Index.drop_duplicates
    Index.max
    Index.min

@@ -240,6 +240,28 @@ def test_dataframe_and_series_with_shuffle(func_name, func_opts):
 
 
 @pytest.mark.parametrize("func_name, func_opts", binary_functions.items())
+def test_dataframe_and_series_with_multiindex(func_name, func_opts):
+    data1 = pd.DataFrame(
+        np.random.rand(10, 10),
+        index=pd.MultiIndex.from_arrays(
+            [list("AAAAABBBBB"), [4, 9, 3, 2, 1, 5, 8, 6, 7, 10]]
+        ),
+        columns=[4, 1, 3, 2, 10, 5, 9, 8, 6, 7],
+    )
+    data1 = to_boolean_if_needed(func_opts.func_name, data1)
+    df1 = from_pandas(data1, chunk_size=5)
+    s1 = from_pandas_series(data1[10].reset_index(level=0, drop=True), chunk_size=6)
+
+    df2 = getattr(df1, func_opts.func_name)(s1, level=1, axis=0)
+
+    # test df2's index and columns
+    assert df2.shape == (np.nan, df1.shape[1])
+    assert df2.index_value.key != df1.index_value.key
+    assert df2.index_value.names == df1.index_value.names
+    assert df2.columns_value.key == df1.columns_value.key
+
+
+@pytest.mark.parametrize("func_name, func_opts", binary_functions.items())
 def test_series_and_series_with_align_map(func_name, func_opts):
     data1 = pd.DataFrame(
         np.random.rand(10, 10), index=np.arange(10), columns=np.arange(3, 13)

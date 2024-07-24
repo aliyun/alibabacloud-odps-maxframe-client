@@ -87,6 +87,7 @@ def oss_config():
         oss_secret_access_key = config.get("oss", "secret_access_key")
         oss_bucket_name = config.get("oss", "bucket_name")
         oss_endpoint = config.get("oss", "endpoint")
+        oss_rolearn = config.get("oss", "rolearn")
 
         config.oss_config = (
             oss_access_id,
@@ -99,6 +100,7 @@ def oss_config():
 
         auth = oss2.Auth(oss_access_id, oss_secret_access_key)
         config.oss_bucket = oss2.Bucket(auth, oss_endpoint, oss_bucket_name)
+        config.oss_rolearn = oss_rolearn
         return config
     except (ConfigParser.NoSectionError, ConfigParser.NoOptionError, ImportError):
         return None

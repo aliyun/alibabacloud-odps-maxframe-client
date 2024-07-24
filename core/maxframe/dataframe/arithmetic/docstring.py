@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# FIXME：https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/17
 _flex_doc_FRAME = """
 Get {desc} of dataframe and other, element-wise (binary operator `{op_name}`).
 Equivalent to ``{equiv}``, but with support to substitute a fill_value
@@ -127,44 +128,15 @@ circle          0
 triangle        3
 rectangle       4
 
->>> (df * other).execute()
-           angles  degrees
-circle          0      NaN
-triangle        9      NaN
-rectangle      16      NaN
-
 >>> df.mul(other, fill_value=0).execute()
            angles  degrees
 circle          0      0.0
 triangle        9      0.0
 rectangle      16      0.0
 
-Divide by a MultiIndex by level.
-
->>> df_multindex = md.DataFrame({{'angles': [0, 3, 4, 4, 5, 6],
-...                              'degrees': [360, 180, 360, 360, 540, 720]}},
-...                             index=[['A', 'A', 'A', 'B', 'B', 'B'],
-...                                    ['circle', 'triangle', 'rectangle',
-...                                     'square', 'pentagon', 'hexagon']])
->>> df_multindex.execute()
-             angles  degrees
-A circle          0      360
-  triangle        3      180
-  rectangle       4      360
-B square          4      360
-  pentagon        5      540
-  hexagon         6      720
-
->>> df.div(df_multindex, level=1, fill_value=0).execute()
-             angles  degrees
-A circle        NaN      1.0
-  triangle      1.0      1.0
-  rectangle     1.0      1.0
-B square        0.0      0.0
-  pentagon      0.0      0.0
-  hexagon       0.0      0.0
 """
 
+# FIXME：https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/28
 _flex_doc_SERIES = """
 Return {desc} of series and other, element-wise (binary operator `{op_name}`).
 
@@ -213,6 +185,7 @@ e    NaN
 dtype: float64
 """
 
+# FIXME: https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/48
 _flex_comp_doc_FRAME = """
 Get {desc} of dataframe and other, element-wise (binary operator `{op_name}`).
 Among flexible wrappers (`eq`, `ne`, `le`, `lt`, `ge`, `gt`) to comparison
@@ -257,7 +230,8 @@ Mismatched indices will be unioned together.
 
 Examples
 --------
->>> df = pd.DataFrame({{'cost': [250, 150, 100],
+>>> import maxframe.dataframe as md
+>>> df = md.DataFrame({{'cost': [250, 150, 100],
 ...                    'revenue': [100, 250, 300]}},
 ...                   index=['A', 'B', 'C'])
 >>> df.execute()
@@ -332,30 +306,6 @@ A  False    False
 B  False    False
 C  False     True
 D  False    False
-
-Compare to a MultiIndex by level.
-
->>> df_multindex = pd.DataFrame({{'cost': [250, 150, 100, 150, 300, 220],
-...                              'revenue': [100, 250, 300, 200, 175, 225]}},
-...                             index=[['Q1', 'Q1', 'Q1', 'Q2', 'Q2', 'Q2'],
-...                                    ['A', 'B', 'C', 'A', 'B', 'C']])
->>> df_multindex.execute()
-      cost  revenue
-Q1 A   250      100
-   B   150      250
-   C   100      300
-Q2 A   150      200
-   B   300      175
-   C   220      225
-
->>> df.le(df_multindex, level=1).execute()
-       cost  revenue
-Q1 A   True     True
-   B   True     True
-   C   True     True
-Q2 A  False     True
-   B   True    False
-   C   True    False
 """
 
 

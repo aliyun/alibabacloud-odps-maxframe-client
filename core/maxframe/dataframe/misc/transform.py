@@ -228,21 +228,6 @@ def df_transform(df, func, axis=0, *args, dtypes=None, skip_infer=False, **kwarg
     0  1  2
     1  2  3
     2  3  4
-
-    Even though the resulting DataFrame must have the same length as the
-    input DataFrame, it is possible to provide several input functions:
-
-    >>> s = md.Series(range(3))
-    >>> s.execute()
-    0    0
-    1    1
-    2    2
-    dtype: int64
-    >>> s.transform([mt.sqrt, mt.exp]).execute()
-           sqrt        exp
-    0  0.000000   1.000000
-    1  1.000000   2.718282
-    2  1.414214   7.389056
     """
     op = TransformOperator(
         func=func,
@@ -265,6 +250,7 @@ def series_transform(
     dtype=None,
     **kwargs
 ):
+    # FIXME: https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/10
     """
     Call ``func`` on self producing a Series with transformed values.
 
@@ -332,21 +318,6 @@ def series_transform(
     0  1  2
     1  2  3
     2  3  4
-
-    Even though the resulting Series must have the same length as the
-    input Series, it is possible to provide several input functions:
-
-    >>> s = md.Series(range(3))
-    >>> s.execute()
-    0    0
-    1    1
-    2    2
-    dtype: int64
-    >>> s.transform([mt.sqrt, mt.exp]).execute()
-       sqrt        exp
-    0  0.000000   1.000000
-    1  1.000000   2.718282
-    2  1.414214   7.389056
     """
     op = TransformOperator(
         func=func,

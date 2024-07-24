@@ -85,6 +85,7 @@ def value_counts(
     dropna=True,
     method="auto",
 ):
+    # FIXME: https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/33
     """
     Return a Series containing counts of unique values.
 
@@ -125,9 +126,8 @@ def value_counts(
     Examples
     --------
     >>> import maxframe.dataframe as md
-    >>> import maxframe.tensor as mt
-
-    >>> s = md.Series([3, 1, 2, 3, 4, mt.nan])
+    >>> import numpy as np
+    >>> s = md.Series([3, 1, 2, 3, 4, np.nan])
     >>> s.value_counts().execute()
     3.0    2
     4.0    1
@@ -138,26 +138,13 @@ def value_counts(
     With `normalize` set to `True`, returns the relative frequency by
     dividing all values by the sum of values.
 
-    >>> s = md.Series([3, 1, 2, 3, 4, mt.nan])
+    >>> s = md.Series([3, 1, 2, 3, 4, np.nan])
     >>> s.value_counts(normalize=True).execute()
     3.0    0.4
     4.0    0.2
     2.0    0.2
     1.0    0.2
     dtype: float64
-
-    **bins**
-
-    Bins can be useful for going from a continuous variable to a
-    categorical variable; instead of counting unique
-    apparitions of values, divide the index in the specified
-    number of half-open bins.
-
-    >>> s.value_counts(bins=3).execute()
-    (2.0, 3.0]      2
-    (0.996, 2.0]    2
-    (3.0, 4.0]      1
-    dtype: int64
 
     **dropna**
 

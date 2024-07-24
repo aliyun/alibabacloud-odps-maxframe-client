@@ -54,7 +54,7 @@ from .reduction import CustomReduction, unique
 from .tseries.to_datetime import to_datetime
 
 try:
-    from pandas import NA, Timestamp
+    from pandas import NA, NaT, Timestamp
 except ImportError:  # pragma: no cover
     pass
 

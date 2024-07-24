@@ -67,6 +67,7 @@ def dataframe_sort_values(
     parallel_kind="PSRS",
     psrs_kinds=None,
 ):
+    # FIXME: https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/15
     """
     Sort by the values along either axis.
 
@@ -152,17 +153,6 @@ def dataframe_sort_values(
     0   A    2    0
     1   A    1    1
     3   NaN  8    4
-
-    Putting NAs first
-
-    >>> df.sort_values(by='col1', ascending=False, na_position='first').execute()
-        col1 col2 col3
-    3   NaN  8    4
-    4   D    7    2
-    5   C    4    3
-    2   B    9    9
-    0   A    2    0
-    1   A    1    1
     """
 
     if na_position not in ["last", "first"]:  # pragma: no cover

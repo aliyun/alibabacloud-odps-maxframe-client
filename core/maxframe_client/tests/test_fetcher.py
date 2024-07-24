@@ -59,6 +59,11 @@ async def test_table_fetcher():
     pd.testing.assert_frame_equal(raw_data, fetched)
 
     result_info = ODPSTableResultInfo(ResultType.ODPS_TABLE, full_table_name=table_name)
+    fetched = await fetcher.fetch(tileable, result_info, [slice(None, 2000), None])
+    assert len(fetched) == 1000
+    pd.testing.assert_frame_equal(raw_data, fetched)
+
+    result_info = ODPSTableResultInfo(ResultType.ODPS_TABLE, full_table_name=table_name)
     fetched = await fetcher.fetch(tileable, result_info, [2, None])
     assert len(fetched) == 1
     pd.testing.assert_frame_equal(raw_data.iloc[2:3], fetched)

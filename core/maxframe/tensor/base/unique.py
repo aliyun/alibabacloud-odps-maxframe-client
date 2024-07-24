@@ -15,7 +15,7 @@
 
 import numpy as np
 
-from ... import opcodes as OperandDef
+from ... import opcodes
 from ...serialization.serializables import BoolField, Int32Field
 from ..core import TensorOrder
 from ..operators import TensorHasInput, TensorOperatorMixin
@@ -23,7 +23,7 @@ from ..utils import validate_axis
 
 
 class TensorUnique(TensorHasInput, TensorOperatorMixin):
-    _op_type_ = OperandDef.UNIQUE
+    _op_type_ = opcodes.UNIQUE
 
     return_index = BoolField("return_index", default=False)
     return_inverse = BoolField("return_inverse", default=False)

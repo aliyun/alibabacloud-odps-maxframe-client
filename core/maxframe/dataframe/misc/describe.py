@@ -15,7 +15,7 @@
 import numpy as np
 import pandas as pd
 
-from ... import opcodes as OperandDef
+from ... import opcodes
 from ...serialization.serializables import AnyField, FieldTypes, KeyField, ListField
 from ..core import SERIES_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
@@ -23,7 +23,7 @@ from ..utils import build_empty_df, parse_index
 
 
 class DataFrameDescribe(DataFrameOperator, DataFrameOperatorMixin):
-    _op_type_ = OperandDef.DESCRIBE
+    _op_type_ = opcodes.DESCRIBE
 
     input = KeyField("input", default=None)
     percentiles = ListField("percentiles", FieldTypes.float64, default=None)

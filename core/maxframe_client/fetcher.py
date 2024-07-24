@@ -12,19 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import base64
-import json
 from abc import ABC, abstractmethod
 from numbers import Integral
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import pandas as pd
 import pyarrow as pa
 from odps import ODPS
+from odps.lib import tzlocal
 from odps.models import ExternalVolume, PartedVolume
 from odps.tunnel import TableTunnel
 from tornado import httpclient
 
+from maxframe.config import options
 from maxframe.core import OBJECT_TYPE
 from maxframe.dataframe.core import DATAFRAME_TYPE
 from maxframe.lib import wrapped_pickle as pickle
@@ -38,7 +38,7 @@ from maxframe.protocol import (
 )
 from maxframe.tensor.core import TENSOR_TYPE
 from maxframe.typing_ import PandasObjectTypes, TileableType
-from maxframe.utils import ToThreadMixin, deserialize_serializable
+from maxframe.utils import ToThreadMixin
 
 _result_fetchers: Dict[ResultType, Type["ResultFetcher"]] = dict()
 
@@ -109,17 +109,12 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
         tileable: TileableType,
         info: ODPSTableResultInfo,
     ) -> None:
-        if isinstance(tileable, DATAFRAME_TYPE) and tileable.dtypes is None:
-            tb_comment = await self.to_thread(
-                self._get_table_comment, info.full_table_name
-            )
-            if tb_comment:  # pragma: no branch
-                comment_data = json.loads(tb_comment)
-
-                table_meta: DataFrameTableMeta = deserialize_serializable(
-                    base64.b64decode(comment_data["table_meta"])
-                )
-                tileable.refresh_from_table_meta(table_meta)
+        if (
+            isinstance(tileable, DATAFRAME_TYPE)
+            and tileable.dtypes is None
+            and info.table_meta is not None
+        ):
+            tileable.refresh_from_table_meta(info.table_meta)
 
         if tileable.shape and any(pd.isna(x) for x in tileable.shape):
             part_specs = [None] if not info.partition_specs else info.partition_specs
@@ -131,14 +126,37 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
                 )
                 total_records += session.count
             new_shape_list = list(tileable.shape)
-            new_shape_list[-1] = total_records
+            new_shape_list[0] = total_records
             tileable.params = {"shape": tuple(new_shape_list)}
+
+    @staticmethod
+    def _align_selection_with_shape(
+        row_sel: slice, shape: Tuple[Optional[int], ...]
+    ) -> dict:
+        size = shape[0]
+        if not row_sel.start and not row_sel.stop:
+            return {}
+        is_reversed = row_sel.step is not None and row_sel.step < 0
+        read_kw = {
+            "start": row_sel.start,
+            "stop": row_sel.stop,
+            "reverse_range": is_reversed,
+        }
+        if pd.isna(size):
+            return read_kw
+
+        if is_reversed and row_sel.start is not None:
+            read_kw["start"] = min(size - 1, row_sel.start)
+        if not is_reversed and row_sel.stop is not None:
+            read_kw["stop"] = min(size, row_sel.stop)
+        return read_kw
 
     def _read_single_source(
         self,
         table_meta: DataFrameTableMeta,
         info: ODPSTableResultInfo,
         indexes: List[Union[None, Integral, slice]],
+        shape: Tuple[Optional[int], ...],
     ):
         table_io = HaloTableIO(self._odps_entry)
         read_kw = {}
@@ -148,13 +166,8 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
                 indexes += [None]
             row_sel, col_sel = indexes
             if isinstance(row_sel, slice):
-                if row_sel.start or row_sel.stop:
-                    read_kw["start"] = row_sel.start
-                    read_kw["stop"] = row_sel.stop
-                    read_kw["reverse_range"] = (
-                        row_sel.step is not None and row_sel.step < 0
-                    )
-                    row_step = row_sel.step
+                row_step = row_sel.step
+                read_kw = self._align_selection_with_shape(row_sel, shape)
             elif isinstance(row_sel, int):
                 read_kw["start"] = row_sel
                 read_kw["stop"] = row_sel + 1
@@ -195,9 +208,20 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
     ) -> PandasObjectTypes:
         table_meta = build_dataframe_table_meta(tileable)
         arrow_table: pa.Table = await self.to_thread(
-            self._read_single_source, table_meta, info, indexes
+            self._read_single_source, table_meta, info, indexes, tileable.shape
         )
-        return arrow_to_pandas(arrow_table, table_meta)
+        # deal datetime timezone convert
+        res = arrow_to_pandas(arrow_table, table_meta)
+        timezone = options.local_timezone or tzlocal.get_localzone()
+        for index, col_type in table_meta.pd_column_dtypes.items():
+            if pd.api.types.is_datetime64_any_dtype(
+                col_type
+            ) and not pd.api.types.is_datetime64_ns_dtype(col_type):
+                if index is None:
+                    res = res.dt.tz_convert(timezone)
+                else:
+                    res[index] = res[index].dt.tz_convert(timezone)
+        return res
 
 
 @register_fetcher

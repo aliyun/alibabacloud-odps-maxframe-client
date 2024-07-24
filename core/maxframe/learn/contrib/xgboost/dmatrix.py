@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-from .... import opcodes as OperandDef
+from .... import opcodes
 from ....core.entity.output_types import get_output_types
 from ....core.operator.base import Operator
 from ....core.operator.core import TileableOperatorMixin
@@ -27,7 +27,7 @@ from ...utils import convert_to_tensor_or_dataframe
 
 
 class ToDMatrix(Operator, TileableOperatorMixin):
-    _op_type_ = OperandDef.TO_DMATRIX
+    _op_type_ = opcodes.TO_DMATRIX
 
     data = KeyField("data", default=None)
     label = KeyField("label", default=None)

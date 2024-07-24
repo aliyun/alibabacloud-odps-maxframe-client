@@ -126,10 +126,15 @@ def odps_type_to_arrow_type(
             ]
             col_type = pa.struct(fields)
         elif isinstance(odps_type, odps_types.Decimal):
-            col_type = pa.decimal128(
-                odps_type.precision or odps_types.Decimal._max_precision,
-                odps_type.scale or odps_types.Decimal._max_scale,
-            )
+            if odps_type.name == "decimal":
+                # legacy decimal data without precision or scale
+                # precision data from internal compat mode
+                col_type = pa.decimal128(38, 18)
+            else:
+                col_type = pa.decimal128(
+                    odps_type.precision or odps_types.Decimal._max_precision,
+                    odps_type.scale or odps_types.Decimal._max_scale,
+                )
         elif isinstance(odps_type, (odps_types.Varchar, odps_types.Char)):
             col_type = pa.string()
         else:
@@ -289,8 +294,6 @@ def build_dataframe_table_meta(
     else:  # pragma: no cover
         raise TypeError(f"Cannot accept type {type(df_obj)}")
 
-    assert not ignore_index or obj_type in (OutputType.dataframe, OutputType.series)
-
     if obj_type == OutputType.scalar:
         pd_dtypes = pd.Series([])
         column_index_names = []
@@ -346,7 +349,7 @@ def build_dataframe_table_meta(
     else:
         index_dtypes = pd.Series([pd_index_val.dtype], index=pd_index_val.names)
 
-    if ignore_index:
+    if ignore_index and obj_type != OutputType.index:
         table_index_column_names = []
         pd_index_dtypes = pd.Series([], index=[])
     else:

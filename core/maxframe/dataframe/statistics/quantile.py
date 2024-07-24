@@ -14,8 +14,9 @@
 
 import numpy as np
 import pandas as pd
+from pandas.core.dtypes.cast import find_common_type
 
-from ... import opcodes as OperandDef
+from ... import opcodes
 from ...core import ENTITY_TYPE
 from ...serialization.serializables import (
     AnyField,
@@ -32,11 +33,11 @@ from ...tensor.datasource import tensor as astensor
 from ...tensor.statistics.quantile import quantile as tensor_quantile
 from ..core import DATAFRAME_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_empty_df, find_common_type, parse_index, validate_axis
+from ..utils import build_empty_df, parse_index, validate_axis
 
 
 class DataFrameQuantile(DataFrameOperator, DataFrameOperatorMixin):
-    _op_type_ = OperandDef.QUANTILE
+    _op_type_ = opcodes.QUANTILE
 
     input = KeyField("input", default=None)
     q = AnyField("q", default=None)
@@ -259,6 +260,7 @@ def quantile_series(series, q=0.5, interpolation="linear"):
 
 
 def quantile_dataframe(df, q=0.5, axis=0, numeric_only=True, interpolation="linear"):
+    # FIXME: Timedelta not support. Data invalid: ODPS-0010000:InvalidArgument:duration[ns] is not equal to string
     """
     Return values at the given quantile over requested axis.
 
@@ -309,20 +311,6 @@ def quantile_dataframe(df, q=0.5, axis=0, numeric_only=True, interpolation="line
            a     b
     0.1  1.3   3.7
     0.5  2.5  55.0
-
-    Specifying `numeric_only=False` will also compute the quantile of
-    datetime and timedelta data.
-
-    >>> df = md.DataFrame({'A': [1, 2],
-    ...                    'B': [md.Timestamp('2010'),
-    ...                          md.Timestamp('2011')],
-    ...                    'C': [md.Timedelta('1 days'),
-    ...                          md.Timedelta('2 days')]})
-    >>> df.quantile(0.5, numeric_only=False).execute()
-    A                    1.5
-    B    2010-07-02 12:00:00
-    C        1 days 12:00:00
-    Name: 0.5, dtype: object
     """
     if isinstance(q, ENTITY_TYPE):
         q = astensor(q)

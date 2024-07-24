@@ -19,6 +19,15 @@ import warnings
 from copy import deepcopy
 from typing import Any, Dict, Optional, Union
 
+from odps.lib import tzlocal
+
+try:
+    from zoneinfo import available_timezones
+except ImportError:
+    from pytz import all_timezones
+
+    available_timezones = lambda: all_timezones
+
 from ..utils import get_python_tag
 from .validators import (
     ValidatorType,
@@ -28,6 +37,7 @@ from .validators import (
     is_dict,
     is_in,
     is_integer,
+    is_non_negative_integer,
     is_null,
     is_numeric,
     is_string,
@@ -37,11 +47,12 @@ _DEFAULT_REDIRECT_WARN = "Option {source} has been replaced by {target} and migh
 _DEFAULT_MAX_ALIVE_SECONDS = 3 * 24 * 3600
 _DEFAULT_MAX_IDLE_SECONDS = 3600
 _DEFAULT_SPE_OPERATION_TIMEOUT_SECONDS = 120
+_DEFAULT_SPE_FAILURE_RETRY_TIMES = 5
 _DEFAULT_UPLOAD_BATCH_SIZE = 4096
 _DEFAULT_TEMP_LIFECYCLE = 1
 _DEFAULT_TASK_START_TIMEOUT = 60
 _DEFAULT_TASK_RESTART_TIMEOUT = 300
-_DEFAULT_LOGVIEW_HOURS = 24 * 60
+_DEFAULT_LOGVIEW_HOURS = 24 * 30
 
 
 class OptionError(Exception):
@@ -297,12 +308,26 @@ class Config:
         return {k: v for k, v in res.items() if k in self._remote_options}
 
 
+def _get_legal_local_tz_name() -> Optional[str]:
+    """Sometimes we may get illegal tz name from tzlocal.get_localzone()"""
+    tz_name = str(tzlocal.get_localzone())
+    if tz_name not in available_timezones():
+        return None
+    return tz_name
+
+
 default_options = Config()
 default_options.register_option(
     "execution_mode", "trigger", validator=is_in(["trigger", "eager"])
 )
 default_options.register_option(
     "python_tag", get_python_tag(), validator=is_string, remote=True
+)
+default_options.register_option(
+    "local_timezone",
+    _get_legal_local_tz_name(),
+    validator=any_validator(is_null, is_in(set(available_timezones()))),
+    remote=True,
 )
 default_options.register_option(
     "session.logview_hours", _DEFAULT_LOGVIEW_HOURS, validator=is_integer, remote=True
@@ -378,7 +403,13 @@ default_options.register_option(
 default_options.register_option(
     "spe.operation_timeout_seconds",
     _DEFAULT_SPE_OPERATION_TIMEOUT_SECONDS,
-    validator=is_integer,
+    validator=is_non_negative_integer,
+    remote=True,
+)
+default_options.register_option(
+    "spe.failure_retry_times",
+    _DEFAULT_SPE_FAILURE_RETRY_TIMES,
+    validator=is_non_negative_integer,
     remote=True,
 )
 

@@ -37,16 +37,15 @@ class DataFrameDropDuplicates(DuplicateOperand):
             shape += (3,)
         return shape
 
-    @classmethod
-    def _gen_tileable_params(cls, op: "DataFrameDropDuplicates", input_params):
+    def _gen_tileable_params(self, op: "DataFrameDropDuplicates", input_params):
         params = input_params.copy()
-        if op.ignore_index:
+        if op.ignore_index and self._output_types[0] != OutputType.index:
             params["index_value"] = parse_index(pd.RangeIndex(-1))
         else:
             params["index_value"] = gen_unknown_index_value(
                 input_params["index_value"], op.keep, op.subset, type(op).__name__
             )
-        params["shape"] = cls._get_shape(input_params["shape"], op)
+        params["shape"] = self._get_shape(input_params["shape"], op)
         return params
 
     def __call__(self, inp, inplace=False):
@@ -105,6 +104,7 @@ def df_drop_duplicates(
 def series_drop_duplicates(
     series, keep="first", inplace=False, ignore_index=False, method="auto"
 ):
+    # FIXME: https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/12
     """
     Return Series with duplicate values removed.
 
@@ -143,27 +143,6 @@ def series_drop_duplicates(
     0      lame
     1       cow
     2      lame
-    3    beetle
-    4      lame
-    5     hippo
-    Name: animal, dtype: object
-
-    With the 'keep' parameter, the selection behaviour of duplicated values
-    can be changed. The value 'first' keeps the first occurrence for each
-    set of duplicated entries. The default value of keep is 'first'.
-
-    >>> s.drop_duplicates().execute()
-    0      lame
-    1       cow
-    3    beetle
-    5     hippo
-    Name: animal, dtype: object
-
-    The value 'last' for parameter 'keep' keeps the last occurrence for
-    each set of duplicated entries.
-
-    >>> s.drop_duplicates(keep='last').execute()
-    1       cow
     3    beetle
     4      lame
     5     hippo

@@ -132,11 +132,11 @@ def fillna(
     --------
     >>> import maxframe.tensor as mt
     >>> import maxframe.dataframe as md
-    >>> df = md.DataFrame([[mt.nan, 2, mt.nan, 0],
-    ...                    [3, 4, mt.nan, 1],
-    ...                    [mt.nan, mt.nan, mt.nan, 5],
-    ...                    [mt.nan, 3, mt.nan, 4]],
-    ...                   columns=list('ABCD'))
+    >>> df = md.DataFrame([[np.nan, 2, np.nan, 0],
+                           [3, 4, np.nan, 1],
+                           [np.nan, np.nan, np.nan, 5],
+                           [np.nan, 3, np.nan, 4]],
+                          columns=list('ABCD'))
     >>> df.execute()
          A    B   C  D
     0  NaN  2.0 NaN  0

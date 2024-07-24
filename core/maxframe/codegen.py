@@ -205,12 +205,8 @@ class BigDagCodeContext(metaclass=abc.ABCMeta):
         return self._session_id
 
     def register_udf(self, udf: AbstractUDF):
-        from maxframe_framedriver.services.session import SessionManager
-
         udf.session_id = self._session_id
         self._udfs[udf.name] = udf
-        if self._session_id and SessionManager.initialized():
-            SessionManager.instance().register_udf(self._session_id, udf)
 
     def get_udfs(self) -> List[AbstractUDF]:
         return list(self._udfs.values())

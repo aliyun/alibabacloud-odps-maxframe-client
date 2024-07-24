@@ -22,7 +22,7 @@ from pandas._libs.tslibs import timezones
 from pandas.tseries.frequencies import to_offset
 from pandas.tseries.offsets import Tick
 
-from ... import opcodes as OperandDef
+from ... import opcodes
 from ...core import OutputType
 from ...serialization.serializables import AnyField, BoolField, Int64Field, StringField
 from ...utils import no_default, pd_release_version
@@ -117,7 +117,7 @@ def generate_range_count(
 
 
 class DataFrameDateRange(DataFrameOperator, DataFrameOperatorMixin):
-    _op_type_ = OperandDef.DATE_RANGE
+    _op_type_ = opcodes.DATE_RANGE
 
     start = AnyField("start")
     end = AnyField("end")

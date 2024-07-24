@@ -180,4 +180,63 @@ from .reduction import std, sum, var
 from .reshape import reshape
 from .ufunc import ufunc
 
+# isort: off
+# noinspection PyUnresolvedReferences
+from numpy import (
+    NAN,
+    NINF,
+    AxisError,
+    Inf,
+    NaN,
+    e,
+    errstate,
+    geterr,
+    inf,
+    nan,
+    newaxis,
+    pi,
+    seterr,
+)
+
+# import numpy types
+# noinspection PyUnresolvedReferences
+from numpy import (
+    bool_ as bool,
+    bytes_,
+    cfloat,
+    character,
+    complex64,
+    complex128,
+    complexfloating,
+    datetime64,
+    double,
+    dtype,
+    flexible,
+    float16,
+    float32,
+    float64,
+    floating,
+    generic,
+    inexact,
+    int8,
+    int16,
+    int32,
+    int64,
+    intc,
+    intp,
+    number,
+    integer,
+    object_ as object,
+    signedinteger,
+    timedelta64,
+    uint,
+    uint8,
+    uint16,
+    uint32,
+    uint64,
+    unicode_,
+    unsignedinteger,
+    void,
+)
+
 del fetch, ufunc
