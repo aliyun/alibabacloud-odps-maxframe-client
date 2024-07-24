@@ -43,20 +43,20 @@ def around(df, decimals=0, *args, **kwargs):
     return op(df)
 
 
+# FIXME Series input of decimals not supported yet
 around.__frame_doc__ = """
 Round a DataFrame to a variable number of decimal places.
 
 Parameters
 ----------
-decimals : int, dict, Series
+decimals : int, dict
     Number of decimal places to round each column to. If an int is
     given, round each column to the same number of places.
     Otherwise dict and Series round to variable numbers of places.
     Column names should be in the keys if `decimals` is a
-    dict-like, or in the index if `decimals` is a Series. Any
-    columns not included in `decimals` will be left as is. Elements
-    of `decimals` which are not columns of the input will be
-    ignored.
+    dict-like. Any columns not included in `decimals` will be left
+    as is. Elements of `decimals` which are not columns of the
+    input will be ignored.
 *args
     Additional keywords have no effect but might be accepted for
     compatibility with numpy.
@@ -102,18 +102,6 @@ specified with the column names as key and the number of decimal
 places as value
 
 >>> df.round({'dogs': 1, 'cats': 0}).execute()
-    dogs  cats
-0   0.2   0.0
-1   0.0   1.0
-2   0.7   0.0
-3   0.2   0.0
-
-Using a Series, the number of places for specific columns can be
-specified with the column names as index and the number of
-decimal places as value
-
->>> decimals = md.Series([0, 1], index=['cats', 'dogs'])
->>> df.round(decimals).execute()
     dogs  cats
 0   0.2   0.0
 1   0.0   1.0

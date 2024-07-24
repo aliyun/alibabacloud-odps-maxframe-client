@@ -17,7 +17,7 @@ import pickle
 import numpy as np
 import pandas as pd
 
-from .... import opcodes as OperandDef
+from .... import opcodes
 from ....core.entity.output_types import OutputType
 from ....core.operator.base import Operator
 from ....core.operator.core import TileableOperatorMixin
@@ -28,7 +28,7 @@ from .dmatrix import check_data
 
 
 class XGBPredict(Operator, TileableOperatorMixin):
-    _op_type_ = OperandDef.XGBOOST_PREDICT
+    _op_type_ = opcodes.XGBOOST_PREDICT
     output_dtype = np.dtype(np.float32)
 
     data = KeyField("data", default=None)

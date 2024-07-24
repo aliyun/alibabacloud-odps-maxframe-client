@@ -436,19 +436,27 @@ async def to_thread_pool(func, *args, pool=None, **kwargs):
     return await loop.run_in_executor(pool, func_call)
 
 
-def create_event(loop: asyncio.AbstractEventLoop) -> asyncio.Event:
+_PrimitiveType = TypeVar("_PrimitiveType")
+
+
+def create_sync_primitive(
+    cls: Type[_PrimitiveType], loop: asyncio.AbstractEventLoop
+) -> _PrimitiveType:
     """
-    Create an asyncio.Event in a certain event loop.
+    Create an asyncio sync primitive (locks, events, etc.)
+    in a certain event loop.
     """
-    if sys.version_info[1] < 10 or loop is None:
-        return asyncio.Event(loop=loop)
+    if sys.version_info[1] < 10:
+        return cls(loop=loop)
 
     # From Python3.10 the loop parameter has been removed. We should work around here.
-    old_loop = asyncio.get_running_loop()
-    asyncio.set_event_loop(loop)
-    event = asyncio.Event()
-    asyncio.set_event_loop(old_loop)
-    return event
+    old_loop = asyncio.get_event_loop()
+    try:
+        asyncio.set_event_loop(loop)
+        primitive = cls()
+    finally:
+        asyncio.set_event_loop(old_loop)
+    return primitive
 
 
 class ToThreadCancelledError(asyncio.CancelledError):

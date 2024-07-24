@@ -143,17 +143,17 @@ def test_pandas_to_odps_schema_index(wrap_obj):
     data = pd.Index(np.random.randint(0, 100, 100))
 
     test_idx = _wrap_maxframe_obj(data, wrap=wrap_obj)
-    schema, meta = pandas_to_odps_schema(test_idx, unknown_as_string=True)
-    assert [c.name for c in schema.columns] == ["_idx_0"]
-    assert [c.type.name for c in schema.columns] == ["bigint"]
-    assert meta.type == OutputType.index
-    assert meta.table_column_names == []
-    assert meta.table_index_column_names == ["_idx_0"]
-    assert meta.pd_column_level_names == []
-    assert meta.pd_index_level_names == [None]
-
-    with pytest.raises(AssertionError):
-        pandas_to_odps_schema(test_idx, unknown_as_string=True, ignore_index=True)
+    for ignore_idx in (False, True):
+        schema, meta = pandas_to_odps_schema(
+            test_idx, unknown_as_string=True, ignore_index=ignore_idx
+        )
+        assert [c.name for c in schema.columns] == ["_idx_0"]
+        assert [c.type.name for c in schema.columns] == ["bigint"]
+        assert meta.type == OutputType.index
+        assert meta.table_column_names == []
+        assert meta.table_index_column_names == ["_idx_0"]
+        assert meta.pd_column_level_names == []
+        assert meta.pd_index_level_names == [None]
 
     data = pd.MultiIndex.from_arrays(
         [np.random.choice(list("ABC"), 100), np.random.randint(0, 10, 100)],
@@ -177,6 +177,7 @@ def test_pandas_to_odps_schema_scalar(wrap_obj):
     test_scalar = _wrap_maxframe_obj(data, wrap=wrap_obj)
     if wrap_obj != "no":
         test_scalar.op.data = None
+
     schema, meta = pandas_to_odps_schema(test_scalar, unknown_as_string=True)
     assert schema.columns[0].name == "_idx_0"
     assert schema.columns[0].type.name == "double"
@@ -185,9 +186,6 @@ def test_pandas_to_odps_schema_scalar(wrap_obj):
     assert meta.table_index_column_names == ["_idx_0"]
     assert meta.pd_column_level_names == []
     assert meta.pd_index_level_names == [None]
-
-    with pytest.raises(AssertionError):
-        pandas_to_odps_schema(test_scalar, unknown_as_string=True, ignore_index=True)
 
 
 def test_odps_arrow_schema_conversion():
@@ -211,10 +209,11 @@ def test_odps_arrow_schema_conversion():
             odps_types.Column("col16", "struct<a1: string, a2: map<string, bigint>>"),
             odps_types.Column("col17", "CHAR(15)"),
             odps_types.Column("col18", "VARCHAR(15)"),
+            odps_types.Column("col19", "decimal"),
         ]
     )
     arrow_schema = odps_schema_to_arrow_schema(odps_schema)
-    assert arrow_schema.names == [f"col{i}" for i in range(1, 19)]
+    assert arrow_schema.names == [f"col{i}" for i in range(1, 20)]
     assert arrow_schema.types == [
         pa.string(),
         pa.binary(),
@@ -234,6 +233,7 @@ def test_odps_arrow_schema_conversion():
         pa.struct([("a1", pa.string()), ("a2", pa.map_(pa.string(), pa.int64()))]),
         pa.string(),
         pa.string(),
+        pa.decimal128(38, 18),
     ]
 
     expected_odps_schema = odps_types.OdpsSchema(
@@ -256,6 +256,7 @@ def test_odps_arrow_schema_conversion():
             odps_types.Column("col16", "struct<a1: string, a2: map<string, bigint>>"),
             odps_types.Column("col17", "string"),
             odps_types.Column("col18", "string"),
+            odps_types.Column("col19", "decimal(38, 18)"),
         ]
     )
 

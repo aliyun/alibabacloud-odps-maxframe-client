@@ -68,6 +68,7 @@ Function application, groupby & window
 .. autosummary::
    :toctree: generated/
 
+   Series.apply
    Series.agg
    Series.aggregate
    Series.groupby

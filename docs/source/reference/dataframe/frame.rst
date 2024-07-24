@@ -35,9 +35,6 @@ Conversion
    :toctree: generated/
 
    DataFrame.astype
-   DataFrame.copy
-   DataFrame.isna
-   DataFrame.notna
 
 Indexing, iteration
 ~~~~~~~~~~~~~~~~~~~
@@ -101,6 +98,7 @@ Computations / descriptive stats
    DataFrame.any
    DataFrame.count
    DataFrame.describe
+   DataFrame.eval
    DataFrame.max
    DataFrame.mean
    DataFrame.min
@@ -123,6 +121,7 @@ Reindexing / selection / label manipulation
 
    DataFrame.add_prefix
    DataFrame.add_suffix
+   DataFrame.drop
    DataFrame.drop_duplicates
    DataFrame.duplicated
    DataFrame.head
@@ -131,6 +130,7 @@ Reindexing / selection / label manipulation
    DataFrame.reset_index
    DataFrame.sample
    DataFrame.set_axis
+   DataFrame.set_index
    DataFrame.tail
 
 .. _generated.dataframe.missing:
@@ -198,3 +198,4 @@ Serialization / IO / conversion
    :toctree: generated/
 
    DataFrame.to_odps_table
+   DataFrame.to_pandas

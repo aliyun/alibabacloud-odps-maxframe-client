@@ -1086,11 +1086,11 @@ class Series(HasShapeTileable, _ToPandasMixin):
         --------
         >>> import maxframe.dataframe as md
         >>> s = md.Series({'a': 1, 'b': 2, 'c': 3})
-        >>> s.ndim.execute()
+        >>> s.ndim
         1
 
         >>> df = md.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
-        >>> df.ndim.execute()
+        >>> df.ndim
         2
         """
         return super().ndim
@@ -1520,7 +1520,7 @@ class BaseDataFrameData(HasShapeTileableData, _ToPandasMixin):
         self._columns_value = parse_index(dtypes.index, store_data=True)
         self._dtypes_value = DtypesValue(key=tokenize(dtypes), value=dtypes)
         new_shape = list(self._shape)
-        new_shape[0] = len(dtypes)
+        new_shape[-1] = len(dtypes)
         self._shape = tuple(new_shape)
 
     @property
@@ -1761,11 +1761,11 @@ class DataFrame(HasShapeTileable, _ToPandasMixin):
         --------
         >>> import maxframe.dataframe as md
         >>> s = md.Series({'a': 1, 'b': 2, 'c': 3})
-        >>> s.ndim.execute()
+        >>> s.ndim
         1
 
         >>> df = md.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
-        >>> df.ndim.execute()
+        >>> df.ndim
         2
         """
         return super().ndim

@@ -19,6 +19,7 @@ import pytest
 from ...core import IndexValue
 from ...datasource.dataframe import from_pandas
 from .. import DataFrameMerge, concat
+from ..merge import DistributedMapJoinHint, MapJoinHint, SkewJoinHint
 
 
 def test_merge():
@@ -30,14 +31,39 @@ def test_merge():
     mdf1 = from_pandas(df1, chunk_size=2)
     mdf2 = from_pandas(df2, chunk_size=3)
 
+    mapjoin = MapJoinHint()
+    dist_mapjoin1 = DistributedMapJoinHint(shard_count=5)
+    skew_join1 = SkewJoinHint()
+    skew_join2 = SkewJoinHint(columns=[0])
+    skew_join3 = SkewJoinHint(columns=[{"a": 4}, {"a": 6}])
+    skew_join4 = SkewJoinHint(columns=[{"a": 4, "b": "test"}, {"a": 5, "b": "hello"}])
+
     parameters = [
         {},
         {"how": "left", "right_on": "x", "left_index": True},
+        {
+            "how": "left",
+            "right_on": "x",
+            "left_index": True,
+            "left_hint": mapjoin,
+            "right_hint": mapjoin,
+        },
         {"how": "right", "left_on": "a", "right_index": True},
+        {
+            "how": "right",
+            "left_on": "a",
+            "right_index": True,
+            "left_hint": mapjoin,
+            "right_hint": dist_mapjoin1,
+        },
         {"how": "left", "left_on": "a", "right_on": "x"},
+        {"how": "left", "left_on": "a", "right_on": "x", "left_hint": skew_join1},
         {"how": "right", "left_on": "a", "right_index": True},
+        {"how": "right", "left_on": "a", "right_index": True, "right_hint": skew_join2},
         {"how": "right", "on": "a"},
+        {"how": "right", "on": "a", "right_hint": skew_join3},
         {"how": "inner", "on": ["a", "b"]},
+        {"how": "inner", "on": ["a", "b"], "left_hint": skew_join4},
     ]
 
     for kw in parameters:
@@ -213,3 +239,100 @@ def test_concat():
     mdf2 = from_pandas(df2, chunk_size=3)
     r = concat([mdf1, mdf2], join="inner")
     assert r.shape == (20, 3)
+
+
+def test_invalid_join_hint():
+    df1 = pd.DataFrame(
+        np.arange(20).reshape((4, 5)) + 1, columns=["a", "b", "c", "d", "e"]
+    )
+    df2 = pd.DataFrame(np.arange(20).reshape((5, 4)) + 1, columns=["a", "b", "x", "y"])
+
+    mdf1 = from_pandas(df1, chunk_size=2)
+    mdf2 = from_pandas(df2, chunk_size=3)
+
+    # type error
+    parameters = [
+        {"how": "left", "right_on": "x", "left_index": True, "left_hint": [1]},
+        {
+            "how": "left",
+            "right_on": "x",
+            "left_index": True,
+            "left_hint": {"key": "value"},
+        },
+        {
+            "how": "right",
+            "left_on": "a",
+            "right_index": True,
+            "right_hint": SkewJoinHint(columns=2),
+        },
+        {
+            "how": "left",
+            "left_on": "a",
+            "right_on": "x",
+            "left_hint": SkewJoinHint(columns="a"),
+        },
+        {
+            "how": "right",
+            "left_on": "a",
+            "right_index": True,
+            "right_hint": SkewJoinHint(columns=["0", []]),
+        },
+    ]
+
+    for kw in parameters:
+        print(kw)
+        with pytest.raises(TypeError):
+            mdf1.merge(mdf2, **kw)
+
+    # value error
+    parameters = [
+        # mapjoin can't working with skew join
+        {
+            "how": "left",
+            "right_on": "x",
+            "left_index": True,
+            "left_hint": MapJoinHint(),
+            "right_hint": SkewJoinHint(),
+        },
+        # right join can't apply to skew join left frame
+        {
+            "how": "right",
+            "left_on": "a",
+            "right_index": True,
+            "left_hint": SkewJoinHint(),
+        },
+        # invalid columns
+        {
+            "how": "left",
+            "left_on": "a",
+            "right_on": "x",
+            "left_hint": SkewJoinHint(columns=["b"]),
+        },
+        # invalid index level
+        {
+            "how": "right",
+            "left_on": "a",
+            "right_index": True,
+            "right_hint": SkewJoinHint(columns=[5]),
+        },
+        # unmatched skew join columns
+        {
+            "how": "right",
+            "left_on": "a",
+            "right_index": True,
+            "right_hint": SkewJoinHint(columns=[{0: "value1"}, {1: "value2"}]),
+        },
+        # invalid dist_mapjoin shard_count
+        {"how": "right", "on": "a", "right_hint": DistributedMapJoinHint()},
+        # all can't work with outer join
+        {"how": "outer", "on": ["a", "b"], "left_hint": MapJoinHint()},
+        {
+            "how": "outer",
+            "on": ["a", "b"],
+            "left_hint": DistributedMapJoinHint(shard_count=5),
+        },
+        {"how": "outer", "on": ["a", "b"], "left_hint": SkewJoinHint()},
+    ]
+    for kw in parameters:
+        with pytest.raises(ValueError):
+            mdf1.merge(mdf2, **kw)

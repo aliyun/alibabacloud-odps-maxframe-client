@@ -195,7 +195,6 @@ def sample(
             num_legs  num_wings  num_specimen_seen
     falcon         2          2                 10
     fish           0          0                  8
-
     """
     axis = validate_axis(axis or 0, df_or_series)
     if axis == 1:

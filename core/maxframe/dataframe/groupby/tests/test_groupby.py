@@ -282,14 +282,17 @@ def test_groupby_cum():
         r = getattr(mdf.groupby("b"), fun)()
         assert r.op.output_types[0] == OutputType.dataframe
         assert r.shape == (len(df1), 2)
+        assert r.index_value.key == mdf.index_value.key
 
         r = getattr(mdf.groupby("b"), fun)(axis=1)
         assert r.op.output_types[0] == OutputType.dataframe
         assert r.shape == (len(df1), 3)
+        assert r.index_value.key == mdf.index_value.key
 
     r = mdf.groupby("b").cumcount()
     assert r.op.output_types[0] == OutputType.series
     assert r.shape == (len(df1),)
+    assert r.index_value.key == mdf.index_value.key
 
     series1 = pd.Series([2, 2, 5, 7, 3, 7, 8, 8, 5, 6])
     ms1 = md.Series(series1, chunk_size=3)
@@ -298,6 +301,7 @@ def test_groupby_cum():
         r = getattr(ms1.groupby(lambda x: x % 2), fun)()
         assert r.op.output_types[0] == OutputType.series
         assert r.shape == (len(series1),)
+        assert r.index_value.key == ms1.index_value.key
 
 
 def test_groupby_fill():

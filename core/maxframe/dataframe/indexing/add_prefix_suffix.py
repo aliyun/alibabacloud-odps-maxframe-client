@@ -51,7 +51,7 @@ def _get_prefix_suffix_docs(is_prefix: bool):
     Examples
     --------
     >>> import maxframe.dataframe as md
-    >>> s = md.Series([1, 2, 3, 4])
+        >>> s = md.Series([1, 2, 3, 4])
     >>> s.execute()
     0    1
     1    2

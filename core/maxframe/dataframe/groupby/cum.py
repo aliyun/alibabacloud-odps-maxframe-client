@@ -59,7 +59,6 @@ class GroupByCumReductionOperator(DataFrameOperatorMixin, DataFrameOperator):
         out_dtypes = self._calc_out_dtypes(groupby)
 
         kw = in_df.params.copy()
-        kw["index_value"] = parse_index(pd.RangeIndex(-1), groupby.key)
         if self.output_types[0] == OutputType.dataframe:
             kw.update(
                 dict(

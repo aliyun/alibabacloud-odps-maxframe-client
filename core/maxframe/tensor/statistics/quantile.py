@@ -16,7 +16,7 @@ from collections.abc import Iterable
 
 import numpy as np
 
-from ... import opcodes as OperandDef
+from ... import opcodes
 from ...core import ENTITY_TYPE
 from ...serialization.serializables import AnyField, BoolField, KeyField, StringField
 from ..core import TENSOR_TYPE, TensorOrder
@@ -43,7 +43,7 @@ q_error_msg = "Quantiles must be in the range [0, 1]"
 
 class TensorQuantile(TensorOperator, TensorOperatorMixin):
     __slots__ = ("q_error_msg",)
-    _op_type_ = OperandDef.QUANTILE
+    _op_type_ = opcodes.QUANTILE
 
     a = KeyField("a")
     q = AnyField("q")

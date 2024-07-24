@@ -120,6 +120,10 @@ class CollectionVisitor(ast.NodeVisitor):
         if obj_name in self.env:
             self.referenced_vars.add(obj_name)
             return self.env[obj_name]
+        try:
+            return self.target[obj_name]
+        except KeyError:
+            pass
         raise KeyError(f"name {obj_name} is not defined")
 
     def visit(self, node):

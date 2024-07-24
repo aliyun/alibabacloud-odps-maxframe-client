@@ -15,7 +15,7 @@
 import logging
 from collections import OrderedDict
 
-from .... import opcodes as OperandDef
+from .... import opcodes
 from ....core import OutputType
 from ....core.operator.base import Operator
 from ....core.operator.core import TileableOperatorMixin
@@ -41,7 +41,7 @@ def _on_serialize_evals(evals_val):
 
 
 class XGBTrain(Operator, TileableOperatorMixin):
-    _op_type_ = OperandDef.XGBOOST_TRAIN
+    _op_type_ = opcodes.XGBOOST_TRAIN
 
     params = DictField("params", key_type=FieldTypes.string, default=None)
     dtrain = KeyField("dtrain", default=None)

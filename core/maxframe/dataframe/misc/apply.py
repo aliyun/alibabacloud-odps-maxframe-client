@@ -319,6 +319,7 @@ def df_apply(
     skip_infer=False,
     **kwds,
 ):
+    # FIXME: https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/50
     """
     Apply a function along an axis of the DataFrame.
 
@@ -444,19 +445,11 @@ def df_apply(
     B    27
     dtype: int64
 
-    >>> df.apply(np.sum, axis=1).execute()
+    >>> df.apply(lambda row: int(np.sum(row)), axis=1).execute()
     0    13
     1    13
     2    13
     dtype: int64
-
-    Returning a list-like will result in a Series
-
-    >>> df.apply(lambda x: [1, 2], axis=1).execute()
-    0    [1, 2]
-    1    [1, 2]
-    2    [1, 2]
-    dtype: object
 
     Passing ``result_type='expand'`` will expand list-like results
     to columns of a Dataframe
@@ -471,7 +464,7 @@ def df_apply(
     ``result_type='expand'``. The resulting column names
     will be the Series index.
 
-    >>> df.apply(lambda x: md.Series([1, 2], index=['foo', 'bar']), axis=1).execute()
+    >>> df.apply(lambda x: pd.Series([1, 2], index=['foo', 'bar']), axis=1).execute()
        foo  bar
     0    1    2
     1    1    2

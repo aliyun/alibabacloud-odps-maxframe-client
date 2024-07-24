@@ -195,7 +195,8 @@ def test_run_dataframe_from_to_odps_table(start_mock_session):
         assert len(result_df) == 10
         assert len(result_df.columns) == 6
 
-        df = md.read_odps_table(table_obj, index_col="index").head(10).execute().fetch()
+        df = md.read_odps_table(table_obj, index_col="index").head(10).execute()
+        assert df.shape == (10, 5)
         assert len(df) == 10
         assert len(df.columns) == 5
     finally:
@@ -280,7 +281,7 @@ def test_pivot_dataframe(start_mock_session):
     df = md.DataFrame(pd_df)
     pivot = df.pivot_table(values="D", index=["A", "B"], columns=["C"], aggfunc="sum")
     executed = pivot.execute()
-    assert pivot.shape == (2, 4)
+    assert pivot.shape == (4, 2)
     pd.testing.assert_index_equal(
         pivot.dtypes.index, pd.Index(["large", "small"], name="C")
     )
@@ -289,3 +290,13 @@ def test_pivot_dataframe(start_mock_session):
         values="D", index=["A", "B"], columns=["C"], aggfunc="sum"
     )
     pd.testing.assert_frame_equal(executed.to_pandas(), expected)
+
+
+def test_index_drop_duplicates(start_mock_session):
+    pd_idx = pd.Index(["lame", "cow", "lame", "beetle", "lame", "hippo"])
+    idx = md.Index(pd_idx)
+    executed = idx.drop_duplicates(keep="first").execute()
+    expected = pd_idx.drop_duplicates(keep="first")
+    pd.testing.assert_index_equal(
+        executed.to_pandas().sort_values(), expected.sort_values()
+    )

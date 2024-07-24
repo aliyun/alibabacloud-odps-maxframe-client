@@ -154,6 +154,9 @@ class ODPSTableResultInfo(ResultInfo):
     partition_specs: Optional[List[str]] = ListField(
         "partition_specs", FieldTypes.string, default=None
     )
+    table_meta: Optional["DataFrameTableMeta"] = ReferenceField(
+        "table_meta", default=None
+    )
 
     def __init__(self, result_type: ResultType = None, **kw):
         result_type = result_type or ResultType.ODPS_TABLE
@@ -164,7 +167,16 @@ class ODPSTableResultInfo(ResultInfo):
         ret["full_table_name"] = self.full_table_name
         if self.partition_specs:
             ret["partition_specs"] = self.partition_specs
+        if self.table_meta:
+            ret["table_meta"] = self.table_meta.to_json()
         return ret
+
+    @classmethod
+    def _json_to_kwargs(cls, serialized: dict) -> dict:
+        kw = super()._json_to_kwargs(serialized)
+        if "table_meta" in kw:
+            kw["table_meta"] = DataFrameTableMeta.from_json(kw["table_meta"])
+        return kw
 
 
 class ODPSVolumeResultInfo(ResultInfo):
@@ -469,7 +481,7 @@ class DecrefRequest(Serializable):
     keys: List[str] = ListField("keys", FieldTypes.string, default=None)
 
 
-class DataFrameTableMeta(Serializable):
+class DataFrameTableMeta(JsonSerializable):
     __slots__ = "_pd_column_names", "_pd_index_level_names"
 
     table_name: Optional[str] = StringField("table_name", default=None)
@@ -500,7 +512,7 @@ class DataFrameTableMeta(Serializable):
             self._pd_index_level_names = self.pd_index_dtypes.index.tolist()
             return self._pd_index_level_names
 
-    def __eq__(self, other: "Serializable") -> bool:
+    def __eq__(self, other: "DataFrameTableMeta") -> bool:
         if not isinstance(other, type(self)):
             return False
         for k in self._FIELDS:
@@ -511,3 +523,29 @@ class DataFrameTableMeta(Serializable):
             if not is_same:
                 return False
         return True
+
+    def to_json(self) -> dict:
+        b64_pk = lambda x: base64.b64encode(pickle.dumps(x))
+        ret = {
+            "table_name": self.table_name,
+            "type": self.type.value,
+            "table_column_names": self.table_column_names,
+            "table_index_column_names": self.table_index_column_names,
+            "pd_column_dtypes": b64_pk(self.pd_column_dtypes),
+            "pd_column_level_names": b64_pk(self.pd_column_level_names),
+            "pd_index_dtypes": b64_pk(self.pd_index_dtypes),
+        }
+        return ret
+
+    @classmethod
+    def from_json(cls, serialized: dict) -> "DataFrameTableMeta":
+        b64_upk = lambda x: pickle.loads(base64.b64decode(x))
+        serialized.update(
+            {
+                "type": OutputType(serialized["type"]),
+                "pd_column_dtypes": b64_upk(serialized["pd_column_dtypes"]),
+                "pd_column_level_names": b64_upk(serialized["pd_column_level_names"]),
+                "pd_index_dtypes": b64_upk(serialized["pd_index_dtypes"]),
+            }
+        )
+        return DataFrameTableMeta(**serialized)

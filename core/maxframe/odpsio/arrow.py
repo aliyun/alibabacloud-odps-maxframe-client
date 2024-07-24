@@ -45,9 +45,13 @@ def _rebuild_dataframe(
 
 def _rebuild_index(df: pd.DataFrame, table_meta: DataFrameTableMeta) -> pd.Index:
     if df.shape[1] > 1:
-        df.columns = pd.Index(table_meta.pd_index_level_names)
-        return pd.MultiIndex.from_frame(df)
-    return pd.Index(df.iloc[:, 0], name=table_meta.pd_index_level_names[0])
+        idx = pd.MultiIndex.from_frame(df)
+        idx.names = table_meta.pd_index_level_names
+    else:
+        # make sure even if None names are updated properly
+        idx = pd.Index(df.iloc[:, 0])
+        idx.name = table_meta.pd_index_level_names[0]
+    return idx
 
 
 def arrow_to_pandas(
@@ -75,7 +79,7 @@ def pandas_to_arrow(
         df.columns = pd.Index(table_meta.table_column_names)
         if not ignore_index:
             df = df.rename_axis(table_meta.table_index_column_names).reset_index()
-    elif ignore_index:
+    elif ignore_index and table_meta.type != OutputType.index:
         df = pd.DataFrame([], columns=[])
     elif table_meta.type == OutputType.index:
         names = [f"_idx_{idx}" for idx in range(len(df.names))]

@@ -21,6 +21,7 @@ import pytest
 from odps import ODPS
 
 from .... import tensor as mt
+from ....core import OutputType
 from ....tests.utils import tn
 from ....utils import lazy_import
 from ... import read_odps_query, read_odps_table
@@ -295,6 +296,15 @@ def test_from_odps_table():
         ),
     )
 
+    out_idx = read_odps_table(
+        test_table,
+        columns=[],
+        index_col=["col1", "col2"],
+        output_type=OutputType.index,
+    )
+    assert out_idx.names == ["col1", "col2"]
+    assert out_idx.shape == (np.nan,)
+
     test_table.drop()
     test_parted_table.drop()
 
@@ -318,6 +328,10 @@ def test_from_odps_query():
     with pytest.raises(ValueError) as err_info:
         read_odps_query(f"CREATE TABLE dummy_table AS SELECT * FROM {table1_name}")
     assert "instant query" in err_info.value.args[0]
+
+    with pytest.raises(ValueError) as err_info:
+        read_odps_query(f"SELECT col1, col2 + col3 FROM {table1_name}")
+    assert "names" in err_info.value.args[0]
 
     query1 = f"SELECT * FROM {table1_name} WHERE col1 > 10"
     df = read_odps_query(query1)

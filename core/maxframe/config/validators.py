@@ -40,6 +40,7 @@ is_numeric = lambda x: isinstance(x, (int, float))
 is_string = lambda x: isinstance(x, str)
 is_dict = lambda x: isinstance(x, dict)
 is_positive_integer = lambda x: is_integer(x) and x > 0
+is_non_negative_integer = lambda x: is_integer(x) and x >= 0
 
 
 def is_in(vals):

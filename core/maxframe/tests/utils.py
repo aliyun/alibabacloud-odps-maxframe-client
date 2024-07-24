@@ -25,7 +25,7 @@ import pytest
 from tornado import netutil
 
 from ..core import Tileable, TileableGraph
-from ..utils import create_event, lazy_import
+from ..utils import create_sync_primitive, lazy_import
 
 try:
     from flaky import flaky
@@ -102,7 +102,7 @@ def run_app_in_thread(app_func):
     def fixture_func(*args, **kwargs):
         app_loop = asyncio.new_event_loop()
         q = queue.Queue()
-        exit_event = create_event(app_loop)
+        exit_event = create_sync_primitive(asyncio.Event, app_loop)
         app_thread = Thread(
             name="TestAppThread",
             target=app_thread_func,

@@ -99,7 +99,7 @@ def case_when(series, caselist):
     >>> b = md.Series([0, 3, 4, 5])
 
     >>> c.case_when(caselist=[(a.gt(0), a),  # condition, replacement
-    ...                       (b.gt(0), b)])
+    ...                       (b.gt(0), b)]).execute()
     0    6
     1    3
     2    1

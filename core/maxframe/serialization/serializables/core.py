@@ -51,7 +51,10 @@ def _is_field_primitive_compound(field: Field):
 class SerializableMeta(type):
     def __new__(mcs, name: str, bases: Tuple[Type], properties: Dict):
         # All the fields including misc fields.
-        name_hash = hash(f"{properties.get('__module__')}.{name}")
+        legacy_name_hash = hash(f"{properties.get('__module__')}.{name}")
+        name_hash = hash(
+            f"{properties.get('__module__')}.{properties.get('__qualname__')}"
+        )
         all_fields = dict()
         # mapping field names to base classes
         field_to_cls_hash = dict()
@@ -107,6 +110,10 @@ class SerializableMeta(type):
         slots.update(properties_field_slot_names)
 
         properties = properties_without_fields
+
+        # todo remove this prop when all versions below v1.0.0rc1 is eliminated
+        properties["_LEGACY_NAME_HASH"] = legacy_name_hash
+
         properties["_NAME_HASH"] = name_hash
         properties["_FIELDS"] = all_fields
         properties["_FIELD_ORDER"] = field_order
@@ -210,8 +217,8 @@ class SerializableSerializer(Serializer):
     """
 
     @classmethod
-    def _get_obj_field_count_key(cls, obj: Serializable):
-        return f"FC_{obj._NAME_HASH}"
+    def _get_obj_field_count_key(cls, obj: Serializable, legacy: bool = False):
+        return f"FC_{obj._NAME_HASH if not legacy else obj._LEGACY_NAME_HASH}"
 
     @classmethod
     def _get_field_values(cls, obj: Serializable, fields):
@@ -290,6 +297,12 @@ class SerializableSerializer(Serializer):
             server_cls_to_field_count = obj_class._CLS_TO_NON_PRIMITIVE_FIELD_COUNT
             server_fields = obj_class._NON_PRIMITIVE_FIELDS
 
+        legacy_to_new_hash = {
+            c._LEGACY_NAME_HASH: c._NAME_HASH
+            for c in obj_class.__mro__
+            if hasattr(c, "_NAME_HASH") and c._LEGACY_NAME_HASH != c._NAME_HASH
+        }
+
         if client_cls_to_field_count:
             field_num, server_field_num = 0, 0
             for cls_hash, count in client_cls_to_field_count.items():
@@ -301,7 +314,19 @@ class SerializableSerializer(Serializer):
                     if not is_primitive or value != {}:
                         cls._set_field_value(obj, field, value)
                 field_num += count
-                server_field_num += server_cls_to_field_count[cls_hash]
+                try:
+                    server_field_num += server_cls_to_field_count[cls_hash]
+                except KeyError:
+                    try:
+                        # todo remove this fallback when all
+                        #  versions below v1.0.0rc1 is eliminated
+                        server_field_num += server_cls_to_field_count[
+                            legacy_to_new_hash[cls_hash]
+                        ]
+                    except KeyError:
+                        # it is possible that certain type of field does not exist
+                        #  at server side
+                        pass
         else:
             # todo remove this branch when all versions below v0.1.0b5 is eliminated
             from .field import AnyField
@@ -342,6 +367,12 @@ class SerializableSerializer(Serializer):
         field_count_data = self.get_public_data(
             context, self._get_obj_field_count_key(obj)
         )
+        if field_count_data is None:
+            # todo remove this fallback when all
+            #  versions below v1.0.0rc1 is eliminated
+            field_count_data = self.get_public_data(
+                context, self._get_obj_field_count_key(obj, legacy=True)
+            )
         if field_count_data is not None:
             cls_to_prim_key, cls_to_non_prim_key = msgpack.loads(field_count_data)
             cls_to_prim_key = dict(cls_to_prim_key)
