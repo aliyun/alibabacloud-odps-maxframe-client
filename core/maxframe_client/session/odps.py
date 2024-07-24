@@ -36,7 +36,7 @@ from maxframe.errors import (
     NoTaskServerResponseError,
     SessionAlreadyClosedError,
 )
-from maxframe.odpsio import HaloTableIO, pandas_to_arrow, pandas_to_odps_schema
+from maxframe.odpsio import ODPSTableIO, pandas_to_arrow, pandas_to_odps_schema
 from maxframe.protocol import (
     DagInfo,
     DagStatus,
@@ -164,8 +164,8 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         batch_size = options.session.upload_batch_size
 
         if len(data):
-            halo_client = HaloTableIO(self._odps_entry)
-            with halo_client.open_writer(table_obj.full_table_name) as writer:
+            table_client = ODPSTableIO(self._odps_entry)
+            with table_client.open_writer(table_obj.full_table_name) as writer:
                 for batch_start in range(0, len(data), batch_size):
                     if isinstance(data, pd.Index):
                         batch = data[batch_start : batch_start + batch_size]

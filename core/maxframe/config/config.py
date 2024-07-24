@@ -320,6 +320,7 @@ default_options = Config()
 default_options.register_option(
     "execution_mode", "trigger", validator=is_in(["trigger", "eager"])
 )
+default_options.register_option("use_common_table", False, validator=is_bool)
 default_options.register_option(
     "python_tag", get_python_tag(), validator=is_string, remote=True
 )

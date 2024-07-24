@@ -23,7 +23,7 @@ class ObjectData(TileableData, _ToObjectMixin):
     __slots__ = ()
     type_name = "Object"
     # workaround for removed field since v0.1.0b5
-    # todo remove this when all versions below v0.1.0b5 is eliminated
+    # todo remove this when all versions below v1.0.0rc1 is eliminated
     _legacy_deprecated_non_primitives = ["_chunks"]
 
     def __init__(self, op=None, nsplits=None, **kw):

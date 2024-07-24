@@ -12,22 +12,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+
 import numpy as np
 import pandas as pd
 import pyarrow as pa
+import pytest
 from odps import ODPS
 
+from ...config import options
 from ...tests.utils import flaky, tn
 from ...utils import config_odps_default_options
-from ..tableio import HaloTableIO
+from ..tableio import ODPSTableIO
+
+
+@pytest.fixture
+def switch_table_io(request):
+    old_use_common_table = options.use_common_table
+    try:
+        options.use_common_table = request.param
+        yield
+    finally:
+        options.use_common_table = old_use_common_table
 
 
 @flaky(max_runs=3)
-def test_empty_table_io():
+@pytest.mark.parametrize("switch_table_io", [False, True], indirect=True)
+def test_empty_table_io(switch_table_io):
     config_odps_default_options()
 
     o = ODPS.from_environments()
-    halo_table_io = HaloTableIO(o)
+    table_io = ODPSTableIO(o)
 
     # test read from empty table
     empty_table_name = tn("test_empty_table_halo_read")
@@ -35,42 +50,53 @@ def test_empty_table_io():
     tb = o.create_table(empty_table_name, "col1 string", lifecycle=1)
 
     try:
-        with halo_table_io.open_reader(empty_table_name) as reader:
+        with table_io.open_reader(empty_table_name) as reader:
             assert len(reader.read_all()) == 0
     finally:
         tb.drop()
 
 
 @flaky(max_runs=3)
-def test_table_io_without_parts():
+@pytest.mark.parametrize("switch_table_io", [False, True], indirect=True)
+def test_table_io_without_parts(switch_table_io):
     config_odps_default_options()
 
     o = ODPS.from_environments()
-    halo_table_io = HaloTableIO(o)
+    table_io = ODPSTableIO(o)
 
     # test read and write tables without partition
     no_part_table_name = tn("test_no_part_halo_write")
     o.delete_table(no_part_table_name, if_exists=True)
-    tb = o.create_table(
-        no_part_table_name, ",".join(f"{c} double" for c in "abcde"), lifecycle=1
-    )
+    col_desc = ",".join(f"{c} double" for c in "abcde") + ", f datetime"
+    tb = o.create_table(no_part_table_name, col_desc, lifecycle=1)
 
     try:
         pd_data = pd.DataFrame(np.random.rand(100, 5), columns=list("abcde"))
-        with halo_table_io.open_writer(no_part_table_name) as writer:
+        date_val = [
+            (
+                datetime.datetime.now().replace(microsecond=0)
+                + datetime.timedelta(seconds=i)
+            )
+            for i in range(100)
+        ]
+        pd_data["f"] = pd.Series(date_val, dtype="datetime64[ms]").dt.tz_localize(
+            options.local_timezone
+        )
+        with table_io.open_writer(no_part_table_name) as writer:
             writer.write(pa.Table.from_pandas(pd_data, preserve_index=False))
-        with halo_table_io.open_reader(no_part_table_name) as reader:
+        with table_io.open_reader(no_part_table_name) as reader:
             pd.testing.assert_frame_equal(reader.read_all().to_pandas(), pd_data)
     finally:
         tb.drop()
 
 
 @flaky(max_runs=3)
-def test_table_io_with_range_reader():
+@pytest.mark.parametrize("switch_table_io", [False, True], indirect=True)
+def test_table_io_with_range_reader(switch_table_io):
     config_odps_default_options()
 
     o = ODPS.from_environments()
-    halo_table_io = HaloTableIO(o)
+    table_io = ODPSTableIO(o)
 
     # test read and write tables without partition
     no_part_table_name = tn("test_no_part_halo_write")
@@ -81,15 +107,15 @@ def test_table_io_with_range_reader():
 
     try:
         pd_data = pd.DataFrame(np.random.rand(100, 5), columns=list("abcde"))
-        with halo_table_io.open_writer(no_part_table_name) as writer:
+        with table_io.open_writer(no_part_table_name) as writer:
             writer.write(pa.Table.from_pandas(pd_data, preserve_index=False))
 
-        with halo_table_io.open_reader(
+        with table_io.open_reader(
             no_part_table_name, start=None, stop=100, row_batch_size=10
         ) as reader:
             pd.testing.assert_frame_equal(reader.read_all().to_pandas(), pd_data)
 
-        with halo_table_io.open_reader(
+        with table_io.open_reader(
             no_part_table_name,
             start=-2,
             stop=-52,
@@ -105,11 +131,12 @@ def test_table_io_with_range_reader():
 
 
 @flaky(max_runs=3)
-def test_table_io_with_parts():
+@pytest.mark.parametrize("switch_table_io", [False, True], indirect=True)
+def test_table_io_with_parts(switch_table_io):
     config_odps_default_options()
 
     o = ODPS.from_environments()
-    halo_table_io = HaloTableIO(o)
+    table_io = ODPSTableIO(o)
 
     # test read and write tables with partition
     parted_table_name = tn("test_parted_halo_write")
@@ -122,11 +149,11 @@ def test_table_io_with_parts():
 
     try:
         pd_data = pd.DataFrame(np.random.rand(100, 5), columns=list("abcde"))
-        with halo_table_io.open_writer(parted_table_name, "pt=test") as writer:
+        with table_io.open_writer(parted_table_name, "pt=test") as writer:
             writer.write(pa.Table.from_pandas(pd_data, preserve_index=False))
-        with halo_table_io.open_reader(parted_table_name, "pt=test") as reader:
+        with table_io.open_reader(parted_table_name, "pt=test") as reader:
             pd.testing.assert_frame_equal(reader.read_all().to_pandas(), pd_data)
-        with halo_table_io.open_reader(
+        with table_io.open_reader(
             parted_table_name, "pt=test", partition_columns=True
         ) as reader:
             expected_data = pd_data.copy()

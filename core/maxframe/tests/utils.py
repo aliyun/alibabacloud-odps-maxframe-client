@@ -14,6 +14,7 @@
 
 import asyncio
 import functools
+import hashlib
 import os
 import queue
 import socket
@@ -25,7 +26,7 @@ import pytest
 from tornado import netutil
 
 from ..core import Tileable, TileableGraph
-from ..utils import create_sync_primitive, lazy_import
+from ..utils import create_sync_primitive, lazy_import, to_binary
 
 try:
     from flaky import flaky
@@ -162,3 +163,11 @@ def require_hadoop(func):
         not os.environ.get("WITH_HADOOP"), reason="Only run when hadoop is installed"
     )(func)
     return func
+
+
+def get_test_unique_name(size=None):
+    test_name = os.getenv("PYTEST_CURRENT_TEST", "pyodps_test")
+    digest = hashlib.md5(to_binary(test_name)).hexdigest()
+    if size:
+        digest = digest[:size]
+    return digest + "_" + str(os.getpid())
