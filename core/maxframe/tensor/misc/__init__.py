@@ -14,6 +14,8 @@
 
 from .astype import TensorAstype
 from .atleast_1d import atleast_1d
+from .atleast_2d import atleast_2d
+from .atleast_3d import atleast_3d
 from .broadcast_to import TensorBroadcastTo, broadcast_to
 from .ravel import ravel
 from .transpose import transpose

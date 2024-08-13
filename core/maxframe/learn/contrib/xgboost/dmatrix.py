@@ -99,10 +99,7 @@ def check_array_like(y: TileableType, name: str) -> TileableType:
     y = convert_to_tensor_or_dataframe(y)
     if isinstance(y, DATAFRAME_TYPE):
         y = y.iloc[:, 0]
-    y = astensor(y)
-    if y.ndim != 1:
-        raise ValueError(f"Expecting 1-d {name}, got: {y.ndim}-d")
-    return y
+    return astensor(y)
 
 
 def to_dmatrix(

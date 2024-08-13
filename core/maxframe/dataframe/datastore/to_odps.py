@@ -23,7 +23,7 @@ from odps.types import PartitionSpec
 from ... import opcodes
 from ...config import options
 from ...core import OutputType
-from ...odpsio import build_dataframe_table_meta
+from ...io.odpsio import build_dataframe_table_meta
 from ...serialization.serializables import (
     BoolField,
     FieldTypes,

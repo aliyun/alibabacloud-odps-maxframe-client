@@ -10,7 +10,7 @@ dependencies = [
     "pyarrow>=1.0.0",
     "msgpack>=1.0.0",
     "traitlets>=5.0",
-    "cloudpickle>=1.5.0",
+    "cloudpickle>=1.5.0,<3.0.0",
     "pyyaml>=5.1",
     "pickle5; python_version<'3.8'",
     "tornado>=6.0",

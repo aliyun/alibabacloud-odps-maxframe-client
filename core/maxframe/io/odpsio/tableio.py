@@ -20,6 +20,7 @@ from typing import Dict, List, Optional, Union
 
 import pyarrow as pa
 from odps import ODPS
+from odps import __version__ as pyodps_version
 from odps.apis.storage_api import (
     StorageApiArrowClient,
     TableBatchScanResponse,
@@ -34,13 +35,15 @@ try:
 except ImportError:
     pac = None
 
-from ..config import options
-from ..env import ODPS_STORAGE_API_ENDPOINT
+from ...config import options
+from ...env import ODPS_STORAGE_API_ENDPOINT
+from ...lib.version import Version
 from .schema import odps_schema_to_arrow_schema
 
 PartitionsType = Union[List[str], str, None]
 
 _DEFAULT_ROW_BATCH_SIZE = 4096
+_need_convert_timezone = Version(pyodps_version) < Version("0.11.7")
 
 
 @contextmanager
@@ -191,7 +194,7 @@ class TunnelMultiPartitionReader:
         arrays = []
         for idx in range(batch.num_columns):
             col = batch.column(idx)
-            if isinstance(col.type, pa.TimestampType):
+            if _need_convert_timezone and isinstance(col.type, pa.TimestampType):
                 if col.type.tz is not None:
                     target_type = pa.timestamp(
                         self._schema.types[idx].unit, col.type.tz
@@ -354,7 +357,10 @@ class TunnelTableIO(ODPSTableIO):
                 # fixme should yield writer directly once pyodps fixes
                 #  related arrow timestamp bug when provided schema and
                 #  table schema is identical.
-                yield TunnelWrappedWriter(writer)
+                if _need_convert_timezone:
+                    yield TunnelWrappedWriter(writer)
+                else:
+                    yield writer
 
 
 class HaloTableArrowReader:

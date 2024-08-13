@@ -552,7 +552,7 @@ class ReductionCompiler:
     @enter_mode(build=True)
     def _compile_function(self, func, func_name=None, ndim=1) -> ReductionSteps:
         from ...tensor.arithmetic.core import TensorBinOp, TensorUnaryOp
-        from ...tensor.base import TensorWhere
+        from ...tensor.misc import TensorWhere
         from ..arithmetic.core import DataFrameBinOp, DataFrameUnaryOp
         from ..datasource.dataframe import DataFrameDataSource
         from ..datasource.series import SeriesDataSource
@@ -679,8 +679,8 @@ class ReductionCompiler:
         ]
         """
         from ...tensor.arithmetic.core import TensorBinOp, TensorUnaryOp
-        from ...tensor.base import TensorWhere
         from ...tensor.datasource import Scalar
+        from ...tensor.misc import TensorWhere
         from ..arithmetic.core import DataFrameBinOp, DataFrameUnaryOp
         from ..datasource.dataframe import DataFrameDataSource
         from ..datasource.series import SeriesDataSource

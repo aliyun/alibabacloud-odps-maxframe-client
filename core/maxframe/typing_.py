@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import TypeVar, Union
+from numbers import Integral
+from typing import List, TypeVar, Union
 
 import pandas as pd
 import pyarrow as pa
+
+SlicesType = List[Union[None, Integral, slice]]
 
 TimeoutType = Union[int, float, None]
 

@@ -23,8 +23,6 @@ from typing import Any, Dict
 import numpy as np
 
 from ..core import (
-    Chunk,
-    ChunkData,
     HasShapeTileable,
     HasShapeTileableData,
     OutputType,
@@ -36,14 +34,9 @@ from ..core.entity.utils import refresh_tileable_shape
 from ..serialization.serializables import (
     AnyField,
     DataTypeField,
-    EnumField,
-    FieldTypes,
-    ListField,
     Serializable,
     StringField,
-    TupleField,
 )
-from ..utils import on_deserialize_shape, on_serialize_shape, skip_na_call
 from .utils import fetch_corner_data, get_chunk_slices
 
 logger = logging.getLogger(__name__)
@@ -56,121 +49,11 @@ class TensorOrder(Enum):
     F_ORDER = "F"
 
 
-class TensorChunkData(ChunkData):
-    __slots__ = ()
-    _no_copy_attrs_ = ChunkData._no_copy_attrs_ | {"dtype"}
-    type_name = "Tensor"
-
-    # required fields
-    _shape = TupleField(
-        "shape",
-        FieldTypes.int64,
-        on_serialize=on_serialize_shape,
-        on_deserialize=on_deserialize_shape,
-    )
-    _order = EnumField("order", TensorOrder, FieldTypes.string)
-    # optional fields
-    _dtype = DataTypeField("dtype")
-
-    def __init__(self, op=None, index=None, shape=None, dtype=None, order=None, **kw):
-        if isinstance(order, str):
-            order = getattr(TensorOrder, order)
-        super().__init__(
-            _op=op, _index=index, _shape=shape, _dtype=dtype, _order=order, **kw
-        )
-        if self.order is None and self.op is not None:
-            if len(self.inputs) == 0:
-                self._order = TensorOrder.C_ORDER
-            elif all(
-                hasattr(inp, "order") and inp.order == TensorOrder.F_ORDER
-                for inp in self.inputs
-            ):
-                self._order = TensorOrder.F_ORDER
-            else:
-                self._order = TensorOrder.C_ORDER
-
-    @property
-    def params(self) -> Dict[str, Any]:
-        # params return the properties which useful to rebuild a new chunk
-        return {
-            "shape": self.shape,
-            "dtype": self.dtype,
-            "order": self.order,
-            "index": self.index,
-        }
-
-    @params.setter
-    def params(self, new_params: Dict[str, Any]):
-        params = new_params.copy()
-        params.pop("index", None)  # index not needed to update
-        new_shape = params.pop("shape", None)
-        if new_shape is not None:
-            self._shape = new_shape
-        dtype = params.pop("dtype", None)
-        if dtype is not None:
-            self._dtype = dtype
-        order = params.pop("order", None)
-        if order is not None:
-            self._order = order
-        if params:  # pragma: no cover
-            raise TypeError(f"Unknown params: {list(params)}")
-
-    @classmethod
-    def get_params_from_data(cls, data: np.ndarray) -> Dict[str, Any]:
-        from .array_utils import is_cupy
-
-        if not is_cupy(data):
-            data = np.asarray(data)
-        order = (
-            TensorOrder.C_ORDER if data.flags["C_CONTIGUOUS"] else TensorOrder.F_ORDER
-        )
-        return {"shape": data.shape, "dtype": data.dtype, "order": order}
-
-    def __len__(self):
-        try:
-            return self.shape[0]
-        except IndexError:
-            if is_build_mode():
-                return 0
-            raise TypeError("len() of unsized object")
-
-    @property
-    def shape(self):
-        return getattr(self, "_shape", None)
-
-    @property
-    def ndim(self):
-        return len(self.shape)
-
-    @property
-    def size(self):
-        return np.prod(self.shape).item()
-
-    @property
-    def dtype(self):
-        return getattr(self, "_dtype", None) or self.op.dtype
-
-    @property
-    def order(self):
-        return getattr(self, "_order", None)
-
-    @property
-    def nbytes(self):
-        return np.prod(self.shape) * self.dtype.itemsize
-
-
-class TensorChunk(Chunk):
-    __slots__ = ()
-    _allow_data_type_ = (TensorChunkData,)
-    type_name = "Tensor"
-
-    def __len__(self):
-        return len(self._data)
-
-
 class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
     __slots__ = ()
     type_name = "Tensor"
+
+    _legacy_deprecated_non_primitives = ["_chunks"]
 
     # required fields
     _order = StringField(
@@ -178,12 +61,6 @@ class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
     )
     # optional fields
     _dtype = DataTypeField("dtype")
-    _chunks = ListField(
-        "chunks",
-        FieldTypes.reference(TensorChunkData),
-        on_serialize=skip_na_call(lambda x: [it.data for it in x]),
-        on_deserialize=skip_na_call(lambda x: [TensorChunk(it) for it in x]),
-    )
 
     def __init__(
         self,
@@ -318,7 +195,7 @@ class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
         return fromsparse(self, fill_value=fill_value)
 
     def transpose(self, *axes):
-        from .base import transpose
+        from .misc import transpose
 
         if len(axes) == 1 and isinstance(axes[0], Iterable):
             axes = axes[0]
@@ -345,11 +222,6 @@ class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
         shape += shapes
 
         return reshape(self, shape, order=order)
-
-    def totiledb(self, uri, ctx=None, key=None, timestamp=None):
-        from .datastore import totiledb
-
-        return totiledb(uri, self, ctx=ctx, key=key, timestamp=timestamp)
 
     @staticmethod
     def from_dataframe(in_df):
@@ -526,9 +398,6 @@ class Tensor(HasShapeTileable):
         """
         return self._data.T
 
-    def totiledb(self, uri, ctx=None, key=None, timestamp=None):
-        return self._data.totiledb(uri, ctx=ctx, key=key, timestamp=timestamp)
-
     def copy(self, order="C"):
         return super().copy().astype(self.dtype, order=order, copy=False)
 
@@ -589,7 +458,7 @@ class Tensor(HasShapeTileable):
         array([('c', 1), ('a', 2)],
               dtype=[('x', '|S1'), ('y', '<i4')])
         """
-        from .base import sort
+        from .misc import sort
 
         self._data = sort(
             self,
@@ -651,7 +520,7 @@ class Tensor(HasShapeTileable):
         >>> a.execute()
         array([1, 2, 3, 4])
         """
-        from .base import partition
+        from .misc import partition
 
         self._data = partition(self, kth, axis=axis, kind=kind, order=order, **kw).data
 

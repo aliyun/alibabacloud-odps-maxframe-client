@@ -24,7 +24,7 @@ from odps.types import Column, OdpsSchema, validate_data_type
 from ... import opcodes
 from ...core import OutputType
 from ...core.graph import DAG
-from ...odpsio import odps_schema_to_pandas_dtypes
+from ...io.odpsio import odps_schema_to_pandas_dtypes
 from ...serialization.serializables import (
     AnyField,
     BoolField,

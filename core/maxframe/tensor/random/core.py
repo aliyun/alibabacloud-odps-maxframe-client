@@ -19,9 +19,9 @@ from contextlib import contextmanager
 import numpy as np
 
 from ...serialization.serializables import FieldTypes, Int32Field, TupleField
-from ..base import broadcast_to
 from ..core import TENSOR_TYPE
 from ..datasource import tensor as astensor
+from ..misc import broadcast_to
 from ..operators import TensorMapReduceOperator, TensorOperator, TensorOperatorMixin
 from ..utils import broadcast_shape
 

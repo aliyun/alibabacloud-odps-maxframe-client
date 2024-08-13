@@ -89,7 +89,7 @@ def full(shape, fill_value, dtype=None, chunk_size=None, gpu=None, order="C"):
     """
     v = np.asarray(fill_value)
     if len(v.shape) > 0:
-        from ..base import broadcast_to
+        from ..misc import broadcast_to
 
         return broadcast_to(
             tensor(v, dtype=dtype, chunk_size=chunk_size, gpu=gpu, order=order), shape

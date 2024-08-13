@@ -21,9 +21,9 @@ import pyarrow as pa
 from odps import types as odps_types
 from pandas.api import types as pd_types
 
-from ..core import TILEABLE_TYPE, OutputType
-from ..protocol import DataFrameTableMeta
-from ..tensor.core import TENSOR_TYPE
+from ...core import TILEABLE_TYPE, OutputType
+from ...protocol import DataFrameTableMeta
+from ...tensor.core import TENSOR_TYPE
 
 _TEMP_TABLE_PREFIX = "tmp_mf_"
 
@@ -184,7 +184,7 @@ def pandas_to_odps_schema(
     unknown_as_string: bool = False,
     ignore_index=False,
 ) -> Tuple[odps_types.OdpsSchema, DataFrameTableMeta]:
-    from .. import dataframe as md
+    from ... import dataframe as md
     from .arrow import pandas_to_arrow
 
     if _is_scalar_object(df_obj):
@@ -278,7 +278,7 @@ def build_table_column_name(
 def build_dataframe_table_meta(
     df_obj: Any, ignore_index: bool = False
 ) -> DataFrameTableMeta:
-    from .. import dataframe as md
+    from ... import dataframe as md
 
     col_to_count = defaultdict(lambda: 0)
     col_to_idx = defaultdict(lambda: 0)

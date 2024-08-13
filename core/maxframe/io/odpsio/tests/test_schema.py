@@ -18,9 +18,9 @@ import pyarrow as pa
 import pytest
 from odps import types as odps_types
 
-from ... import dataframe as md
-from ... import tensor as mt
-from ...core import OutputType
+from .... import dataframe as md
+from .... import tensor as mt
+from ....core import OutputType
 from ..schema import (
     arrow_schema_to_odps_schema,
     build_dataframe_table_meta,

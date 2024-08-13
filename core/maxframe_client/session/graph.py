@@ -19,10 +19,16 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Tuple, Union
 from weakref import WeakSet
 
-from maxframe.core import ChunkType, TileableGraph, TileableType, enter_mode
+from maxframe.core import (
+    ChunkType,
+    TileableGraph,
+    TileableType,
+    build_fetch,
+    enter_mode,
+)
 from maxframe.core.operator import Fetch
 from maxframe.session import AbstractSession
-from maxframe.utils import build_fetch, copy_tileables
+from maxframe.utils import copy_tileables
 
 logger = logging.getLogger(__name__)
 

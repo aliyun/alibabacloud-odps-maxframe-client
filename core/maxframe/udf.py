@@ -29,28 +29,25 @@ from .utils import tokenize
 
 
 class PythonPackOptions(Serializable):
+    _key_args = ("force_rebuild", "prefer_binary", "pre_release", "no_audit_wheel")
+
     key = StringField("key")
     requirements = ListField("requirements", FieldTypes.string, default_factory=list)
     force_rebuild = BoolField("force_rebuild", default=False)
     prefer_binary = BoolField("prefer_binary", default=False)
     pre_release = BoolField("pre_release", default=False)
     pack_instance_id = StringField("pack_instance_id", default=None)
+    no_audit_wheel = BoolField("no_audit_wheel", default=False)
 
     def __init__(self, key: str = None, **kw):
         super().__init__(key=key, **kw)
         if self.key is None:
-            args = {
-                "force_rebuild": self.force_rebuild,
-                "prefer_binary": self.prefer_binary,
-                "pre_release": self.pre_release,
-            }
+            args = {k: getattr(self, k) for k in self._key_args}
             self.key = tokenize(set(self.requirements), args)
 
     def __repr__(self):
-        return (
-            f"<PythonPackOptions {self.requirements} force_rebuild={self.force_rebuild} "
-            f"prefer_binary={self.prefer_binary} pre_release={self.pre_release}>"
-        )
+        args_str = " ".join(f"{k}={getattr(self, k)}" for k in self._key_args)
+        return f"<PythonPackOptions {self.requirements} {args_str}>"
 
 
 class MarkedFunction(Serializable):
@@ -101,6 +98,7 @@ def with_python_requirements(
     force_rebuild: bool = False,
     prefer_binary: bool = False,
     pre_release: bool = False,
+    no_audit_wheel: bool = False,
 ):
     result_req = []
     for req in requirements:
@@ -112,6 +110,7 @@ def with_python_requirements(
             force_rebuild=force_rebuild,
             prefer_binary=prefer_binary,
             pre_release=pre_release,
+            no_audit_wheel=no_audit_wheel,
         )
         if isinstance(func, MarkedFunction):
             func.pythonpacks.append(pack_item)

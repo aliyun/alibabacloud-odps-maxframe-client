@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict
+from typing import Any, Dict, Type
 
+from ...serialization import load_type
+from ...serialization.serializables import StringField
 from .core import Entity
 from .executable import _ToObjectMixin
 from .tileables import TileableData
@@ -25,9 +27,42 @@ class ObjectData(TileableData, _ToObjectMixin):
     # workaround for removed field since v0.1.0b5
     # todo remove this when all versions below v1.0.0rc1 is eliminated
     _legacy_deprecated_non_primitives = ["_chunks"]
+    _legacy_new_non_primitives = ["object_class"]
+
+    object_class = StringField("object_class", default=None)
+
+    @classmethod
+    def get_entity_class(cls) -> Type["Object"]:
+        if getattr(cls, "_entity_class", None) is not None:
+            return cls._entity_class
+        assert cls.__qualname__[-4:] == "Data"
+        target_class_name = cls.__module__ + "#" + cls.__qualname__[:-4]
+        cls._entity_class = load_type(target_class_name, Object)
+        return cls._entity_class
+
+    def __new__(cls, op=None, nsplits=None, **kw):
+        if cls is ObjectData:
+            obj_cls = kw.get("object_class")
+            if isinstance(obj_cls, str):
+                obj_cls = load_type(obj_cls, (Object, ObjectData))
+            if isinstance(obj_cls, type) and issubclass(obj_cls, Object):
+                obj_cls = obj_cls.get_data_class()
+
+            if obj_cls is not None and cls is not obj_cls:
+                return obj_cls(op=op, nsplits=nsplits, **kw)
+        return super().__new__(cls)
 
     def __init__(self, op=None, nsplits=None, **kw):
+        obj_cls = kw.pop("object_class", None)
+        if isinstance(obj_cls, type):
+            if isinstance(obj_cls, type) and issubclass(obj_cls, Object):
+                obj_cls = obj_cls.get_data_class()
+            kw["object_class"] = obj_cls.__module__ + "#" + obj_cls.__qualname__
+
         super().__init__(_op=op, _nsplits=nsplits, **kw)
+        if self.object_class is None and type(self) is not ObjectData:
+            cls = type(self)
+            self.object_class = cls.__module__ + "#" + cls.__qualname__
 
     def __repr__(self):
         return f"Object <op={type(self.op).__name__}, key={self.key}>"
@@ -35,7 +70,7 @@ class ObjectData(TileableData, _ToObjectMixin):
     @property
     def params(self):
         # params return the properties which useful to rebuild a new tileable object
-        return dict()
+        return dict(object_class=self.object_class)
 
     @params.setter
     def params(self, new_params: Dict[str, Any]):
@@ -53,6 +88,14 @@ class Object(Entity, _ToObjectMixin):
     __slots__ = ()
     _allow_data_type_ = (ObjectData,)
     type_name = "Object"
+
+    @classmethod
+    def get_data_class(cls) -> Type[ObjectData]:
+        if getattr(cls, "_data_class", None) is not None:
+            return cls._data_class
+        target_class_name = cls.__module__ + "#" + cls.__qualname__ + "Data"
+        cls._data_class = load_type(target_class_name, ObjectData)
+        return cls._data_class
 
 
 OBJECT_TYPE = (Object, ObjectData)

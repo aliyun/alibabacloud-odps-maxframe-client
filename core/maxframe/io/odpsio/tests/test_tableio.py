@@ -20,9 +20,9 @@ import pyarrow as pa
 import pytest
 from odps import ODPS
 
-from ...config import options
-from ...tests.utils import flaky, tn
-from ...utils import config_odps_default_options
+from ....config import options
+from ....tests.utils import flaky, tn
+from ....utils import config_odps_default_options
 from ..tableio import ODPSTableIO
 
 

@@ -114,7 +114,6 @@ from .arithmetic import (
 )
 from .arithmetic import truediv as true_divide
 from .arithmetic import trunc
-from .base import broadcast_to, transpose, unique, where
 from .core import Tensor
 from .datasource import (
     arange,
@@ -143,7 +142,16 @@ from .indexing import (
     take,
     unravel_index,
 )
-from .merge import stack
+from .merge import concatenate, stack, vstack
+from .misc import (
+    atleast_1d,
+    atleast_2d,
+    atleast_3d,
+    broadcast_to,
+    transpose,
+    unique,
+    where,
+)
 from .rechunk import rechunk
 from .reduction import (
     all,

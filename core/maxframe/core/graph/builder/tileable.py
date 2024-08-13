@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Generator, Union
+from typing import Generator
 
 from ...mode import enter_mode
-from ..entity import ChunkGraph, TileableGraph
+from ..entity import TileableGraph
 from .base import AbstractGraphBuilder
 
 
@@ -26,9 +26,9 @@ class TileableGraphBuilder(AbstractGraphBuilder):
         super().__init__(graph=graph)
 
     @enter_mode(build=True, kernel=True)
-    def _build(self) -> Union[TileableGraph, ChunkGraph]:
+    def _build(self) -> TileableGraph:
         self._add_nodes(self._graph, list(self._graph.result_tileables), set())
         return self._graph
 
-    def build(self) -> Generator[Union[TileableGraph, ChunkGraph], None, None]:
+    def build(self) -> Generator[TileableGraph, None, None]:
         yield self._build()

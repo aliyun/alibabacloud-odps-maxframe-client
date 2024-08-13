@@ -41,11 +41,6 @@ else:
         ):
             session = kw.pop("session", None)
             run_kwargs = kw.pop("run_kwargs", dict())
-            if kw:
-                raise TypeError(
-                    f"fit got an unexpected keyword argument '{next(iter(kw))}'"
-                )
-
             dtrain, evals = wrap_evaluation_matrices(
                 None,
                 X,
@@ -57,6 +52,8 @@ else:
                 base_margin_eval_set,
             )
             params = self.get_xgb_params()
+            if not params.get("objective"):
+                params["objective"] = "reg:squarederror"
             self.evals_result_ = dict()
             result = train(
                 params,
@@ -71,8 +68,4 @@ else:
             return self
 
         def predict(self, data, **kw):
-            session = kw.pop("session", None)
-            run_kwargs = kw.pop("run_kwargs", None)
-            return predict(
-                self.get_booster(), data, session=session, run_kwargs=run_kwargs, **kw
-            )
+            return predict(self.get_booster(), data, **kw)

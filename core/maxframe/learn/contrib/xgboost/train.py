@@ -29,6 +29,7 @@ from ....serialization.serializables import (
     KeyField,
     ListField,
 )
+from .core import Booster
 from .dmatrix import ToDMatrix, to_dmatrix
 
 logger = logging.getLogger(__name__)
@@ -59,49 +60,59 @@ class XGBTrain(Operator, TileableOperatorMixin):
     num_boost_round = Int64Field("num_boost_round", default=10)
     num_class = Int64Field("num_class", default=None)
 
-    # Store evals_result in local to store the remote evals_result
-    evals_result: dict = None
-
     def __init__(self, gpu=None, **kw):
         super().__init__(gpu=gpu, **kw)
         if self.output_types is None:
             self.output_types = [OutputType.object]
+        if self.has_evals_result:
+            self.output_types.append(OutputType.object)
 
     def _set_inputs(self, inputs):
         super()._set_inputs(inputs)
         self.dtrain = self._inputs[0]
         rest = self._inputs[1:]
-        if self.evals is not None:
+        if self.has_evals_result:
             evals_dict = OrderedDict(self.evals)
             new_evals_dict = OrderedDict()
             for new_key, val in zip(rest, evals_dict.values()):
                 new_evals_dict[new_key] = val
             self.evals = list(new_evals_dict.items())
 
-    def __call__(self):
+    def __call__(self, evals_result):
         inputs = [self.dtrain]
-        if self.evals is not None:
+        if self.has_evals_result:
             inputs.extend(e[0] for e in self.evals)
-        return self.new_tileable(inputs)
+        return self.new_tileables(
+            inputs, object_class=Booster, evals_result=evals_result
+        )[0]
+
+    @property
+    def output_limit(self):
+        return 2 if self.has_evals_result else 1
+
+    @property
+    def has_evals_result(self) -> bool:
+        return self.evals
 
 
 def train(params, dtrain, evals=None, evals_result=None, num_class=None, **kwargs):
     """
-    Train XGBoost model in Mars manner.
+    Train XGBoost model in MaxFrame manner.
 
     Parameters
     ----------
-    Parameters are the same as `xgboost.train`.
+    Parameters are the same as `xgboost.train`. Note that train is an eager-execution
+    API. The call will be blocked until training finished.
 
     Returns
     -------
     results: Booster
     """
 
-    evals_result = evals_result or dict()
-    evals = None or ()
-
+    evals_result = evals_result if evals_result is not None else dict()
     processed_evals = []
+    session = kwargs.pop("session", None)
+    run_kwargs = kwargs.pop("run_kwargs", dict())
     if evals:
         for eval_dmatrix, name in evals:
             if not isinstance(name, str):
@@ -110,12 +121,11 @@ def train(params, dtrain, evals=None, evals_result=None, num_class=None, **kwarg
                 processed_evals.append((eval_dmatrix, name))
             else:
                 processed_evals.append((to_dmatrix(eval_dmatrix), name))
-
     return XGBTrain(
         params=params,
         dtrain=dtrain,
         evals=processed_evals,
         evals_result=evals_result,
         num_class=num_class,
-        **kwargs
-    )()
+        **kwargs,
+    )(evals_result).execute(session=session, **run_kwargs)

@@ -15,7 +15,7 @@
 import base64
 import enum
 import uuid
-from typing import Any, Dict, Generic, List, Optional, Tuple, Type, TypeVar
+from typing import Any, Dict, Generic, List, Optional, Type, TypeVar
 
 import pandas as pd
 
@@ -38,7 +38,6 @@ from .serialization.serializables import (
     Serializable,
     SeriesField,
     StringField,
-    TupleField,
 )
 
 pickling_support.install()
@@ -90,19 +89,6 @@ class ResultType(enum.Enum):
 
 class DataSerializeType(enum.Enum):
     PICKLE = 0
-
-
-class VolumeDataMeta(Serializable):
-    output_type: OutputType = EnumField(
-        "output_type", OutputType, FieldTypes.int8, default=None
-    )
-    serial_type: DataSerializeType = EnumField(
-        "serial_type", DataSerializeType, FieldTypes.int8, default=None
-    )
-    shape: Tuple[int, ...] = TupleField("shape", FieldTypes.int64, default=None)
-    nsplits: Tuple[Tuple[int, ...], ...] = TupleField(
-        "nsplits", FieldTypes.tuple(FieldTypes.tuple(FieldTypes.int64)), default=None
-    )
 
 
 _result_type_to_info_cls: Dict[ResultType, Type["ResultInfo"]] = dict()

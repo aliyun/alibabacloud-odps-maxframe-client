@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pickle
 
 import numpy as np
 import pandas as pd
@@ -22,8 +21,14 @@ from ....core.entity.output_types import OutputType
 from ....core.operator.base import Operator
 from ....core.operator.core import TileableOperatorMixin
 from ....dataframe.utils import parse_index
-from ....serialization.serializables import BoolField, BytesField, KeyField, TupleField
+from ....serialization.serializables import (
+    BoolField,
+    KeyField,
+    ReferenceField,
+    TupleField,
+)
 from ....tensor.core import TENSOR_TYPE, TensorOrder
+from .core import BoosterData
 from .dmatrix import check_data
 
 
@@ -32,9 +37,7 @@ class XGBPredict(Operator, TileableOperatorMixin):
     output_dtype = np.dtype(np.float32)
 
     data = KeyField("data", default=None)
-    model = BytesField(
-        "model", on_serialize=pickle.dumps, on_deserialize=pickle.loads, default=None
-    )
+    model = ReferenceField("model", reference_type=BoosterData, default=None)
     pred_leaf = BoolField("pred_leaf", default=False)
     pred_contribs = BoolField("pred_contribs", default=False)
     approx_contribs = BoolField("approx_contribs", default=False)
@@ -107,6 +110,17 @@ def predict(
     strict_shape=False,
     flag=False,
 ):
+    """
+    Using MaxFrame XGBoost model to predict data.
+
+    Parameters
+    ----------
+    Parameters are the same as `xgboost.train`. The predict() is lazy-execution mode.
+
+    Returns
+    -------
+    results: Booster
+    """
     data = check_data(data)
     # TODO: check model datatype
 

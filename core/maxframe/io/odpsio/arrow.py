@@ -17,10 +17,10 @@ from typing import Any, Tuple, Union
 import pandas as pd
 import pyarrow as pa
 
-from ..core import OutputType
-from ..protocol import DataFrameTableMeta
-from ..tensor.core import TENSOR_TYPE
-from ..typing_ import ArrowTableType, PandasObjectTypes
+from ...core import OutputType
+from ...protocol import DataFrameTableMeta
+from ...tensor.core import TENSOR_TYPE
+from ...typing_ import ArrowTableType, PandasObjectTypes
 from .schema import build_dataframe_table_meta
 
 

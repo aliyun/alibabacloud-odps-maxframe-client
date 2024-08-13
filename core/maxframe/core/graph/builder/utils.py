@@ -13,12 +13,11 @@
 # limitations under the License.
 
 import itertools
-from typing import List, Union
+from typing import List
 
 from ....typing_ import TileableType
 from ...mode import enter_mode
-from ..entity import ChunkGraph, TileableGraph
-from .chunk import ChunkGraphBuilder
+from ..entity import EntityGraph, TileableGraph
 from .tileable import TileableGraphBuilder
 
 
@@ -28,14 +27,11 @@ def build_graph(
     tile: bool = False,
     fuse_enabled: bool = True,
     **chunk_graph_build_kwargs
-) -> Union[TileableGraph, ChunkGraph]:
+) -> EntityGraph:
     tileables = list(itertools.chain(*(tileable.op.outputs for tileable in tileables)))
     tileable_graph = TileableGraph(tileables)
     tileable_graph_builder = TileableGraphBuilder(tileable_graph)
     tileable_graph = next(tileable_graph_builder.build())
     if not tile:
         return tileable_graph
-    chunk_graph_builder = ChunkGraphBuilder(
-        tileable_graph, fuse_enabled=fuse_enabled, **chunk_graph_build_kwargs
-    )
-    return next(chunk_graph_builder.build())
+    raise NotImplementedError
