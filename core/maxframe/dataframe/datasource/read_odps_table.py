@@ -23,7 +23,7 @@ from odps.utils import to_timestamp
 
 from ... import opcodes
 from ...core import OutputType
-from ...odpsio import odps_schema_to_pandas_dtypes
+from ...io.odpsio import odps_schema_to_pandas_dtypes
 from ...serialization.serializables import (
     AnyField,
     BoolField,

@@ -15,7 +15,7 @@
 from functools import partial
 
 from .. import opcodes
-from ..core import ENTITY_TYPE, ChunkData
+from ..core import ENTITY_TYPE
 from ..core.operator import ObjectOperator, ObjectOperatorMixin
 from ..dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
 from ..serialization.serializables import (
@@ -26,7 +26,7 @@ from ..serialization.serializables import (
     ListField,
 )
 from ..tensor.core import TENSOR_TYPE
-from ..utils import build_fetch_tileable, find_objects, replace_objects
+from ..utils import find_objects, replace_objects
 
 
 class RemoteFunction(ObjectOperatorMixin, ObjectOperator):
@@ -63,12 +63,8 @@ class RemoteFunction(ObjectOperatorMixin, ObjectOperator):
         if raw_inputs is not None:
             for raw_inp in raw_inputs:
                 if self._no_prepare(raw_inp):
-                    if not isinstance(self._inputs[0], ChunkData):
-                        # not in tile, set_inputs from tileable
-                        mapping[raw_inp] = next(function_inputs)
-                    else:
-                        # in tile, set_inputs from chunk
-                        mapping[raw_inp] = build_fetch_tileable(raw_inp)
+                    # not in tile, set_inputs from tileable
+                    mapping[raw_inp] = next(function_inputs)
                 else:
                     mapping[raw_inp] = next(function_inputs)
         self.function_args = replace_objects(self.function_args, mapping)

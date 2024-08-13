@@ -15,7 +15,7 @@
 import pytest
 from odps import ODPS
 
-from ...tests.utils import tn
+from ....tests.utils import tn
 from ..volumeio import ODPSVolumeReader, ODPSVolumeWriter
 
 
@@ -69,19 +69,17 @@ def create_volume(request, oss_config):
             oss_config.oss_bucket.batch_delete_objects(keys)
 
 
-@pytest.mark.parametrize("create_volume", ["parted", "external"], indirect=True)
+@pytest.mark.parametrize("create_volume", ["external"], indirect=True)
 def test_read_write_volume(create_volume):
     test_vol_dir = "test_vol_dir"
 
     odps_entry = ODPS.from_environments()
 
     writer = ODPSVolumeWriter(odps_entry, create_volume, test_vol_dir)
-    write_session_id = writer.create_write_session()
 
     writer = ODPSVolumeWriter(odps_entry, create_volume, test_vol_dir)
-    writer.write_file("file1", b"content1", write_session_id)
-    writer.write_file("file2", b"content2", write_session_id)
-    writer.commit(["file1", "file2"], write_session_id)
+    writer.write_file("file1", b"content1")
+    writer.write_file("file2", b"content2")
 
     reader = ODPSVolumeReader(odps_entry, create_volume, test_vol_dir)
     assert reader.read_file("file1") == b"content1"

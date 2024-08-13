@@ -19,14 +19,18 @@ from typing import Any, Dict, List, Optional, Tuple, Type, Union
 import pandas as pd
 import pyarrow as pa
 from odps import ODPS
-from odps.models import ExternalVolume, PartedVolume
+from odps.models import ExternalVolume
 from odps.tunnel import TableTunnel
-from tornado import httpclient
 
 from maxframe.core import OBJECT_TYPE
 from maxframe.dataframe.core import DATAFRAME_TYPE
-from maxframe.lib import wrapped_pickle as pickle
-from maxframe.odpsio import ODPSTableIO, arrow_to_pandas, build_dataframe_table_meta
+from maxframe.io.objects import get_object_io_handler
+from maxframe.io.odpsio import (
+    ODPSTableIO,
+    ODPSVolumeReader,
+    arrow_to_pandas,
+    build_dataframe_table_meta,
+)
 from maxframe.protocol import (
     DataFrameTableMeta,
     ODPSTableResultInfo,
@@ -222,47 +226,24 @@ class ODPSVolumeFetcher(ToThreadMixin, ResultFetcher):
     ) -> None:
         return
 
-    async def _read_parted_volume_data(
-        self, volume: PartedVolume, partition: str, file_name: str
-    ) -> bytes:
-        def sync_read():
-            with volume.open_reader(partition, file_name) as reader:
-                return reader.read()
+    async def _fetch_object(
+        self,
+        tileable: TileableType,
+        info: ODPSVolumeResultInfo,
+        indexes: List[Union[Integral, slice]],
+    ) -> Any:
+        def volume_fetch_func():
+            reader = ODPSVolumeReader(
+                self._odps_entry, info.volume_name, info.volume_path
+            )
+            io_handler = get_object_io_handler(tileable)()
+            return io_handler.read_object(reader, tileable, indexes)
 
-        return await self.to_thread(sync_read)
-
-    async def _read_external_volume_data(
-        self, volume: ExternalVolume, path: str, file_name: str
-    ) -> bytes:
-        signed_url = await self.to_thread(
-            volume.get_sign_url, path + "/" + file_name, "GET"
-        )
-        http_client = httpclient.AsyncHTTPClient()
-
-        resp = await http_client.fetch(signed_url)
-        if hasattr(resp, "status_code") and resp.code >= 400:
-            try:
-                import oss2.exceptions
-
-                oss_exc = oss2.exceptions.make_exception(resp.body)
-                raise oss_exc
-            except ImportError:
-                raise SystemError(resp.body)
-        return resp.body
-
-    async def _fetch_object(self, info: ODPSVolumeResultInfo) -> Any:
         volume = await self.to_thread(self._odps_entry.get_volume, info.volume_name)
-        if isinstance(volume, PartedVolume):
-            byte_data = await self._read_parted_volume_data(
-                volume, info.volume_path, "data"
-            )
-        elif isinstance(volume, ExternalVolume):
-            byte_data = await self._read_external_volume_data(
-                volume, info.volume_path, "data"
-            )
+        if isinstance(volume, ExternalVolume):
+            return await self.to_thread(volume_fetch_func)
         else:
             raise NotImplementedError(f"Volume type {type(volume)} not supported")
-        return pickle.loads(byte_data)
 
     async def fetch(
         self,
@@ -271,5 +252,5 @@ class ODPSVolumeFetcher(ToThreadMixin, ResultFetcher):
         indexes: List[Union[Integral, slice]],
     ) -> Any:
         if isinstance(tileable, (OBJECT_TYPE, TENSOR_TYPE)):
-            return await self._fetch_object(info)
+            return await self._fetch_object(tileable, info, indexes)
         raise NotImplementedError(f"Fetching {type(tileable)} not implemented")

@@ -17,6 +17,7 @@ from .core import (
     PickleContainer,
     Serializer,
     deserialize,
+    load_type,
     pickle_buffers,
     serialize,
     serialize_with_spawn,

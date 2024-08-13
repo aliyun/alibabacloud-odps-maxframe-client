@@ -26,9 +26,9 @@ from odps.utils import camel_to_underline
 from .core import OperatorType, Tileable, TileableGraph
 from .core.operator import Fetch
 from .extension import iter_extensions
+from .io.odpsio import build_dataframe_table_meta
+from .io.odpsio.schema import pandas_to_odps_schema
 from .lib import wrapped_pickle as pickle
-from .odpsio import build_dataframe_table_meta
-from .odpsio.schema import pandas_to_odps_schema
 from .protocol import DataFrameTableMeta, ResultInfo
 from .serialization import PickleContainer
 from .serialization.serializables import Serializable, StringField
@@ -506,6 +506,7 @@ class BigDagCodeGenerator(metaclass=abc.ABCMeta):
                 prefer_binary=pack.prefer_binary,
                 pre_release=pack.pre_release,
                 force_rebuild=pack.force_rebuild,
+                no_audit_wheel=pack.no_audit_wheel,
                 python_tag=python_tag,
                 is_production=is_production,
                 schedule_id=schedule_id,

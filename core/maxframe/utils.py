@@ -19,7 +19,6 @@ import dataclasses
 import datetime
 import enum
 import functools
-import hashlib
 import importlib
 import inspect
 import io
@@ -75,7 +74,7 @@ from ._utils import (  # noqa: F401 # pylint: disable=unused-import
     tokenize_int,
 )
 from .lib.version import parse as parse_version
-from .typing_ import ChunkType, EntityType, TileableType, TimeoutType
+from .typing_ import TileableType, TimeoutType
 
 # make flake8 happy by referencing these imports
 NamedType = NamedType
@@ -245,58 +244,6 @@ def copy_tileables(tileables: List[TileableType], **kwargs):
     return op.new_tileables(inputs, kws=kws, output_limit=len(kws))
 
 
-def build_fetch_chunk(chunk: ChunkType, **kwargs) -> ChunkType:
-    from .core.operator import ShuffleProxy
-
-    chunk_op = chunk.op
-    params = chunk.params.copy()
-    assert not isinstance(chunk_op, ShuffleProxy)
-    # for non-shuffle nodes, we build Fetch chunks
-    # to replace original chunk
-    op = chunk_op.get_fetch_op_cls(chunk)(sparse=chunk.op.sparse, gpu=chunk.op.gpu)
-    return op.new_chunk(
-        None,
-        is_broadcaster=chunk.is_broadcaster,
-        kws=[params],
-        _key=chunk.key,
-        **kwargs,
-    )
-
-
-def build_fetch_tileable(tileable: TileableType) -> TileableType:
-    if tileable.is_coarse():
-        chunks = None
-    else:
-        chunks = []
-        for c in tileable.chunks:
-            fetch_chunk = build_fetch_chunk(c, index=c.index)
-            chunks.append(fetch_chunk)
-
-    tileable_op = tileable.op
-    params = tileable.params.copy()
-
-    new_op = tileable_op.get_fetch_op_cls(tileable)(_id=tileable_op.id)
-    return new_op.new_tileables(
-        None,
-        chunks=chunks,
-        nsplits=tileable.nsplits,
-        _key=tileable.key,
-        _id=tileable.id,
-        **params,
-    )[0]
-
-
-def build_fetch(entity: EntityType) -> EntityType:
-    from .core import CHUNK_TYPE, ENTITY_TYPE
-
-    if isinstance(entity, CHUNK_TYPE):
-        return build_fetch_chunk(entity)
-    elif isinstance(entity, ENTITY_TYPE):
-        return build_fetch_tileable(entity)
-    else:
-        raise TypeError(f"Type {type(entity)} not supported")
-
-
 def get_dtype(dtype: Union[np.dtype, pd.api.extensions.ExtensionDtype]):
     if pd.api.types.is_extension_array_dtype(dtype):
         return dtype
@@ -386,13 +333,7 @@ def build_temp_intermediate_table_name(session_id: str, tileable_key: str) -> st
 
 
 def build_session_volume_name(session_id: str) -> str:
-    return f"mf_vol_{session_id}"
-
-
-def build_tileable_dir_name(tileable_key: str) -> str:
-    m = hashlib.md5()
-    m.update(f"mf_dir_{tileable_key}".encode())
-    return m.hexdigest()
+    return f"mf_vol_{session_id.replace('-', '_')}"
 
 
 async def wait_http_response(
@@ -1123,3 +1064,16 @@ def get_item_if_scalar(val: Any) -> Any:
     if isinstance(val, np.ndarray) and val.shape == ():
         return val.item()
     return val
+
+
+def collect_leaf_operators(root) -> List[Type]:
+    result = []
+
+    def _collect(op_type):
+        if len(op_type.__subclasses__()) == 0:
+            result.append(op_type)
+        for subclass in op_type.__subclasses__():
+            _collect(subclass)
+
+    _collect(root)
+    return result

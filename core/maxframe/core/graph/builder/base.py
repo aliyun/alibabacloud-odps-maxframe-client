@@ -14,10 +14,10 @@
 
 
 from abc import ABC, abstractmethod
-from typing import Generator, List, Set, Union
+from typing import Generator, List, Set
 
 from ....typing_ import EntityType
-from ..entity import ChunkGraph, EntityGraph, TileableGraph
+from ..entity import EntityGraph
 
 
 def _default_inputs_selector(inputs: List[EntityType]) -> List[EntityType]:
@@ -43,7 +43,7 @@ class AbstractGraphBuilder(ABC):
 
     def _add_nodes(
         self,
-        graph: Union[ChunkGraph, TileableGraph],
+        graph: EntityGraph,
         nodes: List[EntityType],
         visited: Set,
     ):
@@ -75,7 +75,7 @@ class AbstractGraphBuilder(ABC):
                         nodes.append(out)
 
     @abstractmethod
-    def build(self) -> Generator[Union[EntityGraph, ChunkGraph], None, None]:
+    def build(self) -> Generator[EntityGraph, None, None]:
         """
         Build a entity graph.
 
@@ -84,3 +84,4 @@ class AbstractGraphBuilder(ABC):
         graph : EntityGraph
             Entity graph.
         """
+        raise NotImplementedError

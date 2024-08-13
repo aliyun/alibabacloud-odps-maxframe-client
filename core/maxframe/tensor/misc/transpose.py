@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2024 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,33 +64,39 @@ class TensorTranspose(TensorHasInput, TensorOperatorMixin):
 
 def transpose(a, axes=None):
     """
-    Permute the dimensions of a tensor.
+    Returns an array with axes transposed.
+
+    For a 1-D array, this returns an unchanged view of the original array, as a
+    transposed vector is simply the same vector.
+    To convert a 1-D array into a 2-D column vector, an additional dimension
+    must be added, e.g., ``mt.atleast_2d(a).T`` achieves this, as does
+    ``a[:, mt.newaxis]``.
+    For a 2-D array, this is the standard matrix transpose.
+    For an n-D array, if axes are given, their order indicates how the
+    axes are permuted (see Examples). If axes are not provided, then
+    ``transpose(a).shape == a.shape[::-1]``.
 
     Parameters
     ----------
     a : array_like
-        Input tensor.
-    axes : list of ints, optional
-        By default, reverse the dimensions, otherwise permute the axes
-        according to the values given.
+        Input array.
+    axes : tuple or list of ints, optional
+        If specified, it must be a tuple or list which contains a permutation
+        of [0,1,...,N-1] where N is the number of axes of `a`. The `i`'th axis
+        of the returned array will correspond to the axis numbered ``axes[i]``
+        of the input. If not specified, defaults to ``range(a.ndim)[::-1]``,
+        which reverses the order of the axes.
 
     Returns
     -------
-    p : Tensor
-        `a` with its axes permuted.  A view is returned whenever
-        possible.
-
-    See Also
-    --------
-    moveaxis
-    argsort
+    p : ndarray
+        `a` with its axes permuted. A view is returned whenever possible.
 
     Notes
     -----
-    Use `transpose(a, argsort(axes))` to invert the transposition of tensors
+    Use ``transpose(a, argsort(axes))`` to invert the transposition of tensors
     when using the `axes` keyword argument.
 
-    Transposing a 1-D array returns an unchanged view of the original tensor.
 
     Examples
     --------
@@ -121,5 +125,5 @@ def transpose(a, axes=None):
         axes = list(range(a.ndim))[::-1]
     else:
         axes = list(axes)
-    op = TensorTranspose(axes, dtype=a.dtype, sparse=a.issparse())
+    op = TensorTranspose(axes)
     return op(a)

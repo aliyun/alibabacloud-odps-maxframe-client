@@ -19,17 +19,12 @@ import itertools
 import operator
 from collections import OrderedDict
 from collections.abc import Iterable
-from functools import lru_cache, wraps
+from functools import wraps
 from math import ceil
 from numbers import Integral
 from typing import Dict, List, Union
 
 import numpy as np
-
-try:
-    import tiledb
-except (ImportError, OSError):  # pragma: no cover
-    tildb = None
 
 from ..core import ExecutableTuple
 from ..lib.mmh3 import hash_from_buffer
@@ -508,7 +503,7 @@ def decide_unify_split(*splits):
 
 
 def check_out_param(out, t, casting):
-    from .base import broadcast_to
+    from .misc import broadcast_to
 
     if not hasattr(out, "shape"):
         raise TypeError("return arrays must be a tensor")
@@ -561,21 +556,6 @@ def filter_inputs(inputs):
     from ..core import ENTITY_TYPE
 
     return [inp for inp in inputs if isinstance(inp, ENTITY_TYPE)]
-
-
-# As TileDB Ctx's creation is a bit time-consuming,
-# we just cache the Ctx
-# also remember the arguments should be hashable
-@lru_cache(10)
-def _create_tiledb_ctx(conf_tuple):
-    if conf_tuple is not None:
-        return tiledb.Ctx(dict(conf_tuple))
-    return tiledb.Ctx()
-
-
-def get_tiledb_ctx(conf):
-    key = tuple(conf.items()) if conf is not None else None
-    return _create_tiledb_ctx(key)
 
 
 # this function is only used for pandas' compatibility

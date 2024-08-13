@@ -17,7 +17,6 @@ from ..entity import OutputType, register_fetch_class
 from .base import Operator
 from .core import TileableOperatorMixin
 from .fetch import Fetch, FetchMixin
-from .fuse import Fuse, FuseChunkMixin
 
 
 class ObjectOperator(Operator):
@@ -26,14 +25,6 @@ class ObjectOperator(Operator):
 
 class ObjectOperatorMixin(TileableOperatorMixin):
     _output_type_ = OutputType.object
-
-
-class ObjectFuseChunkMixin(FuseChunkMixin, ObjectOperatorMixin):
-    __slots__ = ()
-
-
-class ObjectFuseChunk(ObjectFuseChunkMixin, Fuse):
-    pass
 
 
 class ObjectFetch(FetchMixin, ObjectOperatorMixin, Fetch):

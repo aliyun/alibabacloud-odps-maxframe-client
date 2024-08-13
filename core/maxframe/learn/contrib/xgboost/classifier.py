@@ -14,7 +14,7 @@
 
 import numpy as np
 
-from ....tensor import argmax
+from ....tensor import argmax, transpose, vstack
 from ..utils import make_import_error_func
 from .core import XGBScikitLearnBase, xgboost
 
@@ -42,7 +42,10 @@ else:
             sample_weight_eval_set=None,
             base_margin_eval_set=None,
             num_class=None,
+            **kw,
         ):
+            session = kw.pop("session", None)
+            run_kwargs = kw.pop("run_kwargs", dict())
             dtrain, evals = wrap_evaluation_matrices(
                 None,
                 X,
@@ -68,6 +71,8 @@ else:
                 evals=evals,
                 evals_result=self.evals_result_,
                 num_class=num_class,
+                session=session,
+                run_kwargs=run_kwargs,
             )
             self._Booster = result
             return self
@@ -83,4 +88,23 @@ else:
         def predict_proba(self, data, ntree_limit=None, flag=False, **kw):
             if ntree_limit is not None:
                 raise NotImplementedError("ntree_limit is not currently supported")
-            return predict(self.get_booster(), data, flag=flag, **kw)
+            prediction = predict(self.get_booster(), data, flag=flag, **kw)
+
+            if len(prediction.shape) == 2 and prediction.shape[1] == self.n_classes_:
+                # multi-class
+                return prediction
+            if (
+                len(prediction.shape) == 2
+                and self.n_classes_ == 2
+                and prediction.shape[1] >= self.n_classes_
+            ):
+                # multi-label
+                return prediction
+            # binary logistic function
+            classone_probs = prediction
+            classzero_probs = 1.0 - classone_probs
+            return transpose(vstack((classzero_probs, classone_probs)))
+
+        @property
+        def classes_(self) -> np.ndarray:
+            return np.arange(self.n_classes_)

@@ -247,7 +247,19 @@ def test_run_and_fetch_series(start_mock_session):
         )
 
 
-def test_run_remote_success(start_mock_session):
+def test_execute_with_tensor(oss_config, start_mock_session):
+    pd_df = pd.DataFrame(
+        {"angles": [0, 3, 4], "degrees": [360, 180, 360]},
+        index=["circle", "triangle", "rectangle"],
+    )
+    df = md.DataFrame(pd_df)
+
+    result = (df - [1, 2]).execute().fetch()
+    expected = pd_df - [1, 2]
+    pd.testing.assert_frame_equal(result, expected)
+
+
+def test_run_remote_success(oss_config, start_mock_session):
     def func(a, b):
         return a + b
 
@@ -258,7 +270,7 @@ def test_run_remote_success(start_mock_session):
     assert result == 21
 
 
-def test_run_remote_error(start_mock_session):
+def test_run_remote_error(oss_config, start_mock_session):
     def func():
         raise ValueError
 

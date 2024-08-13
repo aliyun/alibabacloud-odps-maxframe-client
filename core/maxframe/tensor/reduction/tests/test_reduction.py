@@ -17,8 +17,11 @@
 import numpy as np
 import pytest
 
+from maxframe.tensor.reduction.core import TensorReduction
+
+from ....utils import collect_leaf_operators
 from ...datasource import ones, tensor
-from .. import all
+from .. import *  # noqa: F401
 
 
 def test_base_reduction():
@@ -179,3 +182,11 @@ def test_var_reduction():
 
     res1 = var(ones((10, 8, 8), chunk_size=3), axis=1)
     assert res1.shape == (10, 8)
+
+
+def test_reduction_op_func_name():
+    # make sure all the binary op has defined the func name.
+
+    results = collect_leaf_operators(TensorReduction)
+    for op_type in results:
+        assert hasattr(op_type, "_func_name")

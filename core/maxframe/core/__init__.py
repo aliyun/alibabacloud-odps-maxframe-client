@@ -14,20 +14,14 @@
 
 # noinspection PyUnresolvedReferences
 from ..typing_ import ChunkType, EntityType, OperatorType, TileableType
-from .base import ExecutionError
+from .base import Base, ExecutionError
 from .entity import (
-    CHUNK_TYPE,
     ENTITY_TYPE,
-    FUSE_CHUNK_TYPE,
     OBJECT_TYPE,
     TILEABLE_TYPE,
-    Chunk,
-    ChunkData,
     Entity,
     EntityData,
     ExecutableTuple,
-    FuseChunk,
-    FuseChunkData,
     HasShapeTileable,
     HasShapeTileableData,
     NotSupportTile,
@@ -40,23 +34,18 @@ from .entity import (
     get_fetch_class,
     get_output_types,
     get_tileable_types,
-    register,
     register_fetch_class,
     register_output_types,
-    unregister,
 )
 
 # noinspection PyUnresolvedReferences
 from .graph import (
     DAG,
-    ChunkGraph,
-    ChunkGraphBuilder,
     DirectedGraph,
     GraphContainsCycleError,
     GraphSerializer,
     TileableGraph,
     TileableGraphBuilder,
-    TileContext,
-    TileStatus,
 )
 from .mode import enter_mode, is_build_mode, is_eager_mode, is_kernel_mode
+from .operator import build_fetch

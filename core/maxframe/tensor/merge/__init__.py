@@ -12,4 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .concatenate import concatenate
 from .stack import stack
+from .vstack import vstack

@@ -18,7 +18,36 @@ import numpy as np
 import pytest
 
 from ...datasource import empty, ones
-from .. import stack
+from .. import concatenate, stack
+
+
+def test_concatenate():
+    a = ones((10, 20, 30), chunk_size=10)
+    b = ones((20, 20, 30), chunk_size=20)
+
+    c = concatenate([a, b])
+    assert c.shape == (30, 20, 30)
+
+    a = ones((10, 20, 30), chunk_size=10)
+    b = ones((10, 20, 40), chunk_size=20)
+
+    c = concatenate([a, b], axis=-1)
+    assert c.shape == (10, 20, 70)
+
+    with pytest.raises(ValueError):
+        a = ones((10, 20, 30), chunk_size=10)
+        b = ones((20, 30, 30), chunk_size=20)
+
+        concatenate([a, b])
+
+    with pytest.raises(ValueError):
+        a = ones((10, 20, 30), chunk_size=10)
+        b = ones((20, 20), chunk_size=20)
+
+        concatenate([a, b])
+
+    a = ones((10, 20, 30), chunk_size=5)
+    b = ones((20, 20, 30), chunk_size=10)
 
 
 def test_stack():

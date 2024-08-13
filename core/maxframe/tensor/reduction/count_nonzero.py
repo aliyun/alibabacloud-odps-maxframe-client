@@ -22,6 +22,7 @@ from .core import TensorReduction, TensorReductionMixin
 
 class TensorCountNonzero(TensorReduction, TensorReductionMixin):
     _op_type_ = opcodes.COUNT_NONZERO
+    _func_name = "count_nonzero"
 
     def __init__(self, dtype=None, **kw):
         if dtype is None:

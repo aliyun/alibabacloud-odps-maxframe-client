@@ -23,6 +23,7 @@ from .core import TensorBinOp
 
 class TensorIsclose(TensorBinOp):
     _op_type_ = opcodes.ISCLOSE
+    _func_name = "isclose"
 
     rtol = Float64Field("rtol", default=None)
     atol = Float64Field("atol", default=None)

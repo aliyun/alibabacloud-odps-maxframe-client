@@ -32,7 +32,6 @@ from ..utils import get_python_tag
 from .validators import (
     ValidatorType,
     all_validator,
-    any_validator,
     is_bool,
     is_dict,
     is_in,
@@ -41,6 +40,7 @@ from .validators import (
     is_null,
     is_numeric,
     is_string,
+    is_valid_cache_path,
 )
 
 _DEFAULT_REDIRECT_WARN = "Option {source} has been replaced by {target} and might be removed in a future release."
@@ -327,7 +327,7 @@ default_options.register_option(
 default_options.register_option(
     "local_timezone",
     _get_legal_local_tz_name(),
-    validator=any_validator(is_null, is_in(set(available_timezones()))),
+    validator=is_null | is_in(set(available_timezones())),
     remote=True,
 )
 default_options.register_option(
@@ -349,6 +349,17 @@ default_options.register_option("is_production", False, validator=is_bool, remot
 default_options.register_option("schedule_id", "", validator=is_string, remote=True)
 
 default_options.register_option(
+    "service_role_arn", None, validator=is_null | is_string, remote=True
+)
+default_options.register_option(
+    "object_cache_url", None, validator=is_null | is_valid_cache_path, remote=True
+)
+
+default_options.register_option(
+    "chunk_size", None, validator=is_null | is_integer, remote=True
+)
+
+default_options.register_option(
     "session.max_alive_seconds",
     _DEFAULT_MAX_ALIVE_SECONDS,
     validator=is_numeric,
@@ -366,9 +377,7 @@ default_options.register_option(
     validator=is_integer,
 )
 default_options.register_option(
-    "session.table_lifecycle",
-    None,
-    validator=any_validator(is_null, is_integer),
+    "session.table_lifecycle", None, validator=is_null | is_integer
 )
 default_options.register_option(
     "session.temp_table_lifecycle",
@@ -379,7 +388,7 @@ default_options.register_option(
 default_options.register_option(
     "session.subinstance_priority",
     None,
-    validator=any_validator(is_null, is_integer),
+    validator=is_null | is_integer,
     remote=True,
 )
 
@@ -391,9 +400,7 @@ default_options.register_option(
 default_options.register_option(
     "optimize.head_optimize_threshold", 1000, validator=is_integer
 )
-default_options.register_option(
-    "show_progress", "auto", validator=any_validator(is_bool, is_string)
-)
+default_options.register_option("show_progress", "auto", validator=is_bool | is_string)
 default_options.register_option(
     "dag.settings", value=dict(), validator=is_dict, remote=True
 )

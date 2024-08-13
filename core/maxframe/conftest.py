@@ -19,6 +19,8 @@ from configparser import ConfigParser, NoOptionError
 import pytest
 from odps import ODPS
 
+from .config import options
+
 faulthandler.enable(all_threads=True)
 _test_conf_file_name = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "tests", "test.conf"
@@ -77,10 +79,13 @@ def odps_envs(test_config):
                 pass
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def oss_config():
     config = ConfigParser()
     config.read(_test_conf_file_name)
+
+    old_role_arn = options.service_role_arn
+    old_cache_url = options.object_cache_url
 
     try:
         oss_access_id = config.get("oss", "access_id")
@@ -88,6 +93,9 @@ def oss_config():
         oss_bucket_name = config.get("oss", "bucket_name")
         oss_endpoint = config.get("oss", "endpoint")
         oss_rolearn = config.get("oss", "rolearn")
+
+        options.service_role_arn = oss_rolearn
+        options.object_cache_url = f"oss://{oss_endpoint}/{oss_bucket_name}"
 
         config.oss_config = (
             oss_access_id,
@@ -101,9 +109,12 @@ def oss_config():
         auth = oss2.Auth(oss_access_id, oss_secret_access_key)
         config.oss_bucket = oss2.Bucket(auth, oss_endpoint, oss_bucket_name)
         config.oss_rolearn = oss_rolearn
-        return config
+        yield config
     except (ConfigParser.NoSectionError, ConfigParser.NoOptionError, ImportError):
         return None
+    finally:
+        options.service_role_arn = old_role_arn
+        options.object_cache_url = old_cache_url
 
 
 @pytest.fixture(autouse=True)

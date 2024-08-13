@@ -6,4 +6,6 @@ API reference
 .. toctree::
    :maxdepth: 2
 
+   tensor/routines
    dataframe/index
+   learn/reference

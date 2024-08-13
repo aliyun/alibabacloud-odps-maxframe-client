@@ -24,6 +24,7 @@ from .core import TensorReduction, TensorReductionMixin
 
 class TensorNanMoment(TensorReduction, TensorReductionMixin):
     _op_type_ = opcodes.NANMOMENT
+    _func_name = "nanvar"
 
     moment = Int32Field("moment", default=2)
     ddof = Int32Field("ddof", default=None)
@@ -36,6 +37,7 @@ class TensorNanMoment(TensorReduction, TensorReductionMixin):
 
 class TensorNanVar(TensorReduction, TensorReductionMixin):
     _op_type_ = opcodes.NANVAR
+    _func_name = "nanvar"
 
     ddof = Int32Field("ddof", default=0)
 

@@ -55,6 +55,6 @@ def flatnonzero(a):
     >>> x.ravel()[mt.flatnonzero(x)].execute()  # TODO(jisheng): accomplish this after fancy indexing is supported
 
     """
-    from ..base import ravel
+    from ..misc import ravel
 
     return nonzero(ravel(a))[0]

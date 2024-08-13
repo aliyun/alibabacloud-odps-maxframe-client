@@ -26,7 +26,8 @@ import pandas as pd
 from odps import ODPS
 
 from maxframe.config import options
-from maxframe.core import Entity, TileableGraph, enter_mode
+from maxframe.core import Entity, TileableGraph, build_fetch, enter_mode
+from maxframe.core.operator import Fetch
 from maxframe.dataframe import read_odps_table
 from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
 from maxframe.dataframe.datasource import PandasDataSourceOperator
@@ -36,11 +37,18 @@ from maxframe.errors import (
     NoTaskServerResponseError,
     SessionAlreadyClosedError,
 )
-from maxframe.odpsio import ODPSTableIO, pandas_to_arrow, pandas_to_odps_schema
+from maxframe.io.objects import get_object_io_handler
+from maxframe.io.odpsio import (
+    ODPSTableIO,
+    ODPSVolumeWriter,
+    pandas_to_arrow,
+    pandas_to_odps_schema,
+)
 from maxframe.protocol import (
     DagInfo,
     DagStatus,
     ODPSTableResultInfo,
+    ODPSVolumeResultInfo,
     ResultInfo,
     SessionInfo,
 )
@@ -51,8 +59,13 @@ from maxframe.session import (
     Profiling,
     Progress,
 )
+from maxframe.tensor.datasource import ArrayDataSource
 from maxframe.typing_ import TileableType
-from maxframe.utils import ToThreadMixin, build_temp_table_name
+from maxframe.utils import (
+    ToThreadMixin,
+    build_session_volume_name,
+    build_temp_table_name,
+)
 
 from ..clients.framedriver import FrameDriverClient
 from ..fetcher import get_fetcher_cls
@@ -139,14 +152,9 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         self._session_id = session_info.session_id
         await self._show_logview_address()
 
-    def _upload_and_get_read_tileable(self, t: TileableType) -> Optional[TileableType]:
-        if (
-            not isinstance(t.op, PandasDataSourceOperator)
-            or t.op.get_data() is None
-            or t.inputs
-        ):
-            return None
-
+    def _upload_and_get_table_read_tileable(
+        self, t: TileableType
+    ) -> Optional[TileableType]:
         schema, table_meta = pandas_to_odps_schema(t, unknown_as_string=True)
         if self._odps_entry.exist_table(table_meta.table_name):
             self._odps_entry.delete_table(
@@ -193,8 +201,29 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         read_tileable.params = t.params
         return read_tileable.data
 
+    def _upload_and_get_vol_read_tileable(
+        self, t: TileableType
+    ) -> Optional[TileableType]:
+        vol_name = build_session_volume_name(self.session_id)
+        writer = ODPSVolumeWriter(self._odps_entry, vol_name, t.key)
+        io_handler = get_object_io_handler(t)
+        io_handler().write_object(writer, t, t.op.data)
+        return build_fetch(t).data
+
+    def _upload_and_get_read_tileable(self, t: TileableType) -> Optional[TileableType]:
+        if (
+            not isinstance(t.op, (ArrayDataSource, PandasDataSourceOperator))
+            or t.op.get_data() is None
+            or t.inputs
+        ):
+            return None
+        if isinstance(t.op, PandasDataSourceOperator):
+            return self._upload_and_get_table_read_tileable(t)
+        else:
+            return self._upload_and_get_vol_read_tileable(t)
+
     @enter_mode(kernel=True, build=True)
-    def _scan_and_replace_pandas_sources(
+    def _scan_and_replace_local_sources(
         self, graph: TileableGraph
     ) -> Dict[TileableType, TileableType]:
         """Replaces Pandas data sources with temp table sources in the graph"""
@@ -223,14 +252,21 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
     @enter_mode(kernel=True, build=True)
     def _get_input_infos(self, tileables: List[TileableType]) -> Dict[str, ResultInfo]:
         """Generate ResultInfo structs from generated temp tables"""
+        vol_name = build_session_volume_name(self.session_id)
+
         infos = dict()
         for t in tileables:
             key = t.key
-            if not isinstance(t.op, DataFrameReadODPSTable):
-                if not isinstance(t.inputs[0].op, DataFrameReadODPSTable):
-                    continue
-                t = t.inputs[0]
-            infos[key] = ODPSTableResultInfo(full_table_name=t.op.table_name)
+            if isinstance(t.op, DataFrameReadODPSTable):
+                infos[key] = ODPSTableResultInfo(full_table_name=t.op.table_name)
+            else:
+                if isinstance(t.op, Fetch):
+                    infos[key] = ODPSVolumeResultInfo(
+                        volume_name=vol_name, volume_path=t.key
+                    )
+                elif t.inputs and isinstance(t.inputs[0].op, DataFrameReadODPSTable):
+                    t = t.inputs[0]
+                    infos[key] = ODPSTableResultInfo(full_table_name=t.op.table_name)
         return infos
 
     async def execute(self, *tileables, **kwargs) -> ExecutionInfo:
@@ -242,7 +278,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         tileable_graph, to_execute_tileables = gen_submit_tileable_graph(
             self, tileables, tileable_to_copied
         )
-        source_replacements = self._scan_and_replace_pandas_sources(tileable_graph)
+        source_replacements = self._scan_and_replace_local_sources(tileable_graph)
 
         # we need to manage uploaded data sources with refcounting mechanism
         # as nodes in tileable_graph are copied, we need to use original nodes

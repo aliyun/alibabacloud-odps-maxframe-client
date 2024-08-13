@@ -23,6 +23,7 @@ from .core import TensorReduction, TensorReductionMixin
 
 class TensorMean(TensorReduction, TensorReductionMixin):
     _op_type_ = opcodes.MEAN
+    _func_name = "mean"
 
 
 def mean(a, axis=None, dtype=None, out=None, keepdims=None):

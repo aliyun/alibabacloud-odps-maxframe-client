@@ -42,6 +42,7 @@ def reduce_var_square(var_square, avg_diff, count, op, axis, sum_func):
 
 class TensorMoment(TensorReduction, TensorReductionMixin):
     _op_type_ = opcodes.MOMENT
+    _func_name = "var"
 
     moment = Int32Field("moment", default=2)
     ddof = Int32Field("ddof", default=None)
@@ -54,6 +55,7 @@ class TensorMoment(TensorReduction, TensorReductionMixin):
 
 class TensorVar(TensorReduction, TensorReductionMixin):
     _op_type_ = opcodes.VAR
+    _func_name = "var"
 
     ddof = Int32Field("ddof", default=0)
 

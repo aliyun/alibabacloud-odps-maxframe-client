@@ -23,6 +23,7 @@ from .core import TensorReduction, TensorReductionMixin
 
 class TensorNanMean(TensorReduction, TensorReductionMixin):
     _op_type_ = opcodes.NANMEAN
+    _func_name = "nanmean"
 
 
 def nanmean(a, axis=None, dtype=None, out=None, keepdims=None):

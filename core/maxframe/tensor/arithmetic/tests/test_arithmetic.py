@@ -17,26 +17,13 @@
 import numpy as np
 import pytest
 
+from maxframe.tensor.arithmetic.core import TensorBinOp, TensorUnaryOp
+from maxframe.utils import collect_leaf_operators
+
 from ....core import enter_mode
 from ...core import SparseTensor, Tensor
 from ...datasource import array, empty, ones, tensor
-from .. import (
-    TensorAdd,
-    TensorGreaterThan,
-    TensorIsclose,
-    TensorLog,
-    TensorSubtract,
-    add,
-    around,
-    cos,
-    frexp,
-    isclose,
-    isfinite,
-    log,
-    negative,
-    subtract,
-    truediv,
-)
+from .. import *  # noqa: F401
 
 
 def test_add():
@@ -412,3 +399,20 @@ def test_build_mode():
 
     with enter_mode(build=True):
         assert t1 != 2
+
+
+def test_unary_op_func_name():
+    # make sure all the unary op has defined the func name.
+
+    results = collect_leaf_operators(TensorUnaryOp)
+    for op_type in results:
+        assert hasattr(op_type, "_func_name")
+
+
+def test_binary_op_func_name():
+    # make sure all the binary op has defined the func name.
+
+    results = collect_leaf_operators(TensorBinOp)
+    for op_type in results:
+        if op_type not in (TensorSetImag, TensorSetReal):
+            assert hasattr(op_type, "_func_name")

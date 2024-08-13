@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2024 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,52 +18,50 @@ from ...core import ExecutableTuple
 from ..datasource import tensor as astensor
 
 
-def atleast_1d(*tensors):
+def atleast_2d(*tensors):
     """
-    Convert inputs to tensors with at least one dimension.
-
-    Scalar inputs are converted to 1-dimensional tensors, whilst
-    higher-dimensional inputs are preserved.
+    View inputs as tensors with at least two dimensions.
 
     Parameters
     ----------
     tensors1, tensors2, ... : array_like
-        One or more input tensors.
+        One or more array-like sequences.  Non-tensor inputs are converted
+        to tensors.  Tensors that already have two or more dimensions are
+        preserved.
 
     Returns
     -------
-    ret : Tensor
-        An tensor, or list of tensors, each with ``a.ndim >= 1``.
-        Copies are made only if necessary.
+    res, res2, ... : Tensor
+        A tensor, or list of tensors, each with ``a.ndim >= 2``.
+        Copies are avoided where possible, and views with two or more
+        dimensions are returned.
 
     See Also
     --------
-    atleast_2d, atleast_3d
+    atleast_1d, atleast_3d
 
     Examples
     --------
     >>> import maxframe.tensor as mt
 
-    >>> mt.atleast_1d(1.0).execute()
-    array([ 1.])
+    >>> mt.atleast_2d(3.0).execute()
+    array([[ 3.]])
 
-    >>> x = mt.arange(9.0).reshape(3,3)
-    >>> mt.atleast_1d(x).execute()
-    array([[ 0.,  1.,  2.],
-           [ 3.,  4.,  5.],
-           [ 6.,  7.,  8.]])
-    >>> mt.atleast_1d(x) is x
-    True
+    >>> x = mt.arange(3.0)
+    >>> mt.atleast_2d(x).execute()
+    array([[ 0.,  1.,  2.]])
 
-    >>> mt.atleast_1d(1, [3, 4]).execute()
-    [array([1]), array([3, 4])]
+    >>> mt.atleast_2d(1, [1, 2], [[1, 2]]).execute()
+    [array([[1]]), array([[1, 2]]), array([[1, 2]])]
 
     """
     new_tensors = []
     for x in tensors:
         x = astensor(x)
         if x.ndim == 0:
-            x = x[np.newaxis]
+            x = x[np.newaxis, np.newaxis]
+        elif x.ndim == 1:
+            x = x[np.newaxis, :]
 
         new_tensors.append(x)
 

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from typing import Callable
+from urllib.parse import urlparse
 
 ValidatorType = Callable[..., bool]
 
@@ -32,22 +33,51 @@ def all_validator(*validators: ValidatorType):
     return validate
 
 
-is_null = lambda x: x is None
-is_bool = lambda x: isinstance(x, bool)
-is_float = lambda x: isinstance(x, float)
-is_integer = lambda x: isinstance(x, int)
-is_numeric = lambda x: isinstance(x, (int, float))
-is_string = lambda x: isinstance(x, str)
-is_dict = lambda x: isinstance(x, dict)
-is_positive_integer = lambda x: is_integer(x) and x > 0
-is_non_negative_integer = lambda x: is_integer(x) and x >= 0
+class Validator:
+    def __init__(self, func: ValidatorType):
+        self._func = func
+
+    def __call__(self, arg) -> bool:
+        return self._func(arg)
+
+    def __or__(self, other):
+        return OrValidator(self, other)
+
+
+class OrValidator(Validator):
+    def __init__(self, lhs: Validator, rhs: Validator):
+        super().__init__(lambda x: lhs(x) or rhs(x))
+
+
+is_null = Validator(lambda x: x is None)
+is_bool = Validator(lambda x: isinstance(x, bool))
+is_float = Validator(lambda x: isinstance(x, float))
+is_integer = Validator(lambda x: isinstance(x, int))
+is_numeric = Validator(lambda x: isinstance(x, (int, float)))
+is_string = Validator(lambda x: isinstance(x, str))
+is_dict = Validator(lambda x: isinstance(x, dict))
+is_positive_integer = Validator(lambda x: is_integer(x) and x > 0)
+is_non_negative_integer = Validator(lambda x: is_integer(x) and x >= 0)
 
 
 def is_in(vals):
-    def validate(x):
-        return x in vals
+    return Validator(vals.__contains__)
 
-    return validate
+
+def _is_valid_cache_path(path: str) -> bool:
+    """
+    path should look like oss://oss_endpoint/oss_bucket/path
+    """
+    parsed_url = urlparse(path)
+    return (
+        parsed_url.scheme == "oss"
+        and parsed_url.netloc
+        and parsed_url.path
+        and "/" in parsed_url.path
+    )
+
+
+is_valid_cache_path = Validator(_is_valid_cache_path)
 
 
 _invalid_char_in_yaml_str = {'"', "'", "\n", "\\"}

@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import functools
 import weakref
 from copy import deepcopy
 from enum import Enum
-from functools import partial
+from functools import lru_cache, partial
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 from ...serialization.core import Placeholder
@@ -37,7 +36,6 @@ from ...serialization.serializables.core import SerializableSerializer
 from ...typing_ import OperatorType
 from ...utils import AttributeDict, classproperty, get_user_call_point, tokenize
 from ..base import Base
-from ..entity.chunks import Chunk
 from ..entity.core import ENTITY_TYPE, Entity, EntityData
 from ..entity.output_types import OutputType
 from ..entity.tileables import Tileable
@@ -90,7 +88,7 @@ class SchedulingHint(Serializable):
     priority = Int32Field("priority", default=None)
 
     @classproperty
-    @functools.lru_cache(1)
+    @lru_cache(1)
     def all_hint_names(cls):
         return list(cls._FIELDS)
 
@@ -341,7 +339,7 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
             raise ValueError("Outputs' size exceeds limitation")
 
     @property
-    def outputs(self) -> List[Union[Chunk, Tileable]]:
+    def outputs(self) -> List[Tileable]:
         outputs = self._outputs
         if outputs:
             return [ref() for ref in outputs]

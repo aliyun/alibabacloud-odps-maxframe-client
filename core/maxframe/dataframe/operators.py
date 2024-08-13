@@ -16,13 +16,7 @@ import numpy as np
 import pandas as pd
 
 from ..core import ENTITY_TYPE, OutputType
-from ..core.operator import (
-    Fuse,
-    FuseChunkMixin,
-    Operator,
-    ShuffleProxy,
-    TileableOperatorMixin,
-)
+from ..core.operator import Operator, ShuffleProxy, TileableOperatorMixin
 from ..tensor.core import TENSOR_TYPE
 from ..tensor.datasource import tensor as astensor
 from .core import DATAFRAME_TYPE, SERIES_TYPE
@@ -261,13 +255,3 @@ DataFrameOperator = Operator
 class DataFrameShuffleProxy(ShuffleProxy, DataFrameOperatorMixin):
     def __init__(self, sparse=None, output_types=None, **kwargs):
         super().__init__(sparse=sparse, _output_types=output_types, **kwargs)
-
-
-class DataFrameFuseChunkMixin(FuseChunkMixin, DataFrameOperatorMixin):
-    __slots__ = ()
-
-
-class DataFrameFuseChunk(Fuse, DataFrameFuseChunkMixin):
-    @property
-    def output_types(self):
-        return self.outputs[-1].chunk.op.output_types

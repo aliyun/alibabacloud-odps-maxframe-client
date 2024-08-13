@@ -12,10 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .chunks import CHUNK_TYPE, Chunk, ChunkData
 from .core import ENTITY_TYPE, Entity, EntityData
 from .executable import ExecutableTuple, _ExecuteAndFetchMixin
-from .fuse import FUSE_CHUNK_TYPE, FuseChunk, FuseChunkData
 from .objects import OBJECT_TYPE, Object, ObjectData
 from .output_types import (
     OutputType,
@@ -32,6 +30,4 @@ from .tileables import (
     NotSupportTile,
     Tileable,
     TileableData,
-    register,
-    unregister,
 )

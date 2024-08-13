@@ -15,96 +15,21 @@
 import builtins
 import itertools
 from operator import attrgetter
-from typing import Callable, List
 from weakref import WeakKeyDictionary, WeakSet
 
 import numpy as np
 
 from ...serialization.serializables import BoolField, FieldTypes, TupleField
-from ...typing_ import OperatorType, TileableType
+from ...typing_ import TileableType
 from ...utils import on_deserialize_shape, on_serialize_nsplits, on_serialize_shape
 from ..base import Base
 from ..mode import enter_mode
-from .chunks import Chunk
 from .core import Entity, EntityData
 from .executable import _ExecutableMixin
 
 
 class NotSupportTile(Exception):
     pass
-
-
-class OperatorTilesHandler:
-    _handlers = dict()
-
-    @classmethod
-    def _get_op_cls(cls, op: OperatorType):
-        if isinstance(op, type):
-            return op
-        return type(op)
-
-    @classmethod
-    def register(
-        cls, op: OperatorType, tile_handler: Callable[[OperatorType], TileableType]
-    ):
-        cls._handlers[cls._get_op_cls(op)] = tile_handler
-
-    @classmethod
-    def unregister(cls, op: OperatorType):
-        del cls._handlers[cls._get_op_cls(op)]
-
-    @classmethod
-    def get_handler(
-        cls, op: OperatorType
-    ) -> Callable[[OperatorType], List[TileableType]]:
-        op_cls = cls._get_op_cls(op)
-        return cls._handlers.get(op_cls, op_cls.tile)
-
-    @classmethod
-    def _assign_to(
-        cls,
-        tile_after_tensor_datas: List["TileableData"],
-        tile_before_tensor_datas: List["TileableData"],
-    ):
-        assert len(tile_after_tensor_datas) == len(tile_before_tensor_datas)
-
-        for tile_after_tensor_data, tile_before_tensor_data in zip(
-            tile_after_tensor_datas, tile_before_tensor_datas
-        ):
-            if tile_before_tensor_data is None:
-                # garbage collected
-                continue
-            tile_after_tensor_data.copy_to(tile_before_tensor_data)
-            tile_before_tensor_data.op.outputs = tile_before_tensor_datas
-
-    @enter_mode(kernel=True)
-    def dispatch(self, op: OperatorType):
-        op_cls = self._get_op_cls(op)
-        tiled = None
-        cause = None
-
-        if op_cls in self._handlers:
-            tiled = self._handlers[op_cls](op)
-        else:
-            try:
-                tiled = op_cls.tile(op)
-            except NotImplementedError as ex:
-                cause = ex
-                for super_cls in op_cls.__mro__:
-                    if super_cls in self._handlers:
-                        h = self._handlers[op_cls] = self._handlers[super_cls]
-                        tiled = h(op)
-                        break
-
-        if tiled is not None:
-            return tiled if isinstance(tiled, list) else [tiled]
-        else:
-            raise NotImplementedError(f"{type(op)} does not support tile") from cause
-
-
-handler = OperatorTilesHandler()
-register = OperatorTilesHandler.register
-unregister = OperatorTilesHandler.unregister
 
 
 class _ChunksIndexer:
@@ -231,7 +156,7 @@ entity_view_handler = EntityDataModificationHandler()
 
 
 class TileableData(EntityData, _ExecutableMixin):
-    __slots__ = "_cix", "_entities", "_executed_sessions"
+    __slots__ = "_chunks", "_cix", "_entities", "_executed_sessions"
     _no_copy_attrs_ = Base._no_copy_attrs_ | {"_cix"}
 
     # optional fields
@@ -245,6 +170,8 @@ class TileableData(EntityData, _ExecutableMixin):
     cache = BoolField("cache", default=False)
 
     def __init__(self: TileableType, *args, **kwargs):
+        if kwargs.get("chunks") is not None:
+            self._chunks = kwargs.pop("chunks")
         if kwargs.get("_nsplits", None) is not None:
             kwargs["_nsplits"] = tuple(tuple(s) for s in kwargs["_nsplits"])
 
@@ -270,7 +197,7 @@ class TileableData(EntityData, _ExecutableMixin):
             return tuple(map(len, self._nsplits))
 
     @property
-    def chunks(self) -> List[Chunk]:
+    def chunks(self) -> list:
         return getattr(self, "_chunks", None)
 
     @property

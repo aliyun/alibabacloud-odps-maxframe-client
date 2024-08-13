@@ -22,7 +22,7 @@ from odps import ODPS
 
 import maxframe.dataframe as md
 from maxframe.config import options
-from maxframe.odpsio import ODPSTableIO
+from maxframe.io.odpsio import ODPSTableIO
 from maxframe.protocol import ODPSTableResultInfo, ResultType
 from maxframe.tests.utils import tn
 

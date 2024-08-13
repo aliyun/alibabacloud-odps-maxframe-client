@@ -22,13 +22,6 @@ from .base import (
 )
 from .core import TileableOperatorMixin, estimate_size, execute
 from .fetch import Fetch, FetchMixin, FetchShuffle, ShuffleFetchType
-from .fuse import Fuse, FuseChunkMixin
-from .objects import (
-    MergeDictOperator,
-    ObjectFetch,
-    ObjectFuseChunk,
-    ObjectFuseChunkMixin,
-    ObjectOperator,
-    ObjectOperatorMixin,
-)
+from .objects import MergeDictOperator, ObjectFetch, ObjectOperator, ObjectOperatorMixin
 from .shuffle import MapReduceOperator, ShuffleProxy
+from .utils import add_fetch_builder, build_fetch

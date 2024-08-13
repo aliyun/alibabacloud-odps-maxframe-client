@@ -53,6 +53,9 @@ class ArrayDataSource(TensorNoInput):
 
         super().__init__(data=data, dtype=dtype, gpu=gpu, **kw)
 
+    def get_data(self):
+        return self.data
+
 
 class CSRMatrixDataSource(TensorNoInput):
     """

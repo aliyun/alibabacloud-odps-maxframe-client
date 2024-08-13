@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from ..core import OutputType
 from ..core.operator import (
-    Fuse,
     HasInput,
     MapReduceOperator,
     Operator,
@@ -112,12 +112,6 @@ class TensorShuffleProxy(ShuffleProxy, TensorOperatorMixin):
 
 
 class TensorMapReduceOperator(MapReduceOperator):
-    _output_type_ = OutputType.tensor
-
-    dtype = DataTypeField("dtype", default=None)
-
-
-class TensorFuse(Fuse):
     _output_type_ = OutputType.tensor
 
     dtype = DataTypeField("dtype", default=None)

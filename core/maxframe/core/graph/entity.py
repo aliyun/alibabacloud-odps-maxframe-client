@@ -13,9 +13,9 @@
 # limitations under the License.
 
 from abc import ABCMeta, abstractmethod
-from typing import Dict, Iterable, List, Union
+from typing import Dict, Iterable, List
 
-from ...core import Chunk, Tileable
+from ...core import Tileable
 from ...serialization.core import buffered
 from ...serialization.serializables import BoolField, DictField, ListField, Serializable
 from ...serialization.serializables.core import SerializableSerializer
@@ -97,26 +97,6 @@ class TileableGraph(EntityGraph, Iterable[Tileable]):
         return self._logic_key
 
 
-class ChunkGraph(EntityGraph, Iterable[Chunk]):
-    _result_chunks: List[Chunk]
-
-    def __init__(self, result_chunks: List[Chunk] = None):
-        super().__init__()
-        self._result_chunks = result_chunks
-
-    @property
-    def result_chunks(self):
-        return self._result_chunks
-
-    @property
-    def results(self):
-        return self._result_chunks
-
-    @results.setter
-    def results(self, new_results):
-        self._result_chunks = new_results
-
-
 class SerializableGraph(Serializable):
     _is_chunk = BoolField("is_chunk")
     # TODO(qinxuye): remove this logic when we handle fetch elegantly,
@@ -132,12 +112,11 @@ class SerializableGraph(Serializable):
     _results = ListField("results")
 
     @classmethod
-    def from_graph(cls, graph: Union[TileableGraph, ChunkGraph]) -> "SerializableGraph":
+    def from_graph(cls, graph: EntityGraph) -> "SerializableGraph":
         from ..operator import Fetch
 
-        is_chunk = isinstance(graph, ChunkGraph)
         return SerializableGraph(
-            _is_chunk=is_chunk,
+            _is_chunk=False,
             _fetch_nodes=[chunk for chunk in graph if isinstance(chunk.op, Fetch)],
             _nodes=graph._nodes,
             _predecessors=graph._predecessors,
@@ -145,9 +124,8 @@ class SerializableGraph(Serializable):
             _results=graph.results,
         )
 
-    def to_graph(self) -> Union[TileableGraph, ChunkGraph]:
-        graph_cls = ChunkGraph if self._is_chunk else TileableGraph
-        graph = graph_cls(self._results)
+    def to_graph(self) -> EntityGraph:
+        graph = TileableGraph(self._results)
         graph._nodes.update(self._nodes)
         graph._predecessors.update(self._predecessors)
         graph._successors.update(self._successors)
@@ -156,14 +134,12 @@ class SerializableGraph(Serializable):
 
 class GraphSerializer(SerializableSerializer):
     @buffered
-    def serial(self, obj: Union[TileableGraph, ChunkGraph], context: Dict):
+    def serial(self, obj: EntityGraph, context: Dict):
         serializable_graph = SerializableGraph.from_graph(obj)
         return [], [serializable_graph], False
 
-    def deserial(
-        self, serialized: List, context: Dict, subs: List
-    ) -> Union[TileableGraph, ChunkGraph]:
-        serializable_graph: SerializableGraph = subs[0]
+    def deserial(self, serialized: List, context: Dict, subs: List) -> TileableGraph:
+        serializable_graph: EntityGraph = subs[0]
         return serializable_graph.to_graph()
 
 

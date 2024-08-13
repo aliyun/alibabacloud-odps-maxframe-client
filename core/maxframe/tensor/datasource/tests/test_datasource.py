@@ -141,7 +141,7 @@ def test_zeros():
 
 
 def test_data_source():
-    from ...base.broadcast_to import TensorBroadcastTo
+    from ...misc.broadcast_to import TensorBroadcastTo
 
     data = np.random.random((10, 3))
     t = tensor(data, chunk_size=2)

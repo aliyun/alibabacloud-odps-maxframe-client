@@ -92,18 +92,7 @@ html_title = "MaxFrame"
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-html_theme_options = {
-    # "github_url": "https://github.com/mars-project/mars",
-    # "twitter_url": "https://twitter.com/pymars_dev",
-    # "external_links": [
-    #     {
-    #         "name": "Release Notes",
-    #         "url": "https://github.com/mars-project/mars/releases",
-    #     },
-    # ],
-    # "logo": {
-    # },
-}
+html_theme_options = {}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -167,10 +156,10 @@ man_pages = [(master_doc, "maxframe", "maxframe Documentation", [author], 1)]
 texinfo_documents = [
     (
         master_doc,
-        "mars",
-        "mars Documentation",
+        "MasxFrame",
+        "MaxFrame Documentation",
         author,
-        "mars",
+        "maxframe",
         "One line description of project.",
         "Miscellaneous",
     ),
