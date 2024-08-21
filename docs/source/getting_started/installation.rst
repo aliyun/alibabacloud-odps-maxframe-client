@@ -37,8 +37,8 @@ and then store the result into another MaxCompute table.
         project='your-default-project',
         endpoint='your-end-point',
     )
-    o.create_table("test_source_table", "a string, b bigint")
-    with o.open_writer() as writer:
+    table = o.create_table("test_source_table", "a string, b bigint")
+    with table.open_writer() as writer:
         writer.write([
             ["value1", 0],
             ["value2", 1],
