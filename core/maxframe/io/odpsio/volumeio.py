@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import inspect
-from typing import Iterator, List, Union
+from typing import Iterator, List, Optional, Union
 
 from odps import ODPS
 
@@ -43,9 +43,15 @@ class ODPSVolumeReader:
 
 
 class ODPSVolumeWriter:
-    def __init__(self, odps_entry: ODPS, volume_name: str, volume_dir: str):
+    def __init__(
+        self,
+        odps_entry: ODPS,
+        volume_name: str,
+        volume_dir: str,
+        schema_name: Optional[str] = None,
+    ):
         self._odps_entry = odps_entry
-        self._volume = odps_entry.get_volume(volume_name)
+        self._volume = odps_entry.get_volume(volume_name, schema=schema_name)
         self._volume_dir = volume_dir
 
     def write_file(self, file_name: str, data: Union[bytes, Iterator[bytes]]):

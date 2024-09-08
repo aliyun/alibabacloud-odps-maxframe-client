@@ -150,6 +150,10 @@ class AbstractSession(ABC):
     def session_id(self):
         return self._session_id
 
+    @property
+    def closed(self) -> bool:
+        return self._closed
+
     def __eq__(self, other):
         return (
             isinstance(other, AbstractSession)
@@ -1283,9 +1287,12 @@ def get_default_or_create(**kwargs):
         if session is None:
             # no session attached, try to create one
             warnings.warn(warning_msg)
-            session = new_session(
-                ODPS.from_global() or ODPS.from_environments(), **kwargs
+            odps_entry = (
+                kwargs.pop("odps_entry", None)
+                or ODPS.from_global()
+                or ODPS.from_environments()
             )
+            session = new_session(odps_entry=odps_entry, **kwargs)
             session.as_default()
     if isinstance(session, IsolatedAsyncSession):
         session = SyncSession.from_isolated_session(session)

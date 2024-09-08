@@ -18,6 +18,7 @@ from abc import ABC, abstractmethod
 from contextlib import contextmanager
 from typing import Dict, List, Optional, Union
 
+import numpy as np
 import pyarrow as pa
 from odps import ODPS
 from odps import __version__ as pyodps_version
@@ -26,7 +27,6 @@ from odps.apis.storage_api import (
     TableBatchScanResponse,
     TableBatchWriteResponse,
 )
-from odps.config import option_context as pyodps_option_context
 from odps.tunnel import TableTunnel
 from odps.types import OdpsSchema, PartitionSpec, timestamp_ntz
 
@@ -38,19 +38,13 @@ except ImportError:
 from ...config import options
 from ...env import ODPS_STORAGE_API_ENDPOINT
 from ...lib.version import Version
+from ...utils import sync_pyodps_options
 from .schema import odps_schema_to_arrow_schema
 
 PartitionsType = Union[List[str], str, None]
 
 _DEFAULT_ROW_BATCH_SIZE = 4096
-_need_convert_timezone = Version(pyodps_version) < Version("0.11.7")
-
-
-@contextmanager
-def _sync_pyodps_timezone():
-    with pyodps_option_context() as cfg:
-        cfg.local_timezone = options.local_timezone
-        yield
+_need_patch_batch = Version(pyodps_version) < Version("0.12.0")
 
 
 class ODPSTableIO(ABC):
@@ -166,10 +160,15 @@ class TunnelMultiPartitionReader:
             self._cur_partition_id += 1
 
             part_str = self._partitions[self._cur_partition_id]
-            with _sync_pyodps_timezone():
+
+            # todo make this more formal when PyODPS 0.12.0 is released
+            req_columns = self._columns
+            if not _need_patch_batch:
+                req_columns = self._schema.names
+            with sync_pyodps_options():
                 self._cur_reader = self._table.open_reader(
                     part_str,
-                    columns=self._columns,
+                    columns=req_columns,
                     arrow=True,
                     download_id=self._partition_to_download_ids.get(part_str),
                 )
@@ -180,7 +179,7 @@ class TunnelMultiPartitionReader:
                 else:
                     count = min(self._count, self._cur_reader.count - start)
 
-                with _sync_pyodps_timezone():
+                with sync_pyodps_options():
                     self._reader_iter = self._cur_reader.read(start, count)
                 break
             self._reader_start_pos += self._cur_reader.count
@@ -194,7 +193,7 @@ class TunnelMultiPartitionReader:
         arrays = []
         for idx in range(batch.num_columns):
             col = batch.column(idx)
-            if _need_convert_timezone and isinstance(col.type, pa.TimestampType):
+            if isinstance(col.type, pa.TimestampType):
                 if col.type.tz is not None:
                     target_type = pa.timestamp(
                         self._schema.types[idx].unit, col.type.tz
@@ -212,11 +211,12 @@ class TunnelMultiPartitionReader:
         for part_col in self._partition_cols or []:
             names.append(part_col)
             col_type = self._schema.field_by_name(part_col).type
-            arrays.append(pa.array([pt_spec[part_col]] * batch.num_rows).cast(col_type))
+            pt_col = np.repeat([pt_spec[part_col]], batch.num_rows)
+            arrays.append(pa.array(pt_col).cast(col_type))
         return pa.RecordBatch.from_arrays(arrays, names)
 
     def read(self):
-        with _sync_pyodps_timezone():
+        with sync_pyodps_options():
             if self._cur_reader is None:
                 self._open_next_reader()
                 if self._cur_reader is None:
@@ -227,7 +227,10 @@ class TunnelMultiPartitionReader:
                     if batch is not None:
                         if self._row_left is not None:
                             self._row_left -= batch.num_rows
-                        return self._fill_batch_partition(batch)
+                        if _need_patch_batch:
+                            return self._fill_batch_partition(batch)
+                        else:
+                            return batch
                 except StopIteration:
                     self._open_next_reader()
             return None
@@ -285,7 +288,9 @@ class TunnelTableIO(ODPSTableIO):
         reverse_range: bool = False,
         row_batch_size: int = _DEFAULT_ROW_BATCH_SIZE,
     ):
-        table = self._odps.get_table(full_table_name)
+        with sync_pyodps_options():
+            table = self._odps.get_table(full_table_name)
+
         if partition_columns is True:
             partition_columns = [c.name for c in table.table_schema.partitions]
 
@@ -296,21 +301,22 @@ class TunnelTableIO(ODPSTableIO):
             or (stop is not None and stop < 0)
             or (reverse_range and start is None)
         ):
-            table = self._odps.get_table(full_table_name)
-            tunnel = TableTunnel(self._odps)
-            parts = (
-                [partitions]
-                if partitions is None or isinstance(partitions, str)
-                else partitions
-            )
-            part_to_down_id = dict()
-            total_records = 0
-            for part in parts:
-                down_session = tunnel.create_download_session(
-                    table, async_mode=True, partition_spec=part
+            with sync_pyodps_options():
+                table = self._odps.get_table(full_table_name)
+                tunnel = TableTunnel(self._odps)
+                parts = (
+                    [partitions]
+                    if partitions is None or isinstance(partitions, str)
+                    else partitions
                 )
-                part_to_down_id[part] = down_session.id
-                total_records += down_session.count
+                part_to_down_id = dict()
+                total_records = 0
+                for part in parts:
+                    down_session = tunnel.create_download_session(
+                        table, async_mode=True, partition_spec=part
+                    )
+                    part_to_down_id[part] = down_session.id
+                    total_records += down_session.count
 
         count = None
         if start is not None or stop is not None:
@@ -347,7 +353,7 @@ class TunnelTableIO(ODPSTableIO):
         overwrite: bool = True,
     ):
         table = self._odps.get_table(full_table_name)
-        with _sync_pyodps_timezone():
+        with sync_pyodps_options():
             with table.open_writer(
                 partition=partition,
                 arrow=True,
@@ -357,7 +363,7 @@ class TunnelTableIO(ODPSTableIO):
                 # fixme should yield writer directly once pyodps fixes
                 #  related arrow timestamp bug when provided schema and
                 #  table schema is identical.
-                if _need_convert_timezone:
+                if _need_patch_batch:
                     yield TunnelWrappedWriter(writer)
                 else:
                     yield writer
@@ -596,8 +602,8 @@ class HaloTableIO(ODPSTableIO):
     ):
         from odps.apis.storage_api import (
             SessionRequest,
+            SessionStatus,
             SplitOptions,
-            Status,
             TableBatchScanRequest,
         )
 
@@ -628,13 +634,13 @@ class HaloTableIO(ODPSTableIO):
         resp = client.create_read_session(req)
 
         session_id = resp.session_id
-        status = resp.status
-        while status == Status.WAIT:
+        status = resp.session_status
+        while status == SessionStatus.INIT:
             resp = client.get_read_session(SessionRequest(session_id))
-            status = resp.status
+            status = resp.session_status
             time.sleep(1.0)
 
-        assert status == Status.OK
+        assert status == SessionStatus.NORMAL
 
         count = None
         if start is not None or stop is not None:

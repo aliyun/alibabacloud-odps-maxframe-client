@@ -15,6 +15,7 @@
 from typing import Union
 
 import pandas as pd
+from pandas.api.types import is_list_like
 from pandas.core.dtypes.common import pandas_dtype
 
 from ..core import ENTITY_TYPE
@@ -61,6 +62,8 @@ class DataFrame(_Frame, metaclass=InitializerMeta):
         num_partitions=None,
     ):
         need_repart = False
+        if columns is not None and not is_list_like(columns):
+            raise ValueError("columns must be a list-like object")
         if isinstance(data, TENSOR_TYPE):
             if chunk_size is not None:
                 data = data.rechunk(chunk_size)
@@ -69,7 +72,10 @@ class DataFrame(_Frame, metaclass=InitializerMeta):
             )
             need_repart = num_partitions is not None
         elif isinstance(data, SERIES_TYPE):
-            df = data.to_frame()
+            if columns is not None and len(columns) != 1:
+                raise ValueError("columns' length must be 1 when data is Series")
+            col_name = columns[0] if columns else None
+            df = data.to_frame(name=col_name)
             need_repart = num_partitions is not None
         elif isinstance(data, DATAFRAME_TYPE):
             if not hasattr(data, "data"):
@@ -77,6 +83,10 @@ class DataFrame(_Frame, metaclass=InitializerMeta):
                 df = _Frame(data)
             else:
                 df = data
+            if columns is not None:
+                if len(df.columns) != len(columns):
+                    raise ValueError("columns' length must be equal to the data's")
+                df.columns = columns
             need_repart = num_partitions is not None
         elif isinstance(data, dict) and self._can_process_by_1d_tileables(data):
             # data is a dict and some value is tensor

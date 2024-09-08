@@ -102,7 +102,7 @@ def train(params, dtrain, evals=None, evals_result=None, num_class=None, **kwarg
     Parameters
     ----------
     Parameters are the same as `xgboost.train`. Note that train is an eager-execution
-    API. The call will be blocked until training finished.
+    API if evals is passed, thus the call will be blocked until training finished.
 
     Returns
     -------
@@ -121,11 +121,12 @@ def train(params, dtrain, evals=None, evals_result=None, num_class=None, **kwarg
                 processed_evals.append((eval_dmatrix, name))
             else:
                 processed_evals.append((to_dmatrix(eval_dmatrix), name))
-    return XGBTrain(
+    data = XGBTrain(
         params=params,
         dtrain=dtrain,
         evals=processed_evals,
         evals_result=evals_result,
         num_class=num_class,
         **kwargs,
-    )(evals_result).execute(session=session, **run_kwargs)
+    )(evals_result)
+    return data.execute(session=session, **run_kwargs) if evals else data

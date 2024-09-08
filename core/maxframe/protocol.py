@@ -375,6 +375,11 @@ class ExecuteDagRequest(Serializable):
         value_type=FieldTypes.reference,
         default=None,
     )
+    new_settings: Dict[str, Any] = DictField(
+        "new_settings",
+        key_type=FieldTypes.string,
+        default=None,
+    )
 
 
 class SubDagSubmitInstanceInfo(JsonSerializable):
@@ -511,7 +516,7 @@ class DataFrameTableMeta(JsonSerializable):
         return True
 
     def to_json(self) -> dict:
-        b64_pk = lambda x: base64.b64encode(pickle.dumps(x))
+        b64_pk = lambda x: base64.b64encode(pickle.dumps(x)).decode()
         ret = {
             "table_name": self.table_name,
             "type": self.type.value,

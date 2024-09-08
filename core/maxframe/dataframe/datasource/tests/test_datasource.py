@@ -19,6 +19,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from odps import ODPS
+from odps import types as odps_types
 
 from .... import tensor as mt
 from ....core import OutputType
@@ -35,7 +36,7 @@ from ..from_tensor import (
 )
 from ..index import from_pandas as from_pandas_index
 from ..index import from_tileable
-from ..read_odps_query import ColumnSchema, _resolve_task_sector
+from ..read_odps_query import ColumnSchema, _parse_simple_explain, _resolve_task_sector
 from ..series import from_pandas as from_pandas_series
 
 ray = lazy_import("ray")
@@ -329,10 +330,6 @@ def test_from_odps_query():
         read_odps_query(f"CREATE TABLE dummy_table AS SELECT * FROM {table1_name}")
     assert "instant query" in err_info.value.args[0]
 
-    with pytest.raises(ValueError) as err_info:
-        read_odps_query(f"SELECT col1, col2 + col3 FROM {table1_name}")
-    assert "names" in err_info.value.args[0]
-
     query1 = f"SELECT * FROM {table1_name} WHERE col1 > 10"
     df = read_odps_query(query1)
     assert df.op.query == query1
@@ -401,7 +398,9 @@ def test_date_range():
 
 
 def test_resolve_task_sector():
-    input_path = os.path.join(os.path.dirname(__file__), "test-data", "task-input.txt")
+    input_path = os.path.join(
+        os.path.dirname(__file__), "test-data", "task-input-full.txt"
+    )
     with open(input_path, "r") as f:
         sector = f.read()
     actual_sector = _resolve_task_sector("job0", sector)
@@ -413,3 +412,33 @@ def test_resolve_task_sector():
     assert actual_sector.schema[0] == ColumnSchema("unnamed: 0", "bigint", "")
     assert actual_sector.schema[1] == ColumnSchema("id", "bigint", "id_alias")
     assert actual_sector.schema[2] == ColumnSchema("listing_url", "string", "")
+
+
+def test_resolve_task_odps2():
+    input_path = os.path.join(
+        os.path.dirname(__file__), "test-data", "task-input-odps2.txt"
+    )
+    with open(input_path, "r") as f:
+        sector = f.read()
+    actual_sector = _resolve_task_sector("job0", sector)
+
+    assert actual_sector.job_name == "job0"
+    assert actual_sector.task_name == "M1"
+    assert actual_sector.output_target == "Screen"
+    assert len(actual_sector.schema) == 2
+    assert actual_sector.schema[0] == ColumnSchema("key", "varchar(2048)", "")
+    assert actual_sector.schema[1] == ColumnSchema("data", "binary", "")
+
+
+def test_resolve_simple_explain():
+    input_path = os.path.join(
+        os.path.dirname(__file__), "test-data", "task-input-simple.txt"
+    )
+    with open(input_path, "r") as f:
+        sector = f.read()
+
+    schema = _parse_simple_explain(sector)
+    assert schema.columns[0].name == "memberid"
+    assert schema.columns[0].type == odps_types.string
+    assert schema.columns[1].name == "createdate"
+    assert schema.columns[1].type == odps_types.bigint

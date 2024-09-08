@@ -370,13 +370,6 @@ def format_timeout_params(timeout: TimeoutType) -> str:
         return f"?wait=1&timeout={timeout}"
 
 
-async def to_thread_pool(func, *args, pool=None, **kwargs):
-    loop = asyncio.events.get_running_loop()
-    ctx = contextvars.copy_context()
-    func_call = functools.partial(ctx.run, func, *args, **kwargs)
-    return await loop.run_in_executor(pool, func_call)
-
-
 _PrimitiveType = TypeVar("_PrimitiveType")
 
 
@@ -438,15 +431,22 @@ class ToThreadMixin:
                 thread_name_prefix=f"{type(self).__name__}Pool-{self._counter()}",
             )
 
-        task = asyncio.create_task(
-            to_thread_pool(func, *args, **kwargs, pool=self._pool)
-        )
+        loop = asyncio.events.get_running_loop()
+        ctx = contextvars.copy_context()
+        func_call = functools.partial(ctx.run, func, *args, **kwargs)
+        fut = loop.run_in_executor(self._pool, func_call)
+
         try:
-            return await asyncio.wait_for(asyncio.shield(task), timeout)
+            coro = fut
+            if wait_on_cancel:
+                coro = asyncio.shield(coro)
+            if timeout is not None:
+                coro = asyncio.wait_for(coro, timeout)
+            return await coro
         except (asyncio.CancelledError, asyncio.TimeoutError) as ex:
             if not wait_on_cancel:
                 raise
-            result = await task
+            result = await fut
             raise ToThreadCancelledError(*ex.args, result=result)
 
     def ensure_async_call(
@@ -1077,3 +1077,25 @@ def collect_leaf_operators(root) -> List[Type]:
 
     _collect(root)
     return result
+
+
+@contextmanager
+def sync_pyodps_options():
+    from odps.config import OptionError
+    from odps.config import option_context as pyodps_option_context
+
+    from .config import options
+
+    with pyodps_option_context() as cfg:
+        cfg.local_timezone = options.local_timezone
+        if options.session.enable_schema:
+            try:
+                cfg.enable_schema = options.session.enable_schema
+            except (AttributeError, OptionError):
+                # fixme enable_schema only supported in PyODPS 0.12.0 or later
+                cfg.always_enable_schema = options.session.enable_schema
+        yield
+
+
+def str_to_bool(s: Optional[str]) -> Optional[bool]:
+    return s.lower().strip() in ("true", "1") if s is not None else None

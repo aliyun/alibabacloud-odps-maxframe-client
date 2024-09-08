@@ -1666,6 +1666,8 @@ class DataFrameData(_BatchedFetcher, BaseDataFrameData):
             raise NotImplementedError
 
         corner_data = fetch_corner_data(self, session=self._executed_sessions[-1])
+        if corner_data is None:
+            return
 
         buf = StringIO()
         max_rows = pd.get_option("display.max_rows")

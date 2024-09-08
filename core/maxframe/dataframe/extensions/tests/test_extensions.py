@@ -11,11 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import numpy as np
 import pandas as pd
 import pytest
 
 from .... import dataframe as md
+from ... import DataFrame
 from ...core import IndexValue
 from ..reshuffle import DataFrameReshuffle
 
@@ -36,3 +37,63 @@ def test_reshuffle():
     r = mdf.mf.reshuffle(ignore_index=True)
     assert isinstance(r.op, DataFrameReshuffle)
     assert isinstance(r.index_value.value, IndexValue.RangeIndex)
+
+
+@pytest.fixture
+def df1():
+    return DataFrame({"a": [1, 2, 3], "b": [1, 2, 3], "c": [1, 2, 3]})
+
+
+@pytest.fixture
+def df2():
+    return DataFrame([[1, 2, 3], [1, 2, 3], [1, 2, 3]], columns=["a", "b", "c"])
+
+
+@pytest.fixture
+def df3():
+    return DataFrame(
+        [[1, 2, 3], [1, 2, 3], [1, 2, 3]],
+        columns=["a", "b", "c"],
+        index=pd.MultiIndex.from_arrays([[1, 2, 3], [1, 2, 3]], names=["A", "B"]),
+    )
+
+
+def test_flatmap(df1, df2, df3):
+    def f(x, keys):
+        if x["a"] in keys:
+            yield [1, 0]
+            yield [0, 1]
+
+    apply_df = df1[["a"]].mf.flatmap(
+        f,
+        dtypes={"a": "int64", "b": "int64"},
+    )
+    assert apply_df.shape == (np.nan, 2)
+    assert df1.index_value.key != apply_df.index_value.key
+    assert isinstance(df1.index_value.to_pandas(), pd.RangeIndex)
+    assert not isinstance(apply_df.index_value.to_pandas(), pd.RangeIndex)
+    apply_df = df2[["a"]].mf.flatmap(
+        f,
+        dtypes=pd.Series(["int64", "int64"]),
+    )
+    assert apply_df.shape == (np.nan, 2)
+    assert df2.index_value.key != apply_df.index_value.key
+    with pytest.raises(TypeError):
+        apply_s = df3["a"].mf.flatmap(
+            f,
+        )
+    apply_s = df3["a"].mf.flatmap(
+        f,
+        dtype="int64",
+    )
+    assert apply_s.shape == (np.nan,)
+    assert df3.index_value.key != apply_s.index_value.key
+    assert df3.key != apply_s.index_value.key
+    apply_s = df3["a"].mf.flatmap(
+        f,
+        output_type="dataframe",
+        dtypes=["int64", "int64"],
+    )
+    assert apply_s.shape == (np.nan, 2)
+    assert df3.index_value.key != apply_s.index_value.key
+    assert df3.key != apply_s.index_value.key

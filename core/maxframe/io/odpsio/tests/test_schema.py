@@ -270,10 +270,6 @@ def test_odps_arrow_schema_conversion():
 
     with pytest.raises(TypeError):
         arrow_schema_to_odps_schema(pa.schema([("col1", pa.float16())]))
-    with pytest.raises(TypeError):
-        odps_schema_to_arrow_schema(
-            odps_types.OdpsSchema([odps_types.Column("col1", "json")])
-        )
 
 
 def test_build_column_name():

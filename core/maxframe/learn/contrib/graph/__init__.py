@@ -12,7 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import graph, pytorch
-
-del pytorch
-del graph
+from .connected_components import connected_components

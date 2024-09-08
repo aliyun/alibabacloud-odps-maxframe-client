@@ -347,6 +347,7 @@ BUILTIN_ENGINE_SPE = "SPE"
 BUILTIN_ENGINE_MCSQL = "MCSQL"
 
 FAST_RANGE_INDEX_ENABLED = "codegen.fast_range_index_enabled"
+ROW_NUMBER_WINDOW_INDEX_ENABLED = "codegen.row_number_window_index_enabled"
 
 
 class BigDagCodeGenerator(metaclass=abc.ABCMeta):

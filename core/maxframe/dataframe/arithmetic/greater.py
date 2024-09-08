@@ -52,6 +52,8 @@ dtype: bool
 
 
 @bin_compare_doc("Greater than", equiv=">", series_example=_gt_example)
-def gt(df, other, axis="columns", level=None):
-    op = DataFrameGreater(axis=axis, level=level, lhs=df, rhs=other)
+def gt(df, other, axis="columns", level=None, fill_value=None):
+    op = DataFrameGreater(
+        axis=axis, level=level, lhs=df, rhs=other, fill_value=fill_value
+    )
     return op(df, other)

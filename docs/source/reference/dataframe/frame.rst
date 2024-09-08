@@ -84,6 +84,7 @@ Function application, GroupBy & window
    DataFrame.agg
    DataFrame.aggregate
    DataFrame.groupby
+   DataFrame.mf.flatmap
    DataFrame.transform
 
 .. _generated.dataframe.stats:

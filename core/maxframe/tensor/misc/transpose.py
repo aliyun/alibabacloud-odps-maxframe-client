@@ -125,5 +125,5 @@ def transpose(a, axes=None):
         axes = list(range(a.ndim))[::-1]
     else:
         axes = list(axes)
-    op = TensorTranspose(axes)
+    op = TensorTranspose(axes, dtype=a.dtype)
     return op(a)

@@ -104,7 +104,6 @@ def df_drop_duplicates(
 def series_drop_duplicates(
     series, keep="first", inplace=False, ignore_index=False, method="auto"
 ):
-    # FIXME: https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/12
     """
     Return Series with duplicate values removed.
 
@@ -143,6 +142,24 @@ def series_drop_duplicates(
     0      lame
     1       cow
     2      lame
+    3    beetle
+    4      lame
+    5     hippo
+    Name: animal, dtype: object
+
+    With the 'keep' parameter, the selection behaviour of duplicated values
+    can be changed. The value 'first' keeps the first occurrence for each
+    set of duplicated entries. The default value of keep is 'first'.
+    >>> s.drop_duplicates().execute()
+    0      lame
+    1       cow
+    3    beetle
+    5     hippo
+    Name: animal, dtype: object
+    The value 'last' for parameter 'keep' keeps the last occurrence for
+    each set of duplicated entries.
+    >>> s.drop_duplicates(keep='last').execute()
+    1       cow
     3    beetle
     4      lame
     5     hippo

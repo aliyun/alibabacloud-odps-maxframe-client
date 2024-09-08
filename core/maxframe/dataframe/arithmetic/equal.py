@@ -51,6 +51,8 @@ dtype: bool
 
 
 @bin_compare_doc("Equal to", equiv="==", series_example=_eq_example)
-def eq(df, other, axis="columns", level=None):
-    op = DataFrameEqual(axis=axis, level=level, lhs=df, rhs=other)
+def eq(df, other, axis="columns", level=None, fill_value=None):
+    op = DataFrameEqual(
+        axis=axis, level=level, lhs=df, rhs=other, fill_value=fill_value
+    )
     return op(df, other)

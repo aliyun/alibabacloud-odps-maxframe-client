@@ -17,6 +17,7 @@
 import logging
 from typing import List, Optional, Union
 
+from odps import ODPS
 from odps.models import Table as ODPSTable
 from odps.types import PartitionSpec
 
@@ -136,8 +137,14 @@ def to_odps_table(
     --------
 
     """
+    odps_entry = ODPS.from_global() or ODPS.from_environments()
     if isinstance(table, ODPSTable):
         table = table.full_table_name
+    elif options.session.enable_schema and "." not in table:
+        default_schema = (
+            options.session.default_schema or odps_entry.schema or "default"
+        )
+        table = default_schema + "." + table
 
     if isinstance(index_label, str):
         index_label = [index_label]

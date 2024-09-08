@@ -52,6 +52,8 @@ dtype: bool
 
 
 @bin_compare_doc("Less than or equal to", equiv="<=", series_example=_le_example)
-def le(df, other, axis="columns", level=None):
-    op = DataFrameLessEqual(axis=axis, level=level, lhs=df, rhs=other)
+def le(df, other, axis="columns", level=None, fill_value=None):
+    op = DataFrameLessEqual(
+        axis=axis, level=level, lhs=df, rhs=other, fill_value=fill_value
+    )
     return op(df, other)

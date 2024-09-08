@@ -54,7 +54,9 @@ _odps_type_to_arrow = {
     odps_types.double: pa.float64(),
     odps_types.date: pa.date32(),
     odps_types.datetime: pa.timestamp("ms"),
+    odps_types.json: pa.string(),
     odps_types.timestamp: pa.timestamp("ns"),
+    odps_types.timestamp_ntz: pa.timestamp("ns"),
 }
 
 
@@ -166,7 +168,7 @@ def odps_schema_to_pandas_dtypes(
     return arrow_schema.empty_table().to_pandas().dtypes
 
 
-def _is_scalar_object(df_obj: Any) -> bool:
+def is_scalar_object(df_obj: Any) -> bool:
     return (
         isinstance(df_obj, TENSOR_TYPE) and df_obj.shape == ()
     ) or pd_types.is_scalar(df_obj)
@@ -187,7 +189,7 @@ def pandas_to_odps_schema(
     from ... import dataframe as md
     from .arrow import pandas_to_arrow
 
-    if _is_scalar_object(df_obj):
+    if is_scalar_object(df_obj):
         empty_index = None
     elif hasattr(df_obj, "index_value"):
         empty_index = df_obj.index_value.to_pandas()[:0]
@@ -289,7 +291,7 @@ def build_dataframe_table_meta(
         obj_type = OutputType.series
     elif isinstance(df_obj, (md.Index, pd.Index)):
         obj_type = OutputType.index
-    elif _is_scalar_object(df_obj):
+    elif is_scalar_object(df_obj):
         obj_type = OutputType.scalar
     else:  # pragma: no cover
         raise TypeError(f"Cannot accept type {type(df_obj)}")

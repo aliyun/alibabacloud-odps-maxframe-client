@@ -343,6 +343,9 @@ default_options.register_option("sql.enable_mcqa", True, validator=is_bool, remo
 default_options.register_option(
     "sql.generate_comments", True, validator=is_bool, remote=True
 )
+default_options.register_option(
+    "sql.auto_use_common_image", True, validator=is_bool, remote=True
+)
 default_options.register_option("sql.settings", {}, validator=is_dict, remote=True)
 
 default_options.register_option("is_production", False, validator=is_bool, remote=True)
@@ -372,12 +375,21 @@ default_options.register_option(
     remote=True,
 )
 default_options.register_option(
+    "session.quota_name", None, validator=is_null | is_string, remote=True
+)
+default_options.register_option(
+    "session.enable_schema", None, validator=is_null | is_bool, remote=True
+)
+default_options.register_option(
+    "session.default_schema", None, validator=is_null | is_string, remote=True
+)
+default_options.register_option(
     "session.upload_batch_size",
     _DEFAULT_UPLOAD_BATCH_SIZE,
     validator=is_integer,
 )
 default_options.register_option(
-    "session.table_lifecycle", None, validator=is_null | is_integer
+    "session.table_lifecycle", None, validator=is_null | is_integer, remote=True
 )
 default_options.register_option(
     "session.temp_table_lifecycle",

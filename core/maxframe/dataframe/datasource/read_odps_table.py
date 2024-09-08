@@ -22,6 +22,7 @@ from odps.models import Table
 from odps.utils import to_timestamp
 
 from ... import opcodes
+from ...config import options
 from ...core import OutputType
 from ...io.odpsio import odps_schema_to_pandas_dtypes
 from ...serialization.serializables import (
@@ -167,12 +168,13 @@ def read_odps_table(
         DataFrame read from MaxCompute (ODPS) table
     """
     odps_entry = odps_entry or ODPS.from_global() or ODPS.from_environments()
+    schema = options.session.default_schema or odps_entry.schema
     if odps_entry is None:
         raise ValueError("Missing odps_entry parameter")
     if isinstance(table_name, Table):
         table = table_name
     else:
-        table = odps_entry.get_table(table_name)
+        table = odps_entry.get_table(table_name, schema=schema)
 
     if not table.table_schema.partitions and (
         partitions is not None or append_partitions
