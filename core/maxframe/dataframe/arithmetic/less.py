@@ -52,6 +52,6 @@ dtype: bool
 
 
 @bin_compare_doc("Less than", equiv="<", series_example=_lt_example)
-def lt(df, other, axis="columns", level=None):
-    op = DataFrameLess(axis=axis, level=level, lhs=df, rhs=other)
+def lt(df, other, axis="columns", level=None, fill_value=None):
+    op = DataFrameLess(axis=axis, level=level, lhs=df, rhs=other, fill_value=fill_value)
     return op(df, other)

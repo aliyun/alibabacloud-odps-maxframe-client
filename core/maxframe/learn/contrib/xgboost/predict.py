@@ -14,20 +14,18 @@
 
 
 import numpy as np
-import pandas as pd
 
 from .... import opcodes
 from ....core.entity.output_types import OutputType
 from ....core.operator.base import Operator
 from ....core.operator.core import TileableOperatorMixin
-from ....dataframe.utils import parse_index
 from ....serialization.serializables import (
     BoolField,
     KeyField,
     ReferenceField,
     TupleField,
 )
-from ....tensor.core import TENSOR_TYPE, TensorOrder
+from ....tensor.core import TensorOrder
 from .core import BoosterData
 from .dmatrix import check_data
 
@@ -65,35 +63,12 @@ class XGBPredict(Operator, TileableOperatorMixin):
         else:
             shape = (self.data.shape[0],)
         inputs = [self.data, self.model]
-        if self.output_types[0] == OutputType.tensor:
-            # tensor
-            return self.new_tileable(
-                inputs,
-                shape=shape,
-                dtype=self.output_dtype,
-                order=TensorOrder.C_ORDER,
-            )
-        elif self.output_types[0] == OutputType.dataframe:
-            # dataframe
-            dtypes = pd.DataFrame(
-                np.random.rand(0, num_class), dtype=self.output_dtype
-            ).dtypes
-            return self.new_tileable(
-                inputs,
-                shape=shape,
-                dtypes=dtypes,
-                columns_value=parse_index(dtypes.index),
-                index_value=self.data.index_value,
-            )
-        else:
-            # series
-            return self.new_tileable(
-                inputs,
-                shape=shape,
-                index_value=self.data.index_value,
-                name="predictions",
-                dtype=self.output_dtype,
-            )
+        return self.new_tileable(
+            inputs,
+            shape=shape,
+            dtype=self.output_dtype,
+            order=TensorOrder.C_ORDER,
+        )
 
 
 def predict(
@@ -124,13 +99,7 @@ def predict(
     data = check_data(data)
     # TODO: check model datatype
 
-    num_class = getattr(model.op, "num_class", None)
-    if isinstance(data, TENSOR_TYPE):
-        output_types = [OutputType.tensor]
-    elif num_class is not None:
-        output_types = [OutputType.dataframe]
-    else:
-        output_types = [OutputType.series]
+    output_types = [OutputType.tensor]
 
     iteration_range = iteration_range or (0, 0)
 

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import dataclasses
+import logging
 import re
 from typing import Dict, List, Optional, Tuple, Union
 
@@ -22,12 +23,14 @@ from odps import ODPS
 from odps.types import Column, OdpsSchema, validate_data_type
 
 from ... import opcodes
+from ...config import options
 from ...core import OutputType
 from ...core.graph import DAG
 from ...io.odpsio import odps_schema_to_pandas_dtypes
 from ...serialization.serializables import (
     AnyField,
     BoolField,
+    DictField,
     FieldTypes,
     Int64Field,
     ListField,
@@ -36,6 +39,10 @@ from ...serialization.serializables import (
 )
 from ..utils import parse_index
 from .core import ColumnPruneSupportedDataSourceMixin, IncrementalIndexDatasource
+
+logger = logging.getLogger(__name__)
+
+_DEFAULT_ANONYMOUS_COL_PREFIX = "_anon_col_"
 
 _EXPLAIN_DEPENDS_REGEX = re.compile(r"([^\s]+) depends on: ([^\n]+)")
 _EXPLAIN_JOB_REGEX = re.compile(r"(\S+) is root job")
@@ -46,8 +53,11 @@ _EXPLAIN_TASK_SCHEMA_REGEX = re.compile(
     r"In Task ([^:]+)[\S\s]+FS: output: ([^\n #]+)[\s\S]+schema:\s+([\S\s]+)$",
     re.MULTILINE,
 )
-_EXPLAIN_COLUMN_REGEX = re.compile(r"([^\(]+) \(([^)]+)\)(?:| AS ([^ ]+))(?:\n|$)")
-_ANONYMOUS_COL_REGEX = re.compile(r"^_c\d+$")
+_EXPLAIN_COLUMN_REGEX = re.compile(r"([^\(]+) \(([^\n]+)\)(?:| AS ([^ ]+))(?:\n|$)")
+_ANONYMOUS_COL_REGEX = re.compile(r"^_c(\d+)$")
+
+_SIMPLE_SCHEMA_COLS_REGEX = re.compile(r"SELECT (([^:]+:[^, ]+[, ]*)+)FROM")
+_SIMPLE_SCHEMA_COL_REGEX = re.compile(r"([^\.]+):([^, ]+)")
 
 
 @dataclasses.dataclass
@@ -152,7 +162,7 @@ def _resolve_task_sector(job_name: str, sector: str) -> TaskSector:
     return TaskSector(job_name, task_name, out_target, schemas)
 
 
-def _parse_explained_schema(explain_string: str) -> OdpsSchema:
+def _parse_full_explain(explain_string: str) -> OdpsSchema:
     sectors = _split_explain_string(explain_string)
     jobs_sector = tasks_sector = None
 
@@ -191,6 +201,25 @@ def _parse_explained_schema(explain_string: str) -> OdpsSchema:
     return OdpsSchema(cols)
 
 
+def _parse_simple_explain(explain_string: str) -> OdpsSchema:
+    fields_match = _SIMPLE_SCHEMA_COLS_REGEX.search(explain_string)
+    if not fields_match:
+        raise ValueError("Cannot detect output table schema")
+
+    fields_str = fields_match.group(1)
+    cols = []
+    for field, type_name in _SIMPLE_SCHEMA_COL_REGEX.findall(fields_str):
+        cols.append(Column(field, validate_data_type(type_name)))
+    return OdpsSchema(cols)
+
+
+def _parse_explained_schema(explain_string: str) -> OdpsSchema:
+    if explain_string.startswith("AdhocSink"):
+        return _parse_simple_explain(explain_string)
+    else:
+        return _parse_full_explain(explain_string)
+
+
 class DataFrameReadODPSQuery(
     IncrementalIndexDatasource,
     ColumnPruneSupportedDataSourceMixin,
@@ -205,6 +234,7 @@ class DataFrameReadODPSQuery(
     string_as_binary = BoolField("string_as_binary", default=None)
     index_columns = ListField("index_columns", FieldTypes.string, default=None)
     index_dtypes = SeriesField("index_dtypes", default=None)
+    column_renames = DictField("column_renames", default=None)
 
     def get_columns(self):
         return self.columns
@@ -246,6 +276,8 @@ def read_odps_query(
     odps_entry: ODPS = None,
     index_col: Union[None, str, List[str]] = None,
     string_as_binary: bool = None,
+    sql_hints: Dict[str, str] = None,
+    anonymous_col_prefix: str = _DEFAULT_ANONYMOUS_COL_PREFIX,
     **kw,
 ):
     """
@@ -260,25 +292,51 @@ def read_odps_query(
         MaxCompute SQL statement.
     index_col: Union[None, str, List[str]]
         Columns to be specified as indexes.
+    string_as_binary: bool, optional
+        Whether to convert string columns to binary.
+    sql_hints: Dict[str, str], optional
+        User specified SQL hints.
+    anonymous_col_prefix: str, optional
+        Prefix for anonymous columns, '_anon_col_' by default.
 
     Returns
     -------
     result: DataFrame
         DataFrame read from MaxCompute (ODPS) table
     """
+    hints = options.sql.settings.copy() or {}
+    if sql_hints:
+        hints.update(sql_hints)
+
     odps_entry = odps_entry or ODPS.from_global() or ODPS.from_environments()
+
+    if options.session.enable_schema or odps_entry.is_schema_namespace_enabled():
+        hints["odps.namespace.schema"] = "true"
+        hints["odps.sql.allow.namespace.schema"] = "true"
+
+    # fixme workaround for multi-stage split process
+    hints["odps.sql.object.table.split.by.object.size.enabled"] = "false"
+
     if odps_entry is None:
         raise ValueError("Missing odps_entry parameter")
-    inst = odps_entry.execute_sql(f"EXPLAIN {query}")
+    inst = odps_entry.execute_sql(f"EXPLAIN {query}", hints=hints)
+    logger.debug("Explain instance ID: %s", inst.id)
     explain_str = list(inst.get_task_results().values())[0]
 
     odps_schema = _parse_explained_schema(explain_str)
 
+    new_columns = []
+    col_renames = {}
     for col in odps_schema.columns:
-        if _ANONYMOUS_COL_REGEX.match(col.name) and col.name not in query:
-            raise ValueError("Need to specify names for all columns in SELECT clause.")
+        anon_match = _ANONYMOUS_COL_REGEX.match(col.name)
+        if anon_match and col.name not in query:
+            new_name = anonymous_col_prefix + anon_match.group(1)
+            col_renames[col.name] = new_name
+            new_columns.append(Column(new_name, col.type))
+        else:
+            new_columns.append(col)
 
-    dtypes = odps_schema_to_pandas_dtypes(odps_schema)
+    dtypes = odps_schema_to_pandas_dtypes(OdpsSchema(new_columns))
 
     if not index_col:
         index_dtypes = None
@@ -301,5 +359,6 @@ def read_odps_query(
         string_as_binary=string_as_binary,
         index_columns=index_col,
         index_dtypes=index_dtypes,
+        column_renames=col_renames,
     )
     return op(chunk_bytes=chunk_bytes, chunk_size=chunk_size)

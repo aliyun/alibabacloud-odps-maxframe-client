@@ -40,7 +40,7 @@ from maxframe.protocol import (
 )
 from maxframe.tensor.core import TENSOR_TYPE
 from maxframe.typing_ import PandasObjectTypes, TileableType
-from maxframe.utils import ToThreadMixin
+from maxframe.utils import ToThreadMixin, sync_pyodps_options
 
 _result_fetchers: Dict[ResultType, Type["ResultFetcher"]] = dict()
 
@@ -120,13 +120,15 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
 
         if tileable.shape and any(pd.isna(x) for x in tileable.shape):
             part_specs = [None] if not info.partition_specs else info.partition_specs
-            tunnel = TableTunnel(self._odps_entry)
-            total_records = 0
-            for part_spec in part_specs:
-                session = tunnel.create_download_session(
-                    info.full_table_name, part_spec
-                )
-                total_records += session.count
+
+            with sync_pyodps_options():
+                table = self._odps_entry.get_table(info.full_table_name)
+                tunnel = TableTunnel(self._odps_entry)
+                total_records = 0
+                for part_spec in part_specs:
+                    session = tunnel.create_download_session(table, part_spec)
+                    total_records += session.count
+
             new_shape_list = list(tileable.shape)
             new_shape_list[0] = total_records
             tileable.params = {"shape": tuple(new_shape_list)}

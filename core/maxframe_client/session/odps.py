@@ -18,12 +18,13 @@ import logging
 import time
 import weakref
 from numbers import Integral
-from typing import Dict, List, Mapping, Optional, Tuple, Union
+from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
 from urllib.parse import urlparse
 
 import numpy as np
 import pandas as pd
 from odps import ODPS
+from odps import options as odps_options
 
 from maxframe.config import options
 from maxframe.core import Entity, TileableGraph, build_fetch, enter_mode
@@ -65,6 +66,8 @@ from maxframe.utils import (
     ToThreadMixin,
     build_session_volume_name,
     build_temp_table_name,
+    str_to_bool,
+    sync_pyodps_options,
 )
 
 from ..clients.framedriver import FrameDriverClient
@@ -76,6 +79,43 @@ logger = logging.getLogger(__name__)
 
 
 class MaxFrameServiceCaller(metaclass=abc.ABCMeta):
+    def get_settings_to_upload(self) -> Dict[str, Any]:
+        sql_settings = (odps_options.sql.settings or {}).copy()
+        sql_settings.update(options.sql.settings or {})
+
+        quota_name = options.session.quota_name or getattr(
+            odps_options, "quota_name", None
+        )
+        lifecycle = options.session.table_lifecycle or odps_options.lifecycle
+        temp_lifecycle = (
+            options.session.temp_table_lifecycle or odps_options.temp_lifecycle
+        )
+
+        enable_schema = options.session.enable_schema
+        default_schema = options.session.default_schema
+        if hasattr(self, "_odps_entry"):
+            default_schema = default_schema or self._odps_entry.schema
+
+        # use flags in sql settings
+        if sql_settings.get("odps.default.schema"):
+            default_schema = sql_settings["odps.default.schema"]
+        if str_to_bool(
+            sql_settings.get("odps.namespace.schema") or "false"
+        ) or str_to_bool(
+            sql_settings.get("odps.sql.allow.namespace.schema") or "false"
+        ):
+            enable_schema = True
+
+        mf_settings = dict(options.to_dict(remote_only=True).items())
+        mf_settings["sql.settings"] = sql_settings
+        mf_settings["session.table_lifecycle"] = lifecycle
+        mf_settings["session.temp_table_lifecycle"] = temp_lifecycle
+        mf_settings["session.quota_name"] = quota_name
+        if enable_schema is not None:
+            mf_settings["session.enable_schema"] = enable_schema
+        mf_settings["session.default_schema"] = default_schema or "default"
+        return mf_settings
+
     @abc.abstractmethod
     def create_session(self) -> SessionInfo:
         raise NotImplementedError
@@ -86,7 +126,10 @@ class MaxFrameServiceCaller(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def submit_dag(
-        self, dag: TileableGraph, managed_input_infos: Dict[str, ResultInfo]
+        self,
+        dag: TileableGraph,
+        managed_input_infos: Dict[str, ResultInfo],
+        new_settings: Dict[str, Any] = None,
     ) -> DagInfo:
         raise NotImplementedError
 
@@ -140,6 +183,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         self._tileable_to_infos = weakref.WeakKeyDictionary()
 
         self._caller = self._create_caller(odps_entry, address, **kwargs)
+        self._last_settings = None
 
     @classmethod
     def _create_caller(
@@ -149,13 +193,14 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
 
     async def _init(self, _address: str):
         session_info = await self.ensure_async_call(self._caller.create_session)
+        self._last_settings = self._caller.get_settings_to_upload()
         self._session_id = session_info.session_id
         await self._show_logview_address()
 
     def _upload_and_get_table_read_tileable(
         self, t: TileableType
     ) -> Optional[TileableType]:
-        schema, table_meta = pandas_to_odps_schema(t, unknown_as_string=True)
+        table_schema, table_meta = pandas_to_odps_schema(t, unknown_as_string=True)
         if self._odps_entry.exist_table(table_meta.table_name):
             self._odps_entry.delete_table(
                 table_meta.table_name, hints=options.sql.settings
@@ -163,7 +208,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         table_name = build_temp_table_name(self.session_id, t.key)
         table_obj = self._odps_entry.create_table(
             table_name,
-            schema,
+            table_schema,
             lifecycle=options.session.temp_table_lifecycle,
             hints=options.sql.settings,
         )
@@ -217,10 +262,11 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             or t.inputs
         ):
             return None
-        if isinstance(t.op, PandasDataSourceOperator):
-            return self._upload_and_get_table_read_tileable(t)
-        else:
-            return self._upload_and_get_vol_read_tileable(t)
+        with sync_pyodps_options():
+            if isinstance(t.op, PandasDataSourceOperator):
+                return self._upload_and_get_table_read_tileable(t)
+            else:
+                return self._upload_and_get_vol_read_tileable(t)
 
     @enter_mode(kernel=True, build=True)
     def _scan_and_replace_local_sources(
@@ -244,7 +290,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
 
             for succ in successors:
                 graph.add_edge(replaced, succ)
-                succ.inputs = [replacements.get(t, t) for t in succ.inputs]
+                succ.op._set_inputs([replacements.get(t, t) for t in succ.inputs])
 
         graph.results = [replacements.get(t, t) for t in graph.results]
         return replacements
@@ -269,6 +315,24 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
                     infos[key] = ODPSTableResultInfo(full_table_name=t.op.table_name)
         return infos
 
+    def _get_diff_settings(self) -> Dict[str, Any]:
+        new_settings = self._caller.get_settings_to_upload()
+        if not self._last_settings:  # pragma: no cover
+            self._last_settings = new_settings
+            return new_settings
+
+        update = dict()
+        for k in new_settings.keys():
+            old_item = self._last_settings.get(k)
+            new_item = new_settings.get(k)
+            try:
+                if old_item != new_item:
+                    update[k] = new_item
+            except:  # noqa: E722  # nosec  # pylint: disable=bare-except
+                update[k] = new_item
+        self._last_settings = new_settings
+        return update
+
     async def execute(self, *tileables, **kwargs) -> ExecutionInfo:
         tileables = [
             tileable.data if isinstance(tileable, Entity) else tileable
@@ -288,7 +352,10 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
 
         replaced_infos = self._get_input_infos(list(source_replacements.values()))
         dag_info = await self.ensure_async_call(
-            self._caller.submit_dag, tileable_graph, replaced_infos
+            self._caller.submit_dag,
+            tileable_graph,
+            replaced_infos,
+            self._get_diff_settings(),
         )
 
         await self._show_logview_address(dag_info.dag_id)
@@ -498,7 +565,8 @@ class MaxFrameRestCaller(MaxFrameServiceCaller):
     _client: FrameDriverClient
     _session_id: Optional[str]
 
-    def __init__(self, client: FrameDriverClient):
+    def __init__(self, odps_entry: ODPS, client: FrameDriverClient):
+        self._odps_entry = odps_entry
         self._client = client
         self._session_id = None
 
@@ -511,7 +579,10 @@ class MaxFrameRestCaller(MaxFrameServiceCaller):
         await self._client.delete_session(self._session_id)
 
     async def submit_dag(
-        self, dag: TileableGraph, managed_input_infos: Dict[str, ResultInfo]
+        self,
+        dag: TileableGraph,
+        managed_input_infos: Dict[str, ResultInfo] = None,
+        new_settings: Dict[str, Any] = None,
     ) -> DagInfo:
         return await self._client.submit_dag(self._session_id, dag, managed_input_infos)
 
@@ -551,7 +622,7 @@ class MaxFrameRestSession(MaxFrameSession):
 
     @classmethod
     def _create_caller(cls, odps_entry: ODPS, address: str, **kwargs):
-        return MaxFrameRestCaller(FrameDriverClient(address))
+        return MaxFrameRestCaller(odps_entry, FrameDriverClient(address))
 
 
 def register_session_schemes(overwrite: bool = False):

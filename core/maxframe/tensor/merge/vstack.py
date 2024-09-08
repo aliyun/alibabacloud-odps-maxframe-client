@@ -14,7 +14,7 @@
 
 
 from ..misc import atleast_2d
-from .concatenate import concatenate
+from .concatenate import _concatenate, concatenate
 
 
 def vstack(tup):
@@ -68,3 +68,7 @@ def vstack(tup):
 
     """
     return concatenate([atleast_2d(t) for t in tup], axis=0)
+
+
+def _vstack(tup):
+    return _concatenate([atleast_2d(t) for t in tup], axis=0)

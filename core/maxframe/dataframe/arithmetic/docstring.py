@@ -185,7 +185,6 @@ e    NaN
 dtype: float64
 """
 
-# FIXME: https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/48
 _flex_comp_doc_FRAME = """
 Get {desc} of dataframe and other, element-wise (binary operator `{op_name}`).
 Among flexible wrappers (`eq`, `ne`, `le`, `lt`, `ge`, `gt`) to comparison
@@ -291,7 +290,7 @@ C   True    False
 
 Compare to a DataFrame of different shape.
 
->>> other = pd.DataFrame({{'revenue': [300, 250, 100, 150]}},
+>>> other = md.DataFrame({{'revenue': [300, 250, 100, 150]}},
 ...                      index=['A', 'B', 'C', 'D'])
 >>> other.execute()
    revenue
@@ -306,6 +305,31 @@ A  False    False
 B  False    False
 C  False     True
 D  False    False
+
+Compare to a MultiIndex by level.
+
+>>> df_multindex = md.DataFrame({{'cost': [250, 150, 100, 150, 300, 220],
+...                              'revenue': [100, 250, 300, 200, 175, 225]}},
+...                             index=[['Q1', 'Q1', 'Q1', 'Q2', 'Q2', 'Q2'],
+...                                    ['A', 'B', 'C', 'A', 'B', 'C']])
+>>> df_multindex.execute()
+      cost  revenue
+Q1 A   250      100
+   B   150      250
+   C   100      300
+Q2 A   150      200
+   B   300      175
+   C   220      225
+
+>>> df.le(df_multindex, level=1).execute()
+       cost  revenue
+Q1 A   True     True
+   B   True     True
+   C   True     True
+Q2 A  False     True
+   B   True    False
+   C   True    False
+
 """
 
 

@@ -130,6 +130,8 @@ def _calc_order(a, index):
             continue
         elif isinstance(ind, slice):
             shape = a.shape[in_axis]
+            if shape is np.nan:
+                return TensorOrder.C_ORDER
             slc = ind.indices(shape)
             if slc[0] == 0 and slc[1] == shape and slc[2] == 1:
                 continue

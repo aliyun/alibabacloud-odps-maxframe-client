@@ -1,0 +1,9 @@
+In Task M1:
+    VALUES: key,data :
+        Statistics: Num rows: 1.0, Data size: 200.0
+        FS: output: Screen
+            schema:
+              key (varchar(2048))
+              data (binary)
+
+            Statistics: Num rows: 1.0, Data size: 200.0

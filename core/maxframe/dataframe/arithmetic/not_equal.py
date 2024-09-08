@@ -51,6 +51,8 @@ dtype: bool
 
 
 @bin_compare_doc("Not equal to", equiv="!=", series_example=_ne_example)
-def ne(df, other, axis="columns", level=None):
-    op = DataFrameNotEqual(axis=axis, level=level, lhs=df, rhs=other)
+def ne(df, other, axis="columns", level=None, fill_value=None):
+    op = DataFrameNotEqual(
+        axis=axis, level=level, lhs=df, rhs=other, fill_value=fill_value
+    )
     return op(df, other)

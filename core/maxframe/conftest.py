@@ -14,10 +14,11 @@
 
 import faulthandler
 import os
-from configparser import ConfigParser, NoOptionError
+from configparser import ConfigParser, NoOptionError, NoSectionError
 
 import pytest
 from odps import ODPS
+from odps.accounts import BearerTokenAccount
 
 from .config import options
 
@@ -34,12 +35,23 @@ def test_config():
     return config
 
 
-@pytest.fixture(scope="session", autouse=True)
-def odps_envs(test_config):
-    access_id = test_config.get("odps", "access_id")
-    secret_access_key = test_config.get("odps", "secret_access_key")
-    project = test_config.get("odps", "project")
-    endpoint = test_config.get("odps", "endpoint")
+def _get_odps_env(test_config: ConfigParser, section_name: str) -> ODPS:
+    try:
+        access_id = test_config.get(section_name, "access_id")
+    except NoOptionError:
+        access_id = test_config.get("odps", "access_id")
+    try:
+        secret_access_key = test_config.get(section_name, "secret_access_key")
+    except NoOptionError:
+        secret_access_key = test_config.get("odps", "secret_access_key")
+    try:
+        project = test_config.get(section_name, "project")
+    except NoOptionError:
+        project = test_config.get("odps", "project")
+    try:
+        endpoint = test_config.get(section_name, "endpoint")
+    except NoOptionError:
+        endpoint = test_config.get("odps", "endpoint")
     try:
         tunnel_endpoint = test_config.get("odps", "tunnel_endpoint")
     except NoOptionError:
@@ -55,12 +67,31 @@ def odps_envs(test_config):
         ],
     }
     token = entry.get_project().generate_auth_token(policy, "bearer", 5)
+    return ODPS(
+        account=BearerTokenAccount(token, 5),
+        project=project,
+        endpoint=endpoint,
+        tunnel_endpoint=tunnel_endpoint,
+    )
 
-    os.environ["ODPS_BEARER_TOKEN"] = token
-    os.environ["ODPS_PROJECT_NAME"] = project
-    os.environ["ODPS_ENDPOINT"] = endpoint
-    if tunnel_endpoint:
-        os.environ["ODPS_TUNNEL_ENDPOINT"] = tunnel_endpoint
+
+@pytest.fixture(scope="session")
+def odps_with_schema(test_config):
+    try:
+        return _get_odps_env(test_config, "odps_with_schema")
+    except NoSectionError:
+        pytest.skip("Need to specify odps_with_schema section in test.conf")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def odps_envs(test_config):
+    entry = _get_odps_env(test_config, "odps")
+
+    os.environ["ODPS_BEARER_TOKEN"] = entry.account.token
+    os.environ["ODPS_PROJECT_NAME"] = entry.project
+    os.environ["ODPS_ENDPOINT"] = entry.endpoint
+    if entry.tunnel_endpoint:
+        os.environ["ODPS_TUNNEL_ENDPOINT"] = entry.tunnel_endpoint
 
     try:
         yield

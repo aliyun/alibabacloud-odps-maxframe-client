@@ -16,13 +16,19 @@ import base64
 import json
 import logging
 import time
-from typing import Dict, List, Optional, Type, Union
+from typing import Any, Dict, List, Optional, Type, Union
 
 import msgpack
 from odps import ODPS
 from odps import options as odps_options
 from odps.errors import parse_instance_error
 from odps.models import Instance, MaxFrameTask
+
+try:
+    from odps.errors import EmptyTaskInfoError
+except ImportError:  # pragma: no cover
+    # todo remove when pyodps>=0.12.0 is enforced
+    EmptyTaskInfoError = type("EmptyTaskInfoError", (Exception,), {})
 
 from maxframe.config import options
 from maxframe.core import TileableGraph
@@ -36,6 +42,7 @@ except ImportError:
     mf_version = None
 
 from .consts import (
+    EMPTY_RESPONSE_RETRY_COUNT,
     MAXFRAME_DEFAULT_PROTOCOL,
     MAXFRAME_OUTPUT_JSON_FORMAT,
     MAXFRAME_OUTPUT_MAXFRAME_FORMAT,
@@ -92,6 +99,10 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
             self._nested = True
             self._instance = odps_entry.get_instance(nested_instance_id)
 
+    @property
+    def instance(self):
+        return self._instance
+
     def _deserial_task_info_result(
         self, content: Union[bytes, str, dict], target_cls: Type[JsonSerializable]
     ):
@@ -125,16 +136,8 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
             major_version=self._major_version,
             service_endpoint=self._odps_entry.endpoint,
         )
-
-        # merge sql options
-        sql_settings = (odps_options.sql.settings or {}).copy()
-        sql_settings.update(options.sql.settings or {})
-
-        mf_settings = dict(options.to_dict(remote_only=True).items())
-        mf_settings["sql.settings"] = sql_settings
-
         mf_opts = {
-            "odps.maxframe.settings": json.dumps(mf_settings),
+            "odps.maxframe.settings": json.dumps(self.get_settings_to_upload()),
             "odps.maxframe.output_format": self._output_format,
         }
         if mf_version:
@@ -189,18 +192,39 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
             interval = min(max_interval, interval * 2)
 
     def _put_task_info(self, method_name: str, json_data: dict):
-        resp_data = self._instance.put_task_info(
-            self._task_name, method_name, json.dumps(json_data)
-        )
-        if not resp_data:
-            raise NoTaskServerResponseError(f"No response for request {method_name}")
-        return resp_data
+        for trial in range(EMPTY_RESPONSE_RETRY_COUNT):
+            try:
+                return self._instance.put_task_info(
+                    self._task_name,
+                    method_name,
+                    json.dumps(json_data),
+                    raise_empty=True,
+                )
+            except TypeError:  # pragma: no cover
+                # todo remove when pyodps>=0.12.0 is enforced
+                resp_data = self._instance.put_task_info(
+                    self._task_name, method_name, json.dumps(json_data)
+                )
+                if resp_data:
+                    return resp_data
+                else:
+                    raise NoTaskServerResponseError(
+                        f"No response for request {method_name}. "
+                        f"Instance ID: {self._instance.id}"
+                    )
+            except EmptyTaskInfoError as ex:
+                # retry when server returns HTTP 204, which is designed for retry
+                if ex.code != 204 or trial >= EMPTY_RESPONSE_RETRY_COUNT - 1:
+                    raise NoTaskServerResponseError(
+                        f"No response for request {method_name}. "
+                        f"Instance ID: {self._instance.id}. "
+                        f"Request ID: {ex.request_id}"
+                    ) from None
+                time.sleep(0.5)
 
     def get_session(self) -> SessionInfo:
         req_data = {"output_format": self._output_format}
-        serialized = self._instance.put_task_info(
-            self._task_name, MAXFRAME_TASK_GET_SESSION_METHOD, json.dumps(req_data)
-        )
+        serialized = self._put_task_info(MAXFRAME_TASK_GET_SESSION_METHOD, req_data)
         info: SessionInfo = self._deserial_task_info_result(serialized, SessionInfo)
         info.session_id = self._instance.id
         return info
@@ -217,13 +241,18 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
         self,
         dag: TileableGraph,
         managed_input_infos: Optional[Dict[str, ResultInfo]] = None,
+        new_settings: Dict[str, Any] = None,
     ) -> DagInfo:
+        new_settings_value = {
+            "odps.maxframe.settings": json.dumps(new_settings),
+        }
         req_data = {
             "protocol": MAXFRAME_DEFAULT_PROTOCOL,
             "dag": base64.b64encode(serialize_serializable(dag)).decode(),
             "managed_input_infos": base64.b64encode(
                 serialize_serializable(managed_input_infos)
             ).decode(),
+            "new_settings": json.dumps(new_settings_value),
             "output_format": self._output_format,
         }
         res = self._put_task_info(MAXFRAME_TASK_SUBMIT_DAG_METHOD, req_data)
@@ -276,7 +305,7 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
 class MaxFrameTaskSession(MaxFrameSession):
     schemes = [ODPS_SESSION_INSECURE_SCHEME, ODPS_SESSION_SECURE_SCHEME]
 
-    _instance: Instance
+    _caller: MaxFrameInstanceCaller
 
     @classmethod
     def _create_caller(
@@ -295,6 +324,15 @@ class MaxFrameTaskSession(MaxFrameSession):
             project=project,
             **kwargs,
         )
+
+    @property
+    def closed(self) -> bool:
+        if super().closed:
+            return True
+        if not self._caller or not self._caller.instance:
+            # session not initialized yet
+            return False
+        return self._caller.instance.is_terminated()
 
 
 def register_session_schemes(overwrite: bool = False):

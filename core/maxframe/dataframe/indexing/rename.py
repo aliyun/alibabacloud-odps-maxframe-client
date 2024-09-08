@@ -248,6 +248,7 @@ def df_rename(
     )
 
 
+# fixme https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/58
 def series_rename(
     series,
     index=None,
@@ -382,6 +383,7 @@ def index_rename(index, name, inplace=False):
         return ret
 
 
+# fixme https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/59
 def index_set_names(index, names, level=None, inplace=False):
     """
     Set Index or MultiIndex name.
@@ -407,6 +409,15 @@ def index_set_names(index, names, level=None, inplace=False):
     See Also
     --------
     Index.rename : Able to set new names without level.
+
+    Examples
+    --------
+    >>> import maxframe.dataframe as md
+    >>> idx = md.Index([1, 2, 3, 4])
+    >>> idx.execute()
+    Int64Index([1, 2, 3, 4], dtype='int64')
+    >>> idx.set_names('quarter').execute()
+    Int64Index([1, 2, 3, 4], dtype='int64', name='quarter')
     """
     op = DataFrameRename(
         index_mapper=names, level=level, output_types=get_output_types(index)

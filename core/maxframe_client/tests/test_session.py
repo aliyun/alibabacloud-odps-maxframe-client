@@ -137,6 +137,15 @@ def test_simple_run_dataframe(start_mock_session):
     assert not odps_entry.exist_table(build_temp_table_name(start_mock_session, key))
 
 
+def test_run_and_fetch_slice(start_mock_session):
+    pd_df = pd.DataFrame(np.random.rand(1000, 5), columns=list("ABCDE"))
+    df = md.DataFrame(pd_df)
+    result = df.execute()
+
+    sliced = result.head(10).fetch()
+    assert len(sliced) == 10
+
+
 def test_run_empty_table(start_mock_session):
     odps_entry = ODPS.from_environments()
 
@@ -189,7 +198,7 @@ def test_run_dataframe_from_to_odps_table(start_mock_session):
     table_name = build_temp_table_name(start_mock_session, "tmp_save")
     table_obj = odps_entry.get_table(table_name)
     try:
-        md.to_odps_table(md.DataFrame(pd_df), table_obj).execute().fetch()
+        md.to_odps_table(md.DataFrame(pd_df), table_obj, lifecycle=1).execute().fetch()
         with table_obj.open_reader() as reader:
             result_df = reader.to_pandas()
         assert len(result_df) == 10
@@ -256,7 +265,10 @@ def test_execute_with_tensor(oss_config, start_mock_session):
 
     result = (df - [1, 2]).execute().fetch()
     expected = pd_df - [1, 2]
-    pd.testing.assert_frame_equal(result, expected)
+    # TODO: currently the record order in tensor reading from table is the index
+    # sorting order
+    expected.sort_index(axis=0, inplace=True)
+    pd.testing.assert_frame_equal(result, expected, check_like=True)
 
 
 def test_run_remote_success(oss_config, start_mock_session):

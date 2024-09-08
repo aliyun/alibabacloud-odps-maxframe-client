@@ -14,7 +14,8 @@
 
 import numpy as np
 
-from ....tensor import argmax, transpose, vstack
+from ....tensor import argmax, transpose
+from ....tensor.merge.vstack import _vstack
 from ..utils import make_import_error_func
 from .core import XGBScikitLearnBase, xgboost
 
@@ -89,7 +90,6 @@ else:
             if ntree_limit is not None:
                 raise NotImplementedError("ntree_limit is not currently supported")
             prediction = predict(self.get_booster(), data, flag=flag, **kw)
-
             if len(prediction.shape) == 2 and prediction.shape[1] == self.n_classes_:
                 # multi-class
                 return prediction
@@ -103,7 +103,7 @@ else:
             # binary logistic function
             classone_probs = prediction
             classzero_probs = 1.0 - classone_probs
-            return transpose(vstack((classzero_probs, classone_probs)))
+            return transpose(_vstack((classzero_probs, classone_probs)))
 
         @property
         def classes_(self) -> np.ndarray:

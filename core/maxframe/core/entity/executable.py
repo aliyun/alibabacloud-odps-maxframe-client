@@ -46,7 +46,7 @@ class DecrefRunner:
                 break
 
             session = session_ref()
-            if session is None:
+            if session is None or session.closed:
                 fut.set_result(None)
                 continue
             try:

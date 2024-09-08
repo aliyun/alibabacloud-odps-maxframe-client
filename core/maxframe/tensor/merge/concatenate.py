@@ -26,27 +26,9 @@ class TensorConcatenate(TensorOperator, TensorOperatorMixin):
     axis = Int32Field("axis", default=0)
 
     def __call__(self, tensors):
-        if len(set(t.ndim for t in tensors)) != 1:
-            raise ValueError(
-                "all the input tensors must have same number of dimensions"
-            )
-
         axis = self.axis
-        shapes = [t.shape[:axis] + t.shape[axis + 1 :] for t in tensors]
-        if len(set(shapes)) != 1:
-            raise ValueError(
-                "all the input tensor dimensions "
-                "except for the concatenation axis must match exactly"
-            )
-
-        shape = [
-            0 if i == axis else tensors[0].shape[i] for i in range(tensors[0].ndim)
-        ]
+        shape = _calc_concatenate_shape(tensors, axis)
         shape[axis] = sum(t.shape[axis] for t in tensors)
-
-        if any(np.isnan(s) for i, s in enumerate(shape) if i != axis):
-            raise ValueError("cannot concatenate tensor with unknown shape")
-
         return self.new_tensor(tensors, shape=tuple(shape))
 
 
@@ -90,9 +72,30 @@ def concatenate(tensors, axis=0):
     if axis is None:
         axis = 0
     tensors = [astensor(t) for t in tensors]
-
     axis = validate_axis(tensors[0].ndim, axis)
+
+    if len(set(t.ndim for t in tensors)) != 1:
+        raise ValueError("all the input tensors must have same number of dimensions")
+
+    shapes = [t.shape[:axis] + t.shape[axis + 1 :] for t in tensors]
+    if len(set(shapes)) != 1:
+        raise ValueError(
+            "all the input tensor dimensions "
+            "except for the concatenation axis must match exactly"
+        )
+    shape = _calc_concatenate_shape(tensors, axis)
+    if any(np.isnan(s) for i, s in enumerate(shape) if i != axis):
+        raise ValueError("cannot concatenate tensor with unknown shape")
+
+    return _concatenate(tensors, axis)
+
+
+def _concatenate(tensors, axis=0):
     dtype = np.result_type(*(t.dtype for t in tensors))
 
     op = TensorConcatenate(axis=axis, dtype=dtype)
     return op(tensors)
+
+
+def _calc_concatenate_shape(tensors, axis):
+    return [0 if i == axis else tensors[0].shape[i] for i in range(tensors[0].ndim)]

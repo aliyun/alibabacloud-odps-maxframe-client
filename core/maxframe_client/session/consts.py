@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# retry consts
+EMPTY_RESPONSE_RETRY_COUNT = 5
+
 # Restful Service
 RESTFUL_SESSION_INSECURE_SCHEME = "mf"
 RESTFUL_SESSION_SECURE_SCHEME = "mfs"
