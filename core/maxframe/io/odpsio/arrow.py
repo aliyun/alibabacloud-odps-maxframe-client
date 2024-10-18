@@ -69,13 +69,24 @@ def arrow_to_pandas(
 
 
 def pandas_to_arrow(
-    df: Any, nthreads=1, ignore_index=False
+    df: Any, nthreads=1, ignore_index=False, ms_cols=None
 ) -> Tuple[ArrowTableType, DataFrameTableMeta]:
     table_meta = build_dataframe_table_meta(df, ignore_index)
     df = df.copy() if callable(getattr(df, "copy", None)) else df
+    table_datetime_cols = None
     if table_meta.type in (OutputType.dataframe, OutputType.series):
         if table_meta.type == OutputType.series:
             df = df.to_frame("_data" if df.name is None else df.name)
+            if ms_cols:
+                table_datetime_cols = {"_data"}
+        elif ms_cols:
+            ms_col_set = set(ms_cols)
+            table_datetime_cols = set()
+            for pd_col, table_col in zip(
+                table_meta.pd_column_dtypes.keys(), table_meta.table_column_names
+            ):
+                if pd_col in ms_col_set:
+                    table_datetime_cols.add(table_col)
         df.columns = pd.Index(table_meta.table_column_names)
         if not ignore_index:
             df = df.rename_axis(table_meta.table_index_column_names).reset_index()
@@ -83,6 +94,12 @@ def pandas_to_arrow(
         df = pd.DataFrame([], columns=[])
     elif table_meta.type == OutputType.index:
         names = [f"_idx_{idx}" for idx in range(len(df.names))]
+        table_datetime_cols = set()
+        if ms_cols:
+            if isinstance(df, pd.MultiIndex):
+                table_datetime_cols = {f"_idx_{idx}" for idx in ms_cols}
+            else:
+                table_datetime_cols = {"_idx_0"}
         df = df.to_frame(name=names[0] if len(names) == 1 else names)
     elif table_meta.type == OutputType.scalar:
         names = ["_idx_0"]
@@ -92,4 +109,15 @@ def pandas_to_arrow(
             df = pd.DataFrame([[df]], columns=names)
     else:  # this could never happen  # pragma: no cover
         raise ValueError(f"Does not support meta type {table_meta.type!r}")
-    return pa.Table.from_pandas(df, nthreads=nthreads, preserve_index=False), table_meta
+    pa_table = pa.Table.from_pandas(df, nthreads=nthreads, preserve_index=False)
+    if table_datetime_cols:
+        col_names = pa_table.schema.names
+        col_datas = []
+        for idx, col_name in enumerate(pa_table.schema.names):
+            if col_name not in table_datetime_cols:
+                col_datas.append(pa_table.column(idx))
+                continue
+            col_data = pa_table.column(idx).cast(pa.timestamp("ms"))
+            col_datas.append(col_data)
+        pa_table = pa.Table.from_arrays(col_datas, names=col_names)
+    return pa_table, table_meta

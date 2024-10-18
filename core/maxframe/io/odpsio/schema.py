@@ -16,6 +16,7 @@ import string
 from collections import defaultdict
 from typing import Any, Dict, Tuple
 
+import numpy as np
 import pandas as pd
 import pyarrow as pa
 from odps import types as odps_types
@@ -39,6 +40,7 @@ _arrow_to_odps_types = {
     pa.float64(): odps_types.double,
     pa.date32(): odps_types.date,
     pa.timestamp("ms"): odps_types.datetime,
+    pa.timestamp("us"): odps_types.timestamp,
     pa.timestamp("ns"): odps_types.timestamp,
 }
 
@@ -205,20 +207,35 @@ def pandas_to_odps_schema(
     else:
         empty_columns = None
 
+    ms_cols = None
     if isinstance(df_obj, (md.DataFrame, pd.DataFrame)):
         empty_df_obj = pd.DataFrame(
             [], columns=empty_columns, index=empty_index
         ).astype(df_obj.dtypes)
+        ms_cols = [
+            col for col, dt in df_obj.dtypes.items() if dt == np.dtype("datetime64[ms]")
+        ]
     elif isinstance(df_obj, (md.Series, pd.Series)):
         empty_df_obj = pd.Series([], name=df_obj.name, index=empty_index).astype(
             df_obj.dtype
         )
+        ms_cols = df_obj.dtype == np.dtype("datetime64[ms]")
     elif isinstance(df_obj, (md.Index, pd.Index)):
         empty_df_obj = empty_index
+        if isinstance(empty_index, pd.MultiIndex):
+            ms_cols = [
+                idx
+                for idx, dt in enumerate(empty_index.dtypes.values)
+                if dt == np.dtype("datetime64[ms]")
+            ]
+        else:
+            ms_cols = df_obj.dtype == np.dtype("datetime64[ms]")
     else:
         empty_df_obj = df_obj
 
-    arrow_data, table_meta = pandas_to_arrow(empty_df_obj, ignore_index=ignore_index)
+    arrow_data, table_meta = pandas_to_arrow(
+        empty_df_obj, ignore_index=ignore_index, ms_cols=ms_cols
+    )
     return (
         arrow_schema_to_odps_schema(
             arrow_data.schema, unknown_as_string=unknown_as_string

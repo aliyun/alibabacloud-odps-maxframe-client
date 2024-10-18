@@ -25,13 +25,14 @@ from ...core import ENTITY_TYPE, OutputType
 from ...serialization.serializables import AnyField, KeyField, ListField
 from ...tensor.datasource import asarray
 from ...tensor.utils import calc_sliced_size, filter_inputs
-from ...utils import is_full_slice, lazy_import
+from ...utils import is_full_slice, lazy_import, pd_release_version
 from ..core import DATAFRAME_TYPE, IndexValue
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import parse_index
 from .iloc import DataFrameIlocSetItem
 
 cudf = lazy_import("cudf")
+with_slice_locs_kind = pd_release_version < (1, 4, 0)
 
 
 def process_loc_indexes(inp, indexes, fetch_index: bool = True):
@@ -210,9 +211,10 @@ class DataFrameLocGetItem(DataFrameOperator, DataFrameOperatorMixin):
             if axis == 1:
                 param["dtypes"] = inp.dtypes
         elif input_index_value.has_value():
-            start, end = pd_index.slice_locs(
-                index.start, index.stop, index.step, kind="loc"
-            )
+            kw = {}
+            if with_slice_locs_kind:
+                kw["kind"] = "loc"
+            start, end = pd_index.slice_locs(index.start, index.stop, index.step, **kw)
             slc = slice(start, end, index.step)
             size = calc_sliced_size(inp.shape[axis], slc)
             param["shape"] = size

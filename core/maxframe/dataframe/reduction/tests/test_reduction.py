@@ -23,6 +23,7 @@ import pytest
 
 from .... import dataframe as md
 from ....tensor import Tensor
+from ....tests.utils import assert_mf_index_dtype
 from ...core import DataFrame, IndexValue, OutputType, Series
 from ...datasource.dataframe import from_pandas as from_pandas_df
 from ...datasource.series import from_pandas as from_pandas_series
@@ -111,10 +112,7 @@ def test_dataframe_reduction(func_name, op, func_opts: FunctionOptions):
     reduction_df = getattr(from_pandas_df(data, chunk_size=3), func_name)()
 
     assert isinstance(reduction_df, Series)
-    assert isinstance(
-        reduction_df.index_value._index_value,
-        (IndexValue.RangeIndex, IndexValue.Int64Index),
-    )
+    assert_mf_index_dtype(reduction_df.index_value._index_value, np.int64)
     assert reduction_df.shape == (10,)
 
     data = pd.DataFrame(np.random.rand(20, 20), index=[str(i) for i in range(20)])

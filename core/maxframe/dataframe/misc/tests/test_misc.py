@@ -349,7 +349,9 @@ def test_drop():
 def test_drop_duplicates():
     rs = np.random.RandomState(0)
     raw = pd.DataFrame(
-        rs.randint(1000, size=(20, 7)), columns=["c" + str(i + 1) for i in range(7)]
+        rs.randint(1000, size=(20, 7)),
+        columns=["c" + str(i + 1) for i in range(7)],
+        index=pd.Index(range(20), name="idx"),
     )
     raw["c7"] = [f"s{j}" for j in range(20)]
 
@@ -360,6 +362,12 @@ def test_drop_duplicates():
         df.drop_duplicates(method="unknown")
     with pytest.raises(KeyError):
         df.drop_duplicates(subset="c8")
+
+    # check index
+    distinct_df = df.drop_duplicates()
+    assert distinct_df.index_value.name == df.index_value.name
+    assert isinstance(df.index_value.to_pandas(), pd.RangeIndex)
+    assert not isinstance(distinct_df.index_value.to_pandas(), pd.RangeIndex)
 
     s = df["c7"]
     with pytest.raises(ValueError):
@@ -474,7 +482,7 @@ def test_pivot_table():
     with pytest.raises(ValueError):
         df.pivot_table(values=["D", "E"], aggfunc="sum")
 
-    t = df.pivot_table(index="A")
+    t = df.pivot_table(index=["A", "B", "C"])
     assert isinstance(t.op, DataFrameGroupByAgg)
     t = df.pivot_table(index="A", values=["D", "E"], aggfunc="sum")
     assert isinstance(t.op, DataFrameGroupByAgg)

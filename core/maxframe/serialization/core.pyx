@@ -37,7 +37,7 @@ from .._utils import NamedType
 from .._utils cimport TypeDispatcher
 
 from ..lib import wrapped_pickle as pickle
-from ..utils import arrow_type_from_str
+from ..utils import NoDefault, arrow_type_from_str, no_default
 
 try:
     from pandas import ArrowDtype
@@ -94,6 +94,7 @@ cdef:
     int COMPLEX_SERIALIZER = 12
     int SLICE_SERIALIZER = 13
     int REGEX_SERIALIZER = 14
+    int NO_DEFAULT_SERIALIZER = 15
     int PLACEHOLDER_SERIALIZER = 4096
 
 
@@ -803,6 +804,16 @@ cdef class RegexSerializer(Serializer):
         return re.compile((<bytes>(subs[0])).decode(), serialized[0])
 
 
+cdef class NoDefaultSerializer(Serializer):
+    serializer_id = NO_DEFAULT_SERIALIZER
+
+    cpdef serial(self, object obj, dict context):
+        return [], [], True
+
+    cpdef deserial(self, list obj, dict context, list subs):
+        return no_default
+
+
 cdef class Placeholder:
     """
     Placeholder object to reduce duplicated serialization
@@ -857,6 +868,7 @@ DtypeSerializer.register(ExtensionDtype)
 ComplexSerializer.register(complex)
 SliceSerializer.register(slice)
 RegexSerializer.register(re.Pattern)
+NoDefaultSerializer.register(NoDefault)
 PlaceholderSerializer.register(Placeholder)
 
 

@@ -835,8 +835,41 @@ def parse_readable_size(value: Union[str, int, float]) -> Tuple[float, bool]:
         raise ValueError(f"Unknown limitation value: {value}")
 
 
-def remove_suffix(value: str, suffix: str) -> str:
-    return value[: -len(suffix)] if value.endswith(suffix) else value
+def remove_suffix(value: str, suffix: str) -> Tuple[str, bool]:
+    """
+    Remove a suffix from a given string if it exists.
+
+    Parameters
+    ----------
+    value : str
+        The original string.
+    suffix : str
+        The suffix to be removed.
+
+    Returns
+    -------
+    Tuple[str, bool]
+        A tuple containing the modified string and a boolean indicating whether the suffix was found.
+    """
+
+    # Check if the suffix is an empty string
+    if len(suffix) == 0:
+        # If the suffix is empty, return the original string with True
+        return value, True
+
+    # Check if the length of the value is less than the length of the suffix
+    if len(value) < len(suffix):
+        # If the value is shorter than the suffix, it cannot have the suffix
+        return value, False
+
+    # Check if the suffix matches the end of the value
+    match = value.endswith(suffix)
+
+    # If the suffix is found, remove it; otherwise, return the original string
+    if match:
+        return value[: -len(suffix)], match
+    else:
+        return value, match
 
 
 def find_objects(nested: Union[List, Dict], types: Union[Type, Tuple[Type]]) -> List:

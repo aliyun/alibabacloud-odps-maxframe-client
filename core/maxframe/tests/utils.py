@@ -171,3 +171,9 @@ def get_test_unique_name(size=None):
     if size:
         digest = digest[:size]
     return digest + "_" + str(os.getpid())
+
+
+def assert_mf_index_dtype(idx_obj, dtype):
+    from ..dataframe.core import IndexValue
+
+    assert isinstance(idx_obj, IndexValue.IndexBase) and idx_obj.dtype == dtype

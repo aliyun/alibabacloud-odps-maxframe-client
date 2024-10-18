@@ -263,12 +263,30 @@ def parse_index(index_value, *args, store_data=False, key=None):
         return IndexValue(_index_value=_serialize_index(index_value))
 
 
-def gen_unknown_index_value(index_value, *args):
+def gen_unknown_index_value(index_value, *args, normalize_range_index=False):
+    """
+    Generate new index value with the same likes of given index_value and args, but without any value.
+
+    Parameters
+    ----------
+    index_value
+        Given index value.
+    args
+        Arguments for parse_index.
+    normalize_range_index
+        If normalize range index to normal index.
+
+    Returns
+    -------
+        New created range index value.
+    """
     pd_index = index_value.to_pandas()
-    if isinstance(pd_index, pd.RangeIndex):
-        return parse_index(pd.RangeIndex(-1), *args)
+    if not normalize_range_index and isinstance(pd_index, pd.RangeIndex):
+        return parse_index(pd.RangeIndex(-1, name=pd_index.name), *args)
     elif not isinstance(pd_index, pd.MultiIndex):
-        return parse_index(pd.Index([], dtype=pd_index.dtype), *args)
+        return parse_index(
+            pd.Index([], dtype=pd_index.dtype, name=pd_index.name), *args
+        )
     else:
         i = pd.MultiIndex.from_arrays(
             [c[:0] for c in pd_index.levels], names=pd_index.names

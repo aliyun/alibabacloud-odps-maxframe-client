@@ -131,11 +131,7 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
             )
 
     def _create_maxframe_task(self) -> MaxFrameTask:
-        task = MaxFrameTask(
-            name=self._task_name,
-            major_version=self._major_version,
-            service_endpoint=self._odps_entry.endpoint,
-        )
+        task = MaxFrameTask(name=self._task_name, major_version=self._major_version)
         mf_opts = {
             "odps.maxframe.settings": json.dumps(self.get_settings_to_upload()),
             "odps.maxframe.output_format": self._output_format,

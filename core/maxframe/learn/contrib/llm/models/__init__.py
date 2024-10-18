@@ -11,30 +11,4 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-from .append import DataFrameAppend, append
-from .concat import DataFrameConcat, concat
-from .merge import (
-    DataFrameMerge,
-    DataFrameMergeAlign,
-    DistributedMapJoinHint,
-    MapJoinHint,
-    SkewJoinHint,
-    join,
-    merge,
-)
-
-
-def _install():
-    from ..core import DATAFRAME_TYPE, SERIES_TYPE
-
-    for cls in DATAFRAME_TYPE:
-        setattr(cls, "join", join)
-        setattr(cls, "merge", merge)
-
-    for cls in DATAFRAME_TYPE + SERIES_TYPE:
-        setattr(cls, "append", append)
-
-
-_install()
-del _install
+from .dashscope import DashScopeMultiModalLLM, DashScopeTextLLM

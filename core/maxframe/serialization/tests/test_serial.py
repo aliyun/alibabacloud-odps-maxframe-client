@@ -42,7 +42,7 @@ except ImportError:
 from ...lib.sparse import SparseMatrix
 from ...lib.wrapped_pickle import switch_unpickle
 from ...tests.utils import require_cudf, require_cupy
-from ...utils import lazy_import
+from ...utils import lazy_import, no_default
 from .. import (
     PickleContainer,
     RemoteException,
@@ -90,6 +90,7 @@ class CustomNamedTuple(NamedTuple):
         pd.Timedelta(102.234154131),
         {"abc": 5.6, "def": [3.4], "gh": None, "ijk": {}},
         OrderedDict([("abcd", 5.6)]),
+        no_default,
     ],
 )
 @switch_unpickle

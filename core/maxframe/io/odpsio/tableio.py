@@ -29,6 +29,7 @@ from odps.apis.storage_api import (
 )
 from odps.tunnel import TableTunnel
 from odps.types import OdpsSchema, PartitionSpec, timestamp_ntz
+from odps.utils import call_with_retry
 
 try:
     import pyarrow.compute as pac
@@ -50,7 +51,7 @@ _need_patch_batch = Version(pyodps_version) < Version("0.12.0")
 class ODPSTableIO(ABC):
     def __new__(cls, odps: ODPS):
         if cls is ODPSTableIO:
-            if options.use_common_table:
+            if options.use_common_table or ODPS_STORAGE_API_ENDPOINT in os.environ:
                 return HaloTableIO(odps)
             else:
                 return TunnelTableIO(odps)
@@ -132,7 +133,12 @@ class TunnelMultiPartitionReader:
         self._cur_partition_id = -1
         self._reader_start_pos = 0
 
-        if partitions is None or isinstance(partitions, str):
+        if partitions is None:
+            if not self._table.table_schema.partitions:
+                self._partitions = [None]
+            else:
+                self._partitions = [str(pt) for pt in self._table.partitions]
+        elif isinstance(partitions, str):
             self._partitions = [partitions]
         else:
             self._partitions = partitions
@@ -422,7 +428,7 @@ class HaloTableArrowReader:
             split_index=self._cur_split_id + 1,
             **read_rows_kw,
         )
-        self._cur_reader = self._client.read_rows_arrow(req)
+        self._cur_reader = call_with_retry(self._client.read_rows_arrow, req)
         self._cur_split_id += 1
 
     def _convert_timezone(self, batch: pa.RecordBatch) -> pa.RecordBatch:
@@ -494,8 +500,9 @@ class HaloTableArrowWriter:
     def open(self):
         from odps.apis.storage_api import WriteRowsRequest
 
-        self._writer = self._client.write_rows_arrow(
-            WriteRowsRequest(self._write_info.session_id)
+        self._writer = call_with_retry(
+            self._client.write_rows_arrow,
+            WriteRowsRequest(self._write_info.session_id),
         )
 
     @classmethod
@@ -631,12 +638,12 @@ class HaloTableIO(ODPSTableIO):
 
         # todo add more options for partition column handling
         req = TableBatchScanRequest(**scan_kw)
-        resp = client.create_read_session(req)
+        resp = call_with_retry(client.create_read_session, req)
 
         session_id = resp.session_id
         status = resp.session_status
         while status == SessionStatus.INIT:
-            resp = client.get_read_session(SessionRequest(session_id))
+            resp = call_with_retry(client.get_read_session, SessionRequest(session_id))
             status = resp.session_status
             time.sleep(1.0)
 
@@ -691,7 +698,7 @@ class HaloTableIO(ODPSTableIO):
         part_strs = self._convert_partitions(partition)
         part_str = part_strs[0] if part_strs else None
         req = TableBatchWriteRequest(partition_spec=part_str, overwrite=overwrite)
-        resp = client.create_write_session(req)
+        resp = call_with_retry(client.create_write_session, req)
 
         session_id = resp.session_id
         writer = HaloTableArrowWriter(client, resp, table.table_schema)
@@ -700,9 +707,13 @@ class HaloTableIO(ODPSTableIO):
         yield writer
 
         commit_msg = writer.close()
-        resp = client.commit_write_session(
-            SessionRequest(session_id=session_id), [commit_msg]
+        resp = call_with_retry(
+            client.commit_write_session,
+            SessionRequest(session_id=session_id),
+            [commit_msg],
         )
         while resp.session_status == SessionStatus.COMMITTING:
-            resp = client.get_write_session(SessionRequest(session_id=session_id))
+            resp = call_with_retry(
+                client.get_write_session, SessionRequest(session_id=session_id)
+            )
         assert resp.session_status == SessionStatus.COMMITTED

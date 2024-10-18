@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
+
 import numpy as np
 import pandas as pd
 
@@ -21,6 +23,8 @@ from ...serialization.serializables import AnyField, BoolField, DictField, Tuple
 from ...utils import quiet_stdio
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import parse_index
+
+logger = logging.getLogger(__name__)
 
 
 class GroupByTransform(DataFrameOperator, DataFrameOperatorMixin):
@@ -65,7 +69,7 @@ class GroupByTransform(DataFrameOperator, DataFrameOperatorMixin):
                 output_types = [OutputType.series]
                 new_dtypes = new_dtypes or (infer_df.name, infer_df.dtype)
         except:  # noqa: E722  # nosec
-            pass
+            logger.info("Exception raised while inferring df_func", exc_info=True)
 
         self.output_types = output_types if not self.output_types else self.output_types
         dtypes = new_dtypes if dtypes is None else dtypes

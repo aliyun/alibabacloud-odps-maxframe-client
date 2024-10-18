@@ -28,6 +28,7 @@ from .aggregation import BaseDataFrameExpandingAgg
 from .core import Window
 
 _window_has_method = pd_release_version >= (1, 3, 0)
+_window_has_center = pd_release_version < (2, 0, 0)
 
 
 class DataFrameExpandingAgg(BaseDataFrameExpandingAgg):
@@ -49,10 +50,11 @@ class Expanding(Window):
     def params(self):
         p = OrderedDict()
 
+        args = ["min_periods", "center", "axis", "method"]
         if not _window_has_method:  # pragma: no cover
-            args = ["min_periods", "center", "axis"]
-        else:
-            args = ["min_periods", "center", "axis", "method"]
+            args = [a for a in args if a != "method"]
+        if not _window_has_center:
+            args = [a for a in args if a != "center"]
 
         for k in args:
             p[k] = getattr(self, k)

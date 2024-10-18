@@ -57,7 +57,7 @@ _EXPLAIN_COLUMN_REGEX = re.compile(r"([^\(]+) \(([^\n]+)\)(?:| AS ([^ ]+))(?:\n|
 _ANONYMOUS_COL_REGEX = re.compile(r"^_c(\d+)$")
 
 _SIMPLE_SCHEMA_COLS_REGEX = re.compile(r"SELECT (([^:]+:[^, ]+[, ]*)+)FROM")
-_SIMPLE_SCHEMA_COL_REGEX = re.compile(r"([^\.]+):([^, ]+)")
+_SIMPLE_SCHEMA_COL_REGEX = re.compile(r"([^ \.\)]+):([^ ]+)")
 
 
 @dataclasses.dataclass
@@ -180,23 +180,30 @@ def _parse_full_explain(explain_string: str) -> OdpsSchema:
 
     job_dag = jobs_sector.build_dag()
     indep_job_names = list(job_dag.iter_indep(reverse=True))
-    if len(indep_job_names) > 1:  # pragma: no cover
-        raise ValueError("Only one final job is allowed in SQL statement")
-
-    tasks_sector = jobs_sector.jobs[indep_job_names[0]]
-    task_dag = tasks_sector.build_dag()
-    indep_task_names = list(task_dag.iter_indep(reverse=True))
-    if len(indep_task_names) > 1:  # pragma: no cover
+    schema_signatures = dict()
+    for job_name in indep_job_names:
+        tasks_sector = jobs_sector.jobs[job_name]
+        task_dag = tasks_sector.build_dag()
+        indep_task_names = list(task_dag.iter_indep(reverse=True))
+        for task_name in indep_task_names:
+            task_sector = tasks_sector.tasks[task_name]
+            if not task_sector.schema:  # pragma: no cover
+                raise ValueError("Cannot detect output schema")
+            if task_sector.output_target != "Screen":
+                raise ValueError("The SQL statement should be an instant query")
+            sig_tuples = sorted(
+                [
+                    (c.column_alias or c.column_name, c.column_type)
+                    for c in task_sector.schema
+                ]
+            )
+            schema_signatures[hash(tuple(sig_tuples))] = task_sector.schema
+    if len(schema_signatures) != 1:
         raise ValueError("Only one final task is allowed in SQL statement")
-
-    task_sector = tasks_sector.tasks[indep_task_names[0]]
-    if not task_sector.schema:  # pragma: no cover
-        raise ValueError("Cannot detect output schema")
-    if task_sector.output_target != "Screen":
-        raise ValueError("The SQL statement should be an instant query")
+    schema = list(schema_signatures.values())[0]
     cols = [
         Column(c.column_alias or c.column_name, validate_data_type(c.column_type))
-        for c in task_sector.schema
+        for c in schema
     ]
     return OdpsSchema(cols)
 
@@ -209,7 +216,7 @@ def _parse_simple_explain(explain_string: str) -> OdpsSchema:
     fields_str = fields_match.group(1)
     cols = []
     for field, type_name in _SIMPLE_SCHEMA_COL_REGEX.findall(fields_str):
-        cols.append(Column(field, validate_data_type(type_name)))
+        cols.append(Column(field, validate_data_type(type_name.rstrip(","))))
     return OdpsSchema(cols)
 
 
@@ -257,12 +264,18 @@ class DataFrameReadODPSQuery(
             )
             index_value = parse_index(idx)
 
-        columns_value = parse_index(self.dtypes.index, store_data=True)
+        if self.dtypes is not None:
+            columns_value = parse_index(self.dtypes.index, store_data=True)
+            shape = (np.nan, len(self.dtypes))
+        else:
+            columns_value = None
+            shape = (np.nan, np.nan)
+
         self.output_types = [OutputType.dataframe]
         return self.new_tileable(
             [],
             None,
-            shape=(len(self.dtypes), np.nan),
+            shape=shape,
             dtypes=self.dtypes,
             index_value=index_value,
             columns_value=columns_value,
@@ -278,6 +291,7 @@ def read_odps_query(
     string_as_binary: bool = None,
     sql_hints: Dict[str, str] = None,
     anonymous_col_prefix: str = _DEFAULT_ANONYMOUS_COL_PREFIX,
+    skip_schema: bool = False,
     **kw,
 ):
     """
@@ -298,6 +312,10 @@ def read_odps_query(
         User specified SQL hints.
     anonymous_col_prefix: str, optional
         Prefix for anonymous columns, '_anon_col_' by default.
+    skip_schema: bool, optional
+        Skip resolving output schema before execution. Once this is configured,
+        the output DataFrame cannot be inputs of other DataFrame operators
+        before execution.
 
     Returns
     -------
@@ -319,28 +337,39 @@ def read_odps_query(
 
     if odps_entry is None:
         raise ValueError("Missing odps_entry parameter")
-    inst = odps_entry.execute_sql(f"EXPLAIN {query}", hints=hints)
-    logger.debug("Explain instance ID: %s", inst.id)
-    explain_str = list(inst.get_task_results().values())[0]
 
-    odps_schema = _parse_explained_schema(explain_str)
-
-    new_columns = []
     col_renames = {}
-    for col in odps_schema.columns:
-        anon_match = _ANONYMOUS_COL_REGEX.match(col.name)
-        if anon_match and col.name not in query:
-            new_name = anonymous_col_prefix + anon_match.group(1)
-            col_renames[col.name] = new_name
-            new_columns.append(Column(new_name, col.type))
-        else:
-            new_columns.append(col)
+    if not skip_schema:
+        inst = odps_entry.execute_sql(f"EXPLAIN {query}", hints=hints)
+        logger.debug("Explain instance ID: %s", inst.id)
+        explain_str = list(inst.get_task_results().values())[0]
 
-    dtypes = odps_schema_to_pandas_dtypes(OdpsSchema(new_columns))
+        try:
+            odps_schema = _parse_explained_schema(explain_str)
+        except ValueError as ex:
+            exc = ValueError(str(ex) + "\nExplain instance ID: " + inst.id)
+            raise exc.with_traceback(ex.__traceback__) from None
+
+        new_columns = []
+        for col in odps_schema.columns:
+            anon_match = _ANONYMOUS_COL_REGEX.match(col.name)
+            if anon_match and col.name not in query:
+                new_name = anonymous_col_prefix + anon_match.group(1)
+                col_renames[col.name] = new_name
+                new_columns.append(Column(new_name, col.type))
+            else:
+                new_columns.append(col)
+
+        dtypes = odps_schema_to_pandas_dtypes(OdpsSchema(new_columns))
+    else:
+        dtypes = None
 
     if not index_col:
         index_dtypes = None
     else:
+        if dtypes is None:
+            raise ValueError("Cannot configure index_col when skip_schema is True")
+
         if isinstance(index_col, str):
             index_col = [index_col]
         index_col_set = set(index_col)

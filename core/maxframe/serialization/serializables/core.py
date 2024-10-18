@@ -19,6 +19,7 @@ from typing import Any, Dict, List, Optional, Tuple, Type
 import msgpack
 
 from ...lib.mmh3 import hash
+from ...utils import no_default
 from ..core import Placeholder, Serializer, buffered, load_type
 from .field import Field
 from .field_type import DictType, ListType, PrimitiveFieldType, TupleType
@@ -211,6 +212,22 @@ class _NoFieldValue:
 _no_field_value = _NoFieldValue()
 
 
+def _to_primitive_placeholder(v: Any) -> Any:
+    if v is _no_field_value or v is no_default:
+        return {}
+    return v
+
+
+def _restore_primitive_placeholder(v: Any) -> Any:
+    if type(v) is dict:
+        if v == {}:
+            return _no_field_value
+        else:
+            return v
+    else:
+        return v
+
+
 class SerializableSerializer(Serializer):
     """
     Leverage DictSerializer to perform serde.
@@ -241,9 +258,7 @@ class SerializableSerializer(Serializer):
         else:
             primitive_vals = self._get_field_values(obj, obj._PRIMITIVE_FIELDS)
             # replace _no_field_value as {} to make them msgpack-serializable
-            primitive_vals = [
-                v if v is not _no_field_value else {} for v in primitive_vals
-            ]
+            primitive_vals = [_to_primitive_placeholder(v) for v in primitive_vals]
             if obj._cache_primitive_serial:
                 primitive_vals = msgpack.dumps(primitive_vals)
                 _primitive_serial_cache[obj] = primitive_vals
@@ -311,7 +326,9 @@ class SerializableSerializer(Serializer):
                 cls_fields = server_fields[server_field_num : field_num + count]
                 cls_values = values[field_num : field_num + count]
                 for field, value in zip(cls_fields, cls_values):
-                    if not is_primitive or value != {}:
+                    if is_primitive:
+                        value = _restore_primitive_placeholder(value)
+                    if not is_primitive or value is not _no_field_value:
                         cls._set_field_value(obj, field, value)
                 field_num += count
                 try:
@@ -356,7 +373,9 @@ class SerializableSerializer(Serializer):
                 server_fields + deprecated_fields, key=lambda f: f.name
             )
             for field, value in zip(server_fields, values):
-                if not is_primitive or value != {}:
+                if is_primitive:
+                    value = _restore_primitive_placeholder(value)
+                if not is_primitive or value is not _no_field_value:
                     try:
                         cls._set_field_value(obj, field, value)
                     except AttributeError:  # pragma: no cover

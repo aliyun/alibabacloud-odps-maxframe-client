@@ -88,5 +88,11 @@ def df_groupby_getitem(df_groupby, item):
     if df_groupby.selection:
         raise IndexError(f"Column(s) {df_groupby.selection!r} already selected")
 
+    if (
+        isinstance(item, tuple)
+        and item not in df_groupby.dtypes
+        and item not in df_groupby.index.names
+    ):
+        item = list(item)
     op = GroupByIndex(selection=item, output_types=output_types)
     return op(df_groupby)

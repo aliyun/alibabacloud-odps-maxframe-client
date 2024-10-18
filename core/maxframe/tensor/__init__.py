@@ -191,11 +191,6 @@ from .ufunc import ufunc
 # isort: off
 # noinspection PyUnresolvedReferences
 from numpy import (
-    NAN,
-    NINF,
-    AxisError,
-    Inf,
-    NaN,
     e,
     errstate,
     geterr,
@@ -206,12 +201,21 @@ from numpy import (
     seterr,
 )
 
+try:
+    from numpy.exceptions import AxisError
+except ImportError:
+    from numpy import AxisError
+
+NAN = nan
+NINF = -inf
+Inf = inf
+NaN = nan
+
 # import numpy types
 # noinspection PyUnresolvedReferences
 from numpy import (
     bool_ as bool,
     bytes_,
-    cfloat,
     character,
     complex64,
     complex128,
@@ -242,9 +246,17 @@ from numpy import (
     uint16,
     uint32,
     uint64,
-    unicode_,
     unsignedinteger,
     void,
 )
+
+try:
+    from numpy import cfloat
+except ImportError:
+    from numpy import cdouble as cfloat
+try:
+    from numpy import str_ as unicode_
+except ImportError:
+    from numpy import unicode_
 
 del fetch, ufunc

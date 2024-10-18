@@ -21,6 +21,7 @@ import pytest
 
 from ....core import EntityData
 from ....lib.wrapped_pickle import switch_unpickle
+from ....utils import no_default
 from ... import deserialize, serialize
 from .. import (
     AnyField,
@@ -143,6 +144,7 @@ class MySerializable(Serializable):
         oneof1_val=f"{__name__}.MySerializable",
         oneof2_val=MySimpleSerializable,
     )
+    _no_default_val = Float64Field("no_default_val", default=no_default)
 
 
 @pytest.mark.parametrize("set_is_ci", [False, True], indirect=True)
@@ -187,6 +189,7 @@ def test_serializable(set_is_ci):
         _dict_val={"a": b"bytes_value"},
         _ref_val=MySerializable(),
         _oneof_val=MySerializable(_id="2"),
+        _no_default_val=no_default,
     )
 
     header, buffers = serialize(my_serializable)
@@ -234,7 +237,11 @@ def _assert_serializable_eq(my_serializable, my_serializable2):
         if not hasattr(my_serializable, field.name):
             continue
         expect_value = getattr(my_serializable, field_name)
-        actual_value = getattr(my_serializable2, field_name)
+        if expect_value is no_default:
+            assert not hasattr(my_serializable2, field.name)
+            continue
+        else:
+            actual_value = getattr(my_serializable2, field_name)
         if isinstance(expect_value, np.ndarray):
             np.testing.assert_array_equal(expect_value, actual_value)
         elif isinstance(expect_value, pd.DataFrame):

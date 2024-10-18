@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from typing import List, Union
 
 import pandas as pd
 
@@ -24,6 +25,7 @@ from ...serialization.serializables import (
     StringField,
 )
 from ...utils import lazy_import
+from ..core import DataFrame, Series
 from ..operators import SERIES_TYPE, DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_empty_df, build_empty_series, parse_index, validate_axis
 
@@ -55,41 +57,53 @@ class DataFrameConcat(DataFrameOperator, DataFrameOperatorMixin):
         return self.names
 
     @classmethod
-    def _concat_index(cls, prev_index: pd.Index, cur_index: pd.Index):
-        if isinstance(prev_index, pd.RangeIndex) and isinstance(
-            cur_index, pd.RangeIndex
-        ):
-            # handle RangeIndex that append may generate huge amount of data
-            # e.g. pd.RangeIndex(10_000) and pd.RangeIndex(10_000)
-            # will generate a Int64Index full of data
-            # for details see GH#1647
-            prev_stop = prev_index.start + prev_index.size * prev_index.step
-            cur_start = cur_index.start
-            if prev_stop == cur_start and prev_index.step == cur_index.step:
-                # continuous RangeIndex, still return RangeIndex
-                return prev_index.append(cur_index)
-            else:
-                # otherwise, return an empty index
-                return pd.Index([], dtype=prev_index.dtype)
-        elif isinstance(prev_index, pd.RangeIndex):
-            return pd.Index([], prev_index.dtype).append(cur_index)
-        elif isinstance(cur_index, pd.RangeIndex):
-            return prev_index.append(pd.Index([], cur_index.dtype))
-        return prev_index.append(cur_index)
+    def _concat_index(cls, df_or_series_list: Union[List[DataFrame], List[Series]]):
+        concat_index = None
+        all_indexes_have_value = all(
+            input.index_value.has_value() for input in df_or_series_list
+        )
+
+        def _concat(prev_index: pd.Index, cur_index: pd.Index):
+            if prev_index is None:
+                return cur_index
+
+            if (
+                all_indexes_have_value
+                and isinstance(prev_index, pd.RangeIndex)
+                and isinstance(cur_index, pd.RangeIndex)
+            ):
+                # handle RangeIndex that append may generate huge amount of data
+                # e.g. pd.RangeIndex(10_000) and pd.RangeIndex(10_000)
+                # will generate a Int64Index full of data
+                # for details see GH#1647
+                prev_stop = prev_index.start + prev_index.size * prev_index.step
+                cur_start = cur_index.start
+                if prev_stop == cur_start and prev_index.step == cur_index.step:
+                    # continuous RangeIndex, still return RangeIndex
+                    return prev_index.append(cur_index)
+                else:
+                    # otherwise, return an empty index
+                    return pd.Index([], dtype=prev_index.dtype)
+            elif isinstance(prev_index, pd.RangeIndex):
+                return pd.Index([], prev_index.dtype).append(cur_index)
+            elif isinstance(cur_index, pd.RangeIndex):
+                return prev_index.append(pd.Index([], cur_index.dtype))
+            return prev_index.append(cur_index)
+
+        for input in df_or_series_list:
+            concat_index = _concat(concat_index, input.index_value.to_pandas())
+
+        return concat_index
 
     def _call_series(self, objs):
         if self.axis == 0:
             row_length = 0
-            index = None
             for series in objs:
-                if index is None:
-                    index = series.index_value.to_pandas()
-                else:
-                    index = self._concat_index(index, series.index_value.to_pandas())
                 row_length += series.shape[0]
             if self.ignore_index:  # pragma: no cover
                 index_value = parse_index(pd.RangeIndex(row_length))
             else:
+                index = self._concat_index(objs)
                 index_value = parse_index(index, objs)
             obj_names = {obj.name for obj in objs}
             return self.new_series(
@@ -130,13 +144,8 @@ class DataFrameConcat(DataFrameOperator, DataFrameOperatorMixin):
     def _call_dataframes(self, objs):
         if self.axis == 0:
             row_length = 0
-            index = None
             empty_dfs = []
             for df in objs:
-                if index is None:
-                    index = df.index_value.to_pandas()
-                else:
-                    index = self._concat_index(index, df.index_value.to_pandas())
                 row_length += df.shape[0]
                 if df.ndim == 2:
                     empty_dfs.append(build_empty_df(df.dtypes))
@@ -153,6 +162,7 @@ class DataFrameConcat(DataFrameOperator, DataFrameOperatorMixin):
             if self.ignore_index:  # pragma: no cover
                 index_value = parse_index(pd.RangeIndex(row_length))
             else:
+                index = self._concat_index(objs)
                 index_value = parse_index(index, objs)
 
             new_objs = []

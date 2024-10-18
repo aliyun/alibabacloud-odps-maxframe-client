@@ -353,7 +353,7 @@ def merge(
     df: Union[DataFrame, Series],
     right: Union[DataFrame, Series],
     how: str = "inner",
-    on: str = None,
+    on: Union[str, List[str]] = None,
     left_on: str = None,
     right_on: str = None,
     left_index: bool = False,

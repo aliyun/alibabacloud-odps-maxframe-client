@@ -28,7 +28,7 @@ from ..utils import build_df, build_series, parse_index
 
 cudf = lazy_import("cudf")
 
-_GROUP_KEYS_NO_DEFAULT = pd_release_version >= (1, 5, 0)
+_GROUP_KEYS_NO_DEFAULT = pd_release_version[:2] == (1, 5)
 _default_group_keys = no_default if _GROUP_KEYS_NO_DEFAULT else True
 
 

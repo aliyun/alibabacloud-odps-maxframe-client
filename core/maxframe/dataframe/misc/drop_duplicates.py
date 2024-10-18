@@ -43,7 +43,11 @@ class DataFrameDropDuplicates(DuplicateOperand):
             params["index_value"] = parse_index(pd.RangeIndex(-1))
         else:
             params["index_value"] = gen_unknown_index_value(
-                input_params["index_value"], op.keep, op.subset, type(op).__name__
+                input_params["index_value"],
+                op.keep,
+                op.subset,
+                type(op).__name__,
+                normalize_range_index=True,
             )
         params["shape"] = self._get_shape(input_params["shape"], op)
         return params

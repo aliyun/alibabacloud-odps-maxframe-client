@@ -381,6 +381,9 @@ default_options.register_option(
     "session.enable_schema", None, validator=is_null | is_bool, remote=True
 )
 default_options.register_option(
+    "session.enable_high_availability", None, validator=is_null | is_bool, remote=True
+)
+default_options.register_option(
     "session.default_schema", None, validator=is_null | is_string, remote=True
 )
 default_options.register_option(

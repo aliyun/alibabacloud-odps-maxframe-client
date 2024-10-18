@@ -81,7 +81,10 @@ class DataFrameQuantile(DataFrameOperator, DataFrameOperatorMixin):
             store_index_value = False
         else:
             q_val = np.asanyarray(self.q)
-            pd_index = pd.Index(q_val)
+            if q_val.ndim == 0:
+                pd_index = pd.Index(q_val.reshape(1))
+            else:
+                pd_index = pd.Index(q_val)
             name = self.q if q_val.size == 1 else None
             store_index_value = True
         tokenize_objects = (a, q_val, self.interpolation, type(self).__name__)
@@ -164,7 +167,10 @@ class DataFrameQuantile(DataFrameOperator, DataFrameOperatorMixin):
             store_index_value = False
         else:
             q_val = np.asanyarray(self.q)
-            index_val = pd.Index(q_val)
+            if q_val.ndim == 0:
+                index_val = pd.Index(q_val.reshape(1))
+            else:
+                index_val = pd.Index(q_val)
             store_index_value = True
 
         # get dtype by tensor
