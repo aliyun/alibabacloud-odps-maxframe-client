@@ -16,8 +16,9 @@ import pandas as pd
 import pytest
 
 from .... import dataframe as md
+from ....tests.utils import assert_mf_index_dtype
 from ... import DataFrame
-from ...core import IndexValue
+from ...core import DATAFRAME_TYPE, SERIES_TYPE, IndexValue
 from ..reshuffle import DataFrameReshuffle
 
 
@@ -32,7 +33,7 @@ def test_reshuffle():
 
     r = mdf.mf.reshuffle()
     assert isinstance(r.op, DataFrameReshuffle)
-    assert isinstance(r.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(r.index_value.value, np.int64)
 
     r = mdf.mf.reshuffle(ignore_index=True)
     assert isinstance(r.op, DataFrameReshuffle)
@@ -97,3 +98,46 @@ def test_flatmap(df1, df2, df3):
     assert apply_s.shape == (np.nan, 2)
     assert df3.index_value.key != apply_s.index_value.key
     assert df3.key != apply_s.index_value.key
+
+
+def test_flatjson():
+    s1 = md.Series(["{{'a': 1, 'b': false}}"], index=[1])
+    df1 = s1.mf.flatjson(
+        ["$.a", "$.b"], dtypes=pd.Series(["int32", "bool"], index=["a", "b"])
+    )
+    assert df1.shape == (1, 2)
+    assert df1.index_value.key == s1.index_value.key
+    assert isinstance(df1, DATAFRAME_TYPE)
+    assert list(df1.dtypes) == [np.dtype("int32"), np.dtype("bool")]
+    assert list(df1.dtypes.index) == ["a", "b"]
+
+    df2 = s1.mf.flatjson(["$.a"], dtypes=pd.Series(["int32"], index=["a"]))
+    assert df2.shape == (1, 1)
+    assert df2.index_value.key == s1.index_value.key
+    assert isinstance(df2, DATAFRAME_TYPE)
+    assert list(df2.dtypes) == [np.dtype("int32")]
+    assert list(df2.dtypes.index) == ["a"]
+
+    s2 = s1.mf.flatjson("$.a", dtype="int32", name="a")
+    assert s2.shape == (1,)
+    assert s2.index_value.key == s1.index_value.key
+    assert isinstance(s2, SERIES_TYPE)
+    assert s2.dtype == np.dtype("int32")
+    assert s2.name == "a"
+
+    with pytest.raises(ValueError):
+        s1.mf.flatjson([], dtypes=pd.Series(["int32", "bool"], index=["a", "b"]))
+    with pytest.raises(ValueError):
+        s1.mf.flatjson(["$.a"], dtypes=pd.Series(["int32", "bool"], index=["a", "b"]))
+    with pytest.raises(ValueError):
+        s1.mf.flatjson(["$.a"], dtypes=pd.Series(["int32", "bool"], index=["a", "b"]))
+    with pytest.raises(ValueError):
+        s1.mf.flatjson(["$.a", "$.b"], dtypes=pd.Series(["bool"], index=["b"]))
+    with pytest.raises(ValueError):
+        s1.mf.flatjson(
+            ["$.a"],
+            dtype="int32",
+            dtypes=pd.Series(["int32"], index=["a"]),
+        )
+    with pytest.raises(ValueError):
+        s1.mf.flatjson(["$.a"])

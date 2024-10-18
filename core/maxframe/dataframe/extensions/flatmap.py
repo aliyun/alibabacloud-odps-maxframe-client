@@ -17,17 +17,17 @@ from typing import Callable
 import numpy as np
 import pandas as pd
 
-from maxframe import opcodes
-from maxframe.core import OutputType
-from maxframe.dataframe.core import DataFrame, IndexValue
-from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
-from maxframe.dataframe.utils import make_dtypes, parse_index
-from maxframe.serialization.serializables import (
+from ... import opcodes
+from ...core import OutputType
+from ...serialization.serializables import (
     BoolField,
     DictField,
     FunctionField,
     TupleField,
 )
+from ..core import DataFrame
+from ..operators import DataFrameOperator, DataFrameOperatorMixin
+from ..utils import gen_unknown_index_value, make_dtypes, parse_index
 
 
 class DataFrameFlatMapOperator(DataFrameOperator, DataFrameOperatorMixin):
@@ -41,22 +41,12 @@ class DataFrameFlatMapOperator(DataFrameOperator, DataFrameOperatorMixin):
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
 
-    @staticmethod
-    def _gen_flattening_index_value(index_value, *args) -> IndexValue:
-        pd_index = index_value.to_pandas()
-        if not isinstance(pd_index, pd.MultiIndex):
-            # for func return multi rows, will copy indexes
-            return parse_index(pd.Index([], dtype=pd_index.dtype), *args)
-        # multi index will keep the same level and types
-        return parse_index(
-            pd.MultiIndex.from_arrays([c[:0] for c in pd_index.levels]), *args
-        )
-
     def _call_dataframe(self, df: DataFrame, dtypes: pd.Series):
         dtypes = make_dtypes(dtypes)
-        index_value = self._gen_flattening_index_value(
+        index_value = gen_unknown_index_value(
             df.index_value,
             (df.key, df.index_value.key, self.func),
+            normalize_range_index=True,
         )
         return self.new_dataframe(
             [df],
@@ -67,9 +57,10 @@ class DataFrameFlatMapOperator(DataFrameOperator, DataFrameOperatorMixin):
         )
 
     def _call_series_or_index(self, series, dtypes=None):
-        index_value = self._gen_flattening_index_value(
+        index_value = gen_unknown_index_value(
             series.index_value,
             (series.key, series.index_value.key, self.func),
+            normalize_range_index=True,
         )
 
         if self.output_types[0] == OutputType.series:
@@ -302,7 +293,7 @@ def series_flatmap(
         2  9  15
     """
 
-    if dtypes and dtype:
+    if dtypes is not None and dtype is not None:
         raise ValueError("Both dtypes and dtype cannot be specified at the same time.")
 
     dtypes = (name, dtype) if dtype is not None else dtypes

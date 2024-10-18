@@ -63,9 +63,12 @@ class FrameDriverClient:
         session_id: str,
         dag: TileableGraph,
         managed_input_infos: Dict[str, ResultInfo] = None,
+        new_settings: Dict[str, Any] = None,
     ) -> DagInfo:
         req_url = f"{self._endpoint}/api/sessions/{session_id}/dags"
-        req_body = ExecuteDagRequest(session_id, dag, managed_input_infos)
+        req_body = ExecuteDagRequest(
+            session_id, dag, managed_input_infos, new_settings=new_settings
+        )
         resp = await httpclient.AsyncHTTPClient().fetch(
             req_url,
             method="POST",

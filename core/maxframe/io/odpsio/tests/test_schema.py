@@ -21,6 +21,7 @@ from odps import types as odps_types
 from .... import dataframe as md
 from .... import tensor as mt
 from ....core import OutputType
+from ....utils import pd_release_version
 from ..schema import (
     arrow_schema_to_odps_schema,
     build_dataframe_table_meta,
@@ -292,3 +293,42 @@ def test_build_table_meta(wrap_obj):
     table_meta = build_dataframe_table_meta(test_df)
     expected_cols = ["a_2", "a_3", "a_0", "a_1_0", "a_1_1", "b", "c"]
     assert table_meta.table_column_names == expected_cols
+
+
+@pytest.mark.skipif(
+    pd_release_version[0] < 2, reason="only run under pandas 2.0 or greater"
+)
+def test_table_meta_with_datetime():
+    raw_df = pd.DataFrame(
+        [
+            [1, "abc", "2024-10-01 11:23:12"],
+            [3, "uvw", "2024-10-02 22:55:13"],
+        ],
+        columns=["col1", "col2", "col3"],
+    )
+    df = md.DataFrame(raw_df).astype({"col3": "datetime64[ms]"})
+    schema, _ = pandas_to_odps_schema(df, unknown_as_string=True)
+    assert schema.columns[3].type == odps_types.datetime
+
+    raw_series = pd.Series(
+        ["2024-10-01 11:23:12", "2024-10-02 22:55:13"], dtype="datetime64[ms]"
+    )
+    s = md.Series(raw_series)
+    schema, _ = pandas_to_odps_schema(s, unknown_as_string=True)
+    assert schema.columns[1].type == odps_types.datetime
+
+    raw_index = pd.Index(
+        ["2024-10-01 11:23:12", "2024-10-02 22:55:13"], dtype="datetime64[ms]"
+    )
+    idx = md.Index(raw_index)
+    schema, _ = pandas_to_odps_schema(idx, unknown_as_string=True)
+    assert schema.columns[0].type == odps_types.datetime
+
+    src_df = pd.DataFrame(
+        [[1, "2024-10-01 11:23:12"], [3, "2024-10-02 22:55:13"]],
+        columns=["A", "B"],
+    ).astype({"B": "datetime64[ms]"})
+    raw_multiindex = pd.MultiIndex.from_frame(src_df)
+    multiidx = md.Index(raw_multiindex)
+    schema, _ = pandas_to_odps_schema(multiidx, unknown_as_string=True)
+    assert schema.columns[1].type == odps_types.datetime

@@ -46,6 +46,9 @@ class PrimitiveType(Enum):
     complex128 = 25
 
 
+_np_unicode = np.unicode_ if hasattr(np, "unicode_") else np.str_
+
+
 _primitive_type_to_valid_types = {
     PrimitiveType.bool: (bool, np.bool_),
     PrimitiveType.int8: (int, np.int8),
@@ -60,7 +63,7 @@ _primitive_type_to_valid_types = {
     PrimitiveType.float32: (float, np.float32),
     PrimitiveType.float64: (float, np.float64),
     PrimitiveType.bytes: (bytes, np.bytes_),
-    PrimitiveType.string: (str, np.unicode_),
+    PrimitiveType.string: (str, _np_unicode),
     PrimitiveType.complex64: (complex, np.complex64),
     PrimitiveType.complex128: (complex, np.complex128),
 }

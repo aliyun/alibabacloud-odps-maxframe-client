@@ -55,13 +55,13 @@ def test_sparse_creation():
     s = SparseNDArray(s1_data)
     assert s.ndim == 2
     assert isinstance(s, SparseMatrix)
-    assert_array_equal(s.toarray(), s1_data.A)
-    assert_array_equal(s.todense(), s1_data.A)
+    assert_array_equal(s.toarray(), s1_data.toarray())
+    assert_array_equal(s.todense(), s1_data.toarray())
 
     ss = pickle.loads(pickle.dumps(s))
     assert s == ss
-    assert_array_equal(ss.toarray(), s1_data.A)
-    assert_array_equal(ss.todense(), s1_data.A)
+    assert_array_equal(ss.toarray(), s1_data.toarray())
+    assert_array_equal(ss.todense(), s1_data.toarray())
 
     v = SparseNDArray(v1, shape=(3,))
     assert s.ndim
@@ -331,12 +331,12 @@ def test_sparse_dot():
 
     assert_array_equal(mls.dot(s1, v1_s), s1.dot(v1_data))
     assert_array_equal(mls.dot(s2, v1_s), s2.dot(v1_data))
-    assert_array_equal(mls.dot(v2_s, s1), v2_data.dot(s1_data.A))
-    assert_array_equal(mls.dot(v2_s, s2), v2_data.dot(s2_data.A))
+    assert_array_equal(mls.dot(v2_s, s1), v2_data.dot(s1_data.toarray()))
+    assert_array_equal(mls.dot(v2_s, s2), v2_data.dot(s2_data.toarray()))
     assert_array_equal(mls.dot(v1_s, v1_s), v1_data.dot(v1_data), almost=True)
     assert_array_equal(mls.dot(v2_s, v2_s), v2_data.dot(v2_data), almost=True)
 
-    assert_array_equal(mls.dot(v2_s, s1, sparse=False), v2_data.dot(s1_data.A))
+    assert_array_equal(mls.dot(v2_s, s1, sparse=False), v2_data.dot(s1_data.toarray()))
     assert_array_equal(mls.dot(v1_s, v1_s, sparse=False), v1_data.dot(v1_data))
 
 
@@ -390,7 +390,7 @@ def test_sparse_fill_diagonal():
     arr = SparseNDArray(s1)
     arr.fill_diagonal(3)
 
-    expected = s1.copy().A
+    expected = s1.copy().toarray()
     np.fill_diagonal(expected, 3)
 
     np.testing.assert_array_equal(arr.toarray(), expected)
@@ -399,7 +399,7 @@ def test_sparse_fill_diagonal():
     arr = SparseNDArray(s1)
     arr.fill_diagonal(3, wrap=True)
 
-    expected = s1.copy().A
+    expected = s1.copy().toarray()
     np.fill_diagonal(expected, 3, wrap=True)
 
     np.testing.assert_array_equal(arr.toarray(), expected)
@@ -408,7 +408,7 @@ def test_sparse_fill_diagonal():
     arr = SparseNDArray(s1)
     arr.fill_diagonal([1, 2, 3])
 
-    expected = s1.copy().A
+    expected = s1.copy().toarray()
     np.fill_diagonal(expected, [1, 2, 3])
 
     np.testing.assert_array_equal(arr.toarray(), expected)
@@ -417,7 +417,7 @@ def test_sparse_fill_diagonal():
     arr = SparseNDArray(s1)
     arr.fill_diagonal([1, 2, 3], wrap=True)
 
-    expected = s1.copy().A
+    expected = s1.copy().toarray()
     np.fill_diagonal(expected, [1, 2, 3], wrap=True)
 
     np.testing.assert_array_equal(arr.toarray(), expected)
@@ -427,7 +427,7 @@ def test_sparse_fill_diagonal():
     arr = SparseNDArray(s1)
     arr.fill_diagonal(val)
 
-    expected = s1.copy().A
+    expected = s1.copy().toarray()
     np.fill_diagonal(expected, val)
 
     np.testing.assert_array_equal(arr.toarray(), expected)
@@ -437,7 +437,7 @@ def test_sparse_fill_diagonal():
     arr = SparseNDArray(s1)
     arr.fill_diagonal(val, wrap=True)
 
-    expected = s1.copy().A
+    expected = s1.copy().toarray()
     np.fill_diagonal(expected, val, wrap=True)
 
     np.testing.assert_array_equal(arr.toarray(), expected)
@@ -447,7 +447,7 @@ def test_sparse_fill_diagonal():
     arr = SparseNDArray(s1)
     arr.fill_diagonal(val)
 
-    expected = s1.copy().A
+    expected = s1.copy().toarray()
     np.fill_diagonal(expected, val)
 
     np.testing.assert_array_equal(arr.toarray(), expected)
@@ -457,7 +457,7 @@ def test_sparse_fill_diagonal():
     arr = SparseNDArray(s1)
     arr.fill_diagonal(val, wrap=True)
 
-    expected = s1.copy().A
+    expected = s1.copy().toarray()
     np.fill_diagonal(expected, val, wrap=True)
 
     np.testing.assert_array_equal(arr.toarray(), expected)

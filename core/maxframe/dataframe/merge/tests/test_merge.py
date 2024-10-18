@@ -16,6 +16,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from ....tests.utils import assert_mf_index_dtype
 from ...core import IndexValue
 from ...datasource.dataframe import from_pandas
 from .. import DataFrameMerge, concat
@@ -161,7 +162,7 @@ def test_append():
     adf = mdf1.append(mdf2)
 
     assert adf.shape == (20, 4)
-    assert isinstance(adf.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(adf.index_value.value, np.int64)
 
     mdf1 = from_pandas(df1, chunk_size=3)
     mdf2 = from_pandas(df2, chunk_size=3)
@@ -181,6 +182,7 @@ def test_concat():
     r = concat([mdf1, mdf2], axis="index")
 
     assert r.shape == (20, 4)
+    assert not isinstance(r.index_value.to_pandas(), pd.RangeIndex)
     pd.testing.assert_series_equal(r.dtypes, df1.dtypes)
 
     df3 = pd.DataFrame(

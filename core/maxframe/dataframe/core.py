@@ -142,6 +142,14 @@ class IndexValue(Serializable):
         _data = NDArrayField("data")
         _dtype = DataTypeField("dtype")
 
+        @property
+        def dtype(self):
+            return getattr(self, "_dtype", None)
+
+        @property
+        def inferred_type(self):
+            return "floating" if self.dtype.kind == "f" else "integer"
+
     class RangeIndex(IndexBase):
         _name = AnyField("name")
         _slice = SliceField("slice")
@@ -244,6 +252,10 @@ class IndexValue(Serializable):
         _dtype = DataTypeField("dtype")
 
         @property
+        def dtype(self):
+            return getattr(self, "_dtype", None)
+
+        @property
         def inferred_type(self):
             return "integer"
 
@@ -255,6 +267,10 @@ class IndexValue(Serializable):
         _dtype = DataTypeField("dtype")
 
         @property
+        def dtype(self):
+            return getattr(self, "_dtype", None)
+
+        @property
         def inferred_type(self):
             return "integer"
 
@@ -264,6 +280,10 @@ class IndexValue(Serializable):
         _name = AnyField("name")
         _data = NDArrayField("data")
         _dtype = DataTypeField("dtype")
+
+        @property
+        def dtype(self):
+            return getattr(self, "_dtype", None)
 
         @property
         def inferred_type(self):
@@ -1514,14 +1534,16 @@ class BaseDataFrameData(HasShapeTileableData, _ToPandasMixin):
         refresh_index_value(self)
         refresh_dtypes(self)
 
-    def refresh_from_table_meta(self, table_meta: DataFrameTableMeta) -> None:
-        dtypes = table_meta.pd_column_dtypes
+    def refresh_from_dtypes(self, dtypes: pd.Series) -> None:
         self._dtypes = dtypes
         self._columns_value = parse_index(dtypes.index, store_data=True)
         self._dtypes_value = DtypesValue(key=tokenize(dtypes), value=dtypes)
         new_shape = list(self._shape)
         new_shape[-1] = len(dtypes)
         self._shape = tuple(new_shape)
+
+    def refresh_from_table_meta(self, table_meta: DataFrameTableMeta) -> None:
+        self.refresh_from_dtypes(table_meta.pd_column_dtypes)
 
     @property
     def dtypes(self):

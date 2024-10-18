@@ -22,6 +22,7 @@ import pandas as pd
 import pytest
 
 from ....core import OperatorType
+from ....tests.utils import assert_mf_index_dtype
 from ....utils import dataslots
 from ...core import IndexValue
 from ...datasource.dataframe import from_pandas
@@ -164,7 +165,7 @@ def test_without_shuffle(func_name, func_opts):
     pd.testing.assert_index_equal(
         df3.columns_value.to_pandas(), func_opts.func(data1, data2).columns
     )
-    assert isinstance(df3.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(df3.index_value.value, np.int64)
     pd.testing.assert_index_equal(
         df3.index_value.to_pandas(), pd.Index([], dtype=np.int64)
     )
@@ -176,7 +177,7 @@ def test_without_shuffle(func_name, func_opts):
     pd.testing.assert_index_equal(
         df3.columns_value.to_pandas(), func_opts.func(data1, data2).columns
     )
-    assert isinstance(df3.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(df3.index_value.value, np.int64)
     pd.testing.assert_index_equal(
         df3.index_value.to_pandas(), pd.Index([], dtype=np.int64)
     )
@@ -370,7 +371,7 @@ def test_with_one_shuffle(func_name, func_opts):
     pd.testing.assert_index_equal(
         df3.columns_value.to_pandas(), func_opts.func(data1, data2).columns
     )
-    assert isinstance(df3.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(df3.index_value.value, np.int64)
     pd.testing.assert_index_equal(
         df3.index_value.to_pandas(), pd.Index([], dtype=np.int64)
     )
@@ -403,7 +404,7 @@ def test_with_all_shuffle(func_name, func_opts):
     pd.testing.assert_index_equal(
         df3.columns_value.to_pandas(), func_opts.func(data1, data2).columns
     )
-    assert isinstance(df3.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(df3.index_value.value, np.int64)
     pd.testing.assert_index_equal(
         df3.index_value.to_pandas(), pd.Index([], dtype=np.int64)
     )
@@ -433,7 +434,7 @@ def test_with_all_shuffle(func_name, func_opts):
     pd.testing.assert_index_equal(
         df6.columns_value.to_pandas(), func_opts.func(data4, data5).columns
     )
-    assert isinstance(df6.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(df6.index_value.value, np.int64)
     pd.testing.assert_index_equal(
         df6.index_value.to_pandas(), pd.Index([], dtype=np.int64)
     )
@@ -468,7 +469,7 @@ def test_without_shuffle_and_with_one_chunk(func_name, func_opts):
     pd.testing.assert_index_equal(
         df3.columns_value.to_pandas(), func_opts.func(data1, data2).columns
     )
-    assert isinstance(df3.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(df3.index_value.value, np.int64)
     pd.testing.assert_index_equal(
         df3.index_value.to_pandas(), pd.Index([], dtype=np.int64)
     )
@@ -501,7 +502,7 @@ def test_both_one_chunk(func_name, func_opts):
     pd.testing.assert_index_equal(
         df3.columns_value.to_pandas(), func_opts.func(data1, data2).columns
     )
-    assert isinstance(df3.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(df3.index_value.value, np.int64)
     pd.testing.assert_index_equal(
         df3.index_value.to_pandas(), pd.Index([], dtype=np.int64)
     )
@@ -534,7 +535,7 @@ def test_with_shuffle_and_one_chunk(func_name, func_opts):
     pd.testing.assert_index_equal(
         df3.columns_value.to_pandas(), func_opts.func(data1, data2).columns
     )
-    assert isinstance(df3.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(df3.index_value.value, np.int64)
     pd.testing.assert_index_equal(
         df3.index_value.to_pandas(), pd.Index([], dtype=np.int64)
     )
@@ -558,7 +559,7 @@ def test_on_same_dataframe(func_name, func_opts):
     pd.testing.assert_index_equal(
         df2.columns_value.to_pandas(), func_opts.func(data, data).columns
     )
-    assert isinstance(df2.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(df2.index_value.value, np.int64)
     pd.testing.assert_index_equal(
         df2.index_value.to_pandas(), pd.Index([], dtype=np.int64)
     )
@@ -590,19 +591,19 @@ def test_dataframe_and_scalar(func_name, func_opts):
     pd.testing.assert_series_equal(result.dtypes, expected.dtypes)
 
     pd.testing.assert_index_equal(result.columns_value.to_pandas(), data.columns)
-    assert isinstance(result.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(result.index_value.value, np.int64)
 
     pd.testing.assert_index_equal(result2.columns_value.to_pandas(), data.columns)
-    assert isinstance(result2.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(result2.index_value.value, np.int64)
 
     pd.testing.assert_index_equal(result3.columns_value.to_pandas(), data.columns)
-    assert isinstance(result3.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(result3.index_value.value, np.int64)
 
     pd.testing.assert_index_equal(result4.columns_value.to_pandas(), data.columns)
-    assert isinstance(result4.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(result4.index_value.value, np.int64)
 
     pd.testing.assert_index_equal(result5.columns_value.to_pandas(), data.columns)
-    assert isinstance(result5.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(result5.index_value.value, np.int64)
 
     if "builtin_function_or_method" not in str(type(func_opts.func)):
         # skip NotImplemented test for comparison function
@@ -679,7 +680,7 @@ def test_abs():
     pd.testing.assert_index_equal(
         df2.columns_value.to_pandas(), df1.columns_value.to_pandas()
     )
-    assert isinstance(df2.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(df2.index_value.value, np.int64)
     assert df2.shape == (10, 10)
 
 
@@ -697,7 +698,7 @@ def test_not():
     pd.testing.assert_index_equal(
         df2.columns_value.to_pandas(), df1.columns_value.to_pandas()
     )
-    assert isinstance(df2.index_value.value, IndexValue.Int64Index)
+    assert_mf_index_dtype(df2.index_value.value, np.int64)
     assert df2.shape == (10, 10)
 
 

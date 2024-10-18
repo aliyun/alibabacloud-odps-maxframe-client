@@ -38,7 +38,7 @@ class DataFrameReshuffle(DataFrameOperator, DataFrameOperatorMixin):
         else:
             idx_value = df.index_value
             if isinstance(idx_value.value, IndexValue.RangeIndex):
-                idx_value = parse_index(pd.Int64Index([0]))
+                idx_value = parse_index(pd.RangeIndex(1))
         params = df.params
         params["index_value"] = idx_value
         self._output_types = get_output_types(df)

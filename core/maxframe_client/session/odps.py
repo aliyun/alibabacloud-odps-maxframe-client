@@ -14,6 +14,7 @@
 
 import abc
 import asyncio
+import copy
 import logging
 import time
 import weakref
@@ -25,6 +26,7 @@ import numpy as np
 import pandas as pd
 from odps import ODPS
 from odps import options as odps_options
+from odps.console import in_ipython_frontend
 
 from maxframe.config import options
 from maxframe.core import Entity, TileableGraph, build_fetch, enter_mode
@@ -113,6 +115,8 @@ class MaxFrameServiceCaller(metaclass=abc.ABCMeta):
         mf_settings["session.quota_name"] = quota_name
         if enable_schema is not None:
             mf_settings["session.enable_schema"] = enable_schema
+        if options.session.enable_high_availability is None:
+            mf_settings["session.enable_high_availability"] = not in_ipython_frontend()
         mf_settings["session.default_schema"] = default_schema or "default"
         return mf_settings
 
@@ -184,6 +188,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
 
         self._caller = self._create_caller(odps_entry, address, **kwargs)
         self._last_settings = None
+        self._pull_interval = 1 if in_ipython_frontend() else 3
 
     @classmethod
     def _create_caller(
@@ -193,7 +198,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
 
     async def _init(self, _address: str):
         session_info = await self.ensure_async_call(self._caller.create_session)
-        self._last_settings = self._caller.get_settings_to_upload()
+        self._last_settings = copy.deepcopy(self._caller.get_settings_to_upload())
         self._session_id = session_info.session_id
         await self._show_logview_address()
 
@@ -318,7 +323,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
     def _get_diff_settings(self) -> Dict[str, Any]:
         new_settings = self._caller.get_settings_to_upload()
         if not self._last_settings:  # pragma: no cover
-            self._last_settings = new_settings
+            self._last_settings = copy.deepcopy(new_settings)
             return new_settings
 
         update = dict()
@@ -330,7 +335,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
                     update[k] = new_item
             except:  # noqa: E722  # nosec  # pylint: disable=bare-except
                 update[k] = new_item
-        self._last_settings = new_settings
+        self._last_settings = copy.deepcopy(new_settings)
         return update
 
     async def execute(self, *tileables, **kwargs) -> ExecutionInfo:
@@ -379,18 +384,18 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         start_time = time.time()
         session_id = dag_info.session_id
         dag_id = dag_info.dag_id
-        wait_timeout = 10
         server_no_response_time = None
         with enter_mode(build=True, kernel=True):
             key_to_tileables = {t.key: t for t in tileables}
-
+            timeout_val = 0.1
             try:
                 while True:
                     elapsed_time = time.time() - start_time
+                    next_timeout_val = min(timeout_val * 2, self._pull_interval)
                     timeout_val = (
-                        min(self.timeout - elapsed_time, wait_timeout)
+                        min(self.timeout - elapsed_time, next_timeout_val)
                         if self.timeout
-                        else wait_timeout
+                        else next_timeout_val
                     )
                     if timeout_val <= 0:
                         raise TimeoutError("Running DAG timed out")
@@ -584,7 +589,9 @@ class MaxFrameRestCaller(MaxFrameServiceCaller):
         managed_input_infos: Dict[str, ResultInfo] = None,
         new_settings: Dict[str, Any] = None,
     ) -> DagInfo:
-        return await self._client.submit_dag(self._session_id, dag, managed_input_infos)
+        return await self._client.submit_dag(
+            self._session_id, dag, managed_input_infos, new_settings=new_settings
+        )
 
     async def get_dag_info(self, dag_id: str) -> DagInfo:
         return await self._client.get_dag_info(self._session_id, dag_id)

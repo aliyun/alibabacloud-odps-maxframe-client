@@ -134,8 +134,10 @@ class ArraySerializer(Serializer):
                 data_parts = [obj.tolist()]
             else:
                 data_parts = [obj.to_numpy().tolist()]
-        else:
+        elif hasattr(obj, "_data"):
             data_parts = [getattr(obj, "_data")]
+        else:
+            data_parts = [getattr(obj, "_pa_array")]
         return [ser_type], [dtype] + data_parts, False
 
     def deserial(self, serialized: List, context: Dict, subs: List):
@@ -155,38 +157,66 @@ class PdTimestampSerializer(Serializer):
         else:
             zone_info = []
             ts = obj.to_pydatetime().timestamp()
-        return (
-            [int(ts), obj.microsecond, obj.nanosecond],
-            zone_info,
-            bool(zone_info),
-        )
+        elements = [int(ts), obj.microsecond, obj.nanosecond]
+        if hasattr(obj, "unit"):
+            elements.append(str(obj.unit))
+        return elements, zone_info, bool(zone_info)
 
     def deserial(self, serialized: List, context: Dict, subs: List):
         if subs:
-            val = pd.Timestamp.utcfromtimestamp(serialized[0]).replace(
-                microsecond=serialized[1], nanosecond=serialized[2]
-            )
-            val = val.replace(tzinfo=datetime.timezone.utc).tz_convert(subs[0])
+            pydt = datetime.datetime.utcfromtimestamp(serialized[0])
+            kwargs = {
+                "year": pydt.year,
+                "month": pydt.month,
+                "day": pydt.day,
+                "hour": pydt.hour,
+                "minute": pydt.minute,
+                "second": pydt.second,
+                "microsecond": serialized[1],
+                "nanosecond": serialized[2],
+                "tzinfo": datetime.timezone.utc,
+            }
+            if len(serialized) > 3:
+                kwargs["unit"] = serialized[3]
+            val = pd.Timestamp(**kwargs).tz_convert(subs[0])
         else:
-            val = pd.Timestamp.fromtimestamp(serialized[0]).replace(
-                microsecond=serialized[1], nanosecond=serialized[2]
-            )
+            pydt = datetime.datetime.fromtimestamp(serialized[0])
+            kwargs = {
+                "year": pydt.year,
+                "month": pydt.month,
+                "day": pydt.day,
+                "hour": pydt.hour,
+                "minute": pydt.minute,
+                "second": pydt.second,
+                "microsecond": serialized[1],
+                "nanosecond": serialized[2],
+            }
+            if len(serialized) >= 4:
+                kwargs["unit"] = serialized[3]
+            val = pd.Timestamp(**kwargs)
         return val
 
 
 class PdTimedeltaSerializer(Serializer):
     def serial(self, obj: pd.Timedelta, context: Dict):
-        return [int(obj.seconds), obj.microseconds, obj.nanoseconds, obj.days], [], True
+        elements = [int(obj.seconds), obj.microseconds, obj.nanoseconds, obj.days]
+        if hasattr(obj, "unit"):
+            elements.append(str(obj.unit))
+        return elements, [], True
 
     def deserial(self, serialized: List, context: Dict, subs: List):
         days = 0 if len(serialized) < 4 else serialized[3]
+        unit = None if len(serialized) < 5 else serialized[4]
         seconds, microseconds, nanoseconds = serialized[:3]
-        return pd.Timedelta(
-            days=days,
-            seconds=seconds,
-            microseconds=microseconds,
-            nanoseconds=nanoseconds,
-        )
+        kwargs = {
+            "days": days,
+            "seconds": seconds,
+            "microseconds": microseconds,
+            "nanoseconds": nanoseconds,
+        }
+        if unit is not None:
+            kwargs["unit"] = unit
+        return pd.Timedelta(**kwargs)
 
 
 class NoDefaultSerializer(Serializer):

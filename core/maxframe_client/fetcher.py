@@ -30,6 +30,7 @@ from maxframe.io.odpsio import (
     ODPSVolumeReader,
     arrow_to_pandas,
     build_dataframe_table_meta,
+    odps_schema_to_pandas_dtypes,
 )
 from maxframe.protocol import (
     DataFrameTableMeta,
@@ -116,13 +117,25 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
             and tileable.dtypes is None
             and info.table_meta is not None
         ):
-            tileable.refresh_from_table_meta(info.table_meta)
+            if info.table_meta.pd_column_dtypes is not None:
+                tileable.refresh_from_table_meta(info.table_meta)
+            else:
+                # need to get meta directly from table
+                table = self._odps_entry.get_table(info.full_table_name)
+                pd_dtypes = odps_schema_to_pandas_dtypes(table.table_schema).drop(
+                    info.table_meta.table_index_column_names
+                )
+                tileable.refresh_from_dtypes(pd_dtypes)
 
         if tileable.shape and any(pd.isna(x) for x in tileable.shape):
             part_specs = [None] if not info.partition_specs else info.partition_specs
 
             with sync_pyodps_options():
                 table = self._odps_entry.get_table(info.full_table_name)
+                if isinstance(tileable, DATAFRAME_TYPE) and tileable.dtypes is None:
+                    dtypes = odps_schema_to_pandas_dtypes(table.table_schema)
+                    tileable.refresh_from_dtypes(dtypes)
+
                 tunnel = TableTunnel(self._odps_entry)
                 total_records = 0
                 for part_spec in part_specs:

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import uuid
 from collections import OrderedDict
 
 import numpy as np
@@ -26,7 +27,14 @@ from ....core import OutputType
 from ....tests.utils import tn
 from ....utils import lazy_import
 from ... import read_odps_query, read_odps_table
-from ...core import DatetimeIndex, Float64Index, IndexValue, Int64Index, MultiIndex
+from ...core import (
+    DatetimeIndex,
+    Float64Index,
+    Index,
+    IndexValue,
+    Int64Index,
+    MultiIndex,
+)
 from ..dataframe import from_pandas as from_pandas_df
 from ..date_range import date_range
 from ..from_tensor import (
@@ -36,7 +44,12 @@ from ..from_tensor import (
 )
 from ..index import from_pandas as from_pandas_index
 from ..index import from_tileable
-from ..read_odps_query import ColumnSchema, _parse_simple_explain, _resolve_task_sector
+from ..read_odps_query import (
+    ColumnSchema,
+    _parse_full_explain,
+    _parse_simple_explain,
+    _resolve_task_sector,
+)
 from ..series import from_pandas as from_pandas_series
 
 ray = lazy_import("ray")
@@ -114,18 +127,22 @@ def test_from_tileable_index():
 
     for o in [df, df[0]]:
         index = o.index
-        assert isinstance(index, Int64Index)
+        assert isinstance(index, (Index, Int64Index))
         assert index.dtype == np.int64
         assert index.name == pd_df.index.name
-        assert isinstance(index.index_value.value, IndexValue.Int64Index)
+        assert isinstance(
+            index.index_value.value, (IndexValue.Int64Index, IndexValue.Index)
+        )
 
     t = mt.random.rand(10, chunk_size=6)
     index = from_tileable(t, name="new_name")
 
-    assert isinstance(index, Float64Index)
+    assert isinstance(index, (Index, Float64Index))
     assert index.dtype == np.float64
     assert index.name == "new_name"
-    assert isinstance(index.index_value.value, IndexValue.Float64Index)
+    assert isinstance(
+        index.index_value.value, (IndexValue.Float64Index, IndexValue.Index)
+    )
 
 
 def test_from_tensor():
@@ -327,7 +344,10 @@ def test_from_odps_query():
     odps_entry.write_table(test_table2, [["A", 10, 4.5]])
 
     with pytest.raises(ValueError) as err_info:
-        read_odps_query(f"CREATE TABLE dummy_table AS SELECT * FROM {table1_name}")
+        read_odps_query(
+            f"CREATE TABLE dummy_table_{uuid.uuid4().hex} "
+            f"AS SELECT * FROM {table1_name}"
+        )
     assert "instant query" in err_info.value.args[0]
 
     query1 = f"SELECT * FROM {table1_name} WHERE col1 > 10"
@@ -342,6 +362,10 @@ def test_from_odps_query():
             index=["col1", "col2", "col3"],
         ),
     )
+
+    df = read_odps_query(query1, skip_schema=True)
+    assert df.dtypes is None
+    assert df.columns_value is None
 
     df = read_odps_query(query1, index_col="col1")
     assert df.op.query == query1
@@ -442,3 +466,31 @@ def test_resolve_simple_explain():
     assert schema.columns[0].type == odps_types.string
     assert schema.columns[1].name == "createdate"
     assert schema.columns[1].type == odps_types.bigint
+
+
+def test_resolve_conditional():
+    input_path = os.path.join(
+        os.path.dirname(__file__), "test-data", "task-input-multi-cond.txt"
+    )
+    with open(input_path, "r") as f:
+        sector = f.read()
+
+    expected_col_types = {
+        "cs1": "string",
+        "cs2": "string",
+        "ci1": "bigint",
+        "cs3": "string",
+        "cs4": "string",
+        "cs5": "string",
+        "cs6": "string",
+        "cs7": "string",
+        "cs8": "string",
+        "ci2": "int",
+        "ci3": "bigint",
+        "cs9": "string",
+    }
+
+    schema = _parse_full_explain(sector)
+    for col, (exp_nm, exp_tp) in zip(schema.columns, expected_col_types.items()):
+        assert col.name == exp_nm
+        assert col.type == odps_types.validate_data_type(exp_tp)

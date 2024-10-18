@@ -230,7 +230,7 @@ def test_groupby_transform():
     assert r.op._op_type_ == opcodes.TRANSFORM
     assert r.op.output_types[0] == OutputType.dataframe
 
-    r = mdf.groupby("b").transform(["cummax", "cumcount"], _call_agg=True)
+    r = mdf[list("abde")].groupby("b").transform(["cummax", "cumcount"], _call_agg=True)
     assert r.shape == (np.nan, 6)
     assert r.op._op_type_ == opcodes.TRANSFORM
     assert r.op.output_types[0] == OutputType.dataframe

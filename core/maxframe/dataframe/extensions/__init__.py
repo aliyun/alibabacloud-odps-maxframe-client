@@ -18,6 +18,7 @@ from .accessor import (
     IndexMaxFrameAccessor,
     SeriesMaxFrameAccessor,
 )
+from .flatjson import series_flatjson
 from .flatmap import df_flatmap, series_flatmap
 from .reshuffle import DataFrameReshuffle, df_reshuffle
 
@@ -28,6 +29,7 @@ def _install():
     DataFrameMaxFrameAccessor._register("reshuffle", df_reshuffle)
     DataFrameMaxFrameAccessor._register("flatmap", df_flatmap)
     SeriesMaxFrameAccessor._register("flatmap", series_flatmap)
+    SeriesMaxFrameAccessor._register("flatjson", series_flatjson)
 
     if DataFrameMaxFrameAccessor._api_count:
         for t in DATAFRAME_TYPE:

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import time
-from typing import Dict
+from typing import Any, Dict
 
 import mock
 import numpy as np
@@ -86,9 +86,12 @@ def test_simple_run_dataframe(start_mock_session):
         session_id: str,
         dag: TileableGraph,
         managed_input_infos: Dict[str, ResultInfo] = None,
+        new_settings: Dict[str, Any] = None,
     ):
         assert len(dag) == 2
-        return await original_submit_dag(self, session_id, dag, managed_input_infos)
+        return await original_submit_dag(
+            self, session_id, dag, managed_input_infos, new_settings
+        )
 
     no_task_server_raised = False
     original_get_dag_info = MaxFrameRestCaller.get_dag_info
@@ -130,7 +133,15 @@ def test_simple_run_dataframe(start_mock_session):
     )
     assert odps_entry.exist_table(build_temp_table_name(start_mock_session, key))
     del df
-    time.sleep(5)
+    retry_times = 10
+    while (
+        odps_entry.exist_table(
+            build_temp_table_name(start_mock_session, intermediate_key)
+        )
+        and retry_times > 0
+    ):
+        time.sleep(1)
+        retry_times -= 1
     assert not odps_entry.exist_table(
         build_temp_table_name(start_mock_session, intermediate_key)
     )
@@ -164,6 +175,25 @@ def test_run_empty_table(start_mock_session):
     assert 0 == len(fetched)
 
     empty_table.drop()
+
+
+def test_run_odps_query_without_schema(start_mock_session):
+    odps_entry = ODPS.from_environments()
+
+    table_name = tn("test_session_empty_table")
+    odps_entry.delete_table(table_name, if_exists=True)
+    test_table = odps_entry.create_table(table_name, "a double, b double", lifecycle=1)
+
+    with test_table.open_writer() as writer:
+        writer.write([123, 456])
+
+    df = md.read_odps_query(
+        f"select a, b, a + b as `special: name` from {table_name}", skip_schema=True
+    )
+    executed = df.execute().fetch()
+    assert len(executed.dtypes) == 3
+
+    test_table.drop()
 
 
 def test_run_dataframe_with_pd_source(start_mock_session):

@@ -35,12 +35,15 @@ class GroupByFillOperator(DataFrameOperator, DataFrameOperatorMixin):
         func_name = getattr(self, "_func_name")
 
         if func_name == "fillna":
+            kw = {}
+            if self.axis is not None:
+                kw["axis"] = self.axis
             result_df = mock_groupby.fillna(
                 value=self.value,
                 method=self.method,
-                axis=self.axis,
                 limit=self.limit,
                 downcast=self.downcast,
+                **kw,
             )
         else:
             result_df = getattr(mock_groupby, func_name)(limit=self.limit)
