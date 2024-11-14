@@ -86,6 +86,8 @@ class SchedulingHint(Serializable):
     # `gpu` indicates that if the operator should be executed on the GPU.
     gpu = BoolField("gpu", default=None)
     priority = Int32Field("priority", default=None)
+    expect_engine = StringField("expect_engine", default=None)
+    expect_resources = DictField("expect_resources", FieldTypes.string, default=None)
 
     @classproperty
     @lru_cache(1)

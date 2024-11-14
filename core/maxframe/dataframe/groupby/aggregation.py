@@ -79,6 +79,7 @@ _agg_functions = {
     "kurt": lambda x, bias=False: x.kurt(bias=bias),
     "kurtosis": lambda x, bias=False: x.kurtosis(bias=bias),
     "nunique": lambda x: x.nunique(),
+    "median": lambda x: x.median(),
 }
 _series_col_name = "col_name"
 

@@ -27,6 +27,7 @@ from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import (
     build_df,
     build_series,
+    copy_func_scheduling_hints,
     make_dtypes,
     pack_func_args,
     parse_index,
@@ -49,10 +50,12 @@ class TransformOperator(DataFrameOperator, DataFrameOperatorMixin):
 
     def __init__(self, output_types=None, memory_scale=None, **kw):
         super().__init__(_output_types=output_types, _memory_scale=memory_scale, **kw)
+        if hasattr(self, "func"):
+            copy_func_scheduling_hints(self.func, self)
 
     def _infer_df_func_returns(self, df, dtypes):
-        packed_funcs = self.get_packed_funcs(df)
-        test_df = self._build_stub_pandas_obj(df)
+        packed_funcs = self.func
+        test_df = _build_stub_pandas_obj(df, self.output_types[0])
         if self.output_types[0] == OutputType.dataframe:
             try:
                 with np.errstate(all="ignore"), quiet_stdio():
@@ -147,16 +150,18 @@ class TransformOperator(DataFrameOperator, DataFrameOperatorMixin):
                 index_value=new_index_value,
             )
 
-    def get_packed_funcs(self, df=None) -> Any:
-        stub_df = self._build_stub_pandas_obj(df or self.inputs[0])
-        return pack_func_args(stub_df, self.func, *self.args, **self.kwds)
 
-    def _build_stub_pandas_obj(self, df) -> Union[DataFrame, Series]:
-        # TODO: Simulate a dataframe with the corresponding indexes if self.func is
-        # a dict and axis=1
-        if self.output_types[0] == OutputType.dataframe:
-            return build_df(df, fill_value=1, size=1)
-        return build_series(df, size=1, name=df.name)
+def get_packed_funcs(df, output_type, func, *args, **kwds) -> Any:
+    stub_df = _build_stub_pandas_obj(df, output_type)
+    return pack_func_args(stub_df, func, *args, **kwds)
+
+
+def _build_stub_pandas_obj(df, output_type) -> Union[DataFrame, Series]:
+    # TODO: Simulate a dataframe with the corresponding indexes if self.func is
+    # a dict and axis=1
+    if output_type == OutputType.dataframe:
+        return build_df(df, fill_value=1, size=1)
+    return build_series(df, size=1, name=df.name)
 
 
 def df_transform(df, func, axis=0, *args, dtypes=None, skip_infer=False, **kwargs):
@@ -229,13 +234,15 @@ def df_transform(df, func, axis=0, *args, dtypes=None, skip_infer=False, **kwarg
     1  2  3
     2  3  4
     """
+    call_agg = kwargs.pop("_call_agg", False)
+    func = get_packed_funcs(df, OutputType.dataframe, func, *args, **kwargs)
     op = TransformOperator(
         func=func,
         axis=axis,
         args=args,
         kwds=kwargs,
         output_types=[OutputType.dataframe],
-        call_agg=kwargs.pop("_call_agg", False),
+        call_agg=call_agg,
     )
     return op(df, dtypes=dtypes, skip_infer=skip_infer)
 
@@ -319,6 +326,8 @@ def series_transform(
     1  2  3
     2  3  4
     """
+    call_agg = kwargs.pop("_call_agg", False)
+    func = get_packed_funcs(series, OutputType.series, func, *args, **kwargs)
     op = TransformOperator(
         func=func,
         axis=axis,
@@ -326,7 +335,7 @@ def series_transform(
         args=args,
         kwds=kwargs,
         output_types=[OutputType.series],
-        call_agg=kwargs.pop("_call_agg", False),
+        call_agg=call_agg,
     )
     dtypes = (series.name, dtype) if dtype is not None else None
     return op(series, dtypes=dtypes, skip_infer=skip_infer)

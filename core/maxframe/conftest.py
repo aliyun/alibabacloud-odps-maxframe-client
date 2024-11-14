@@ -126,7 +126,14 @@ def oss_config():
         oss_rolearn = config.get("oss", "rolearn")
 
         options.service_role_arn = oss_rolearn
-        options.object_cache_url = f"oss://{oss_endpoint}/{oss_bucket_name}"
+        if "test" in oss_endpoint:
+            oss_svc_endpoint = oss_endpoint
+        else:
+            endpoint_parts = oss_endpoint.split(".", 1)
+            if "-internal" not in endpoint_parts[0]:
+                endpoint_parts[0] += "-internal"
+            oss_svc_endpoint = ".".join(endpoint_parts)
+        options.object_cache_url = f"oss://{oss_svc_endpoint}/{oss_bucket_name}"
 
         config.oss_config = (
             oss_access_id,
@@ -141,7 +148,7 @@ def oss_config():
         config.oss_bucket = oss2.Bucket(auth, oss_endpoint, oss_bucket_name)
         config.oss_rolearn = oss_rolearn
         yield config
-    except (ConfigParser.NoSectionError, ConfigParser.NoOptionError, ImportError):
+    except (NoSectionError, NoOptionError, ImportError):
         return None
     finally:
         options.service_role_arn = old_role_arn

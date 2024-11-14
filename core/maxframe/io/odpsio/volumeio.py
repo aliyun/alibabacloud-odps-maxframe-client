@@ -16,13 +16,25 @@ import inspect
 from typing import Iterator, List, Optional, Union
 
 from odps import ODPS
+from odps import __version__ as pyodps_version
+
+from ...lib.version import Version
+
+_has_replace_internal_host = Version(pyodps_version) >= Version("0.12.0")
 
 
 class ODPSVolumeReader:
-    def __init__(self, odps_entry: ODPS, volume_name: str, volume_dir: str):
+    def __init__(
+        self,
+        odps_entry: ODPS,
+        volume_name: str,
+        volume_dir: str,
+        replace_internal_host: bool = False,
+    ):
         self._odps_entry = odps_entry
         self._volume = odps_entry.get_volume(volume_name)
         self._volume_dir = volume_dir
+        self._replace_internal_host = replace_internal_host
 
     def list_files(self) -> List[str]:
         def _get_file_name(vol_file):
@@ -38,7 +50,12 @@ class ODPSVolumeReader:
         ]
 
     def read_file(self, file_name: str) -> bytes:
-        with self._volume.open_reader(self._volume_dir + "/" + file_name) as reader:
+        kw = {}
+        if _has_replace_internal_host and self._replace_internal_host:
+            kw = {"replace_internal_host": self._replace_internal_host}
+        with self._volume.open_reader(
+            self._volume_dir + "/" + file_name, **kw
+        ) as reader:
             return reader.read()
 
 
@@ -49,13 +66,20 @@ class ODPSVolumeWriter:
         volume_name: str,
         volume_dir: str,
         schema_name: Optional[str] = None,
+        replace_internal_host: bool = False,
     ):
         self._odps_entry = odps_entry
         self._volume = odps_entry.get_volume(volume_name, schema=schema_name)
         self._volume_dir = volume_dir
+        self._replace_internal_host = replace_internal_host
 
     def write_file(self, file_name: str, data: Union[bytes, Iterator[bytes]]):
-        with self._volume.open_writer(self._volume_dir + "/" + file_name) as writer:
+        kw = {}
+        if _has_replace_internal_host and self._replace_internal_host:
+            kw = {"replace_internal_host": self._replace_internal_host}
+        with self._volume.open_writer(
+            self._volume_dir + "/" + file_name, **kw
+        ) as writer:
             if not inspect.isgenerator(data):
                 writer.write(data)
             else:

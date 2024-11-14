@@ -249,7 +249,10 @@ class ODPSVolumeFetcher(ToThreadMixin, ResultFetcher):
     ) -> Any:
         def volume_fetch_func():
             reader = ODPSVolumeReader(
-                self._odps_entry, info.volume_name, info.volume_path
+                self._odps_entry,
+                info.volume_name,
+                info.volume_path,
+                replace_internal_host=True,
             )
             io_handler = get_object_io_handler(tileable)()
             return io_handler.read_object(reader, tileable, indexes)

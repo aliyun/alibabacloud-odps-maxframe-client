@@ -39,6 +39,7 @@ from .. import (
     DataFrameKurtosis,
     DataFrameMax,
     DataFrameMean,
+    DataFrameMedian,
     DataFrameMin,
     DataFrameNunique,
     DataFrameProd,
@@ -72,6 +73,7 @@ reduction_functions = [
     ("sem", DataFrameSem, FunctionOptions()),
     ("all", DataFrameAll, FunctionOptions(has_numeric_only=False, has_bool_only=True)),
     ("any", DataFrameAny, FunctionOptions(has_numeric_only=False, has_bool_only=True)),
+    ("median", DataFrameMedian, FunctionOptions()),
 ]
 
 
@@ -208,6 +210,7 @@ def test_dataframe_aggregate():
         "skew",
         "kurt",
         "sem",
+        "median",
     ]
 
     df = from_pandas_df(data)
@@ -251,7 +254,7 @@ def test_dataframe_aggregate():
     assert result.op.output_types[0] == OutputType.dataframe
     assert result.op.func == agg_funcs
 
-    dict_fun = {0: "sum", 2: ["var", "max"], 9: ["mean", "var", "std"]}
+    dict_fun = {0: "sum", 2: ["var", "max"], 9: ["mean", "var", "std", "median"]}
     all_cols = set(
         reduce(
             operator.add, [[v] if isinstance(v, str) else v for v in dict_fun.values()]
@@ -266,9 +269,9 @@ def test_dataframe_aggregate():
     assert result.op.func[2] == dict_fun[2]
 
     with pytest.raises(TypeError):
-        df.agg(sum_0="sum", mean_0="mean")
+        df.agg(sum_0="sum", mean_0="mean", median_0="median")
     with pytest.raises(NotImplementedError):
-        df.agg({0: ["sum", "min", "var"], 9: ["mean", "var", "std"]}, axis=1)
+        df.agg({0: ["sum", "min", "var"], 9: ["mean", "var", "std", "median"]}, axis=1)
 
 
 def test_series_aggregate():
@@ -285,6 +288,7 @@ def test_series_aggregate():
         "skew",
         "kurt",
         "sem",
+        "median",
     ]
 
     series = from_pandas_series(data)
@@ -300,6 +304,14 @@ def test_series_aggregate():
     result = series.agg("sum")
     assert result.shape == ()
     assert result.op.output_types[0] == OutputType.scalar
+
+    result = series.agg("median")
+    assert result.shape == ()
+    assert result.op.output_types[0] == OutputType.scalar
+
+    result = series.median(level=0)
+    assert result.shape == (np.nan,)
+    assert result.op.output_types[0] == OutputType.series
 
     result = series.agg(agg_funcs)
     assert result.shape == (len(agg_funcs),)

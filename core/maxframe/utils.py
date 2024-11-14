@@ -1114,7 +1114,6 @@ def collect_leaf_operators(root) -> List[Type]:
 
 @contextmanager
 def sync_pyodps_options():
-    from odps.config import OptionError
     from odps.config import option_context as pyodps_option_context
 
     from .config import options
@@ -1122,11 +1121,7 @@ def sync_pyodps_options():
     with pyodps_option_context() as cfg:
         cfg.local_timezone = options.local_timezone
         if options.session.enable_schema:
-            try:
-                cfg.enable_schema = options.session.enable_schema
-            except (AttributeError, OptionError):
-                # fixme enable_schema only supported in PyODPS 0.12.0 or later
-                cfg.always_enable_schema = options.session.enable_schema
+            cfg.enable_schema = options.session.enable_schema
         yield
 
 

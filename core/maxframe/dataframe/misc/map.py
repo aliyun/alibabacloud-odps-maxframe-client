@@ -24,7 +24,7 @@ from ...serialization.serializables import AnyField, KeyField, StringField
 from ...utils import quiet_stdio
 from ..core import SERIES_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_series
+from ..utils import build_series, copy_func_scheduling_hints
 
 
 class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
@@ -38,6 +38,8 @@ class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
         super().__init__(_output_types=output_types, _memory_scale=memory_scale, **kw)
         if not self.output_types:
             self.output_types = [OutputType.series]
+        if hasattr(self, "arg"):
+            copy_func_scheduling_hints(self.arg, self)
 
     def _set_inputs(self, inputs):
         super()._set_inputs(inputs)

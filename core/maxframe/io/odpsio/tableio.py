@@ -18,10 +18,8 @@ from abc import ABC, abstractmethod
 from contextlib import contextmanager
 from typing import Dict, List, Optional, Union
 
-import numpy as np
 import pyarrow as pa
 from odps import ODPS
-from odps import __version__ as pyodps_version
 from odps.apis.storage_api import (
     StorageApiArrowClient,
     TableBatchScanResponse,
@@ -38,14 +36,12 @@ except ImportError:
 
 from ...config import options
 from ...env import ODPS_STORAGE_API_ENDPOINT
-from ...lib.version import Version
 from ...utils import sync_pyodps_options
 from .schema import odps_schema_to_arrow_schema
 
 PartitionsType = Union[List[str], str, None]
 
 _DEFAULT_ROW_BATCH_SIZE = 4096
-_need_patch_batch = Version(pyodps_version) < Version("0.12.0")
 
 
 class ODPSTableIO(ABC):
@@ -166,17 +162,14 @@ class TunnelMultiPartitionReader:
             self._cur_partition_id += 1
 
             part_str = self._partitions[self._cur_partition_id]
-
-            # todo make this more formal when PyODPS 0.12.0 is released
-            req_columns = self._columns
-            if not _need_patch_batch:
-                req_columns = self._schema.names
+            req_columns = self._schema.names
             with sync_pyodps_options():
                 self._cur_reader = self._table.open_reader(
                     part_str,
                     columns=req_columns,
                     arrow=True,
                     download_id=self._partition_to_download_ids.get(part_str),
+                    append_partitions=True,
                 )
             if self._cur_reader.count + self._reader_start_pos > self._start:
                 start = self._start - self._reader_start_pos
@@ -192,35 +185,6 @@ class TunnelMultiPartitionReader:
         else:
             self._cur_reader = None
 
-    def _fill_batch_partition(self, batch: pa.RecordBatch) -> pa.RecordBatch:
-        pt_spec = PartitionSpec(self._partitions[self._cur_partition_id])
-
-        names = list(batch.schema.names)
-        arrays = []
-        for idx in range(batch.num_columns):
-            col = batch.column(idx)
-            if isinstance(col.type, pa.TimestampType):
-                if col.type.tz is not None:
-                    target_type = pa.timestamp(
-                        self._schema.types[idx].unit, col.type.tz
-                    )
-                    arrays.append(col.cast(target_type))
-                else:
-                    target_type = pa.timestamp(
-                        self._schema.types[idx].unit, options.local_timezone
-                    )
-                    pd_col = col.to_pandas().dt.tz_localize(options.local_timezone)
-                    arrays.append(pa.Array.from_pandas(pd_col).cast(target_type))
-            else:
-                arrays.append(batch.column(idx))
-
-        for part_col in self._partition_cols or []:
-            names.append(part_col)
-            col_type = self._schema.field_by_name(part_col).type
-            pt_col = np.repeat([pt_spec[part_col]], batch.num_rows)
-            arrays.append(pa.array(pt_col).cast(col_type))
-        return pa.RecordBatch.from_arrays(arrays, names)
-
     def read(self):
         with sync_pyodps_options():
             if self._cur_reader is None:
@@ -233,10 +197,7 @@ class TunnelMultiPartitionReader:
                     if batch is not None:
                         if self._row_left is not None:
                             self._row_left -= batch.num_rows
-                        if _need_patch_batch:
-                            return self._fill_batch_partition(batch)
-                        else:
-                            return batch
+                        return batch
                 except StopIteration:
                     self._open_next_reader()
             return None
@@ -251,34 +212,6 @@ class TunnelMultiPartitionReader:
         if not batches:
             return self._schema.empty_table()
         return pa.Table.from_batches(batches)
-
-
-class TunnelWrappedWriter:
-    def __init__(self, nested_writer):
-        self._writer = nested_writer
-
-    def write(self, data: Union[pa.RecordBatch, pa.Table]):
-        if not any(isinstance(tp, pa.TimestampType) for tp in data.schema.types):
-            self._writer.write(data)
-            return
-        pa_type = type(data)
-        arrays = []
-        for idx in range(data.num_columns):
-            name = data.schema.names[idx]
-            col = data.column(idx)
-            if not isinstance(col.type, pa.TimestampType):
-                arrays.append(col)
-                continue
-            if self._writer.schema[name].type == timestamp_ntz:
-                col = HaloTableArrowWriter._localize_timezone(col, "UTC")
-            else:
-                col = HaloTableArrowWriter._localize_timezone(col)
-            arrays.append(col)
-        data = pa_type.from_arrays(arrays, names=data.schema.names)
-        self._writer.write(data)
-
-    def __getattr__(self, item):
-        return getattr(self._writer, item)
 
 
 class TunnelTableIO(ODPSTableIO):
@@ -366,13 +299,7 @@ class TunnelTableIO(ODPSTableIO):
                 create_partition=partition is not None,
                 overwrite=overwrite,
             ) as writer:
-                # fixme should yield writer directly once pyodps fixes
-                #  related arrow timestamp bug when provided schema and
-                #  table schema is identical.
-                if _need_patch_batch:
-                    yield TunnelWrappedWriter(writer)
-                else:
-                    yield writer
+                yield writer
 
 
 class HaloTableArrowReader:
@@ -572,28 +499,6 @@ class HaloTableIO(ODPSTableIO):
             "/".join(f"{k}={v}" for k, v in PartitionSpec(pt).items())
             for pt in partitions
         ]
-
-    def get_table_record_count(
-        self, full_table_name: str, partitions: PartitionsType = None
-    ):
-        from odps.apis.storage_api import SplitOptions, TableBatchScanRequest
-
-        table = self._odps.get_table(full_table_name)
-        client = StorageApiArrowClient(
-            self._odps, table, rest_endpoint=self._storage_api_endpoint
-        )
-
-        split_option = SplitOptions.SplitMode.SIZE
-
-        scan_kw = {
-            "required_partitions": self._convert_partitions(partitions),
-            "split_options": SplitOptions.get_default_options(split_option),
-        }
-
-        # todo add more options for partition column handling
-        req = TableBatchScanRequest(**scan_kw)
-        resp = client.create_read_session(req)
-        return resp.record_count
 
     @contextmanager
     def open_reader(

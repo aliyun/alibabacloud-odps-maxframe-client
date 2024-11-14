@@ -31,7 +31,7 @@ from maxframe.lib.aio import stop_isolation
 from maxframe.protocol import ResultInfo
 from maxframe.serialization import RemoteException
 from maxframe.session import new_session
-from maxframe.tests.utils import tn
+from maxframe.tests.utils import ensure_table_deleted, tn
 from maxframe.utils import build_temp_table_name
 from maxframe_framedriver.app.tests.test_framedriver_webapp import (  # noqa: F401
     framedriver_app,
@@ -133,19 +133,10 @@ def test_simple_run_dataframe(start_mock_session):
     )
     assert odps_entry.exist_table(build_temp_table_name(start_mock_session, key))
     del df
-    retry_times = 10
-    while (
-        odps_entry.exist_table(
-            build_temp_table_name(start_mock_session, intermediate_key)
-        )
-        and retry_times > 0
-    ):
-        time.sleep(1)
-        retry_times -= 1
-    assert not odps_entry.exist_table(
-        build_temp_table_name(start_mock_session, intermediate_key)
+    ensure_table_deleted(
+        odps_entry, build_temp_table_name(start_mock_session, intermediate_key)
     )
-    assert not odps_entry.exist_table(build_temp_table_name(start_mock_session, key))
+    ensure_table_deleted(odps_entry, build_temp_table_name(start_mock_session, key))
 
 
 def test_run_and_fetch_slice(start_mock_session):
@@ -180,7 +171,7 @@ def test_run_empty_table(start_mock_session):
 def test_run_odps_query_without_schema(start_mock_session):
     odps_entry = ODPS.from_environments()
 
-    table_name = tn("test_session_empty_table")
+    table_name = tn("test_query_without_schema")
     odps_entry.delete_table(table_name, if_exists=True)
     test_table = odps_entry.create_table(table_name, "a double, b double", lifecycle=1)
 
@@ -276,9 +267,8 @@ def test_run_and_fetch_series(start_mock_session):
         pd.testing.assert_series_equal(pd_result, result)
 
         del s1
-        time.sleep(5)
-        assert not odps_entry.exist_table(
-            build_temp_table_name(start_mock_session, src_key)
+        ensure_table_deleted(
+            odps_entry, build_temp_table_name(start_mock_session, src_key)
         )
     finally:
         odps_entry.delete_table(

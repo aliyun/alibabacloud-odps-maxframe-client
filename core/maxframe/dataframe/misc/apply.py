@@ -35,6 +35,7 @@ from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import (
     build_df,
     build_series,
+    copy_func_scheduling_hints,
     make_dtype,
     make_dtypes,
     pack_func_args,
@@ -79,6 +80,8 @@ class ApplyOperator(
         if output_type:
             kw["_output_types"] = [output_type]
         super().__init__(**kw)
+        if hasattr(self, "func"):
+            copy_func_scheduling_hints(self.func, self)
 
     def _update_key(self):
         values = [v for v in self._values_ if v is not self.func] + [

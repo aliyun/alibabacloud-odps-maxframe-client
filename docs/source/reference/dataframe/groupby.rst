@@ -38,6 +38,7 @@ Computations / descriptive stats
    GroupBy.count
    GroupBy.max
    GroupBy.mean
+   GroupBy.median
    GroupBy.min
    GroupBy.size
    GroupBy.sem
