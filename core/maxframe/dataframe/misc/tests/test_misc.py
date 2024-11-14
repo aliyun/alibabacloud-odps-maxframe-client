@@ -20,6 +20,7 @@ from .... import opcodes
 from ....core import OutputType
 from ....dataframe import DataFrame
 from ....tensor.core import TENSOR_TYPE
+from ....udf import with_running_options
 from ... import eval as maxframe_eval
 from ... import get_dummies, to_numeric
 from ...arithmetic import DataFrameGreater, DataFrameLess
@@ -60,6 +61,17 @@ def test_transform():
 
     # test transform scenarios on data frames
     r = df.transform(lambda x: list(range(len(x))))
+    assert all(v == np.dtype("int64") for v in r.dtypes) is True
+    assert r.shape == df.shape
+    assert r.op._op_type_ == opcodes.TRANSFORM
+    assert r.op.output_types[0] == OutputType.dataframe
+
+    def transform_df_with_param(row, param, k):
+        assert param == 5
+        assert k == "6"
+        return row
+
+    r = df.transform(transform_df_with_param, 1, 5, k="6")
     assert all(v == np.dtype("int64") for v in r.dtypes) is True
     assert r.shape == df.shape
     assert r.op._op_type_ == opcodes.TRANSFORM
@@ -444,6 +456,7 @@ def test_apply():
 
     keys = [1, 2]
 
+    @with_running_options(engine="spe")
     def f(x, keys):
         if x["a"] in keys:
             return [1, 0]
@@ -459,6 +472,7 @@ def test_apply():
         keys=keys,
     )
     assert apply_df.shape == (3, 2)
+    assert apply_df.op.expect_engine == "SPE"
 
 
 def test_pivot_table():

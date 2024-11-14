@@ -18,6 +18,7 @@ from .accessor import (
     IndexMaxFrameAccessor,
     SeriesMaxFrameAccessor,
 )
+from .apply_chunk import df_apply_chunk, series_apply_chunk
 from .flatjson import series_flatjson
 from .flatmap import df_flatmap, series_flatmap
 from .reshuffle import DataFrameReshuffle, df_reshuffle
@@ -28,8 +29,10 @@ def _install():
 
     DataFrameMaxFrameAccessor._register("reshuffle", df_reshuffle)
     DataFrameMaxFrameAccessor._register("flatmap", df_flatmap)
+    DataFrameMaxFrameAccessor._register("apply_chunk", df_apply_chunk)
     SeriesMaxFrameAccessor._register("flatmap", series_flatmap)
     SeriesMaxFrameAccessor._register("flatjson", series_flatjson)
+    SeriesMaxFrameAccessor._register("apply_chunk", series_apply_chunk)
 
     if DataFrameMaxFrameAccessor._api_count:
         for t in DATAFRAME_TYPE:

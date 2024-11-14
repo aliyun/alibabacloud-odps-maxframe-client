@@ -189,6 +189,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         self._caller = self._create_caller(odps_entry, address, **kwargs)
         self._last_settings = None
         self._pull_interval = 1 if in_ipython_frontend() else 3
+        self._replace_internal_host = kwargs.get("replace_internal_host", True)
 
     @classmethod
     def _create_caller(
@@ -255,7 +256,12 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         self, t: TileableType
     ) -> Optional[TileableType]:
         vol_name = build_session_volume_name(self.session_id)
-        writer = ODPSVolumeWriter(self._odps_entry, vol_name, t.key)
+        writer = ODPSVolumeWriter(
+            self._odps_entry,
+            vol_name,
+            t.key,
+            replace_internal_host=self._replace_internal_host,
+        )
         io_handler = get_object_io_handler(t)
         io_handler().write_object(writer, t, t.op.data)
         return build_fetch(t).data
@@ -624,7 +630,7 @@ class MaxFrameRestSession(MaxFrameSession):
         real_endpoint = address.replace(f"{parsed_endpoint.scheme}://", f"{scheme}://")
 
         super().__init__(
-            real_endpoint, session_id, odps_entry=odps_entry, timeout=timeout
+            real_endpoint, session_id, odps_entry=odps_entry, timeout=timeout, **kwargs
         )
 
     @classmethod

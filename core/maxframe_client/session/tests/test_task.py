@@ -53,10 +53,6 @@ def test_maxframe_instance_caller_creating_session():
         assert property_node.find("Name").text == "settings"
         setting_dict = json.loads(property_node.find("Value").text)
         assert setting_dict["odps.task.major.version"] == "test_version"
-        assert (
-            setting_dict["odps.service.endpoint"]
-            == "http://100.69.248.78:8002/odps_dailyrunnew"
-        )
 
         assert setting_dict["odps.maxframe.output_format"] == "json"
         maxframe_setting_dict = json.loads(setting_dict["odps.maxframe.settings"])

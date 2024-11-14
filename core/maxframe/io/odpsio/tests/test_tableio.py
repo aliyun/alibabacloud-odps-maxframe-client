@@ -31,7 +31,7 @@ def switch_table_io(request):
     old_use_common_table = options.use_common_table
     try:
         options.use_common_table = request.param
-        yield
+        yield request.param
     finally:
         options.use_common_table = old_use_common_table
 
@@ -45,7 +45,7 @@ def test_empty_table_io(switch_table_io):
     table_io = ODPSTableIO(o)
 
     # test read from empty table
-    empty_table_name = tn("test_empty_table_halo_read")
+    empty_table_name = tn("test_empty_table_halo_read_" + str(switch_table_io).lower())
     o.delete_table(empty_table_name, if_exists=True)
     tb = o.create_table(empty_table_name, "col1 string", lifecycle=1)
 
@@ -65,7 +65,7 @@ def test_table_io_without_parts(switch_table_io):
     table_io = ODPSTableIO(o)
 
     # test read and write tables without partition
-    no_part_table_name = tn("test_no_part_halo_write")
+    no_part_table_name = tn("test_no_part_halo_write_" + str(switch_table_io).lower())
     o.delete_table(no_part_table_name, if_exists=True)
     col_desc = ",".join(f"{c} double" for c in "abcde") + ", f datetime"
     tb = o.create_table(no_part_table_name, col_desc, lifecycle=1)
@@ -99,7 +99,7 @@ def test_table_io_with_range_reader(switch_table_io):
     table_io = ODPSTableIO(o)
 
     # test read and write tables without partition
-    no_part_table_name = tn("test_no_part_halo_write")
+    no_part_table_name = tn("test_halo_write_range_" + str(switch_table_io).lower())
     o.delete_table(no_part_table_name, if_exists=True)
     tb = o.create_table(
         no_part_table_name, ",".join(f"{c} double" for c in "abcde"), lifecycle=1
@@ -139,7 +139,7 @@ def test_table_io_with_parts(switch_table_io):
     table_io = ODPSTableIO(o)
 
     # test read and write tables with partition
-    parted_table_name = tn("test_parted_halo_write")
+    parted_table_name = tn("test_parted_halo_write_" + str(switch_table_io).lower())
     o.delete_table(parted_table_name, if_exists=True)
     tb = o.create_table(
         parted_table_name,

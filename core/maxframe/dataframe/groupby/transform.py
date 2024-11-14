@@ -22,7 +22,7 @@ from ...core import OutputType
 from ...serialization.serializables import AnyField, BoolField, DictField, TupleField
 from ...utils import quiet_stdio
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from ..utils import copy_func_scheduling_hints, parse_index
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +39,8 @@ class GroupByTransform(DataFrameOperator, DataFrameOperatorMixin):
 
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
+        if hasattr(self, "func"):
+            copy_func_scheduling_hints(self.func, self)
 
     def _infer_df_func_returns(self, in_groupby, dtypes, index):
         index_value, output_types, new_dtypes = None, None, None

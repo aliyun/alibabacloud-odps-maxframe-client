@@ -21,14 +21,8 @@ from typing import Any, Dict, List, Optional, Type, Union
 import msgpack
 from odps import ODPS
 from odps import options as odps_options
-from odps.errors import parse_instance_error
+from odps.errors import EmptyTaskInfoError, parse_instance_error
 from odps.models import Instance, MaxFrameTask
-
-try:
-    from odps.errors import EmptyTaskInfoError
-except ImportError:  # pragma: no cover
-    # todo remove when pyodps>=0.12.0 is enforced
-    EmptyTaskInfoError = type("EmptyTaskInfoError", (Exception,), {})
 
 from maxframe.config import options
 from maxframe.core import TileableGraph
@@ -196,18 +190,6 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
                     json.dumps(json_data),
                     raise_empty=True,
                 )
-            except TypeError:  # pragma: no cover
-                # todo remove when pyodps>=0.12.0 is enforced
-                resp_data = self._instance.put_task_info(
-                    self._task_name, method_name, json.dumps(json_data)
-                )
-                if resp_data:
-                    return resp_data
-                else:
-                    raise NoTaskServerResponseError(
-                        f"No response for request {method_name}. "
-                        f"Instance ID: {self._instance.id}"
-                    )
             except EmptyTaskInfoError as ex:
                 # retry when server returns HTTP 204, which is designed for retry
                 if ex.code != 204 or trial >= EMPTY_RESPONSE_RETRY_COUNT - 1:

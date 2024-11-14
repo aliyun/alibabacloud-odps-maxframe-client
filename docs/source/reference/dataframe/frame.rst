@@ -84,7 +84,6 @@ Function application, GroupBy & window
    DataFrame.agg
    DataFrame.aggregate
    DataFrame.groupby
-   DataFrame.mf.flatmap
    DataFrame.transform
 
 .. _generated.dataframe.stats:
@@ -102,6 +101,7 @@ Computations / descriptive stats
    DataFrame.eval
    DataFrame.max
    DataFrame.mean
+   DataFrame.median
    DataFrame.min
    DataFrame.nunique
    DataFrame.pct_change
@@ -114,6 +114,7 @@ Computations / descriptive stats
    DataFrame.sum
    DataFrame.value_counts
    DataFrame.var
+   DataFrame.median
 
 Reindexing / selection / label manipulation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -200,3 +201,19 @@ Serialization / IO / conversion
 
    DataFrame.to_odps_table
    DataFrame.to_pandas
+
+.. _generated.dataframe.mf:
+
+MaxFrame Extensions
+~~~~~~~~~~~~~~~~~~~
+
+.. autosummary::
+   :toctree: generated/
+   :template: accessor_method.rst
+
+   DataFrame.mf.apply_chunk
+   DataFrame.mf.flatmap
+   DataFrame.mf.reshuffle
+
+``DataFrame.mf`` provides methods unique to MaxFrame. These methods are collated from application
+scenarios in MaxCompute and these can be accessed like ``DataFrame.mf.<function/property>``.

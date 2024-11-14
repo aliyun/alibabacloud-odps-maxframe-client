@@ -28,7 +28,13 @@ from ...serialization.serializables import (
 )
 from ...utils import get_func_token, quiet_stdio, tokenize
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import make_dtype, make_dtypes, parse_index, validate_output_types
+from ..utils import (
+    copy_func_scheduling_hints,
+    make_dtype,
+    make_dtypes,
+    parse_index,
+    validate_output_types,
+)
 
 
 class GroupByApplyLogicKeyGeneratorMixin(OperatorLogicKeyGeneratorMixin):
@@ -56,6 +62,8 @@ class GroupByApply(
 
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
+        if hasattr(self, "func"):
+            copy_func_scheduling_hints(self.func, self)
 
     def _update_key(self):
         values = [v for v in self._values_ if v is not self.func] + [

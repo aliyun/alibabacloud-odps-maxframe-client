@@ -25,6 +25,7 @@ from .custom_reduction import DataFrameCustomReduction
 from .kurtosis import DataFrameKurtosis
 from .max import DataFrameMax
 from .mean import DataFrameMean
+from .median import DataFrameMedian
 from .min import DataFrameMin
 from .nunique import DataFrameNunique
 from .prod import DataFrameProd
@@ -50,6 +51,7 @@ def _install():
     from .kurtosis import kurt_dataframe, kurt_series
     from .max import max_dataframe, max_index, max_series
     from .mean import mean_dataframe, mean_series
+    from .median import median_dataframe, median_series
     from .min import min_dataframe, min_index, min_series
     from .nunique import nunique_dataframe, nunique_series
     from .prod import prod_dataframe, prod_series
@@ -68,6 +70,7 @@ def _install():
         ("min", min_series, min_dataframe),
         ("count", count_series, count_dataframe),
         ("mean", mean_series, mean_dataframe),
+        ("median", median_series, median_dataframe),
         ("var", var_series, var_dataframe),
         ("std", std_series, std_dataframe),
         ("all", all_series, all_dataframe),

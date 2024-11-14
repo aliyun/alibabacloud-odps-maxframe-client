@@ -363,10 +363,11 @@ def build_dataframe_table_meta(
     else:
         pd_index_val = index_obj
 
-    if hasattr(pd_index_val, "dtypes"):
-        index_dtypes = pd.Series(pd_index_val.dtypes.values, index=pd_index_val.names)
-    else:
-        index_dtypes = pd.Series([pd_index_val.dtype], index=pd_index_val.names)
+    level_dtypes = [
+        pd_index_val.get_level_values(level).dtype
+        for level in range(pd_index_val.nlevels)
+    ]
+    index_dtypes = pd.Series(level_dtypes, index=pd_index_val.names)
 
     if ignore_index and obj_type != OutputType.index:
         table_index_column_names = []

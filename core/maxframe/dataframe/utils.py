@@ -20,7 +20,7 @@ import operator
 import sys
 from contextlib import contextmanager
 from numbers import Integral
-from typing import Any, Callable, List
+from typing import TYPE_CHECKING, Any, Callable, List
 
 import numpy as np
 import pandas as pd
@@ -30,6 +30,7 @@ from pandas.core.dtypes.inference import is_dict_like, is_list_like
 
 from ..core import Entity, ExecutableTuple
 from ..lib.mmh3 import hash as mmh_hash
+from ..udf import MarkedFunction
 from ..utils import (
     ModulePlaceholder,
     is_full_slice,
@@ -43,6 +44,9 @@ try:
     import pyarrow as pa
 except ImportError:  # pragma: no cover
     pa = ModulePlaceholder("pyarrow")
+
+if TYPE_CHECKING:
+    from .operators import DataFrameOperator
 
 cudf = lazy_import("cudf", rename="cudf")
 vineyard = lazy_import("vineyard")
@@ -1178,7 +1182,65 @@ def patch_sa_engine_execute():
     Engine.execute = execute
 
 
-def pack_func_args(df, funcs, *args, **kwargs) -> Any:
+def bind_func_args_from_pos(func, args_bind_position, *bound_args, **bound_kwargs):
+    """
+    Create a new function with arguments bound from specified position.
+
+    Parameters
+    ----------
+    func : callable
+        Target function to be wrapped.
+    args_bind_position : int
+        Position to start binding arguments (0-based).
+        e.g., n=0 binds from first arg, n=1 binds from second arg.
+    *bound_args : tuple
+        Arguments to be bound from position n.
+    **bound_kwargs : dict
+        Keyword arguments to be bound.
+
+    Returns
+    -------
+    callable
+        Wrapped function with bound arguments.
+
+    Examples
+    --------
+    >>> def func(x, y, z=0):
+    ...    return x * y + z
+    >>> f = bind_func_args_from_pos(func, 0, 10)  # bind from second position
+    >>> f(5)  # equals func(5, 10)
+    10
+
+    Raises
+    ------
+    TypeError
+        If func is not callable or n is not an integer.
+    ValueError
+        If n is negative or exceeds the number of parameters.
+    """
+
+    @functools.wraps(func)
+    def wrapper(*runtime_args, **runtime_kwargs):
+        try:
+            # Combine arguments
+            all_args = (
+                runtime_args[:args_bind_position]
+                + bound_args
+                + runtime_args[args_bind_position:]
+            )
+            all_kwargs = {**bound_kwargs, **runtime_kwargs}
+
+            return func(*all_args, **all_kwargs)
+        except Exception as e:
+            # Enhance error message with context
+            raise type(e)(
+                f"Error calling {func.__name__} with bound arguments: {str(e)}"
+            ) from e
+
+    return wrapper
+
+
+def pack_func_args(df, funcs, *args, args_bind_position=1, **kwargs) -> Any:
     """
     Pack the funcs with args and kwargs to avoid the ambiguity between other
     positional and keyword arguments. It will process the funcs by the following rule:
@@ -1207,6 +1269,9 @@ def pack_func_args(df, funcs, *args, **kwargs) -> Any:
         The DataFrame or Series object to test the function.
     funcs : function, str, list-like or dict-like
         Function to pack. It should have the same type with Dataframe.transform().
+    args_bind_position: int
+        Position to start binding arguments (0-based).
+            e.g., n=0 binds from first arg, n=1 binds from second arg.
     *args :
         The positional arguments to func. If funcs contains many functions, each one
         should be able to accept *args.
@@ -1237,8 +1302,19 @@ def pack_func_args(df, funcs, *args, **kwargs) -> Any:
 
     f = get_callable_by_name(df, funcs) if isinstance(funcs, str) else funcs
 
+    from ..udf import MarkedFunction
+
+    if isinstance(f, MarkedFunction):
+        # for marked function, pack the inner function, and reset as mark function
+        packed_func = f.copy()
+        packed_func.func = bind_func_args_from_pos(
+            f.func, args_bind_position, *args, **kwargs
+        )
+    else:
+        packed_func = bind_func_args_from_pos(f, args_bind_position, *args, **kwargs)
+
     # Callable
-    return functools.partial(f, *args, **kwargs)
+    return packed_func
 
 
 def get_callable_by_name(df: Any, func_name: str) -> Callable:
@@ -1280,3 +1356,12 @@ def get_callable_by_name(df: Any, func_name: str) -> Callable:
     raise AttributeError(
         f"'{func_name}' is not a valid function for '{type(df).__name__}' object"
     )
+
+
+def copy_func_scheduling_hints(func, op: "DataFrameOperator") -> None:
+    if not isinstance(func, MarkedFunction):
+        return
+    if func.expect_engine:
+        op.expect_engine = func.expect_engine
+    if func.expect_resources:
+        op.expect_resources = func.expect_resources

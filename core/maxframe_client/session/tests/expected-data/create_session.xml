@@ -4,7 +4,7 @@
   <Config>
     <Property>
       <Name>settings</Name>
-      <Value>{"odps.task.major.version": "test_version", "odps.maxframe.settings": "{\"sql.enable_mcqa\": true, \"sql.generate_comments\": true, \"sql.settings\": {}, \"session.max_alive_seconds\": 259200, \"session.max_idle_seconds\": 3600, \"session.temp_table_lifecycle\": 1, \"spe.operation_timeout_seconds\": 120, \"spe.task.settings\": {}}", "odps.maxframe.output_format": "json", "odps.service.endpoint": "http://100.69.248.78:8002/odps_dailyrunnew"}</Value>
+      <Value>{"odps.task.major.version": "test_version", "odps.maxframe.settings": "{\"sql.enable_mcqa\": true, \"sql.generate_comments\": true, \"sql.settings\": {}, \"session.max_alive_seconds\": 259200, \"session.max_idle_seconds\": 3600, \"session.temp_table_lifecycle\": 1, \"spe.operation_timeout_seconds\": 120, \"spe.task.settings\": {}}", "odps.maxframe.output_format": "json"}</Value>
     </Property>
   </Config>
   <Command>CREATE_SESSION</Command>

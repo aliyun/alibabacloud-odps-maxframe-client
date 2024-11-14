@@ -42,15 +42,33 @@ def create_volume(request, oss_config):
             oss_bucket_name,
             oss_endpoint,
         ) = oss_config.oss_config
-        test_location = "oss://%s:%s@%s/%s/%s" % (
-            oss_access_id,
-            oss_secret_access_key,
-            oss_endpoint,
-            oss_bucket_name,
-            oss_test_dir_name,
-        )
+
+        if "test" in oss_endpoint:
+            # offline config
+            test_location = "oss://%s:%s@%s/%s/%s" % (
+                oss_access_id,
+                oss_secret_access_key,
+                oss_endpoint,
+                oss_bucket_name,
+                oss_test_dir_name,
+            )
+            rolearn = None
+        else:
+            # online config
+            endpoint_parts = oss_endpoint.split(".", 1)
+            if "-internal" not in endpoint_parts[0]:
+                endpoint_parts[0] += "-internal"
+            test_location = "oss://%s/%s/%s" % (
+                ".".join(endpoint_parts),
+                oss_bucket_name,
+                oss_test_dir_name,
+            )
+            rolearn = oss_config.oss_rolearn
+
         oss_config.oss_bucket.put_object(oss_test_dir_name + "/", b"")
-        odps_entry.create_external_volume(test_vol_name, location=test_location)
+        odps_entry.create_external_volume(
+            test_vol_name, location=test_location, rolearn=rolearn
+        )
     try:
         yield test_vol_name
     finally:
@@ -75,13 +93,19 @@ def test_read_write_volume(create_volume):
 
     odps_entry = ODPS.from_environments()
 
-    writer = ODPSVolumeWriter(odps_entry, create_volume, test_vol_dir)
+    writer = ODPSVolumeWriter(
+        odps_entry, create_volume, test_vol_dir, replace_internal_host=True
+    )
 
-    writer = ODPSVolumeWriter(odps_entry, create_volume, test_vol_dir)
+    writer = ODPSVolumeWriter(
+        odps_entry, create_volume, test_vol_dir, replace_internal_host=True
+    )
     writer.write_file("file1", b"content1")
     writer.write_file("file2", b"content2")
 
-    reader = ODPSVolumeReader(odps_entry, create_volume, test_vol_dir)
+    reader = ODPSVolumeReader(
+        odps_entry, create_volume, test_vol_dir, replace_internal_host=True
+    )
     assert reader.read_file("file1") == b"content1"
     assert reader.read_file("file2") == b"content2"
 

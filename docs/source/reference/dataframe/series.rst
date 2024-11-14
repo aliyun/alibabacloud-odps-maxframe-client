@@ -73,7 +73,6 @@ Function application, groupby & window
    Series.aggregate
    Series.groupby
    Series.map
-   Series.mf.flatmap
    Series.transform
 
 .. _generated.series.stats:
@@ -90,6 +89,8 @@ Computations / descriptive stats
    Series.max
    Series.mean
    Series.min
+   Series.median
+   Series.nunique
    Series.prod
    Series.product
    Series.round
@@ -97,7 +98,6 @@ Computations / descriptive stats
    Series.std
    Series.sum
    Series.var
-   Series.nunique
    Series.value_counts
 
 Reindexing / selection / label manipulation
@@ -294,3 +294,19 @@ specific plotting methods of the form ``Series.plot.<kind>``.
    Series.plot.kde
    Series.plot.line
    Series.plot.pie
+
+.. _generated.series.mf:
+
+MaxFrame Extensions
+~~~~~~~~~~~~~~~~~~~
+
+.. autosummary::
+   :toctree: generated/
+   :template: accessor_method.rst
+
+   Series.mf.apply_chunk
+   Series.mf.flatmap
+   Series.mf.flatjson
+
+``Series.mf`` The Series.mf provides methods unique to MaxFrame. These methods are collated from application
+scenarios in MaxCompute and these can be accessed like ``Series.mf.<function/property>``.

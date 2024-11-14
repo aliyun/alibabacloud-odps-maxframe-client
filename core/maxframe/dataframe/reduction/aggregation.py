@@ -71,6 +71,7 @@ _agg_functions = {
     "kurt": lambda x, skipna=True, bias=False: x.kurt(skipna=skipna, bias=bias),
     "kurtosis": lambda x, skipna=True, bias=False: x.kurtosis(skipna=skipna, bias=bias),
     "nunique": lambda x: x.nunique(),
+    "median": lambda x, skipna=True: x.median(skipna=skipna),
 }
 
 

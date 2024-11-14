@@ -19,6 +19,7 @@ from odps.models import Resource
 
 from .serialization.serializables import (
     BoolField,
+    DictField,
     FieldTypes,
     FunctionField,
     ListField,
@@ -54,6 +55,10 @@ class MarkedFunction(Serializable):
     func = FunctionField("func")
     resources = ListField("resources", FieldTypes.string, default_factory=list)
     pythonpacks = ListField("pythonpacks", FieldTypes.reference, default_factory=list)
+    expect_engine = StringField("expect_engine", default=None)
+    expect_resources = DictField(
+        "expect_resources", FieldTypes.string, default_factory=dict
+    )
 
     def __init__(self, func: Optional[Callable] = None, **kw):
         super().__init__(func=func, **kw)
@@ -116,6 +121,28 @@ def with_python_requirements(
             func.pythonpacks.append(pack_item)
             return func
         return MarkedFunction(func, pythonpacks=[pack_item])
+
+    return func_wrapper
+
+
+def with_running_options(
+    *,
+    engine: Optional[str] = None,
+    cpu: Optional[int] = None,
+    memory: Optional[int] = None,
+    **kwargs,
+):
+    engine = engine.upper() if engine else None
+    resources = {"cpu": cpu, "memory": memory, **kwargs}
+
+    def func_wrapper(func):
+        if all(v is None for v in (engine, cpu, memory)):
+            return func
+        if isinstance(func, MarkedFunction):
+            func.expect_engine = engine
+            func.expect_resources = resources
+            return func
+        return MarkedFunction(func, expect_engine=engine, expect_resources=resources)
 
     return func_wrapper
 

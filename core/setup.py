@@ -23,16 +23,6 @@ from Cython.Build import cythonize
 from pkg_resources import parse_version
 from setuptools import Extension, setup
 
-try:
-    import distutils.ccompiler
-
-    if sys.platform != "win32":
-        from numpy.distutils.ccompiler import CCompiler_compile
-
-        distutils.ccompiler.CCompiler.compile = CCompiler_compile
-except ImportError:
-    pass
-
 # From https://github.com/pandas-dev/pandas/pull/24274:
 # For mac, ensure extensions are built for macos 10.9 when compiling on a
 # 10.9 system or above, overriding distuitls behaviour which is to target

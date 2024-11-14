@@ -18,11 +18,13 @@ import hashlib
 import os
 import queue
 import socket
+import time
 import types
 from threading import Thread
 from typing import Dict, List, Optional, Set, Tuple
 
 import pytest
+from odps import ODPS
 from tornado import netutil
 
 from ..core import Tileable, TileableGraph
@@ -177,3 +179,11 @@ def assert_mf_index_dtype(idx_obj, dtype):
     from ..dataframe.core import IndexValue
 
     assert isinstance(idx_obj, IndexValue.IndexBase) and idx_obj.dtype == dtype
+
+
+def ensure_table_deleted(odps_entry: ODPS, table_name: str) -> None:
+    retry_times = 20
+    while odps_entry.exist_table(table_name) and retry_times > 0:
+        time.sleep(1)
+        retry_times -= 1
+    assert not odps_entry.exist_table(table_name)
