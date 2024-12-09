@@ -19,5 +19,5 @@ from .schema import (
     odps_schema_to_pandas_dtypes,
     pandas_to_odps_schema,
 )
-from .tableio import HaloTableIO, ODPSTableIO
+from .tableio import HaloTableIO, ODPSTableIO, TunnelTableIO
 from .volumeio import ODPSVolumeReader, ODPSVolumeWriter

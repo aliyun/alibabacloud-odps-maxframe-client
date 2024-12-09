@@ -11,17 +11,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 import json
 import os
 
 import mock
+import pytest
 from defusedxml import ElementTree
 from odps import ODPS
 from odps import options as odps_options
 
+from maxframe import options
+from maxframe.config import option_context
+
 from ...session.consts import MAXFRAME_OUTPUT_JSON_FORMAT
-from ...session.task import MaxFrameInstanceCaller, MaxFrameTask
+from ...session.task import MaxFrameInstanceCaller, MaxFrameTask, MaxFrameTaskSession
 
 expected_file_dir = os.path.join(os.path.dirname(__file__), "expected-data")
 
@@ -79,3 +82,33 @@ def test_maxframe_instance_caller_creating_session():
         finally:
             odps_options.priority = old_priority
             odps_options.get_priority = old_get_priority
+
+
+@pytest.mark.asyncio
+async def test_session_quota_flag_valid():
+    def mock_create(self, task: MaxFrameTask, **kwargs):
+        assert task.properties["settings"]
+        task_settings = json.loads(task.properties["settings"])
+        assert task_settings["odps.task.wlm.quota"] == "session_quota"
+
+    with mock.patch.multiple(
+        target="maxframe_client.session.task.MaxFrameInstanceCaller",
+        _wait_instance_task_ready=mock.DEFAULT,
+        get_session=mock.DEFAULT,
+        get_logview_address=mock.DEFAULT,
+    ), mock.patch("odps.models.instances.BaseInstances.create", mock_create):
+        with option_context({"session.quota_name": "session_quota"}):
+            with pytest.raises(ValueError):
+                options.sql.settings["odps.task.wlm.quota"] = "session_quota2"
+                await MaxFrameTaskSession.init(
+                    address="test", odps_entry=ODPS.from_environments()
+                )
+            options.sql.settings["odps.task.wlm.quota"] = "session_quota"
+            mf_task_session = await MaxFrameTaskSession.init(
+                address="test", odps_entry=ODPS.from_environments()
+            )
+            with pytest.raises(ValueError):
+                options.sql.settings["odps.task.wlm.quota"] = "session_quota2"
+                mf_task_session._get_diff_settings()
+            options.sql.settings["odps.task.wlm.quota"] = "session_quota"
+            mf_task_session._get_diff_settings()

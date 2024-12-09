@@ -28,6 +28,8 @@ except ImportError:
 
     available_timezones = lambda: all_timezones
 
+import logging
+
 from ..utils import get_python_tag
 from .validators import (
     ValidatorType,
@@ -42,6 +44,8 @@ from .validators import (
     is_string,
     is_valid_cache_path,
 )
+
+logger = logging.getLogger(__name__)
 
 _DEFAULT_REDIRECT_WARN = "Option {source} has been replaced by {target} and might be removed in a future release."
 _DEFAULT_MAX_ALIVE_SECONDS = 3 * 24 * 3600
@@ -499,3 +503,22 @@ class OptionsProxy:
 
 
 options = OptionsProxy()
+
+
+def update_wlm_quota_settings(session_id: str, engine_settings: Dict[str, Any]):
+    engine_quota = engine_settings.get("odps.task.wlm.quota", None)
+    session_quota = options.session.quota_name or None
+    if engine_quota != session_quota and engine_quota:
+        logger.warning(
+            "[Session=%s] Session quota (%s) is different to SubDag engine quota (%s)",
+            session_id,
+            session_quota,
+            engine_quota,
+        )
+        # TODO(renxiang): overwrite or not overwrite
+        return
+
+    if session_quota:
+        engine_settings["odps.task.wlm.quota"] = session_quota
+    elif "odps.task.wlm.quota" in engine_settings:
+        engine_settings.pop("odps.task.wlm.quota")

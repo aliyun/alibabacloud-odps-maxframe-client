@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .config import AttributeDict, option_context, options
+from .config import AttributeDict, option_context, options, update_wlm_quota_settings

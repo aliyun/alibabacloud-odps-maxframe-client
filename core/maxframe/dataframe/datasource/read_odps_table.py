@@ -34,6 +34,7 @@ from ...serialization.serializables import (
     SeriesField,
     StringField,
 )
+from ...utils import is_empty
 from ..core import DataFrame  # noqa: F401
 from ..utils import parse_index
 from .core import ColumnPruneSupportedDataSourceMixin, IncrementalIndexDatasource
@@ -76,7 +77,7 @@ class DataFrameReadODPSTable(
         self.columns = columns
 
     def __call__(self, shape, chunk_bytes=None, chunk_size=None):
-        if not self.index_columns:
+        if is_empty(self.index_columns):
             if np.isnan(shape[0]):
                 index_value = parse_index(pd.RangeIndex(0))
             else:
@@ -238,7 +239,8 @@ def read_odps_table(
         partitions = [partitions]
 
     append_partitions = append_partitions or any(
-        pt.name in (columns or ()) for pt in (table.table_schema.partitions or ())
+        pt.name in (columns if not is_empty(columns) else ())
+        for pt in (table.table_schema.partitions or ())
     )
     op = DataFrameReadODPSTable(
         table_name=table.full_table_name,

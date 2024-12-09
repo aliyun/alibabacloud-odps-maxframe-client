@@ -14,10 +14,12 @@
 
 from typing import Any, Tuple, Union
 
+import numpy as np
 import pandas as pd
 import pyarrow as pa
 
 from ...core import OutputType
+from ...lib.version import parse as parse_version
 from ...protocol import DataFrameTableMeta
 from ...tensor.core import TENSOR_TYPE
 from ...typing_ import ArrowTableType, PandasObjectTypes
@@ -109,7 +111,26 @@ def pandas_to_arrow(
             df = pd.DataFrame([[df]], columns=names)
     else:  # this could never happen  # pragma: no cover
         raise ValueError(f"Does not support meta type {table_meta.type!r}")
-    pa_table = pa.Table.from_pandas(df, nthreads=nthreads, preserve_index=False)
+
+    try:
+        pa_table = pa.Table.from_pandas(df, nthreads=nthreads, preserve_index=False)
+    except pa.ArrowTypeError as ex:  # pragma: no cover
+        late_np_version = parse_version(np.__version__) >= parse_version("1.20")
+        early_pa_version = parse_version(pa.__version__) <= parse_version("4.0")
+        if (
+            late_np_version
+            and early_pa_version
+            and "Did not pass numpy.dtype object" in str(ex)
+        ):
+            raise TypeError(
+                "Potential dependency conflict. Try update to pyarrow>4.0 "
+                "or downgrade to numpy<1.20. Details can be seen at "
+                "https://github.com/numpy/numpy/issues/17913. "
+                f"Raw error message: {ex!r}"
+            ).with_traceback(ex.__traceback__) from None
+        else:
+            raise
+
     if table_datetime_cols:
         col_names = pa_table.schema.names
         col_datas = []

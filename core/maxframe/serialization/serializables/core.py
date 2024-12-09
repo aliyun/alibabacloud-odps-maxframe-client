@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import weakref
-from collections import defaultdict
+from collections import OrderedDict
 from typing import Any, Dict, List, Optional, Tuple, Type
 
 import msgpack
@@ -98,14 +98,18 @@ class SerializableMeta(type):
                 non_primitive_fields.append(v)
 
         # count number of fields for every base class
-        cls_to_primitive_field_count = defaultdict(lambda: 0)
-        cls_to_non_primitive_field_count = defaultdict(lambda: 0)
+        cls_to_primitive_field_count = OrderedDict()
+        cls_to_non_primitive_field_count = OrderedDict()
         for field_name in field_order:
             cls_hash = field_to_cls_hash[field_name]
             if field_name in primitive_field_names:
-                cls_to_primitive_field_count[cls_hash] += 1
+                cls_to_primitive_field_count[cls_hash] = (
+                    cls_to_primitive_field_count.get(cls_hash, 0) + 1
+                )
             else:
-                cls_to_non_primitive_field_count[cls_hash] += 1
+                cls_to_non_primitive_field_count[cls_hash] = (
+                    cls_to_non_primitive_field_count.get(cls_hash, 0) + 1
+                )
 
         slots = set(properties.pop("__slots__", set()))
         slots.update(properties_field_slot_names)
@@ -120,9 +124,11 @@ class SerializableMeta(type):
         properties["_FIELD_ORDER"] = field_order
         properties["_FIELD_TO_NAME_HASH"] = field_to_cls_hash
         properties["_PRIMITIVE_FIELDS"] = primitive_fields
-        properties["_CLS_TO_PRIMITIVE_FIELD_COUNT"] = dict(cls_to_primitive_field_count)
+        properties["_CLS_TO_PRIMITIVE_FIELD_COUNT"] = OrderedDict(
+            cls_to_primitive_field_count
+        )
         properties["_NON_PRIMITIVE_FIELDS"] = non_primitive_fields
-        properties["_CLS_TO_NON_PRIMITIVE_FIELD_COUNT"] = dict(
+        properties["_CLS_TO_NON_PRIMITIVE_FIELD_COUNT"] = OrderedDict(
             cls_to_non_primitive_field_count
         )
         properties["__slots__"] = tuple(slots)
@@ -297,20 +303,50 @@ class SerializableSerializer(Serializer):
                 field.set(obj, value)
 
     @classmethod
+    def _prune_server_fields(
+        cls,
+        client_cls_to_field_count: Optional[Dict[int, int]],
+        server_cls_to_field_count: Dict[int, int],
+        server_fields: list,
+    ) -> list:
+        if not client_cls_to_field_count:  # pragma: no cover
+            # todo remove this branch when all versions below v0.1.0b5 is eliminated
+            return server_fields
+        if set(client_cls_to_field_count.keys()) == set(
+            server_cls_to_field_count.keys()
+        ):
+            return server_fields
+        ret_server_fields = []
+        server_pos = 0
+        for cls_hash, count in server_cls_to_field_count.items():
+            if cls_hash in client_cls_to_field_count:
+                ret_server_fields.extend(server_fields[server_pos : server_pos + count])
+            server_pos += count
+        return ret_server_fields
+
+    @classmethod
     def _set_field_values(
         cls,
         obj: Serializable,
         values: List[Any],
-        client_cls_to_field_count: Optional[Dict[str, int]],
+        client_cls_to_field_count: Optional[Dict[int, int]],
         is_primitive: bool = True,
     ):
         obj_class = type(obj)
         if is_primitive:
             server_cls_to_field_count = obj_class._CLS_TO_PRIMITIVE_FIELD_COUNT
-            server_fields = obj_class._PRIMITIVE_FIELDS
+            server_fields = cls._prune_server_fields(
+                client_cls_to_field_count,
+                server_cls_to_field_count,
+                obj_class._PRIMITIVE_FIELDS,
+            )
         else:
             server_cls_to_field_count = obj_class._CLS_TO_NON_PRIMITIVE_FIELD_COUNT
-            server_fields = obj_class._NON_PRIMITIVE_FIELDS
+            server_fields = cls._prune_server_fields(
+                client_cls_to_field_count,
+                server_cls_to_field_count,
+                obj_class._NON_PRIMITIVE_FIELDS,
+            )
 
         legacy_to_new_hash = {
             c._LEGACY_NAME_HASH: c._NAME_HASH

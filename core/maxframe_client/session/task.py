@@ -126,10 +126,13 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
 
     def _create_maxframe_task(self) -> MaxFrameTask:
         task = MaxFrameTask(name=self._task_name, major_version=self._major_version)
+        mf_settings = self.get_settings_to_upload()
         mf_opts = {
-            "odps.maxframe.settings": json.dumps(self.get_settings_to_upload()),
+            "odps.maxframe.settings": json.dumps(mf_settings),
             "odps.maxframe.output_format": self._output_format,
         }
+        if mf_settings.get("session.quota_name", None):
+            mf_opts["odps.task.wlm.quota"] = mf_settings["session.quota_name"]
         if mf_version:
             mf_opts["odps.maxframe.client_version"] = mf_version
         task.update_settings(mf_opts)

@@ -20,7 +20,6 @@ import pandas as pd
 import pyarrow as pa
 from odps import ODPS
 from odps.models import ExternalVolume
-from odps.tunnel import TableTunnel
 
 from maxframe.core import OBJECT_TYPE
 from maxframe.dataframe.core import DATAFRAME_TYPE
@@ -28,6 +27,7 @@ from maxframe.io.objects import get_object_io_handler
 from maxframe.io.odpsio import (
     ODPSTableIO,
     ODPSVolumeReader,
+    TunnelTableIO,
     arrow_to_pandas,
     build_dataframe_table_meta,
     odps_schema_to_pandas_dtypes,
@@ -136,11 +136,10 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
                     dtypes = odps_schema_to_pandas_dtypes(table.table_schema)
                     tileable.refresh_from_dtypes(dtypes)
 
-                tunnel = TableTunnel(self._odps_entry)
-                total_records = 0
-                for part_spec in part_specs:
-                    session = tunnel.create_download_session(table, part_spec)
-                    total_records += session.count
+                part_sessions = TunnelTableIO.create_download_sessions(
+                    self._odps_entry, info.full_table_name, part_specs
+                )
+                total_records = sum(session.count for session in part_sessions.values())
 
             new_shape_list = list(tileable.shape)
             new_shape_list[0] = total_records

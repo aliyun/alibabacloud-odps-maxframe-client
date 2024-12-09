@@ -48,7 +48,7 @@ def vstack(tup):
 
     Examples
     --------
-    >>> import mars.tensor as mt
+    >>> import maxframe.tensor as mt
 
     >>> a = mt.array([1, 2, 3])
     >>> b = mt.array([2, 3, 4])

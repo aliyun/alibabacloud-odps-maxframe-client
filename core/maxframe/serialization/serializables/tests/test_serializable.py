@@ -221,7 +221,10 @@ def test_compatible_serializable(set_is_ci):
             _ref_val = ReferenceField("ref_val", "MySimpleSerializable")
             _dict_val = DictField("dict_val")
 
-        class MySubSerializable(MySimpleSerializable):
+        class MyMidSerializable(MySimpleSerializable):
+            _i_bool_val = Int64Field("i_bool_val", default=True)
+
+        class MySubSerializable(MyMidSerializable):
             _m_int_val = Int64Field("m_int_val", default=250)
             _m_str_val = StringField("m_str_val", default="SUB_STR")
 
