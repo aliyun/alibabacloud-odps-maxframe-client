@@ -40,10 +40,14 @@ def _get_odps_env(test_config: ConfigParser, section_name: str) -> ODPS:
         access_id = test_config.get(section_name, "access_id")
     except NoOptionError:
         access_id = test_config.get("odps", "access_id")
+    if not access_id:
+        access_id = os.getenv("ACCESS_ID")
     try:
         secret_access_key = test_config.get(section_name, "secret_access_key")
     except NoOptionError:
         secret_access_key = test_config.get("odps", "secret_access_key")
+    if not secret_access_key:
+        secret_access_key = os.getenv("SECRET_ACCESS_KEY")
     try:
         project = test_config.get(section_name, "project")
     except NoOptionError:
@@ -119,8 +123,10 @@ def oss_config():
     old_cache_url = options.object_cache_url
 
     try:
-        oss_access_id = config.get("oss", "access_id")
-        oss_secret_access_key = config.get("oss", "secret_access_key")
+        oss_access_id = config.get("oss", "access_id") or os.getenv("ACCESS_ID")
+        oss_secret_access_key = config.get("oss", "secret_access_key") or os.getenv(
+            "SECRET_ACCESS_KEY"
+        )
         oss_bucket_name = config.get("oss", "bucket_name")
         oss_endpoint = config.get("oss", "endpoint")
         oss_rolearn = config.get("oss", "rolearn")

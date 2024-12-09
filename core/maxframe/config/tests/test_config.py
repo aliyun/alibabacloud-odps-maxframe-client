@@ -18,7 +18,14 @@ import threading
 
 import pytest
 
-from ..config import Config, is_integer, is_string, option_context, options
+from ..config import (
+    Config,
+    is_integer,
+    is_string,
+    option_context,
+    options,
+    update_wlm_quota_settings,
+)
 
 
 def test_config_context():
@@ -101,3 +108,15 @@ def test_config_copy():
 
     target_cfg.update(src_cfg_dict)
     assert target_cfg.a.b.c == 1
+
+
+def test_update_wlm_quota_settings():
+    with option_context({}):
+        options.session.quota_name = "quota1"
+        engine_settings = {}
+        update_wlm_quota_settings("session_id", engine_settings)
+        assert engine_settings["odps.task.wlm.quota"] == "quota1"
+        options.session.quota_name = None
+        update_wlm_quota_settings("session_id", engine_settings)
+        # TODO(renxiang): overwrite or not overwrite
+        assert "odps.task.wlm.quota" in engine_settings

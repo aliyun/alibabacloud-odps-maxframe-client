@@ -15,6 +15,7 @@
 import os
 import time
 from abc import ABC, abstractmethod
+from collections import OrderedDict
 from contextlib import contextmanager
 from typing import Dict, List, Optional, Union
 
@@ -25,7 +26,7 @@ from odps.apis.storage_api import (
     TableBatchScanResponse,
     TableBatchWriteResponse,
 )
-from odps.tunnel import TableTunnel
+from odps.tunnel import TableDownloadSession, TableDownloadStatus, TableTunnel
 from odps.types import OdpsSchema, PartitionSpec, timestamp_ntz
 from odps.utils import call_with_retry
 
@@ -36,12 +37,13 @@ except ImportError:
 
 from ...config import options
 from ...env import ODPS_STORAGE_API_ENDPOINT
-from ...utils import sync_pyodps_options
+from ...utils import is_empty, sync_pyodps_options
 from .schema import odps_schema_to_arrow_schema
 
 PartitionsType = Union[List[str], str, None]
 
 _DEFAULT_ROW_BATCH_SIZE = 4096
+_DOWNLOAD_ID_CACHE_SIZE = 100
 
 
 class ODPSTableIO(ABC):
@@ -65,7 +67,11 @@ class ODPSTableIO(ABC):
     ) -> OdpsSchema:
         final_cols = []
 
-        columns = columns or [col.name for col in table_schema.simple_columns]
+        columns = (
+            columns
+            if not is_empty(columns)
+            else [col.name for col in table_schema.simple_columns]
+        )
         if partition_columns is True:
             partition_columns = [c.name for c in table_schema.partitions]
         else:
@@ -215,6 +221,46 @@ class TunnelMultiPartitionReader:
 
 
 class TunnelTableIO(ODPSTableIO):
+    _down_session_ids = OrderedDict()
+
+    @classmethod
+    def create_download_sessions(
+        cls,
+        odps_entry: ODPS,
+        full_table_name: str,
+        partitions: List[Optional[str]] = None,
+    ) -> Dict[Optional[str], TableDownloadSession]:
+        table = odps_entry.get_table(full_table_name)
+        tunnel = TableTunnel(odps_entry)
+        parts = (
+            [partitions]
+            if partitions is None or isinstance(partitions, str)
+            else partitions
+        )
+        part_to_session = dict()
+        for part in parts:
+            part_key = (full_table_name, part)
+            down_session = None
+
+            if part_key in cls._down_session_ids:
+                down_id = cls._down_session_ids[part_key]
+                down_session = tunnel.create_download_session(
+                    table, async_mode=True, partition_spec=part, download_id=down_id
+                )
+                if down_session.status != TableDownloadStatus.Normal:
+                    down_session = None
+
+            if down_session is None:
+                down_session = tunnel.create_download_session(
+                    table, async_mode=True, partition_spec=part
+                )
+
+            while len(cls._down_session_ids) >= _DOWNLOAD_ID_CACHE_SIZE:
+                cls._down_session_ids.popitem(False)
+            cls._down_session_ids[part_key] = down_session.id
+            part_to_session[part] = down_session
+        return part_to_session
+
     @contextmanager
     def open_reader(
         self,
@@ -241,21 +287,15 @@ class TunnelTableIO(ODPSTableIO):
             or (reverse_range and start is None)
         ):
             with sync_pyodps_options():
-                table = self._odps.get_table(full_table_name)
-                tunnel = TableTunnel(self._odps)
-                parts = (
-                    [partitions]
-                    if partitions is None or isinstance(partitions, str)
-                    else partitions
+                tunnel_sessions = self.create_download_sessions(
+                    self._odps, full_table_name, partitions
                 )
-                part_to_down_id = dict()
-                total_records = 0
-                for part in parts:
-                    down_session = tunnel.create_download_session(
-                        table, async_mode=True, partition_spec=part
-                    )
-                    part_to_down_id[part] = down_session.id
-                    total_records += down_session.count
+                part_to_down_id = {
+                    pt: session.id for (pt, session) in tunnel_sessions.items()
+                }
+                total_records = sum(
+                    session.count for session in tunnel_sessions.values()
+                )
 
         count = None
         if start is not None or stop is not None:

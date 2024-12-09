@@ -37,6 +37,7 @@ from ...serialization.serializables import (
     SeriesField,
     StringField,
 )
+from ...utils import is_empty
 from ..utils import parse_index
 from .core import ColumnPruneSupportedDataSourceMixin, IncrementalIndexDatasource
 
@@ -250,7 +251,7 @@ class DataFrameReadODPSQuery(
         self.columns = columns
 
     def __call__(self, chunk_bytes=None, chunk_size=None):
-        if not self.index_columns:
+        if is_empty(self.index_columns):
             index_value = parse_index(pd.RangeIndex(0))
         elif len(self.index_columns) == 1:
             index_value = parse_index(

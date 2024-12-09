@@ -1127,3 +1127,9 @@ def sync_pyodps_options():
 
 def str_to_bool(s: Optional[str]) -> Optional[bool]:
     return s.lower().strip() in ("true", "1") if s is not None else None
+
+
+def is_empty(val):
+    if isinstance(val, (pd.DataFrame, pd.Series, pd.Index)):
+        return val.empty
+    return not bool(val)

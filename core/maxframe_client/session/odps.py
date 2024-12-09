@@ -84,10 +84,21 @@ class MaxFrameServiceCaller(metaclass=abc.ABCMeta):
     def get_settings_to_upload(self) -> Dict[str, Any]:
         sql_settings = (odps_options.sql.settings or {}).copy()
         sql_settings.update(options.sql.settings or {})
-
         quota_name = options.session.quota_name or getattr(
             odps_options, "quota_name", None
         )
+        quota_settings = {
+            sql_settings.get("odps.task.wlm.quota", None),
+            options.spe.task.settings.get("odps.task.wlm.quota", None),
+            options.pythonpack.task.settings.get("odps.task.wlm.quota", None),
+            quota_name,
+        }.difference([None])
+        if len(quota_settings) >= 2:
+            raise ValueError(
+                "Quota settings are conflicting: %s" % ", ".join(sorted(quota_settings))
+            )
+        elif len(quota_settings) == 1:
+            quota_name = quota_settings.pop()
         lifecycle = options.session.table_lifecycle or odps_options.lifecycle
         temp_lifecycle = (
             options.session.temp_table_lifecycle or odps_options.temp_lifecycle
@@ -331,6 +342,11 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         if not self._last_settings:  # pragma: no cover
             self._last_settings = copy.deepcopy(new_settings)
             return new_settings
+
+        if self._last_settings.get("session.quota_name", None) != new_settings.get(
+            "session.quota_name", None
+        ):
+            raise ValueError("Quota name cannot be changed after sessions are created")
 
         update = dict()
         for k in new_settings.keys():
