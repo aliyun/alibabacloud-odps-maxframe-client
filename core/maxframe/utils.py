@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -128,6 +128,13 @@ try:
     import pyarrow as pa
 except ImportError:
     pa = None
+
+try:
+    from pandas import ArrowDtype as PandasArrowDtype  # noqa: F401
+
+    ARROW_DTYPE_NOT_SUPPORTED = False
+except ImportError:
+    ARROW_DTYPE_NOT_SUPPORTED = True
 
 
 class classproperty:

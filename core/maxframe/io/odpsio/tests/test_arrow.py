@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,10 @@
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
+import pytest
+
+from maxframe.lib.dtypes_extension import dict_
 
 from ..arrow import arrow_to_pandas, pandas_to_arrow
 
@@ -86,3 +90,44 @@ def test_scalar_convert():
 
     scalar_res = arrow_to_pandas(arrow_data, meta)
     assert scalar_data == scalar_res
+
+
+@pytest.mark.skipif(
+    pa is None or not hasattr(pd, "ArrowDtype"),
+    reason="pandas doesn't support ArrowDtype",
+)
+def test_map_convert():
+    pd_data = pd.DataFrame(
+        {
+            "A": pd.Series(
+                [(("k1", "v1"), ("k2", "v2"))], dtype=dict_(pa.string(), pa.string())
+            ),
+            "B": pd.Series([{"k1": 1, "k2": 2}], dtype=dict_(pa.string(), pa.int64())),
+        },
+    )
+    arrow_data, meta = pandas_to_arrow(pd_data)
+    assert arrow_data.column_names == ["_idx_0", "a", "b"]
+    pd.testing.assert_series_equal(
+        meta.pd_column_dtypes,
+        pd.Series(
+            [dict_(pa.string(), pa.string()), dict_(pa.string(), pa.int64())],
+            index=["A", "B"],
+        ),
+    )
+    pd_result = arrow_to_pandas(arrow_data, meta)
+    pd.testing.assert_frame_equal(pd_data, pd_result)
+
+
+def test_datetime_with_tz_convert():
+    pd_data = pd.DataFrame(
+        {
+            "a": pd.to_datetime(
+                pd.Series([1609459200, 1609545600], index=[0, 1]), unit="s"
+            ),
+        },
+    )
+
+    arrow_data, meta = pandas_to_arrow(pd_data)
+    assert arrow_data.column_names == ["_idx_0", "a"]
+    pd_result = arrow_to_pandas(arrow_data, meta)
+    pd.testing.assert_frame_equal(pd_data, pd_result)

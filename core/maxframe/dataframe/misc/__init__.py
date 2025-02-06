@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,9 +50,6 @@ from .value_counts import value_counts
 
 def _install():
     from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
-    from .accessor import CachedAccessor, DatetimeAccessor, StringAccessor
-    from .datetimes import _datetime_method_to_handlers
-    from .string_ import _string_method_to_handlers
 
     for t in DATAFRAME_TYPE:
         setattr(t, "apply", df_apply)
@@ -116,18 +113,6 @@ def _install():
         setattr(t, "map", index_map)
         setattr(t, "memory_usage", index_memory_usage)
         setattr(t, "value_counts", value_counts)
-
-    for method in _string_method_to_handlers:
-        if not hasattr(StringAccessor, method):
-            StringAccessor._register(method)
-
-    for method in _datetime_method_to_handlers:
-        if not hasattr(DatetimeAccessor, method):
-            DatetimeAccessor._register(method)
-
-    for series in SERIES_TYPE:
-        series.str = CachedAccessor("str", StringAccessor)
-        series.dt = CachedAccessor("dt", DatetimeAccessor)
 
 
 _install()

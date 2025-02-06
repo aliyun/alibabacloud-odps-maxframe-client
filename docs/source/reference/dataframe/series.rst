@@ -147,6 +147,7 @@ Data Type                   Accessor
 =========================== =================================
 Datetime, Timedelta, Period :ref:`dt <generated.series.dt>`
 String                      :ref:`str <generated.series.str>`
+Dict                        :ref:`dict <generated.series.dict>`
 =========================== =================================
 
 .. _generated.series.dt:
@@ -269,6 +270,30 @@ strings and apply several methods to it. These can be accessed like
 
        Series.str
        Series.dt
+
+.. _generated.series.dict:
+
+Dict properties
+~~~~~~~~~~~~~~~~~~~~~~~
+
+``Series.dict`` can be used to access the methods of the series with dict values.
+These can be accessed like ``Series.dict.<method>``.
+
+
+Dict methods
+^^^^^^^^^^^^^^^^
+
+.. autosummary::
+   :toctree: generated/
+   :template: accessor_method.rst
+
+   Series.dict.__getitem__
+   Series.dict.__setitem__
+   Series.dict.contains
+   Series.dict.get
+   Series.dict.len
+   Series.dict.remove
+
 
 Plotting
 --------

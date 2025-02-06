@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -80,10 +80,13 @@ class MaxFrameExtension(metaclass=abc.ABCMeta):
 def iter_extensions() -> Iterable[Tuple[str, MaxFrameExtension]]:
     try:
         from importlib.metadata import entry_points
+
+        eps = entry_points(group="maxframe.extension")
     except (ImportError, TypeError):
         from importlib_metadata import entry_points
 
-    eps = entry_points(group="maxframe.extension")
+        eps = entry_points(group="maxframe.extension")
+
     if callable(getattr(eps, "values", None)):
         _it = itertools.chain(*eps.values())
     else:

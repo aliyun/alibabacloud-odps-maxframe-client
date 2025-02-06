@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -228,6 +228,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             table_schema,
             lifecycle=options.session.temp_table_lifecycle,
             hints=options.sql.settings,
+            if_not_exists=True,
         )
 
         data = t.op.get_data()

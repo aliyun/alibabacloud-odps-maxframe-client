@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,40 +11,24 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-import functools
 from typing import TYPE_CHECKING
+
+from ...core import BaseMaxFrameAccessor
 
 if TYPE_CHECKING:
     from ..core import DataFrame, Index, Series
 
 
-class BaseMaxFrameAccessor:
-    def __init__(self, df_obj):
-        self._df_obj = df_obj
-
-    @classmethod
-    def _register(cls, name, func):
-        @functools.wraps(func)
-        def wrapped(self, *args, **kw):
-            return func(self._df_obj, *args, **kw)
-
-        wrapped.__name__ = name
-        setattr(cls, name, wrapped)
-        if hasattr(cls, "_api_count"):  # pragma: no branch
-            cls._api_count += 1
-
-
 class DataFrameMaxFrameAccessor(BaseMaxFrameAccessor):
-    _df_obj: "DataFrame"
+    obj: "DataFrame"
     _api_count: int = 0
 
 
 class SeriesMaxFrameAccessor(BaseMaxFrameAccessor):
-    _df_obj: "Series"
+    obj: "Series"
     _api_count: int = 0
 
 
 class IndexMaxFrameAccessor(BaseMaxFrameAccessor):
-    _df_obj: "Index"
+    obj: "Index"
     _api_count: int = 0

@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from . import (
+    accessors,
     arithmetic,
     datasource,
     datastore,
@@ -22,7 +23,6 @@ from . import (
     indexing,
     misc,
     missing,
-    plotting,
     reduction,
     sort,
     statistics,
@@ -64,6 +64,7 @@ except ImportError:  # pragma: no cover
     pass
 
 del (
+    accessors,
     arithmetic,
     datasource,
     datastore,
@@ -71,7 +72,6 @@ del (
     fetch,
     groupby,
     indexing,
-    plotting,
     reduction,
     sort,
     tseries,

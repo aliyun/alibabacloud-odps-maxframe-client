@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -231,7 +231,7 @@ class TunnelTableIO(ODPSTableIO):
         partitions: List[Optional[str]] = None,
     ) -> Dict[Optional[str], TableDownloadSession]:
         table = odps_entry.get_table(full_table_name)
-        tunnel = TableTunnel(odps_entry)
+        tunnel = TableTunnel(odps_entry, quota_name=options.tunnel_quota_name)
         parts = (
             [partitions]
             if partitions is None or isinstance(partitions, str)
@@ -561,7 +561,10 @@ class HaloTableIO(ODPSTableIO):
 
         table = self._odps.get_table(full_table_name)
         client = StorageApiArrowClient(
-            self._odps, table, rest_endpoint=self._storage_api_endpoint
+            self._odps,
+            table,
+            rest_endpoint=self._storage_api_endpoint,
+            quota_name=options.tunnel_quota_name,
         )
 
         split_option = SplitOptions.SplitMode.SIZE
@@ -637,7 +640,10 @@ class HaloTableIO(ODPSTableIO):
 
         table = self._odps.get_table(full_table_name)
         client = StorageApiArrowClient(
-            self._odps, table, rest_endpoint=self._storage_api_endpoint
+            self._odps,
+            table,
+            rest_endpoint=self._storage_api_endpoint,
+            quota_name=options.tunnel_quota_name,
         )
 
         part_strs = self._convert_partitions(partition)

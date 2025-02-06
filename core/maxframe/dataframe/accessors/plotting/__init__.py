@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,14 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-
 def _install():
     import pandas as pd
 
-    from ...utils import adapt_docstring
-    from ..core import DATAFRAME_TYPE, SERIES_TYPE
-    from ..misc.accessor import CachedAccessor
+    from ....core import CachedAccessor
+    from ....utils import adapt_docstring
+    from ...core import DATAFRAME_TYPE, SERIES_TYPE
     from .core import DataFramePlotAccessor, PlotAccessor, SeriesPlotAccessor
 
     for t in DATAFRAME_TYPE:

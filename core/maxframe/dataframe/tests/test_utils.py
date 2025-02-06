@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +13,17 @@
 # limitations under the License.
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 import pytest
 
 from ...udf import MarkedFunction, with_python_requirements, with_resources
-from ..utils import pack_func_args
+from ...utils import ARROW_DTYPE_NOT_SUPPORTED
+from ..utils import _generate_value, pack_func_args
+
+try:
+    from pandas import ArrowDtype
+except:
+    ArrowDtype = None
 
 
 @pytest.fixture
@@ -58,3 +65,30 @@ def test_pack_function(df1):
     assert isinstance(f, MarkedFunction)
     assert f.resources == ["a.txt"]
     assert f.pythonpacks[0].requirements == ("pandas",)
+
+
+@pytest.mark.skipif(ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported")
+@pytest.mark.parametrize(
+    "dtype, fill_value, expected",
+    [
+        (
+            ArrowDtype(pa.map_(pa.int32(), pa.string())) if ArrowDtype else None,
+            1,
+            [(np.int32(1), "1")],
+        ),
+        (pa.map_(pa.int32(), pa.string()), 1, [(np.int32(1), "1")]),
+        (pa.int32(), 1, np.int32(1)),
+        (np.datetime64, "2023-01-01", pd.Timestamp("2023-01-01")),
+        (np.timedelta64, "1D", pd.Timedelta("1D")),
+        (
+            pd.CategoricalDtype(categories=["a", "b", "c"]),
+            "a",
+            pd.CategoricalDtype(["a"]),
+        ),
+        (np.object_, 1, "1"),
+        (np.int32, 1, 1),
+    ],
+)
+def test_generate_value(dtype, fill_value, expected):
+    result = _generate_value(dtype, fill_value)
+    assert result == expected

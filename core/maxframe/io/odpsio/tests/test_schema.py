@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ from odps import types as odps_types
 from .... import dataframe as md
 from .... import tensor as mt
 from ....core import OutputType
+from ....lib.dtypes_extension import dict_
 from ....utils import pd_release_version
 from ..schema import (
     arrow_schema_to_odps_schema,
@@ -28,6 +29,7 @@ from ..schema import (
     build_table_column_name,
     odps_schema_to_arrow_schema,
     pandas_to_odps_schema,
+    pandas_types_to_arrow_schema,
 )
 
 
@@ -332,3 +334,19 @@ def test_table_meta_with_datetime():
     multiidx = md.Index(raw_multiindex)
     schema, _ = pandas_to_odps_schema(multiidx, unknown_as_string=True)
     assert schema.columns[1].type == odps_types.datetime
+
+
+@pytest.mark.skipif(
+    pa is None or not hasattr(pd, "ArrowDtype"),
+    reason="pandas doesn't support ArrowDtype",
+)
+def test_pandas_types_to_arrow_schema():
+    pd_data = pd.DataFrame(
+        {
+            "int8": pd.Series([], dtype=np.int8),
+            "map": pd.Series([], dtype=dict_(pa.string(), pa.string())),
+        },
+    )
+    schema = pandas_types_to_arrow_schema(pd_data)
+    assert schema.field("int8").type == pa.int8()
+    assert schema.field("map").type == pa.map_(pa.string(), pa.string())

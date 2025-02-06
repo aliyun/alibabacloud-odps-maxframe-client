@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import DictField, KeyField, StringField, TupleField
-from ...tensor import tensor as astensor
-from ...tensor.core import TENSOR_TYPE
-from ..core import SERIES_TYPE
-from ..initializer import Series as asseries
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_empty_series, infer_index_value, parse_index
+from .... import opcodes
+from ....core import OutputType
+from ....serialization.serializables import DictField, KeyField, StringField, TupleField
+from ....tensor import tensor as astensor
+from ....tensor.core import TENSOR_TYPE
+from ...core import SERIES_TYPE
+from ...initializer import Series as asseries
+from ...operators import DataFrameOperator, DataFrameOperatorMixin
+from ...utils import build_empty_series, infer_index_value, parse_index
 
 
 class SeriesStringMethod(DataFrameOperator, DataFrameOperatorMixin):
@@ -51,7 +51,7 @@ class SeriesStringMethod(DataFrameOperator, DataFrameOperatorMixin):
             self.method_kwargs["others"] = self._inputs[1]
 
     def __call__(self, inp):
-        return _string_method_to_handlers[self.method].call(self, inp)
+        return string_method_to_handlers[self.method].call(self, inp)
 
 
 class SeriesStringMethodBaseHandler:
@@ -123,7 +123,7 @@ class SeriesStringCatHandler(SeriesStringMethodBaseHandler):
         others = method_kwargs.get("others")
 
         if others is None:
-            from ..reduction import build_str_concat_object
+            from ...reduction import build_str_concat_object
 
             return build_str_concat_object(
                 inp,
@@ -201,21 +201,21 @@ class SeriesStringExtractHandler(SeriesStringMethodBaseHandler):
             )
 
 
-_string_method_to_handlers = {}
+string_method_to_handlers = {}
 _not_implements = ["get_dummies"]
 # start to register handlers for string methods
 # register special methods first
-_string_method_to_handlers["split"] = SeriesStringSplitHandler
-_string_method_to_handlers["rsplit"] = SeriesStringSplitHandler
-_string_method_to_handlers["cat"] = SeriesStringCatHandler
-_string_method_to_handlers["extract"] = SeriesStringExtractHandler
-_string_method_to_handlers["extractall"] = SeriesStringExtractHandler
+string_method_to_handlers["split"] = SeriesStringSplitHandler
+string_method_to_handlers["rsplit"] = SeriesStringSplitHandler
+string_method_to_handlers["cat"] = SeriesStringCatHandler
+string_method_to_handlers["extract"] = SeriesStringExtractHandler
+string_method_to_handlers["extractall"] = SeriesStringExtractHandler
 # then come to the normal methods
 for method in dir(pd.Series.str):
     if method.startswith("_") and method != "__getitem__":
         continue
     if method in _not_implements:
         continue
-    if method in _string_method_to_handlers:
+    if method in string_method_to_handlers:
         continue
-    _string_method_to_handlers[method] = SeriesStringMethodBaseHandler
+    string_method_to_handlers[method] = SeriesStringMethodBaseHandler

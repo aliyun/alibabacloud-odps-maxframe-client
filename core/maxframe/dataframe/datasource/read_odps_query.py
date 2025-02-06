@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import numpy as np
 import pandas as pd
 from odps import ODPS
 from odps.types import Column, OdpsSchema, validate_data_type
+from odps.utils import split_sql_by_semicolon
 
 from ... import opcodes
 from ...config import options
@@ -163,6 +164,12 @@ def _resolve_task_sector(job_name: str, sector: str) -> TaskSector:
     return TaskSector(job_name, task_name, out_target, schemas)
 
 
+def _select_task_prefix(sector: TasksSector, prefix: str) -> List[TaskSector]:
+    if prefix in sector.tasks:
+        return [sector.tasks[prefix]]
+    return [v for k, v in sector.tasks.items() if k.startswith(prefix + "_")]
+
+
 def _parse_full_explain(explain_string: str) -> OdpsSchema:
     sectors = _split_explain_string(explain_string)
     jobs_sector = tasks_sector = None
@@ -187,18 +194,18 @@ def _parse_full_explain(explain_string: str) -> OdpsSchema:
         task_dag = tasks_sector.build_dag()
         indep_task_names = list(task_dag.iter_indep(reverse=True))
         for task_name in indep_task_names:
-            task_sector = tasks_sector.tasks[task_name]
-            if not task_sector.schema:  # pragma: no cover
-                raise ValueError("Cannot detect output schema")
-            if task_sector.output_target != "Screen":
-                raise ValueError("The SQL statement should be an instant query")
-            sig_tuples = sorted(
-                [
-                    (c.column_alias or c.column_name, c.column_type)
-                    for c in task_sector.schema
-                ]
-            )
-            schema_signatures[hash(tuple(sig_tuples))] = task_sector.schema
+            for task_sector in _select_task_prefix(tasks_sector, task_name):
+                if not task_sector.schema:  # pragma: no cover
+                    raise ValueError("Cannot detect output schema")
+                if task_sector.output_target != "Screen":
+                    raise ValueError("The SQL statement should be an instant query")
+                sig_tuples = sorted(
+                    [
+                        (c.column_alias or c.column_name, c.column_type)
+                        for c in task_sector.schema
+                    ]
+                )
+                schema_signatures[hash(tuple(sig_tuples))] = task_sector.schema
     if len(schema_signatures) != 1:
         raise ValueError("Only one final task is allowed in SQL statement")
     schema = list(schema_signatures.values())[0]
@@ -226,6 +233,16 @@ def _parse_explained_schema(explain_string: str) -> OdpsSchema:
         return _parse_simple_explain(explain_string)
     else:
         return _parse_full_explain(explain_string)
+
+
+def _build_explain_sql(sql_stmt: str, no_split: bool = False) -> str:
+    if no_split:
+        return "EXPLAIN " + sql_stmt
+    sql_parts = split_sql_by_semicolon(sql_stmt)
+    if not sql_parts:
+        raise ValueError(f"Cannot explain SQL statement {sql_stmt}")
+    sql_parts[-1] = "EXPLAIN " + sql_parts[-1]
+    return "\n".join(sql_parts)
 
 
 class DataFrameReadODPSQuery(
@@ -323,16 +340,23 @@ def read_odps_query(
     result: DataFrame
         DataFrame read from MaxCompute (ODPS) table
     """
+    no_split_sql = kw.pop("no_split_sql", False)
+
     hints = options.sql.settings.copy() or {}
     if sql_hints:
         hints.update(sql_hints)
 
     odps_entry = odps_entry or ODPS.from_global() or ODPS.from_environments()
+    if odps_entry is None:
+        raise ValueError(
+            "Need to provide an odps_entry argument or hold a default ODPS entry."
+        )
 
     if options.session.enable_schema or odps_entry.is_schema_namespace_enabled():
         hints["odps.namespace.schema"] = "true"
         hints["odps.sql.allow.namespace.schema"] = "true"
 
+    hints["odps.sql.submit.mode"] = "script"
     # fixme workaround for multi-stage split process
     hints["odps.sql.object.table.split.by.object.size.enabled"] = "false"
 
@@ -341,14 +365,18 @@ def read_odps_query(
 
     col_renames = {}
     if not skip_schema:
-        inst = odps_entry.execute_sql(f"EXPLAIN {query}", hints=hints)
+        explain_stmt = _build_explain_sql(query, no_split=no_split_sql)
+        inst = odps_entry.execute_sql(explain_stmt, hints=hints)
         logger.debug("Explain instance ID: %s", inst.id)
         explain_str = list(inst.get_task_results().values())[0]
 
         try:
             odps_schema = _parse_explained_schema(explain_str)
-        except ValueError as ex:
-            exc = ValueError(str(ex) + "\nExplain instance ID: " + inst.id)
+        except BaseException as ex:
+            exc = ValueError(
+                f"Failed to obtain schema from SQL explain: {ex!r}"
+                f"\nExplain instance ID: {inst.id}"
+            )
             raise exc.with_traceback(ex.__traceback__) from None
 
         new_columns = []
@@ -390,5 +418,6 @@ def read_odps_query(
         index_columns=index_col,
         index_dtypes=index_dtypes,
         column_renames=col_renames,
+        no_split_sql=no_split_sql,
     )
     return op(chunk_bytes=chunk_bytes, chunk_size=chunk_size)

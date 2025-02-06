@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,9 +62,11 @@ def test_local_filesystem():
 
 @pytest.mark.parametrize(
     "fs_type",
-    [LocalFileSystem, ArrowBasedLocalFileSystem]
-    if pa is not None
-    else [LocalFileSystem],
+    (
+        [LocalFileSystem, ArrowBasedLocalFileSystem]
+        if pa is not None
+        else [LocalFileSystem]
+    ),
 )
 def test_filesystems(fs_type):
     fs = fs_type.get_instance()

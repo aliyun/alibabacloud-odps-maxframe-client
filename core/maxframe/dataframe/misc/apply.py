@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -428,6 +428,9 @@ def df_apply(
       specified.
     * For Series output, you need to specify ``dtype`` and ``name`` of
       output Series.
+    * For any input with data type ``pandas.ArrowDtype(pyarrow.MapType)``, it will always
+      be converted to a Python dict. And for any output with this data type, it must be
+      returned as a Python dict as well.
 
     Examples
     --------
@@ -483,6 +486,45 @@ def df_apply(
     0  1  2
     1  1  2
     2  1  2
+
+    Create a dataframe with a map type.
+
+    >>> import pyarrow as pa
+    >>> import pandas as pd
+    >>> from maxframe.lib.dtypes_extension import dict_
+    >>> col_a = pd.Series(
+    ...     data=[[("k1", 1), ("k2", 2)], [("k1", 3)], None],
+    ...     index=[1, 2, 3],
+    ...     dtype=dict_(pa.string(), pa.int64()),
+    ... )
+    >>> col_b = pd.Series(
+    ...     data=["A", "B", "C"],
+    ...     index=[1, 2, 3],
+    ... )
+    >>> df = md.DataFrame({"A": col_a, "B": col_b})
+    >>> df.execute()
+                            A  B
+    1  [('k1', 1), ('k2', 2)]  A
+    2             [('k1', 3)]  B
+    3                    <NA>  C
+
+    Define a function that updates the map type with a new key-value pair.
+
+    >>> def custom_set_item(x):
+    ...     if x["A"] is not None:
+    ...         x["A"]["k2"] = 10
+    ...     return x
+
+    >>> df.apply(
+    ...     custom_set_item,
+    ...     axis=1,
+    ...     output_type="dataframe",
+    ...     dtypes=df.dtypes.copy(),
+    ... ).execute()
+                             A  B
+    1  [('k1', 1), ('k2', 10)]  A
+    2  [('k1', 3), ('k2', 10)]  B
+    3                     <NA>  C
     """
     if isinstance(func, (list, dict)):
         return df.aggregate(func, axis)
@@ -592,6 +634,9 @@ def series_apply(
       specified.
     * For Series output, you need to specify ``dtype`` and ``name`` of
       output Series.
+    * For any input with data type ``pandas.ArrowDtype(pyarrow.MapType)``, it will always
+      be converted to a Python dict. And for any output with this data type, it must be
+      returned as a Python dict as well.
 
     Examples
     --------
@@ -653,6 +698,34 @@ def series_apply(
     New York    96
     Helsinki    87
     dtype: int64
+
+    Create a series with a map type.
+
+    >>> import pyarrow as pa
+    >>> from maxframe.lib.dtypes_extension import dict_
+    >>> s = md.Series(
+    ...     data=[[("k1", 1), ("k2", 2)], [("k1", 3)], None],
+    ...     index=[1, 2, 3],
+    ...     dtype=dict_(pa.string(), pa.int64()),
+    ... )
+    >>> s.execute()
+    1    [('k1', 1), ('k2', 2)]
+    2               [('k1', 3)]
+    3                      <NA>
+    dtype: map<string, int64>[pyarrow]
+
+    Define a function that updates the map type with a new key-value pair.
+
+    >>> def custom_set_item(x):
+    ...     if x is not None:
+    ...         x["k2"] = 10
+    ...     return x
+
+    >>> s.apply(custom_set_item, output_type="series", dtype=dict_(pa.string(), pa.int64())).execute()
+    1    [('k1', 1), ('k2', 10)]
+    2    [('k1', 3), ('k2', 10)]
+    3                       <NA>
+    dtype: map<string, int64>[pyarrow]
     """
     if isinstance(func, (list, dict)):
         return series.aggregate(func)

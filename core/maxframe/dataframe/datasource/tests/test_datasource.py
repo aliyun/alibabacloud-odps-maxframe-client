@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -350,9 +350,11 @@ def test_from_odps_query():
         )
     assert "instant query" in err_info.value.args[0]
 
+    # test simple select query
     query1 = f"SELECT * FROM {table1_name} WHERE col1 > 10"
-    df = read_odps_query(query1)
+    df = read_odps_query(query1, no_split_sql=True)
     assert df.op.query == query1
+    assert df.op.extra_params.no_split_sql is True
     assert df.index_value.name is None
     assert isinstance(df.index_value.value, IndexValue.RangeIndex)
     pd.testing.assert_series_equal(
@@ -366,6 +368,7 @@ def test_from_odps_query():
     df = read_odps_query(query1, skip_schema=True)
     assert df.dtypes is None
     assert df.columns_value is None
+    assert df.op.extra_params.no_split_sql is False
 
     df = read_odps_query(query1, index_col="col1")
     assert df.op.query == query1
@@ -376,12 +379,13 @@ def test_from_odps_query():
         pd.Series([np.dtype("int64"), np.dtype("float64")], index=["col2", "col3"]),
     )
 
-    query2 = (
-        f"SELECT t1.col1, t1.col2, t1.col3 as c31, t2.col3 as c32 "
-        f"FROM {table1_name} t1 "
-        f"INNER JOIN {table2_name} t2 "
-        f"ON t1.col1 = t2.col1 AND t1.col2 = t2.col2"
-    )
+    # test query with join
+    query2 = f"""
+    SELECT t1.col1, t1.col2, t1.col3 as c31, t2.col3 as c32
+    FROM {table1_name} t1
+    INNER JOIN {table2_name} t2
+    ON t1.col1 = t2.col1 AND t1.col2 = t2.col2
+    """
     df = read_odps_query(query2, index_col=["col1", "col2"])
     assert df.op.query == query2
     assert df.index_value.names == ["col1", "col2"]
@@ -389,6 +393,21 @@ def test_from_odps_query():
     pd.testing.assert_series_equal(
         df.dtypes,
         pd.Series([np.dtype("float64"), np.dtype("float64")], index=["c31", "c32"]),
+    )
+
+    # test query with multiple statements
+    query3 = f"""
+    @val := SELECT t1.col1, t1.col2 as c1, t1.col3 as c31, t1.col3 as c32
+    FROM {table1_name} t1;
+    SELECT c1, c32 FROM @val;
+    """
+    df = read_odps_query(query3, index_col=["c1"])
+    assert df.op.query == query3
+    assert df.op.extra_params.no_split_sql is False
+    assert df.index_value.names == ["c1"]
+    pd.testing.assert_series_equal(
+        df.dtypes,
+        pd.Series([np.dtype("float64")], index=["c32"]),
     )
 
     test_table.drop()
@@ -471,6 +490,34 @@ def test_resolve_simple_explain():
 def test_resolve_conditional():
     input_path = os.path.join(
         os.path.dirname(__file__), "test-data", "task-input-multi-cond.txt"
+    )
+    with open(input_path, "r") as f:
+        sector = f.read()
+
+    expected_col_types = {
+        "cs1": "string",
+        "cs2": "string",
+        "ci1": "bigint",
+        "cs3": "string",
+        "cs4": "string",
+        "cs5": "string",
+        "cs6": "string",
+        "cs7": "string",
+        "cs8": "string",
+        "ci2": "int",
+        "ci3": "bigint",
+        "cs9": "string",
+    }
+
+    schema = _parse_full_explain(sector)
+    for col, (exp_nm, exp_tp) in zip(schema.columns, expected_col_types.items()):
+        assert col.name == exp_nm
+        assert col.type == odps_types.validate_data_type(exp_tp)
+
+
+def test_resolve_multi_join():
+    input_path = os.path.join(
+        os.path.dirname(__file__), "test-data", "task-input-multi-join.txt"
     )
     with open(input_path, "r") as f:
         sector = f.read()

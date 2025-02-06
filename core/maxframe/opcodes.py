@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -575,6 +575,11 @@ DATAFRAME_RESHUFFLE = 10001
 FLATMAP = 10002
 FLATJSON = 10003
 APPLY_CHUNK = 10004
+SERIES_DICT_GETITEM = 10005
+SERIES_DICT_SETITEM = 10006
+SERIES_DICT_LENGTH = 10007
+SERIES_DICT_REMOVE = 10008
+SERIES_DICT_CONTAINS = 10009
 
 # MaxFrame internal operators
 DATAFRAME_PROJECTION_SAME_INDEX_MERGE = 100001

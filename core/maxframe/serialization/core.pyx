@@ -1,5 +1,5 @@
 # distutils: language = c++
-# Copyright 1999-2024 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,12 +37,8 @@ from .._utils import NamedType
 from .._utils cimport TypeDispatcher
 
 from ..lib import wrapped_pickle as pickle
+from ..lib.dtypes_extension import ArrowDtype
 from ..utils import NoDefault, arrow_type_from_str, no_default
-
-try:
-    from pandas import ArrowDtype
-except ImportError:
-    ArrowDtype = type(None)
 
 # resolve pandas pickle compatibility between <1.2 and >=1.3
 try:
@@ -67,6 +63,7 @@ except ImportError:
 BUFFER_PICKLE_PROTOCOL = max(pickle.DEFAULT_PROTOCOL, 5)
 cdef bint HAS_PICKLE_BUFFER = pickle.HIGHEST_PROTOCOL >= 5
 cdef bint _PANDAS_HAS_MGR = hasattr(pd.Series([0]), "_mgr")
+cdef bint _ARROW_DTYPE_NOT_SUPPORTED = ArrowDtype is None
 
 
 cdef TypeDispatcher _serial_dispatcher = TypeDispatcher()
@@ -728,6 +725,8 @@ cdef class DtypeSerializer(Serializer):
                 dtype_new_order = list(fields)
                 return [_TYPE_CHAR_DTYPE_NUMPY, desc, dtype_new_order], [], True
         elif isinstance(obj, ExtensionDtype):
+            if _ARROW_DTYPE_NOT_SUPPORTED:
+                raise ImportError("ArrowDtype is not supported in current environment")
             if isinstance(obj, ArrowDtype):
                 return [_TYPE_CHAR_DTYPE_PANDAS_ARROW, str(obj.pyarrow_dtype)], [], True
             elif isinstance(obj, pd.CategoricalDtype):
@@ -756,12 +755,16 @@ cdef class DtypeSerializer(Serializer):
                 dt = dt[serialized[2]]
             return dt
         elif ser_type == _TYPE_CHAR_DTYPE_PANDAS_ARROW:
+            if _ARROW_DTYPE_NOT_SUPPORTED:
+                raise ImportError("ArrowDtype is not supported in current environment")
             return ArrowDtype(arrow_type_from_str(serialized[1]))
         elif ser_type == _TYPE_CHAR_DTYPE_PANDAS_CATEGORICAL:
             return pd.CategoricalDtype(subs[0], serialized[1])
         elif ser_type == _TYPE_CHAR_DTYPE_PANDAS_INTERVAL:
             return pd.IntervalDtype(subs[0], serialized[1])
         elif ser_type == _TYPE_CHAR_DTYPE_PANDAS_EXTENSION:
+            if serialized[1] == "StringDtype":  # for legacy pandas version
+                return pd.StringDtype()
             return pandas_dtype(serialized[1])
         else:
             raise NotImplementedError(f"Unknown serialization type {ser_type}")
