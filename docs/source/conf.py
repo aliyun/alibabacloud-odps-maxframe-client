@@ -21,7 +21,7 @@
 from maxframe import __version__
 
 project = "maxframe"
-copyright = "1999-2024, The Alibaba Group Holding Ltd."
+copyright = "1999-2025, The Alibaba Group Holding Ltd."
 author = "Wenjun Si"
 
 # The short X.Y version
