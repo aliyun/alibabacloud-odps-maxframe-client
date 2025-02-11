@@ -129,6 +129,13 @@ try:
 except ImportError:
     pa = None
 
+try:
+    from pandas import ArrowDtype as PandasArrowDtype  # noqa: F401
+
+    ARROW_DTYPE_NOT_SUPPORTED = False
+except ImportError:
+    ARROW_DTYPE_NOT_SUPPORTED = True
+
 
 class classproperty:
     def __init__(self, f):

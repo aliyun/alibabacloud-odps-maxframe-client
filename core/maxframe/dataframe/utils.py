@@ -60,6 +60,11 @@ except ImportError:
     ray_deprecate_ml_dataset = None
 logger = logging.getLogger(__name__)
 
+try:
+    from pandas import ArrowDtype
+except ImportError:
+    ArrowDtype = None
+
 
 def hash_index(index, size):
     def func(x, size):
@@ -455,6 +460,20 @@ def build_split_idx_to_origin_idx(splits, increase=True):
 
 
 def _generate_value(dtype, fill_value):
+    if ArrowDtype and isinstance(dtype, pd.ArrowDtype):
+        return _generate_value(dtype.pyarrow_dtype, fill_value)
+
+    if isinstance(dtype, pa.MapType):
+        return [
+            (
+                _generate_value(dtype.key_type, fill_value),
+                _generate_value(dtype.item_type, fill_value),
+            )
+        ]
+
+    if isinstance(dtype, pa.DataType):
+        return _generate_value(dtype.to_pandas_dtype(), fill_value)
+
     # special handle for datetime64 and timedelta64
     dispatch = {
         np.datetime64: pd.Timestamp,
@@ -465,7 +484,8 @@ def _generate_value(dtype, fill_value):
         np.object_: lambda x: str(fill_value),
     }
     # otherwise, just use dtype.type itself to convert
-    convert = dispatch.get(dtype.type, dtype.type)
+    target_dtype = getattr(dtype, "type", dtype)
+    convert = dispatch.get(target_dtype, target_dtype)
     return convert(fill_value)
 
 

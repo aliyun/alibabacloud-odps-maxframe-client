@@ -135,6 +135,11 @@ def with_running_options(
     engine = engine.upper() if engine else None
     resources = {"cpu": cpu, "memory": memory, **kwargs}
 
+    if cpu is not None and cpu <= 0:
+        raise ValueError("cpu must be greater than 0")
+    if memory is not None and memory <= 0:
+        raise ValueError("memory must be greater than 0")
+
     def func_wrapper(func):
         if all(v is None for v in (engine, cpu, memory)):
             return func

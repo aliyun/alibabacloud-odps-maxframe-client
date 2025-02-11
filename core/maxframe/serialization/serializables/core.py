@@ -12,17 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import weakref
 from collections import OrderedDict
 from typing import Any, Dict, List, Optional, Tuple, Type
 
 import msgpack
 
+from ...errors import MaxFrameDeprecationError
 from ...lib.mmh3 import hash
 from ...utils import no_default
 from ..core import Placeholder, Serializer, buffered, load_type
 from .field import Field
 from .field_type import DictType, ListType, PrimitiveFieldType, TupleType
+
+try:
+    from ..deserializer import get_legacy_module_name
+except ImportError:
+    get_legacy_module_name = lambda x: x
+
+logger = logging.getLogger(__name__)
+_deprecate_log_key = "_SER_DEPRECATE_LOGGED"
 
 
 def _is_field_primitive_compound(field: Field):
@@ -52,19 +62,24 @@ def _is_field_primitive_compound(field: Field):
 class SerializableMeta(type):
     def __new__(mcs, name: str, bases: Tuple[Type], properties: Dict):
         # All the fields including misc fields.
-        legacy_name_hash = hash(f"{properties.get('__module__')}.{name}")
+        legacy_name_hash = hash(
+            f"{get_legacy_module_name(properties.get('__module__'))}.{name}"
+        )
         name_hash = hash(
             f"{properties.get('__module__')}.{properties.get('__qualname__')}"
         )
         all_fields = dict()
         # mapping field names to base classes
         field_to_cls_hash = dict()
+        # mapping legacy name hash to name hashes
+        legacy_to_new_name_hash = {legacy_name_hash: name_hash}
 
         for base in bases:
             if not hasattr(base, "_FIELDS"):
                 continue
             all_fields.update(base._FIELDS)
             field_to_cls_hash.update(base._FIELD_TO_NAME_HASH)
+            legacy_to_new_name_hash.update(base._LEGACY_TO_NEW_NAME_HASH)
 
         properties_without_fields = {}
         properties_field_slot_names = []
@@ -118,8 +133,9 @@ class SerializableMeta(type):
 
         # todo remove this prop when all versions below v1.0.0rc1 is eliminated
         properties["_LEGACY_NAME_HASH"] = legacy_name_hash
-
         properties["_NAME_HASH"] = name_hash
+        properties["_LEGACY_TO_NEW_NAME_HASH"] = legacy_to_new_name_hash
+
         properties["_FIELDS"] = all_fields
         properties["_FIELD_ORDER"] = field_order
         properties["_FIELD_TO_NAME_HASH"] = field_to_cls_hash
@@ -153,7 +169,10 @@ class Serializable(metaclass=SerializableMeta):
     _cache_primitive_serial = False
     _ignore_non_existing_keys = False
 
+    _LEGACY_NAME_HASH: int
     _NAME_HASH: int
+    _LEGACY_TO_NEW_NAME_HASH: Dict[int, int]
+
     _FIELDS: Dict[str, Field]
     _FIELD_ORDER: List[str]
     _FIELD_TO_NAME_HASH: Dict[str, int]
@@ -240,6 +259,17 @@ class SerializableSerializer(Serializer):
     """
 
     @classmethod
+    def _log_legacy(cls, context: Dict, key: Any, msg: str, *args, **kwargs):
+        level = kwargs.pop("level", logging.WARNING)
+        try:
+            logged_keys = context[_deprecate_log_key]
+        except KeyError:
+            logged_keys = context[_deprecate_log_key] = set()
+        if key not in logged_keys:
+            logged_keys.add(key)
+            logger.log(level, msg, *args, **kwargs)
+
+    @classmethod
     def _get_obj_field_count_key(cls, obj: Serializable, legacy: bool = False):
         return f"FC_{obj._NAME_HASH if not legacy else obj._LEGACY_NAME_HASH}"
 
@@ -308,18 +338,21 @@ class SerializableSerializer(Serializer):
         client_cls_to_field_count: Optional[Dict[int, int]],
         server_cls_to_field_count: Dict[int, int],
         server_fields: list,
+        legacy_to_new_hash: Dict[int, int],
     ) -> list:
-        if not client_cls_to_field_count:  # pragma: no cover
-            # todo remove this branch when all versions below v0.1.0b5 is eliminated
-            return server_fields
         if set(client_cls_to_field_count.keys()) == set(
             server_cls_to_field_count.keys()
         ):
             return server_fields
+
+        new_to_legacy_hash = {v: k for k, v in legacy_to_new_hash.items()}
         ret_server_fields = []
         server_pos = 0
         for cls_hash, count in server_cls_to_field_count.items():
-            if cls_hash in client_cls_to_field_count:
+            if (
+                cls_hash in client_cls_to_field_count
+                or new_to_legacy_hash.get(cls_hash) in client_cls_to_field_count
+            ):
                 ret_server_fields.extend(server_fields[server_pos : server_pos + count])
             server_pos += count
         return ret_server_fields
@@ -333,90 +366,45 @@ class SerializableSerializer(Serializer):
         is_primitive: bool = True,
     ):
         obj_class = type(obj)
+        legacy_to_new_hash = obj_class._LEGACY_TO_NEW_NAME_HASH
+
         if is_primitive:
             server_cls_to_field_count = obj_class._CLS_TO_PRIMITIVE_FIELD_COUNT
-            server_fields = cls._prune_server_fields(
-                client_cls_to_field_count,
-                server_cls_to_field_count,
-                obj_class._PRIMITIVE_FIELDS,
-            )
+            field_def_list = obj_class._PRIMITIVE_FIELDS
         else:
             server_cls_to_field_count = obj_class._CLS_TO_NON_PRIMITIVE_FIELD_COUNT
-            server_fields = cls._prune_server_fields(
-                client_cls_to_field_count,
-                server_cls_to_field_count,
-                obj_class._NON_PRIMITIVE_FIELDS,
-            )
+            field_def_list = obj_class._NON_PRIMITIVE_FIELDS
 
-        legacy_to_new_hash = {
-            c._LEGACY_NAME_HASH: c._NAME_HASH
-            for c in obj_class.__mro__
-            if hasattr(c, "_NAME_HASH") and c._LEGACY_NAME_HASH != c._NAME_HASH
-        }
+        server_fields = cls._prune_server_fields(
+            client_cls_to_field_count,
+            server_cls_to_field_count,
+            field_def_list,
+            legacy_to_new_hash,
+        )
 
-        if client_cls_to_field_count:
-            field_num, server_field_num = 0, 0
-            for cls_hash, count in client_cls_to_field_count.items():
-                # cut values and fields given field distribution
-                # at client and server end
-                cls_fields = server_fields[server_field_num : field_num + count]
-                cls_values = values[field_num : field_num + count]
-                for field, value in zip(cls_fields, cls_values):
-                    if is_primitive:
-                        value = _restore_primitive_placeholder(value)
-                    if not is_primitive or value is not _no_field_value:
-                        cls._set_field_value(obj, field, value)
-                field_num += count
-                try:
-                    server_field_num += server_cls_to_field_count[cls_hash]
-                except KeyError:
-                    try:
-                        # todo remove this fallback when all
-                        #  versions below v1.0.0rc1 is eliminated
-                        server_field_num += server_cls_to_field_count[
-                            legacy_to_new_hash[cls_hash]
-                        ]
-                    except KeyError:
-                        # it is possible that certain type of field does not exist
-                        #  at server side
-                        pass
-        else:
-            # handle legacy serialization style, with all fields sorted by name
-            # todo remove this branch when all versions below v0.1.0b5 is eliminated
-            from .field import AnyField
-
-            if is_primitive:
-                new_field_attr = "_legacy_new_primitives"
-                deprecated_field_attr = "_legacy_deprecated_primitives"
-            else:
-                new_field_attr = "_legacy_new_non_primitives"
-                deprecated_field_attr = "_legacy_deprecated_non_primitives"
-
-            # remove fields added on later releases
-            new_names = set(getattr(obj_class, new_field_attr, None) or [])
-            server_fields = [f for f in server_fields if f.name not in new_names]
-
-            # fill fields deprecated on later releases
-            deprecated_fields = []
-            deprecated_names = set()
-            if hasattr(obj_class, deprecated_field_attr):
-                deprecated_names = set(getattr(obj_class, deprecated_field_attr))
-                for field_name in deprecated_names:
-                    field = AnyField(tag=field_name)
-                    field.name = field_name
-                    deprecated_fields.append(field)
-            server_fields = sorted(
-                server_fields + deprecated_fields, key=lambda f: f.name
-            )
-            for field, value in zip(server_fields, values):
+        field_num, server_field_num = 0, 0
+        for cls_hash, count in client_cls_to_field_count.items():
+            # cut values and fields given field distribution
+            # at client and server end
+            cls_fields = server_fields[server_field_num : field_num + count]
+            cls_values = values[field_num : field_num + count]
+            for field, value in zip(cls_fields, cls_values):
                 if is_primitive:
                     value = _restore_primitive_placeholder(value)
                 if not is_primitive or value is not _no_field_value:
-                    try:
-                        cls._set_field_value(obj, field, value)
-                    except AttributeError:  # pragma: no cover
-                        if field.name not in deprecated_names:
-                            raise
+                    cls._set_field_value(obj, field, value)
+            field_num += count
+            try:
+                server_field_num += server_cls_to_field_count[cls_hash]
+            except KeyError:
+                try:
+                    server_field_num += server_cls_to_field_count[
+                        legacy_to_new_hash[cls_hash]
+                    ]
+                except KeyError:
+                    # it is possible that certain type of field does not exist
+                    #  at server side
+                    pass
 
     def deserial(self, serialized: List, context: Dict, subs: List) -> Serializable:
         obj_class_name, primitives = serialized
@@ -431,17 +419,34 @@ class SerializableSerializer(Serializer):
             context, self._get_obj_field_count_key(obj)
         )
         if field_count_data is None:
-            # todo remove this fallback when all
-            #  versions below v1.0.0rc1 is eliminated
+            # try using legacy field count key to get counts
             field_count_data = self.get_public_data(
                 context, self._get_obj_field_count_key(obj, legacy=True)
             )
-        if field_count_data is not None:
-            cls_to_prim_key, cls_to_non_prim_key = msgpack.loads(field_count_data)
-            cls_to_prim_key = dict(cls_to_prim_key)
-            cls_to_non_prim_key = dict(cls_to_non_prim_key)
-        else:
-            cls_to_prim_key, cls_to_non_prim_key = None, None
+
+            if field_count_data is None:
+                self._log_legacy(
+                    context,
+                    ("MISSING_CLASS", obj_class_name),
+                    "Field count info of %s not found in serialized data",
+                    obj_class_name,
+                    level=logging.ERROR,
+                )
+                raise MaxFrameDeprecationError(
+                    "Failed to deserialize request. Please upgrade your "
+                    "MaxFrame client to the latest release."
+                )
+            else:
+                self._log_legacy(
+                    context,
+                    ("LEGACY_CLASS", obj_class_name),
+                    "Class %s used in legacy client",
+                    obj_class_name,
+                )
+
+        cls_to_prim_key, cls_to_non_prim_key = msgpack.loads(field_count_data)
+        cls_to_prim_key = dict(cls_to_prim_key)
+        cls_to_non_prim_key = dict(cls_to_non_prim_key)
 
         if primitives:
             self._set_field_values(obj, primitives, cls_to_prim_key, True)

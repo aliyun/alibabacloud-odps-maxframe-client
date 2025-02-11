@@ -14,17 +14,17 @@
 
 import pandas as pd
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import (
+from .... import opcodes
+from ....core import OutputType
+from ....serialization.serializables import (
     BoolField,
     DictField,
     KeyField,
     StringField,
     TupleField,
 )
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_empty_series
+from ...operators import DataFrameOperator, DataFrameOperatorMixin
+from ...utils import build_empty_series
 
 
 class SeriesDatetimeMethod(DataFrameOperator, DataFrameOperatorMixin):
@@ -50,7 +50,7 @@ class SeriesDatetimeMethod(DataFrameOperator, DataFrameOperatorMixin):
         self._input = self._inputs[0]
 
     def __call__(self, inp):
-        return _datetime_method_to_handlers[self.method].call(self, inp)
+        return datetime_method_to_handlers[self.method].call(self, inp)
 
 
 class SeriesDatetimeMethodBaseHandler:
@@ -73,7 +73,7 @@ class SeriesDatetimeMethodBaseHandler:
         )
 
 
-_datetime_method_to_handlers = {}
+datetime_method_to_handlers = {}
 for method in dir(pd.Series.dt):
     if not method.startswith("_"):
-        _datetime_method_to_handlers[method] = SeriesDatetimeMethodBaseHandler
+        datetime_method_to_handlers[method] = SeriesDatetimeMethodBaseHandler

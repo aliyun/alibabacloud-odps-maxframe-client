@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from . import (
+    accessors,
     arithmetic,
     datasource,
     datastore,
@@ -22,7 +23,6 @@ from . import (
     indexing,
     misc,
     missing,
-    plotting,
     reduction,
     sort,
     statistics,
@@ -64,6 +64,7 @@ except ImportError:  # pragma: no cover
     pass
 
 del (
+    accessors,
     arithmetic,
     datasource,
     datastore,
@@ -71,7 +72,6 @@ del (
     fetch,
     groupby,
     indexing,
-    plotting,
     reduction,
     sort,
     tseries,

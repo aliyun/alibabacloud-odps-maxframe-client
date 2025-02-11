@@ -326,6 +326,9 @@ default_options.register_option(
 )
 default_options.register_option("use_common_table", False, validator=is_bool)
 default_options.register_option(
+    "tunnel_quota_name", None, validator=is_string | is_null
+)
+default_options.register_option(
     "python_tag", get_python_tag(), validator=is_string, remote=True
 )
 default_options.register_option(
@@ -402,6 +405,12 @@ default_options.register_option(
     "session.temp_table_lifecycle",
     _DEFAULT_TEMP_LIFECYCLE,
     validator=is_integer,
+    remote=True,
+)
+default_options.register_option(
+    "session.auto_purge_temp_tables",
+    False,
+    validator=is_bool,
     remote=True,
 )
 default_options.register_option(

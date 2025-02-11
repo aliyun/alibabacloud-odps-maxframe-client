@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..misc.accessor import CachedAccessor
+from ...core import CachedAccessor
 from .accessor import (
     DataFrameMaxFrameAccessor,
     IndexMaxFrameAccessor,

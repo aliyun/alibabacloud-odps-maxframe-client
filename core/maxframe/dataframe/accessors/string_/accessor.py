@@ -16,16 +16,9 @@ from functools import wraps
 from typing import Iterable
 
 import pandas as pd
-from pandas.api.types import (
-    is_datetime64_dtype,
-    is_datetime64tz_dtype,
-    is_period_dtype,
-    is_timedelta64_dtype,
-)
 
-from ...utils import adapt_docstring
-from .datetimes import SeriesDatetimeMethod, _datetime_method_to_handlers
-from .string_ import SeriesStringMethod, _string_method_to_handlers
+from ....utils import adapt_docstring
+from .core import SeriesStringMethod, string_method_to_handlers
 
 
 class StringAccessor:
@@ -69,7 +62,7 @@ class StringAccessor:
 
     def __dir__(self) -> Iterable[str]:
         s = set(super().__dir__())
-        s.update(_string_method_to_handlers.keys())
+        s.update(string_method_to_handlers.keys())
         return list(s)
 
     @classmethod
@@ -220,57 +213,3 @@ class StringAccessor:
 
     rsplit.__doc__ = adapt_docstring(pd.Series.str.rsplit.__doc__)
     cat.__doc__ = adapt_docstring(pd.Series.str.cat.__doc__)
-
-
-class DatetimeAccessor:
-    def __init__(self, series):
-        if (
-            not is_datetime64_dtype(series.dtype)
-            and not is_datetime64tz_dtype(series.dtype)
-            and not is_timedelta64_dtype(series.dtype)
-            and not is_period_dtype(series.dtype)
-        ):
-            raise AttributeError("Can only use .dt accessor with datetimelike values")
-        self._series = series
-
-    @classmethod
-    def _gen_func(cls, method, is_property):
-        @wraps(getattr(pd.Series.dt, method))
-        def _inner(self, *args, **kwargs):
-            op = SeriesDatetimeMethod(
-                method=method,
-                is_property=is_property,
-                method_args=args,
-                method_kwargs=kwargs,
-            )
-            return op(self._series)
-
-        _inner.__doc__ = adapt_docstring(getattr(pd.Series.dt, method).__doc__)
-        return _inner
-
-    @classmethod
-    def _register(cls, method):
-        is_property = not callable(getattr(pd.Series.dt, method))
-        func = cls._gen_func(method, is_property)
-        if is_property:
-            func = property(func)
-        setattr(cls, method, func)
-
-    def __dir__(self) -> Iterable[str]:
-        s = set(super().__dir__())
-        s.update(_datetime_method_to_handlers.keys())
-        return list(s)
-
-
-class CachedAccessor:
-    def __init__(self, name: str, accessor) -> None:
-        self._name = name
-        self._accessor = accessor
-
-    def __get__(self, obj, cls):
-        if obj is None:
-            # we're accessing the attribute of the class, i.e., Dataset.geo
-            return self._accessor
-        if self._name not in obj._accessors:
-            obj._accessors[self._name] = self._accessor(obj)
-        return obj._accessors[self._name]

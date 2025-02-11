@@ -14,7 +14,7 @@
 
 import string
 from collections import defaultdict
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -23,6 +23,7 @@ from odps import types as odps_types
 from pandas.api import types as pd_types
 
 from ...core import TILEABLE_TYPE, OutputType
+from ...lib.dtypes_extension import ArrowDtype
 from ...protocol import DataFrameTableMeta
 from ...tensor.core import TENSOR_TYPE
 
@@ -60,6 +61,33 @@ _odps_type_to_arrow = {
     odps_types.timestamp: pa.timestamp("ns"),
     odps_types.timestamp_ntz: pa.timestamp("ns"),
 }
+
+_based_for_pandas_pa_dtypes = Union[pa.MapType]
+
+
+def is_based_for_pandas_dtype(dtype: pa.DataType) -> bool:
+    """
+    Check whether the arrow type is based for one pandas data type.
+    If true, we should make sure the environment support ArrowDtype.
+    """
+    if not isinstance(dtype, _based_for_pandas_pa_dtypes):
+        return False
+
+    if ArrowDtype is None:
+        raise ImportError("ArrowDtype is not supported in current environment")
+    return True
+
+
+def pandas_types_to_arrow_schema(df_obj: pd.DataFrame) -> pa.Schema:
+    """
+    This one is only called when a pandas DataFrame is written to ODPS. So we can check
+    whether the ArrowDtype is supported.
+    """
+    schema = pa.Schema.from_pandas(df_obj, preserve_index=False)
+    for idx, col_dtype in enumerate(df_obj.dtypes.items()):
+        if ArrowDtype is not None and isinstance(col_dtype[1], ArrowDtype):
+            schema.set(idx, pa.field(col_dtype[0], col_dtype[1].pyarrow_dtype))
+    return schema
 
 
 def arrow_type_to_odps_type(
@@ -167,7 +195,51 @@ def odps_schema_to_pandas_dtypes(
     arrow_schema = odps_schema_to_arrow_schema(
         odps_schema, with_partitions=with_partitions
     )
-    return arrow_schema.empty_table().to_pandas().dtypes
+    return arrow_table_to_pandas_dataframe(arrow_schema.empty_table()).dtypes
+
+
+def arrow_table_to_pandas_dataframe(
+    table: pa.Table, meta: DataFrameTableMeta = None
+) -> pd.DataFrame:
+    df = table.to_pandas(
+        types_mapper=lambda x: (
+            ArrowDtype(x) if is_based_for_pandas_dtype(x) else None
+        ),
+        ignore_metadata=True,
+    )
+    if not meta:
+        return df
+
+    # If meta is passed, we should convert the dtypes to match the ones in the meta
+    converted_column_dtypes = dict()
+    for source_dtype, target_col, target_dtype in zip(
+        df.dtypes.values,
+        df.columns,
+        list(meta.pd_index_dtypes.values) + list(meta.pd_column_dtypes.values),
+    ):
+        if source_dtype != target_dtype:
+            # Converting tz-aware dtype to tz-native dtype is a special case.
+            # In numpy1.19, we can't use numpy.dtype.DateTime64Dtype
+            if (
+                isinstance(source_dtype, pd.DatetimeTZDtype)
+                and isinstance(target_dtype, np.dtype)
+                and target_dtype.name.startswith("datetime64")
+            ):
+                df[target_col] = df[target_col].dt.tz_localize(None)
+            else:
+                converted_column_dtypes[target_col] = target_dtype
+
+    if converted_column_dtypes:
+        df = df.astype(converted_column_dtypes)
+
+    return df
+
+
+def pandas_dataframe_to_arrow_table(df: pd.DataFrame, nthreads=1) -> pa.Table:
+    schema = pandas_types_to_arrow_schema(df)
+    return pa.Table.from_pandas(
+        df, schema=schema, nthreads=nthreads, preserve_index=False
+    )
 
 
 def is_scalar_object(df_obj: Any) -> bool:

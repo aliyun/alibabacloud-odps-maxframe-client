@@ -339,6 +339,9 @@ def df_apply_chunk(
       specified.
     * For Series output, you need to specify ``dtype`` and ``name`` of
       output Series.
+    * For any input with data type ``pandas.ArrowDtype(pyarrow.MapType)``, it will always
+      be converted to a Python dict. And for any output with this data type, it must be
+      returned as a Python dict as well.
 
     Examples
     --------
@@ -355,6 +358,7 @@ def df_apply_chunk(
     Use different batch_rows will collect different dataframe chunk into the function.
 
     For example, when you use ``batch_rows=3``, it means that the function will wait until 3 rows are collected.
+
     >>> df.mf.apply_chunk(np.sum, batch_rows=3).execute()
     A    12
     B    27
@@ -412,6 +416,48 @@ def df_apply_chunk(
     1   -0.765025
     2   -0.765025
     Name: predict_B, dtype: float64
+
+    Create a dataframe with a dict type.
+
+    >>> import pyarrow as pa
+    >>> import pandas as pd
+    >>> from maxframe.lib.dtypes_extension import dict_
+    >>> col_a = pd.Series(
+    ...     data=[[("k1", 1), ("k2", 2)], [("k1", 3)], None],
+    ...     index=[1, 2, 3],
+    ...     dtype=dict_(pa.string(), pa.int64()),
+    ... )
+    >>> col_b = pd.Series(
+    ...     data=["A", "B", "C"],
+    ...     index=[1, 2, 3],
+    ... )
+    >>> df = md.DataFrame({"A": col_a, "B": col_b})
+    >>> df.execute()
+                            A  B
+    1  [('k1', 1), ('k2', 2)]  A
+    2             [('k1', 3)]  B
+    3                    <NA>  C
+
+    Define a function that updates the map type with a new key-value pair in a batch.
+
+    >>> def custom_set_item(df):
+    ...     for name, value in df["A"].items():
+    ...         if value is not None:
+    ...             df["A"][name]["x"] = 100
+    ...     return df
+
+    >>> mf.apply_chunk(
+    ...     process,
+    ...     output_type="dataframe",
+    ...     dtypes=md_df.dtypes.copy(),
+    ...     batch_rows=2,
+    ...     skip_infer=True,
+    ...     index=md_df.index,
+    ... )
+                                        A  B
+    1  [('k1', 1), ('k2', 2), ('x', 10))]  A
+    2              [('k1', 3), ('x', 10)]  B
+    3                                <NA>  C
     """
     if not isinstance(func, Callable):
         raise TypeError("function must be a callable object")
@@ -529,6 +575,9 @@ def series_apply_chunk(
       specified.
     * For Series output, you need to specify ``dtype`` and ``name`` of
       output Series.
+    * For any input with data type ``pandas.ArrowDtype(pyarrow.MapType)``, it will always
+      be converted to a Python dict. And for any output with this data type, it must be
+      returned as a Python dict as well.
 
     Examples
     --------
@@ -614,6 +663,42 @@ def series_apply_chunk(
     London    20  20
     New York  21  21
     Helsinki  12  12
+
+    Create a series with a dict type.
+
+    >>> import pyarrow as pa
+    >>> from maxframe.lib.dtypes_extension import dict_
+    >>> s = md.Series(
+    ...     data=[[("k1", 1), ("k2", 2)], [("k1", 3)], None],
+    ...     index=[1, 2, 3],
+    ...     dtype=dict_(pa.string(), pa.int64()),
+    ... )
+    >>> s.execute()
+    1    [('k1', 1), ('k2', 2)]
+    2               [('k1', 3)]
+    3                      <NA>
+    dtype: map<string, int64>[pyarrow]
+
+    Define a function that updates the map type with a new key-value pair in a batch.
+
+    >>> def custom_set_item(row):
+    ...     for _, value in row.items():
+    ...         if value is not None:
+    ...             value["x"] = 100
+    ...     return row
+
+    >>> s.mf.apply_chunk(
+    ...     custom_set_item,
+    ...     output_type="series",
+    ...     dtype=s.dtype,
+    ...     batch_rows=2,
+    ...     skip_infer=True,
+    ...     index=s.index,
+    ... ).execute()
+    1    [('k1', 1), ('k2', 2), ('x', 100)]
+    2               [('k1', 3), ('x', 100)]
+    3                                  <NA>
+    dtype: map<string, int64>[pyarrow]
     """
     if not isinstance(func, Callable):
         raise TypeError("function must be a callable object")

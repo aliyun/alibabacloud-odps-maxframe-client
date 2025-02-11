@@ -39,6 +39,7 @@ try:
 except ImportError:
     zoneinfo = None
 
+from ...lib.dtypes_extension._fake_arrow_dtype import FakeArrowDtype
 from ...lib.sparse import SparseMatrix
 from ...lib.wrapped_pickle import switch_unpickle
 from ...tests.utils import require_cudf, require_cupy
@@ -50,10 +51,12 @@ from .. import (
     serialize,
     serialize_with_spawn,
 )
-from ..core import ListSerializer, Placeholder
+from ..core import DtypeSerializer, ListSerializer, Placeholder
 
 cupy = lazy_import("cupy")
 cudf = lazy_import("cudf")
+
+_arrow_dtype_supported = pa is not None and hasattr(pd, "ArrowDtype")
 
 
 class CustomList(list):
@@ -188,7 +191,7 @@ def test_pandas():
             "cat_col": pd.Categorical(np.random.choice(list("abcd"), size=(1000,))),
         }
     )
-    if pa is not None and hasattr(pd, "ArrowDtype"):
+    if _arrow_dtype_supported:
         val["arrow_col"] = pd.Series(
             np.random.rand(1000), dtype=pd.ArrowDtype(pa.float64())
         )
@@ -201,6 +204,21 @@ def test_pandas():
 
     val = pd.CategoricalIndex(np.random.choice(list("abcd"), size=(1000,)))
     pd.testing.assert_index_equal(val, deserialize(*serialize(val)))
+
+
+@switch_unpickle
+@pytest.mark.skipif(_arrow_dtype_supported, reason="pandas doesn't support ArrowDtype")
+def test_fake_arrow_dtype_serde():
+    serializer = DtypeSerializer()
+    payload, data, ok = serializer.serial(
+        FakeArrowDtype(pa.map_(pa.int64(), pa.string())), dict()
+    )
+
+    assert ok
+    assert data == []
+    assert payload == ["PA", "map<int64, string>"]
+    new_dtype = serializer.deserial(payload, dict(), list())
+    assert type(new_dtype) == FakeArrowDtype
 
 
 @pytest.mark.skipif(pa is None, reason="need pyarrow to run the cases")

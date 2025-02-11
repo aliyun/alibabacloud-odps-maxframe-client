@@ -14,6 +14,7 @@
 
 # noinspection PyUnresolvedReferences
 from ..typing_ import ChunkType, EntityType, OperatorType, TileableType
+from .accessor import BaseMaxFrameAccessor, CachedAccessor
 from .base import Base, ExecutionError
 from .entity import (
     ENTITY_TYPE,

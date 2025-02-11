@@ -16,8 +16,8 @@ from collections import OrderedDict
 
 import pandas as pd
 
-from ...core import ENTITY_TYPE, ExecutableTuple
-from ...utils import adapt_docstring, get_item_if_scalar
+from ....core import ENTITY_TYPE, ExecutableTuple
+from ....utils import adapt_docstring, get_item_if_scalar
 
 
 class PlotAccessor:
