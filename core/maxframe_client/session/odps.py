@@ -228,6 +228,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             table_schema,
             lifecycle=options.session.temp_table_lifecycle,
             hints=options.sql.settings,
+            if_not_exists=True,
         )
 
         data = t.op.get_data()

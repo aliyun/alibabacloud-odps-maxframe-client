@@ -23,7 +23,11 @@ from ...lib.version import parse as parse_version
 from ...protocol import DataFrameTableMeta
 from ...tensor.core import TENSOR_TYPE
 from ...typing_ import ArrowTableType, PandasObjectTypes
-from .schema import build_dataframe_table_meta
+from .schema import (
+    arrow_table_to_pandas_dataframe,
+    build_dataframe_table_meta,
+    pandas_dataframe_to_arrow_table,
+)
 
 
 def _rebuild_dataframe(
@@ -59,7 +63,7 @@ def _rebuild_index(df: pd.DataFrame, table_meta: DataFrameTableMeta) -> pd.Index
 def arrow_to_pandas(
     arrow_table: ArrowTableType, table_meta: DataFrameTableMeta
 ) -> PandasObjectTypes:
-    df = arrow_table.to_pandas()
+    df = arrow_table_to_pandas_dataframe(arrow_table, table_meta)
     if table_meta.type in (OutputType.dataframe, OutputType.series):
         return _rebuild_dataframe(df, table_meta)
     elif table_meta.type == OutputType.index:
@@ -113,7 +117,7 @@ def pandas_to_arrow(
         raise ValueError(f"Does not support meta type {table_meta.type!r}")
 
     try:
-        pa_table = pa.Table.from_pandas(df, nthreads=nthreads, preserve_index=False)
+        pa_table = pandas_dataframe_to_arrow_table(df, nthreads=nthreads)
     except pa.ArrowTypeError as ex:  # pragma: no cover
         late_np_version = parse_version(np.__version__) >= parse_version("1.20")
         early_pa_version = parse_version(pa.__version__) <= parse_version("4.0")

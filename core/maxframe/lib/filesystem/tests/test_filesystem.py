@@ -62,9 +62,11 @@ def test_local_filesystem():
 
 @pytest.mark.parametrize(
     "fs_type",
-    [LocalFileSystem, ArrowBasedLocalFileSystem]
-    if pa is not None
-    else [LocalFileSystem],
+    (
+        [LocalFileSystem, ArrowBasedLocalFileSystem]
+        if pa is not None
+        else [LocalFileSystem]
+    ),
 )
 def test_filesystems(fs_type):
     fs = fs_type.get_instance()

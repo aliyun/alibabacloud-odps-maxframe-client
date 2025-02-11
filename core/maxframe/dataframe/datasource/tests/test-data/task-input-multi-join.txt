@@ -1,0 +1,134 @@
+
+job0 is root job
+
+In Job job0:
+root Tasks: M1
+M6_8 depends on: C8_1
+J5_1_6_8 depends on: C8_1, M1, M6_8
+C8_1 depends on: M1
+
+In Task M1:
+    Data source: test_proj.test_table/pt=2024-09-01
+        Statistics: Num rows: 92166.8, Data size: 8.36874544E7
+        SEL: cs1, ci1, cs4, cs6, cs7, cs8, cs5, cs2, cs3 CONDITION: AND(EQ(TODOUBLE(ci4),1.0),ISNOTNULL(cs1))
+            Statistics: Num rows: 3,770.46, Data size: 1.971285205E6
+            RS: order: +
+                nullDirection: *
+                optimizeOrderBy: False
+                valueDestLimit: 0
+                dist: HASH
+                keys:
+                      cs1
+                values:
+                      cs1 (string)
+                      ci1 (bigint)
+                      cs4 (string)
+                      cs6 (string)
+                      cs7 (string)
+                      cs8 (string)
+                      cs5 (string)
+                      cs2 (string)
+                      cs3 (string)
+                partitions:
+                      cs1
+
+                Statistics: Num rows: 3,770.46, Data size: 1.971285205E6
+
+In Task R3_1_8:
+    SEL: cs1,ci1,cs4,cs6,cs7,cs8,cs5,cs2,cs3
+        Statistics: Num rows: 33224.09, Data size: 3.22323432320000004E6
+        RS: valueDestLimit: 0
+            dist: BROADCAST
+            keys:
+            values:
+                  cs1 (string)
+                  ci1 (bigint)
+                  cs4 (string)
+                  cs6 (string)
+                  cs7 (string)
+                  cs8 (string)
+                  cs5 (string)
+                  cs2 (string)
+                  cs3 (string)
+            partitions:
+
+            Statistics: Num rows: 33224.09, Data size: 3.22323432320000004E6
+
+In Task J5_1_6_8_U0:
+    JOIN:
+         StreamLineRead3 INNERJOIN StreamLineRead4
+         keys:
+             0:cs1
+             1:cs1
+         probeCandidate: StreamLineRead4
+
+        Statistics: Num rows: 6.698158940533501E9, Data size: 6.832122119344171E12
+        SEL: MASKING_V2(cs1,'cs1',0L) cs1, MASKING_V2(cs2,'cs2',1L) cs2, ci1, MASKING_V2(cs3,'cs3',3L) cs3, MASKING_V2(cs4,'cs4',4L) cs4, MASKING_V2(cs5,'cs5',5L) cs5, MASKING_V2(cs6,'cs6',6L) cs6, MASKING_V2(cs7,'cs7',7L) cs7, MASKING_V2(cs8,'cs8',8L) cs8, ci2, ci3, MASKING_V2(cs9,'cs9',11L) cs9
+            Statistics: Num rows: 6.698158940533501E9, Data size: 6.16230622529082E12
+            FS: output: Screen
+                schema:
+                  cs1 (string)
+                  cs2 (string)
+                  ci1 (bigint)
+                  cs3 (string)
+                  cs4 (string)
+                  cs5 (string)
+                  cs6 (string)
+                  cs7 (string)
+                  cs8 (string)
+                  ci2 (int)
+                  ci3 (bigint)
+                  cs9 (string)
+
+                Statistics: Num rows: 2.2327196468E7, Data size: 6.16230622529082E12
+
+In Task J5_1_6_8_U1:
+    JOIN:
+         StreamLineRead3 INNERJOIN StreamLineRead4
+         keys:
+             0:cs1
+             1:cs1
+         probeCandidate: StreamLineRead4
+
+        Statistics: Num rows: 6.698158940533501E9, Data size: 6.832122119344171E12
+        SEL: MASKING_V2(cs1,'cs1',0L) cs1, MASKING_V2(cs2,'cs2',1L) cs2, ci1, MASKING_V2(cs3,'cs3',3L) cs3, MASKING_V2(cs4,'cs4',4L) cs4, MASKING_V2(cs5,'cs5',5L) cs5, MASKING_V2(cs6,'cs6',6L) cs6, MASKING_V2(cs7,'cs7',7L) cs7, MASKING_V2(cs8,'cs8',8L) cs8, ci2, ci3, MASKING_V2(cs9,'cs9',11L) cs9
+            Statistics: Num rows: 6.698158940533501E9, Data size: 6.16230622529082E12
+            FS: output: Screen
+                schema:
+                  cs1 (string)
+                  cs2 (string)
+                  ci1 (bigint)
+                  cs3 (string)
+                  cs4 (string)
+                  cs5 (string)
+                  cs6 (string)
+                  cs7 (string)
+                  cs8 (string)
+                  ci2 (int)
+                  ci3 (bigint)
+                  cs9 (string)
+
+                Statistics: Num rows: 2.2327196468E7, Data size: 6.16230622529082E12
+
+In Task M6_8:
+    Data source: test_proj.test_table2/pt=2024-09-11
+    TS: test_proj.test_table2/pt=2024-09-11
+        Statistics: Num rows: 1435542.0, Data size: 3.33045744E8
+        SEL: cs1, ci3, cs9, IF(GE(ci5,3L),0,1) ci2 CONDITION: AND(EQ(ci5,1L),EQ(ci4,1L),ISNOTNULL(cs1))
+            Statistics: Num rows: 322996.95, Data size: 6.84753534E7
+            RS: order: +
+                nullDirection: *
+                optimizeOrderBy: False
+                valueDestLimit: 0
+                dist: HASH
+                keys:
+                      cs1
+                values:
+                      cs1 (string)
+                      ci3 (bigint)
+                      cs9 (string)
+                      ci2 (int)
+                partitions:
+                      cs1
+
+                Statistics: Num rows: 14043, Data size: 3.12E5

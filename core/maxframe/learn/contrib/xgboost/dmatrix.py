@@ -19,7 +19,7 @@ from ....core.operator.base import Operator
 from ....core.operator.core import TileableOperatorMixin
 from ....dataframe.core import DATAFRAME_TYPE
 from ....serialization.serializables import Float64Field, KeyField, ListField
-from ....serialization.serializables.field import AnyField, Int64Field
+from ....serialization.serializables.field import AnyField, BoolField, Int64Field
 from ....tensor import tensor as astensor
 from ....tensor.core import TENSOR_TYPE
 from ....typing_ import TileableType
@@ -42,6 +42,7 @@ class ToDMatrix(Operator, TileableOperatorMixin):
     qid = AnyField("qid", default=None)
     label_lower_bound = AnyField("label_lower_bound", default=None)
     label_upper_bound = AnyField("label_upper_bound", default=None)
+    enable_categorical = BoolField("enable_categorical", default=None)
 
     @property
     def output_limit(self):
@@ -116,6 +117,7 @@ def to_dmatrix(
     qid=None,
     label_lower_bound=None,
     label_upper_bound=None,
+    enable_categorical=None,
 ):
     data = check_data(data)
     label = check_array_like(label, "label")
@@ -139,6 +141,7 @@ def to_dmatrix(
         label_lower_bound=label_lower_bound,
         label_upper_bound=label_upper_bound,
         gpu=data.op.gpu,
+        enable_categorical=enable_categorical,
         _output_types=get_output_types(data),
     )
     return op()

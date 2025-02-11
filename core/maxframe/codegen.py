@@ -215,9 +215,8 @@ class BigDagCodeContext(metaclass=abc.ABCMeta):
         try:
             return self._tileable_key_to_variables[tileable.key]
         except KeyError:
-            var_name = self._tileable_key_to_variables[
-                tileable.key
-            ] = self.next_var_name()
+            var_name = self.next_var_name()
+            self._tileable_key_to_variables[tileable.key] = var_name
             return var_name
 
     def next_var_name(self) -> str:
@@ -281,11 +280,20 @@ class EngineAcceptance(Enum):
     DENY: The operator is not accepted by the current engine.
     ACCEPT: The operator is accepted by the current engine, and doesn't break from here.
     BREAK: The operator is accepted by the current engine, but should break from here.
+    PREDECESSOR: The acceptance of the operator is decided by engines of its
+        predecessors. If acceptance of all predecessors are SUCCESSOR, the acceptance
+        of current operator is SUCCESSOR. Otherwise the engine selected in predecessors
+        with highest priority is used.
+    SUCCESSOR: The acceptance of the operator is decided by engines of its successors.
+        If the operator has no successors, the acceptance will be treated as ACCEPT.
+        Otherwise the engine selected in successors with highest priority is used.
     """
 
     DENY = 0
     ACCEPT = 1
     BREAK = 2
+    PREDECESSOR = 3
+    SUCCESSOR = 4
 
     @classmethod
     def _missing_(cls, pred: bool) -> "EngineAcceptance":
@@ -467,9 +475,8 @@ class BigDagCodeGenerator(metaclass=abc.ABCMeta):
         for tileable in dag.topological_iter():
             op: OperatorType = tileable.op
             if isinstance(op, Fetch):
-                input_key_to_vars[
-                    op.outputs[0].key
-                ] = self._context.get_tileable_variable(tileable)
+                fetch_tileable = self._context.get_tileable_variable(tileable)
+                input_key_to_vars[op.outputs[0].key] = fetch_tileable
 
         result_variables = {
             t.key: self._context.get_tileable_variable(t) for t in dag.results

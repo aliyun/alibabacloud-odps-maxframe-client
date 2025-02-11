@@ -80,10 +80,13 @@ class MaxFrameExtension(metaclass=abc.ABCMeta):
 def iter_extensions() -> Iterable[Tuple[str, MaxFrameExtension]]:
     try:
         from importlib.metadata import entry_points
+
+        eps = entry_points(group="maxframe.extension")
     except (ImportError, TypeError):
         from importlib_metadata import entry_points
 
-    eps = entry_points(group="maxframe.extension")
+        eps = entry_points(group="maxframe.extension")
+
     if callable(getattr(eps, "values", None)):
         _it = itertools.chain(*eps.values())
     else:

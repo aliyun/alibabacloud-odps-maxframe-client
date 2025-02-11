@@ -80,6 +80,7 @@ def df_drop_duplicates(
         Determines which duplicates (if any) to keep.
         - ``first`` : Drop duplicates except for the first occurrence.
         - ``last`` : Drop duplicates except for the last occurrence.
+        - ``any`` : Drop duplicates except for a random occurrence.
         - False : Drop all duplicates.
     inplace : bool, default False
         Whether to drop duplicates in place or to return a copy.
@@ -91,7 +92,7 @@ def df_drop_duplicates(
     DataFrame
         DataFrame with duplicates removed or None if ``inplace=True``.
     """
-    if keep not in ("first", "last", False):
+    if keep not in ("first", "last", "any", False):
         raise ValueError("keep could only be one of 'first', 'last' or False")
     if method not in ("auto", "tree", "subset_tree", "shuffle", None):
         raise ValueError(
@@ -118,6 +119,7 @@ def series_drop_duplicates(
 
         - 'first' : Drop duplicates except for the first occurrence.
         - 'last' : Drop duplicates except for the last occurrence.
+        - 'any' : Drop duplicates except for a random occurrence.
         - ``False`` : Drop all duplicates.
 
     inplace : bool, default ``False``
@@ -180,7 +182,7 @@ def series_drop_duplicates(
     5     hippo
     Name: animal, dtype: object
     """
-    if keep not in ("first", "last", False):
+    if keep not in ("first", "last", "any", False):
         raise ValueError("keep could only be one of 'first', 'last' or False")
     if method not in ("auto", "tree", "shuffle", None):
         raise ValueError(
@@ -199,6 +201,7 @@ def index_drop_duplicates(index, keep="first", method="auto"):
     keep : {'first', 'last', ``False``}, default 'first'
         - 'first' : Drop duplicates except for the first occurrence.
         - 'last' : Drop duplicates except for the last occurrence.
+        - 'any' : Drop duplicates except for a random occurrence.
         - ``False`` : Drop all duplicates.
 
     Returns
@@ -238,7 +241,7 @@ def index_drop_duplicates(index, keep="first", method="auto"):
     >>> idx.drop_duplicates(keep=False).execute()
     Index(['cow', 'beetle', 'hippo'], dtype='object')
     """
-    if keep not in ("first", "last", False):
+    if keep not in ("first", "last", "any", False):
         raise ValueError("keep could only be one of 'first', 'last' or False")
     if method not in ("auto", "tree", "shuffle", None):
         raise ValueError(

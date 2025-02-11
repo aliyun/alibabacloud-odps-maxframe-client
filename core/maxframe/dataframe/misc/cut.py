@@ -156,9 +156,11 @@ class DataFrameCut(DataFrameOperator, DataFrameOperatorMixin):
                     {
                         "dtype": self.bins.dtype,
                         "shape": self.bins.shape,
-                        "index_value": self.bins.index_value
-                        if isinstance(self.bins, INDEX_TYPE)
-                        else parse_index(self.bins, store_data=False),
+                        "index_value": (
+                            self.bins.index_value
+                            if isinstance(self.bins, INDEX_TYPE)
+                            else parse_index(self.bins, store_data=False)
+                        ),
                         "name": self.bins.name,
                     }
                 )

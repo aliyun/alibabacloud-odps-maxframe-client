@@ -25,11 +25,11 @@ try:
 except ImportError:  # pragma: no cover
     matplotlib = None
 
-from .... import dataframe as md
-from .... import tensor as mt
-from ....core import ExecutableTuple
-from ....tensor.datasource import Scalar
-from ...datasource import PandasDataSourceOperator
+from ..... import dataframe as md
+from ..... import tensor as mt
+from .....core import ExecutableTuple
+from .....tensor.datasource import Scalar
+from ....datasource import PandasDataSourceOperator
 
 
 @pytest.fixture

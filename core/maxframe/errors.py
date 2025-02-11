@@ -25,6 +25,10 @@ class MaxFrameUserError(MaxFrameError):
     pass
 
 
+class MaxFrameDeprecationError(MaxFrameUserError):
+    pass
+
+
 class NoTaskServerResponseError(MaxFrameError):
     pass
 
