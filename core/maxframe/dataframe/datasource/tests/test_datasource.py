@@ -364,6 +364,7 @@ def test_from_odps_query():
             index=["col1", "col2", "col3"],
         ),
     )
+    assert df.op.get_columns() == ["col1", "col2", "col3"]
 
     df = read_odps_query(query1, skip_schema=True)
     assert df.dtypes is None
@@ -373,6 +374,7 @@ def test_from_odps_query():
     df = read_odps_query(query1, index_col="col1")
     assert df.op.query == query1
     assert df.index_value.name == "col1"
+    assert df.op.get_columns() == ["col2", "col3"]
     assert isinstance(df.index_value.value, IndexValue.Index)
     pd.testing.assert_series_equal(
         df.dtypes,
@@ -389,6 +391,7 @@ def test_from_odps_query():
     df = read_odps_query(query2, index_col=["col1", "col2"])
     assert df.op.query == query2
     assert df.index_value.names == ["col1", "col2"]
+    assert df.op.get_columns() == ["c31", "c32"]
     assert isinstance(df.index_value.value, IndexValue.MultiIndex)
     pd.testing.assert_series_equal(
         df.dtypes,
@@ -405,6 +408,7 @@ def test_from_odps_query():
     assert df.op.query == query3
     assert df.op.extra_params.no_split_sql is False
     assert df.index_value.names == ["c1"]
+    assert df.op.get_columns() == ["c32"]
     pd.testing.assert_series_equal(
         df.dtypes,
         pd.Series([np.dtype("float64")], index=["c32"]),
