@@ -181,7 +181,10 @@ def _reshape(a, newshape, order="C", tensor_order=None, out_shape=None):
     if tensor_order is None:
         tensor_order = get_order(order, a.order, available_options="CFA")
     op = TensorReshape(
-        newshape, order, dtype=a.dtype, create_view=tensor_order == a.order
+        newshape=newshape,
+        order=order,
+        dtype=a.dtype,
+        create_view=tensor_order == a.order,
     )
     if out_shape is None:
         out_shape = newshape

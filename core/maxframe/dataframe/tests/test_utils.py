@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import numpy as np
 import pandas as pd
 import pyarrow as pa
@@ -71,6 +72,12 @@ def test_pack_function(df1):
 @pytest.mark.parametrize(
     "dtype, fill_value, expected",
     [
+        (
+            ArrowDtype(pa.list_(pa.string())) if ArrowDtype else None,
+            1,
+            ["1"],
+        ),
+        (pa.list_(pa.string()), 1, ["1"]),
         (
             ArrowDtype(pa.map_(pa.int32(), pa.string())) if ArrowDtype else None,
             1,

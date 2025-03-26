@@ -27,6 +27,7 @@ from ...core import OutputType
 from ...io.odpsio import build_dataframe_table_meta
 from ...serialization.serializables import (
     BoolField,
+    DictField,
     FieldTypes,
     Int64Field,
     ListField,
@@ -55,6 +56,7 @@ class DataFrameToODPSTable(DataFrameDataStore):
     index = BoolField("index", default=True)
     index_label = ListField("index_label", FieldTypes.string, default=None)
     lifecycle = Int64Field("lifecycle", default=None)
+    table_properties = DictField("table_properties", default=None)
 
     def __init__(self, **kw):
         super().__init__(_output_types=[OutputType.dataframe], **kw)
@@ -84,6 +86,7 @@ def to_odps_table(
     index: bool = True,
     index_label: Union[None, str, List[str]] = None,
     lifecycle: Optional[int] = None,
+    table_properties: Optional[dict] = None,
 ):
     """
     Write DataFrame object into a MaxCompute (ODPS) table.
@@ -122,6 +125,8 @@ def to_odps_table(
         names will be used.
     lifecycle: Optional[int]
         Specify lifecycle of the output table.
+    table_properties: Optional[dict]
+        Specify properties of the output table.
 
     Returns
     -------
@@ -186,5 +191,6 @@ def to_odps_table(
         index=index,
         index_label=index_label,
         lifecycle=lifecycle or options.session.table_lifecycle,
+        table_properties=table_properties,
     )
     return op(df)

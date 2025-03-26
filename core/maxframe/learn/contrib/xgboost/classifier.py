@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Union
+
 import numpy as np
 
-from ....tensor import argmax, transpose
+from .... import tensor as mt
 from ....tensor.merge.vstack import _vstack
 from ..utils import make_import_error_func
 from .core import XGBScikitLearnBase, xgboost
@@ -33,6 +35,14 @@ else:
         Implementation of the scikit-learn API for XGBoost classification.
         """
 
+        def __init__(
+            self,
+            xgb_model: Union[xgboost.XGBClassifier, xgboost.Booster] = None,
+            **kwargs,
+        ):
+            super().__init__(**kwargs)
+            self._set_model(xgb_model)
+
         def fit(
             self,
             X,
@@ -46,7 +56,7 @@ else:
             **kw,
         ):
             session = kw.pop("session", None)
-            run_kwargs = kw.pop("run_kwargs", dict())
+            run_kwargs = kw.pop("run_kwargs", None) or dict()
             dtrain, evals = wrap_evaluation_matrices(
                 None,
                 X,
@@ -58,6 +68,7 @@ else:
                 base_margin_eval_set,
             )
             params = self.get_xgb_params()
+            self._n_features_in = X.shape[1]
             self.n_classes_ = num_class or 1
             if self.n_classes_ > 2:
                 params["objective"] = "multi:softprob"
@@ -81,7 +92,7 @@ else:
         def predict(self, data, **kw):
             prob = self.predict_proba(data, flag=True, **kw)
             if prob.ndim > 1:
-                prediction = argmax(prob, axis=1)
+                prediction = mt.argmax(prob, axis=1)
             else:
                 prediction = (prob > 0.5).astype(np.int64)
             return prediction
@@ -103,7 +114,7 @@ else:
             # binary logistic function
             classone_probs = prediction
             classzero_probs = 1.0 - classone_probs
-            return transpose(_vstack((classzero_probs, classone_probs)))
+            return mt.transpose(_vstack((classzero_probs, classone_probs)))
 
         @property
         def classes_(self) -> np.ndarray:

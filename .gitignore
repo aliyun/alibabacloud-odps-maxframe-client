@@ -36,6 +36,7 @@ npm-debug.log*
 
 # Unit test / coverage reports
 .coverage
+.coverage.*
 htmlcov
 .tox
 nosetests.xml
@@ -85,3 +86,6 @@ core/maxframe/serialization/*.c*
 # Makefile related
 package
 maxframe-*.tar.gz
+
+# Files making troubles
+\\*

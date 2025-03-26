@@ -68,6 +68,7 @@ from maxframe.utils import (
     ToThreadMixin,
     build_session_volume_name,
     build_temp_table_name,
+    get_default_table_properties,
     str_to_bool,
     sync_pyodps_options,
 )
@@ -229,6 +230,8 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             lifecycle=options.session.temp_table_lifecycle,
             hints=options.sql.settings,
             if_not_exists=True,
+            table_properties=options.session.temp_table_properties
+            or get_default_table_properties(),
         )
 
         data = t.op.get_data()

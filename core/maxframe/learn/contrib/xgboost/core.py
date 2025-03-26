@@ -12,14 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Callable, Dict, List, Optional, Tuple
+import json
+import os
+import tempfile
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+
+import numpy as np
 
 try:
     import xgboost
 except ImportError:
     xgboost = None
 
+from ....core import OutputType
 from ...core import Model, ModelData
+from ..models import ModelApplyChunk, to_remote_model
 from .dmatrix import DMatrix
 
 
@@ -31,6 +38,33 @@ class BoosterData(ModelData):
     def __init__(self, *args, evals_result=None, **kwargs):
         super().__init__(*args, **kwargs)
         self._evals_result = evals_result if evals_result is not None else dict()
+
+    @staticmethod
+    def _get_booster_score(bst, fmap=None, importance_type="weight"):
+        if not fmap:
+            tmp_file_name = ""
+        else:
+            tmp_file = tempfile.NamedTemporaryFile(delete=False)
+            tmp_file.write(fmap)
+            tmp_file.close()
+            tmp_file_name = tmp_file.name
+
+        try:
+            return bst.get_score(fmap=tmp_file_name, importance_type=importance_type)
+        finally:
+            if tmp_file_name:
+                os.unlink(tmp_file_name)
+
+    def get_score(self, fmap="", importance_type="weight"):
+        op = ModelApplyChunk(
+            func=self._get_booster_score, output_types=[OutputType.object]
+        )
+        if not fmap:
+            fmap_data = None
+        else:
+            with open(fmap, "rb") as fmap_file:
+                fmap_data = fmap_file.read()
+        return op(self, [{}], fmap=fmap_data, importance_type=importance_type)[0]
 
     def execute(self, session=None, **kw):
         # The evals_result should be fetched when BoosterData.execute() is called.
@@ -81,6 +115,30 @@ else:
         """
         Base class for implementing scikit-learn interface
         """
+
+        def _set_model(
+            self, xgb_model: Union[xgboost.XGBModel, xgboost.Booster] = None
+        ):
+            booster = None
+            if isinstance(xgb_model, xgboost.XGBModel):
+                booster = xgb_model.get_booster()
+            elif isinstance(xgb_model, xgboost.Booster):
+                booster = xgb_model
+
+            if booster is not None:
+                self._Booster = to_remote_model(booster, model_cls=Booster)
+
+        @classmethod
+        def _get_param_names(cls):
+            # make sure `xgb_model` not treated as a model param
+            names = super()._get_param_names()
+            if names:
+                names = [p for p in names if p != "xgb_model"]
+            return names
+
+        def __repr__(self):
+            local_model = self.fetch()
+            return repr(local_model)
 
         def fit(
             self,
@@ -156,6 +214,55 @@ else:
             run_kwargs = kw.pop("run_kwargs", dict())
             self._Booster.execute(session=session, **run_kwargs)
             return super().evals_result()
+
+        def execute(self, session=None, run_kwargs=None):
+            self._Booster.execute(session=session, run_kwargs=run_kwargs)
+            return self
+
+        def fetch(self, session=None, run_kwargs=None):
+            from xgboost import sklearn as xgb_sklearn
+
+            booster = self._Booster.fetch(session=session, run_kwargs=run_kwargs)
+            remote_bst, self._Booster = self._Booster, booster
+            try:
+                local_cls = getattr(xgb_sklearn, type(self).__name__)
+                local_model = local_cls(**self.get_params(deep=True))
+                local_model._Booster = booster
+                return local_model
+            finally:
+                self._Booster = remote_bst
+
+        @staticmethod
+        def _calc_feature_importance(bst, importance_type, n_features):
+            config = json.loads(bst.save_config())
+            bst_type = config["learner"]["gradient_booster"]["name"]
+            dft = "weight" if bst_type == "gblinear" else "gain"
+            importance_type = importance_type or dft
+            score = bst.get_score(importance_type=importance_type)
+            if bst.feature_names is None:
+                feature_names = [f"f{i}" for i in range(n_features)]
+            else:
+                feature_names = bst.feature_names
+            # gblinear returns all features so the `get` in next line is only for gbtree.
+            all_features = [score.get(f, 0.0) for f in feature_names]
+            all_features_arr = np.array(all_features, dtype=np.float32)
+            total = all_features_arr.sum()
+            if total == 0:
+                return all_features_arr
+            return all_features_arr / total
+
+        @property
+        def feature_importances_(self):
+            op = ModelApplyChunk(
+                func=self._calc_feature_importance, output_types=[OutputType.tensor]
+            )
+            params = {"shape": (self._n_features_in,), "dtype": np.dtype(np.float32)}
+            return op(
+                self.get_booster(),
+                [params],
+                importance_type=self.importance_type,
+                n_features=self._n_features_in,
+            )[0]
 
     def wrap_evaluation_matrices(
         missing: float,

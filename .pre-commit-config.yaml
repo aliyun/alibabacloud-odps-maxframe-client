@@ -34,6 +34,22 @@ repos:
     entry: trailing-whitespace-fixer
     language: python
     additional_dependencies: [pre-commit-hooks==4.4.0]
+  - id: check-illegal-windows-names
+    name: check illegal windows names
+    entry: Illegal windows filenames detected
+    language: fail
+    files: '(?i)((^|/)(\\|CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\.|/|$)|:)'
+- repo: local
+  hooks:
+  # Check that the copyright is configured
+  - id: copyright-check
+    name: copyright-check
+    entry: python ci/copyright.py --required --fill-empty-line
+    language: python
+    files: '^core/.*'
+    exclude: '(core/maxframe/lib/.*|core/.*/_internal.*)'
+    types_or: [python, pyi]
+    additional_dependencies: [pyyaml]
 - repo: local
   hooks:
   # NOTE: we make `black` a local hook because if it's installed from
@@ -45,7 +61,7 @@ repos:
     language: python
     require_serial: true
     types_or: [python, pyi]
-    additional_dependencies: [black>=23.3.0]
+    additional_dependencies: [black==23.3.0]
 - repo: local
   hooks:
     - id: flake8
@@ -55,7 +71,10 @@ repos:
       language: python
       require_serial: true
       types_or: [python, pyi]
-      additional_dependencies: [flake8==5.0.4]
+      additional_dependencies: [
+        'flake8==5.0.4; python_version<"3.8"',
+        'flake8==6.1.0; python_version>="3.8"',
+      ]
 - repo: local
   hooks:
     - id: isort

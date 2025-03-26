@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -102,7 +103,7 @@ def test_apply_chunk_infer_dtypes_and_index(df1, df2, df3):
     assert result.index_value is df1.index_value
     assert result.dtypes.equals(df1.dtypes)
     assert isinstance(result.op.func, MarkedFunction)
-    assert result.op.func is not process
+    assert result.op.func is process
     assert result.op.func.resources is process.resources
     assert result.op.func.pythonpacks is process.pythonpacks
 

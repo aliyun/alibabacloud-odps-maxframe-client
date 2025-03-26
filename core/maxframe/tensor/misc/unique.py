@@ -32,23 +32,24 @@ class TensorUnique(TensorHasInput, TensorOperatorMixin):
 
     @property
     def output_limit(self):
-        return 1
+        return 1 + self.return_index + self.return_inverse + self.return_counts
 
-    def _gen_kws(self, input_obj, chunk=False, chunk_index=None):
+    @classmethod
+    def _gen_kws(cls, op: "TensorUnique", input_obj, chunk=False, chunk_index=None):
         kws = []
 
         # unique tensor
         shape = list(input_obj.shape)
-        shape[self.axis] = np.nan
+        shape[op.axis] = np.nan
         kw = {"shape": tuple(shape), "dtype": input_obj.dtype, "gpu": input_obj.op.gpu}
         if chunk:
             idx = [0] * len(shape)
-            idx[self.axis] = chunk_index or 0
+            idx[op.axis] = chunk_index or 0
             kw["index"] = tuple(idx)
         kws.append(kw)
 
         # unique indices tensor
-        if self.return_index:
+        if op.return_index:
             kw = {
                 "shape": (np.nan,),
                 "dtype": np.dtype(np.intp),
@@ -60,9 +61,9 @@ class TensorUnique(TensorHasInput, TensorOperatorMixin):
             kws.append(kw)
 
         # unique inverse tensor
-        if self.return_inverse:
+        if op.return_inverse:
             kw = {
-                "shape": (input_obj.shape[self.axis],),
+                "shape": (input_obj.shape[op.axis],),
                 "dtype": np.dtype(np.intp),
                 "gpu": input_obj.op.gpu,
                 "type": "inverse",
@@ -72,7 +73,7 @@ class TensorUnique(TensorHasInput, TensorOperatorMixin):
             kws.append(kw)
 
         # unique counts tensor
-        if self.return_counts:
+        if op.return_counts:
             kw = {
                 "shape": (np.nan,),
                 "dtype": np.dtype(int),
@@ -92,9 +93,9 @@ class TensorUnique(TensorHasInput, TensorOperatorMixin):
         if self.axis is None:
             if ar.ndim > 1:
                 ar = ar.flatten()
-            self._axis = 0
+            self.axis = 0
         else:
-            self._axis = validate_axis(ar.ndim, self._axis)
+            self.axis = validate_axis(ar.ndim, self.axis)
 
         kws = self._gen_kws(self, ar)
         tensors = self.new_tensors([ar], kws=kws, order=TensorOrder.C_ORDER)

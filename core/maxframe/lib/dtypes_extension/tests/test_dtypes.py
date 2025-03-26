@@ -17,18 +17,19 @@ import pyarrow as pa
 import pytest
 
 from ....utils import ARROW_DTYPE_NOT_SUPPORTED
-from ..dtypes import dict_, is_map_dtype
+from ..dtypes import dict_, is_list_dtype, is_map_dtype, list_
 
 try:
     from pandas import ArrowDtype
 except:
     ArrowDtype = None
 
-
-@pytest.mark.skipif(
+pytestmark = pytest.mark.skipif(
     ARROW_DTYPE_NOT_SUPPORTED,
     reason="pandas doesn't support ArrowDtype",
 )
+
+
 def test_map_dtype():
     dt = dict_(pa.int64(), pa.string())
     assert is_map_dtype(dt)
@@ -36,3 +37,12 @@ def test_map_dtype():
     dt = pd.ArrowDtype(pa.list_(pa.int64()))
     assert not is_map_dtype(dt)
     assert not is_map_dtype(pd.Int64Dtype)
+
+
+def test_list_dtype():
+    dt = list_(pa.int64())
+    assert is_list_dtype(dt)
+
+    dt = pd.ArrowDtype(pa.map_(pa.int64(), pa.string()))
+    assert not is_list_dtype(dt)
+    assert not is_list_dtype(pd.Int64Dtype)

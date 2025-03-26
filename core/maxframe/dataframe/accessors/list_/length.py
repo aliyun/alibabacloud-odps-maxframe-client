@@ -20,8 +20,8 @@ from ....core.entity.output_types import OutputType
 from ...operators import DataFrameOperator, DataFrameOperatorMixin
 
 
-class SeriesDictLengthOperator(DataFrameOperator, DataFrameOperatorMixin):
-    _op_type_ = opcodes.SERIES_DICT_LENGTH
+class SeriesListLengthOperator(DataFrameOperator, DataFrameOperatorMixin):
+    _op_type_ = opcodes.SERIES_LIST_LENGTH
 
     def __init__(self, **kw):
         super().__init__(_output_types=[OutputType.series], **kw)
@@ -36,38 +36,38 @@ class SeriesDictLengthOperator(DataFrameOperator, DataFrameOperatorMixin):
         )
 
 
-def series_dict_length(series):
+def series_list_length(series):
     """
-    Get the length of each dict of the Series.
+    Get the length of each list of the Series.
 
     Returns
     -------
     Series :
         A Series with data type ``pandas.ArrowDtype(pyarrow.int64)``. Each element
-        represents the length of the dict, or ``None`` if the dict is ``None``.
+        represents the length of the list, or ``None`` if the list is ``None``.
 
     Examples
     --------
-    Create a series with dict type data.
+    Create a series with list type data.
 
     >>> import maxframe.dataframe as md
     >>> import pyarrow as pa
-    >>> from maxframe.lib.dtypes_extension import dict_
+    >>> from maxframe.lib.dtypes_extension import list_
     >>> s = md.Series(
-    ...     data=[[("k1", 1), ("k2", 2)], [("k1", 3)], None],
+    ...     data=[[1, 2, 3], [4, 5, 6], None],
     ...     index=[1, 2, 3],
-    ...     dtype=map_(pa.string(), pa.int64()),
+    ...     dtype=list_(pa.int64()),
     ... )
     >>> s.execute()
-    1    [('k1', 1), ('k2', 2)]
-    2               [('k1', 3)]
-    3                      <NA>
-    dtype: map<string, int64>[pyarrow]
+    1    [1, 2, 3]
+    2    [4, 5, 6]
+    3         <NA>
+    dtype: list<int64>[pyarrow]
 
-    >>> s.dict.len().execute()
+    >>> s.list.len().execute()
     1       2
     2       1
     3    <NA>
     dtype: int64[pyarrow]
     """
-    return SeriesDictLengthOperator()(series)
+    return SeriesListLengthOperator()(series)

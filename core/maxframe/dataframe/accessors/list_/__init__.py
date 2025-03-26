@@ -12,21 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .core import SeriesStringMethod
-
 
 def _install():
     from ....core import CachedAccessor
     from ...core import SERIES_TYPE
-    from .accessor import StringAccessor
-    from .core import string_method_to_handlers
+    from .accessor import ListAccessor
+    from .getitem import series_list_getitem, series_list_getitem_with_index_error
+    from .length import series_list_length
 
-    for method in string_method_to_handlers:
-        if not hasattr(StringAccessor, method):
-            StringAccessor._register(method)
+    dict_method_to_handlers = {
+        "__getitem__": series_list_getitem_with_index_error,
+        "get": series_list_getitem,
+        "len": series_list_length,
+    }
+
+    for name, handler in dict_method_to_handlers.items():
+        ListAccessor._register(name, handler)
 
     for series in SERIES_TYPE:
-        series.str = CachedAccessor("str", StringAccessor)
+        series.list = CachedAccessor("list", ListAccessor)
 
 
 _install()

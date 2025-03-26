@@ -82,9 +82,8 @@ class XGBTrain(Operator, TileableOperatorMixin):
         inputs = [self.dtrain]
         if self.has_evals_result:
             inputs.extend(e[0] for e in self.evals)
-        return self.new_tileables(
-            inputs, object_class=Booster, evals_result=evals_result
-        )[0]
+        kws = [{"object_class": Booster}, {}]
+        return self.new_tileables(inputs, kws=kws, evals_result=evals_result)[0]
 
     @property
     def output_limit(self):
@@ -129,4 +128,6 @@ def train(params, dtrain, evals=None, evals_result=None, num_class=None, **kwarg
         num_class=num_class,
         **kwargs,
     )(evals_result)
-    return data.execute(session=session, **run_kwargs) if evals else data
+    if evals:
+        data.execute(session=session, **run_kwargs)
+    return data

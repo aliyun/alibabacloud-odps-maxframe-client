@@ -463,6 +463,9 @@ def _generate_value(dtype, fill_value):
     if ArrowDtype and isinstance(dtype, pd.ArrowDtype):
         return _generate_value(dtype.pyarrow_dtype, fill_value)
 
+    if isinstance(dtype, pa.ListType):
+        return [_generate_value(dtype.value_type, fill_value)]
+
     if isinstance(dtype, pa.MapType):
         return [
             (

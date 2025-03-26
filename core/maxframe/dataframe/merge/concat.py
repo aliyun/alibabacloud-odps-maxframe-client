@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 from typing import List, Union
 
 import pandas as pd
@@ -100,8 +101,9 @@ class DataFrameConcat(DataFrameOperator, DataFrameOperatorMixin):
             row_length = 0
             for series in objs:
                 row_length += series.shape[0]
-            if self.ignore_index:  # pragma: no cover
-                index_value = parse_index(pd.RangeIndex(row_length))
+            if self.ignore_index:
+                idx_length = 0 if pd.isna(row_length) else row_length
+                index_value = parse_index(pd.RangeIndex(idx_length))
             else:
                 index = self._concat_index(objs)
                 index_value = parse_index(index, objs)
@@ -159,8 +161,9 @@ class DataFrameConcat(DataFrameOperator, DataFrameOperatorMixin):
             if self.join == "inner":
                 objs = [o[list(emtpy_result.columns)] for o in objs]
 
-            if self.ignore_index:  # pragma: no cover
-                index_value = parse_index(pd.RangeIndex(row_length))
+            if self.ignore_index:
+                idx_length = 0 if pd.isna(row_length) else row_length
+                index_value = parse_index(pd.RangeIndex(idx_length))
             else:
                 index = self._concat_index(objs)
                 index_value = parse_index(index, objs)

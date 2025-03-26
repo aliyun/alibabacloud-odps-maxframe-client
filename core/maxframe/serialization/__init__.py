@@ -16,6 +16,7 @@ from . import arrow, exception, maxframe_objects, numpy, pandas, scipy, serializ
 from .core import (
     PickleContainer,
     Serializer,
+    clear_type_cache,
     deserialize,
     load_type,
     pickle_buffers,

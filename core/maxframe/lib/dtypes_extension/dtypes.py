@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 from typing import Union
 
 import pandas as pd
@@ -36,6 +37,15 @@ def dict_(
     return pd.ArrowDtype(pa.map_(key_type, item_type))
 
 
+def list_(value_type: Union[pa.DataType, pa.Field]):
+    """
+    Create ``pd.ArrowDtype(pa.ListType)`` instance from a list or field.
+    """
+    if ArrowDtype is None:
+        raise ImportError("ArrowDtype is not supported in current environment")
+    return pd.ArrowDtype(pa.list_(value_type))
+
+
 def is_map_dtype(dtype: ArrowDtype) -> bool:
     """
     Check whether the dtype is a map type.
@@ -43,3 +53,14 @@ def is_map_dtype(dtype: ArrowDtype) -> bool:
     if ArrowDtype is None:
         raise ImportError("ArrowDtype is not supported in current environment")
     return isinstance(dtype, ArrowDtype) and isinstance(dtype.pyarrow_dtype, pa.MapType)
+
+
+def is_list_dtype(dtype: ArrowDtype) -> bool:
+    """
+    Check whether the dtype is a list dtype.
+    """
+    if ArrowDtype is None:
+        raise ImportError("ArrowDtype is not supported in current environment")
+    return isinstance(dtype, ArrowDtype) and isinstance(
+        dtype.pyarrow_dtype, pa.ListType
+    )

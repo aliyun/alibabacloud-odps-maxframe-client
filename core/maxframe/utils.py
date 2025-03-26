@@ -1140,3 +1140,7 @@ def is_empty(val):
     if isinstance(val, (pd.DataFrame, pd.Series, pd.Index)):
         return val.empty
     return not bool(val)
+
+
+def get_default_table_properties():
+    return {"storagestrategy": "archive"}

@@ -162,6 +162,8 @@ def test_timezones(val):
 @pytest.mark.parametrize(
     "val",
     [
+        np.array(1234),
+        np.array("str-val", dtype="O"),
         np.array([1024])[0],
         np.array(np.random.rand(100, 100)),
         np.array(np.random.rand(100, 100).T),

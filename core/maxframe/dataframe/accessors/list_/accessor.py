@@ -14,22 +14,26 @@
 
 from typing import TYPE_CHECKING
 
-from ...core import BaseMaxFrameAccessor
+import pandas as pd
+import pyarrow as pa
+
+from ....core import BaseMaxFrameAccessor
+from ....utils import ARROW_DTYPE_NOT_SUPPORTED
 
 if TYPE_CHECKING:
-    from ..core import DataFrame, Index, Series
+    from ...core import Series
 
 
-class DataFrameMaxFrameAccessor(BaseMaxFrameAccessor):
-    obj: "DataFrame"
-    _api_count: int = 0
-
-
-class SeriesMaxFrameAccessor(BaseMaxFrameAccessor):
+class ListAccessor(BaseMaxFrameAccessor):
     obj: "Series"
     _api_count: int = 0
 
+    def __init__(self, series):
+        super().__init__(series)
+        if ARROW_DTYPE_NOT_SUPPORTED:
+            raise ImportError("pd.ArrowDtype is not supported in current environment")
 
-class IndexMaxFrameAccessor(BaseMaxFrameAccessor):
-    obj: "Index"
-    _api_count: int = 0
+        if not isinstance(series.dtype, pd.ArrowDtype) or not isinstance(
+            series.dtype.pyarrow_dtype, pa.ListType
+        ):
+            raise AttributeError("Can only use .list accessor with list values")

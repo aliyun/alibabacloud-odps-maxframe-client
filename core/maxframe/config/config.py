@@ -408,6 +408,12 @@ default_options.register_option(
     remote=True,
 )
 default_options.register_option(
+    "session.temp_table_properties",
+    None,
+    validator=is_null | is_dict,
+    remote=True,
+)
+default_options.register_option(
     "session.auto_purge_temp_tables",
     False,
     validator=is_bool,

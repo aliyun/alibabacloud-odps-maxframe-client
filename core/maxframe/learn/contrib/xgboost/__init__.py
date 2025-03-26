@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils import config_mod_getattr as _config_mod_getattr
+from .core import Booster
 from .dmatrix import DMatrix
 from .predict import predict
 from .train import train
+
+# isort: off
+from ..utils import config_mod_getattr as _config_mod_getattr
 
 _config_mod_getattr(
     {
@@ -24,3 +27,7 @@ _config_mod_getattr(
     },
     globals(),
 )
+
+del _config_mod_getattr
+
+__all__ = ["Booster", "DMatrix", "XGBClassifier", "XGBRegressor", "predict", "train"]
