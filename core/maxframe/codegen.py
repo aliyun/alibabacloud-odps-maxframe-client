@@ -24,7 +24,7 @@ from odps.types import OdpsSchema
 from odps.utils import camel_to_underline
 
 from .core import OperatorType, Tileable, TileableGraph
-from .core.operator import Fetch
+from .core.operator import Fetch, Operator
 from .extension import iter_extensions
 from .io.odpsio import build_dataframe_table_meta
 from .io.odpsio.schema import pandas_to_odps_schema
@@ -211,7 +211,21 @@ class BigDagCodeContext(metaclass=abc.ABCMeta):
     def get_udfs(self) -> List[AbstractUDF]:
         return list(self._udfs.values())
 
-    def get_tileable_variable(self, tileable: Tileable) -> str:
+    def get_input_tileable_variable(self, tileable: Tileable) -> str:
+        """
+        Get or create the variable name for an input tileable. It should be used on the
+        RIGHT side of the assignment.
+        """
+        return self._get_tileable_variable(tileable)
+
+    def get_output_tileable_variable(self, tileable: Tileable) -> str:
+        """
+        Get or create the variable name for an output tileable. It should be used on the
+        LEFT side of the assignment.
+        """
+        return self._get_tileable_variable(tileable)
+
+    def _get_tileable_variable(self, tileable: Tileable) -> str:
         try:
             return self._tileable_key_to_variables[tileable.key]
         except KeyError:
@@ -315,7 +329,7 @@ class EngineAcceptance(Enum):
 
 class BigDagOperatorAdapter(metaclass=abc.ABCMeta):
     # todo handle refcount issue when generated code is being executed
-    def accepts(self, op: OperatorType) -> EngineAcceptance:
+    def accepts(self, op: Operator) -> EngineAcceptance:
         return EngineAcceptance.ACCEPT
 
     @abc.abstractmethod
@@ -330,7 +344,7 @@ class BigDagOperatorAdapter(metaclass=abc.ABCMeta):
 
         Parameters
         ----------
-        op : OperatorType
+        op : Operator
             The operator instance.
         context : BigDagCodeContext
             The BigDagCodeContext instance.
@@ -339,6 +353,48 @@ class BigDagOperatorAdapter(metaclass=abc.ABCMeta):
         -------
         result: List[str]
             The comment codes, one per line.
+        """
+        return list()
+
+    def generate_pre_op_code(
+        self, op: Operator, context: BigDagCodeContext
+    ) -> List[str]:
+        """
+        Generate the codes before actually handling the operator.
+        This method is usually implemented in the base class of each engine.
+
+        Parameters
+        ----------
+        op : Operator
+            The operator instance.
+        context : BigDagCodeContext
+            The BigDagCodeContext instance.
+
+        Returns
+        -------
+        result: List[str]
+            The codes generated before one operator actually handled, one per line.
+        """
+        return list()
+
+    def generate_post_op_code(
+        self, op: Operator, context: BigDagCodeContext
+    ) -> List[str]:
+        """
+        Generate the codes after actually handling the operator.
+        This method is usually implemented in the base class of each engine.
+
+        Parameters
+        ----------
+        op : Operator
+            The operator instance.
+        context : BigDagCodeContext
+            The BigDagCodeContext instance.
+
+        Returns
+        -------
+        result: List[str]
+            The codes generated after one operator actually handled, one per line.
         """
         return list()
 
@@ -354,9 +410,6 @@ def register_engine_codegen(type_: Type["BigDagCodeGenerator"]):
 BUILTIN_ENGINE_SPE = "SPE"
 BUILTIN_ENGINE_MCSQL = "MCSQL"
 
-FAST_RANGE_INDEX_ENABLED = "codegen.fast_range_index_enabled"
-ROW_NUMBER_WINDOW_INDEX_ENABLED = "codegen.row_number_window_index_enabled"
-
 
 class BigDagCodeGenerator(metaclass=abc.ABCMeta):
     _context: BigDagCodeContext
@@ -364,11 +417,13 @@ class BigDagCodeGenerator(metaclass=abc.ABCMeta):
     engine_type: Optional[str] = None
     engine_priority: int = 0
     _extension_loaded = False
+    _generate_comments_enabled: bool = True
 
     def __init__(self, session_id: str, subdag_id: str = None):
         self._session_id = session_id
         self._subdag_id = subdag_id
         self._context = self._init_context(session_id, subdag_id)
+        self._generate_comments_enabled = True
 
     @classmethod
     def _load_engine_extensions(cls):
@@ -401,14 +456,6 @@ class BigDagCodeGenerator(metaclass=abc.ABCMeta):
     def _init_context(self, session_id: str, subdag_id: str) -> BigDagCodeContext:
         raise NotImplementedError
 
-    def _generate_comments(
-        self, op: OperatorType, adapter: BigDagOperatorAdapter
-    ) -> List[str]:
-        return adapter.generate_comment(op, self._context)
-
-    def _generate_pre_op_code(self, op: OperatorType) -> List[str]:
-        return []
-
     def _generate_delete_code(self, var_name: str) -> List[str]:
         return []
 
@@ -438,9 +485,11 @@ class BigDagCodeGenerator(metaclass=abc.ABCMeta):
             visited_op_key.add(op.key)
 
             adapter = self.get_op_adapter(type(op))()
-            code_lines.extend(self._generate_pre_op_code(op))
-            code_lines.extend(self._generate_comments(op, adapter))
+            code_lines.extend(adapter.generate_pre_op_code(op, self._context))
+            if self._generate_comments_enabled:
+                code_lines.extend(adapter.generate_comment(op, self._context))
             code_lines.extend(adapter.generate_code(op, self._context))
+            code_lines.extend(adapter.generate_post_op_code(op, self._context))
             code_lines.append("")  # Append an empty line to separate operators
 
             # record refcounts
@@ -449,7 +498,7 @@ class BigDagCodeGenerator(metaclass=abc.ABCMeta):
                     continue
                 if dag.count_successors(out_t) == 0:
                     delete_code = self._generate_delete_code(
-                        self._context.get_tileable_variable(out_t)
+                        self._context.get_input_tileable_variable(out_t)
                     )
                     code_lines.extend(delete_code)
                 else:
@@ -462,7 +511,7 @@ class BigDagCodeGenerator(metaclass=abc.ABCMeta):
                 out_refcounts[inp_t.key] -= 1
                 if out_refcounts[inp_t.key] == 0:
                     delete_code = self._generate_delete_code(
-                        self._context.get_tileable_variable(inp_t)
+                        self._context.get_input_tileable_variable(inp_t)
                     )
                     code_lines.extend(delete_code)
                     out_refcounts.pop(inp_t.key)
@@ -475,11 +524,11 @@ class BigDagCodeGenerator(metaclass=abc.ABCMeta):
         for tileable in dag.topological_iter():
             op: OperatorType = tileable.op
             if isinstance(op, Fetch):
-                fetch_tileable = self._context.get_tileable_variable(tileable)
+                fetch_tileable = self._context.get_input_tileable_variable(tileable)
                 input_key_to_vars[op.outputs[0].key] = fetch_tileable
 
         result_variables = {
-            t.key: self._context.get_tileable_variable(t) for t in dag.results
+            t.key: self._context.get_input_tileable_variable(t) for t in dag.results
         }
 
         return CodeGenResult(

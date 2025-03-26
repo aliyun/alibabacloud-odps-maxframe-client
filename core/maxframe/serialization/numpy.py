@@ -70,10 +70,18 @@ class NDArraySerializer(Serializer):
         if dtype_new_order:
             dtype = dtype[dtype_new_order]
         if dtype.hasobject:
-            shape = header["shape"]
-            # fill empty object array
-            val = np.empty(shape, dtype=dtype)
-            val[(slice(None),) * len(shape)] = subs[0]
+            shape = tuple(header["shape"])
+            if shape == ():
+                val = np.array(subs[0]).reshape(shape)
+            else:
+                # fill empty object array
+                val = np.empty(shape, dtype=dtype)
+                try:
+                    val[(slice(None),) * len(shape)] = subs[0]
+                except ValueError:
+                    val[(slice(None),) * len(shape)] = np.array(
+                        subs[0], dtype=dtype
+                    ).reshape(shape)
         else:
             val = np.ndarray(
                 shape=tuple(header["shape"]),

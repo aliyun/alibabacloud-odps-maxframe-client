@@ -141,8 +141,8 @@ def to_dmatrix(
         label_lower_bound=label_lower_bound,
         label_upper_bound=label_upper_bound,
         gpu=data.op.gpu,
-        enable_categorical=enable_categorical,
         _output_types=get_output_types(data),
+        enable_categorical=enable_categorical,
     )
     return op()
 

@@ -26,7 +26,8 @@ from ....serialization.serializables import (
     TupleField,
 )
 from ....tensor.core import TensorOrder
-from .core import BoosterData
+from ..models import to_remote_model
+from .core import Booster, BoosterData
 from .dmatrix import check_data
 
 
@@ -96,11 +97,15 @@ def predict(
     -------
     results: Booster
     """
+    import xgboost
+
     data = check_data(data)
-    # TODO: check model datatype
+    if not isinstance(model, (Booster, BoosterData, xgboost.Booster)):
+        raise TypeError(f"model has to be a xgboost.Booster, got {type(model)} instead")
+    elif isinstance(model, xgboost.Booster):
+        model = to_remote_model(model, model_cls=Booster)
 
     output_types = [OutputType.tensor]
-
     iteration_range = iteration_range or (0, 0)
 
     return XGBPredict(

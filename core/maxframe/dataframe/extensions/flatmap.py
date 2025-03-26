@@ -27,7 +27,12 @@ from ...serialization.serializables import (
 )
 from ..core import DataFrame
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import gen_unknown_index_value, make_dtypes, parse_index
+from ..utils import (
+    copy_func_scheduling_hints,
+    gen_unknown_index_value,
+    make_dtypes,
+    parse_index,
+)
 
 
 class DataFrameFlatMapOperator(DataFrameOperator, DataFrameOperatorMixin):
@@ -40,6 +45,8 @@ class DataFrameFlatMapOperator(DataFrameOperator, DataFrameOperatorMixin):
 
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
+        if hasattr(self, "func"):
+            copy_func_scheduling_hints(self.func, self)
 
     def _call_dataframe(self, df: DataFrame, dtypes: pd.Series):
         dtypes = make_dtypes(dtypes)

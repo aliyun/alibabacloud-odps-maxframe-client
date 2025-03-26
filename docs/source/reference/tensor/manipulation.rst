@@ -13,6 +13,16 @@ Transposition
    maxframe.tensor.transpose
 
 
+Shape manipulation
+------------------
+
+.. autosummary::
+   :toctree: generated/
+   :nosignatures:
+
+   maxframe.tensor.reshape
+
+
 Edit dimensionalities
 ---------------------
 

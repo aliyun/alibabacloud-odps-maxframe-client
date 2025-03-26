@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Union
 
 from ..utils import make_import_error_func
 from .core import XGBScikitLearnBase, xgboost
@@ -19,14 +20,24 @@ from .core import XGBScikitLearnBase, xgboost
 if not xgboost:
     XGBRegressor = make_import_error_func("xgboost")
 else:
+    from xgboost.sklearn import XGBRegressorBase
+
     from .core import wrap_evaluation_matrices
     from .predict import predict
     from .train import train
 
-    class XGBRegressor(XGBScikitLearnBase):
+    class XGBRegressor(XGBScikitLearnBase, XGBRegressorBase):
         """
         Implementation of the scikit-learn API for XGBoost regressor.
         """
+
+        def __init__(
+            self,
+            xgb_model: Union[xgboost.XGBRegressor, xgboost.Booster] = None,
+            **kwargs,
+        ):
+            super().__init__(**kwargs)
+            self._set_model(xgb_model)
 
         def fit(
             self,
@@ -41,6 +52,9 @@ else:
         ):
             session = kw.pop("session", None)
             run_kwargs = kw.pop("run_kwargs", dict())
+
+            self._n_features_in = X.shape[1]
+
             dtrain, evals = wrap_evaluation_matrices(
                 None,
                 X,

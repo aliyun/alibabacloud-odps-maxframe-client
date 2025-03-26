@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import graph, llm, pytorch
+from . import graph, llm, models, pytorch
 
-del graph
-del llm
-del pytorch
+del graph, llm, models, pytorch

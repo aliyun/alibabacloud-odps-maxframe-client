@@ -28,6 +28,7 @@ from ...protocol import DataFrameTableMeta
 from ...tensor.core import TENSOR_TYPE
 
 _TEMP_TABLE_PREFIX = "tmp_mf_"
+DEFAULT_SINGLE_INDEX_NAME = "_idx_0"
 
 _arrow_to_odps_types = {
     pa.string(): odps_types.string,

@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import numpy as np
 import pandas as pd
 import pyarrow as pa
@@ -24,6 +25,10 @@ from ..getitem import SeriesDictGetItemOperator
 from ..length import SeriesDictLengthOperator
 from ..remove import SeriesDictRemoveOperator
 from ..setitem import SeriesDictSetItemOperator
+
+pytestmark = pytest.mark.skipif(
+    ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported"
+)
 
 
 @pytest.fixture
@@ -40,13 +45,11 @@ def df():
     )
 
 
-@pytest.mark.skipif(ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported")
 def test_invalid_dtype(df):
     with pytest.raises(AttributeError):
         df["C"].dict.contains("k1")
 
 
-@pytest.mark.skipif(ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported")
 def test_getitem(df):
     s1 = df["A"].dict["k1"]
     assert isinstance(s1, md.Series)
@@ -61,7 +64,6 @@ def test_getitem(df):
     assert op.ignore_key_error is False
 
 
-@pytest.mark.skipif(ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported")
 def test_getitem_with_default_value(df):
     s1 = df["B"].dict.get("k1", 1)
     assert isinstance(s1, md.Series)
@@ -76,7 +78,6 @@ def test_getitem_with_default_value(df):
     assert op.ignore_key_error is True
 
 
-@pytest.mark.skipif(ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported")
 def test_setitem(df):
     s1 = df["A"]
     s1.dict["k1"] = "v3"
@@ -91,7 +92,6 @@ def test_setitem(df):
     assert op.value == "v3"
 
 
-@pytest.mark.skipif(ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported")
 def test_length(df):
     s1 = df["A"].dict.len()
     assert isinstance(s1, md.Series)
@@ -103,7 +103,6 @@ def test_length(df):
     assert isinstance(op, SeriesDictLengthOperator)
 
 
-@pytest.mark.skipif(ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported")
 def test_remove(df):
     s1 = df["A"].dict.remove("k1", ignore_key_error=True)
     assert isinstance(s1, md.Series)
@@ -117,7 +116,6 @@ def test_remove(df):
     assert op.ignore_key_error is True
 
 
-@pytest.mark.skipif(ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported")
 def test_contains(df):
     s1 = df["A"].dict.contains("k1")
     assert isinstance(s1, md.Series)

@@ -16,10 +16,10 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from .... import dataframe as md
 from ....tests.utils import assert_mf_index_dtype
 from ...core import IndexValue
-from ...datasource.dataframe import from_pandas
-from .. import DataFrameMerge, concat
+from .. import DataFrameMerge
 from ..merge import DistributedMapJoinHint, MapJoinHint, SkewJoinHint
 
 
@@ -29,8 +29,8 @@ def test_merge():
     )
     df2 = pd.DataFrame(np.arange(20).reshape((5, 4)) + 1, columns=["a", "b", "x", "y"])
 
-    mdf1 = from_pandas(df1, chunk_size=2)
-    mdf2 = from_pandas(df2, chunk_size=3)
+    mdf1 = md.DataFrame(df1, chunk_size=2)
+    mdf2 = md.DataFrame(df2, chunk_size=3)
 
     mapjoin = MapJoinHint()
     dist_mapjoin1 = DistributedMapJoinHint(shard_count=5)
@@ -83,8 +83,8 @@ def test_merge_invalid_parameters():
     )
     pdf2 = pd.DataFrame(np.arange(20).reshape((5, 4)) + 1, columns=["a", "b", "x", "y"])
 
-    df1 = from_pandas(pdf1, chunk_size=2)
-    df2 = from_pandas(pdf2, chunk_size=3)
+    df1 = md.DataFrame(pdf1, chunk_size=2)
+    df2 = md.DataFrame(pdf2, chunk_size=3)
 
     with pytest.raises(ValueError):
         df1.merge(df2, bloom_filter="wrong")
@@ -104,8 +104,8 @@ def test_join():
     df2 = pd.DataFrame([[1, 2, 3], [1, 5, 6], [7, 8, 9]], index=["a1", "b2", "b3"]) + 1
     df2 = pd.concat([df2, df2 + 1])
 
-    mdf1 = from_pandas(df1, chunk_size=2)
-    mdf2 = from_pandas(df2, chunk_size=2)
+    mdf1 = md.DataFrame(df1, chunk_size=2)
+    mdf2 = md.DataFrame(df2, chunk_size=2)
 
     parameters = [
         {"lsuffix": "l_", "rsuffix": "r_"},
@@ -132,8 +132,8 @@ def test_join_on():
     )
     df2 = pd.concat([df2, df2 + 1])
 
-    mdf1 = from_pandas(df1, chunk_size=2)
-    mdf2 = from_pandas(df2, chunk_size=2)
+    mdf1 = md.DataFrame(df1, chunk_size=2)
+    mdf2 = md.DataFrame(df2, chunk_size=2)
 
     parameters = [
         {"lsuffix": "l_", "rsuffix": "r_"},
@@ -157,15 +157,15 @@ def test_append():
     df1 = pd.DataFrame(np.random.rand(10, 4), columns=list("ABCD"))
     df2 = pd.DataFrame(np.random.rand(10, 4), columns=list("ABCD"))
 
-    mdf1 = from_pandas(df1, chunk_size=3)
-    mdf2 = from_pandas(df2, chunk_size=3)
+    mdf1 = md.DataFrame(df1, chunk_size=3)
+    mdf2 = md.DataFrame(df2, chunk_size=3)
     adf = mdf1.append(mdf2)
 
     assert adf.shape == (20, 4)
     assert_mf_index_dtype(adf.index_value.value, np.int64)
 
-    mdf1 = from_pandas(df1, chunk_size=3)
-    mdf2 = from_pandas(df2, chunk_size=3)
+    mdf1 = md.DataFrame(df1, chunk_size=3)
+    mdf2 = md.DataFrame(df2, chunk_size=3)
     adf = mdf1.append(mdf2, ignore_index=True)
 
     assert adf.shape == (20, 4)
@@ -173,84 +173,135 @@ def test_append():
     pd.testing.assert_index_equal(adf.index_value.to_pandas(), pd.RangeIndex(20))
 
 
-def test_concat():
+def test_concat_dataframe():
+    # test index concatenate
     df1 = pd.DataFrame(np.random.rand(10, 4), columns=list("ABCD"))
     df2 = pd.DataFrame(np.random.rand(10, 4), columns=list("ABCD"))
 
-    mdf1 = from_pandas(df1, chunk_size=4)
-    mdf2 = from_pandas(df2, chunk_size=4)
-    r = concat([mdf1, mdf2], axis="index")
+    mdf1 = md.DataFrame(df1, chunk_size=4)
+    mdf2 = md.DataFrame(df2, chunk_size=4)
+    r = md.concat([mdf1, mdf2], axis="index")
 
     assert r.shape == (20, 4)
     assert not isinstance(r.index_value.to_pandas(), pd.RangeIndex)
-    pd.testing.assert_series_equal(r.dtypes, df1.dtypes)
+    pd.testing.assert_series_equal(r.dtypes, mdf1.dtypes)
 
-    df3 = pd.DataFrame(
-        np.random.rand(10, 4), columns=list("ABCD"), index=pd.RangeIndex(10, 20)
+    # test index concatenate with range index
+    mdf3 = md.DataFrame(
+        np.random.rand(10, 4),
+        columns=list("ABCD"),
+        index=pd.RangeIndex(10, 20),
+        chunk_size=4,
     )
-
-    mdf3 = from_pandas(df3, chunk_size=4)
-    r = concat([mdf1, mdf3], axis="index")
+    r = md.concat([mdf1, mdf3], axis="index")
 
     assert r.shape == (20, 4)
-    pd.testing.assert_series_equal(r.dtypes, df1.dtypes)
+    pd.testing.assert_series_equal(r.dtypes, mdf1.dtypes)
     pd.testing.assert_index_equal(r.index_value.to_pandas(), pd.RangeIndex(20))
 
+    # test index concatenate with perm index
     df4 = pd.DataFrame(
         np.random.rand(10, 4),
         columns=list("ABCD"),
         index=np.random.permutation(np.arange(10)),
     )
 
-    mdf4 = from_pandas(df4, chunk_size=4)
-    r = concat([mdf1, mdf4], axis="index")
+    # test concat with same index with different sources
+    mdf4 = md.DataFrame(df4, chunk_size=4)
+    r = md.concat([mdf1, mdf4], axis="index")
 
     assert r.shape == (20, 4)
-    pd.testing.assert_series_equal(r.dtypes, df1.dtypes)
+    pd.testing.assert_series_equal(r.dtypes, mdf1.dtypes)
     pd.testing.assert_index_equal(
         r.index_value.to_pandas(), pd.Index([], dtype=np.int64)
     )
 
-    r = concat([mdf4, mdf1], axis="index")
+    r = md.concat([mdf4, mdf1], axis="index")
 
     assert r.shape == (20, 4)
-    pd.testing.assert_series_equal(r.dtypes, df1.dtypes)
+    pd.testing.assert_series_equal(r.dtypes, mdf1.dtypes)
     pd.testing.assert_index_equal(
         r.index_value.to_pandas(), pd.Index([], dtype=np.int64)
     )
 
-    r = concat([mdf4, mdf4], axis="index")
+    # test concat with same index with same source
+    r = md.concat([mdf4, mdf4], axis="index")
 
     assert r.shape == (20, 4)
-    pd.testing.assert_series_equal(r.dtypes, df1.dtypes)
+    pd.testing.assert_series_equal(r.dtypes, mdf1.dtypes)
     pd.testing.assert_index_equal(
         r.index_value.to_pandas(), pd.Index([], dtype=np.int64)
     )
 
-    mdf1 = from_pandas(df1, chunk_size=3)
-    mdf2 = from_pandas(df2, chunk_size=4)
-    r = concat([mdf1, mdf2], axis="columns")
+    # test concat with column outer join
+    mdf1 = md.DataFrame(df1, chunk_size=3)
+    mdf2 = md.DataFrame(df2, chunk_size=4)
+    r = md.concat([mdf1, mdf2], axis="columns")
 
     assert r.shape == (10, 8)
     expected_dtypes = pd.concat([df1, df2], axis="columns").dtypes
     pd.testing.assert_series_equal(r.dtypes, expected_dtypes)
 
-    df1 = pd.DataFrame(np.random.rand(10, 4), columns=list("ABCD"))
-    df2 = pd.DataFrame(np.random.rand(10, 3), columns=list("ABC"))
-    mdf1 = from_pandas(df1, chunk_size=3)
-    mdf2 = from_pandas(df2, chunk_size=3)
-    r = concat([mdf1, mdf2], join="inner")
+    # test concat with column inner join
+    mdf1 = md.DataFrame(np.random.rand(10, 4), columns=list("ABCD"), chunk_size=3)
+    mdf2 = md.DataFrame(np.random.rand(10, 3), columns=list("ABC"), chunk_size=3)
+    r = md.concat([mdf1, mdf2], join="inner")
     assert r.shape == (20, 3)
+
+    # test concat with ignore index
+    r = md.concat([mdf1, mdf2], join="inner", ignore_index=True)
+    assert r.shape == (20, 3)
+    pd.testing.assert_index_equal(r.index_value.to_pandas(), pd.RangeIndex(20))
+
+    # test concat with unknown shapes
+    mdf1._shape = (np.nan, 4)
+    r = md.concat([mdf1, mdf2], join="inner", ignore_index=True)
+    np.testing.assert_array_equal(np.array(r.shape), np.array((np.nan, 3)))
+    r = md.concat([mdf1, mdf2], join="inner", ignore_index=True)
+    np.testing.assert_array_equal(np.array(r.shape), np.array((np.nan, 3)))
+
+    # test concat with empty frames
+    r = md.concat([md.DataFrame([]), mdf2], ignore_index=True)
+    assert r.shape == (10, 3)
+
+
+def test_concat_series():
+    # test row concat
+    ms1 = md.Series(np.random.rand(10))
+    ms2 = md.Series(np.random.rand(10))
+    r = md.concat([ms1, ms2])
+    assert r.shape == (20,)
+
+    # test row concat with unknown shape
+    ms1._shape = (np.nan,)
+    r = md.concat([ms1, ms2])
+    assert np.isnan(r.shape[0])
+    r = md.concat([ms1, ms2], ignore_index=True)
+    assert np.isnan(r.shape[0])
+
+    # test col concat
+    ms1 = md.Series(np.random.rand(10))
+    ms2 = md.Series(np.random.rand(10))
+    r = md.concat([ms1, ms2], axis=1)
+    assert r.shape == (10, 2)
+
+    # test col concat with names
+    ms1.name = "col1"
+    ms2.name = "col2"
+    r = md.concat([ms1, ms2], axis=1)
+    assert r.shape == (10, 2)
+    assert r.dtypes.index.tolist() == ["col1", "col2"]
 
 
 def test_invalid_join_hint():
-    df1 = pd.DataFrame(
-        np.arange(20).reshape((4, 5)) + 1, columns=["a", "b", "c", "d", "e"]
+    mdf1 = md.DataFrame(
+        np.arange(20).reshape((4, 5)) + 1,
+        columns=["a", "b", "c", "d", "e"],
+        chunk_size=2,
     )
-    df2 = pd.DataFrame(np.arange(20).reshape((5, 4)) + 1, columns=["a", "b", "x", "y"])
-
-    mdf1 = from_pandas(df1, chunk_size=2)
-    mdf2 = from_pandas(df2, chunk_size=3)
+    mdf2 = md.DataFrame(
+        np.arange(20).reshape((5, 4)) + 1, columns=["a", "b", "x", "y"], chunk_size=3
+    )
 
     # type error
     parameters = [
@@ -282,7 +333,6 @@ def test_invalid_join_hint():
     ]
 
     for kw in parameters:
-        print(kw)
         with pytest.raises(TypeError):
             mdf1.merge(mdf2, **kw)
 

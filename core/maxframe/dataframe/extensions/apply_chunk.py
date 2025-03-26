@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import functools
 from typing import Any, Callable, Dict, List, Tuple, Union
 
@@ -19,7 +20,12 @@ import pandas as pd
 
 from ... import opcodes
 from ...core import OutputType
-from ...serialization.serializables import FunctionField, Int32Field
+from ...serialization.serializables import (
+    DictField,
+    FunctionField,
+    Int32Field,
+    TupleField,
+)
 from ...utils import quiet_stdio
 from ..core import DATAFRAME_TYPE, DataFrame, IndexValue, Series
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
@@ -38,7 +44,9 @@ class DataFrameApplyChunkOperator(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.APPLY_CHUNK
 
     func = FunctionField("func")
-    batch_rows = Int32Field("batch_rows")
+    batch_rows = Int32Field("batch_rows", default=None)
+    args = TupleField("args", default=None)
+    kwargs = DictField("kwargs", default=None)
 
     def __init__(self, output_type=None, **kw):
         if output_type:
@@ -104,12 +112,11 @@ class DataFrameApplyChunkOperator(DataFrameOperator, DataFrameOperatorMixin):
         dtypes: Union[Tuple[str, Any], Dict[str, Any]] = None,
         output_type=None,
         index=None,
-        args=(),
-        **kwargs,
     ):
+        args = self.args or ()
+        kwargs = self.kwargs or {}
         # if not dtypes and not skip_infer:
-        origin_func = self.func
-        self.func = get_packed_func(df_or_series, origin_func, *args, **kwargs)
+        packed_func = get_packed_func(df_or_series, self.func, *args, **kwargs)
 
         # if skip_infer, directly build a frame
         if self.output_types and self.output_types[0] == OutputType.df_or_series:
@@ -118,8 +125,8 @@ class DataFrameApplyChunkOperator(DataFrameOperator, DataFrameOperatorMixin):
         # infer return index and dtypes
         dtypes, index_value, elementwise = self._infer_batch_func_returns(
             df_or_series,
-            origin_func=origin_func,
-            packed_func=self.func,
+            origin_func=self.func,
+            packed_func=packed_func,
             given_output_type=output_type,
             given_dtypes=dtypes,
             given_index=index,
@@ -166,6 +173,8 @@ class DataFrameApplyChunkOperator(DataFrameOperator, DataFrameOperatorMixin):
         given_dtypes: Union[Tuple[str, Any], pd.Series, List[Any], Dict[str, Any]],
         given_index: Union[pd.Index, IndexValue],
         given_elementwise: bool = False,
+        *args,
+        **kwargs,
     ):
         inferred_output_type = inferred_dtypes = inferred_index_value = None
         inferred_is_elementwise = False
@@ -190,7 +199,7 @@ class DataFrameApplyChunkOperator(DataFrameOperator, DataFrameOperatorMixin):
         try:
             # execute
             with np.errstate(all="ignore"), quiet_stdio():
-                infer_result = packed_func(empty_data)
+                infer_result = packed_func(empty_data, *args, **kwargs)
 
             #  if executed successfully, get index and dtypes from returned object
             if inferred_index_value is None:
@@ -258,7 +267,7 @@ def get_packed_func(df, func, *args, **kwargs) -> Any:
 def df_apply_chunk(
     dataframe,
     func: Union[str, Callable],
-    batch_rows,
+    batch_rows=None,
     dtypes=None,
     dtype=None,
     name=None,
@@ -462,11 +471,11 @@ def df_apply_chunk(
     if not isinstance(func, Callable):
         raise TypeError("function must be a callable object")
 
-    if not isinstance(batch_rows, int):
-        raise TypeError("batch_rows must be an integer")
-
-    if batch_rows <= 0:
-        raise ValueError("batch_rows must be greater than 0")
+    if batch_rows is not None:
+        if not isinstance(batch_rows, int):
+            raise TypeError("batch_rows must be an integer")
+        elif batch_rows <= 0:
+            raise ValueError("batch_rows must be greater than 0")
 
     dtypes = (name, dtype) if dtype is not None else dtypes
 
@@ -481,15 +490,17 @@ def df_apply_chunk(
 
     # bind args and kwargs
     op = DataFrameApplyChunkOperator(
-        func=func, batch_rows=batch_rows, output_type=output_type
+        func=func,
+        batch_rows=batch_rows,
+        output_type=output_type,
+        args=args,
+        kwargs=kwargs,
     )
 
     return op(
         dataframe,
         dtypes=dtypes,
         index=index,
-        args=args,
-        **kwargs,
     )
 
 
@@ -720,7 +731,11 @@ def series_apply_chunk(
         output_type = OutputType.df_or_series
 
     op = DataFrameApplyChunkOperator(
-        func=func, batch_rows=batch_rows, output_type=output_type
+        func=func,
+        batch_rows=batch_rows,
+        output_type=output_type,
+        args=args,
+        kwargs=kwargs,
     )
 
     dtypes = (name, dtype) if dtype is not None else dtypes
@@ -729,6 +744,4 @@ def series_apply_chunk(
         dtypes=dtypes,
         output_type=output_type,
         index=index,
-        args=args,
-        **kwargs,
     )

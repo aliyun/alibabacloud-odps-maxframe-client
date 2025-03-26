@@ -11,12 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 from typing import Any, Dict
 
 from ..... import opcodes
 from .....serialization.serializables.core import Serializable
 from .....serialization.serializables.field import StringField
-from ..core import LLMOperator
+from ..core import LLMTextGenOperator
 from ..multi_modal import MultiModalLLM
 from ..text import TextLLM
 
@@ -65,9 +66,9 @@ class DashScopeMultiModalLLM(MultiModalLLM, DashScopeLLMMixin):
         )(data)
 
 
-class DashScopeTextGenerationOperator(LLMOperator):
+class DashScopeTextGenerationOperator(LLMTextGenOperator):
     _op_type_ = opcodes.DASHSCOPE_TEXT_GENERATION
 
 
-class DashScopeMultiModalGenerationOperator(LLMOperator):
+class DashScopeMultiModalGenerationOperator(LLMTextGenOperator):
     _op_type_ = opcodes.DASHSCOPE_MULTI_MODAL_GENERATION

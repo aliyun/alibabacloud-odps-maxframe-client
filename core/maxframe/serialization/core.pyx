@@ -112,7 +112,14 @@ cpdef object load_type(str class_name, object parent_class):
 
             mod_name, cls_name = class_name.rsplit("#", 1)
 
-            cls = importlib.import_module(mod_name)
+            try:
+                cls = importlib.import_module(mod_name)
+            except ImportError as ex:
+                raise ImportError(
+                    f"Failed to import {mod_name} when loading "
+                    f"class {class_name}, {ex}"
+                ) from None
+
             for sub_cls_name in cls_name.split("."):
                 cls = getattr(cls, sub_cls_name)
         _type_cache[class_name] = cls
@@ -120,6 +127,10 @@ cpdef object load_type(str class_name, object parent_class):
     if not issubclass(cls, parent_class):
         raise ValueError(f"Class {class_name} not a {parent_class}")
     return cls
+
+
+cpdef void clear_type_cache():
+    _type_cache.clear()
 
 
 cdef Serializer get_deserializer(int32_t deserializer_id):

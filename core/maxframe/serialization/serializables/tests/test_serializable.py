@@ -22,7 +22,7 @@ import pytest
 from ....core import EntityData
 from ....lib.wrapped_pickle import switch_unpickle
 from ....utils import no_default
-from ... import deserialize, serialize
+from ... import clear_type_cache, deserialize, serialize
 from .. import (
     AnyField,
     BoolField,
@@ -202,6 +202,7 @@ def test_serializable(set_is_ci):
 def test_compatible_serializable(set_is_ci):
     global MySimpleSerializable, MySubSerializable
 
+    clear_type_cache()
     old_base, old_sub = MySimpleSerializable, MySubSerializable
 
     try:
@@ -231,13 +232,23 @@ def test_compatible_serializable(set_is_ci):
         my_sub_serializable2 = deserialize(header, buffers)
         assert type(my_sub_serializable) is not type(my_sub_serializable2)
         _assert_serializable_eq(my_sub_serializable, my_sub_serializable2)
+
+        header, buffers = serialize(my_sub_serializable2)
     finally:
         MySimpleSerializable, MySubSerializable = old_base, old_sub
+        MyMidSerializable = None
+        clear_type_cache()
+
+    my_sub_serializable3 = deserialize(header, buffers)
+    assert type(my_sub_serializable2) is not type(my_sub_serializable3)
+    _assert_serializable_eq(my_sub_serializable2, my_sub_serializable3)
 
 
 def _assert_serializable_eq(my_serializable, my_serializable2):
     for field_name, field in my_serializable._FIELDS.items():
-        if not hasattr(my_serializable, field.name):
+        if not hasattr(my_serializable, field.name) or not hasattr(
+            my_serializable2, field.name
+        ):
             continue
         expect_value = getattr(my_serializable, field_name)
         if expect_value is no_default:
