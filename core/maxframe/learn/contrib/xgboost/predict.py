@@ -100,9 +100,7 @@ def predict(
     import xgboost
 
     data = check_data(data)
-    if not isinstance(model, (Booster, BoosterData, xgboost.Booster)):
-        raise TypeError(f"model has to be a xgboost.Booster, got {type(model)} instead")
-    elif isinstance(model, xgboost.Booster):
+    if isinstance(model, xgboost.Booster):
         model = to_remote_model(model, model_cls=Booster)
 
     output_types = [OutputType.tensor]

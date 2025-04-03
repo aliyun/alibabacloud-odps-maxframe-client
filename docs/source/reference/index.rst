@@ -8,4 +8,4 @@ API reference
 
    tensor/routines
    dataframe/index
-   learn/reference
+   learn/index

@@ -404,6 +404,7 @@ class ReductionPostStep(NamedTuple):
     func_name: str
     columns: Optional[List[str]]
     func_idl: bytes
+    post_func_aliases: Optional[List[str]] = None
 
 
 class ReductionSteps(NamedTuple):
@@ -462,6 +463,7 @@ class ReductionCompiler:
         self._output_key_to_agg_steps = dict()
         self._output_key_to_post_steps = dict()
         self._output_key_to_post_cols = dict()
+        self._output_key_to_col_func_mapping = dict()
 
     @classmethod
     def _check_function_valid(cls, func):
@@ -530,6 +532,14 @@ class ReductionCompiler:
         for step in compile_result.post_funcs:
             self._output_key_to_post_steps[step.output_key] = step
             self._update_col_dict(self._output_key_to_post_cols, step.output_key, cols)
+
+            if cols is not None:
+                col_name_map = (
+                    self._output_key_to_col_func_mapping.get(step.output_key) or {}
+                )
+                for col in cols:
+                    col_name_map[col] = func_name
+                self._output_key_to_col_func_mapping[step.output_key] = col_name_map
 
     @staticmethod
     def _build_mock_return_object(func, input_dtype, ndim):
@@ -812,11 +822,12 @@ class ReductionCompiler:
             agg_funcs.append(step)
 
         for key, step in self._output_key_to_post_steps.items():
-            cols = self._output_key_to_post_cols[key]
-            if cols and set(cols) == set(referred_cols):
-                post_cols = None
-            else:
-                post_cols = cols
+            post_cols = self._output_key_to_post_cols[key]
+            func_renames = None
+            if post_cols:
+                col_map = self._output_key_to_col_func_mapping.get(key)
+                if col_map:
+                    func_renames = [col_map[c] for c in post_cols]
 
             func_name = step.func_name
             if self._lambda_counter == 1 and step.func_name == "<lambda_0>":
@@ -831,6 +842,7 @@ class ReductionCompiler:
                     func_name,
                     post_cols,
                     step.func_idl,
+                    func_renames,
                 )
             )
 
