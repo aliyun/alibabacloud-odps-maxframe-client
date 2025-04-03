@@ -27,6 +27,21 @@ class ManagedLLMTextGenOperator(LLMTextGenOperator):
 
 
 class ManagedTextLLM(TextLLM):
+    """
+    Managed text LLM by MaxFrame.
+    """
+
+    def __init__(self, name: str):
+        """
+        Initialize a managed text LLM.
+
+        Parameters
+        ----------
+        name : str
+            The managed text LLM name to use.
+        """
+        super().__init__(name=name)
+
     def generate(
         self,
         data,

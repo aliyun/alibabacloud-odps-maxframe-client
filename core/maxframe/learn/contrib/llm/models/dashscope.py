@@ -34,7 +34,24 @@ class DashScopeLLMMixin(Serializable):
 
 
 class DashScopeTextLLM(TextLLM, DashScopeLLMMixin):
+    """
+    DashScope text LLM.
+    """
+
     api_key_resource = StringField("api_key_resource", default=None)
+
+    def __init__(self, name: str, api_key_resource: str):
+        """
+        Initialize a DashScope text LLM.
+
+        Parameters
+        ----------
+        name : str
+            The LLM name to use, check DashScope for `available models <https://help.aliyun.com/zh/model-studio/getting-started/models>`_.
+        api_key_resource : str
+            The MaxCompute resource file name containing the DashScope API key.
+        """
+        super().__init__(name=name, api_key_resource=api_key_resource)
 
     def generate(
         self,
@@ -50,7 +67,24 @@ class DashScopeTextLLM(TextLLM, DashScopeLLMMixin):
 
 
 class DashScopeMultiModalLLM(MultiModalLLM, DashScopeLLMMixin):
+    """
+    DashScope multi-modal LLM.
+    """
+
     api_key_resource = StringField("api_key_resource", default=None)
+
+    def __init__(self, name: str, api_key_resource: str):
+        """
+        Initialize a DashScope multi-modal LLM.
+
+        Parameters
+        ----------
+        name : str
+            The LLM name to use, check DashScope for `available models <https://help.aliyun.com/zh/model-studio/getting-started/models>`_.
+        api_key_resource : str
+            The MaxCompute resource file name containing the DashScope API key.
+        """
+        super().__init__(name=name, api_key_resource=api_key_resource)
 
     def generate(
         self,

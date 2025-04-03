@@ -145,16 +145,16 @@ def generate(
     >>> import maxframe.dataframe as md
     >>>
     >>> # Initialize the model
-    >>> llm = ManagedTextLLM(name="Qwen2.5-1.5B")
+    >>> llm = ManagedTextLLM(name="Qwen2.5-0.5B-instruct")
     >>>
     >>> # Prepare prompt template
     >>> messages = [
     ...     {
     ...         "role": "user",
-    ...         "content": "{query}",
+    ...         "content": "Help answer following question: {query}",
     ...     },
     ... ]
-    >>>
+
     >>> # Create sample data
     >>> df = md.DataFrame({"query": ["What is machine learning?"]})
     >>>
@@ -177,7 +177,7 @@ def summary(series, model: TextLLM, index=None):
 
     Parameters
     ----------
-    series : pandas.Series
+    series : Series
         A maxframe Series containing text data to be summarized.
         Each element should be a text string.
     model : TextLLM
@@ -189,6 +189,11 @@ def summary(series, model: TextLLM, index=None):
     -------
     maxframe.Series
         A pandas Series containing the generated summaries and success status.
+
+    Notes
+    -----
+      **Preview:** This API is in preview state and may be unstable.
+      The interface may change in future releases.
     """
     if not isinstance(series, Series):
         raise ValueError("series must be a maxframe series object")
@@ -208,7 +213,7 @@ def translate(
     Parameters
     ----------
     series : pandas.Series
-        A maxframe Series containing text data to be translate.
+        A maxframe Series containing text data to translate.
         Each element should be a text string.
     model : TextLLM
         Language model instance used for text summarization.
@@ -223,6 +228,12 @@ def translate(
     -------
     maxframe.Series
         A pandas Series containing the generated translation and success status.
+
+    Notes
+    -----
+      **Preview:** This API is in preview state and may be unstable.
+      The interface may change in future releases.
+
     """
     if not isinstance(series, Series):
         raise ValueError("series must be a maxframe series object")
@@ -268,6 +279,11 @@ def classify(
     -------
     maxframe.Series
         A pandas Series containing the generated classification results and success status.
+
+    Notes
+    -----
+      **Preview:** This API is in preview state and may be unstable.
+      The interface may change in future releases.
     """
     if not isinstance(series, Series):
         raise ValueError("series must be a maxframe series object")
