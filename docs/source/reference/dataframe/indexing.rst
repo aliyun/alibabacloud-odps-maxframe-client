@@ -46,6 +46,7 @@ Missing values
 .. autosummary::
    :toctree: generated/
 
+   Index.dropna
    Index.fillna
    Index.isna
    Index.notna

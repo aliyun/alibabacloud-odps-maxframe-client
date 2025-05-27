@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from numbers import Integral
+from typing import List
 
 import numpy as np
 import pandas as pd
@@ -21,7 +22,7 @@ from pandas.core.indexing import IndexingError
 
 from ... import opcodes
 from ...config import options
-from ...core import ENTITY_TYPE, OutputType
+from ...core import ENTITY_TYPE, EntityData, OutputType
 from ...serialization.serializables import AnyField, KeyField, ListField
 from ...tensor import asarray
 from ...tensor.indexing.core import calc_shape
@@ -181,26 +182,29 @@ class DataFrameIlocGetItem(DataFrameOperator, HeadTailOptimizedOperatorMixin):
     _input = KeyField("input")
     indexes = ListField("indexes", default=None)
 
-    def __init__(self, gpu=None, sparse=False, output_types=None, **kw):
-        super().__init__(gpu=gpu, sparse=sparse, _output_types=output_types, **kw)
+    def __init__(self, gpu=None, sparse=False, **kw):
+        if kw.get("output_types"):
+            kw["_output_types"] = kw.pop("output_types")
+        super().__init__(gpu=gpu, sparse=sparse, **kw)
         if not self.output_types:
-            self.output_types = [OutputType.dataframe]
+            self._output_types = [OutputType.dataframe]
 
     @property
     def input(self):
         return self._input
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs)
-        self._input = next(inputs_iter)
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameIlocGetItem", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs)
+        op._input = next(inputs_iter)
         indexes = []
-        for index in self.indexes:
+        for index in op.indexes:
             if isinstance(index, ENTITY_TYPE):
                 indexes.append(next(inputs_iter))
             else:
                 indexes.append(index)
-        self.indexes = indexes
+        op.indexes = indexes
 
     def __call__(self, df):
         # Note [Fancy Index of Numpy and Pandas]
@@ -222,7 +226,6 @@ class DataFrameIlocGetItem(DataFrameOperator, HeadTailOptimizedOperatorMixin):
         inputs = [df] + [
             index for index in self.indexes if isinstance(index, ENTITY_TYPE)
         ]
-
         # NB: pandas only compresses the result to series when index on one of axis is integral
         if isinstance(self.indexes[1], Integral):
             shape = shape0
@@ -274,19 +277,20 @@ class SeriesIlocGetItem(DataFrameOperator, HeadTailOptimizedOperatorMixin):
     def input(self):
         return self._input
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
+    @classmethod
+    def _set_inputs(cls, op: "SeriesIlocGetItem", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
 
-        inputs_iter = iter(self._inputs)
-        self._input = next(inputs_iter)
+        inputs_iter = iter(op._inputs)
+        op._input = next(inputs_iter)
 
         indexes = []
-        for index in self.indexes:
+        for index in op.indexes:
             if isinstance(index, ENTITY_TYPE):
                 indexes.append(next(inputs_iter))
             else:
                 indexes.append(index)
-        self.indexes = indexes
+        op.indexes = indexes
 
     def __call__(self, series):
         if isinstance(self.indexes[0], Integral):
@@ -322,19 +326,20 @@ class IndexIlocGetItem(DataFrameOperator, DataFrameOperatorMixin):
     def input(self):
         return self._input
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
+    @classmethod
+    def _set_inputs(cls, op: "IndexIlocGetItem", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
 
-        inputs_iter = iter(self._inputs)
-        self._input = next(inputs_iter)
+        inputs_iter = iter(op._inputs)
+        op._input = next(inputs_iter)
 
         indexes = []
-        for index in self.indexes:
+        for index in op.indexes:
             if isinstance(index, ENTITY_TYPE):
                 indexes.append(next(inputs_iter))
             else:
                 indexes.append(index)
-        self.indexes = indexes
+        op.indexes = indexes
 
     def __call__(self, idx):
         if isinstance(self.indexes[0], Integral):

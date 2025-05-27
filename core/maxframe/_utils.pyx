@@ -22,7 +22,6 @@ import pickle
 import pkgutil
 import time
 import types
-import uuid
 import warnings
 from datetime import date, datetime, timedelta, tzinfo
 from enum import Enum
@@ -283,8 +282,8 @@ cdef inline tuple tokenize_numpy(ob):
             try:
                 data = mmh_hash_bytes(pickle.dumps(ob, pickle.HIGHEST_PROTOCOL))
             except:
-                # nothing can do, generate uuid
-                data = uuid.uuid4().hex
+                # nothing can do, generate random id
+                data = new_random_id(32).hex().encode()
     else:
         try:
             data = mmh_hash_bytes(ob.ravel().view('i1').data)
@@ -397,12 +396,14 @@ def tokenize_pickled_with_cache(ob):
 
 def tokenize_cupy(ob):
     from .serialization import serialize
+
     header, _buffers = serialize(ob)
     return iterative_tokenize([header, ob.data.ptr])
 
 
 def tokenize_cudf(ob):
     from .serialization import serialize
+
     header, buffers = serialize(ob)
     return iterative_tokenize([header] + [(buf.ptr, buf.size) for buf in buffers])
 

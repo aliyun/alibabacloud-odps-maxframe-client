@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import fetch, random
+from . import extensions, fetch, linalg, random, special, statistics
 from .arithmetic import absolute
 from .arithmetic import absolute as abs
 from .arithmetic import (
@@ -121,16 +121,26 @@ from .datasource import (
     asarray,
     ascontiguousarray,
     asfortranarray,
+    diag,
+    diagflat,
     empty,
     empty_like,
+    eye,
     from_dataframe,
     full,
     full_like,
+    identity,
+    indices,
+    linspace,
+    meshgrid,
     ones,
     ones_like,
     scalar,
     tensor,
+    tril,
+    triu,
     zeros,
+    zeros_like,
 )
 from .indexing import (
     choose,
@@ -142,13 +152,31 @@ from .indexing import (
     take,
     unravel_index,
 )
-from .merge import concatenate, stack, vstack
+from .linalg.dot import dot
+from .linalg.inner import inner, innerproduct
+from .linalg.matmul import matmul
+from .linalg.tensordot import tensordot
+from .linalg.vdot import vdot
+from .merge import append, column_stack, concatenate, dstack, hstack, stack, vstack
 from .misc import (
+    astype,
     atleast_1d,
     atleast_2d,
     atleast_3d,
     broadcast_to,
+    copy,
+    diff,
+    in1d,
+    isin,
+    ndim,
+    ravel,
+    repeat,
+    searchsorted,
+    setdiff1d,
+    squeeze,
+    swapaxes,
     transpose,
+    trapezoid,
     unique,
     where,
 )
@@ -186,9 +214,14 @@ from .reduction import prod
 from .reduction import prod as product
 from .reduction import std, sum, var
 from .reshape import reshape
+from .sort import argsort, sort
+from .statistics import average, bincount, percentile, quantile
 from .ufunc import ufunc
 
 # isort: off
+# noinspection PyUnresolvedReferences
+from .lib.index_tricks import mgrid, ogrid, ndindex, r_, c_
+
 # noinspection PyUnresolvedReferences
 from numpy import (
     e,

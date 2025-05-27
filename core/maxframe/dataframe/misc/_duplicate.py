@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import pandas as pd
 from pandas.api.types import is_list_like
 
+from ...core import EntityData
 from ...core.operator import MapReduceOperator
 from ...serialization.serializables import AnyField, KeyField, StringField
 from ..operators import DataFrameOperatorMixin
@@ -26,9 +29,10 @@ class DuplicateOperand(MapReduceOperator, DataFrameOperatorMixin):
     keep = AnyField("keep", default="first")
     method = StringField("method", default=None)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "DuplicateOperand", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.input = op._inputs[0]
 
 
 def validate_subset(df, subset):

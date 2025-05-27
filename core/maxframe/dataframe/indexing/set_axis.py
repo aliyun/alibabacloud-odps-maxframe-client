@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 import pandas as pd
 
 from ... import opcodes
-from ...core import ENTITY_TYPE, get_output_types
+from ...core import ENTITY_TYPE, EntityData, get_output_types
 from ...serialization.serializables import AnyField, Int8Field, KeyField
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import parse_index, validate_axis
@@ -29,11 +31,12 @@ class DataFrameSetAxis(DataFrameOperator, DataFrameOperatorMixin):
     axis = Int8Field("axis", default=None)
     value = AnyField("value", default=None)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.input = inputs[0]
-        if isinstance(self.value, ENTITY_TYPE):
-            self.value = inputs[-1]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameSetAxis", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.input = inputs[0]
+        if isinstance(op.value, ENTITY_TYPE):
+            op.value = inputs[-1]
 
     def __call__(self, df_or_series):
         new_size = self.value.shape[0]

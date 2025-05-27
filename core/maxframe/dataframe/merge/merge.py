@@ -22,13 +22,11 @@ from pandas import Index
 
 from ... import opcodes
 from ...core import OutputType
-from ...core.operator import MapReduceOperator
 from ...serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
     Int32Field,
-    KeyField,
     NamedTupleField,
     Serializable,
     StringField,
@@ -52,26 +50,6 @@ BLOOM_FILTER_ON_OPTIONS = ["large", "small", "both"]
 DEFAULT_BLOOM_FILTER_ON = "large"
 
 cudf = lazy_import("cudf")
-
-
-class DataFrameMergeAlign(MapReduceOperator, DataFrameOperatorMixin):
-    _op_type_ = opcodes.DATAFRAME_SHUFFLE_MERGE_ALIGN
-
-    index_shuffle_size = Int32Field("index_shuffle_size")
-    shuffle_on = AnyField("shuffle_on")
-
-    input = KeyField("input")
-    # for mapper
-    mapper_id = Int32Field("mapper_id", default=0)
-
-    def __init__(self, output_types=None, **kw):
-        super().__init__(_output_types=output_types, **kw)
-        self._output_types = output_types
-
-    @property
-    def output_limit(self) -> int:
-        return len(self.output_types)
-
 
 MergeSplitInfo = namedtuple("MergeSplitInfo", "split_side, split_index, nsplits")
 
@@ -300,8 +278,8 @@ class DataFrameMerge(DataFrameOperator, DataFrameOperatorMixin):
     left_hint = AnyField("left_hint", default=None)
     right_hint = AnyField("right_hint", default=None)
 
-    def __init__(self, copy=None, **kwargs):
-        super().__init__(copy_=copy, **kwargs)
+    def __init__(self, copy=None, output_types=None, **kwargs):
+        super().__init__(copy_=copy, _output_types=output_types, **kwargs)
 
     def __call__(self, left, right):
         empty_left, empty_right = build_df(left), build_df(right)

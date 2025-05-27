@@ -22,6 +22,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from .. import PickleHookOptions
+
 try:
     import pyarrow as pa
 except ImportError:
@@ -199,6 +201,10 @@ def test_pandas():
         )
     pd.testing.assert_frame_equal(val, deserialize(*serialize(val)))
 
+    # dataframe with index only
+    val = pd.DataFrame([], index=pd.RangeIndex(1000))
+    pd.testing.assert_frame_equal(val, deserialize(*serialize(val)))
+
     val = pd.MultiIndex.from_arrays(
         [(1, 5, 4, 9, 6), list("BADCE")], names=["C1", "C2"]
     )
@@ -306,6 +312,27 @@ def test_pickle_container():
 
         deserial2 = deserialize(*serialize(deserial))
         assert deserial2() == func_to_pk()
+
+
+def test_pickle_hook():
+    def forbidden_unknown_type():
+        raise RuntimeError("forbidden serial/deserial untrusted module")
+
+    def func_to_pk():
+        print("hello, world")
+        return 1234
+
+    with PickleHookOptions(serial_hook=forbidden_unknown_type):
+        with pytest.raises(RuntimeError):
+            serialize(func_to_pk)
+
+    content_bytes = serialize(func_to_pk)
+    with PickleHookOptions(deserial_hook=forbidden_unknown_type):
+        with pytest.raises(RuntimeError):
+            deserialize(*content_bytes)
+
+    deser_obj = deserialize(*content_bytes)
+    assert 1234 == deser_obj()
 
 
 def test_exceptions():

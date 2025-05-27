@@ -15,6 +15,7 @@
 import os
 import uuid
 from collections import OrderedDict
+from math import isinf
 
 import numpy as np
 import pandas as pd
@@ -24,6 +25,7 @@ from odps import types as odps_types
 
 from .... import tensor as mt
 from ....core import OutputType
+from ....core.operator import estimate_size
 from ....tests.utils import tn
 from ....utils import lazy_import
 from ... import read_odps_query, read_odps_table
@@ -70,6 +72,10 @@ def test_from_pandas_dataframe():
     assert df.index_value.min_val == 0
     assert df.index_value.max_val == 9
     np.testing.assert_equal(df.columns_value._index_value._data, data.columns.values)
+
+    result_ctx = dict()
+    estimate_size(result_ctx, df.op)
+    assert result_ctx[df.key] > 0 and not isinf(result_ctx[df.key])
 
     data2 = data[::2]
     df2 = from_pandas_df(data2, chunk_size=4)
@@ -258,6 +264,10 @@ def test_from_odps_table():
         ),
     )
 
+    result_ctx = dict()
+    estimate_size(result_ctx, df.op)
+    assert result_ctx[df.key] >= 0 and not isinf(result_ctx[df.key])
+
     with pytest.raises(ValueError):
         read_odps_table(test_table, columns=["col3", "col4"])
     with pytest.raises(ValueError):
@@ -300,6 +310,7 @@ def test_from_odps_table():
         ),
     )
 
+    test_parted_table.create_partition("pt=20240103")
     df = read_odps_table(
         test_parted_table, columns=["col1", "col2", "pt"], partitions="pt=20240103"
     )
@@ -313,6 +324,10 @@ def test_from_odps_table():
             index=["col1", "col2", "pt"],
         ),
     )
+
+    result_ctx = dict()
+    estimate_size(result_ctx, df.op)
+    assert result_ctx[df.key] >= 0 and not isinf(result_ctx[df.key])
 
     out_idx = read_odps_table(
         test_table,
@@ -539,6 +554,24 @@ def test_resolve_multi_join():
         "ci2": "int",
         "ci3": "bigint",
         "cs9": "string",
+    }
+
+    schema = _parse_full_explain(sector)
+    for col, (exp_nm, exp_tp) in zip(schema.columns, expected_col_types.items()):
+        assert col.name == exp_nm
+        assert col.type == odps_types.validate_data_type(exp_tp)
+
+
+def test_resolve_break_lines():
+    input_path = os.path.join(
+        os.path.dirname(__file__), "test-data", "task-input-with-break-line.txt"
+    )
+    with open(input_path, "r") as f:
+        sector = f.read()
+
+    expected_col_types = {
+        "key": "string",
+        "value": "string",
     }
 
     schema = _parse_full_explain(sector)

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import importlib
 import inspect
 import itertools
 import operator
@@ -669,9 +668,21 @@ def fetch_corner_data(tensor, session=None):
         return tensor.fetch(session=session)
 
 
-def implement_scipy(scipy_fun):
+def _load_scipy_func(func_name: str):
+    try:
+        assert func_name.startswith("scipy.")
+        mod_name, func_name = func_name.rsplit(".", 1)
+        mod = importlib.import_module(mod_name)
+        return getattr(mod, func_name)
+    except (AttributeError, ImportError):
+        return None
+
+
+def implement_scipy(scipy_fun_name):
     import re
     import textwrap
+
+    scipy_fun = _load_scipy_func(scipy_fun_name)
 
     def wrapper(fun):
         if scipy_fun is None:
@@ -696,3 +707,10 @@ def implement_scipy(scipy_fun):
         return fun
 
     return wrapper
+
+
+def infer_scipy_dtype(scipy_fun_name):
+    scipy_fun = _load_scipy_func(scipy_fun_name)
+    if scipy_fun is None:
+        return lambda x: x
+    return infer_dtype(scipy_fun)

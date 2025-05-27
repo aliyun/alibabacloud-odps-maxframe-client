@@ -16,7 +16,6 @@ from .append import DataFrameAppend, append
 from .concat import DataFrameConcat, concat
 from .merge import (
     DataFrameMerge,
-    DataFrameMergeAlign,
     DistributedMapJoinHint,
     MapJoinHint,
     SkewJoinHint,

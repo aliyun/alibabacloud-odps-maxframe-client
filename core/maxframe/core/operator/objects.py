@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...serialization.serializables import BoolField
 from ..entity import OutputType, register_fetch_class
 from .base import Operator
 from .core import TileableOperatorMixin
@@ -42,22 +41,3 @@ class ObjectFetch(FetchMixin, ObjectOperatorMixin, Fetch):
 
 
 register_fetch_class(OutputType.object, ObjectFetch, None)
-
-
-class MergeDictOperator(ObjectOperator, ObjectOperatorMixin):
-    _merge = BoolField("merge")
-
-    def __init__(self, merge=None, **kw):
-        super().__init__(_merge=merge, **kw)
-
-    @property
-    def merge(self):
-        return self._merge
-
-    @classmethod
-    def concat_tileable_chunks(cls, tileable):
-        assert not tileable.is_coarse()
-
-        op = cls(merge=True)
-        chunk = cls(merge=True).new_chunk(tileable.chunks)
-        return op.new_tileable([tileable], chunks=[chunk], nsplits=((1,),))

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -88,7 +86,7 @@ def argmin(a, axis=None, out=None):
     >>> ind = mt.unravel_index(mt.argmin(a, axis=None), a.shape)
     >>> ind.execute()
     (0, 0)
-    >>> a[ind]  # TODO(jisheng): accomplish when fancy index on tensor is supported
+    >>> a[ind]
 
     >>> b = mt.arange(6)
     >>> b[4] = 0

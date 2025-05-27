@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Callable
+from typing import Callable, MutableMapping, Union
 
 import numpy as np
 import pandas as pd
@@ -25,14 +25,11 @@ from ...serialization.serializables import (
     FunctionField,
     TupleField,
 )
+from ...udf import BuiltinFunction, MarkedFunction
+from ...utils import make_dtypes
 from ..core import DataFrame
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import (
-    copy_func_scheduling_hints,
-    gen_unknown_index_value,
-    make_dtypes,
-    parse_index,
-)
+from ..utils import copy_func_scheduling_hints, gen_unknown_index_value, parse_index
 
 
 class DataFrameFlatMapOperator(DataFrameOperator, DataFrameOperatorMixin):
@@ -47,6 +44,9 @@ class DataFrameFlatMapOperator(DataFrameOperator, DataFrameOperatorMixin):
         super().__init__(_output_types=output_types, **kw)
         if hasattr(self, "func"):
             copy_func_scheduling_hints(self.func, self)
+
+    def has_custom_code(self) -> bool:
+        return not isinstance(self.func, BuiltinFunction)
 
     def _call_dataframe(self, df: DataFrame, dtypes: pd.Series):
         dtypes = make_dtypes(dtypes)
@@ -100,6 +100,14 @@ class DataFrameFlatMapOperator(DataFrameOperator, DataFrameOperatorMixin):
             return self._call_dataframe(df_or_series, dtypes=dtypes)
         else:
             return self._call_series_or_index(df_or_series, dtypes=dtypes)
+
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "DataFrameFlatMapOperator"
+    ) -> None:
+        if isinstance(op.func, MarkedFunction):
+            ctx[op.outputs[0].key] = float("inf")
+        super().estimate_size(ctx, op)
 
 
 def df_flatmap(dataframe, func: Callable, dtypes=None, raw=False, args=(), **kwargs):

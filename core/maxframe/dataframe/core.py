@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +32,7 @@ from ..core import (
     is_build_mode,
     register_output_types,
 )
-from ..core.entity.utils import refresh_tileable_shape
+from ..core.entity.utils import fill_chunk_slices, refresh_tileable_shape
 from ..protocol import DataFrameTableMeta
 from ..serialization.serializables import (
     AnyField,
@@ -303,6 +301,10 @@ class IndexValue(Serializable):
         def names(self) -> list:
             return self._names
 
+        @property
+        def dtypes(self) -> pd.Series:
+            return pd.Series(self._dtypes, index=self._names)
+
         def to_pandas(self):
             data = getattr(self, "_data", None)
             sortorder = getattr(self, "_sortorder", None)
@@ -445,9 +447,7 @@ class DtypesValue(Serializable):
 def refresh_index_value(tileable: ENTITY_TYPE):
     index_to_index_values = dict()
     for chunk in tileable.chunks:
-        if chunk.ndim == 1:
-            index_to_index_values[chunk.index] = chunk.index_value
-        elif chunk.index[1] == 0:
+        if chunk.ndim == 1 or chunk.index[1] == 0:
             index_to_index_values[chunk.index] = chunk.index_value
     index_value = merge_index_value(index_to_index_values, store_data=False)
     # keep key as original index_value's
@@ -637,11 +637,12 @@ class IndexData(HasShapeTileableData, _ToPandasMixin):
     def refresh_params(self):
         # refresh params when chunks updated
         refresh_tileable_shape(self)
-        refresh_index_value(self)
-        if self._dtype is None:
-            self._dtype = self.chunks[0].dtype
-        if self._name is None:
-            self._name = self.chunks[0].name
+        fill_chunk_slices(self)
+        # refresh_index_value(self)
+        # if self._dtype is None:
+        #     self._dtype = self.chunks[0].dtype
+        # if self._name is None:
+        #     self._name = self.chunks[0].name
 
     def refresh_from_table_meta(self, table_meta: DataFrameTableMeta) -> None:
         pass
@@ -695,73 +696,6 @@ class IndexData(HasShapeTileableData, _ToPandasMixin):
         from ..tensor.datasource.from_dataframe import from_index
 
         return from_index(self, dtype=dtype, extract_multi_index=extract_multi_index)
-
-
-class Index(HasShapeTileable, _ToPandasMixin):
-    __slots__ = "_df_or_series", "_parent_key", "_axis"
-    _allow_data_type_ = (IndexData,)
-    type_name = "Index"
-
-    def __new__(cls, data: Union[pd.Index, IndexData] = None, **_):
-        if data is not None and not isinstance(data, pd.Index):
-            # create corresponding Index class
-            # according to type of index_value
-            clz = globals()[type(data.index_value.value).__name__]
-        else:
-            clz = cls
-        return object.__new__(clz)
-
-    def __len__(self):
-        return len(self._data)
-
-    def __maxframe_tensor__(self, dtype=None, order="K"):
-        return self._data.__maxframe_tensor__(dtype=dtype, order=order)
-
-    def _get_df_or_series(self):
-        obj = getattr(self, "_df_or_series", None)
-        if obj is not None:
-            return obj()
-        return None
-
-    def _set_df_or_series(self, df_or_series, axis):
-        self._df_or_series = weakref.ref(df_or_series)
-        self._parent_key = df_or_series.key
-        self._axis = axis
-
-    @property
-    def T(self):
-        """Return the transpose, which is by definition self."""
-        return self
-
-    @property
-    def name(self):
-        return self._data.name
-
-    @name.setter
-    def name(self, value):
-        df_or_series = self._get_df_or_series()
-        if df_or_series is not None and df_or_series.key == self._parent_key:
-            df_or_series.rename_axis(value, axis=self._axis, inplace=True)
-            self.data = df_or_series.axes[self._axis].data
-        else:
-            self.rename(value, inplace=True)
-
-    @property
-    def names(self):
-        return self._data.names
-
-    @names.setter
-    def names(self, value):
-        df_or_series = self._get_df_or_series()
-        if df_or_series is not None:
-            df_or_series.rename_axis(value, axis=self._axis, inplace=True)
-            self.data = df_or_series.axes[self._axis].data
-        else:
-            self.rename(value, inplace=True)
-
-    @property
-    def values(self):
-        return self.to_tensor()
 
     def to_frame(self, index: bool = True, name=None):
         """
@@ -838,7 +772,7 @@ class Index(HasShapeTileable, _ToPandasMixin):
             columns = [name or self.name or 0]
         index_ = self if index else None
         return dataframe_from_tensor(
-            self._data._to_maxframe_tensor(self, extract_multi_index=True),
+            self._to_maxframe_tensor(self, extract_multi_index=True),
             index=index_,
             columns=columns,
         )
@@ -865,6 +799,73 @@ class Index(HasShapeTileable, _ToPandasMixin):
         from . import series_from_index
 
         return series_from_index(self, index=index, name=name)
+
+
+class Index(HasShapeTileable, _ToPandasMixin):
+    __slots__ = "_df_or_series", "_parent_key", "_axis"
+    _allow_data_type_ = (IndexData,)
+    type_name = "Index"
+
+    def __new__(cls, data: Union[pd.Index, IndexData] = None, **_):
+        if data is not None and not isinstance(data, pd.Index):
+            # create corresponding Index class
+            # according to type of index_value
+            clz = globals()[type(data.index_value.value).__name__]
+        else:
+            clz = cls
+        return object.__new__(clz)
+
+    def __len__(self):
+        return len(self._data)
+
+    def __maxframe_tensor__(self, dtype=None, order="K"):
+        return self._data.__maxframe_tensor__(dtype=dtype, order=order)
+
+    def _get_df_or_series(self):
+        obj = getattr(self, "_df_or_series", None)
+        if obj is not None:
+            return obj()
+        return None
+
+    def _set_df_or_series(self, df_or_series, axis):
+        self._df_or_series = weakref.ref(df_or_series)
+        self._parent_key = df_or_series.key
+        self._axis = axis
+
+    @property
+    def T(self):
+        """Return the transpose, which is by definition self."""
+        return self
+
+    @property
+    def name(self):
+        return self._data.name
+
+    @name.setter
+    def name(self, value):
+        df_or_series = self._get_df_or_series()
+        if df_or_series is not None and df_or_series.key == self._parent_key:
+            df_or_series.rename_axis(value, axis=self._axis, inplace=True)
+            self.data = df_or_series.axes[self._axis].data
+        else:
+            self.rename(value, inplace=True)
+
+    @property
+    def names(self):
+        return self._data.names
+
+    @names.setter
+    def names(self, value):
+        df_or_series = self._get_df_or_series()
+        if df_or_series is not None:
+            df_or_series.rename_axis(value, axis=self._axis, inplace=True)
+            self.data = df_or_series.axes[self._axis].data
+        else:
+            self.rename(value, inplace=True)
+
+    @property
+    def values(self):
+        return self.to_tensor()
 
 
 class RangeIndex(Index):
@@ -969,11 +970,12 @@ class BaseSeriesData(HasShapeTileableData, _ToPandasMixin):
     def refresh_params(self):
         # refresh params when chunks updated
         refresh_tileable_shape(self)
-        refresh_index_value(self)
+        fill_chunk_slices(self)
+        # refresh_index_value(self)
         if self._dtype is None:
-            self._dtype = self.chunks[0].dtype
-        if self._name is None:
-            self._name = self.chunks[0].name
+            self._dtype = getattr(self.chunks[0], "dtype", None)
+        # if self._name is None:
+        #     self._name = self.chunks[0].name
 
     def refresh_from_table_meta(self, table_meta: DataFrameTableMeta) -> None:
         pass
@@ -1073,6 +1075,12 @@ class SeriesData(_BatchedFetcher, BaseSeriesData):
         return self.to_pandas(session=session, fetch_kwargs=fetch_kwargs).to_dict(
             into=into
         )
+
+    def to_frame(self, name=None):
+        from . import dataframe_from_tensor
+
+        name = name or self.name or 0
+        return dataframe_from_tensor(self, columns=[name])
 
 
 class Series(HasShapeTileable, _ToPandasMixin):
@@ -1287,10 +1295,7 @@ class Series(HasShapeTileable, _ToPandasMixin):
         1    b
         2    c
         """
-        from . import dataframe_from_tensor
-
-        name = name or self.name or 0
-        return dataframe_from_tensor(self, columns=[name])
+        return self._data.to_frame(name=name)
 
     def between(self, left, right, inclusive="both"):
         """
@@ -1498,8 +1503,8 @@ class BaseDataFrameData(HasShapeTileableData, _ToPandasMixin):
             "shape": self.shape,
             "dtypes": self.dtypes,
             "index_value": self.index_value,
-            "columns_value": self.columns_value,
-            "dtypes_value": self.dtypes_value,
+            "columns_value": getattr(self, "columns_value", None),
+            "dtypes_value": getattr(self, "dtypes_value", None),
         }
 
     def _set_params(self, new_params: Dict[str, Any]):
@@ -1531,8 +1536,9 @@ class BaseDataFrameData(HasShapeTileableData, _ToPandasMixin):
     def refresh_params(self):
         # refresh params when chunks updated
         refresh_tileable_shape(self)
-        refresh_index_value(self)
-        refresh_dtypes(self)
+        fill_chunk_slices(self)
+        # refresh_index_value(self)
+        # refresh_dtypes(self)
 
     def refresh_from_dtypes(self, dtypes: pd.Series) -> None:
         self._dtypes = dtypes
@@ -2227,6 +2233,7 @@ class CategoricalData(HasShapeTileableData, _ToPandasMixin):
     def refresh_params(self):
         # refresh params when chunks updated
         refresh_tileable_shape(self)
+        fill_chunk_slices(self)
         if self._dtype is None:
             self._dtype = self.chunks[0].dtype
         if self._categories_value is None:

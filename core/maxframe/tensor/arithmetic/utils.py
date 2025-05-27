@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +14,8 @@
 
 import numpy as np
 
+from ...config import options
+
 
 def arithmetic_operator(cls=None, init=True, sparse_mode=None):
     def _decorator(cls):
@@ -26,11 +26,12 @@ def arithmetic_operator(cls=None, init=True, sparse_mode=None):
         def _is_sparse_binary_and_const(x1, x2):
             if all(np.isscalar(x) for x in [x1, x2]):
                 return False
-            if all(
-                np.isscalar(x) or (hasattr(x, "issparse") and x.issparse())
-                for x in [x1, x2]
-            ):
+            if all(hasattr(x, "issparse") and x.issparse() for x in [x1, x2]):
                 return True
+            if np.isscalar(x1):
+                return cls._is_sparse_with_scalar(x1, True)
+            if np.isscalar(x2):
+                return cls._is_sparse_with_scalar(x2, False)
             return False
 
         def _is_sparse_binary_or_const(x1, x2):
@@ -63,3 +64,28 @@ def arithmetic_operator(cls=None, init=True, sparse_mode=None):
         return _decorator(cls)
     else:
         return _decorator
+
+
+class TreeReductionBuilder:
+    def __init__(self, combine_size=None):
+        self._combine_size = combine_size or options.dpe.reduction.combine_size
+
+    def _build_reduction(self, inputs, final=False):
+        raise NotImplementedError
+
+    def build(self, inputs):
+        combine_size = self._combine_size
+        while len(inputs) > self._combine_size:
+            new_inputs = []
+            for i in range(0, len(inputs), combine_size):
+                objs = inputs[i : i + combine_size]
+                if len(objs) == 1:
+                    obj = objs[0]
+                else:
+                    obj = self._build_reduction(objs, final=False)
+                new_inputs.append(obj)
+            inputs = new_inputs
+
+        if len(inputs) == 1:
+            return inputs[0]
+        return self._build_reduction(inputs, final=True)

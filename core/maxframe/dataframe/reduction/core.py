@@ -226,7 +226,9 @@ class DataFrameReductionMixin(DataFrameOperatorMixin):
                     #  handle pandas Dtypes in the future more carefully.
                     reduced_dtype = np.dtype("O")
                 else:
-                    reduced_dtype = np.find_common_type(dtypes, [])
+                    from pandas.core.dtypes.cast import find_common_type
+
+                    reduced_dtype = find_common_type(dtypes)
 
         if level is not None:
             return self._call_groupby_level(df[reduced_cols], level)

@@ -35,7 +35,7 @@ def test_config():
     return config
 
 
-def _get_odps_env(test_config: ConfigParser, section_name: str) -> ODPS:
+def _get_account_env(test_config: ConfigParser, section_name: str) -> ODPS:
     try:
         access_id = test_config.get(section_name, "access_id")
     except NoOptionError:
@@ -60,10 +60,18 @@ def _get_odps_env(test_config: ConfigParser, section_name: str) -> ODPS:
         tunnel_endpoint = test_config.get("odps", "tunnel_endpoint")
     except NoOptionError:
         tunnel_endpoint = None
-
-    entry = ODPS(
-        access_id, secret_access_key, project, endpoint, overwrite_global=False
+    return ODPS(
+        access_id,
+        secret_access_key,
+        project,
+        endpoint,
+        tunnel_endpoint=tunnel_endpoint,
+        overwrite_global=False,
     )
+
+
+def _get_bearer_token_env(test_config: ConfigParser, section_name: str) -> ODPS:
+    entry = _get_account_env(test_config, section_name)
     policy = {
         "Version": "1",
         "Statement": [
@@ -73,27 +81,28 @@ def _get_odps_env(test_config: ConfigParser, section_name: str) -> ODPS:
     token = entry.get_project().generate_auth_token(policy, "bearer", 5)
     return ODPS(
         account=BearerTokenAccount(token, 5),
-        project=project,
-        endpoint=endpoint,
-        tunnel_endpoint=tunnel_endpoint,
+        project=entry.project,
+        endpoint=entry.endpoint,
+        tunnel_endpoint=entry.tunnel_endpoint,
     )
 
 
 @pytest.fixture(scope="session")
 def odps_with_schema(test_config):
     try:
-        return _get_odps_env(test_config, "odps_with_schema")
+        return _get_bearer_token_env(test_config, "odps_with_schema")
     except NoSectionError:
         pytest.skip("Need to specify odps_with_schema section in test.conf")
 
 
 @pytest.fixture(scope="session", autouse=True)
 def odps_envs(test_config):
-    entry = _get_odps_env(test_config, "odps")
+    entry = _get_bearer_token_env(test_config, "odps")
 
     os.environ["ODPS_BEARER_TOKEN"] = entry.account.token
     os.environ["ODPS_PROJECT_NAME"] = entry.project
     os.environ["ODPS_ENDPOINT"] = entry.endpoint
+    os.environ["RAY_ISOLATION_UT_ENV"] = "UT"
     if entry.tunnel_endpoint:
         os.environ["ODPS_TUNNEL_ENDPOINT"] = entry.tunnel_endpoint
 
@@ -104,6 +113,7 @@ def odps_envs(test_config):
         os.environ.pop("ODPS_PROJECT_NAME", None)
         os.environ.pop("ODPS_ENDPOINT", None)
         os.environ.pop("ODPS_TUNNEL_ENDPOINT", None)
+        os.environ.pop("RAY_ISOLATION_UT_ENV", None)
 
         from .tests.utils import _test_tables_to_drop
 
@@ -112,6 +122,11 @@ def odps_envs(test_config):
                 entry.delete_table(table_name, wait=False)
             except:
                 pass
+
+
+@pytest.fixture(scope="session")
+def odps_account(test_config):
+    return _get_account_env(test_config, "odps")
 
 
 @pytest.fixture(scope="session")
@@ -155,7 +170,7 @@ def oss_config():
         config.oss_rolearn = oss_rolearn
         yield config
     except (NoSectionError, NoOptionError, ImportError):
-        return None
+        yield None
     finally:
         options.service_role_arn = old_role_arn
         options.object_cache_url = old_cache_url
@@ -194,3 +209,16 @@ def local_test_envs():
         os.environ[spe_launcher_env] = old_value
     else:
         del os.environ[spe_launcher_env]
+
+
+@pytest.fixture
+def enable_local_execution(request):
+    old_enabled = options.local_execution.enabled
+    old_limit = options.local_execution.size_limit
+    try:
+        options.local_execution.enabled = True
+        options.local_execution.size_limit = getattr(request, "param", 0)
+        yield
+    finally:
+        options.local_execution.enabled = old_enabled
+        options.local_execution.size_limit = old_limit

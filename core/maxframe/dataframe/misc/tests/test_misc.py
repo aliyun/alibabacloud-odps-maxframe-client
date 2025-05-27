@@ -31,6 +31,166 @@ from ...datasource.series import from_pandas as from_pandas_series
 from .. import astype, cut
 
 
+def test_dataframe_apply():
+    cols = [chr(ord("A") + i) for i in range(10)]
+    df_raw = pd.DataFrame(dict((c, [i**2 for i in range(20)]) for c in cols))
+
+    df = from_pandas_df(df_raw, chunk_size=5)
+
+    def df_func_with_err(v):
+        assert len(v) > 2
+        return v.sort_values()
+
+    def df_series_func_with_err(v):
+        assert len(v) > 2
+        return 0
+
+    with pytest.raises(TypeError):
+        df.apply(df_func_with_err)
+
+    r = df.apply(df_func_with_err, output_type="dataframe", dtypes=df_raw.dtypes)
+    assert r.shape == (np.nan, df.shape[-1])
+    assert r.op._op_type_ == opcodes.APPLY
+    assert r.op.output_types[0] == OutputType.dataframe
+    assert r.op.elementwise is False
+
+    r = df.apply(
+        df_series_func_with_err, output_type="series", dtype=object, name="output"
+    )
+    assert r.dtype == np.dtype("O")
+    assert r.shape == (df.shape[-1],)
+    assert r.op._op_type_ == opcodes.APPLY
+    assert r.op.output_types[0] == OutputType.series
+    assert r.op.elementwise is False
+
+    r = df.apply("ffill")
+    assert r.op._op_type_ == opcodes.FILL_NA
+
+    r = df.apply(np.sqrt)
+    assert all(v == np.dtype("float64") for v in r.dtypes) is True
+    assert r.shape == df.shape
+    assert r.op._op_type_ == opcodes.APPLY
+    assert r.op.output_types[0] == OutputType.dataframe
+    assert r.op.elementwise is True
+
+    r = df.apply(lambda x: pd.Series([1, 2]))
+    assert all(v == np.dtype("int64") for v in r.dtypes) is True
+    assert r.shape == (np.nan, df.shape[1])
+    assert r.op.output_types[0] == OutputType.dataframe
+    assert r.op.elementwise is False
+
+    r = df.apply(np.sum, axis="index")
+    assert np.dtype("int64") == r.dtype
+    assert r.shape == (df.shape[1],)
+    assert r.op.output_types[0] == OutputType.series
+    assert r.op.elementwise is False
+
+    r = df.apply(np.sum, axis="columns")
+    assert np.dtype("int64") == r.dtype
+    assert r.shape == (df.shape[0],)
+    assert r.op.output_types[0] == OutputType.series
+    assert r.op.elementwise is False
+
+    r = df.apply(lambda x: pd.Series([1, 2], index=["foo", "bar"]), axis=1)
+    assert all(v == np.dtype("int64") for v in r.dtypes) is True
+    assert r.shape == (df.shape[0], 2)
+    assert r.op.output_types[0] == OutputType.dataframe
+    assert r.op.elementwise is False
+
+    r = df.apply(lambda x: [1, 2], axis=1, result_type="expand")
+    assert all(v == np.dtype("int64") for v in r.dtypes) is True
+    assert r.shape == (df.shape[0], 2)
+    assert r.op.output_types[0] == OutputType.dataframe
+    assert r.op.elementwise is False
+
+    r = df.apply(lambda x: list(range(10)), axis=1, result_type="reduce")
+    assert np.dtype("object") == r.dtype
+    assert r.shape == (df.shape[0],)
+    assert r.op.output_types[0] == OutputType.series
+    assert r.op.elementwise is False
+
+    r = df.apply(lambda x: list(range(10)), axis=1, result_type="broadcast")
+    assert all(v == np.dtype("int64") for v in r.dtypes) is True
+    assert r.shape == (df.shape[0], 10)
+    assert r.op.output_types[0] == OutputType.dataframe
+    assert r.op.elementwise is False
+
+    raw = pd.DataFrame({"a": [np.array([1, 2, 3]), np.array([4, 5, 6])]})
+    df = from_pandas_df(raw)
+    df2 = df.apply(
+        lambda x: x["a"].astype(pd.Series),
+        axis=1,
+        output_type="dataframe",
+        dtypes=pd.Series([np.dtype(float)] * 3),
+    )
+    assert df2.ndim == 2
+
+
+def test_series_apply():
+    idxes = [chr(ord("A") + i) for i in range(20)]
+    s_raw = pd.Series([i**2 for i in range(20)], index=idxes)
+
+    series = from_pandas_series(s_raw, chunk_size=5)
+
+    r = series.apply("add", args=(1,))
+    assert r.op._op_type_ == opcodes.ADD
+
+    r = series.apply(np.sqrt)
+    assert np.dtype("float64") == r.dtype
+    assert r.shape == series.shape
+    assert r.index_value is series.index_value
+    assert r.op._op_type_ == opcodes.APPLY
+    assert r.op.output_types[0] == OutputType.series
+
+    r = series.apply("sqrt")
+    assert np.dtype("float64") == r.dtype
+    assert r.shape == series.shape
+    assert r.op._op_type_ == opcodes.APPLY
+    assert r.op.output_types[0] == OutputType.series
+
+    r = series.apply(lambda x: [x, x + 1], convert_dtype=False)
+    assert np.dtype("object") == r.dtype
+    assert r.shape == series.shape
+    assert r.op._op_type_ == opcodes.APPLY
+    assert r.op.output_types[0] == OutputType.series
+
+    s_raw2 = pd.Series([np.array([1, 2, 3]), np.array([4, 5, 6])])
+    series = from_pandas_series(s_raw2)
+
+    r = series.apply(np.sum)
+    assert r.dtype == np.dtype(object)
+
+    r = series.apply(lambda x: pd.Series([1]), output_type="dataframe")
+    expected = s_raw2.apply(lambda x: pd.Series([1]))
+    pd.testing.assert_series_equal(r.dtypes, expected.dtypes)
+
+    dtypes = pd.Series([np.dtype(float)] * 3)
+    r = series.apply(pd.Series, output_type="dataframe", dtypes=dtypes)
+    assert r.ndim == 2
+    pd.testing.assert_series_equal(r.dtypes, dtypes)
+    assert r.shape == (2, 3)
+
+    def apply_with_error(_):
+        raise ValueError
+
+    r = series.apply(apply_with_error, output_type="dataframe", dtypes=dtypes)
+    assert r.ndim == 2
+
+    r = series.apply(
+        pd.Series, output_type="dataframe", dtypes=dtypes, index=pd.RangeIndex(2)
+    )
+    assert r.ndim == 2
+    pd.testing.assert_series_equal(r.dtypes, dtypes)
+    assert r.shape == (2, 3)
+
+    with pytest.raises(AttributeError, match="abc"):
+        series.apply("abc")
+
+    with pytest.raises(TypeError):
+        # dtypes not provided
+        series.apply(lambda x: x.tolist(), output_type="dataframe")
+
+
 def test_transform():
     cols = [chr(ord("A") + i) for i in range(10)]
     df_raw = pd.DataFrame(dict((c, [i**2 for i in range(20)]) for c in cols))
@@ -339,6 +499,11 @@ def test_get_dummies():
     r = get_dummies(df)
     assert isinstance(r, DATAFRAME_TYPE)
 
+    raw = pd.Series(["a", "a", "b", "c"])
+    ms = from_pandas_series(raw, chunk_size=2)
+    r = get_dummies(ms)
+    assert isinstance(r, DATAFRAME_TYPE)
+
 
 def test_to_numeric():
     raw = pd.DataFrame({"a": [1.0, 2, 3, -3]})
@@ -381,7 +546,7 @@ def test_apply():
 
     keys = [1, 2]
 
-    @with_running_options(engine="spe")
+    @with_running_options(engine="spe", memory="40GB")
     def f(x, keys):
         if x["a"] in keys:
             return [1, 0]
@@ -398,6 +563,7 @@ def test_apply():
     )
     assert apply_df.shape == (3, 2)
     assert apply_df.op.expect_engine == "SPE"
+    assert apply_df.op.expect_resources == {"cpu": 1, "memory": "40GB", "gpu": 0}
 
 
 def test_pivot_table():

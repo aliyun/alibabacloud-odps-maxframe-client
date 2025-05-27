@@ -18,7 +18,12 @@ from .accessor import (
     IndexMaxFrameAccessor,
     SeriesMaxFrameAccessor,
 )
-from .apply_chunk import df_apply_chunk, series_apply_chunk
+from .apply_chunk import (
+    DataFrameApplyChunk,
+    DataFrameApplyChunkOperator,
+    df_apply_chunk,
+    series_apply_chunk,
+)
 from .flatjson import series_flatjson
 from .flatmap import df_flatmap, series_flatmap
 from .reshuffle import DataFrameReshuffle, df_reshuffle

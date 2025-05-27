@@ -12,23 +12,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .astype import TensorAstype
+from .astype import TensorAstype, astype
 from .atleast_1d import atleast_1d
 from .atleast_2d import atleast_2d
 from .atleast_3d import atleast_3d
 from .broadcast_to import TensorBroadcastTo, broadcast_to
+from .copy import copy
+from .diff import TensorDiff, diff
+from .flatten import flatten
+from .in1d import in1d
+from .isin import TensorIsIn, isin
+from .ndim import ndim
 from .ravel import ravel
-from .transpose import transpose
-from .unique import unique
+from .repeat import TensorRepeat, repeat
+from .searchsorted import TensorSearchsorted, searchsorted
+from .setdiff1d import setdiff1d
+from .squeeze import TensorSqueeze, squeeze
+from .swapaxes import TensorSwapAxes, swapaxes
+from .transpose import TensorTranspose, transpose
+from .trapezoid import TensorTrapezoid, trapezoid
+from .unique import TensorUnique, unique
 from .where import TensorWhere, where
 
 
 def _install():
     from ..core import Tensor, TensorData
-    from .astype import _astype
 
     for cls in (Tensor, TensorData):
-        setattr(cls, "astype", _astype)
+        setattr(cls, "astype", astype)
+        setattr(cls, "flatten", flatten)
+        setattr(cls, "swapaxes", swapaxes)
         setattr(cls, "ravel", ravel)
 
 

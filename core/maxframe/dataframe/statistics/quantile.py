@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 import pandas as pd
 from pandas.core.dtypes.cast import find_common_type
 
 from ... import opcodes
-from ...core import ENTITY_TYPE
+from ...core import ENTITY_TYPE, EntityData
 from ...serialization.serializables import (
     AnyField,
     BoolField,
@@ -50,11 +52,12 @@ class DataFrameQuantile(DataFrameOperator, DataFrameOperatorMixin):
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.input = self._inputs[0]
-        if isinstance(self.q, TENSOR_TYPE):
-            self.q = self._inputs[-1]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameQuantile", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.input = op._inputs[0]
+        if isinstance(op.q, TENSOR_TYPE):
+            op.q = op._inputs[-1]
 
     def _calc_dtype_on_axis_1(self, a, dtypes):
         quantile_dtypes = []

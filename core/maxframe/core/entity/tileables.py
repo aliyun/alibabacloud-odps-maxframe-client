@@ -172,6 +172,8 @@ class TileableData(EntityData, _ExecutableMixin):
     def __init__(self: TileableType, *args, **kwargs):
         if kwargs.get("chunks") is not None:
             self._chunks = kwargs.pop("chunks")
+        if "nsplits" in kwargs:
+            kwargs["_nsplits"] = kwargs.pop("nsplits")
         if kwargs.get("_nsplits", None) is not None:
             kwargs["_nsplits"] = tuple(tuple(s) for s in kwargs["_nsplits"])
 
@@ -198,7 +200,7 @@ class TileableData(EntityData, _ExecutableMixin):
 
     @property
     def chunks(self) -> list:
-        return getattr(self, "_chunks", None)
+        return getattr(self, "_chunks", None) or self._extra_params.get("_chunks")
 
     @property
     def nsplits(self):

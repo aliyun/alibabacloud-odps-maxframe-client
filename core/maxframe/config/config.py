@@ -14,6 +14,7 @@
 
 import contextlib
 import contextvars
+import os
 import traceback
 import warnings
 from copy import deepcopy
@@ -28,14 +29,14 @@ except ImportError:
 
     available_timezones = lambda: all_timezones
 
-import logging
-
 from ..utils import get_python_tag
 from .validators import (
     ValidatorType,
     all_validator,
+    is_all_dict_keys_in,
     is_bool,
     is_dict,
+    is_float,
     is_in,
     is_integer,
     is_non_negative_integer,
@@ -45,11 +46,11 @@ from .validators import (
     is_valid_cache_path,
 )
 
-logger = logging.getLogger(__name__)
-
 _DEFAULT_REDIRECT_WARN = "Option {source} has been replaced by {target} and might be removed in a future release."
 _DEFAULT_MAX_ALIVE_SECONDS = 3 * 24 * 3600
 _DEFAULT_MAX_IDLE_SECONDS = 3600
+_DEFAULT_RETRY_DELAY = 0.1
+_DEFAULT_RETRY_TIMES = 4
 _DEFAULT_SPE_OPERATION_TIMEOUT_SECONDS = 120
 _DEFAULT_SPE_FAILURE_RETRY_TIMES = 5
 _DEFAULT_UPLOAD_BATCH_SIZE = 4096
@@ -57,6 +58,7 @@ _DEFAULT_TEMP_LIFECYCLE = 1
 _DEFAULT_TASK_START_TIMEOUT = 60
 _DEFAULT_TASK_RESTART_TIMEOUT = 300
 _DEFAULT_LOGVIEW_HOURS = 24 * 30
+_DEFAULT_FUNCTION_RUNNING_OPTIONS = {"cpu": 1, "memory": "4GiB", "gpu": 0}
 
 
 class OptionError(Exception):
@@ -322,6 +324,12 @@ def _get_legal_local_tz_name() -> Optional[str]:
 
 default_options = Config()
 default_options.register_option(
+    "retry_times", _DEFAULT_RETRY_TIMES, validator=is_integer
+)
+default_options.register_option(
+    "retry_delay", _DEFAULT_RETRY_DELAY, validator=is_integer | is_float
+)
+default_options.register_option(
     "execution_mode", "trigger", validator=is_in(["trigger", "eager"])
 )
 default_options.register_option("use_common_table", False, validator=is_bool)
@@ -367,6 +375,14 @@ default_options.register_option(
 
 default_options.register_option(
     "chunk_size", None, validator=is_null | is_integer, remote=True
+)
+default_options.register_option(
+    "chunk_store_limit", 128 * 1024**2, validator=is_numeric
+)
+
+default_options.register_option("local_execution.enabled", False, validator=is_bool)
+default_options.register_option(
+    "local_execution.size_limit", 5 * 1024**2, validator=is_integer
 )
 
 default_options.register_option(
@@ -425,6 +441,9 @@ default_options.register_option(
     validator=is_null | is_integer,
     remote=True,
 )
+default_options.register_option(
+    "session.client_version", None, validator=is_null | is_string, remote=True
+)
 
 default_options.register_option("warn_duplicated_execution", False, validator=is_bool)
 default_options.register_option("dataframe.use_arrow_dtype", True, validator=is_bool)
@@ -437,6 +456,23 @@ default_options.register_option(
 default_options.register_option("show_progress", "auto", validator=is_bool | is_string)
 default_options.register_option(
     "dag.settings", value=dict(), validator=is_dict, remote=True
+)
+
+default_options.register_option(
+    "function.default_running_options",
+    _DEFAULT_FUNCTION_RUNNING_OPTIONS,
+    validator=is_dict | is_all_dict_keys_in("cpu", "memory", "gpu"),
+)
+
+################
+# DPE Settings #
+################
+default_options.register_option("dpe.settings", dict(), validator=is_dict, remote=True)
+default_options.register_option(
+    "dpe.task.settings", dict(), validator=is_dict, remote=True
+)
+default_options.register_option(
+    "dpe.reduction.combine_size", 4, validator=is_integer, remote=True
 )
 
 ################
@@ -461,6 +497,16 @@ default_options.register_option(
 
 default_options.register_option(
     "pythonpack.task.settings", {}, validator=is_dict, remote=True
+)
+
+##################
+# Learn settings #
+##################
+assume_finite = os.environ.get("SKLEARN_ASSUME_FINITE")
+if assume_finite is not None:
+    assume_finite = bool(assume_finite)
+default_options.register_option(
+    "learn.assume_finite", assume_finite, validator=is_null | is_bool
 )
 
 _options_ctx_var = contextvars.ContextVar("_options_ctx_var")
@@ -518,22 +564,3 @@ class OptionsProxy:
 
 
 options = OptionsProxy()
-
-
-def update_wlm_quota_settings(session_id: str, engine_settings: Dict[str, Any]):
-    engine_quota = engine_settings.get("odps.task.wlm.quota", None)
-    session_quota = options.session.quota_name or None
-    if engine_quota != session_quota and engine_quota:
-        logger.warning(
-            "[Session=%s] Session quota (%s) is different to SubDag engine quota (%s)",
-            session_id,
-            session_quota,
-            engine_quota,
-        )
-        # TODO(renxiang): overwrite or not overwrite
-        return
-
-    if session_quota:
-        engine_settings["odps.task.wlm.quota"] = session_quota
-    elif "odps.task.wlm.quota" in engine_settings:
-        engine_settings.pop("odps.task.wlm.quota")

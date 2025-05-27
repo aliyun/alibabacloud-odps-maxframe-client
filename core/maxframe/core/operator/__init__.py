@@ -20,8 +20,13 @@ from .base import (
     OperatorStage,
     VirtualOperator,
 )
-from .core import TileableOperatorMixin, estimate_size, execute
-from .fetch import Fetch, FetchMixin, FetchShuffle, ShuffleFetchType
-from .objects import MergeDictOperator, ObjectFetch, ObjectOperator, ObjectOperatorMixin
+from .core import (
+    TileableOperatorMixin,
+    estimate_size,
+    estimate_tileable_execution_size,
+    execute,
+)
+from .fetch import Fetch, FetchMixin, FetchShuffle
+from .objects import ObjectFetch, ObjectOperator, ObjectOperatorMixin
 from .shuffle import MapReduceOperator, ShuffleProxy
 from .utils import add_fetch_builder, build_fetch

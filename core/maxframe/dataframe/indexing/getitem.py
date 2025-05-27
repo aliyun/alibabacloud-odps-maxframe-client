@@ -13,12 +13,13 @@
 # limitations under the License.
 
 from numbers import Integral
+from typing import List
 
 import numpy as np
 import pandas as pd
 
 from ... import opcodes
-from ...core import ENTITY_TYPE, OutputType
+from ...core import ENTITY_TYPE, EntityData, OutputType
 from ...serialization.serializables import AnyField, BoolField
 from ...tensor.core import TENSOR_TYPE
 from ...tensor.datasource import tensor as astensor
@@ -66,7 +67,6 @@ class DataFrameIndex(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.INDEX
 
     col_names = AnyField("col_names", default=None)
-
     # for bool index
     mask = AnyField("mask", default=None)
     identical_index = BoolField("identical_index")
@@ -75,12 +75,13 @@ class DataFrameIndex(DataFrameOperator, DataFrameOperatorMixin):
         output_types = output_types or [OutputType.series]
         super().__init__(_output_types=output_types, **kw)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        if isinstance(self.col_names, ENTITY_TYPE):
-            self.col_names = self._inputs[0]
-        if isinstance(self.mask, ENTITY_TYPE):
-            self.mask = self._inputs[-1]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameIndex", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        if isinstance(op.col_names, ENTITY_TYPE):
+            op.col_names = op._inputs[0]
+        if isinstance(op.mask, ENTITY_TYPE):
+            op.mask = op._inputs[-1]
 
     def __call__(self, df):
         if self.col_names is not None:

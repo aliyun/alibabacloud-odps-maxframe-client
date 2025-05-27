@@ -13,14 +13,15 @@
 # limitations under the License.
 
 import inspect
-from collections.abc import MutableMapping
+from typing import List, MutableMapping, Union
 
 import numpy as np
 import pandas as pd
 
 from ... import opcodes
-from ...core import OutputType
+from ...core import EntityData, OutputType
 from ...serialization.serializables import AnyField, KeyField, StringField
+from ...udf import BuiltinFunction, MarkedFunction
 from ...utils import quiet_stdio
 from ..core import SERIES_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
@@ -41,11 +42,17 @@ class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
         if hasattr(self, "arg"):
             copy_func_scheduling_hints(self.arg, self)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameMap", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.input = op._inputs[0]
         if len(inputs) == 2:
-            self.arg = self._inputs[1]
+            op.arg = op._inputs[1]
+
+    def has_custom_code(self) -> bool:
+        return not isinstance(
+            self.arg, (dict, SERIES_TYPE, pd.Series)
+        ) and not isinstance(self.arg, BuiltinFunction)
 
     def __call__(self, series, dtype, skip_infer=False):
         if dtype is None and not skip_infer:
@@ -111,6 +118,14 @@ class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
                 index_value=series.index_value,
                 name=series.name,
             )
+
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "DataFrameMap"
+    ) -> None:
+        if isinstance(op.arg, MarkedFunction):
+            ctx[op.outputs[0].key] = float("inf")
+        super().estimate_size(ctx, op)
 
 
 def series_map(

@@ -21,15 +21,15 @@ import msgpack
 
 from ...errors import MaxFrameDeprecationError
 from ...lib.mmh3 import hash
-from ...utils import no_default
+from ...utils import extract_class_name, no_default
 from ..core import Placeholder, Serializer, buffered, load_type
 from .field import Field
 from .field_type import DictType, ListType, PrimitiveFieldType, TupleType
 
 try:
-    from ..deserializer import get_legacy_module_name
+    from ..deserializer import get_legacy_class_name
 except ImportError:
-    get_legacy_module_name = lambda x: x
+    get_legacy_class_name = lambda x: x
 
 logger = logging.getLogger(__name__)
 _deprecate_log_key = "_SER_DEPRECATE_LOGGED"
@@ -62,8 +62,9 @@ def _is_field_primitive_compound(field: Field):
 class SerializableMeta(type):
     def __new__(mcs, name: str, bases: Tuple[Type], properties: Dict):
         # All the fields including misc fields.
+        legacy_name = properties.get("_legacy_name", name)
         legacy_name_hash = hash(
-            f"{get_legacy_module_name(properties.get('__module__'))}.{name}"
+            get_legacy_class_name(f"{properties.get('__module__')}.{legacy_name}")
         )
         name_hash = hash(
             f"{properties.get('__module__')}.{properties.get('__qualname__')}"
@@ -300,7 +301,7 @@ class SerializableSerializer(Serializer):
                 _primitive_serial_cache[obj] = primitive_vals
 
         compound_vals = self._get_field_values(obj, obj._NON_PRIMITIVE_FIELDS)
-        cls_module = f"{type(obj).__module__}#{type(obj).__qualname__}"
+        cls_module = extract_class_name(type(obj))
 
         field_count_key = self._get_obj_field_count_key(obj)
         if not self.is_public_data_exist(context, field_count_key):

@@ -12,19 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import logging
+from typing import MutableMapping, Union
 
 import numpy as np
-import pandas as pd
 
 from ... import opcodes
 from ...core import OutputType
 from ...serialization.serializables import AnyField, BoolField, DictField, TupleField
-from ...utils import quiet_stdio
+from ...udf import BuiltinFunction, MarkedFunction
+from ...utils import copy_if_possible
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import copy_func_scheduling_hints, parse_index
-
-logger = logging.getLogger(__name__)
+from ..utils import (
+    InferredDataFrameMeta,
+    copy_func_scheduling_hints,
+    infer_dataframe_return_value,
+    parse_index,
+)
 
 
 class GroupByTransform(DataFrameOperator, DataFrameOperatorMixin):
@@ -42,68 +45,61 @@ class GroupByTransform(DataFrameOperator, DataFrameOperatorMixin):
         if hasattr(self, "func"):
             copy_func_scheduling_hints(self.func, self)
 
-    def _infer_df_func_returns(self, in_groupby, dtypes, index):
-        index_value, output_types, new_dtypes = None, None, None
+    def has_custom_code(self) -> bool:
+        return not isinstance(self.func, BuiltinFunction)
 
-        output_types = (
-            [OutputType.dataframe]
-            if in_groupby.op.output_types[0] == OutputType.dataframe_groupby
-            else [OutputType.series]
-        )
-
-        try:
-            mock_groupby = in_groupby.op.build_mock_groupby()
-            with np.errstate(all="ignore"), quiet_stdio():
-                if self.call_agg:
-                    infer_df = mock_groupby.agg(self.func, *self.args, **self.kwds)
-                else:
-                    infer_df = mock_groupby.transform(
-                        self.func, *self.args, **self.kwds
-                    )
-
-            # todo return proper index when sort=True is implemented
-            index_value = parse_index(None, in_groupby.key, self.func)
-
-            if isinstance(infer_df, pd.DataFrame):
-                output_types = [OutputType.dataframe]
-                new_dtypes = new_dtypes or infer_df.dtypes
+    def _infer_df_func_returns(
+        self, in_groupby, dtypes, dtype=None, name=None, index=None
+    ) -> InferredDataFrameMeta:
+        def infer_func(groupby_obj):
+            args = copy_if_possible(self.args)
+            kwds = copy_if_possible(self.kwds)
+            if self.call_agg:
+                return groupby_obj.agg(self.func, *args, **kwds)
             else:
-                output_types = [OutputType.series]
-                new_dtypes = new_dtypes or (infer_df.name, infer_df.dtype)
-        except:  # noqa: E722  # nosec
-            logger.info("Exception raised while inferring df_func", exc_info=True)
+                return groupby_obj.transform(self.func, *args, **kwds)
 
-        self.output_types = output_types if not self.output_types else self.output_types
-        dtypes = new_dtypes if dtypes is None else dtypes
-        index_value = index_value if index is None else parse_index(index)
-        return dtypes, index_value
+        if self.call_agg:
+            output_type = None
+        elif in_groupby.op.output_types[0] == OutputType.dataframe_groupby:
+            output_type = OutputType.dataframe
+        else:
+            output_type = OutputType.series
+
+        inferred_meta = infer_dataframe_return_value(
+            in_groupby,
+            infer_func,
+            output_type=output_type,
+            dtypes=dtypes,
+            dtype=dtype,
+            name=name,
+            index=index,
+        )
+        if inferred_meta.output_type and not self.output_types:
+            self.output_types = [inferred_meta.output_type]
+        return inferred_meta
 
     def __call__(
         self, groupby, dtypes=None, dtype=None, name=None, index=None, skip_infer=None
     ):
         in_df = groupby.inputs[0]
 
-        if dtypes is None and dtype is not None:
-            dtypes = (name, dtype)
         if skip_infer:
-            dtypes, index_value = None, None
+            dtypes, dtype, name, index_value = None, None, None, None
             self.output_types = (
                 [OutputType.dataframe]
                 if groupby.op.output_types[0] == OutputType.dataframe_groupby
                 else [OutputType.series]
             )
         else:
-            dtypes, index_value = self._infer_df_func_returns(groupby, dtypes, index)
-            for arg, desc in zip(
-                (self.output_types, dtypes), ("output_types", "dtypes")
-            ):
-                if arg is None:
-                    raise TypeError(
-                        f"Cannot determine {desc} by calculating with enumerate data, "
-                        "please specify it as arguments"
-                    )
-        if index_value is None:
-            index_value = parse_index(None, (in_df.key, in_df.index_value.key))
+            inferred_meta = self._infer_df_func_returns(
+                groupby, dtypes=dtypes, dtype=dtype, name=name, index=index
+            )
+            inferred_meta.check_absence("output_type", "dtypes", "dtype")
+            dtypes = inferred_meta.dtypes
+            dtype = inferred_meta.dtype
+            name = inferred_meta.name
+            index_value = inferred_meta.index_value
 
         if self.output_types[0] == OutputType.dataframe:
             new_shape = (
@@ -123,7 +119,6 @@ class GroupByTransform(DataFrameOperator, DataFrameOperatorMixin):
                 columns_value=columns_value,
             )
         else:
-            name, dtype = dtypes
             new_shape = (np.nan,) if self.call_agg else groupby.shape
             return self.new_series(
                 [groupby],
@@ -132,6 +127,14 @@ class GroupByTransform(DataFrameOperator, DataFrameOperatorMixin):
                 dtype=dtype,
                 index_value=index_value,
             )
+
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "GroupByTransform"
+    ) -> None:
+        if isinstance(op.func, MarkedFunction):
+            ctx[op.outputs[0].key] = float("inf")
+        super().estimate_size(ctx, op)
 
 
 def groupby_transform(

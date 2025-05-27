@@ -17,7 +17,7 @@ from .compress import compress
 from .extract import extract
 from .fill_diagonal import TensorFillDiagonal, fill_diagonal
 from .flatnonzero import flatnonzero
-from .getitem import FancyIndexingConcat, FancyIndexingDistribute, TensorIndex
+from .getitem import TensorIndex
 from .nonzero import TensorNonzero, nonzero
 from .setitem import TensorIndexSetValue
 from .slice import TensorSlice

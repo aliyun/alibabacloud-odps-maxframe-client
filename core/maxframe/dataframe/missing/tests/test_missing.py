@@ -64,7 +64,7 @@ def test_drop_na():
     df_raw = pd.DataFrame(np.nan, index=range(0, 20), columns=list("ABCDEFGHIJ"))
     for _ in range(30):
         df_raw.iloc[random.randint(0, 19), random.randint(0, 9)] = random.randint(0, 99)
-    for rowid in range(random.randint(1, 5)):
+    for _ in range(random.randint(1, 5)):
         row = random.randint(0, 19)
         for idx in range(0, 10):
             df_raw.iloc[row, idx] = random.randint(0, 99)
@@ -79,7 +79,7 @@ def test_replace():
     df_raw = pd.DataFrame(-1, index=range(0, 20), columns=list("ABCDEFGHIJ"))
     for _ in range(30):
         df_raw.iloc[random.randint(0, 19), random.randint(0, 9)] = random.randint(0, 99)
-    for rowid in range(random.randint(1, 5)):
+    for _ in range(random.randint(1, 5)):
         row = random.randint(0, 19)
         for idx in range(0, 10):
             df_raw.iloc[row, idx] = random.randint(0, 99)

@@ -13,13 +13,13 @@
 # limitations under the License.
 
 import copy
-from typing import Optional, Sequence, Union
+from typing import List, Optional, Sequence, Union
 
 import numpy as np
 import pandas as pd
 
 from ... import opcodes
-from ...core import ENTITY_TYPE, OutputType, get_output_types
+from ...core import ENTITY_TYPE, EntityData, OutputType, get_output_types
 from ...serialization.serializables import (
     BoolField,
     DictField,
@@ -48,7 +48,6 @@ class GroupBySample(DataFrameOperator, DataFrameOperatorMixin):
     seed = Int32Field("seed", default=None)
     _random_state = RandomStateField("random_state", default=None)
     errors = StringField("errors", default=None)
-
     # for chunks
     # num of instances for chunks
     input_nsplits = NDArrayField("input_nsplits", default=None)
@@ -60,12 +59,13 @@ class GroupBySample(DataFrameOperator, DataFrameOperatorMixin):
     def random_state(self):
         return self._random_state
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
+    @classmethod
+    def _set_inputs(cls, op: "GroupBySample", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
         input_iter = iter(inputs)
         next(input_iter)
-        if isinstance(self.weights, ENTITY_TYPE):
-            self.weights = next(input_iter)
+        if isinstance(op.weights, ENTITY_TYPE):
+            op.weights = next(input_iter)
 
     def __call__(self, groupby):
         df = groupby

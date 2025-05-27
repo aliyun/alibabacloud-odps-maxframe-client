@@ -64,6 +64,11 @@ def is_in(vals):
     return Validator(vals.__contains__)
 
 
+def is_all_dict_keys_in(*keys):
+    keys_set = set(keys)
+    return Validator(lambda x: x in keys_set)
+
+
 def _is_valid_cache_path(path: str) -> bool:
     """
     path should look like oss://oss_endpoint/oss_bucket/path

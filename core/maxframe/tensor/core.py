@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +28,7 @@ from ..core import (
     is_build_mode,
     register_output_types,
 )
-from ..core.entity.utils import refresh_tileable_shape
+from ..core.entity.utils import fill_chunk_slices, refresh_tileable_shape
 from ..serialization.serializables import (
     AnyField,
     DataTypeField,
@@ -50,7 +48,7 @@ class TensorOrder(Enum):
 
 
 class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
-    __slots__ = ()
+    __slots__ = ("_accessors",)
     type_name = "Tensor"
 
     _legacy_deprecated_non_primitives = ["_chunks"]
@@ -79,6 +77,7 @@ class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
             _order=order,
             **kw,
         )
+        self._accessors = dict()
         if self.order is None and self.op is not None:
             if len(self.inputs) == 0:
                 self._order = TensorOrder.C_ORDER
@@ -137,7 +136,8 @@ class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
 
     def refresh_params(self):
         refresh_tileable_shape(self)
-        if self._dtype is None:
+        fill_chunk_slices(self)
+        if self.dtype is None:
             self._dtype = self.chunks[0].dtype
 
     @property
@@ -458,7 +458,7 @@ class Tensor(HasShapeTileable):
         array([('c', 1), ('a', 2)],
               dtype=[('x', '|S1'), ('y', '<i4')])
         """
-        from .misc import sort
+        from .sort import sort
 
         self._data = sort(
             self,

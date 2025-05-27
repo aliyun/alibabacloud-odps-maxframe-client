@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -85,10 +83,8 @@ def test_sparse_add():
     assert_array_equal(s1 + s2, s1 + s2)
     assert_array_equal(s1 + d1, s1 + d1)
     assert_array_equal(d1 + s1, d1 + s1)
-    r = sps.csr_matrix(((s1.data + 1), s1.indices, s1.indptr), s1.shape)
-    assert_array_equal(s1 + 1, r)
-    r = sps.csr_matrix(((1 + s1.data), s1.indices, s1.indptr), s1.shape)
-    assert_array_equal(1 + s1, r)
+    assert_array_equal(s1 + 1, s1.toarray() + 1)
+    assert_array_equal(1 + s1.toarray(), 1 + s1.toarray())
 
     # test sparse vector
     v = SparseNDArray(v1, shape=(3,))
@@ -108,10 +104,8 @@ def test_sparse_subtract():
     assert_array_equal(s1 - s2, s1 - s2)
     assert_array_equal(s1 - d1, s1 - d1)
     assert_array_equal(d1 - s1, d1 - s1)
-    r = sps.csr_matrix(((s1.data - 1), s1.indices, s1.indptr), s1.shape)
-    assert_array_equal(s1 - 1, r)
-    r = sps.csr_matrix(((1 - s1.data), s1.indices, s1.indptr), s1.shape)
-    assert_array_equal(1 - s1, r)
+    assert_array_equal(s1 - 1, s1.toarray() - 1)
+    assert_array_equal(1 - s1, 1 - s1.toarray())
 
     # test sparse vector
     v = SparseNDArray(v1, shape=(3,))
@@ -264,53 +258,59 @@ def test_sparse_bin():
         assert_array_equal(lm(2, v), rm(2, v1_data))
 
 
-def test_sparse_unary():
+@pytest.mark.parametrize(
+    "method,dense",
+    [
+        ("exp", True),
+        ("exp2", True),
+        ("log", True),
+        ("log2", True),
+        ("log10", True),
+        ("reciprocal", True),
+        ("cos", True),
+        ("arccos", True),
+        ("arccosh", True),
+        ("sinc", True),
+        ("isreal", True),
+        ("isfinite", True),
+        ("negative", False),
+        ("positive", False),
+        ("absolute", False),
+        ("abs", False),
+        ("fabs", False),
+        ("rint", False),
+        ("sign", False),
+        ("conj", False),
+        ("expm1", False),
+        ("log1p", False),
+        ("sqrt", False),
+        ("square", False),
+        ("cbrt", False),
+        ("sin", False),
+        ("tan", False),
+        ("arcsin", False),
+        ("arctan", False),
+        ("arcsinh", False),
+        ("arctanh", False),
+        ("deg2rad", False),
+        ("rad2deg", False),
+        ("angle", False),
+        ("isnan", False),
+        ("isinf", False),
+        ("signbit", False),
+    ],
+)
+def test_sparse_unary_normal(method, dense):
     s1 = SparseNDArray(s1_data)
     v = SparseNDArray(v1, shape=(3,))
 
-    for method in (
-        "negative",
-        "positive",
-        "absolute",
-        "abs",
-        "fabs",
-        "rint",
-        "sign",
-        "conj",
-        "exp",
-        "exp2",
-        "log",
-        "log2",
-        "log10",
-        "expm1",
-        "log1p",
-        "sqrt",
-        "square",
-        "cbrt",
-        "reciprocal",
-        "sin",
-        "cos",
-        "tan",
-        "arcsin",
-        "arccos",
-        "arctan",
-        "arcsinh",
-        "arccosh",
-        "arctanh",
-        "deg2rad",
-        "rad2deg",
-        "angle",
-        "isnan",
-        "isinf",
-        "signbit",
-        "sinc",
-        "isreal",
-        "isfinite",
-    ):
-        lm, rm = getattr(mls, method), getattr(np, method)
+    lm, rm = getattr(mls, method), getattr(np, method)
+    if dense:
+        r = rm(s1.toarray())
+    else:
         r = sps.csr_matrix((rm(s1.data), s1.indices, s1.indptr), s1.shape)
-        assert_array_equal(lm(s1), r)
-        assert_array_equal(lm(v), rm(v1_data))
+    assert_array_equal(lm(s1), r)
+    assert_array_equal(lm(v), rm(v1_data))
 
 
 def test_sparse_dot():

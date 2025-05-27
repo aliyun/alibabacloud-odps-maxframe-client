@@ -13,10 +13,9 @@
 # limitations under the License.
 
 import inspect
-from typing import Any, Union
+from typing import Any, MutableMapping, Union
 
 import numpy as np
-import pandas as pd
 from pandas import DataFrame, Series
 
 from ... import opcodes
@@ -30,14 +29,15 @@ from ...serialization.serializables import (
     StringField,
     TupleField,
 )
-from ...utils import get_func_token, quiet_stdio, tokenize
+from ...udf import BuiltinFunction, MarkedFunction
+from ...utils import copy_if_possible, get_func_token, make_dtype, make_dtypes, tokenize
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import (
+    InferredDataFrameMeta,
     build_df,
     build_series,
     copy_func_scheduling_hints,
-    make_dtype,
-    make_dtypes,
+    infer_dataframe_return_value,
     pack_func_args,
     parse_index,
     validate_axis,
@@ -60,10 +60,11 @@ class ApplyOperandLogicKeyGeneratorMixin(OperatorLogicKeyGeneratorMixin):
             return token_values
 
 
-class ApplyOperator(
+class DataFrameApply(
     DataFrameOperator, DataFrameOperatorMixin, ApplyOperandLogicKeyGeneratorMixin
 ):
     _op_type_ = opcodes.APPLY
+    _legacy_name = "ApplyOperator"
 
     func = FunctionField("func")
     axis = AnyField("axis", default=0)
@@ -83,6 +84,9 @@ class ApplyOperator(
         if hasattr(self, "func"):
             copy_func_scheduling_hints(self.func, self)
 
+    def has_custom_code(self) -> bool:
+        return not isinstance(self.func, BuiltinFunction)
+
     def _update_key(self):
         values = [v for v in self._values_ if v is not self.func] + [
             get_func_token(self.func)
@@ -90,62 +94,48 @@ class ApplyOperator(
         self._obj_set("_key", tokenize(type(self).__name__, *values))
         return self
 
-    def _infer_df_func_returns(self, df, dtypes, dtype=None, name=None, index=None):
+    def _infer_df_func_returns(
+        self, df, dtypes, dtype=None, name=None, index=None
+    ) -> InferredDataFrameMeta:
         if isinstance(self.func, np.ufunc):
             output_type = OutputType.dataframe
-            new_dtypes = None
-            index_value = "inherit"
             new_elementwise = True
         else:
-            if self.output_types is not None and (
-                dtypes is not None or dtype is not None
-            ):
-                ret_dtypes = dtypes if dtypes is not None else (name, dtype)
-                ret_index_value = parse_index(index) if index is not None else None
-                self.elementwise = False
-                return ret_dtypes, ret_index_value
-
-            output_type = new_dtypes = index_value = None
+            output_type = self.output_types[0] if self.output_types else None
             new_elementwise = False
 
-        try:
-            empty_df = build_df(df, size=2)
-            with np.errstate(all="ignore"), quiet_stdio():
-                infer_df = empty_df.apply(
-                    self.func,
-                    axis=self.axis,
-                    raw=self.raw,
-                    result_type=self.result_type,
-                    args=self.args,
-                    **self.kwds,
-                )
-            if index_value is None:
-                if infer_df.index is empty_df.index:
-                    index_value = "inherit"
-                else:
-                    index_value = parse_index(pd.RangeIndex(-1))
+        def infer_func(in_df):
+            return in_df.apply(
+                self.func,
+                axis=self.axis,
+                raw=self.raw,
+                result_type=self.result_type,
+                args=self.args,
+                **self.kwds,
+            )
 
-            if isinstance(infer_df, pd.DataFrame):
-                output_type = output_type or OutputType.dataframe
-                new_dtypes = new_dtypes or infer_df.dtypes
-            else:
-                output_type = output_type or OutputType.series
-                new_dtypes = (name or infer_df.name, dtype or infer_df.dtype)
-            new_elementwise = False if new_elementwise is None else new_elementwise
-        except:  # noqa: E722  # nosec
-            pass
+        inferred_meta = infer_dataframe_return_value(
+            df,
+            infer_func,
+            output_type=output_type,
+            dtypes=dtypes,
+            dtype=dtype,
+            name=name,
+            index=index,
+            inherit_index=True,
+            build_kw={"size": 2},
+        )
+        inferred_meta.check_absence("output_type", "dtypes")
 
         self.output_types = (
-            [output_type]
-            if not self.output_types and output_type
+            [inferred_meta.output_type]
+            if not self.output_types and inferred_meta.output_type
             else self.output_types
         )
-        dtypes = new_dtypes if dtypes is None else dtypes
-        index_value = index_value if index is None else parse_index(index)
         self.elementwise = (
             new_elementwise if self.elementwise is None else self.elementwise
         )
-        return dtypes, index_value
+        return inferred_meta
 
     def _call_df_or_series(self, df):
         return self.new_df_or_series([df])
@@ -153,20 +143,12 @@ class ApplyOperator(
     def _call_dataframe(self, df, dtypes=None, dtype=None, name=None, index=None):
         # for backward compatibility
         dtype = dtype if dtype is not None else dtypes
-        dtypes, index_value = self._infer_df_func_returns(
+        inferred_meta = self._infer_df_func_returns(
             df, dtypes, dtype=dtype, name=name, index=index
         )
+        index_value = inferred_meta.index_value
         if index_value is None:
             index_value = parse_index(None, (df.key, df.index_value.key))
-        for arg, desc in zip((self.output_types, dtypes), ("output_types", "dtypes")):
-            if arg is None:
-                raise TypeError(
-                    f"Cannot determine {desc} by calculating with enumerate data, "
-                    "please specify it as arguments"
-                )
-
-        if index_value == "inherit":
-            index_value = df.index_value
 
         if self.elementwise:
             shape = df.shape
@@ -174,30 +156,21 @@ class ApplyOperator(
             shape = [np.nan, np.nan]
             shape[1 - self.axis] = df.shape[1 - self.axis]
             if self.axis == 1:
-                shape[1] = len(dtypes)
+                shape[1] = len(inferred_meta.dtypes)
             shape = tuple(shape)
         else:
             shape = (df.shape[1 - self.axis],)
 
         if self.output_types[0] == OutputType.dataframe:
-            if self.axis == 0:
-                return self.new_dataframe(
-                    [df],
-                    shape=shape,
-                    dtypes=dtypes,
-                    index_value=index_value,
-                    columns_value=parse_index(dtypes.index, store_data=True),
-                )
-            else:
-                return self.new_dataframe(
-                    [df],
-                    shape=shape,
-                    dtypes=dtypes,
-                    index_value=df.index_value,
-                    columns_value=parse_index(dtypes.index, store_data=True),
-                )
+            kw = dict(
+                shape=shape,
+                dtypes=inferred_meta.dtypes,
+                index_value=index_value if self.axis == 0 else df.index_value,
+                columns_value=parse_index(inferred_meta.dtypes.index, store_data=True),
+            )
+            return self.new_dataframe([df], **kw)
         else:
-            name, dtype = dtypes
+            name, dtype = inferred_meta.name, inferred_meta.dtype
             return self.new_series(
                 [df], shape=shape, name=name, dtype=dtype, index_value=index_value
             )
@@ -205,70 +178,7 @@ class ApplyOperator(
     def _call_series(self, series, dtypes=None, dtype=None, name=None, index=None):
         # for backward compatibility
         dtype = dtype if dtype is not None else dtypes
-        if self.convert_dtype:
-            if self.output_types is not None and (
-                dtypes is not None or dtype is not None
-            ):
-                infer_series = test_series = None
-            else:
-                test_series = build_series(series, size=2, name=series.name)
-                try:
-                    with np.errstate(all="ignore"), quiet_stdio():
-                        infer_series = test_series.apply(
-                            self.func, args=self.args, **self.kwds
-                        )
-                except:  # noqa: E722  # nosec  # pylint: disable=bare-except
-                    infer_series = None
-
-            output_type = self._output_types[0]
-
-            if index is not None:
-                index_value = parse_index(index)
-            elif infer_series is not None:
-                if infer_series.index is test_series.index:
-                    index_value = series.index_value
-                else:  # pragma: no cover
-                    index_value = parse_index(infer_series.index)
-            else:
-                index_value = parse_index(series.index_value)
-
-            if output_type == OutputType.dataframe:
-                if dtypes is None:
-                    if infer_series is not None and infer_series.ndim == 2:
-                        dtypes = infer_series.dtypes
-                    else:
-                        raise TypeError(
-                            "Cannot determine dtypes, "
-                            "please specify `dtypes` as argument"
-                        )
-                columns_value = parse_index(dtypes.index, store_data=True)
-
-                return self.new_dataframe(
-                    [series],
-                    shape=(series.shape[0], len(dtypes)),
-                    index_value=index_value,
-                    columns_value=columns_value,
-                    dtypes=dtypes,
-                )
-            else:
-                if (
-                    dtype is None
-                    and infer_series is not None
-                    and infer_series.ndim == 1
-                ):
-                    dtype = infer_series.dtype
-                else:
-                    dtype = dtype if dtype is not None else np.dtype(object)
-                if infer_series is not None and infer_series.ndim == 1:
-                    name = name or infer_series.name
-                return self.new_series(
-                    [series],
-                    dtype=dtype,
-                    shape=series.shape,
-                    index_value=index_value,
-                    name=name,
-                )
-        else:
+        if not self.convert_dtype:
             dtype = dtype if dtype is not None else np.dtype("object")
             return self.new_series(
                 [series],
@@ -277,6 +187,49 @@ class ApplyOperator(
                 index_value=series.index_value,
                 name=name,
             )
+        else:
+
+            def infer_func(obj):
+                return obj.apply(self.func, args=self.args, **self.kwds)
+
+            output_type = self.output_types[0] if self.output_types else None
+            inferred_meta = infer_dataframe_return_value(
+                series,
+                infer_func,
+                output_type=output_type,
+                dtypes=dtypes,
+                dtype=dtype,
+                name=name,
+                index=index,
+                inherit_index=True,
+                build_kw={"size": 2},
+            )
+
+            output_type = inferred_meta.output_type or output_type
+            if output_type == OutputType.dataframe:
+                dtypes = inferred_meta.dtypes
+                if dtypes is None:
+                    raise TypeError(
+                        "Cannot determine dtypes, please specify `dtypes` as argument"
+                    )
+                return self.new_dataframe(
+                    [series],
+                    shape=(series.shape[0], len(dtypes)),
+                    index_value=inferred_meta.index_value,
+                    columns_value=parse_index(
+                        inferred_meta.dtypes.index, store_data=True
+                    ),
+                    dtypes=inferred_meta.dtypes,
+                )
+            else:
+                dtype = inferred_meta.dtype or np.dtype("O")
+                return self.new_series(
+                    [series],
+                    dtype=dtype,
+                    shape=series.shape,
+                    index_value=inferred_meta.index_value,
+                    name=inferred_meta.name,
+                )
 
     def __call__(self, df_or_series, dtypes=None, dtype=None, name=None, index=None):
         axis = getattr(self, "axis", None) or 0
@@ -303,7 +256,21 @@ class ApplyOperator(
 
     def get_packed_funcs(self, df=None) -> Any:
         stub_df = self._build_stub_pandas_obj(df or self.inputs[0])
-        return pack_func_args(stub_df, self.func, *self.args, **self.kwds)
+        args = copy_if_possible(self.args)
+        kwargs = copy_if_possible(self.kwds)
+        return pack_func_args(stub_df, self.func, *args, **kwargs)
+
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "DataFrameApply"
+    ) -> None:
+        if isinstance(op.func, MarkedFunction):
+            ctx[op.outputs[0].key] = float("inf")
+        super().estimate_size(ctx, op)
+
+
+# keep for import compatibility
+ApplyOperator = DataFrameApply
 
 
 def df_apply(
@@ -546,7 +513,7 @@ def df_apply(
             kwds["axis"] = axis
         return func(*args, **kwds)
 
-    op = ApplyOperator(
+    op = DataFrameApply(
         func=func,
         axis=axis,
         raw=raw,
@@ -753,7 +720,7 @@ def series_apply(
     )
     output_type = output_types[0] if output_types else OutputType.series
 
-    op = ApplyOperator(
+    op = DataFrameApply(
         func=func,
         convert_dtype=convert_dtype,
         args=args,

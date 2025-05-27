@@ -14,6 +14,7 @@
 
 import warnings
 from datetime import date, datetime, time
+from typing import MutableMapping, Union
 
 import numpy as np
 import pandas as pd
@@ -161,6 +162,13 @@ class DataFrameDateRange(DataFrameOperator, DataFrameOperatorMixin):
             raw_chunk_size=chunk_size,
             freq=self.freq,
         )
+
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "DataFrameDateRange"
+    ):  # pragma: no cover
+        # todo implement this to facilitate local computation
+        ctx[op.outputs[0].key] = float("inf")
 
 
 _midnight = time(0, 0)

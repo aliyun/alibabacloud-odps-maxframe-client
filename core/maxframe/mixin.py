@@ -12,15 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import errno
 import logging.config
-from typing import Union
+import os
+from typing import List, Union
 
 import traitlets as T
+from tornado import httpserver, web
 from tornado.log import enable_pretty_logging
 from traitlets.config import Configurable
 
 from . import env
-from .utils import trait_from_env
+from .utils import random_ports, trait_from_env
 
 
 class ServiceConfigMixin(Configurable):
@@ -66,6 +69,55 @@ class ServiceConfigMixin(Configurable):
     )
     base_url_default = trait_from_env("base_url", base_url_env)
 
+    def init_http_server(self) -> None:
+        """Initializes an HTTP server for the Tornado web application on the
+        configured interface and port.
+
+        Tries to find an open port if the one configured is not available using
+        the same logic as the Jupyter Notebook server.
+        """
+        self.http_server = httpserver.HTTPServer(self.web_app)
+
+        for port in random_ports(self.port, self.port_retries + 1):
+            try:
+                self.http_server.listen(port, self.ip)
+            except OSError as e:
+                if e.errno == errno.EADDRINUSE:
+                    self.log.info(
+                        "The port %i is already in use, trying another port." % port
+                    )
+                    continue
+                elif e.errno in (
+                    errno.EACCES,
+                    getattr(errno, "WSAEACCES", errno.EACCES),
+                ):
+                    self.log.warning("Permission to listen on port %i denied" % port)
+                    continue
+                else:
+                    raise
+            else:
+                self.port = port
+                if env.MAXFRAME_HTTP_PORT_FILE in os.environ:
+                    try:
+                        with open(os.getenv(env.MAXFRAME_HTTP_PORT_FILE), "w") as outf:
+                            outf.write(str(port))
+                    except IOError:  # pragma: no cover
+                        self.log.warning(
+                            "Failed to write port file %s",
+                            os.getenv(env.MAXFRAME_HTTP_PORT_FILE),
+                        )
+                break
+        else:
+            self.log.critical(
+                "ERROR: the gateway server could not be started because "
+                "no available port could be found."
+            )
+            self.exit(1)
+
+    @classmethod
+    def get_health_handlers(cls) -> List[tuple]:
+        return [("/health", HealthHandler)]
+
 
 class LoggerConfigMixin(Configurable):
     log_config_file_env = env.MAXFRAME_SERVICE_LOG_CONFIG_FILE
@@ -98,3 +150,8 @@ class LoggerConfigMixin(Configurable):
             logging.getLogger().setLevel(log_level)
         # Adjust kubernetes logging level to hide secrets when logging
         logging.getLogger("kubernetes").setLevel(logging.WARNING)
+
+
+class HealthHandler(web.RequestHandler):
+    async def get(self):
+        self.set_status(200)

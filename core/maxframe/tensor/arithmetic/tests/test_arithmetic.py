@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,14 +14,14 @@
 
 import numpy as np
 import pytest
-
-from maxframe.tensor.arithmetic.core import TensorBinOp, TensorUnaryOp
-from maxframe.utils import collect_leaf_operators
+import scipy.sparse as sps
 
 from ....core import enter_mode
+from ....utils import collect_leaf_operators
 from ...core import SparseTensor, Tensor
 from ...datasource import array, empty, ones, tensor
 from .. import *  # noqa: F401
+from ..core import TensorBinOp, TensorUnaryOp
 
 
 def test_add():
@@ -51,8 +49,8 @@ def test_add():
 
     t = t1 + 1
     assert t.op.gpu is None
-    assert t.issparse() is True
-    assert type(t) is SparseTensor
+    assert t.issparse() is False
+    assert type(t) is Tensor
 
     t = t1 + 0
     assert t.issparse() is True
@@ -343,8 +341,8 @@ def test_cos():
     t1 = tensor([[0, 1, 0], [1, 0, 0]], chunk_size=2).tosparse()
 
     t = cos(t1)
-    assert t.issparse() is True
-    assert type(t) is SparseTensor
+    assert t.issparse() is False
+    assert type(t) is Tensor
 
 
 def test_around():
@@ -416,3 +414,39 @@ def test_binary_op_func_name():
     for op_type in results:
         if op_type not in (TensorSetImag, TensorSetReal):
             assert hasattr(op_type, "_func_name")
+
+
+def test_tree_arithmetic():
+    raws = [np.random.rand(10, 10) for _ in range(10)]
+    tensors = [tensor(a, chunk_size=3) for a in raws]
+
+    t = tree_add(*tensors, combine_size=4)
+    assert isinstance(t.op, TensorTreeAdd)
+    assert t.issparse() is False
+    assert len(t.inputs) == 3
+    assert len(t.inputs[0].inputs) == 4
+    assert len(t.inputs[-1].inputs) == 2
+
+    t = tree_multiply(*tensors, combine_size=4)
+    assert isinstance(t.op, TensorTreeMultiply)
+    assert t.issparse() is False
+    assert len(t.inputs) == 3
+    assert len(t.inputs[0].inputs) == 4
+    assert len(t.inputs[-1].inputs) == 2
+
+    raws = [sps.random(5, 9, density=0.1) for _ in range(10)]
+    tensors = [tensor(a, chunk_size=3) for a in raws]
+
+    t = tree_add(*tensors, combine_size=4)
+    assert isinstance(t.op, TensorTreeAdd)
+    assert t.issparse() is True
+    assert len(t.inputs) == 3
+    assert len(t.inputs[0].inputs) == 4
+    assert len(t.inputs[-1].inputs) == 2
+
+    t = tree_multiply(*tensors, combine_size=4)
+    assert isinstance(t.op, TensorTreeMultiply)
+    assert t.issparse() is True
+    assert len(t.inputs) == 3
+    assert len(t.inputs[0].inputs) == 4
+    assert len(t.inputs[-1].inputs) == 2

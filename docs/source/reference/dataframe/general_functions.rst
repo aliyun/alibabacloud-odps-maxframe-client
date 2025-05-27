@@ -10,6 +10,7 @@ Data manipulations
    :toctree: generated/
 
    concat
+   get_dummies
    merge
 
 Top-level missing data

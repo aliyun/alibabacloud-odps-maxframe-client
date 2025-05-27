@@ -64,6 +64,12 @@ Sums, products, differences
    maxframe.tensor.sum
    maxframe.tensor.nanprod
    maxframe.tensor.nansum
+   maxframe.tensor.cumprod
+   maxframe.tensor.cumsum
+   maxframe.tensor.nancumprod
+   maxframe.tensor.nancumsum
+   maxframe.tensor.diff
+   maxframe.tensor.trapezoid
 
 
 Exponential and logarithms

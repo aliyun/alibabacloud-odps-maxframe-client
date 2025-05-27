@@ -26,9 +26,9 @@ from odps.apis.storage_api import (
     TableBatchScanResponse,
     TableBatchWriteResponse,
 )
+from odps.errors import TableModified
 from odps.tunnel import TableDownloadSession, TableDownloadStatus, TableTunnel
 from odps.types import OdpsSchema, PartitionSpec, timestamp_ntz
-from odps.utils import call_with_retry
 
 try:
     import pyarrow.compute as pac
@@ -37,7 +37,7 @@ except ImportError:
 
 from ...config import options
 from ...env import ODPS_STORAGE_API_ENDPOINT
-from ...utils import is_empty, sync_pyodps_options
+from ...utils import call_with_retry, is_empty, sync_pyodps_options
 from .schema import odps_schema_to_arrow_schema
 
 PartitionsType = Union[List[str], str, None]
@@ -154,6 +154,32 @@ class TunnelMultiPartitionReader:
             return None
         return self._count
 
+    def _open_table_reader(self, partition: Optional[str], columns: List[str]):
+        attempts = 2
+        for trial in range(attempts):
+            try:
+                return self._table.open_reader(
+                    partition,
+                    columns=columns,
+                    arrow=True,
+                    download_id=self._partition_to_download_ids.get(partition),
+                    append_partitions=True,
+                )
+            except TableModified:
+                if trial == attempts - 1:
+                    raise
+                pt_to_session = TunnelTableIO.create_download_sessions(
+                    self._odps_entry,
+                    self._table.full_table_name,
+                    partition,
+                    reopen=True,
+                )
+                assert partition in pt_to_session
+                self._partition_to_download_ids[partition] = pt_to_session[partition].id
+        raise RuntimeError(
+            "Unexpected condition: all trial of open reader done and not raised"
+        )
+
     def _open_next_reader(self):
         if self._cur_reader is not None:
             self._reader_start_pos += self._cur_reader.count
@@ -170,12 +196,8 @@ class TunnelMultiPartitionReader:
             part_str = self._partitions[self._cur_partition_id]
             req_columns = self._schema.names
             with sync_pyodps_options():
-                self._cur_reader = self._table.open_reader(
-                    part_str,
-                    columns=req_columns,
-                    arrow=True,
-                    download_id=self._partition_to_download_ids.get(part_str),
-                    append_partitions=True,
+                self._cur_reader = self._open_table_reader(
+                    part_str, columns=req_columns
                 )
             if self._cur_reader.count + self._reader_start_pos > self._start:
                 start = self._start - self._reader_start_pos
@@ -193,13 +215,27 @@ class TunnelMultiPartitionReader:
 
     def read(self):
         with sync_pyodps_options():
+            is_first_batch = False
             if self._cur_reader is None:
+                is_first_batch = True
                 self._open_next_reader()
                 if self._cur_reader is None:
                     return None
             while self._cur_reader is not None:
                 try:
-                    batch = next(self._reader_iter)
+                    try:
+                        batch = next(self._reader_iter)
+                    except TableModified:
+                        if not is_first_batch:
+                            raise
+                        # clear download id cache to create new sessions
+                        self._partition_to_download_ids = dict()
+                        self._cur_reader = None
+                        self._open_next_reader()
+                        if self._cur_reader is None:
+                            return None
+                        batch = next(self._reader_iter)
+
                     if batch is not None:
                         if self._row_left is not None:
                             self._row_left -= batch.num_rows
@@ -222,6 +258,14 @@ class TunnelMultiPartitionReader:
 
 class TunnelTableIO(ODPSTableIO):
     _down_session_ids = OrderedDict()
+    _down_modified_time = dict()
+
+    @classmethod
+    def _get_modified_time(cls, odps_entry: ODPS, full_table_name, partition):
+        data_src = odps_entry.get_table(full_table_name)
+        if partition is not None:
+            data_src = data_src.partitions[partition]
+        return data_src.last_data_modified_time
 
     @classmethod
     def create_download_sessions(
@@ -229,6 +273,7 @@ class TunnelTableIO(ODPSTableIO):
         odps_entry: ODPS,
         full_table_name: str,
         partitions: List[Optional[str]] = None,
+        reopen: bool = False,
     ) -> Dict[Optional[str], TableDownloadSession]:
         table = odps_entry.get_table(full_table_name)
         tunnel = TableTunnel(odps_entry, quota_name=options.tunnel_quota_name)
@@ -240,9 +285,14 @@ class TunnelTableIO(ODPSTableIO):
         part_to_session = dict()
         for part in parts:
             part_key = (full_table_name, part)
+            modified_time = cls._get_modified_time(odps_entry, full_table_name, part)
             down_session = None
 
-            if part_key in cls._down_session_ids:
+            if (
+                not reopen
+                and part_key in cls._down_session_ids
+                and cls._down_modified_time.get(part_key) == modified_time
+            ):
                 down_id = cls._down_session_ids[part_key]
                 down_session = tunnel.create_download_session(
                     table, async_mode=True, partition_spec=part, download_id=down_id
@@ -256,8 +306,10 @@ class TunnelTableIO(ODPSTableIO):
                 )
 
             while len(cls._down_session_ids) >= _DOWNLOAD_ID_CACHE_SIZE:
-                cls._down_session_ids.popitem(False)
+                k, _ = cls._down_session_ids.popitem(False)
+                cls._down_modified_time.pop(k)
             cls._down_session_ids[part_key] = down_session.id
+            cls._down_modified_time[part_key] = modified_time
             part_to_session[part] = down_session
         return part_to_session
 

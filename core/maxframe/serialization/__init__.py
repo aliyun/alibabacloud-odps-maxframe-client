@@ -15,9 +15,11 @@
 from . import arrow, exception, maxframe_objects, numpy, pandas, scipy, serializables
 from .core import (
     PickleContainer,
+    PickleHookOptions,
     Serializer,
     clear_type_cache,
     deserialize,
+    load_member,
     load_type,
     pickle_buffers,
     serialize,

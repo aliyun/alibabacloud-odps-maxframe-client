@@ -107,25 +107,13 @@ def _is_array_writeable(a):
     return True
 
 
-def as_same_device(inputs, device=None, ret_extra=False, copy_if_not_writeable=False):
+def as_same_module(inputs, ret_extra=False, copy_if_not_writeable=False):
     input_tensors = [
         i for i in inputs if hasattr(i, "ndim") and i.ndim > 0
     ]  # filter scalar
     has_sparse = any(issparse(i) for i in inputs)
 
-    if device is None:
-        try:
-            device = _most_nbytes_device(
-                (i.device.id if hasattr(i, "device") else -1, i.nbytes)
-                for i in input_tensors
-            )
-        except ValueError:
-            device = -1
-
-    if device == -1:
-        outputs = [_get(i) for i in inputs]
-    else:
-        outputs = [move_to_device(i, device) for i in inputs]
+    outputs = [_get(i) for i in inputs]
 
     if copy_if_not_writeable:
         new_outputs = []
@@ -155,7 +143,7 @@ def as_same_device(inputs, device=None, ret_extra=False, copy_if_not_writeable=F
             m = get_array_module(input_tensors[0])
         else:
             m = np
-    return outputs, device, m
+    return outputs, m
 
 
 def as_np_array(x):
@@ -174,13 +162,3 @@ def device(device_id):
     else:  # pragma: no cover
         with cp.cuda.Device(device_id) as dev:
             yield dev
-
-
-def create_array(op):
-    xp = array_module(op.gpu)
-
-    def inner(func, *args, **kwargs):
-        with device(op.device):
-            return getattr(xp, func)(*args, **kwargs)
-
-    return inner

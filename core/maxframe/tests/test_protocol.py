@@ -20,8 +20,8 @@ import pytest
 from ..lib import wrapped_pickle
 from ..protocol import (
     DagInfo,
-    DagStatus,
     ErrorInfo,
+    ExecutionStatus,
     ODPSTableResultInfo,
     ODPSVolumeResultInfo,
     ResultInfo,
@@ -127,7 +127,7 @@ def test_dag_info_json_serialize():
     info = DagInfo(
         session_id="test_session_id",
         dag_id="test_dag_id",
-        status=DagStatus.FAILED,
+        status=ExecutionStatus.FAILED,
         progress=0.65,
         tileable_to_result_infos={
             "tileable_key": ODPSTableResultInfo(full_table_name="table_name")
@@ -153,7 +153,7 @@ def test_session_info_json_serialize():
     dag_info = DagInfo(
         session_id="test_session_id",
         dag_id="test_dag_id",
-        status=DagStatus.RUNNING,
+        status=ExecutionStatus.RUNNING,
         progress=0.65,
     )
     info = SessionInfo(

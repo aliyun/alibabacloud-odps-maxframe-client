@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 import pandas as pd
 
 from ... import opcodes
-from ...core import ENTITY_TYPE
+from ...core import ENTITY_TYPE, EntityData
 from ...serialization.serializables import AnyField, BoolField, Int32Field, StringField
 from ...tensor.utils import filter_inputs
 from ..core import DATAFRAME_TYPE, SERIES_TYPE
@@ -99,14 +101,15 @@ class DataFrameWhere(DataFrameOperator, DataFrameOperatorMixin):
                 index_value=df_or_series.index_value,
             )
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs)
-        self._input = next(inputs_iter)
-        if isinstance(self.cond, ENTITY_TYPE):
-            self.cond = next(inputs_iter)
-        if isinstance(self.other, ENTITY_TYPE):
-            self.other = next(inputs_iter)
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameWhere", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs)
+        op._input = next(inputs_iter)
+        if isinstance(op.cond, ENTITY_TYPE):
+            op.cond = next(inputs_iter)
+        if isinstance(op.other, ENTITY_TYPE):
+            op.other = next(inputs_iter)
 
 
 _doc_template = """

@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 import pandas as pd
 
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import AnyField, FieldTypes, KeyField, ListField
 from ..core import SERIES_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
@@ -33,9 +36,10 @@ class DataFrameDescribe(DataFrameOperator, DataFrameOperatorMixin):
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameDescribe", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.input = op._inputs[0]
 
     def __call__(self, df_or_series):
         if isinstance(df_or_series, SERIES_TYPE):

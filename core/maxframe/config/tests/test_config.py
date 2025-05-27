@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,14 +16,8 @@ import threading
 
 import pytest
 
-from ..config import (
-    Config,
-    is_integer,
-    is_string,
-    option_context,
-    options,
-    update_wlm_quota_settings,
-)
+from ...utils import update_wlm_quota_settings
+from ..config import Config, is_integer, is_string, option_context, options
 
 
 def test_config_context():
@@ -117,6 +109,6 @@ def test_update_wlm_quota_settings():
         update_wlm_quota_settings("session_id", engine_settings)
         assert engine_settings["odps.task.wlm.quota"] == "quota1"
         options.session.quota_name = None
-        update_wlm_quota_settings("session_id", engine_settings)
-        # TODO(renxiang): overwrite or not overwrite
+        with pytest.raises(ValueError):
+            update_wlm_quota_settings("session_id", engine_settings)
         assert "odps.task.wlm.quota" in engine_settings

@@ -39,6 +39,17 @@ class OutputType(Enum):
         return [cls(ot) for ot in output_types] if output_types is not None else None
 
 
+df_output_types = {
+    OutputType.dataframe,
+    OutputType.dataframe_groupby,
+    OutputType.series,
+    OutputType.series_groupby,
+    OutputType.df_or_series,
+    OutputType.index,
+    OutputType.categorical,
+}
+
+
 _OUTPUT_TYPE_TO_TILEABLE_TYPES = {OutputType.object: OBJECT_TYPE}
 _OUTPUT_TYPE_TO_FETCH_CLS = {}
 

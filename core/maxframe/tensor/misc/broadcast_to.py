@@ -85,5 +85,5 @@ def broadcast_to(tensor, shape):
             f"and requested shape {shape}"
         )
 
-    op = TensorBroadcastTo(shape, dtype=tensor.dtype, sparse=tensor.issparse())
+    op = TensorBroadcastTo(shape=shape, dtype=tensor.dtype, sparse=tensor.issparse())
     return op(tensor, shape)

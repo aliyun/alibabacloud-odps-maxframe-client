@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -105,7 +103,7 @@ def noncentral_f(
     >>> dfden = 20 # within groups degrees of freedom
     >>> nonc = 3.0
     >>> nc_vals = mt.random.noncentral_f(dfnum, dfden, nonc, 1000000)
-    >>> NF = np.histogram(nc_vals.execute(), bins=50, normed=True)  # TODO(jisheng): implement mt.histogram
+    >>> NF = np.histogram(nc_vals.execute(), bins=50, normed=True)
     >>> c_vals = mt.random.f(dfnum, dfden, 1000000)
     >>> F = np.histogram(c_vals.execute(), bins=50, normed=True)
     >>> plt.plot(F[1][1:], F[0])

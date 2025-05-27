@@ -22,7 +22,6 @@ from ..core.operator import (
     TileableOperatorMixin,
 )
 from ..serialization.serializables import DataTypeField
-from ..utils import calc_nsplits
 
 
 class TensorOperatorMixin(TileableOperatorMixin):
@@ -58,39 +57,6 @@ class TensorOperatorMixin(TileableOperatorMixin):
         if getattr(self, "output_limit") != 1:
             raise TypeError("cannot new tensor with more than 1 outputs")
         return self.new_tensors(inputs, shape=shape, dtype=dtype, order=order, **kw)[0]
-
-    @classmethod
-    def concat_tileable_chunks(cls, tileable):
-        from .merge.concatenate import TensorConcatenate
-
-        tensor = tileable
-        assert not tensor.is_coarse()
-
-        op = TensorConcatenate(dtype=tensor.dtype)
-        chunk = TensorConcatenate(dtype=tensor.dtype).new_chunk(
-            tensor.chunks, shape=tensor.shape, index=(0,) * tileable.ndim
-        )
-        return op.new_tensor(
-            [tensor],
-            tensor.shape,
-            chunks=[chunk],
-            nsplits=tuple((s,) for s in tensor.shape),
-        )
-
-    @classmethod
-    def create_tileable_from_chunks(cls, chunks, inputs=None, **kw):
-        chunk_idx_to_shape = {c.index: c.shape for c in chunks}
-        nsplits = calc_nsplits(chunk_idx_to_shape)
-        shape = tuple(sum(ns) for ns in nsplits)
-        op = chunks[0].op.copy().reset_key()
-        return op.new_tensor(
-            inputs,
-            shape=shape,
-            chunks=chunks,
-            nsplits=nsplits,
-            dtype=chunks[0].dtype,
-            **kw
-        )
 
 
 class TensorOperator(Operator):

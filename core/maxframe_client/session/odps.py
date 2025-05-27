@@ -19,26 +19,30 @@ import logging
 import time
 import weakref
 from numbers import Integral
-from typing import Any, Dict, List, Mapping, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Mapping, Optional, Tuple, Union
 from urllib.parse import urlparse
 
 import numpy as np
 import pandas as pd
 from odps import ODPS
 from odps import options as odps_options
+from odps.config import option_context as odps_option_context
 from odps.console import in_ipython_frontend
 
+from maxframe.codegen import CodeGenResult
+from maxframe.codegen.spe import SPECodeGenerator
 from maxframe.config import options
 from maxframe.core import Entity, TileableGraph, build_fetch, enter_mode
-from maxframe.core.operator import Fetch
+from maxframe.core.operator import Fetch, estimate_tileable_execution_size
 from maxframe.dataframe import read_odps_table
-from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
 from maxframe.dataframe.datasource import PandasDataSourceOperator
 from maxframe.dataframe.datasource.read_odps_table import DataFrameReadODPSTable
 from maxframe.errors import (
     MaxFrameError,
     NoTaskServerResponseError,
     SessionAlreadyClosedError,
+    TileableNotExecutedError,
 )
 from maxframe.io.objects import get_object_io_handler
 from maxframe.io.odpsio import (
@@ -48,8 +52,9 @@ from maxframe.io.odpsio import (
     pandas_to_odps_schema,
 )
 from maxframe.protocol import (
+    ConstantResultInfo,
     DagInfo,
-    DagStatus,
+    ExecutionStatus,
     ODPSTableResultInfo,
     ODPSVolumeResultInfo,
     ResultInfo,
@@ -62,13 +67,16 @@ from maxframe.session import (
     Profiling,
     Progress,
 )
+from maxframe.sperunner import SPEDagRunner
 from maxframe.tensor.datasource import ArrayDataSource
 from maxframe.typing_ import TileableType
 from maxframe.utils import (
     ToThreadMixin,
     build_session_volume_name,
     build_temp_table_name,
+    estimate_pandas_size,
     get_default_table_properties,
+    no_default,
     str_to_bool,
     sync_pyodps_options,
 )
@@ -92,6 +100,7 @@ class MaxFrameServiceCaller(metaclass=abc.ABCMeta):
             sql_settings.get("odps.task.wlm.quota", None),
             options.spe.task.settings.get("odps.task.wlm.quota", None),
             options.pythonpack.task.settings.get("odps.task.wlm.quota", None),
+            options.dpe.task.settings.get("odps.task.wlm.quota", None),
             quota_name,
         }.difference([None])
         if len(quota_settings) >= 2:
@@ -165,6 +174,41 @@ class MaxFrameServiceCaller(metaclass=abc.ABCMeta):
         return None
 
 
+class LocalSPEDagRunner(SPEDagRunner):
+    def __init__(
+        self,
+        session_id: str,
+        subdag_id: str,
+        subdag: TileableGraph,
+        generated: CodeGenResult,
+        settings: Dict[str, Any],
+        odps_entry: Optional[ODPS] = None,
+        tileable_to_info: Mapping[TileableType, ResultInfo] = None,
+        data_tileable_getter: Optional[
+            Callable[[TileableType], Tuple[TileableType, Any]]
+        ] = None,
+        loop: asyncio.AbstractEventLoop = None,
+    ):
+        super().__init__(session_id, subdag_id, subdag, generated, settings)
+        self._odps = self._odps or odps_entry
+        self._tileable_key_to_info = {
+            t.key: v for t, v in ({} or tileable_to_info).items()
+        }
+        self._data_tileable_getter = data_tileable_getter or (lambda x: (x, None))
+        self._loop = loop
+
+    def fetch_data_by_tileable(self, t: TileableType) -> Any:
+        tileable, index = self._data_tileable_getter(t)
+        result_info = self._tileable_key_to_info[tileable.key]
+        fetcher = get_fetcher_cls(result_info.result_type)(self._odps)
+        return asyncio.run_coroutine_threadsafe(
+            fetcher.fetch(t, result_info, index), self._loop
+        ).result()
+
+    def store_data(self, key: str, value: Any) -> ResultInfo:
+        return ConstantResultInfo(data=value)
+
+
 class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
     _odps_entry: Optional[ODPS]
     _tileable_to_infos: Mapping[TileableType, ResultInfo]
@@ -216,7 +260,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         await self._show_logview_address()
 
     def _upload_and_get_table_read_tileable(
-        self, t: TileableType
+        self, t: TileableType, data: Any
     ) -> Optional[TileableType]:
         table_schema, table_meta = pandas_to_odps_schema(t, unknown_as_string=True)
         if self._odps_entry.exist_table(table_meta.table_name):
@@ -224,9 +268,15 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
                 table_meta.table_name, hints=options.sql.settings
             )
         table_name = build_temp_table_name(self.session_id, t.key)
+        schema = (
+            self._last_settings.get("session.default_schema", None)
+            if self._last_settings.get("session.enable_schema", False)
+            else None
+        )
         table_obj = self._odps_entry.create_table(
             table_name,
             table_schema,
+            schema=schema,
             lifecycle=options.session.temp_table_lifecycle,
             hints=options.sql.settings,
             if_not_exists=True,
@@ -234,7 +284,6 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             or get_default_table_properties(),
         )
 
-        data = t.op.get_data()
         batch_size = options.session.upload_batch_size
 
         if len(data):
@@ -268,7 +317,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         return read_tileable.data
 
     def _upload_and_get_vol_read_tileable(
-        self, t: TileableType
+        self, t: TileableType, data: Any
     ) -> Optional[TileableType]:
         vol_name = build_session_volume_name(self.session_id)
         writer = ODPSVolumeWriter(
@@ -278,21 +327,35 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             replace_internal_host=self._replace_internal_host,
         )
         io_handler = get_object_io_handler(t)
-        io_handler().write_object(writer, t, t.op.data)
+        io_handler().write_object(writer, t, data)
         return build_fetch(t).data
 
+    def _get_local_data(self, t: TileableType) -> Any:
+        if isinstance(t.op, (ArrayDataSource, PandasDataSourceOperator)):
+            # scenario 1: tensor or DataFrame input
+            if t.inputs:
+                return no_default
+            return t.op.get_data()
+        if isinstance(t.op, Fetch):
+            # scenario 2: local data
+            key_to_tileables = {t.key: t for t in self._tileable_to_infos.keys()}
+            if t.key not in key_to_tileables:
+                return no_default
+            src_info = self._tileable_to_infos[key_to_tileables[t.key]]
+            if not isinstance(src_info, ConstantResultInfo):
+                return no_default
+            return src_info.data
+        return no_default
+
     def _upload_and_get_read_tileable(self, t: TileableType) -> Optional[TileableType]:
-        if (
-            not isinstance(t.op, (ArrayDataSource, PandasDataSourceOperator))
-            or t.op.get_data() is None
-            or t.inputs
-        ):
-            return None
+        local_data = self._get_local_data(t)
+        if local_data is no_default:
+            return
         with sync_pyodps_options():
-            if isinstance(t.op, PandasDataSourceOperator):
-                return self._upload_and_get_table_read_tileable(t)
+            if isinstance(t, DATAFRAME_TYPE + SERIES_TYPE + INDEX_TYPE):
+                return self._upload_and_get_table_read_tileable(t, local_data)
             else:
-                return self._upload_and_get_vol_read_tileable(t)
+                return self._upload_and_get_vol_read_tileable(t, local_data)
 
     @enter_mode(kernel=True, build=True)
     def _scan_and_replace_local_sources(
@@ -316,7 +379,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
 
             for succ in successors:
                 graph.add_edge(replaced, succ)
-                succ.op._set_inputs([replacements.get(t, t) for t in succ.inputs])
+                succ.op.inputs = [replacements.get(t, t) for t in succ.inputs]
 
         graph.results = [replacements.get(t, t) for t in graph.results]
         return replacements
@@ -364,6 +427,34 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         self._last_settings = copy.deepcopy(new_settings)
         return update
 
+    def _is_local_executable(self, tileable_graph: TileableGraph) -> bool:
+        from maxframe.codegen.spe.core import get_op_adapter
+
+        local_exec_size_limit = options.local_execution.size_limit
+        if not options.local_execution.enabled or not local_exec_size_limit:
+            return False
+
+        # make sure all ops registered in SPE
+        try:
+            for tileable in tileable_graph:
+                get_op_adapter(type(tileable.op))
+        except KeyError:
+            return False
+
+        fetch_sizes = dict()
+        for inp in tileable_graph.iter_indep():
+            if not isinstance(inp.op, Fetch):
+                continue
+            local_data = self._get_local_data(inp)
+            # todo add resolution of sizes of tensor data type here
+            if isinstance(local_data, (pd.DataFrame, pd.Series, pd.Index)):
+                fetch_sizes[inp.key] = estimate_pandas_size(local_data)
+
+        est_exec_size = estimate_tileable_execution_size(
+            tileable_graph, fetch_sizes=fetch_sizes
+        )
+        return local_exec_size_limit and est_exec_size < local_exec_size_limit
+
     async def execute(self, *tileables, **kwargs) -> ExecutionInfo:
         tileables = [
             tileable.data if isinstance(tileable, Entity) else tileable
@@ -373,6 +464,20 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         tileable_graph, to_execute_tileables = gen_submit_tileable_graph(
             self, tileables, tileable_to_copied
         )
+
+        if self._is_local_executable(tileable_graph):
+            return await self._execute_locally(tileable_graph, to_execute_tileables)
+        else:
+            return await self._execute_in_service(
+                tileable_graph, to_execute_tileables, tileable_to_copied
+            )
+
+    async def _execute_in_service(
+        self,
+        tileable_graph: TileableGraph,
+        to_execute_tileables: List[TileableType],
+        tileable_to_copied: Dict[TileableType, TileableType],
+    ) -> ExecutionInfo:
         source_replacements = self._scan_and_replace_local_sources(tileable_graph)
 
         # we need to manage uploaded data sources with refcounting mechanism
@@ -394,7 +499,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         progress = Progress()
         profiling = Profiling()
         aio_task = asyncio.create_task(
-            self._run_in_background(dag_info, to_execute_tileables, progress)
+            self._run_remotely_in_background(dag_info, to_execute_tileables, progress)
         )
         return ExecutionInfo(
             aio_task,
@@ -404,7 +509,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             to_execute_tileables,
         )
 
-    async def _run_in_background(
+    async def _run_remotely_in_background(
         self, dag_info: DagInfo, tileables: List, progress: Progress
     ):
         start_time = time.time()
@@ -458,20 +563,20 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
                             f"Cannot find DAG with ID {dag_id} in session {session_id}"
                         )
                     progress.value = dag_info.progress
-                    if dag_info.status != DagStatus.RUNNING:
+                    if dag_info.status != ExecutionStatus.RUNNING:
                         break
                     await asyncio.sleep(timeout_val)
             except asyncio.CancelledError:
                 dag_info = await self.ensure_async_call(self._caller.cancel_dag, dag_id)
-                if dag_info.status != DagStatus.CANCELLED:  # pragma: no cover
+                if dag_info.status != ExecutionStatus.CANCELLED:  # pragma: no cover
                     raise
             finally:
-                if dag_info.status == DagStatus.SUCCEEDED:
+                if dag_info.status == ExecutionStatus.SUCCEEDED:
                     progress.value = 1.0
-                elif dag_info.status == DagStatus.FAILED:
+                elif dag_info.status == ExecutionStatus.FAILED:
                     dag_info.error_info.reraise()
 
-            if dag_info.status in (DagStatus.RUNNING, DagStatus.CANCELLED):
+            if dag_info.status in (ExecutionStatus.RUNNING, ExecutionStatus.CANCELLED):
                 return
 
             for key, result_info in dag_info.tileable_to_result_infos.items():
@@ -479,6 +584,45 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
                 fetcher = get_fetcher_cls(result_info.result_type)(self._odps_entry)
                 await fetcher.update_tileable_meta(t, result_info)
                 self._tileable_to_infos[t] = result_info
+
+    async def _execute_locally(
+        self,
+        tileable_graph: TileableGraph,
+        to_execute_tileables: List[TileableType],
+    ):
+        cur_loop = asyncio.get_running_loop()
+
+        def run_sync(subdag_id):
+            codegen = SPECodeGenerator(self.session_id, subdag_id)
+            generated_code = codegen.generate(tileable_graph)
+
+            runner = LocalSPEDagRunner(
+                self._session_id,
+                subdag_id,
+                tileable_graph,
+                generated_code,
+                settings={},
+                odps_entry=self._odps_entry,
+                tileable_to_info=self._tileable_to_infos,
+                loop=cur_loop,
+            )
+            with odps_option_context():
+                self._odps_entry.to_global()
+                key_to_info = runner.run()
+            for tileable in to_execute_tileables:
+                self._tileable_to_infos[tileable] = key_to_info[tileable.key]
+
+        mock_subdag_id = f"subdag_local_{int(time.time())}"
+        progress = Progress()
+        profiling = Profiling()
+        aio_task = asyncio.create_task(self.to_thread(run_sync, mock_subdag_id))
+        return ExecutionInfo(
+            aio_task,
+            progress,
+            profiling,
+            asyncio.get_running_loop(),
+            to_execute_tileables,
+        )
 
     def _get_data_tileable_and_indexes(
         self, tileable: TileableType
@@ -503,7 +647,9 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
                 if not all(isinstance(index, (slice, Integral)) for index in indexes):
                     raise ValueError("Only support fetch data slices")
             else:
-                raise ValueError(f"Cannot fetch unexecuted tileable: {tileable!r}")
+                raise TileableNotExecutedError(
+                    f"Cannot fetch unexecuted tileable: {tileable!r}"
+                )
 
         return tileable, indexes
 
@@ -546,17 +692,6 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         raise NotImplementedError
 
     async def get_web_endpoint(self) -> Optional[str]:
-        raise NotImplementedError
-
-    async def create_remote_object(
-        self, session_id: str, name: str, object_cls, *args, **kwargs
-    ):
-        raise NotImplementedError
-
-    async def get_remote_object(self, session_id: str, name: str):
-        raise NotImplementedError
-
-    async def destroy_remote_object(self, session_id: str, name: str):
         raise NotImplementedError
 
     async def create_mutable_tensor(
@@ -602,7 +737,7 @@ class MaxFrameRestCaller(MaxFrameServiceCaller):
         self._session_id = None
 
     async def create_session(self) -> SessionInfo:
-        info = await self._client.create_session(options.to_dict(remote_only=True))
+        info = await self._client.create_session(self.get_settings_to_upload())
         self._session_id = info.session_id
         return info
 

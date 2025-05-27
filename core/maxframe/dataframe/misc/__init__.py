@@ -38,8 +38,10 @@ from .map import index_map, series_map
 from .melt import melt
 from .memory_usage import df_memory_usage, index_memory_usage, series_memory_usage
 from .pct_change import pct_change
+from .pivot import pivot
 from .pivot_table import pivot_table
 from .qcut import qcut
+from .rechunk import rechunk
 from .select_dtypes import select_dtypes
 from .shift import shift, tshift
 from .stack import stack
@@ -68,9 +70,11 @@ def _install():
         setattr(t, "melt", melt)
         setattr(t, "memory_usage", df_memory_usage)
         setattr(t, "pct_change", pct_change)
+        setattr(t, "pivot", pivot)
         setattr(t, "pivot_table", pivot_table)
         setattr(t, "pop", df_pop)
         setattr(t, "query", df_query)
+        setattr(t, "rechunk", rechunk)
         setattr(t, "select_dtypes", select_dtypes)
         setattr(t, "shift", shift)
         setattr(t, "stack", stack)
@@ -96,6 +100,7 @@ def _install():
         setattr(t, "map", series_map)
         setattr(t, "memory_usage", series_memory_usage)
         setattr(t, "pct_change", pct_change)
+        setattr(t, "rechunk", rechunk)
         setattr(t, "shift", shift)
         setattr(t, "transform", series_transform)
         setattr(t, "tshift", tshift)
@@ -112,6 +117,7 @@ def _install():
         setattr(t, "is_monotonic_decreasing", property(fget=is_monotonic_decreasing))
         setattr(t, "map", index_map)
         setattr(t, "memory_usage", index_memory_usage)
+        setattr(t, "rechunk", rechunk)
         setattr(t, "value_counts", value_counts)
 
 

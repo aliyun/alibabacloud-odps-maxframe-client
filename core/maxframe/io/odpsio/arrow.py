@@ -68,6 +68,8 @@ def arrow_to_pandas(
         return _rebuild_dataframe(df, table_meta)
     elif table_meta.type == OutputType.index:
         return _rebuild_index(df, table_meta)
+    elif table_meta.type == OutputType.tensor:
+        return _rebuild_index(df, table_meta).to_numpy()
     elif table_meta.type == OutputType.scalar:
         return _rebuild_index(df, table_meta)[0]
     else:  # this could never happen  # pragma: no cover
@@ -107,9 +109,9 @@ def pandas_to_arrow(
             else:
                 table_datetime_cols = {"_idx_0"}
         df = df.to_frame(name=names[0] if len(names) == 1 else names)
-    elif table_meta.type == OutputType.scalar:
+    elif table_meta.type in (OutputType.scalar, OutputType.tensor):
         names = ["_idx_0"]
-        if isinstance(df, TENSOR_TYPE):
+        if isinstance(df, (TENSOR_TYPE, np.ndarray)):
             df = pd.DataFrame([], columns=names).astype({names[0]: df.dtype})
         else:
             df = pd.DataFrame([[df]], columns=names)
@@ -145,4 +147,15 @@ def pandas_to_arrow(
             col_data = pa_table.column(idx).cast(pa.timestamp("ms"))
             col_datas.append(col_data)
         pa_table = pa.Table.from_arrays(col_datas, names=col_names)
+
+        new_names, new_dtypes = [], []
+        for table_col, (pd_col, pd_dtype) in zip(
+            table_meta.table_column_names, table_meta.pd_column_dtypes.items()
+        ):
+            new_names.append(pd_col)
+            if table_col not in table_datetime_cols:
+                new_dtypes.append(pd_dtype)
+            else:
+                new_dtypes.append(np.dtype("datetime64[ms]"))
+        table_meta.pd_column_dtypes = pd.Series(new_dtypes, index=new_names)
     return pa_table, table_meta

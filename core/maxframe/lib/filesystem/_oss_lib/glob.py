@@ -15,7 +15,7 @@
 """
 Filename globbing utility, modified from python glob.
 
-obviously，this implementation is not optimal, it will cause too many
+obviously, this implementation is not optimal, it will cause too many
 oss requests. Lately, We can then convert the glob expression into
 a regular expression, and then match the oss key list.
 But before that, we need to figure out how to deal with magic char

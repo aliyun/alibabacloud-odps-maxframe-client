@@ -68,3 +68,9 @@ The following methods are available only for ``DataFrameGroupBy`` objects.
 
 .. autosummary::
    :toctree: generated/
+
+.. autosummary::
+   :toctree: generated/
+   :template: accessor_method.rst
+
+   DataFrameGroupBy.mf.apply_chunk

@@ -22,9 +22,7 @@ if not xgboost:
 else:
     from xgboost.sklearn import XGBRegressorBase
 
-    from .core import wrap_evaluation_matrices
     from .predict import predict
-    from .train import train
 
     class XGBRegressor(XGBScikitLearnBase, XGBRegressorBase):
         """
@@ -46,39 +44,42 @@ else:
             sample_weight=None,
             base_margin=None,
             eval_set=None,
+            xgb_model=None,
             sample_weight_eval_set=None,
             base_margin_eval_set=None,
             **kw,
         ):
-            session = kw.pop("session", None)
-            run_kwargs = kw.pop("run_kwargs", dict())
+            """
+            Fit the regressor. Note that fit() is an eager-execution
+            API. The call will be blocked until training finished.
 
-            self._n_features_in = X.shape[1]
-
-            dtrain, evals = wrap_evaluation_matrices(
-                None,
+            Parameters
+            ----------
+            X : array_like
+                Feature matrix
+            y : array_like
+                Labels
+            sample_weight : array_like
+                instance weights
+            eval_set : list, optional
+                A list of (X, y) tuple pairs to use as validation sets, for which
+                metrics will be computed.
+                Validation metrics will help us track the performance of the model.
+            sample_weight_eval_set : list, optional
+                A list of the form [L_1, L_2, ..., L_n], where each L_i is a list
+                of group weights on the i-th validation set.
+            """
+            super().fit(
                 X,
                 y,
-                sample_weight,
-                base_margin,
-                eval_set,
-                sample_weight_eval_set,
-                base_margin_eval_set,
+                sample_weight=sample_weight,
+                base_margin=base_margin,
+                eval_set=eval_set,
+                xgb_model=xgb_model,
+                sample_weight_eval_set=sample_weight_eval_set,
+                base_margin_eval_set=base_margin_eval_set,
+                **kw,
             )
-            params = self.get_xgb_params()
-            if not params.get("objective"):
-                params["objective"] = "reg:squarederror"
-            self.evals_result_ = dict()
-            result = train(
-                params,
-                dtrain,
-                num_boost_round=self.get_num_boosting_rounds(),
-                evals=evals,
-                evals_result=self.evals_result_,
-                session=session,
-                run_kwargs=run_kwargs,
-            )
-            self._Booster = result
             return self
 
         def predict(self, data, **kw):

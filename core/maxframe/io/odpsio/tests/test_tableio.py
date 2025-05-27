@@ -14,15 +14,19 @@
 
 import datetime
 
+import mock
 import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pytest
 from odps import ODPS
+from odps.errors import TableModified
+from odps.models import Table
 
 from ....config import options
 from ....tests.utils import flaky, tn
 from ....utils import config_odps_default_options
+from .. import TunnelTableIO
 from ..tableio import ODPSTableIO
 
 
@@ -159,5 +163,43 @@ def test_table_io_with_parts(switch_table_io):
             expected_data = pd_data.copy()
             expected_data["pt"] = "test"
             pd.testing.assert_frame_equal(reader.read_all().to_pandas(), expected_data)
+    finally:
+        tb.drop()
+
+
+def test_tunnel_table_io_with_modified():
+    config_odps_default_options()
+
+    o = ODPS.from_environments()
+    table_io = TunnelTableIO(o)
+
+    # test read and write tables with partition
+    parted_table_name = tn("test_tunnel_write_modified")
+    o.delete_table(parted_table_name, if_exists=True)
+    tb = o.create_table(
+        parted_table_name,
+        (",".join(f"{c} double" for c in "abcde"), "pt string"),
+        lifecycle=1,
+    )
+
+    raised = False
+    raw_open_reader = Table.open_reader
+
+    def _new_open_reader(self, *args, **kwargs):
+        nonlocal raised
+        if not raised:
+            raised = True
+            raise TableModified("Intentional error")
+        return raw_open_reader(self, *args, **kwargs)
+
+    try:
+        pd_data = pd.DataFrame(np.random.rand(100, 5), columns=list("abcde"))
+        with table_io.open_writer(parted_table_name, "pt=test") as writer:
+            writer.write(pa.Table.from_pandas(pd_data, preserve_index=False))
+
+        with mock.patch(
+            "odps.models.table.Table.open_reader", new=_new_open_reader
+        ), table_io.open_reader(parted_table_name, "pt=test") as reader:
+            pd.testing.assert_frame_equal(reader.read_all().to_pandas(), pd_data)
     finally:
         tb.drop()

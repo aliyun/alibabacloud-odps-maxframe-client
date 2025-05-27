@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 import copy
+import functools
 import os
 import shutil
 import sys
 import tempfile
 import textwrap
 import time
+from concurrent.futures import ThreadPoolExecutor
 from enum import Enum
 from functools import partial
 
@@ -29,6 +31,8 @@ import pyarrow as pa
 import pytest
 
 from .. import utils
+from ..serialization import PickleContainer
+from ..utils import parse_size_to_megabytes
 
 
 def test_string_conversion():
@@ -169,6 +173,9 @@ def test_tokenize():
     partial_f2 = partial(f, 1, k=1)
     assert utils.tokenize(partial_f) == utils.tokenize(copy.deepcopy(partial_f))
     assert utils.tokenize(partial_f) != utils.tokenize(partial_f2)
+
+    container = PickleContainer([b"abcd", b"efgh"])
+    assert utils.tokenize(container) == utils.tokenize(copy.deepcopy(container))
 
 
 def test_lazy_import():
@@ -362,3 +369,205 @@ def test_arrow_type_from_string():
     _assert_arrow_type_convert(
         pa.struct([("key", pa.string()), ("value", pa.list_(pa.int64()))])
     )
+
+
+@pytest.mark.parametrize("use_async", [False, True])
+async def test_call_with_retry(use_async):
+    retry_idx_list = [0]
+
+    def sync_func(delay=0):
+        if delay:
+            time.sleep(delay)
+        if retry_idx_list[0] < 3:
+            retry_idx_list[0] += 1
+            raise ValueError
+
+    async def async_func(delay=0):
+        if delay:
+            await asyncio.sleep(delay)
+        if retry_idx_list[0] < 3:
+            retry_idx_list[0] += 1
+            raise ValueError
+
+    func = async_func if use_async else sync_func
+
+    async def wait_coro(res):
+        if asyncio.iscoroutine(res):
+            return await res
+        return res
+
+    # test cases for retry times
+    with pytest.raises(ValueError):
+        retry_idx_list[0] = 0
+        await wait_coro(
+            utils.call_with_retry(func, retry_times=1, exc_type=(TypeError, ValueError))
+        )
+    assert retry_idx_list[0] == 2
+
+    retry_idx_list[0] = 0
+    await wait_coro(
+        utils.call_with_retry(func, retry_times=3, exc_type=(TypeError, ValueError))
+    )
+    assert retry_idx_list[0] == 3
+
+    retry_idx_list[0] = 0
+    exc_info = await wait_coro(
+        utils.call_with_retry(
+            func, retry_times=1, exc_type=(TypeError, ValueError), no_raise=True
+        )
+    )
+    assert isinstance(exc_info[1], ValueError)
+    assert retry_idx_list[0] == 2
+
+    delay_func = functools.partial(func, delay=0.5)
+    with pytest.raises(ValueError):
+        retry_idx_list[0] = 0
+        await wait_coro(
+            utils.call_with_retry(delay_func, retry_times=None, retry_timeout=0.7)
+        )
+    assert retry_idx_list[0] == 2
+
+    retry_idx_list[0] = 0
+    await wait_coro(
+        utils.call_with_retry(delay_func, retry_times=None, retry_timeout=2.2)
+    )
+    assert retry_idx_list[0] == 3
+
+    retry_idx_list[0] = 0
+    exc_info = await wait_coro(
+        utils.call_with_retry(
+            delay_func, retry_times=None, retry_timeout=0.7, no_raise=True
+        )
+    )
+    assert isinstance(exc_info[1], ValueError)
+    assert retry_idx_list[0] == 2
+
+
+def test_debug_to_thread():
+    class MixinTestCls(utils.ToThreadMixin):
+        async def run_in_coro(self):
+            await self.to_thread(time.sleep, 0.5)
+            await self.to_thread(functools.partial(time.sleep), 0.5)
+
+    def thread_body():
+        loop = asyncio.new_event_loop()
+        loop.set_debug(True)
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(MixinTestCls().run_in_coro())
+
+    tpe = ThreadPoolExecutor(max_workers=1)
+    tpe.submit(thread_body).result()
+    tpe.shutdown()
+
+
+@pytest.mark.parametrize(
+    "val, expected, make_series",
+    [
+        (int, np.dtype(int), True),
+        ([int], [np.dtype(int)], False),
+        ([int], pd.Series([np.dtype(int)]), True),
+        (np.dtype("float64"), np.dtype("float64"), True),
+        ("category", "category", True),
+        ("string", "string", True),
+        (pd.Timestamp, np.dtype("datetime64[ns]"), True),
+        (pd.Timedelta, np.dtype("timedelta64[ns]"), True),
+        ({"col": float}, {"col": np.dtype(float)}, False),
+        ({"col": float}, pd.Series({"col": np.dtype(float)}), True),
+        (
+            pd.Series([float], index=["col"]),
+            pd.Series([np.dtype(float)], index=["col"]),
+            True,
+        ),
+    ],
+)
+def test_make_dtypes(val, expected, make_series):
+    result = utils.make_dtypes(val, make_series=make_series)
+    if isinstance(expected, pd.Series):
+        pd.testing.assert_series_equal(result, expected)
+    else:
+        assert result == expected
+
+
+# Define conversion constants
+BYTES_PER_KIB = 1024
+BYTES_PER_MIB = 1024**2
+BYTES_PER_GIB = 1024**3
+BYTES_PER_TIB = 1024**4
+
+BYTES_PER_KB = 1000
+BYTES_PER_MB = 1000**2
+BYTES_PER_GB = 1000**3
+BYTES_PER_TB = 1000**4
+
+
+# Test numeric values with default units
+@pytest.mark.parametrize("value", [0, 1, 4, 5, 0.01, 0.1, 0.5, 1.5])
+@pytest.mark.parametrize(
+    "default_unit", ["KiB", "MiB", "GiB", "TiB", "KB", "MB", "GB", "TB"]
+)
+def test_numeric_inputs_with_default_units(value, default_unit):
+    """Test numeric inputs with various default units"""
+    # Define unit conversions to MiB for reusability
+    unit_to_mib_factor = {
+        "KiB": BYTES_PER_KIB / BYTES_PER_MIB,
+        "MiB": 1,
+        "GiB": BYTES_PER_GIB / BYTES_PER_MIB,
+        "TiB": BYTES_PER_TIB / BYTES_PER_MIB,
+        "KB": BYTES_PER_KB / BYTES_PER_MIB,
+        "MB": BYTES_PER_MB / BYTES_PER_MIB,
+        "GB": BYTES_PER_GB / BYTES_PER_MIB,
+        "TB": BYTES_PER_TB / BYTES_PER_MIB,
+    }
+    expected = value * unit_to_mib_factor[default_unit]
+    result = parse_size_to_megabytes(value, default_number_unit=default_unit)
+    assert pytest.approx(result) == expected
+
+
+@pytest.mark.parametrize(
+    "input_string, expected",
+    [
+        # Basic binary units
+        ("1KiB", BYTES_PER_KIB / BYTES_PER_MIB),
+        ("5miB", 5),
+        ("2giB", 2 * BYTES_PER_GIB / BYTES_PER_MIB),
+        ("0.1TiB", 0.1 * BYTES_PER_TIB / BYTES_PER_MIB),
+        # Basic decimal units
+        ("1KB", BYTES_PER_KB / BYTES_PER_MIB),
+        ("10MB", 10 * BYTES_PER_MB / BYTES_PER_MIB),
+        ("0.5GB", 0.5 * BYTES_PER_GB / BYTES_PER_MIB),
+        ("0.01TB", 0.01 * BYTES_PER_TB / BYTES_PER_MIB),
+        # Abbreviated forms
+        ("1K", BYTES_PER_KB / BYTES_PER_MIB),
+        ("10M", 10 * BYTES_PER_MB / BYTES_PER_MIB),
+        ("0.5g", 0.5 * BYTES_PER_GB / BYTES_PER_MIB),
+        ("0.01T", 0.01 * BYTES_PER_TB / BYTES_PER_MIB),
+        # With spaces
+        ("1 kiB", BYTES_PER_KIB / BYTES_PER_MIB),
+        ("10 MB", 10 * BYTES_PER_MB / BYTES_PER_MIB),
+        (" 0.5 GiB ", 0.5 * BYTES_PER_GIB / BYTES_PER_MIB),
+        ("0.01  TB", 0.01 * BYTES_PER_TB / BYTES_PER_MIB),
+    ],
+)
+def test_string_values_with_units(input_string, expected):
+    """Test various string inputs with different units"""
+    result = parse_size_to_megabytes(input_string, default_number_unit="GiB")
+    assert pytest.approx(result) == expected
+
+
+@pytest.mark.parametrize(
+    "invalid_input, default_unit",
+    [
+        ("invalid", "GiB"),  # Non-numeric input
+        ("1.2.3GiB", "GiB"),  # Invalid number format
+        ("1ZiB", "GiB"),  # Invalid unit
+        ("GiB", "GiB"),  # Missing number
+        ("1G1B", "GiB"),  # Invalid format
+        (5, None),  # Numeric input with default_number_unit as None
+        ("5", None),  # String numeric input with default_number_unit as None
+        ("5", "Gibb"),  # String numeric input with bad default_number_unit
+    ],
+)
+def test_parse_size_to_mega_bytes_invalid_inputs(invalid_input, default_unit):
+    """Test invalid inputs that should raise ValueError"""
+    with pytest.raises(ValueError):  # Catch ValueError
+        parse_size_to_megabytes(invalid_input, default_number_unit=default_unit)

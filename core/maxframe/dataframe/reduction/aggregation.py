@@ -14,6 +14,7 @@
 
 import copy
 import functools
+import inspect
 import itertools
 from collections import OrderedDict
 from collections.abc import Iterable
@@ -21,10 +22,13 @@ from typing import List
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 
 from ... import opcodes
 from ... import tensor as maxframe_tensor
 from ...core import ENTITY_TYPE, OutputType, enter_mode
+from ...io.odpsio.schema import pandas_dtype_to_arrow_type
+from ...lib.dtypes_extension import ArrowDtype
 from ...serialization.serializables import AnyField, BoolField, DictField, ListField
 from ...typing_ import TileableType
 from ...utils import lazy_import, pd_release_version
@@ -37,6 +41,7 @@ from .core import (
     ReductionPostStep,
     ReductionPreStep,
 )
+from .unique import _unique
 
 cp = lazy_import("cupy", rename="cp")
 cudf = lazy_import("cudf")
@@ -71,6 +76,7 @@ _agg_functions = {
     "kurt": lambda x, skipna=True, bias=False: x.kurt(skipna=skipna, bias=bias),
     "kurtosis": lambda x, skipna=True, bias=False: x.kurtosis(skipna=skipna, bias=bias),
     "nunique": lambda x: x.nunique(),
+    "unique": lambda x: _unique(x, output_list_scalar=True),
     "median": lambda x, skipna=True: x.median(skipna=skipna),
 }
 
@@ -99,6 +105,46 @@ class DataFrameAggregate(DataFrameOperator, DataFrameOperatorMixin):
             [np.number, np.bool_] if op.numeric_only else [np.bool_]
         ).dtypes
 
+    def _fill_df_dtypes(self, in_df, dtypes):
+        if all(dt != np.dtype("O") for dt in dtypes):
+            return dtypes
+
+        if isinstance(self.func, dict):
+            col_func_it = self.func.items()
+        else:
+            assert in_df.ndim == 2
+            col_func_it = itertools.product(in_df.dtypes.index, self.func)
+
+        col_to_dt = dict(in_df.dtypes.items())
+
+        new_dt = OrderedDict()
+        for (col_name, func), (out_col_name, dt) in zip(col_func_it, dtypes.items()):
+            if dt != np.dtype("O"):
+                new_dt[out_col_name] = dt
+            elif func == "unique":
+                in_dt = col_to_dt[col_name]
+                if in_dt == np.dtype("O"):
+                    in_dt = pd.StringDtype()
+                arrow_dt = pandas_dtype_to_arrow_type(in_dt)
+                new_dt[out_col_name] = ArrowDtype(pa.list_(arrow_dt))
+            else:
+                # do nothing as the result might be string
+                new_dt[out_col_name] = dt
+        return pd.Series(list(new_dt.values()), index=new_dt.keys())
+
+    def _fill_series_dtype(self, in_data, dtype):
+        if len(self.func) != 1 or dtype != np.dtype("O") or in_data.ndim > 1:
+            return dtype
+
+        if self.func[0] == "unique":
+            in_dt = in_data.dtype
+            if in_dt == np.dtype("O"):
+                in_dt = pd.StringDtype()
+            arrow_dt = pandas_dtype_to_arrow_type(in_dt)
+            return ArrowDtype(pa.list_(arrow_dt))
+        else:
+            return dtype
+
     def _calc_result_shape(self, df):
         if df.ndim == 2:
             if self.numeric_only:
@@ -114,16 +160,23 @@ class DataFrameAggregate(DataFrameOperator, DataFrameOperatorMixin):
             )
 
         result_df = test_obj.agg(self.raw_func, axis=self.axis, **self.raw_func_kw)
+        if isinstance(result_df, pd.DataFrame):
+            out_dtypes = self._fill_df_dtypes(df, result_df.dtypes)
+        elif isinstance(result_df, pd.Series):
+            dtype = self._fill_series_dtype(df, result_df.dtype)
+            out_dtypes = pd.Series([dtype], index=[result_df.name])
+        else:
+            out_dtypes = pd.Series([np.array(result_df).dtype], index=[None])
 
         if isinstance(result_df, pd.DataFrame):
             self.output_types = [OutputType.dataframe]
-            return result_df.dtypes, result_df.index
+            return out_dtypes, result_df.index
         elif isinstance(result_df, pd.Series):
             self.output_types = [OutputType.series]
-            return pd.Series([result_df.dtype], index=[result_df.name]), result_df.index
+            return out_dtypes, result_df.index
         else:
             self.output_types = [OutputType.scalar]
-            return np.array(result_df).dtype, None
+            return out_dtypes.iloc[0], None
 
     def __call__(self, df, output_type=None, dtypes=None, index=None):
         self._output_types = df.op.output_types
@@ -379,6 +432,15 @@ def aggregate(df, func=None, axis=0, **kw):
     min    1
     """
     axis = validate_axis(axis, df)
+    if func == "unique":
+        # workaround for direct call of unique function which
+        #  returns a tensor directly
+        func = getattr(df, func)
+        if "axis" in inspect.getfullargspec(func).args:
+            kw = kw.copy()
+            kw["axis"] = axis
+        return func(**kw)
+
     if (
         df.ndim == 2
         and isinstance(func, dict)

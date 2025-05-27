@@ -69,8 +69,8 @@ fields_values = [
     [FieldTypes.reference(MyClass), [MyClass()], [object()]],
     [
         FieldTypes.tuple(FieldTypes.int64, ...),
-        [tuple(), tuple([1, 2])],
-        [list(), tuple([1, 2.0])],
+        [(), (1, 2)],
+        [list(), (1, 2.0)],
     ],
     [
         FieldTypes.list(FieldTypes.int64, FieldTypes.float64),
@@ -101,9 +101,7 @@ def test_field_type(field_type, valid_values, invalid_values):
 
 def test_collction_field_error():
     with pytest.raises(ValueError):
-        FieldTypes.tuple(FieldTypes.int64, FieldTypes.float32).validate(
-            tuple([1, 3.0, 3.0])
-        )
+        FieldTypes.tuple(FieldTypes.int64, FieldTypes.float32).validate((1, 3.0, 3.0))
 
 
 def test_field_name():

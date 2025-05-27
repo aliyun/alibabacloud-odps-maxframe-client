@@ -15,7 +15,7 @@
 import numpy as np
 
 from ... import opcodes
-from ...lib.sparse.core import cp, cps, get_array_module, issparse, sps
+from ...lib.sparse.core import cp, get_array_module, issparse
 from ...serialization.serializables import (
     AnyField,
     FieldTypes,
@@ -26,7 +26,6 @@ from ...serialization.serializables import (
 from ...utils import on_deserialize_shape, on_serialize_shape
 from ..array_utils import is_array, is_cupy
 from ..core import TENSOR_TYPE, Tensor, TensorData, TensorOrder
-from ..utils import get_chunk_slices
 from .core import TensorNoInput
 from .scalar import scalar
 
@@ -81,26 +80,6 @@ class CSRMatrixDataSource(TensorNoInput):
             kw["gpu"] = True
         super().__init__(data=data, **kw)
 
-    def to_chunk_op(self, *args):
-        _, idx, chunk_size = args
-
-        xps = cps if self.gpu else sps
-        if len(self.shape) == 1:
-            shape = (1, self.shape[0])
-        else:
-            shape = self.shape
-        data = xps.csr_matrix((self.data, self.indices, self.indptr), shape)
-        chunk_data = data[get_chunk_slices(chunk_size, idx)]
-
-        chunk_op = self.copy().reset_key()
-        chunk_op.data = chunk_data.data
-        chunk_op.indices = chunk_data.indices
-        chunk_op.indptr = chunk_data.indptr
-        chunk_shape = chunk_data.shape[1:] if len(self.shape) == 1 else chunk_data.shape
-        chunk_op.shape = chunk_shape
-
-        return chunk_op
-
 
 def _from_spmatrix(spmatrix, dtype=None, chunk_size=None, gpu=None):
     if gpu is None:
@@ -152,6 +131,8 @@ def tensor(
         try:
             data = m.asarray(data, dtype=dtype, order=order)
         except ValueError:
+            if not hasattr(data, "__array__"):
+                raise
             arr = data.__array__(dtype=dtype)
             if isinstance(arr, TENSOR_TYPE):
                 return arr.astype(arr.dtype, order=order, copy=False)

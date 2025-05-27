@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 from pandas.core.dtypes.cast import find_common_type
 
 from ... import opcodes
-from ...core import TILEABLE_TYPE
+from ...core import TILEABLE_TYPE, EntityData
 from ...serialization.serializables import FieldTypes, ListField
 from ..core import SERIES_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
@@ -32,21 +34,23 @@ class DataFrameCaseWhen(DataFrameOperator, DataFrameOperatorMixin):
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameCaseWhen", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
         it = iter(inputs)
         next(it)
-        self.conditions = [
-            next(it) if isinstance(t, TILEABLE_TYPE) else t for t in self.conditions
+        op.conditions = [
+            next(it) if isinstance(t, TILEABLE_TYPE) else t for t in op.conditions
         ]
-        self.replacements = [
-            next(it) if isinstance(t, TILEABLE_TYPE) else t for t in self.replacements
+        op.replacements = [
+            next(it) if isinstance(t, TILEABLE_TYPE) else t for t in op.replacements
         ]
 
     def __call__(self, series):
         replacement_dtypes = [
             it.dtype if isinstance(it, SERIES_TYPE) else np.array(it).dtype
             for it in self.replacements
+            if it is not None
         ]
         dtype = find_common_type([series.dtype] + replacement_dtypes)
 

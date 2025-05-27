@@ -13,14 +13,15 @@
 # limitations under the License.
 
 from collections import namedtuple
+from typing import List
 
 import pandas as pd
 
 from ... import opcodes
-from ...core import ENTITY_TYPE, Entity, OutputType
+from ...core import ENTITY_TYPE, Entity, EntityData, OutputType
 from ...core.operator import MapReduceOperator
 from ...serialization.serializables import AnyField, BoolField, Int32Field
-from ...utils import lazy_import, no_default, pd_release_version
+from ...utils import lazy_import, no_default
 from ..core import SERIES_TYPE
 from ..initializer import Series as asseries
 from ..operators import DataFrameOperatorMixin
@@ -28,15 +29,13 @@ from ..utils import build_df, build_series, parse_index
 
 cudf = lazy_import("cudf")
 
-_GROUP_KEYS_NO_DEFAULT = pd_release_version[:2] == (1, 5)
-_default_group_keys = no_default if _GROUP_KEYS_NO_DEFAULT else True
-
 
 NamedAgg = namedtuple("NamedAgg", ["column", "aggfunc"])
 
 
-class DataFrameGroupByOperator(MapReduceOperator, DataFrameOperatorMixin):
+class DataFrameGroupByOp(MapReduceOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.GROUPBY
+    _legacy_name = "DataFrameGroupByOperator"
 
     by = AnyField(
         "by",
@@ -96,8 +95,6 @@ class DataFrameGroupByOperator(MapReduceOperator, DataFrameOperatorMixin):
 
         new_kw = self.groupby_params
         new_kw.update(kwargs)
-        if new_kw.get("level"):
-            new_kw["level"] = 0
         if isinstance(new_kw["by"], list):
             new_by = []
             for v in new_kw["by"]:
@@ -115,17 +112,18 @@ class DataFrameGroupByOperator(MapReduceOperator, DataFrameOperatorMixin):
             new_kw["by"] = new_by
         return mock_obj.groupby(**new_kw)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs[1:])
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameGroupByOp", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs[1:])
         if len(inputs) > 1:
             by = []
-            for k in self.by:
+            for k in op.by:
                 if isinstance(k, SERIES_TYPE):
                     by.append(next(inputs_iter))
                 else:
                     by.append(k)
-            self.by = by
+            op.by = by
 
     def __call__(self, df):
         params = df.params.copy()
@@ -153,9 +151,74 @@ class DataFrameGroupByOperator(MapReduceOperator, DataFrameOperatorMixin):
         return self.new_tileable(inputs, **params)
 
 
-def groupby(
-    df, by=None, level=None, as_index=True, sort=True, group_keys=_default_group_keys
-):
+DataFrameGroupByOperator = DataFrameGroupByOp
+
+
+def groupby(df, by=None, level=None, as_index=True, sort=True, group_keys=True):
+    """
+    Group DataFrame using a mapper or by a Series of columns.
+
+    A groupby operation involves some combination of splitting the
+    object, applying a function, and combining the results. This can be
+    used to group large amounts of data and compute operations on these
+    groups.
+
+    Parameters
+    ----------
+    by : mapping, function, label, or list of labels
+        Used to determine the groups for the groupby.
+        If ``by`` is a function, it's called on each value of the object's
+        index. If a dict or Series is passed, the Series or dict VALUES
+        will be used to determine the groups (the Series' values are first
+        aligned; see ``.align()`` method). If an ndarray is passed, the
+        values are used as-is to determine the groups. A label or list of
+        labels may be passed to group by the columns in ``self``. Notice
+        that a tuple is interpreted as a (single) key.
+    as_index : bool, default True
+        For aggregated output, return object with group labels as the
+        index. Only relevant for DataFrame input. as_index=False is
+        effectively "SQL-style" grouped output.
+    sort : bool, default True
+        Sort group keys. Get better performance by turning this off.
+        Note this does not influence the order of observations within each
+        group. Groupby preserves the order of rows within each group.
+    group_keys : bool
+        When calling apply, add group keys to index to identify pieces.
+
+    Notes
+    -----
+    MaxFrame only supports groupby with axis=0.
+    Default value of `group_keys` will be decided given the version of local
+    pandas library, which is True since pandas 2.0.
+
+    Returns
+    -------
+    DataFrameGroupBy
+        Returns a groupby object that contains information about the groups.
+
+    See Also
+    --------
+    resample : Convenience method for frequency conversion and resampling
+        of time series.
+
+    Examples
+    --------
+    >>> import maxframe.dataframe as md
+    >>> df = md.DataFrame({'Animal': ['Falcon', 'Falcon',
+    ...                               'Parrot', 'Parrot'],
+    ...                    'Max Speed': [380., 370., 24., 26.]})
+    >>> df.execute()
+       Animal  Max Speed
+    0  Falcon      380.0
+    1  Falcon      370.0
+    2  Parrot       24.0
+    3  Parrot       26.0
+    >>> df.groupby(['Animal']).mean().execute()
+            Max Speed
+    Animal
+    Falcon      375.0
+    Parrot       25.0
+    """
     if not as_index and df.op.output_types[0] == OutputType.series:
         raise TypeError("as_index=False only valid with DataFrame")
 
@@ -168,7 +231,7 @@ def groupby(
         by = [by]
     elif df.ndim > 1 and by is not None and not isinstance(by, list):
         by = [by]
-    op = DataFrameGroupByOperator(
+    op = DataFrameGroupByOp(
         by=by,
         level=level,
         as_index=as_index,

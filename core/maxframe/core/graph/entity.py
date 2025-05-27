@@ -16,10 +16,17 @@ from abc import ABCMeta, abstractmethod
 from typing import Dict, Iterable, List
 
 from ...core import Tileable
-from ...serialization.core import buffered
-from ...serialization.serializables import BoolField, DictField, ListField, Serializable
+from ...serialization.core import buffered, load_type
+from ...serialization.serializables import (
+    BoolField,
+    DictField,
+    ListField,
+    Serializable,
+    StringField,
+)
 from ...serialization.serializables.core import SerializableSerializer
-from ...utils import tokenize
+from ...utils import extract_class_name, tokenize
+from ..operator import Fetch
 from .core import DAG
 
 
@@ -110,11 +117,10 @@ class SerializableGraph(Serializable):
     _predecessors = DictField("predecessors")
     _successors = DictField("successors")
     _results = ListField("results")
+    _graph_cls = StringField("graph_cls")
 
     @classmethod
     def from_graph(cls, graph: EntityGraph) -> "SerializableGraph":
-        from ..operator import Fetch
-
         return SerializableGraph(
             _is_chunk=False,
             _fetch_nodes=[chunk for chunk in graph if isinstance(chunk.op, Fetch)],
@@ -122,10 +128,16 @@ class SerializableGraph(Serializable):
             _predecessors=graph._predecessors,
             _successors=graph._successors,
             _results=graph.results,
+            _graph_cls=extract_class_name(type(graph)),
         )
 
     def to_graph(self) -> EntityGraph:
-        graph = TileableGraph(self._results)
+        graph_cls = (
+            load_type(self._graph_cls, EntityGraph)
+            if hasattr(self, "_graph_cls") and self._graph_cls
+            else TileableGraph
+        )
+        graph = graph_cls(self._results)
         graph._nodes.update(self._nodes)
         graph._predecessors.update(self._predecessors)
         graph._successors.update(self._successors)

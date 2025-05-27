@@ -180,7 +180,9 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
             if status_json.get("status") == "Running":
                 break
             if time.time() - check_time > timeout:
-                raise TimeoutError("Check session startup time out")
+                raise TimeoutError(
+                    f"Check session startup time out. Instance ID: {self._instance.id}"
+                )
             time.sleep(interval)
             interval = min(max_interval, interval * 2)
 

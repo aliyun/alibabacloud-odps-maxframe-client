@@ -12,23 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Union
+from typing import Any, MutableMapping, Union
 
 import numpy as np
-import pandas as pd
 from pandas import DataFrame, Series
 
 from ... import opcodes
 from ...core import OutputType
 from ...serialization.serializables import AnyField, BoolField, DictField, TupleField
-from ...utils import pd_release_version, quiet_stdio
+from ...udf import BuiltinFunction, MarkedFunction
+from ...utils import copy_if_possible, pd_release_version
 from ..core import DATAFRAME_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import (
+    InferredDataFrameMeta,
     build_df,
     build_series,
     copy_func_scheduling_hints,
-    make_dtypes,
+    infer_dataframe_return_value,
     pack_func_args,
     parse_index,
     validate_axis,
@@ -53,63 +54,55 @@ class TransformOperator(DataFrameOperator, DataFrameOperatorMixin):
         if hasattr(self, "func"):
             copy_func_scheduling_hints(self.func, self)
 
-    def _infer_df_func_returns(self, df, dtypes):
-        packed_funcs = self.func
-        test_df = _build_stub_pandas_obj(df, self.output_types[0])
-        if self.output_types[0] == OutputType.dataframe:
-            try:
-                with np.errstate(all="ignore"), quiet_stdio():
-                    if self.call_agg:
-                        infer_df = test_df.agg(packed_funcs, axis=self.axis)
-                    else:
-                        infer_df = test_df.transform(packed_funcs, axis=self.axis)
-            except:  # noqa: E722
-                infer_df = None
-        else:
-            try:
-                with np.errstate(all="ignore"), quiet_stdio():
-                    if self.call_agg:
-                        infer_df = test_df.agg(packed_funcs)
-                    else:
-                        if not _with_convert_dtype:
-                            infer_df = test_df.transform(packed_funcs)
-                        else:  # pragma: no cover
-                            infer_df = test_df.transform(
-                                packed_funcs, convert_dtype=self.convert_dtype
-                            )
-            except:  # noqa: E722
-                infer_df = None
+    def has_custom_code(self) -> bool:
+        return not isinstance(self.func, BuiltinFunction)
 
-        if infer_df is None and dtypes is None:
-            raise TypeError(
-                "Failed to infer dtype, please specify dtypes as arguments."
-            )
+    def _infer_df_func_returns(
+        self, df, dtypes=None, dtype=None, name=None, index=None
+    ) -> InferredDataFrameMeta:
+        def infer_func(df_obj):
+            if self.call_agg:
+                return df_obj.agg(self.func, self.axis)
+            else:
+                return df_obj.transform(self.func, self.axis)
 
-        if infer_df is None:
-            is_df = self.output_types[0] == OutputType.dataframe
-        else:
-            is_df = isinstance(infer_df, pd.DataFrame)
+        res = infer_dataframe_return_value(
+            df,
+            infer_func,
+            self.output_types[0] if self.output_types else None,
+            dtypes=dtypes,
+            dtype=dtype,
+            name=name,
+            index=index,
+            inherit_index=True,
+        )
+        res.check_absence("dtypes", "dtype")
+        return res
 
-        if is_df:
-            new_dtypes = make_dtypes(dtypes) if dtypes is not None else infer_df.dtypes
-            self.output_types = [OutputType.dataframe]
-        else:
-            new_dtypes = (
-                dtypes if dtypes is not None else (infer_df.name, infer_df.dtype)
-            )
-            self.output_types = [OutputType.series]
-
-        return new_dtypes
-
-    def __call__(self, df, dtypes=None, index=None, skip_infer=None):
+    def __call__(
+        self, df, dtypes=None, dtype=None, name=None, index=None, skip_infer=None
+    ):
         axis = getattr(self, "axis", None) or 0
         self.axis = validate_axis(axis, df)
         if not skip_infer:
-            dtypes = self._infer_df_func_returns(df, dtypes)
+            inferred_meta = self._infer_df_func_returns(
+                df, dtypes=dtypes, dtype=dtype, name=name, index=index
+            )
+        else:
+            index_value = parse_index(index) if index else df.index_value
+            inferred_meta = InferredDataFrameMeta(
+                self.output_types[0],
+                dtypes=dtypes,
+                dtype=dtype,
+                name=name,
+                index_value=index_value,
+            )
 
+        self._output_types = [inferred_meta.output_type]
         if self.output_types[0] == OutputType.dataframe:
             new_shape = list(df.shape)
-            new_index_value = df.index_value
+            new_index_value = inferred_meta.index_value
+            dtypes = inferred_meta.dtypes
             if len(new_shape) == 1:
                 new_shape.append(len(dtypes) if dtypes is not None else np.nan)
             else:
@@ -118,6 +111,7 @@ class TransformOperator(DataFrameOperator, DataFrameOperatorMixin):
             if self.call_agg:
                 new_shape[self.axis] = np.nan
                 new_index_value = parse_index(None, (df.key, df.index_value.key))
+
             if dtypes is None:
                 columns_value = None
             else:
@@ -130,11 +124,6 @@ class TransformOperator(DataFrameOperator, DataFrameOperatorMixin):
                 columns_value=columns_value,
             )
         else:
-            if dtypes is not None:
-                name, dtype = dtypes
-            else:
-                name, dtype = None, None
-
             if isinstance(df, DATAFRAME_TYPE):
                 new_shape = (df.shape[1 - axis],)
                 new_index_value = [df.columns_value, df.index_value][axis]
@@ -145,15 +134,25 @@ class TransformOperator(DataFrameOperator, DataFrameOperatorMixin):
             return self.new_series(
                 [df],
                 shape=new_shape,
-                name=name,
-                dtype=dtype,
+                name=inferred_meta.name,
+                dtype=inferred_meta.dtype,
                 index_value=new_index_value,
             )
+
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "TransformOperator"
+    ) -> None:
+        if isinstance(op.func, MarkedFunction):
+            ctx[op.outputs[0].key] = float("inf")
+        super().estimate_size(ctx, op)
 
 
 def get_packed_funcs(df, output_type, func, *args, **kwds) -> Any:
     stub_df = _build_stub_pandas_obj(df, output_type)
-    return pack_func_args(stub_df, func, *args, **kwds)
+    n_args = copy_if_possible(args)
+    n_kwds = copy_if_possible(kwds)
+    return pack_func_args(stub_df, func, *n_args, **n_kwds)
 
 
 def _build_stub_pandas_obj(df, output_type) -> Union[DataFrame, Series]:
@@ -241,7 +240,7 @@ def df_transform(df, func, axis=0, *args, dtypes=None, skip_infer=False, **kwarg
         axis=axis,
         args=args,
         kwds=kwargs,
-        output_types=[OutputType.dataframe],
+        output_types=[OutputType.dataframe] if not call_agg else None,
         call_agg=call_agg,
     )
     return op(df, dtypes=dtypes, skip_infer=skip_infer)
@@ -337,5 +336,4 @@ def series_transform(
         output_types=[OutputType.series],
         call_agg=call_agg,
     )
-    dtypes = (series.name, dtype) if dtype is not None else None
-    return op(series, dtypes=dtypes, skip_infer=skip_infer)
+    return op(series, dtype=dtype, name=series.name, skip_infer=skip_infer)

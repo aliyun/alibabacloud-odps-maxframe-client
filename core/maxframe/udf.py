@@ -17,6 +17,7 @@ from typing import Callable, List, Optional, Union
 
 from odps.models import Resource
 
+from .serialization import load_member
 from .serialization.serializables import (
     BoolField,
     DictField,
@@ -26,7 +27,7 @@ from .serialization.serializables import (
     Serializable,
     StringField,
 )
-from .utils import tokenize
+from .utils import extract_class_name, tokenize
 
 
 class PythonPackOptions(Serializable):
@@ -49,6 +50,52 @@ class PythonPackOptions(Serializable):
     def __repr__(self):
         args_str = " ".join(f"{k}={getattr(self, k)}" for k in self._key_args)
         return f"<PythonPackOptions {self.requirements} {args_str}>"
+
+
+class BuiltinFunction(Serializable):
+    """
+    Record reference for builtin functions. The function body
+    will NOT be serialized when submitting jobs.
+    """
+
+    __slots__ = ("_func",)
+
+    func_name = StringField("func_name")
+
+    def __init__(self, func: Optional[Callable] = None, **kw):
+        self._func = func
+        if func is not None:
+            func_name = extract_class_name(func)
+            if "<" in func_name:
+                raise ValueError("Cannot be a local or lambda function")
+            kw["func_name"] = kw.get("func_name") or func_name
+        super().__init__(**kw)
+
+    @property
+    def func(self):
+        if getattr(self, "_func", None) is None:
+            assert isinstance(self.func_name, str)
+            self._func = load_member(self.func_name, type(self)).func
+        return self._func
+
+    @property
+    def module(self):
+        # use func_name instead of func itself to avoid it
+        # been imported (might cause infinite recursion!)
+        assert isinstance(self.func_name, str)
+        return self.func_name.split("#")[0]
+
+    def __getattr__(self, item):
+        if item.startswith("_") and not item.endswith("_"):
+            return super().__getattribute__(item)
+        return getattr(self.func, item)
+
+    def __call__(self, *args, **kw):
+        return self.func(*args, **kw)
+
+
+def builtin_function(func: Callable) -> BuiltinFunction:
+    return BuiltinFunction(func=func)
 
 
 class MarkedFunction(Serializable):
@@ -129,16 +176,39 @@ def with_running_options(
     *,
     engine: Optional[str] = None,
     cpu: Optional[int] = None,
-    memory: Optional[int] = None,
+    memory: Optional[Union[str, int]] = None,
     **kwargs,
 ):
-    engine = engine.upper() if engine else None
-    resources = {"cpu": cpu, "memory": memory, **kwargs}
+    """
+    Set running options for the UDF.
 
-    if cpu is not None and cpu <= 0:
+    Parameters
+    ----------
+    engine: Optional[str]
+        The engine to run the UDF.
+    cpu: Optional[int]
+        The CPU to run the UDF.
+    memory: Optional[Union[str, int]]
+        The memory to run the UDF. If it is an int, it is in GB.
+        If it is a str, it is in the format of "10GiB", "30MiB", etc.
+    kwargs
+        Other running options.
+    """
+    engine = engine.upper() if engine else None
+    resources = kwargs.copy()
+
+    if cpu is not None and isinstance(cpu, int) and cpu <= 0:
         raise ValueError("cpu must be greater than 0")
-    if memory is not None and memory <= 0:
-        raise ValueError("memory must be greater than 0")
+    if memory is not None:
+        if not isinstance(memory, (int, str)):
+            raise TypeError("memory must be an int or str")
+        if isinstance(memory, int) and memory <= 0:
+            raise ValueError("memory must be greater than 0")
+
+    if cpu:
+        resources["cpu"] = cpu
+    if memory:
+        resources["memory"] = memory
 
     def func_wrapper(func):
         if all(v is None for v in (engine, cpu, memory)):

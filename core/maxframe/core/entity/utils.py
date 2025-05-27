@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import numpy as np
+
+from ...typing_ import TileableType
 from ...utils import calc_nsplits, has_unknown_shape
 
 
@@ -22,3 +25,15 @@ def refresh_tileable_shape(tileable):
         shape = tuple(sum(ns) for ns in nsplits)
         tileable._nsplits = nsplits
         tileable._shape = shape
+
+
+def fill_chunk_slices(tileable: TileableType) -> None:
+    if tileable is None or not tileable.nsplits or not tileable.chunks:
+        # errors may occurred
+        return
+    acc_splits = tuple((0,) + tuple(np.cumsum(sp)) for sp in tileable.nsplits)
+    for chunk in tileable.chunks:
+        chunk.slices = list(
+            (acc_splits[i][chunk.index[i]], acc_splits[i][chunk.index[i] + 1])
+            for i in range(tileable.ndim)
+        )

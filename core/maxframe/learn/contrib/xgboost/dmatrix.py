@@ -12,14 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
 
 from .... import opcodes
+from ....core import EntityData
 from ....core.entity.output_types import get_output_types
 from ....core.operator.base import Operator
 from ....core.operator.core import TileableOperatorMixin
 from ....dataframe.core import DATAFRAME_TYPE
-from ....serialization.serializables import Float64Field, KeyField, ListField
-from ....serialization.serializables.field import AnyField, BoolField, Int64Field
+from ....serialization.serializables import BoolField, Float64Field, KeyField, ListField
+from ....serialization.serializables.field import AnyField, Int64Field
 from ....tensor import tensor as astensor
 from ....tensor.core import TENSOR_TYPE
 from ....typing_ import TileableType
@@ -42,24 +44,29 @@ class ToDMatrix(Operator, TileableOperatorMixin):
     qid = AnyField("qid", default=None)
     label_lower_bound = AnyField("label_lower_bound", default=None)
     label_upper_bound = AnyField("label_upper_bound", default=None)
+    # if to collocate the data, label and weight
+    collocate = BoolField("collocate", default=False)
     enable_categorical = BoolField("enable_categorical", default=None)
 
     @property
     def output_limit(self):
+        if self.collocate:
+            return 1 + sum(bool(x) for x in [self.label, self.weight, self.base_margin])
         return 1
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        if self.data is not None:
-            self.data = self._inputs[0]
-        has_label = self.label is not None
+    @classmethod
+    def _set_inputs(cls, op: "ToDMatrix", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        if op.data is not None:
+            op.data = op._inputs[0]
+        has_label = op.label is not None
         if has_label:
-            self.label = self._inputs[1]
-        if self.weight is not None:
+            op.label = op._inputs[1]
+        if op.weight is not None:
             i = 1 if not has_label else 2
-            self.weight = self._inputs[i]
-        if self.base_margin is not None:
-            self.base_margin = self._inputs[-1]
+            op.weight = op._inputs[i]
+        if op.base_margin is not None:
+            op.base_margin = op._inputs[-1]
 
     @staticmethod
     def _get_kw(obj):

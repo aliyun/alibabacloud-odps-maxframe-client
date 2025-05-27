@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,15 +17,15 @@ from .binomial import TensorBinomial, binomial
 from .bytes import bytes
 from .chisquare import TensorChisquareDist, chisquare
 from .choice import TensorChoice, choice
-from .core import RandomState, RandomStateField, _random_state
+from .core import RandomState, RandomStateField, TensorDistribution, _random_state
 from .dirichlet import TensorDirichlet, dirichlet
 from .exponential import TensorExponential, exponential
-from .f import TensorF, f
+from .f import TensorFDist, f
 from .gamma import TensorRandGamma, gamma
 from .geometric import TensorGeometric, geometric
 from .gumbel import TensorGumbel, gumbel
 from .hypergeometric import TensorHypergeometric, hypergeometric
-from .laplace import TensorLaplace, laplace
+from .laplace import TensorLaplaceDist, laplace
 from .logistic import TensorLogistic, logistic
 from .lognormal import TensorLognormal, lognormal
 from .logseries import TensorLogseries, logseries

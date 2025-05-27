@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 from abc import ABC, abstractmethod
 from numbers import Integral
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
@@ -21,6 +22,7 @@ import pyarrow as pa
 from odps import ODPS
 from odps.models import ExternalVolume
 
+from maxframe import utils
 from maxframe.core import OBJECT_TYPE
 from maxframe.dataframe.core import DATAFRAME_TYPE
 from maxframe.io.objects import get_object_io_handler
@@ -33,6 +35,7 @@ from maxframe.io.odpsio import (
     odps_schema_to_pandas_dtypes,
 )
 from maxframe.protocol import (
+    ConstantResultInfo,
     DataFrameTableMeta,
     ODPSTableResultInfo,
     ODPSVolumeResultInfo,
@@ -41,9 +44,18 @@ from maxframe.protocol import (
 )
 from maxframe.tensor.core import TENSOR_TYPE
 from maxframe.typing_ import PandasObjectTypes, TileableType
-from maxframe.utils import ToThreadMixin, sync_pyodps_options
+from maxframe.utils import (
+    ToThreadMixin,
+    estimate_pandas_size,
+    estimate_table_size,
+    sync_pyodps_options,
+)
 
 _result_fetchers: Dict[ResultType, Type["ResultFetcher"]] = dict()
+
+_FetchIndexType = Optional[List[Union[None, Integral, slice]]]
+
+_VOLUME_LOAD_RETRY_TIMES = 5
 
 
 def register_fetcher(fetcher_cls: Type["ResultFetcher"]):
@@ -74,8 +86,16 @@ class ResultFetcher(ABC):
         self,
         tileable: TileableType,
         info: ResultInfo,
-        indexes: List[Union[None, Integral, slice]],
+        indexes: _FetchIndexType,
     ) -> Any:
+        raise NotImplementedError
+
+    @abstractmethod
+    def estimate_size(
+        self,
+        tileable: TileableType,
+        info: ResultInfo,
+    ) -> Union[int, float]:
         raise NotImplementedError
 
 
@@ -94,9 +114,57 @@ class NullFetcher(ResultFetcher):
         self,
         tileable: TileableType,
         info: ODPSTableResultInfo,
-        indexes: List[Union[None, Integral, slice]],
+        indexes: _FetchIndexType,
     ) -> None:
         return
+
+    def estimate_size(
+        self,
+        tileable: TileableType,
+        info: ResultInfo,
+    ) -> Union[int, float]:
+        return 0
+
+
+@register_fetcher
+class ConstantFetcher(ResultFetcher):
+    result_type = ResultType.CONSTANT
+
+    async def update_tileable_meta(
+        self,
+        tileable: TileableType,
+        info: ConstantResultInfo,
+    ) -> None:
+        if isinstance(tileable, DATAFRAME_TYPE) and tileable.dtypes is None:
+            tileable.refresh_from_dtypes(info.data.dtypes)
+        if tileable.shape and any(pd.isna(x) for x in tileable.shape):
+            tileable.params = {"shape": info.data.shape}
+
+    async def fetch(
+        self,
+        tileable: TileableType,
+        info: ConstantResultInfo,
+        indexes: List[Union[None, Integral, slice]],
+    ) -> Any:
+        result = info.data
+        if indexes:
+            if isinstance(indexes, List):
+                indexes = tuple(indexes)
+            if isinstance(result, (pd.DataFrame, pd.Series)):
+                result = result.iloc[indexes]
+            else:
+                result = result[indexes]
+        return result
+
+    def estimate_size(
+        self,
+        tileable: TileableType,
+        info: ConstantResultInfo,
+    ) -> Union[int, float]:
+        if isinstance(info.data, (pd.DataFrame, pd.Series, pd.Index)):
+            return estimate_pandas_size(info.data)
+        else:
+            return sys.getsizeof(info.data)
 
 
 @register_fetcher
@@ -220,13 +288,22 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
         self,
         tileable: TileableType,
         info: ODPSTableResultInfo,
-        indexes: List[Union[None, Integral, slice]],
+        indexes: _FetchIndexType,
     ) -> PandasObjectTypes:
         table_meta = build_dataframe_table_meta(tileable)
         arrow_table: pa.Table = await self.to_thread(
             self._read_single_source, table_meta, info, indexes, tileable.shape
         )
         return arrow_to_pandas(arrow_table, table_meta)
+
+    def estimate_size(
+        self,
+        tileable: TileableType,
+        info: ODPSTableResultInfo,
+    ) -> Union[int, float]:
+        return estimate_table_size(
+            self._odps_entry, info.full_table_name, info.partition_specs
+        )
 
 
 @register_fetcher
@@ -238,7 +315,29 @@ class ODPSVolumeFetcher(ToThreadMixin, ResultFetcher):
         tileable: TileableType,
         info: ODPSVolumeResultInfo,
     ) -> None:
-        return
+        def volume_fetch_func():
+            reader = ODPSVolumeReader(
+                self._odps_entry,
+                info.volume_name,
+                info.volume_path,
+                replace_internal_host=True,
+            )
+            io_handler = get_object_io_handler(tileable)()
+            return utils.call_with_retry(
+                io_handler.read_object_meta,
+                reader,
+                tileable,
+                retry_timeout=_VOLUME_LOAD_RETRY_TIMES,
+                delay=2,
+            )
+
+        volume = await self.to_thread(self._odps_entry.get_volume, info.volume_name)
+        if isinstance(volume, ExternalVolume):
+            meta = await self.to_thread(volume_fetch_func)
+            meta.pop("nsplits", None)
+            tileable.params = meta
+        else:
+            raise NotImplementedError(f"Volume type {type(volume)} not supported")
 
     async def _fetch_object(
         self,
@@ -266,8 +365,16 @@ class ODPSVolumeFetcher(ToThreadMixin, ResultFetcher):
         self,
         tileable: TileableType,
         info: ODPSVolumeResultInfo,
-        indexes: List[Union[Integral, slice]],
+        indexes: _FetchIndexType,
     ) -> Any:
         if isinstance(tileable, (OBJECT_TYPE, TENSOR_TYPE)):
             return await self._fetch_object(tileable, info, indexes)
         raise NotImplementedError(f"Fetching {type(tileable)} not implemented")
+
+    def estimate_size(
+        self,
+        tileable: TileableType,
+        info: ResultInfo,
+    ) -> Union[int, float]:
+        # todo estimate size of volume
+        return float("inf")

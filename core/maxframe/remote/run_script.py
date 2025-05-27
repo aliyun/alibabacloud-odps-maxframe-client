@@ -17,7 +17,7 @@ from typing import Any, BinaryIO, Dict, List, TextIO, Union
 
 from .. import opcodes
 from ..core import TILEABLE_TYPE, OutputType
-from ..core.operator import MergeDictOperator
+from ..core.operator import ObjectOperator, ObjectOperatorMixin
 from ..serialization.serializables import (
     BoolField,
     BytesField,
@@ -29,7 +29,7 @@ from ..typing_ import SessionType, TileableType
 from ..utils import to_binary
 
 
-class RunScript(MergeDictOperator):
+class RunScript(ObjectOperator, ObjectOperatorMixin):
     _op_type_ = opcodes.RUN_SCRIPT
 
     code: bytes = BytesField("code", default=None)
@@ -48,6 +48,9 @@ class RunScript(MergeDictOperator):
     @property
     def retryable(self):
         return self.retry_when_fail
+
+    def has_custom_code(self) -> bool:
+        return True
 
     def __call__(self, inputs):
         return self.new_tileable(inputs)
@@ -74,7 +77,7 @@ def run_script(
     n_workers: int = 1,
     command_argv: List[str] = None,
     session: SessionType = None,
-    retry_when_fail: bool = False,
+    retry_when_fail: bool = True,
     run_kwargs: Dict[str, Any] = None,
 ):
     """

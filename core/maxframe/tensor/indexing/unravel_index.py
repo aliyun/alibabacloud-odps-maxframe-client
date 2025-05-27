@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +13,12 @@
 # limitations under the License.
 
 from collections.abc import Iterable
+from typing import List
 
 import numpy as np
 
 from ... import opcodes
-from ...core import ExecutableTuple
+from ...core import EntityData, ExecutableTuple
 from ...serialization.serializables import FieldTypes, KeyField, StringField, TupleField
 from ..core import TensorOrder
 from ..datasource import tensor as astensor
@@ -42,9 +41,10 @@ class TensorUnravelIndex(TensorHasInput, TensorOperatorMixin):
     def output_limit(self):
         return float("inf")
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "TensorUnravelIndex", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op._input = op._inputs[0]
 
     def __call__(self, indices):
         order = TensorOrder.C_ORDER if self.order == "C" else TensorOrder.F_ORDER

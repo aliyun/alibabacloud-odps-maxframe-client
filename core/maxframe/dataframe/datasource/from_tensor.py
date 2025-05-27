@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +13,13 @@
 # limitations under the License.
 
 from collections import OrderedDict
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, MutableMapping, Union
 
 import numpy as np
 import pandas as pd
 
 from ... import opcodes
-from ...core import ENTITY_TYPE, OutputType
+from ...core import ENTITY_TYPE, EntityData, OutputType
 from ...serialization.serializables import AnyField, KeyField
 from ...tensor.core import Tensor
 from ...tensor.datasource import tensor as astensor
@@ -46,24 +44,25 @@ class DataFrameFromTensor(DataFrameOperator, DataFrameOperatorMixin):
         kwargs["_output_types"] = [OutputType.dataframe]
         super().__init__(*args, **kwargs)
 
-    def _set_inputs(self, inputs: List[EntityType]):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs)
-        if self.input is not None:
-            if not isinstance(self.input, dict):
-                self.input = next(inputs_iter)
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameFromTensor", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs)
+        if op.input is not None:
+            if not isinstance(op.input, dict):
+                op.input = next(inputs_iter)
             else:
                 # check each value for input
                 new_input = OrderedDict()
-                for k, v in self.input.items():
+                for k, v in op.input.items():
                     if isinstance(v, ENTITY_TYPE):
                         new_input[k] = next(inputs_iter)
                     else:
                         new_input[k] = v
-                self.input = new_input
+                op.input = new_input
 
-        if isinstance(self.index, ENTITY_TYPE):
-            self.index = next(inputs_iter)
+        if isinstance(op.index, ENTITY_TYPE):
+            op.index = next(inputs_iter)
 
     def __call__(
         self,
@@ -138,7 +137,11 @@ class DataFrameFromTensor(DataFrameOperator, DataFrameOperatorMixin):
                 )
             index_value = self._process_index(index, tileables)
         else:
-            self.index = index = pd.RangeIndex(0, tileables[0].shape[0])
+            if np.isnan(tileables[0].shape[0]):
+                index = pd.RangeIndex(0)
+            else:
+                index = pd.RangeIndex(0, tileables[0].shape[0])
+            self.index = index
             index_value = parse_index(index)
 
         if columns is not None:
@@ -260,6 +263,13 @@ class DataFrameFromTensor(DataFrameOperator, DataFrameOperatorMixin):
             columns_value=columns_value,
         )
 
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "DataFrameFromTensor"
+    ):  # pragma: no cover
+        # todo implement this to facilitate local computation
+        ctx[op.outputs[0].key] = float("inf")
+
 
 def dataframe_from_tensor(
     tensor: Tensor,
@@ -340,12 +350,13 @@ class SeriesFromTensor(DataFrameOperator, DataFrameOperatorMixin):
     input = KeyField("input")
     index = AnyField("index")
 
-    def _set_inputs(self, inputs: List[EntityType]):
-        super()._set_inputs(inputs)
-        if self.input is not None:
-            self.input = self.inputs[0]
-        if self.index is not None and hasattr(self.index, "key"):
-            self.index = self.inputs[-1]
+    @classmethod
+    def _set_inputs(cls, op: "SeriesFromTensor", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        if op.input is not None:
+            op.input = op.inputs[0]
+        if op.index is not None and hasattr(op.index, "key"):
+            op.index = op.inputs[-1]
 
     def __call__(
         self,

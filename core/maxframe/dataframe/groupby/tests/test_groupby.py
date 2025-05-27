@@ -23,7 +23,7 @@ from .... import opcodes
 from ....core import OutputType
 from ...core import DataFrame, DataFrameGroupBy, SeriesGroupBy
 from ..aggregation import DataFrameGroupByAgg
-from ..core import DataFrameGroupByOperator
+from ..core import DataFrameGroupByOp
 from ..getitem import GroupByIndex
 
 
@@ -39,7 +39,7 @@ def test_groupby():
 
     grouped = mdf.groupby("b")
     assert isinstance(grouped, DataFrameGroupBy)
-    assert isinstance(grouped.op, DataFrameGroupByOperator)
+    assert isinstance(grouped.op, DataFrameGroupByOp)
     assert list(grouped.key_dtypes.index) == ["b"]
 
     series = pd.Series([3, 4, 5, 3, 5, 4, 1, 2, 3])
@@ -47,7 +47,7 @@ def test_groupby():
     grouped = ms.groupby(lambda x: x + 1)
 
     assert isinstance(grouped, SeriesGroupBy)
-    assert isinstance(grouped.op, DataFrameGroupByOperator)
+    assert isinstance(grouped.op, DataFrameGroupByOp)
 
     with pytest.raises(TypeError):
         ms.groupby(lambda x: x + 1, as_index=False)

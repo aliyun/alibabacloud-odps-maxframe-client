@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +15,10 @@
 import numpy as np
 import pytest
 
-from maxframe.tensor.reduction.core import TensorReduction
-
 from ....utils import collect_leaf_operators
 from ...datasource import ones, tensor
 from .. import *  # noqa: F401
+from ..core import TensorReduction
 
 
 def test_base_reduction():

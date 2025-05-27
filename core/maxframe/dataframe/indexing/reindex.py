@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 
 try:
@@ -20,7 +22,7 @@ except ImportError:  # pragma: no cover
     sps = None
 
 from ... import opcodes
-from ...core import ENTITY_TYPE
+from ...core import ENTITY_TYPE, EntityData
 from ...serialization.serializables import (
     AnyField,
     BoolField,
@@ -53,6 +55,7 @@ class DataFrameReindex(DataFrameOperator, DataFrameOperatorMixin):
     level = AnyField("level", default=None)
     fill_value = AnyField("fill_value", default=None)
     limit = Int64Field("limit", default=None)
+    tolerance = Int64Field("tolerance", default=None)
     enable_sparse = BoolField("enable_sparse", default=None)
 
     @property
@@ -86,14 +89,15 @@ class DataFrameReindex(DataFrameOperator, DataFrameOperatorMixin):
     def can_index_miss(self):
         return True
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs)
-        self._input = next(inputs_iter)
-        if self.index is not None and isinstance(self.index, ENTITY_TYPE):
-            self.index = next(inputs_iter)
-        if self.fill_value is not None and isinstance(self.fill_value, ENTITY_TYPE):
-            self.fill_value = next(inputs_iter)
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameReindex", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs)
+        op._input = next(inputs_iter)
+        if op.index is not None and isinstance(op.index, ENTITY_TYPE):
+            op.index = next(inputs_iter)
+        if op.fill_value is not None and isinstance(op.fill_value, ENTITY_TYPE):
+            op.fill_value = next(inputs_iter)
 
     def __call__(self, df_or_series):
         inputs = [df_or_series]
@@ -137,7 +141,21 @@ class DataFrameReindex(DataFrameOperator, DataFrameOperatorMixin):
             )
 
 
-def reindex(df_or_series, *args, **kwargs):
+def reindex(
+    df_or_series,
+    labels=None,
+    *,
+    index=None,
+    columns=None,
+    axis=None,
+    method=None,
+    copy=None,
+    level=None,
+    fill_value=None,
+    limit=None,
+    tolerance=None,
+    enable_sparse=False
+):
     """
     Conform Series/DataFrame to new index with optional filling logic.
 
@@ -342,26 +360,14 @@ def reindex(df_or_series, *args, **kwargs):
 
     See the :ref:`user guide <basics.reindexing>` for more.
     """
-    axes = validate_axis_style_args(df_or_series, args, kwargs, "labels", "reindex")
-    # Pop these, since the values are in `kwargs` under different names
-    kwargs.pop("index", None)
-    if df_or_series.ndim > 1:
-        kwargs.pop("columns", None)
-        kwargs.pop("axis", None)
-        kwargs.pop("labels", None)
-    method = kwargs.pop("method", None)
-    level = kwargs.pop("level", None)
-    copy = kwargs.pop("copy", True)
-    limit = kwargs.pop("limit", None)
-    tolerance = kwargs.pop("tolerance", None)
-    fill_value = kwargs.pop("fill_value", None)
-    enable_sparse = kwargs.pop("enable_sparse", None)
-
-    if kwargs:
-        raise TypeError(
-            "reindex() got an unexpected keyword "
-            f'argument "{list(kwargs.keys())[0]}"'
-        )
+    axes_kwargs = dict(index=index, columns=columns, axis=axis)
+    axes = validate_axis_style_args(
+        df_or_series,
+        (labels,),
+        {k: v for k, v in axes_kwargs.items() if v is not None},
+        "labels",
+        "reindex",
+    )
 
     if tolerance is not None:  # pragma: no cover
         raise NotImplementedError("`tolerance` is not supported yet")

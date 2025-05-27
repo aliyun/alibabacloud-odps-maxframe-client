@@ -12,13 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 from collections.abc import Iterable
 from contextlib import contextmanager
+from typing import List
 
 import numpy as np
 
+from ...core import EntityData
 from ...serialization.serializables import FieldTypes, Int32Field, TupleField
+from ...utils import on_deserialize_shape, on_serialize_shape
 from ..core import TENSOR_TYPE
 from ..datasource import tensor as astensor
 from ..misc import broadcast_to
@@ -184,7 +186,7 @@ def RandomStateField(name, **kwargs):
     return TupleField(name, **kwargs)
 
 
-class TensorSeedOperatorMixin(object):
+class TensorSeedOperatorMixin:
     @property
     def seed(self):
         return getattr(self, "seed", None)
@@ -200,9 +202,16 @@ class TensorSeedOperatorMixin(object):
                 if field not in TensorRandomOperator._FIELDS
             ]
 
+    @classmethod
+    def _set_inputs(cls, op: "TensorRandomOperator", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        fields = getattr(cls, "_input_fields_", [])
+        for field, inp in zip(fields, inputs):
+            setattr(op, field, inp)
+
 
 class TensorRandomOperator(TensorSeedOperatorMixin, TensorOperator):
-    seed = Int32Field("seed")
+    seed = Int32Field("seed", default=None)
 
     def __init__(self, dtype=None, **kw):
         dtype = np.dtype(dtype) if dtype is not None else dtype
@@ -212,7 +221,7 @@ class TensorRandomOperator(TensorSeedOperatorMixin, TensorOperator):
 
 
 class TensorRandomMapReduceOperator(TensorSeedOperatorMixin, TensorMapReduceOperator):
-    seed = Int32Field("seed")
+    seed = Int32Field("seed", default=None)
 
     def __init__(self, dtype=None, **kw):
         dtype = np.dtype(dtype) if dtype is not None else dtype
@@ -226,7 +235,13 @@ class TensorDistribution(TensorRandomOperator):
 
 
 class TensorSimpleRandomData(TensorRandomOperator):
-    size = TupleField("size", FieldTypes.int64)
+    size = TupleField(
+        "size",
+        FieldTypes.int64,
+        default=None,
+        on_serialize=on_serialize_shape,
+        on_deserialize=on_deserialize_shape,
+    )
 
     def __init__(self, size=None, **kw):
         if type(size) is int:

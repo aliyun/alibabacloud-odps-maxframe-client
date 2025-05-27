@@ -47,7 +47,9 @@ pytestmark = pytest.mark.maxframe_engine(["MCSQL", "SPE"])
 def start_mock_session(framedriver_app):  # noqa: F811
     odps_entry = ODPS.from_environments()
     framedriver_addr = f"mf://localhost:{framedriver_app.port}"
-    session = new_session(framedriver_addr, odps_entry=odps_entry)
+    session = new_session(
+        framedriver_addr, odps_entry=odps_entry, replace_internal_host=True
+    )
 
     session_id = session._isolated_session.session_id
     try:
@@ -59,6 +61,42 @@ def start_mock_session(framedriver_app):  # noqa: F811
         else:
             session.reset_default()
         stop_isolation()
+
+
+@pytest.mark.parametrize("enable_local_execution", [5000], indirect=True)
+def test_local_run_dataframe(start_mock_session, enable_local_execution):
+    pd_df = pd.DataFrame(np.random.rand(10, 5), columns=list("ABCDE"))
+    df = md.DataFrame(pd_df)
+    df["F"] = df["A"] + df["B"]
+    df["G"] = df["C"] * 2 + df["D"]
+
+    executed = df.execute()
+    result = executed.fetch()
+
+    pd_result = pd_df.copy()
+    pd_result["F"] = pd_result["A"] + pd_result["B"]
+    pd_result["G"] = pd_result["C"] * 2 + pd_result["D"]
+    pd.testing.assert_frame_equal(pd_result, result)
+
+    # test fetch from executed result
+    iloc_result = executed.iloc[:10].fetch()
+    pd.testing.assert_frame_equal(pd_result[:10], iloc_result)
+
+    # test execute with executed result locally
+    executed["H"] = executed["G"] + 1
+    result2 = executed.execute().fetch()
+
+    pd_result["H"] = pd_result["G"] + 1
+    pd.testing.assert_frame_equal(pd_result, result2)
+
+    # test execute with executed result remotely
+    pd_df2 = pd.DataFrame(np.random.rand(1000, 8), columns=list("ABCDEFGH"))
+    df2 = md.DataFrame(pd_df2)
+
+    cat_df = md.concat([df, df2])
+    executed = cat_df.execute()
+    result = executed.fetch()
+    pd.testing.assert_frame_equal(pd.concat([pd_result, pd_df2]), result)
 
 
 def test_simple_run_dataframe(start_mock_session):
@@ -323,16 +361,14 @@ def test_pivot_dataframe(start_mock_session):
         }
     )
     df = md.DataFrame(pd_df)
-    pivot = df.pivot_table(values="D", index=["A", "B"], columns=["C"], aggfunc="sum")
+    pivot = df.pivot_table(values="D", index=["A", "B"], columns=["C"])
     executed = pivot.execute()
     assert pivot.shape == (4, 2)
     pd.testing.assert_index_equal(
         pivot.dtypes.index, pd.Index(["large", "small"], name="C")
     )
 
-    expected = pd_df.pivot_table(
-        values="D", index=["A", "B"], columns=["C"], aggfunc="sum"
-    )
+    expected = pd_df.pivot_table(values="D", index=["A", "B"], columns=["C"])
     pd.testing.assert_frame_equal(executed.to_pandas(), expected)
 
 

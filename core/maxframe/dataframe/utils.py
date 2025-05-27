@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import dataclasses
 import functools
 import inspect
 import itertools
@@ -20,25 +21,29 @@ import operator
 import sys
 from contextlib import contextmanager
 from numbers import Integral
-from typing import TYPE_CHECKING, Any, Callable, List
+from typing import TYPE_CHECKING, Any, Callable, List, Optional
 
 import numpy as np
 import pandas as pd
-from pandas.api.extensions import ExtensionDtype
 from pandas.api.types import is_string_dtype
 from pandas.core.dtypes.inference import is_dict_like, is_list_like
 
-from ..core import Entity, ExecutableTuple
+from ..core import Entity, ExecutableTuple, OutputType, get_output_types
 from ..lib.mmh3 import hash as mmh_hash
 from ..udf import MarkedFunction
 from ..utils import (
     ModulePlaceholder,
     is_full_slice,
     lazy_import,
-    parse_version,
+    make_dtype,
+    make_dtypes,
+    quiet_stdio,
     sbytes,
     tokenize,
 )
+
+if TYPE_CHECKING:
+    from .core import IndexValue
 
 try:
     import pyarrow as pa
@@ -49,15 +54,6 @@ if TYPE_CHECKING:
     from .operators import DataFrameOperator
 
 cudf = lazy_import("cudf", rename="cudf")
-vineyard = lazy_import("vineyard")
-try:
-    import ray
-
-    ray_release_version = parse_version(ray.__version__).release
-    ray_deprecate_ml_dataset = ray_release_version[:2] >= (2, 0)
-except ImportError:
-    ray_release_version = None
-    ray_deprecate_ml_dataset = None
 logger = logging.getLogger(__name__)
 
 try:
@@ -603,6 +599,7 @@ def build_series(
     else:
         series_index = index[:0] if index is not None else None
 
+    name = name or getattr(series_obj, "name", None)
     for size, fill_value in zip(sizes, fill_values):
         empty_series = build_empty_series(dtype, name=name, index=series_index)
         record = _generate_value(dtype, fill_value)
@@ -1039,20 +1036,6 @@ def to_arrow_dtypes(dtypes, test_df=None):
     return new_dtypes
 
 
-def make_dtype(dtype):
-    if isinstance(dtype, (np.dtype, ExtensionDtype)):
-        return dtype
-    return np.dtype(dtype) if dtype is not None else None
-
-
-def make_dtypes(dtypes):
-    if dtypes is None:
-        return None
-    if not isinstance(dtypes, pd.Series):
-        dtypes = pd.Series(dtypes)
-    return dtypes.apply(make_dtype)
-
-
 def is_dataframe(x):
     if cudf is not None:  # pragma: no cover
         if isinstance(x, cudf.DataFrame):
@@ -1314,6 +1297,8 @@ def pack_func_args(df, funcs, *args, args_bind_position=1, **kwargs) -> Any:
     AttributeError :
         If there's a string but no corresponding function is found.
     """
+    from ..udf import MarkedFunction
+
     if not args and not kwargs:
         return funcs
 
@@ -1324,8 +1309,6 @@ def pack_func_args(df, funcs, *args, args_bind_position=1, **kwargs) -> Any:
         return [pack_func_args(df, v, *args, **kwargs) for v in funcs]
 
     f = get_callable_by_name(df, funcs) if isinstance(funcs, str) else funcs
-
-    from ..udf import MarkedFunction
 
     if isinstance(f, MarkedFunction):
         # for marked function, pack the inner function, and reset as mark function
@@ -1351,7 +1334,7 @@ def get_callable_by_name(df: Any, func_name: str) -> Callable:
 
     Parameters
     ----------
-    df: padnas.Series or pandas.Dataframe
+    df: pandas.Series or pandas.Dataframe
         The receiver of the func name.
     func_name : str
         The func name.
@@ -1381,10 +1364,215 @@ def get_callable_by_name(df: Any, func_name: str) -> Callable:
     )
 
 
+@dataclasses.dataclass
+class InferredDataFrameMeta:
+    output_type: OutputType
+    dtypes: Optional[pd.Series] = None
+    dtype: Optional[Any] = None
+    name: Optional[str] = None
+    index_value: Optional["IndexValue"] = None
+    maybe_agg: bool = False
+    elementwise: bool = False
+
+    def check_absence(self, *args: str) -> None:
+        args_set = set(args)
+        if self.output_type == OutputType.dataframe:
+            args_set.difference_update(["dtype", "name"])
+        else:
+            args_set.difference_update(["dtypes"])
+        absent_args = [arg for arg in sorted(args_set) if getattr(self, arg) is None]
+        if absent_args:
+            raise TypeError(
+                f"Cannot determine {', '.join(absent_args)} by calculating "
+                "with mock data, please specify it as arguments"
+            )
+
+
+def _get_groupby_input_df(groupby):
+    in_df = groupby
+    while in_df.op.output_types[0] not in (OutputType.dataframe, OutputType.series):
+        in_df = in_df.inputs[0]
+    return in_df
+
+
+def infer_dataframe_return_value(
+    df_obj,
+    func,
+    output_type=None,
+    dtypes=None,
+    dtype=None,
+    name=None,
+    index=None,
+    inherit_index=False,
+    build_kw=None,
+    elementwise=None,
+) -> InferredDataFrameMeta:
+    from .core import GROUPBY_TYPE
+
+    if elementwise is None:
+        unwrapped_func = func
+        if isinstance(unwrapped_func, MarkedFunction):
+            unwrapped_func = unwrapped_func.func
+        while True:
+            if isinstance(unwrapped_func, functools.partial):
+                unwrapped_func = unwrapped_func.func
+            elif hasattr(unwrapped_func, "__wrapped__"):
+                unwrapped_func = unwrapped_func.__wrapped__
+            else:
+                break
+        elementwise = isinstance(unwrapped_func, np.ufunc)
+
+    ret_index_value = None
+    if output_type is not None and (dtypes is not None or dtype is not None):
+        if inherit_index:
+            ret_index_value = df_obj.index_value
+        elif index is not None:
+            ret_index_value = parse_index(index)
+
+        if ret_index_value is not None:
+            return InferredDataFrameMeta(
+                output_type,
+                dtypes,
+                dtype,
+                name,
+                ret_index_value,
+                elementwise=elementwise or False,
+            )
+
+    ret_output_type = ret_dtypes = None
+    maybe_agg = False
+    build_kw = build_kw or {}
+    obj_key = df_obj.key
+
+    if elementwise:
+        inherit_index = True
+        (ret_output_type,) = get_output_types(df_obj)
+    if index is not None:
+        ret_index_value = parse_index(index)
+
+    if isinstance(df_obj, GROUPBY_TYPE):
+        is_groupby = True
+        empty_df_obj = df_obj.op.build_mock_groupby(**build_kw)
+    else:
+        is_groupby = False
+        empty_df_obj = (
+            build_df(df_obj, **build_kw)
+            if df_obj.ndim == 2
+            else build_series(df_obj, **build_kw)
+        )
+    try:
+        with np.errstate(all="ignore"), quiet_stdio():
+            infer_df_obj = func(empty_df_obj)
+
+        if ret_index_value is None:
+            if (
+                infer_df_obj is None
+                or not hasattr(infer_df_obj, "index")
+                or infer_df_obj.index is None
+            ):
+                ret_index_value = parse_index(pd.RangeIndex(-1))
+            elif (
+                infer_df_obj.index is getattr(empty_df_obj, "index", None)
+                or inherit_index
+            ):
+                ret_index_value = df_obj.index_value
+            else:
+                ret_index_value = parse_index(infer_df_obj.index, obj_key, func)
+
+        if isinstance(infer_df_obj, pd.DataFrame):
+            if output_type is not None and output_type != OutputType.dataframe:
+                raise TypeError(
+                    f'Cannot infer output_type as "series", '
+                    f'please specify `output_type` as "dataframe"'
+                )
+            ret_output_type = ret_output_type or OutputType.dataframe
+            ret_dtypes = ret_dtypes or infer_df_obj.dtypes
+        else:
+            if output_type is not None and output_type == OutputType.dataframe:
+                raise TypeError(
+                    f'Cannot infer output_type as "dataframe", '
+                    f'please specify `output_type` as "series"'
+                )
+            ret_output_type = ret_output_type or OutputType.series
+            name = name or getattr(infer_df_obj, "name", None)
+            dtype = dtype or infer_df_obj.dtype
+
+        if is_groupby and len(infer_df_obj) <= 2:
+            # we create mock df with 4 rows, 2 groups
+            # if return df has 2 rows, we assume that
+            # it's an aggregation operation
+            maybe_agg = True
+
+        return InferredDataFrameMeta(
+            ret_output_type,
+            make_dtypes(ret_dtypes),
+            make_dtype(dtype),
+            name,
+            ret_index_value,
+            maybe_agg,
+            elementwise=elementwise,
+        )
+    except:  # noqa: E722  # nosec
+        logger.info(
+            "Exception raised while inferring meta of function result", exc_info=True
+        )
+        return InferredDataFrameMeta(
+            output_type,
+            make_dtypes(dtypes),
+            make_dtype(dtype),
+            name,
+            ret_index_value,
+            maybe_agg,
+            elementwise=elementwise,
+        )
+
+
 def copy_func_scheduling_hints(func, op: "DataFrameOperator") -> None:
+    from ..config import options
+
     if not isinstance(func, MarkedFunction):
         return
     if func.expect_engine:
         op.expect_engine = func.expect_engine
+
+    expect_resources = func.expect_resources or {}
+    default_function_running_options = options.function.default_running_options or {}
+
+    for key, value in default_function_running_options.items():
+        if key not in expect_resources or expect_resources.get(key) is None:
+            expect_resources[key] = value
+
     if func.expect_resources:
-        op.expect_resources = func.expect_resources
+        op.expect_resources = expect_resources
+
+
+def make_column_list(col, dtypes_or_columns, level=None):
+    """Returns [col] if col is a column in dtypes"""
+    try:
+        if isinstance(dtypes_or_columns, pd.Series):
+            idx = dtypes_or_columns.index
+        else:
+            idx = dtypes_or_columns
+
+        if level is None:
+            if col in idx:
+                return [col]
+            elif isinstance(col, int):
+                col = [col]
+            if all(c in idx for c in col):
+                return col
+            if all(isinstance(c, int) for c in col):
+                return [idx[c] for c in col]
+            return col
+        else:
+            level_idx = idx.get_level_values(level)
+            if isinstance(col, list):
+                cols = col
+            else:
+                cols = [col]
+            mask = level_idx.isin(cols)
+            if not mask.any():
+                mask = col
+            return idx[mask]
+    except (IndexError, TypeError, ValueError):
+        return col

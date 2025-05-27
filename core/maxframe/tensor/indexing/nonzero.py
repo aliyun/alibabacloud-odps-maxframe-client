@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -92,9 +90,9 @@ def nonzero(a):
     >>> mt.nonzero(x).execute()
     (array([0, 1, 2, 2]), array([0, 1, 0, 1]))
 
-    >>> x[mt.nonzero(x)].execute()  # TODO(jisheng): accomplish this after fancy indexing is supported
+    >>> x[mt.nonzero(x)].execute()
 
-    >>> mt.transpose(mt.nonzero(x)).execute() # TODO(jisheng): accomplish this later
+    >>> mt.transpose(mt.nonzero(x)).execute()
 
     A common use for ``nonzero`` is to find the indices of an array, where
     a condition is True.  Given an array `a`, the condition `a` > 3 is a

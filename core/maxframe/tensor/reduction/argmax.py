@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -88,7 +86,7 @@ def argmax(a, axis=None, out=None):
     >>> ind = mt.unravel_index(mt.argmax(a, axis=None), a.shape)
     >>> ind.execute()
     (1, 2)
-    >>> a[ind].execute()  # TODO(jisheng): accomplish when fancy index on tensor is supported
+    >>> a[ind].execute()
 
     >>> b = mt.arange(6)
     >>> b[1] = 5

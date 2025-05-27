@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +20,7 @@ from .core import TensorUnaryOp
 from .utils import arithmetic_operator
 
 
-@arithmetic_operator(sparse_mode="unary")
+@arithmetic_operator(sparse_mode="always_false")
 class TensorInvert(TensorUnaryOp):
     _op_type_ = opcodes.INVERT
     _func_name = "invert"

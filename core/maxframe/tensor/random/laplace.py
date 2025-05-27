@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +20,7 @@ from ..utils import gen_random_seeds
 from .core import TensorDistribution, TensorRandomOperatorMixin, handle_array
 
 
-class TensorLaplace(TensorDistribution, TensorRandomOperatorMixin):
+class TensorLaplaceDist(TensorDistribution, TensorRandomOperatorMixin):
     _input_fields_ = ["loc", "scale"]
     _op_type_ = opcodes.RAND_LAPLACE
 
@@ -129,5 +127,5 @@ def laplace(
         )
     size = random_state._handle_size(size)
     seed = gen_random_seeds(1, random_state.to_numpy())[0]
-    op = TensorLaplace(seed=seed, size=size, gpu=gpu, dtype=dtype)
+    op = TensorLaplaceDist(seed=seed, size=size, gpu=gpu, dtype=dtype)
     return op(loc, scale, chunk_size=chunk_size)

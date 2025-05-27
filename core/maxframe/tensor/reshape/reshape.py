@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,10 +13,12 @@
 # limitations under the License.
 
 import logging
+from typing import List
 
 import numpy as np
 
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import FieldTypes, KeyField, StringField, TupleField
 from ..datasource import tensor as astensor
 from ..operators import TensorMapReduceOperator, TensorOperatorMixin
@@ -42,9 +42,10 @@ class TensorReshape(TensorMapReduceOperator, TensorOperatorMixin):
     def input(self):
         return self._input
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "TensorReshape", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op._input = op._inputs[0]
 
     def on_output_modify(self, new_output):
         return reshape(new_output, self._input.shape)

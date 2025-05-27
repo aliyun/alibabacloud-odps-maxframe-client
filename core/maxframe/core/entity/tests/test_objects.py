@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from ....utils import extract_class_name
 from ..objects import Object, ObjectData
 
 
@@ -26,18 +27,16 @@ class TestSubObject(Object):
 def test_object_init():
     assert TestSubObjectData.get_entity_class() is TestSubObject
 
-    obj = ObjectData(
-        object_class=TestSubObjectData.__module__ + "#" + TestSubObjectData.__name__
-    )
-    assert isinstance(obj, TestSubObjectData)
+    obj_data = ObjectData(object_class=extract_class_name(TestSubObjectData))
+    assert isinstance(obj_data, TestSubObjectData)
+    obj = Object(obj_data)
+    assert isinstance(obj, TestSubObject)
 
-    obj = ObjectData(object_class=TestSubObjectData)
-    assert isinstance(obj, TestSubObjectData)
+    obj_data = ObjectData(object_class=TestSubObjectData)
+    assert isinstance(obj_data, TestSubObjectData)
 
-    obj = ObjectData(
-        object_class=TestSubObject.__module__ + "#" + TestSubObject.__name__
-    )
-    assert isinstance(obj, TestSubObjectData)
+    obj_data = ObjectData(object_class=extract_class_name(TestSubObject))
+    assert isinstance(obj_data, TestSubObjectData)
 
-    obj = ObjectData(object_class=TestSubObject)
-    assert isinstance(obj, TestSubObjectData)
+    obj_data = ObjectData(object_class=TestSubObject)
+    assert isinstance(obj_data, TestSubObjectData)

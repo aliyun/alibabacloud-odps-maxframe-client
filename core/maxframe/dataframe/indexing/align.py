@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Optional, Union
+from typing import Any, List, Optional, Union
 
 import numpy as np
 
 from ... import opcodes
-from ...core import OutputType, get_output_types
+from ...core import EntityData, OutputType, get_output_types
 from ...serialization.serializables import (
     AnyField,
     Int16Field,
@@ -53,10 +53,11 @@ class DataFrameAlign(DataFrameOperator, DataFrameOperatorMixin):
     def output_limit(self) -> int:
         return 2
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.lhs = inputs[0]
-        self.rhs = inputs[1]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameAlign", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.lhs = inputs[0]
+        op.rhs = inputs[1]
 
     def __call__(self, lhs: TileableType, rhs: TileableType):
         if self.broadcast_axis != 1 or lhs.ndim == rhs.ndim:

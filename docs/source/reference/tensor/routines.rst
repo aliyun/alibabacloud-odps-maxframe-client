@@ -12,9 +12,12 @@ The following pages describe Numpy-compatible routines. These functions cover a 
    :maxdepth: 2
 
    creation
+   indexing
    manipulation
+   binary
    logic
    math
    random
+   sets
    sorting
    statistics

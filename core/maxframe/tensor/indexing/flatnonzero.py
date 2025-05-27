@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,7 +50,7 @@ def flatnonzero(a):
     Use the indices of the non-zero elements as an index array to extract
     these elements:
 
-    >>> x.ravel()[mt.flatnonzero(x)].execute()  # TODO(jisheng): accomplish this after fancy indexing is supported
+    >>> x.ravel()[mt.flatnonzero(x)].execute()
 
     """
     from ..misc import ravel

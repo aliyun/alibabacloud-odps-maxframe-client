@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 import pandas as pd
 
 from ... import opcodes
-from ...core import OutputType
+from ...core import EntityData, OutputType
 from ...serialization.serializables import BoolField, Int64Field, KeyField, StringField
 from ...utils import pd_release_version
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
@@ -42,9 +44,10 @@ class DataFrameValueCounts(DataFrameOperator, DataFrameOperatorMixin):
         super().__init__(**kw)
         self.output_types = [OutputType.series]
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameValueCounts", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.input = op._inputs[0]
 
     def __call__(self, inp):
         test_series = build_series(inp).value_counts(normalize=self.normalize)

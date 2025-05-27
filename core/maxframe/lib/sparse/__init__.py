@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,6 +17,7 @@ import operator
 from collections.abc import Iterable
 from functools import partial, reduce
 
+from . import linalg
 from .array import SparseNDArray, call_sparse
 from .core import get_sparse_module, issparse
 from .matrix import SparseMatrix
@@ -312,6 +311,12 @@ elliprj = partial(call_sparse, "elliprj")
 airy = partial(_call_unary, "airy")
 airye = partial(_call_unary, "airye")
 itairy = partial(_call_unary, "itairy")
+
+expit = partial(call_sparse, "expit")
+logit = partial(call_sparse, "logit")
+log_expit = partial(call_sparse, "log_expit")
+
+softplus = partial(call_sparse, "softplus")
 
 
 def equal(a, b, **_):
@@ -837,23 +842,13 @@ def tril(m, k=0, gpu=False):
     raise NotImplementedError
 
 
-def lu(m):
-    from .matrix import lu_sparse_matrix
-
-    return lu_sparse_matrix(m)
-
-
-def solve_triangular(a, b, lower=False, sparse=True):
-    from .matrix import solve_triangular_sparse_matrix
-
-    return solve_triangular_sparse_matrix(a, b, lower=lower, sparse=sparse)
-
-
 def block(arrs):
     arr = arrs[0]
     while isinstance(arr, list):
         arr = arr[0]
-    if arr.ndim != 2:  # pragma: no cover
+    if arr.ndim == 1:
+        return concatenate(arrs)
+    elif arr.ndim != 2:  # pragma: no cover
         raise NotImplementedError
 
     from .matrix import block

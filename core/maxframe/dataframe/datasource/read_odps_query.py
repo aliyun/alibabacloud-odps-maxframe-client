@@ -13,9 +13,11 @@
 # limitations under the License.
 
 import dataclasses
+import io
 import logging
 import re
-from typing import Dict, List, Optional, Tuple, Union
+import tokenize
+from typing import Dict, List, MutableMapping, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -110,7 +112,15 @@ def _split_explain_string(explain_string: str) -> List[str]:
     grouped = []
     for part in parts:
         part = part.strip("\n")
-        if grouped and not part.startswith(" "):
+        part_line1 = part.split("\n", 1)[0]
+        # initial line of part should not start with spaces (Statistics row)
+        #  or with quote marks
+        if (
+            grouped
+            and not part.startswith(" ")
+            and "'" not in part_line1
+            and '"' not in part_line1
+        ):
             final_parts.append("\n\n".join(grouped).strip())
             grouped = []
         grouped.append(part)
@@ -267,6 +277,15 @@ class DataFrameReadODPSQuery(
     def set_pruned_columns(self, columns, *, keep_order=None):  # pragma: no cover
         self.columns = columns
 
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "DataFrameReadODPSQuery"
+    ):  # pragma: no cover
+        # use infinity to show that the size cannot be inferred
+        # todo when local catalyst is implemented,
+        #  a more precise estimation here can be useful then.
+        ctx[op.outputs[0].key] = float("inf")
+
     def __call__(self, chunk_bytes=None, chunk_size=None):
         if is_empty(self.index_columns):
             index_value = parse_index(pd.RangeIndex(0))
@@ -300,6 +319,17 @@ class DataFrameReadODPSQuery(
             chunk_bytes=chunk_bytes,
             chunk_size=chunk_size,
         )
+
+
+def _check_token_in_sql(token: str, sql: str) -> bool:
+    try:
+        names = set()
+        for tk_info in tokenize.tokenize(io.BytesIO(sql.encode()).readline):
+            if tk_info.type == tokenize.NAME:
+                names.add(tk_info.string)
+        return token in names
+    except:  # pragma: no cover
+        return False
 
 
 def read_odps_query(
@@ -382,7 +412,7 @@ def read_odps_query(
         new_columns = []
         for col in odps_schema.columns:
             anon_match = _ANONYMOUS_COL_REGEX.match(col.name)
-            if anon_match and col.name not in query:
+            if anon_match and not _check_token_in_sql(col.name, query):
                 new_name = anonymous_col_prefix + anon_match.group(1)
                 col_renames[col.name] = new_name
                 new_columns.append(Column(new_name, col.type))

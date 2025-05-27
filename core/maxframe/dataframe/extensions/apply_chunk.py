@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import functools
-from typing import Any, Callable, Dict, List, Tuple, Union
+from typing import Any, Callable, Dict, List, MutableMapping, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -26,22 +26,24 @@ from ...serialization.serializables import (
     Int32Field,
     TupleField,
 )
-from ...utils import quiet_stdio
+from ...udf import BuiltinFunction, MarkedFunction
+from ...utils import copy_if_possible, make_dtype, make_dtypes
 from ..core import DATAFRAME_TYPE, DataFrame, IndexValue, Series
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import (
+    InferredDataFrameMeta,
     build_df,
-    build_series,
     copy_func_scheduling_hints,
-    make_dtypes,
+    infer_dataframe_return_value,
     pack_func_args,
     parse_index,
     validate_output_types,
 )
 
 
-class DataFrameApplyChunkOperator(DataFrameOperator, DataFrameOperatorMixin):
+class DataFrameApplyChunk(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.APPLY_CHUNK
+    _legacy_name = "DataFrameApplyChunkOperator"
 
     func = FunctionField("func")
     batch_rows = Int32Field("batch_rows", default=None)
@@ -55,7 +57,10 @@ class DataFrameApplyChunkOperator(DataFrameOperator, DataFrameOperatorMixin):
         if hasattr(self, "func"):
             copy_func_scheduling_hints(self.func, self)
 
-    def _call_dataframe(self, df, dtypes, index_value, element_wise):
+    def has_custom_code(self) -> bool:
+        return not isinstance(self.func, BuiltinFunction)
+
+    def _call_dataframe(self, df, dtypes, dtype, name, index_value, element_wise):
         # return dataframe
         if self.output_types[0] == OutputType.dataframe:
             dtypes = make_dtypes(dtypes)
@@ -69,26 +74,13 @@ class DataFrameApplyChunkOperator(DataFrameOperator, DataFrameOperatorMixin):
             )
 
         # return series
-        if not isinstance(dtypes, tuple):
-            raise TypeError(
-                "Cannot determine dtype, " "please specify `dtype` as argument"
-            )
-
-        name, dtype = dtypes
         return self.new_series(
             [df], shape=(np.nan,), name=name, dtype=dtype, index_value=index_value
         )
 
-    def _call_series(self, series, dtypes, index_value, element_wise):
+    def _call_series(self, series, dtypes, dtype, name, index_value, element_wise):
         if self.output_types[0] == OutputType.series:
-            if not isinstance(dtypes, tuple):
-                raise TypeError(
-                    "Cannot determine dtype, " "please specify `dtype` as argument"
-                )
-
-            name, dtype = dtypes
             shape = series.shape if element_wise else (np.nan,)
-
             return self.new_series(
                 [series],
                 dtype=dtype,
@@ -110,6 +102,8 @@ class DataFrameApplyChunkOperator(DataFrameOperator, DataFrameOperatorMixin):
         self,
         df_or_series: Union[DataFrame, Series],
         dtypes: Union[Tuple[str, Any], Dict[str, Any]] = None,
+        dtype: Any = None,
+        name: Any = None,
         output_type=None,
         index=None,
     ):
@@ -123,145 +117,104 @@ class DataFrameApplyChunkOperator(DataFrameOperator, DataFrameOperatorMixin):
             return self.new_df_or_series([df_or_series])
 
         # infer return index and dtypes
-        dtypes, index_value, elementwise = self._infer_batch_func_returns(
+        inferred_meta = self._infer_batch_func_returns(
             df_or_series,
-            origin_func=self.func,
             packed_func=packed_func,
-            given_output_type=output_type,
-            given_dtypes=dtypes,
-            given_index=index,
+            output_type=output_type,
+            dtypes=dtypes,
+            dtype=dtype,
+            name=name,
+            index=index,
         )
 
-        if index_value is None:
-            index_value = parse_index(
+        if inferred_meta.index_value is None:
+            inferred_meta.index_value = parse_index(
                 None, (df_or_series.key, df_or_series.index_value.key, self.func)
             )
-        for arg, desc in zip((self.output_types, dtypes), ("output_types", "dtypes")):
-            if arg is None:
-                raise TypeError(
-                    f"Cannot determine {desc} by calculating with enumerate data, "
-                    "please specify it as arguments"
-                )
-
-        if dtypes is None or len(dtypes) == 0:
-            raise TypeError(
-                "Cannot determine {dtypes} or {dtype} by calculating with enumerate data, "
-                "please specify it as arguments"
-            )
+        inferred_meta.check_absence("output_type", "dtypes", "dtype")
 
         if isinstance(df_or_series, DATAFRAME_TYPE):
             return self._call_dataframe(
                 df_or_series,
-                dtypes=dtypes,
-                index_value=index_value,
-                element_wise=elementwise,
+                dtypes=inferred_meta.dtypes,
+                dtype=inferred_meta.dtype,
+                name=inferred_meta.name,
+                index_value=inferred_meta.index_value,
+                element_wise=inferred_meta.elementwise,
             )
 
         return self._call_series(
             df_or_series,
-            dtypes=dtypes,
-            index_value=index_value,
-            element_wise=elementwise,
+            dtypes=inferred_meta.dtypes,
+            dtype=inferred_meta.dtype,
+            name=inferred_meta.name,
+            index_value=inferred_meta.index_value,
+            element_wise=inferred_meta.elementwise,
         )
 
     def _infer_batch_func_returns(
         self,
         input_df_or_series: Union[DataFrame, Series],
-        origin_func: Union[str, Callable, np.ufunc],
         packed_func: Union[Callable, functools.partial],
-        given_output_type: OutputType,
-        given_dtypes: Union[Tuple[str, Any], pd.Series, List[Any], Dict[str, Any]],
-        given_index: Union[pd.Index, IndexValue],
-        given_elementwise: bool = False,
+        output_type: OutputType,
         *args,
+        dtypes: Union[pd.Series, List[Any], Dict[str, Any]] = None,
+        dtype: Any = None,
+        name: Any = None,
+        index: Union[pd.Index, IndexValue] = None,
+        elementwise: bool = None,
         **kwargs,
-    ):
-        inferred_output_type = inferred_dtypes = inferred_index_value = None
-        inferred_is_elementwise = False
-
-        # handle numpy ufunc case
-        if isinstance(origin_func, np.ufunc):
-            inferred_output_type = OutputType.dataframe
-            inferred_dtypes = None
-            inferred_index_value = input_df_or_series.index_value
-            inferred_is_elementwise = True
-        elif self.output_types is not None and given_dtypes is not None:
-            inferred_dtypes = given_dtypes
-
-        # build same schema frame toto execute
-        if isinstance(input_df_or_series, DATAFRAME_TYPE):
-            empty_data = build_df(input_df_or_series, fill_value=1, size=1)
-        else:
-            empty_data = build_series(
-                input_df_or_series, size=1, name=input_df_or_series.name
-            )
-
-        try:
-            # execute
-            with np.errstate(all="ignore"), quiet_stdio():
-                infer_result = packed_func(empty_data, *args, **kwargs)
-
-            #  if executed successfully, get index and dtypes from returned object
-            if inferred_index_value is None:
-                if (
-                    infer_result is None
-                    or not hasattr(infer_result, "index")
-                    or infer_result.index is None
-                ):
-                    inferred_index_value = parse_index(pd.RangeIndex(-1))
-                elif infer_result.index is empty_data.index:
-                    inferred_index_value = input_df_or_series.index_value
-                else:
-                    inferred_index_value = parse_index(infer_result.index, packed_func)
-
-            if isinstance(infer_result, pd.DataFrame):
-                if (
-                    given_output_type is not None
-                    and given_output_type != OutputType.dataframe
-                ):
-                    raise TypeError(
-                        f'Cannot infer output_type as "series", '
-                        f'please specify `output_type` as "dataframe"'
-                    )
-                inferred_output_type = given_output_type or OutputType.dataframe
-                inferred_dtypes = (
-                    given_dtypes if given_dtypes is not None else infer_result.dtypes
-                )
-            else:
-                if (
-                    given_output_type is not None
-                    and given_output_type == OutputType.dataframe
-                ):
-                    raise TypeError(
-                        f'Cannot infer output_type as "dataframe", '
-                        f'please specify `output_type` as "series"'
-                    )
-                inferred_output_type = given_output_type or OutputType.series
-                inferred_dtypes = (infer_result.name, infer_result.dtype)
-        except:  # noqa: E722
-            pass
+    ) -> InferredDataFrameMeta:
+        inferred_meta = infer_dataframe_return_value(
+            input_df_or_series,
+            functools.partial(packed_func, *args, **kwargs),
+            output_type=output_type,
+            dtypes=dtypes,
+            dtype=dtype,
+            name=name,
+            index=index,
+            elementwise=elementwise,
+        )
 
         # merge specified and inferred index, dtypes, output_type
         # elementwise used to decide shape
         self.output_types = (
-            [inferred_output_type]
-            if not self.output_types and inferred_output_type
+            [inferred_meta.output_type]
+            if not self.output_types and inferred_meta.output_type
             else self.output_types
         )
-        inferred_dtypes = given_dtypes if given_dtypes is not None else inferred_dtypes
-        if given_index is not None:
-            inferred_index_value = (
-                parse_index(given_index)
-                if given_index is not input_df_or_series.index_value
+        if self.output_types:
+            inferred_meta.output_type = self.output_types[0]
+        inferred_meta.dtypes = dtypes if dtypes is not None else inferred_meta.dtypes
+        if index is not None:
+            inferred_meta.index_value = (
+                parse_index(index)
+                if index is not input_df_or_series.index_value
                 else input_df_or_series.index_value
             )
-        inferred_is_elementwise = given_elementwise or inferred_is_elementwise
-        return inferred_dtypes, inferred_index_value, inferred_is_elementwise
+        inferred_meta.elementwise = elementwise or inferred_meta.elementwise
+        return inferred_meta
+
+    @classmethod
+    def estimate_size(
+        cls,
+        ctx: MutableMapping[str, Union[int, float]],
+        op: "DataFrameApplyChunk",
+    ) -> None:
+        if isinstance(op.func, MarkedFunction):
+            ctx[op.outputs[0].key] = float("inf")
+        super().estimate_size(ctx, op)
+
+
+# Keep for import compatibility
+DataFrameApplyChunkOperator = DataFrameApplyChunk
 
 
 def get_packed_func(df, func, *args, **kwargs) -> Any:
     stub_df = build_df(df, fill_value=1, size=1)
-    return pack_func_args(stub_df, func, *args, **kwargs)
+    n_args = copy_if_possible(args)
+    n_kwargs = copy_if_possible(kwargs)
+    return pack_func_args(stub_df, func, *n_args, **n_kwargs)
 
 
 def df_apply_chunk(
@@ -477,7 +430,8 @@ def df_apply_chunk(
         elif batch_rows <= 0:
             raise ValueError("batch_rows must be greater than 0")
 
-    dtypes = (name, dtype) if dtype is not None else dtypes
+    if dtype is not None:
+        dtype = make_dtype(dtype)
 
     output_types = kwargs.pop("output_types", None)
     object_type = kwargs.pop("object_type", None)
@@ -489,7 +443,7 @@ def df_apply_chunk(
         output_type = OutputType.df_or_series
 
     # bind args and kwargs
-    op = DataFrameApplyChunkOperator(
+    op = DataFrameApplyChunk(
         func=func,
         batch_rows=batch_rows,
         output_type=output_type,
@@ -500,14 +454,17 @@ def df_apply_chunk(
     return op(
         dataframe,
         dtypes=dtypes,
+        dtype=dtype,
+        name=name,
         index=index,
+        output_type=output_type,
     )
 
 
 def series_apply_chunk(
     dataframe_or_series,
     func: Union[str, Callable],
-    batch_rows,
+    batch_rows=None,
     dtypes=None,
     dtype=None,
     name=None,
@@ -714,11 +671,11 @@ def series_apply_chunk(
     if not isinstance(func, Callable):
         raise TypeError("function must be a callable object")
 
-    if not isinstance(batch_rows, int):
-        raise TypeError("batch_rows must be an integer")
-
-    if batch_rows <= 0:
-        raise ValueError("batch_rows must be greater than 0")
+    if batch_rows is not None:
+        if not isinstance(batch_rows, int):
+            raise TypeError("batch_rows must be an integer")
+        if batch_rows <= 0:
+            raise ValueError("batch_rows must be greater than 0")
 
     # bind args and kwargs
     output_types = kwargs.pop("output_types", None)
@@ -730,7 +687,7 @@ def series_apply_chunk(
     if skip_infer and output_type is None:
         output_type = OutputType.df_or_series
 
-    op = DataFrameApplyChunkOperator(
+    op = DataFrameApplyChunk(
         func=func,
         batch_rows=batch_rows,
         output_type=output_type,
@@ -738,10 +695,13 @@ def series_apply_chunk(
         kwargs=kwargs,
     )
 
-    dtypes = (name, dtype) if dtype is not None else dtypes
+    if dtype is not None:
+        dtype = make_dtype(dtype)
     return op(
         dataframe_or_series,
-        dtypes=dtypes,
+        dtypes=make_dtypes(dtypes),
+        dtype=dtype,
+        name=name,
         output_type=output_type,
         index=index,
     )

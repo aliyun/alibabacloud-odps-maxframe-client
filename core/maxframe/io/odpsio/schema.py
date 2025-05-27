@@ -14,7 +14,7 @@
 
 import string
 from collections import defaultdict
-from typing import Any, Dict, Tuple, Union
+from typing import Any, Dict, Tuple
 
 import numpy as np
 import pandas as pd
@@ -23,9 +23,11 @@ from odps import types as odps_types
 from pandas.api import types as pd_types
 
 from ...core import TILEABLE_TYPE, OutputType
+from ...dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
 from ...lib.dtypes_extension import ArrowDtype
 from ...protocol import DataFrameTableMeta
 from ...tensor.core import TENSOR_TYPE
+from ...utils import build_temp_table_name
 
 _TEMP_TABLE_PREFIX = "tmp_mf_"
 DEFAULT_SINGLE_INDEX_NAME = "_idx_0"
@@ -63,15 +65,15 @@ _odps_type_to_arrow = {
     odps_types.timestamp_ntz: pa.timestamp("ns"),
 }
 
-_based_for_pandas_pa_dtypes = Union[pa.MapType]
+_based_for_pandas_pa_types = (pa.ListType, pa.MapType)
 
 
-def is_based_for_pandas_dtype(dtype: pa.DataType) -> bool:
+def is_based_for_pandas_dtype(arrow_type: pa.DataType) -> bool:
     """
     Check whether the arrow type is based for one pandas data type.
     If true, we should make sure the environment support ArrowDtype.
     """
-    if not isinstance(dtype, _based_for_pandas_pa_dtypes):
+    if not isinstance(arrow_type, _based_for_pandas_pa_types):
         return False
 
     if ArrowDtype is None:
@@ -243,10 +245,35 @@ def pandas_dataframe_to_arrow_table(df: pd.DataFrame, nthreads=1) -> pa.Table:
     )
 
 
+def pandas_dtypes_to_arrow_schema(dtypes, unknown_as_string: bool = False) -> pa.Schema:
+    if unknown_as_string:
+        dt_list = [dt if dt != np.dtype("O") else pd.StringDtype() for dt in dtypes]
+        dtypes = pd.Series(dt_list, index=dtypes.index)
+    schema = pandas_types_to_arrow_schema(
+        pd.DataFrame([], columns=dtypes.index).astype(dtypes)
+    )
+    return schema
+
+
+def pandas_dtype_to_arrow_type(dtype, unknown_as_string: bool = False) -> pa.DataType:
+    if unknown_as_string and dtype == np.dtype("O"):
+        dtype = pd.StringDtype()
+    schema = pandas_types_to_arrow_schema(
+        pd.DataFrame([], columns=["a"]).astype({"a": dtype})
+    )
+    return schema.types[0]
+
+
 def is_scalar_object(df_obj: Any) -> bool:
     return (
         isinstance(df_obj, TENSOR_TYPE) and df_obj.shape == ()
     ) or pd_types.is_scalar(df_obj)
+
+
+def is_tensor_object(df_obj: Any) -> bool:
+    return (
+        isinstance(df_obj, TENSOR_TYPE) or isinstance(df_obj, np.ndarray)
+    ) and df_obj.ndim <= 1
 
 
 def _scalar_as_index(df_obj: Any) -> pd.Index:
@@ -264,7 +291,7 @@ def pandas_to_odps_schema(
     from ... import dataframe as md
     from .arrow import pandas_to_arrow
 
-    if is_scalar_object(df_obj):
+    if is_scalar_object(df_obj) or is_tensor_object(df_obj):
         empty_index = None
     elif hasattr(df_obj, "index_value"):
         empty_index = df_obj.index_value.to_pandas()[:0]
@@ -368,25 +395,25 @@ def build_table_column_name(
 
 
 def build_dataframe_table_meta(
-    df_obj: Any, ignore_index: bool = False
+    df_obj: Any, ignore_index: bool = False, session_id: str = None
 ) -> DataFrameTableMeta:
-    from ... import dataframe as md
-
     col_to_count = defaultdict(lambda: 0)
     col_to_idx = defaultdict(lambda: 0)
     pd_col_to_col_name = dict()
-    if isinstance(df_obj, (md.DataFrame, pd.DataFrame)):
+    if isinstance(df_obj, (DATAFRAME_TYPE, pd.DataFrame)):
         obj_type = OutputType.dataframe
-    elif isinstance(df_obj, (md.Series, pd.Series)):
+    elif isinstance(df_obj, (SERIES_TYPE, pd.Series)):
         obj_type = OutputType.series
-    elif isinstance(df_obj, (md.Index, pd.Index)):
+    elif isinstance(df_obj, (INDEX_TYPE, pd.Index)):
         obj_type = OutputType.index
+    elif is_tensor_object(df_obj) and df_obj.ndim == 1:
+        obj_type = OutputType.tensor
     elif is_scalar_object(df_obj):
         obj_type = OutputType.scalar
     else:  # pragma: no cover
         raise TypeError(f"Cannot accept type {type(df_obj)}")
 
-    if obj_type == OutputType.scalar:
+    if obj_type in (OutputType.scalar, OutputType.tensor):
         pd_dtypes = pd.Series([])
         column_index_names = []
         index_obj = _scalar_as_index(df_obj)
@@ -404,7 +431,10 @@ def build_dataframe_table_meta(
         index_obj = df_obj.index
 
     if isinstance(df_obj, TILEABLE_TYPE):
-        table_name = _TEMP_TABLE_PREFIX + str(df_obj.key)
+        if not session_id:
+            table_name = _TEMP_TABLE_PREFIX + str(df_obj.key)
+        else:
+            table_name = build_temp_table_name(session_id, df_obj.key)
     else:
         table_name = None
 

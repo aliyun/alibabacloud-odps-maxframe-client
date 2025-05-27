@@ -41,6 +41,10 @@ class AbstractGraphBuilder(ABC):
     ):  # pylint: disable=no-self-use
         return node not in visited
 
+    @classmethod
+    def _get_node_outputs(cls, node: EntityType):
+        return node.op.outputs
+
     def _add_nodes(
         self,
         graph: EntityGraph,
@@ -70,7 +74,7 @@ class AbstractGraphBuilder(ABC):
                     graph.add_node(c)
                 if not graph.has_successor(c, node):
                     graph.add_edge(c, node)
-                for out in c.op.outputs:
+                for out in self._get_node_outputs(c):
                     if self._if_add_node(out, visited):
                         nodes.append(out)
 

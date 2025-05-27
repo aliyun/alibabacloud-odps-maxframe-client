@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import KeyField
 from ..datasource import tensor as astensor
 from ..operators import TensorOperator, TensorOperatorMixin
@@ -31,11 +32,12 @@ class TensorWhere(TensorOperator, TensorOperatorMixin):
     x = KeyField("x", default=None)
     y = KeyField("y", default=None)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.condition = self._inputs[0]
-        self.x = self._inputs[1]
-        self.y = self._inputs[2]
+    @classmethod
+    def _set_inputs(cls, op: "TensorWhere", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.condition = op._inputs[0]
+        op.x = op._inputs[1]
+        op.y = op._inputs[2]
 
     def __call__(self, condition, x, y, shape=None):
         shape = shape or broadcast_shape(condition.shape, x.shape, y.shape)
@@ -123,5 +125,5 @@ def where(condition, x=None, y=None):
         return broadcast_to(x if condition else y, shape).astype(dtype)
     else:
         condition = astensor(condition)
-        op = TensorWhere(dtype=dtype)
+        op = TensorWhere(dtype=dtype, sparse=condition.issparse())
         return op(condition, x, y, shape=shape)

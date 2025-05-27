@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 import pandas as pd
 from pandas.api.types import is_list_like
 
 from ... import opcodes
-from ...core import OutputType
+from ...core import EntityData, OutputType
 from ...serialization.serializables import AnyField, KeyField
 from ...tensor.core import TENSOR_TYPE
 from ...utils import pd_release_version
@@ -43,11 +45,12 @@ class DataFrameSetitem(DataFrameOperator, DataFrameOperatorMixin):
         if self.output_types is None:
             self.output_types = [OutputType.dataframe]
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.target = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameSetitem", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.target = op._inputs[0]
         if len(inputs) > 1:
-            self.value = self._inputs[-1]
+            op.value = op._inputs[-1]
 
     @staticmethod
     def _is_scalar_tensor(t):

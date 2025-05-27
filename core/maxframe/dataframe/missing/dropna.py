@@ -37,6 +37,8 @@ class DataFrameDropNA(DataFrameOperator, DataFrameOperatorMixin):
     drop_directly = BoolField("drop_directly", default=None)
     # size of subset, used when how == 'any'
     subset_size = Int32Field("subset_size", default=None)
+    # if True, drop index
+    ignore_index = BoolField("ignore_index", default=False)
 
     def __init__(self, sparse=None, output_types=None, **kw):
         super().__init__(_output_types=output_types, sparse=sparse, **kw)
@@ -52,7 +54,13 @@ class DataFrameDropNA(DataFrameOperator, DataFrameOperatorMixin):
 
 
 def df_dropna(
-    df, axis=0, how=no_default, thresh=no_default, subset=None, inplace=False
+    df,
+    axis=0,
+    how=no_default,
+    thresh=no_default,
+    subset=None,
+    inplace=False,
+    ignore_index=False,
 ):
     """
     Remove missing values.
@@ -69,11 +77,6 @@ def df_dropna(
         * 0, or 'index' : Drop rows which contain missing values.
         * 1, or 'columns' : Drop columns which contain missing value.
 
-        .. versionchanged:: 1.0.0
-
-           Pass tuple or list to drop on multiple axes.
-           Only a single axis is allowed.
-
     how : {'any', 'all'}, default 'any'
         Determine if row or column is removed from DataFrame, when we have
         at least one NA or all NA.
@@ -88,6 +91,8 @@ def df_dropna(
         these would be a list of columns to include.
     inplace : bool, default False
         If True, do operation inplace and return None.
+    ignore_index : bool, default False
+        If True, the resulting axis will be labeled 0, 1, …, n - 1.
 
     Returns
     -------
@@ -168,6 +173,7 @@ def df_dropna(
         how=how,
         thresh=thresh,
         subset=subset,
+        ignore_index=ignore_index,
         output_types=[OutputType.dataframe],
     )
     out_df = op(df)
@@ -177,7 +183,7 @@ def df_dropna(
         return out_df
 
 
-def series_dropna(series, axis=0, inplace=False, how=None):
+def series_dropna(series, axis=0, inplace=False, how=None, ignore_index=False):
     """
     Return a new Series with missing values removed.
 
@@ -192,6 +198,8 @@ def series_dropna(series, axis=0, inplace=False, how=None):
         If True, do operation inplace and return None.
     how : str, optional
         Not in use. Kept for compatibility.
+    ignore_index : bool, default False
+        If True, the resulting axis will be labeled 0, 1, …, n - 1.
 
     Returns
     -------
@@ -253,6 +261,7 @@ def series_dropna(series, axis=0, inplace=False, how=None):
     op = DataFrameDropNA(
         axis=axis,
         how=how,
+        ignore_index=ignore_index,
         output_types=[OutputType.series],
     )
     out_series = op(series)

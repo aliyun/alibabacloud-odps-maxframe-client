@@ -22,6 +22,15 @@ Training
     xgboost.predict
     xgboost.train
 
+Callbacks
+---------
+
+.. autosummary::
+    :toctree: generated/
+
+    xgboost.callback.EarlyStopping
+    xgboost.callback.LearningRateScheduler
+
 Scikit-learn API
 ----------------
 

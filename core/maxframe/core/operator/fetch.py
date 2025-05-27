@@ -12,16 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import enum
-
 from ... import opcodes
-from ...serialization.serializables import (
-    FieldTypes,
-    Int32Field,
-    ListField,
-    ReferenceField,
-    StringField,
-)
+from ...serialization.serializables import Int32Field, StringField
 from .base import Operator
 from .core import TileableOperatorMixin
 
@@ -42,12 +34,7 @@ class FetchMixin(TileableOperatorMixin):
 class FetchShuffle(Operator):
     _op_type_ = opcodes.FETCH_SHUFFLE
 
-    source_keys = ListField("source_keys", FieldTypes.string)
-    n_mappers = Int32Field("n_mappers")
-    n_reducers = Int32Field("n_reducers")
-    shuffle_fetch_type = ReferenceField("shuffle_fetch_type")
-
-
-class ShuffleFetchType(enum.Enum):
-    FETCH_BY_KEY = 0
-    FETCH_BY_INDEX = 1
+    shuffle_key = StringField("shuffle_key", default=None)
+    reducer_id = Int32Field("reducer_id", default=None)
+    n_mappers = Int32Field("n_mappers", default=None)
+    n_reducers = Int32Field("n_reducers", default=None)

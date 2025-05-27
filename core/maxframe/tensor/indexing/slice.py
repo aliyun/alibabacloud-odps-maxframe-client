@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
 
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import KeyField, ListField
 from ..operators import TensorHasInput, TensorOperatorMixin
 
@@ -24,6 +26,7 @@ class TensorSlice(TensorHasInput, TensorOperatorMixin):
     _input = KeyField("input")
     slices = ListField("slices", default=None)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "TensorSlice", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op._input = op._inputs[0]

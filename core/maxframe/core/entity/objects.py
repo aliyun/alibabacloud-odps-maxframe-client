@@ -16,6 +16,7 @@ from typing import Any, Dict, Type
 
 from ...serialization import load_type
 from ...serialization.serializables import StringField
+from ...utils import extract_class_name
 from .core import Entity
 from .executable import _ToObjectMixin
 from .tileables import TileableData
@@ -36,7 +37,7 @@ class ObjectData(TileableData, _ToObjectMixin):
         if getattr(cls, "_entity_class", None) is not None:
             return cls._entity_class
         assert cls.__qualname__[-4:] == "Data"
-        target_class_name = cls.__module__ + "#" + cls.__qualname__[:-4]
+        target_class_name = extract_class_name(cls)[:-4]
         cls._entity_class = load_type(target_class_name, Object)
         return cls._entity_class
 
@@ -57,15 +58,18 @@ class ObjectData(TileableData, _ToObjectMixin):
         if isinstance(obj_cls, type):
             if isinstance(obj_cls, type) and issubclass(obj_cls, Object):
                 obj_cls = obj_cls.get_data_class()
-            kw["object_class"] = obj_cls.__module__ + "#" + obj_cls.__qualname__
+            kw["object_class"] = extract_class_name(obj_cls)
 
         super().__init__(_op=op, _nsplits=nsplits, **kw)
         if self.object_class is None and type(self) is not ObjectData:
             cls = type(self)
-            self.object_class = cls.__module__ + "#" + cls.__qualname__
+            self.object_class = extract_class_name(cls)
 
     def __repr__(self):
-        return f"Object <op={type(self.op).__name__}, key={self.key}>"
+        return (
+            f"{type(self).__name__[:-4]} "
+            f"<op={type(self.op).__name__}, key={self.key}>"
+        )
 
     @property
     def params(self):
@@ -75,6 +79,7 @@ class ObjectData(TileableData, _ToObjectMixin):
     @params.setter
     def params(self, new_params: Dict[str, Any]):
         params = new_params.copy()
+        params.pop("object_class", None)
         if params:  # pragma: no cover
             raise TypeError(f"Unknown params: {list(params)}")
 
@@ -89,11 +94,20 @@ class Object(Entity, _ToObjectMixin):
     _allow_data_type_ = (ObjectData,)
     type_name = "Object"
 
+    def __new__(cls, data=None, **kw):
+        if (
+            cls is Object
+            and isinstance(data, ObjectData)
+            and type(data) is not ObjectData
+        ):
+            return data.get_entity_class()(data, **kw)
+        return super().__new__(cls)
+
     @classmethod
     def get_data_class(cls) -> Type[ObjectData]:
         if getattr(cls, "_data_class", None) is not None:
             return cls._data_class
-        target_class_name = cls.__module__ + "#" + cls.__qualname__ + "Data"
+        target_class_name = extract_class_name(cls) + "Data"
         cls._data_class = load_type(target_class_name, ObjectData)
         return cls._data_class
 

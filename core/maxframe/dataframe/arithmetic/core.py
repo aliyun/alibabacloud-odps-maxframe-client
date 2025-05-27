@@ -13,14 +13,15 @@
 # limitations under the License.
 
 import copy
+from typing import List, MutableMapping, Union
 
 import numpy as np
 import pandas as pd
 
-from ...core import ENTITY_TYPE
+from ...core import ENTITY_TYPE, EntityData
 from ...serialization.serializables import AnyField
 from ...tensor.core import TENSOR_TYPE
-from ...utils import classproperty, get_dtype
+from ...utils import classproperty, make_dtype
 from ..core import DATAFRAME_TYPE, SERIES_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..ufunc.tensor import TensorUfuncMixin
@@ -30,6 +31,7 @@ from ..utils import (
     infer_dtypes,
     infer_index_value,
     parse_index,
+    validate_axis,
 )
 
 
@@ -63,7 +65,7 @@ class DataFrameBinOpMixin(DataFrameOperatorMixin):
             x2 is None or pd.api.types.is_scalar(x2) or isinstance(x2, TENSOR_TYPE)
         ):
             x2_dtype = x2.dtype if hasattr(x2, "dtype") else type(x2)
-            x2_dtype = get_dtype(x2_dtype)
+            x2_dtype = make_dtype(x2_dtype)
             if hasattr(cls, "return_dtype"):
                 dtype = cls.return_dtype
             else:
@@ -153,7 +155,7 @@ class DataFrameBinOpMixin(DataFrameOperatorMixin):
                 columns = x1.columns_value
                 dtypes = x1.dtypes
                 index_shape, index = np.nan, None
-                if x1.index_value is not None and x1.index_value is not None:
+                if x1.index_value is not None and x2.index_value is not None:
                     if x1.index_value.key == x2.index_value.key:
                         dtypes = pd.Series(
                             [
@@ -277,34 +279,42 @@ class DataFrameBinOpMixin(DataFrameOperatorMixin):
             raise NotImplementedError
         return self._call(x2, x1)
 
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "DataFrameOperator"
+    ):
+        ctx[op.outputs[0].key] = max(ctx[inp.key] for inp in (op.inputs or ()))
 
-class DataFrameBinOp(DataFrameOperator, DataFrameBinOpMixin):
+
+class DataFrameBinOp(DataFrameBinOpMixin, DataFrameOperator):
     axis = AnyField("axis", default=None)
     level = AnyField("level", default=None)
     fill_value = AnyField("fill_value", default=None)
     lhs = AnyField("lhs")
     rhs = AnyField("rhs")
 
-    def __init__(self, output_types=None, **kw):
-        super().__init__(_output_types=output_types, **kw)
+    def __init__(self, output_types=None, axis=0, **kw):
+        axis = validate_axis(axis)
+        super().__init__(_output_types=output_types, axis=axis, **kw)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        if len(self._inputs) == 2:
-            self.lhs = self._inputs[0]
-            self.rhs = self._inputs[1]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameBinOp", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        if len(op._inputs) == 2:
+            op.lhs = op._inputs[0]
+            op.rhs = op._inputs[1]
         else:
-            if isinstance(self.lhs, ENTITY_TYPE):
-                self.lhs = self._inputs[0]
-            elif pd.api.types.is_scalar(self.lhs):
-                self.rhs = self._inputs[0]
+            if isinstance(op.lhs, ENTITY_TYPE):
+                op.lhs = op._inputs[0]
+            elif isinstance(op.rhs, ENTITY_TYPE):
+                op.rhs = op._inputs[0]
 
 
 class DataFrameUnaryOpMixin(DataFrameOperatorMixin):
     __slots__ = ()
 
 
-class DataFrameUnaryOp(DataFrameOperator, DataFrameUnaryOpMixin):
+class DataFrameUnaryOp(DataFrameUnaryOpMixin, DataFrameOperator):
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
 
@@ -337,9 +347,10 @@ class DataFrameUnaryOp(DataFrameOperator, DataFrameUnaryOpMixin):
 
 
 class DataFrameArithmeticTreeMixin:
-    def _set_inputs(self, inputs):
-        inputs = self._get_inputs_data(inputs)
-        setattr(self, "_inputs", inputs)
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameOperator", inputs: List[EntityData]):
+        inputs = op._get_inputs_data(inputs)
+        setattr(op, "_inputs", inputs)
 
 
 class DataFrameUnaryUfunc(DataFrameUnaryOp, TensorUfuncMixin):

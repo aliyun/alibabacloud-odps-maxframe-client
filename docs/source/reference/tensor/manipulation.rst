@@ -44,3 +44,13 @@ Joining tensors
 
    maxframe.tensor.concatenate
    maxframe.tensor.vstack
+
+
+Tiling arrays
+-------------
+
+.. autosummary::
+   :toctree: generated/
+   :nosignatures:
+
+   maxframe.tensor.repeat

@@ -19,9 +19,11 @@ from typing import NamedTuple
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 import pytest
 
 from .... import dataframe as md
+from ....lib.dtypes_extension import ArrowDtype
 from ....tensor import Tensor
 from ....tests.utils import assert_mf_index_dtype
 from ...core import DataFrame, IndexValue, OutputType, Series
@@ -29,6 +31,7 @@ from ...datasource.dataframe import from_pandas as from_pandas_df
 from ...datasource.series import from_pandas as from_pandas_series
 from .. import (
     CustomReduction,
+    DataFrameAggregate,
     DataFrameAll,
     DataFrameAny,
     DataFrameCount,
@@ -194,6 +197,36 @@ def test_nunique():
     assert result2.shape == (20,)
     assert result2.op.output_types[0] == OutputType.series
     assert isinstance(result2.op, DataFrameNunique)
+
+
+def test_unique():
+    pd_df = pd.DataFrame(
+        {
+            "col1": pd.Series(np.random.choice(["a", "b", "c", "d"], 100)),
+            "col2": pd.Series(np.random.choice([0, 1, 2, 3], 100)),
+        }
+    )
+    df = from_pandas_df(pd_df, chunk_size=3)
+    result = df.agg(["unique"])
+
+    assert result.shape == (1, 2)
+    assert result.op.output_types[0] == OutputType.dataframe
+    assert isinstance(result.op, DataFrameAggregate)
+    pd.testing.assert_series_equal(
+        result.dtypes,
+        pd.Series(
+            [ArrowDtype(pa.list_(pa.string())), ArrowDtype(pa.list_(pa.int64()))],
+            index=pd_df.columns,
+        ),
+    )
+
+    pd_s = pd.Series(np.random.choice(["a", "b", "c", "d"], 100))
+    ms = from_pandas_series(pd_s, chunk_size=3)
+    result = ms.agg(["unique"])
+    assert result.shape == (1,)
+    assert result.op.output_types[0] == OutputType.series
+    assert isinstance(result.op, DataFrameAggregate)
+    assert result.dtype == ArrowDtype(pa.list_(pa.string()))
 
 
 def test_dataframe_aggregate():

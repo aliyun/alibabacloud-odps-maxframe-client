@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,6 +23,7 @@ from ...serialization.serializables import (
     StringField,
     TupleField,
 )
+from ...utils import on_deserialize_shape, on_serialize_shape
 from ..utils import get_order
 from .array import tensor
 from .core import TensorLike, TensorNoInput
@@ -34,7 +33,12 @@ class TensorZeros(TensorNoInput):
     _op_type_ = opcodes.TENSOR_ZEROS
 
     order = StringField("order")
-    shape = TupleField("shape", FieldTypes.int64)
+    shape = TupleField(
+        "shape",
+        FieldTypes.int64,
+        on_serialize=on_serialize_shape,
+        on_deserialize=on_deserialize_shape,
+    )
     chunk_size = AnyField("chunk_size")
 
     def __init__(self, shape=None, **kwargs):

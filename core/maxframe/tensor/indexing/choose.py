@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import FieldTypes, KeyField, ListField, StringField
 from ..core import Tensor, TensorOrder
 from ..datasource import tensor as astensor
@@ -40,10 +41,11 @@ class TensorChoose(TensorOperator, TensorOperatorMixin):
 
         super().__setattr__(key, value)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.a = self._inputs[0]
-        self.choices = self._inputs[1:]
+    @classmethod
+    def _set_inputs(cls, op: "TensorChoose", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.a = op._inputs[0]
+        op.choices = op._inputs[1:]
 
     def __call__(self, a, choices, out=None):
         if out is not None and not isinstance(out, Tensor):

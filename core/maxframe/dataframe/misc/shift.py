@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import pandas as pd
 
 from ... import opcodes
-from ...core import OutputType
+from ...core import EntityData, OutputType
 from ...serialization.serializables import AnyField, Int8Field, Int64Field, KeyField
 from ...utils import no_default, pd_release_version
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
@@ -39,9 +41,10 @@ class DataFrameShift(DataFrameOperator, DataFrameOperatorMixin):
     def input(self):
         return self._input
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameShift", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op._input = op._inputs[0]
 
     def _call_dataframe(self, df):
         test_df = build_df(df)

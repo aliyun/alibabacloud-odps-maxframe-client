@@ -13,3 +13,7 @@
 # limitations under the License.
 
 from .core import convert_to_tensor_or_dataframe
+from .multiclass import check_classification_targets
+from .shuffle import shuffle
+from .sparsefuncs import count_nonzero
+from .validation import check_consistent_length

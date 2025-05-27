@@ -20,7 +20,7 @@ import scipy.sparse as sps
 
 from .... import dataframe as md
 from ....core import enter_mode
-from ... import arange, full, ones, ones_like, tensor, zeros
+from ... import arange, diag, full, ones, ones_like, tensor, zeros
 from ...core import SparseTensor, Tensor
 from .. import array, asarray, ascontiguousarray, asfortranarray, fromdense
 from ..array import CSRMatrixDataSource
@@ -276,3 +276,34 @@ def test_from_dataframe():
     tensor = from_dataframe(mdf)
     assert tensor.shape == (3, 3)
     assert np.float64 == tensor.dtype
+
+
+def test_diag():
+    # test 2-d, shape[0] == shape[1], k == 0
+    v = tensor(np.arange(16).reshape(4, 4), chunk_size=2)
+    t = diag(v)
+    assert t.shape == (4,)
+
+    v = tensor(np.arange(16).reshape(4, 4), chunk_size=(2, 3))
+    t = diag(v)
+    assert t.shape == (4,)
+
+    # test 1-d, k == 0
+    v = tensor(np.arange(3), chunk_size=2)
+    t = diag(v, sparse=True)
+    assert t.shape == (3, 3)
+
+    # test 2-d, shape[0] != shape[1]
+    v = tensor(np.arange(24).reshape(4, 6), chunk_size=2)
+    t = diag(v)
+    assert t.shape == np.diag(np.arange(24).reshape(4, 6)).shape
+
+    v = tensor(np.arange(24).reshape(4, 6), chunk_size=2)
+    t = diag(v, k=1)
+    assert t.shape == np.diag(np.arange(24).reshape(4, 6), k=1).shape
+    t = diag(v, k=2)
+    assert t.shape == np.diag(np.arange(24).reshape(4, 6), k=2).shape
+    t = diag(v, k=-1)
+    assert t.shape == np.diag(np.arange(24).reshape(4, 6), k=-1).shape
+    t = diag(v, k=-2)
+    assert t.shape == np.diag(np.arange(24).reshape(4, 6), k=-2).shape

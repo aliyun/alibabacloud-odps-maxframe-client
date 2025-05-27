@@ -13,11 +13,13 @@
 # limitations under the License.
 
 from numbers import Integral
+from typing import List
 
 import numpy as np
 
 from ... import opcodes
-from ...core import ENTITY_TYPE
+from ...core import ENTITY_TYPE, EntityData
+from ...core.operator import OperatorStage
 from ...serialization.serializables import AnyField, BoolField, KeyField, TupleField
 from ...tensor import tensor as astensor
 from ..core import TENSOR_TYPE
@@ -57,17 +59,25 @@ class TensorIndexSetValue(TensorMapReduceOperator, TensorOperatorMixin):
             **kw,
         )
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.input = self._inputs[0]
-        inputs_iter = iter(self._inputs[1:])
+    @classmethod
+    def _set_inputs(cls, op: "TensorIndexSetValue", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.input = op._inputs[0]
+        if op.stage == OperatorStage.reduce:
+            op.input = op._inputs[0]
+            return
+        elif op.stage == OperatorStage.map:
+            inputs_iter = iter(op._inputs)
+        else:
+            op.input = op._inputs[0]
+            inputs_iter = iter(op._inputs[1:])
         new_indexes = [
             next(inputs_iter) if isinstance(index, ENTITY_TYPE) else index
-            for index in self.indexes
+            for index in op.indexes
         ]
-        self.indexes = tuple(new_indexes)
-        if isinstance(self.value, ENTITY_TYPE):
-            self.value = next(inputs_iter)
+        op.indexes = tuple(new_indexes)
+        if isinstance(op.value, ENTITY_TYPE):
+            op.value = next(inputs_iter)
 
     def __call__(self, a, index, value):
         inputs = filter_inputs([a] + list(index) + [value])

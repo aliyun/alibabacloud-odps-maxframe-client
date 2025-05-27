@@ -18,9 +18,10 @@ from ... import opcodes
 from ...core import OutputType
 from ...serialization.serializables import ListField
 from ...serialization.serializables.field_type import FieldTypes
+from ...utils import make_dtype, make_dtypes
 from ..core import DataFrame
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import make_dtypes, parse_index
+from ..utils import parse_index
 
 
 class SeriesFlatJSONOperator(DataFrameOperator, DataFrameOperatorMixin):
@@ -36,7 +37,7 @@ class SeriesFlatJSONOperator(DataFrameOperator, DataFrameOperatorMixin):
                 shape=series.shape,
                 index_value=series.index_value,
                 name=name,
-                dtype=dtype,
+                dtype=make_dtype(dtype),
             )
         return self.new_dataframe(
             [series],

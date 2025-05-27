@@ -17,7 +17,7 @@ from pandas.api.types import CategoricalDtype
 
 from ... import opcodes
 from ...serialization.serializables import AnyField, ListField, StringField
-from ...utils import pd_release_version
+from ...utils import make_dtypes, pd_release_version
 from ..core import DATAFRAME_TYPE, SERIES_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_empty_df, build_empty_series, parse_index
@@ -184,6 +184,7 @@ def astype(df, dtype, copy=True, errors="raise"):
     1     2
     dtype: int64
     """
+    dtype = make_dtypes(dtype, make_series=False)
     if isinstance(dtype, dict):
         keys = list(dtype.keys())
         if isinstance(df, SERIES_TYPE):
@@ -233,4 +234,4 @@ def index_astype(ix, dtype, copy=True):
     Index
         Index with values cast to specified dtype.
     """
-    return astype(ix, dtype, copy=copy)
+    return astype(ix, make_dtypes(dtype), copy=copy)

@@ -12,16 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 import pandas as pd
 from pandas.api.types import is_list_like
 
 from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import AnyField, BoolField, StringField
+from ...core import EntityData, OutputType
+from ...serialization.serializables import AnyField, BoolField, KeyField, StringField
 from ...utils import no_default
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_df, parse_index
+from ..utils import build_df, make_column_list, parse_index
 
 
 class DataFramePivotTable(DataFrameOperator, DataFrameOperatorMixin):
@@ -37,35 +39,53 @@ class DataFramePivotTable(DataFrameOperator, DataFrameOperatorMixin):
     margins_name = StringField("margins_name", default=None)
     sort = BoolField("sort", default=False)
 
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        self.output_types = [OutputType.dataframe]
+    agg_results = KeyField("agg_results", default=None)
+
+    def __init__(self, aggfunc=None, **kw):
+        if aggfunc is None:
+            aggfunc = "mean"
+        super().__init__(aggfunc=aggfunc, **kw)
+        self._output_types = [OutputType.dataframe]
+
+    @classmethod
+    def _set_inputs(cls, op: "DataFramePivotTable", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        if op.agg_results is not None:  # pragma: no branch
+            op.agg_results = inputs[-1]
 
     def __call__(self, df):
-        index_value = columns_value = dtypes = None
-        if self.index is not None:
-            # index is now a required field
-            if len(self.index) == 1:
-                index_data = pd.Index(
-                    [], dtype=df.dtypes[self.index[0]], name=self.index[0]
-                )
-            else:
-                index_data = pd.MultiIndex.from_frame(build_df(df[self.index]))
-            index_value = parse_index(index_data)
+        index_list = make_column_list(self.index, df.dtypes)
+        columns_list = make_column_list(self.columns, df.dtypes)
+        values_list = make_column_list(self.values, df.dtypes)
 
-            if self.columns is None:  # output columns can be determined
-                sel_df = df
-                groupby_obj = sel_df.groupby(self.index)
-                if self.values:
-                    groupby_obj = groupby_obj[self.values]
-                aggregated_df = groupby_obj.agg(self.aggfunc)
-                index_value = aggregated_df.index_value
-                columns_value = aggregated_df.columns_value
-                dtypes = aggregated_df.dtypes
-            else:
-                columns_value = dtypes = None
+        if not index_list:
+            index_data = pd.Index([])
+        elif len(index_list) == 1:
+            index_data = pd.Index(
+                [], dtype=df.dtypes[index_list[0]], name=index_list[0]
+            )
+        else:
+            index_data = pd.MultiIndex.from_frame(build_df(df[index_list]))
+        index_value = parse_index(index_data, df)
+
+        if columns_list is None:  # output columns can be determined
+            sel_df = df
+            groupby_obj = sel_df.groupby(index_list)
+            if values_list:
+                groupby_obj = groupby_obj[values_list]
+            aggregated_df = groupby_obj.agg(self.aggfunc)
+            index_value = aggregated_df.index_value
+            columns_value = aggregated_df.columns_value
+            dtypes = aggregated_df.dtypes
+        else:
+            self.agg_results = df[columns_list].drop_duplicates()
+            columns_value = dtypes = None
+
+        inputs = [df]
+        if self.agg_results is not None:
+            inputs.append(self.agg_results)
         return self.new_dataframe(
-            [df],
+            inputs,
             shape=(np.nan, np.nan),
             dtypes=dtypes,
             columns_value=columns_value,
@@ -219,17 +239,9 @@ def pivot_table(
             "No group keys passed, need to specify at least one of index or columns"
         )
 
-    def make_col_list(col):
-        try:
-            if col in data.dtypes.index:
-                return [col]
-        except TypeError:
-            return col
-        return col
-
-    values_list = make_col_list(values)
-    index_list = make_col_list(index)
-    columns_list = make_col_list(columns)
+    values_list = make_column_list(values, data.dtypes)
+    index_list = make_column_list(index, data.dtypes)
+    columns_list = make_column_list(columns, data.dtypes)
 
     name_to_attr = {"values": values_list, "index": index_list, "columns": columns_list}
     for key, val in name_to_attr.items():

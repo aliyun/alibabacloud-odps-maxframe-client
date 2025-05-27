@@ -14,7 +14,8 @@
 
 from ... import opcodes
 from ...core import OutputType
-from ...serialization.serializables import AnyField, BoolField
+from ...serialization.serializables import AnyField, BoolField, Int32Field
+from ...utils import no_default
 from ..core import DATAFRAME_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_df, build_series, parse_index, validate_axis
@@ -27,6 +28,7 @@ class DataFrameRenameAxis(DataFrameOperator, DataFrameOperatorMixin):
     columns = AnyField("columns", default=None)
     copy_value = BoolField("copy_value", default=None)
     level = AnyField("level", default=None)
+    axis = Int32Field("axis", default=0)
 
     @staticmethod
     def _update_params(params, obj, mapper, axis, level):
@@ -54,7 +56,7 @@ class DataFrameRenameAxis(DataFrameOperator, DataFrameOperatorMixin):
         else:
             self._output_types = [OutputType.series]
 
-        if self.index is not None:
+        if self.axis == 0:
             self._update_params(
                 params, df_or_series, self.index, axis=0, level=self.level
             )
@@ -68,21 +70,27 @@ class DataFrameRenameAxis(DataFrameOperator, DataFrameOperatorMixin):
 
 def rename_axis_with_level(
     df_or_series,
-    mapper=None,
-    index=None,
-    columns=None,
+    mapper=no_default,
+    index=no_default,
+    columns=no_default,
     axis=0,
     copy=True,
     level=None,
     inplace=False,
 ):
     axis = validate_axis(axis, df_or_series)
-    if mapper is not None:
+    if mapper is not no_default:
         if axis == 0:
             index = mapper
         else:
             columns = mapper
-    op = DataFrameRenameAxis(index=index, columns=columns, copy_value=copy, level=level)
+    op = DataFrameRenameAxis(
+        index=None if index is no_default else index,
+        columns=None if columns is no_default else columns,
+        copy_value=copy,
+        level=level,
+        axis=0 if index is not no_default else 1,
+    )
     result = op(df_or_series)
     if not inplace:
         return result
@@ -92,9 +100,9 @@ def rename_axis_with_level(
 
 def rename_axis(
     df_or_series,
-    mapper=None,
-    index=None,
-    columns=None,
+    mapper=no_default,
+    index=no_default,
+    columns=no_default,
     axis=0,
     copy=True,
     inplace=False,

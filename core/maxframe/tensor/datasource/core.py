@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 
+from ...core import EntityData
 from ...serialization.serializables import FieldTypes, StringField, TupleField
 from ..core import TensorOrder
 from ..operators import TensorOperator, TensorOperatorMixin
@@ -66,9 +69,10 @@ class TensorHasInput(TensorDataSource):
         if len(inputs) != 1:
             raise ValueError("Tensor can only have 1 input")
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "TensorHasInput", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op._input = op._inputs[0]
 
     def __call__(self, a, order=None):
         order = a.order if order is None else order
@@ -76,15 +80,16 @@ class TensorHasInput(TensorDataSource):
 
 
 class TensorLike(TensorHasInput):
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        if self.dtype is None:
-            self.dtype = self.input.dtype
-        if self.gpu is None:
-            self.gpu = self.input.op.gpu
+    @classmethod
+    def _set_inputs(cls, op: "TensorLike", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        if op.dtype is None:
+            op.dtype = op.input.dtype
+        if op.gpu is None:
+            op.gpu = op.input.op.gpu
 
         # FIXME: remove when cupy supports other dtypes
-        if self.gpu and self.dtype not in (np.float32, np.float64):
+        if op.gpu and op.dtype not in (np.float32, np.float64):
             raise NotImplementedError(
                 "Sparse tensor on GPU only supports float32 and float64"
             )

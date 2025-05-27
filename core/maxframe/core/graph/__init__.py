@@ -14,4 +14,9 @@
 
 from .builder import TileableGraphBuilder
 from .core import DAG, DirectedGraph, GraphContainsCycleError
-from .entity import EntityGraph, GraphSerializer, TileableGraph
+from .entity import EntityGraph, GraphSerializer, SerializableGraph, TileableGraph
+
+try:
+    from ._internal import SubDAG
+except ImportError:  # pragma: no cover
+    pass

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import itertools
 import logging
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
 
 from odps import ODPS
 from odps.models import Table as ODPSTable
@@ -74,6 +73,25 @@ class DataFrameToODPSTable(DataFrameDataStore):
             index_value=index_value,
             columns_value=columns_value,
         )
+
+    @classmethod
+    def get_index_mapping(
+        cls,
+        index_label: Optional[List[str]],
+        raw_index_levels: List[Any],
+    ) -> List[Any]:
+        def_labels = index_label or itertools.repeat(None)
+        def_labels = itertools.chain(def_labels, itertools.repeat(None))
+        names = raw_index_levels
+        if len(names) == 1:
+            default_labels = ["index"]
+        else:
+            default_labels = [f"level_{i}" for i in range(len(names))]
+        indexes = [
+            def_label or name or label
+            for def_label, name, label in zip(def_labels, names, default_labels)
+        ]
+        return [x.lower() for x in indexes]
 
 
 def to_odps_table(
@@ -161,16 +179,34 @@ def to_odps_table(
             f"index_label needs {len(df.index.nlevels)} labels "
             f"but it only have {len(index_label)}"
         )
+
+    # check if table partition columns conflicts with dataframe columns
     table_cols = set(build_dataframe_table_meta(df).table_column_names)
+    partition_col_set = (
+        set(x.lower() for x in PartitionSpec(partition).keys()) if partition else set()
+    )
     if partition:
-        partition_intersect = (
-            set(x.lower() for x in PartitionSpec(partition).keys()) & table_cols
-        )
+        partition_intersect = partition_col_set & table_cols
         if partition_intersect:
             raise ValueError(
                 f"Data column(s) {partition_intersect} in the dataframe"
                 " cannot be used in parameter 'partition'."
                 " Use 'partition_col' instead."
+            )
+
+    if index:
+        index_cols = set(
+            DataFrameToODPSTable.get_index_mapping(index_label, df.index.names)
+        )
+        index_table_intersect = index_cols & table_cols
+        if index_table_intersect:
+            raise ValueError(
+                f"Index column(s) {index_table_intersect} conflict with column(s) of the input dataframe."
+            )
+        index_partition_intersect = index_cols & partition_col_set
+        if index_partition_intersect:
+            raise ValueError(
+                f"Index column(s) {index_partition_intersect} conflict with partition column(s)."
             )
 
     if partition_col:

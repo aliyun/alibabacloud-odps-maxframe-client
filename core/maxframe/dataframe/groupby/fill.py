@@ -21,8 +21,9 @@ from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import parse_index
 
 
-class GroupByFillOperator(DataFrameOperator, DataFrameOperatorMixin):
+class GroupByFill(DataFrameOperator, DataFrameOperatorMixin):
     _op_module_ = "dataframe.groupby"
+    _legacy_name = "GroupByFillOperator"
 
     value = AnyField("value", default=None)
     method = StringField("method", default=None)
@@ -77,19 +78,23 @@ class GroupByFillOperator(DataFrameOperator, DataFrameOperatorMixin):
         return self.new_tileable([groupby], **kw)
 
 
-class GroupByFFill(GroupByFillOperator):
+class GroupByFFill(GroupByFill):
     _op_type_ = opcodes.FILL_NA
     _func_name = "ffill"
 
 
-class GroupByBFill(GroupByFillOperator):
+class GroupByBFill(GroupByFill):
     _op_type = opcodes.FILL_NA
     _func_name = "bfill"
 
 
-class GroupByFillNa(GroupByFillOperator):
+class GroupByFillNa(GroupByFill):
     _op_type = opcodes.FILL_NA
     _func_name = "fillna"
+
+
+# keep for import compatibility
+GroupByFillOperator = GroupByFill
 
 
 def ffill(groupby, limit=None):

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -280,7 +278,7 @@ class SparseArray(SparseNDArray):
             return NotImplemented
         other_xp = get_array_module(naked_other)
         if other_xp.isscalar(naked_other):
-            return call_sparse("add", self, naked_other)
+            return other_xp.add(self.toarray(), naked_other)
         if issparse(naked_other):
             x = self.spmatrix + naked_other
         else:
@@ -296,7 +294,7 @@ class SparseArray(SparseNDArray):
             return NotImplemented
         other_xp = get_array_module(naked_other)
         if other_xp.isscalar(naked_other):
-            return call_sparse("add", naked_other, self)
+            return other_xp.add(naked_other, self.toarray())
         if issparse(naked_other):
             x = self.spmatrix + naked_other
         else:
@@ -312,7 +310,7 @@ class SparseArray(SparseNDArray):
             return NotImplemented
         other_xp = get_array_module(naked_other)
         if other_xp.isscalar(naked_other):
-            return call_sparse("subtract", self, naked_other)
+            return other_xp.subtract(self.toarray(), naked_other)
         if issparse(naked_other):
             x = self.spmatrix - naked_other
         else:
@@ -328,7 +326,7 @@ class SparseArray(SparseNDArray):
             return NotImplemented
         other_xp = get_array_module(naked_other)
         if other_xp.isscalar(naked_other):
-            return call_sparse("subtract", naked_other, self)
+            return other_xp.subtract(naked_other, self.toarray())
         if issparse(naked_other):
             x = naked_other - self.spmatrix
         else:
@@ -645,19 +643,24 @@ class SparseArray(SparseNDArray):
         return SparseNDArray(self.spmatrix.conj(), shape=self.shape)
 
     def exp(self):
-        return call_sparse("exp", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.exp(self.toarray())
 
     def exp2(self):
-        return call_sparse("exp2", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.exp2(self.toarray())
 
     def log(self):
-        return call_sparse("log", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.log(self.toarray())
 
     def log2(self):
-        return call_sparse("log2", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.log2(self.toarray())
 
     def log10(self):
-        return call_sparse("log10", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.log10(self.toarray())
 
     def expm1(self):
         return SparseNDArray(self.spmatrix.expm1(), shape=self.shape)
@@ -675,7 +678,8 @@ class SparseArray(SparseNDArray):
         return call_sparse("cbrt", self)
 
     def reciprocal(self):
-        return call_sparse("reciprocal", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.reciprocal(self.toarray())
 
     def _scipy_unary(self, func_name):
         spmatrix = self.spmatrix
@@ -952,7 +956,8 @@ class SparseArray(SparseNDArray):
         return get_array_module(x).asarray(x)
 
     def logical_not(self):
-        return call_sparse("logical_not", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.logical_not(self.toarray())
 
     @staticmethod
     def _bitwise(this, other, method_name):
@@ -989,23 +994,27 @@ class SparseArray(SparseNDArray):
         return self._bitwise(other, self.spmatrix, "bitwise_and")
 
     def __or__(self, other):
-        if get_array_module(other).isscalar(other):
-            return call_sparse("bitwise_or", self, other)
+        other_xp = get_array_module(other)
+        if other_xp.isscalar(other):
+            return other_xp.bitwise_or(self.toarray(), other)
         return self._bitwise(self.spmatrix, other, "bitwise_or")
 
     def __ror__(self, other):
-        if get_array_module(other).isscalar(other):
-            return call_sparse("bitwise_or", other, self)
+        other_xp = get_array_module(other)
+        if other_xp.isscalar(other):
+            return other_xp.bitwise_or(other, self.toarray())
         return self._bitwise(other, self.spmatrix, "bitwise_or")
 
     def __xor__(self, other):
-        if get_array_module(other).isscalar(other):
-            return call_sparse("bitwise_xor", self, other)
+        other_xp = get_array_module(other)
+        if other_xp.isscalar(other):
+            return other_xp.bitwise_xor(self.toarray(), other)
         return self._bitwise(self.spmatrix, other, "bitwise_xor")
 
     def __rxor__(self, other):
-        if get_array_module(other).isscalar(other):
-            return call_sparse("bitwise_xor", other, self)
+        other_xp = get_array_module(other)
+        if other_xp.isscalar(other):
+            return other_xp.bitwise_xor(other, self.toarray())
         return self._bitwise(other, self.spmatrix, "bitwise_xor")
 
     def isclose(self, other, **kw):
@@ -1020,7 +1029,8 @@ class SparseArray(SparseNDArray):
         return xp.isclose(self.toarray(), naked_other, **kw)
 
     def __invert__(self):
-        return call_sparse("invert", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.invert(self.toarray())
 
     @staticmethod
     def _shift(this, other, method_name):
@@ -1087,7 +1097,8 @@ class SparseArray(SparseNDArray):
         return SparseNDArray(self.spmatrix.sin(), shape=self.shape)
 
     def cos(self):
-        return call_sparse("cos", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.cos(self.toarray())
 
     def tan(self):
         return SparseNDArray(self.spmatrix.tan(), shape=self.shape)
@@ -1096,7 +1107,8 @@ class SparseArray(SparseNDArray):
         return SparseNDArray(self.spmatrix.arcsin(), shape=self.shape)
 
     def arccos(self):
-        return call_sparse("arccos", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.arccos(self.toarray())
 
     def arctan(self):
         return SparseNDArray(self.spmatrix.arctan(), shape=self.shape)
@@ -1145,7 +1157,8 @@ class SparseArray(SparseNDArray):
         return SparseNDArray(self.spmatrix.arcsinh(), shape=self.shape)
 
     def arccosh(self):
-        return call_sparse("arccosh", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.arccosh(self.toarray())
 
     def arctanh(self):
         return SparseNDArray(self.spmatrix.arctanh(), shape=self.shape)
@@ -1436,11 +1449,7 @@ class SparseArray(SparseNDArray):
 
     def i0(self):
         xp = get_array_module(self.spmatrix)
-        data = xp.i0(self.spmatrix.data).reshape(self.spmatrix.data.shape)
-        x = get_sparse_module(self.spmatrix).csr_matrix(
-            (data, self.spmatrix.indices, self.spmatrix.indptr), self.spmatrix.shape
-        )
-        return SparseNDArray(x, shape=self.shape)
+        return xp.i0(self.toarray())
 
     def nan_to_num(self):
         return call_sparse("nan_to_num", self)
@@ -1517,13 +1526,16 @@ class SparseArray(SparseNDArray):
         )
 
     def sinc(self):
-        return call_sparse("sinc", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.sinc(self.toarray())
 
     def isfinite(self):
-        return call_sparse("isfinite", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.isfinite(self.toarray())
 
     def isreal(self):
-        return call_sparse("isreal", self)
+        xp = get_array_module(self.spmatrix)
+        return xp.isreal(self.toarray())
 
     def digitize(self, bins, right=False):
         return call_sparse("digitize", self, bins=bins, right=right)

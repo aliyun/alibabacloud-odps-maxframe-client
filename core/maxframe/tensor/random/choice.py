@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,10 +13,12 @@
 # limitations under the License.
 
 from numbers import Integral
+from typing import List
 
 import numpy as np
 
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import (
     AnyField,
     BoolField,
@@ -41,12 +41,13 @@ class TensorChoice(TensorRandomOperator, TensorOperatorMixin):
     replace = BoolField("replace")
     p = KeyField("p")
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        if isinstance(self.a, TENSOR_TYPE):
-            self.a = self._inputs[0]
-        if isinstance(self.p, TENSOR_TYPE):
-            self.p = self._inputs[-1]
+    @classmethod
+    def _set_inputs(cls, op: "TensorChoice", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        if isinstance(op.a, TENSOR_TYPE):
+            op.a = op._inputs[0]
+        if isinstance(op.p, TENSOR_TYPE):
+            op.p = op._inputs[-1]
 
     def __call__(self, a, p, chunk_size=None):
         inputs = []

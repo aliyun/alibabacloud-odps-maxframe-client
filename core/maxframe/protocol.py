@@ -44,6 +44,26 @@ pickling_support.install()
 
 BodyType = TypeVar("BodyType", bound="Serializable")
 
+_PANDAS_HAS_MGR = hasattr(pd.Series([0]), "_mgr")
+
+
+def _base64_pickle(val: Any) -> str:
+    return base64.b64encode(pickle.dumps(val)).decode()
+
+
+def _base64_unpickle(val: str) -> Any:
+    # as pandas prior to 1.1.0 use _data instead of _mgr to hold BlockManager,
+    # deserializing from high versions may produce mal-functioned pandas objects,
+    # thus the patch is needed
+
+    res = pickle.loads(base64.b64decode(val))
+    if _PANDAS_HAS_MGR or not isinstance(res, (pd.DataFrame, pd.Series)):
+        return res
+    if hasattr(res, "_mgr"):
+        res._data = getattr(res, "_mgr")
+        delattr(res, "_mgr")
+    return res
+
 
 class JsonSerializable(Serializable):
     _ignore_non_existing_keys = True
@@ -63,7 +83,7 @@ class ProtocolBody(Generic[BodyType], Serializable):
     body: BodyType = AnyField("body", default=None)
 
 
-class DagStatus(enum.Enum):
+class ExecutionStatus(enum.Enum):
     PREPARING = 0
     RUNNING = 1
     SUCCEEDED = 2
@@ -72,7 +92,15 @@ class DagStatus(enum.Enum):
     CANCELLED = 5
 
     def is_terminated(self):
-        return self in (DagStatus.CANCELLED, DagStatus.SUCCEEDED, DagStatus.FAILED)
+        return self in (
+            ExecutionStatus.CANCELLED,
+            ExecutionStatus.SUCCEEDED,
+            ExecutionStatus.FAILED,
+        )
+
+
+# keep compatibility
+DagStatus = ExecutionStatus
 
 
 class DimensionIndex(Serializable):
@@ -85,6 +113,7 @@ class ResultType(enum.Enum):
     NULL = 0
     ODPS_TABLE = 1
     ODPS_VOLUME = 2
+    CONSTANT = 3
 
 
 class DataSerializeType(enum.Enum):
@@ -131,6 +160,26 @@ class ResultInfo(JsonSerializable):
 
 
 ResultInfoType = TypeVar("ResultInfoType", bound=ResultInfo)
+
+
+class ConstantResultInfo(ResultInfo):
+    _result_type = ResultType.CONSTANT
+
+    data: Any = AnyField("data", default=None)
+
+    def __init__(self, result_type: ResultType = None, **kw):
+        result_type = result_type or ResultType.CONSTANT
+        super().__init__(result_type=result_type, **kw)
+
+    def to_json(self) -> dict:
+        ret = super().to_json()
+        ret["data"] = _base64_pickle(self.data)
+        return ret
+
+    def _json_to_kwargs(self, serialized: dict) -> dict:
+        kw = super()._json_to_kwargs(serialized)
+        kw["data"] = _base64_unpickle(kw["data"])
+        return kw
 
 
 class ODPSTableResultInfo(ResultInfo):
@@ -254,7 +303,9 @@ class ErrorInfo(JsonSerializable):
 class DagInfo(JsonSerializable):
     session_id: str = StringField("session_id", default=None)
     dag_id: str = StringField("dag_id", default=None)
-    status: DagStatus = EnumField("status", DagStatus, FieldTypes.int8, default=None)
+    status: ExecutionStatus = EnumField(
+        "status", ExecutionStatus, FieldTypes.int8, default=None
+    )
     progress: float = Float64Field("progress", default=None)
     tileable_to_result_infos: Dict[str, ResultInfo] = DictField(
         "tileable_to_result_infos",
@@ -277,7 +328,7 @@ class DagInfo(JsonSerializable):
         if serialized is None:
             return None
         kw = serialized.copy()
-        kw["status"] = DagStatus(kw["status"])
+        kw["status"] = ExecutionStatus(kw["status"])
         if kw.get("tileable_to_result_infos"):
             kw["tileable_to_result_infos"] = {
                 k: ResultInfo.from_json(s)
@@ -402,7 +453,9 @@ class SubDagSubmitInstanceInfo(JsonSerializable):
 
 class SubDagInfo(JsonSerializable):
     subdag_id: str = StringField("subdag_id")
-    status: DagStatus = EnumField("status", DagStatus, FieldTypes.int8, default=None)
+    status: ExecutionStatus = EnumField(
+        "status", ExecutionStatus, FieldTypes.int8, default=None
+    )
     progress: float = Float64Field("progress", default=None)
     error_info: Optional[ErrorInfo] = ReferenceField(
         "error_info", reference_type=ErrorInfo, default=None
@@ -424,7 +477,7 @@ class SubDagInfo(JsonSerializable):
     @classmethod
     def from_json(cls, serialized: dict) -> "SubDagInfo":
         kw = serialized.copy()
-        kw["status"] = DagStatus(kw["status"])
+        kw["status"] = ExecutionStatus(kw["status"])
         if kw.get("tileable_to_result_infos"):
             kw["tileable_to_result_infos"] = {
                 k: ResultInfo.from_json(s)
@@ -516,27 +569,27 @@ class DataFrameTableMeta(JsonSerializable):
         return True
 
     def to_json(self) -> dict:
-        b64_pk = lambda x: base64.b64encode(pickle.dumps(x)).decode()
         ret = {
             "table_name": self.table_name,
             "type": self.type.value,
             "table_column_names": self.table_column_names,
             "table_index_column_names": self.table_index_column_names,
-            "pd_column_dtypes": b64_pk(self.pd_column_dtypes),
-            "pd_column_level_names": b64_pk(self.pd_column_level_names),
-            "pd_index_dtypes": b64_pk(self.pd_index_dtypes),
+            "pd_column_dtypes": _base64_pickle(self.pd_column_dtypes),
+            "pd_column_level_names": _base64_pickle(self.pd_column_level_names),
+            "pd_index_dtypes": _base64_pickle(self.pd_index_dtypes),
         }
         return ret
 
     @classmethod
     def from_json(cls, serialized: dict) -> "DataFrameTableMeta":
-        b64_upk = lambda x: pickle.loads(base64.b64decode(x))
         serialized.update(
             {
                 "type": OutputType(serialized["type"]),
-                "pd_column_dtypes": b64_upk(serialized["pd_column_dtypes"]),
-                "pd_column_level_names": b64_upk(serialized["pd_column_level_names"]),
-                "pd_index_dtypes": b64_upk(serialized["pd_index_dtypes"]),
+                "pd_column_dtypes": _base64_unpickle(serialized["pd_column_dtypes"]),
+                "pd_column_level_names": _base64_unpickle(
+                    serialized["pd_column_level_names"]
+                ),
+                "pd_index_dtypes": _base64_unpickle(serialized["pd_index_dtypes"]),
             }
         )
         return DataFrameTableMeta(**serialized)

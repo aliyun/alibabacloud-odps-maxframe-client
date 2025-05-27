@@ -13,10 +13,12 @@
 # limitations under the License.
 
 from numbers import Integral
+from typing import List
 
 import numpy as np
 
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import Int32Field, KeyField
 from ..datasource import tensor as astensor
 from ..operators import TensorOperatorMixin
@@ -45,9 +47,10 @@ class TensorPermutation(TensorRandomMapReduceOperator, TensorOperatorMixin):
 
     reduce_size = Int32Field("reduce_size")
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "TensorPermutation", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.input = op._inputs[0]
 
     def __call__(self, x):
         return self.new_tensor([x], x.shape, order=x.order)

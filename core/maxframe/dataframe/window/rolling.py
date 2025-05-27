@@ -13,10 +13,12 @@
 # limitations under the License.
 
 from collections import OrderedDict
+from typing import List
 
 import pandas as pd
 
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import (
     AnyField,
     BoolField,
@@ -55,10 +57,11 @@ class DataFrameRollingAgg(DataFrameOperator, DataFrameOperatorMixin):
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        input_iter = iter(self._inputs)
-        self.input = next(input_iter)
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameRollingAgg", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        input_iter = iter(op._inputs)
+        op.input = next(input_iter)
 
     def __call__(self, rolling):
         inp = rolling.input

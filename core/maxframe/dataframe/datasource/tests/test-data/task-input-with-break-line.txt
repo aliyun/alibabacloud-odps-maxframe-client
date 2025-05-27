@@ -1,0 +1,24 @@
+
+job0 is root job
+
+In Job job0:
+root Tasks: M1
+
+In Task M1:
+    Data source: project.table
+    TS: project.table
+        Statistics: Num rows: 10124.0, Data size: 2024800.0
+        LIM:limit 100
+            Statistics: Num rows: 100.0, Data size: 20000.0
+            SEL: key, SPLIT(params,'
+
+') SPLIT
+                Statistics: Num rows: 100.0, Data size: 110000.0
+                TVF: EXPLODE(SPLIT) (value)
+                    Statistics: Num rows: 500.0, Data size: 100000.0
+                    FS: output: Screen
+                        schema:
+                          key (string)
+                          value (string)
+
+                        Statistics: Num rows: 500.0, Data size: 100000.0

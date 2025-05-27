@@ -15,6 +15,7 @@
 import datetime
 import operator
 from dataclasses import dataclass
+from math import isinf
 from typing import Callable
 
 import numpy as np
@@ -22,6 +23,7 @@ import pandas as pd
 import pytest
 
 from ....core import OperatorType
+from ....core.operator import estimate_size
 from ....tests.utils import assert_mf_index_dtype
 from ....utils import dataslots
 from ...core import IndexValue
@@ -184,6 +186,10 @@ def test_without_shuffle(func_name, func_opts):
     assert df3.index_value.key != df1.index_value.key
     assert df3.index_value.key != df2.index_value.key
     assert df3.shape[1] == 11  # columns is recorded, so we can get it
+
+    result_ctx = {inp.key: 10 for inp in df3.op.inputs}
+    estimate_size(result_ctx, df3.op)
+    assert result_ctx[df3.key] >= 0 and not isinf(result_ctx[df3.key])
 
 
 @pytest.mark.parametrize("func_name, func_opts", binary_functions.items())

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,6 +28,12 @@ class TensorFrexp(TensorOutBinOp):
     @property
     def _fun(self):
         return np.frexp
+
+    @classmethod
+    def _is_sparse(cls, x):
+        if hasattr(x, "issparse") and x.issparse():
+            return True
+        return False
 
 
 def frexp(x, out1=None, out2=None, out=None, where=None, **kwargs):

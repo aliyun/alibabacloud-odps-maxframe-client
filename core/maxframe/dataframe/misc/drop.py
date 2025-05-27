@@ -13,15 +13,16 @@
 # limitations under the License.
 
 import warnings
+from typing import List
 
 import numpy as np
 
-from maxframe import opcodes
-from maxframe.core import Entity, OutputType
-from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE, IndexValue
-from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
-from maxframe.dataframe.utils import parse_index, validate_axis
-from maxframe.serialization.serializables import AnyField, StringField
+from ... import opcodes
+from ...core import Entity, EntityData, OutputType
+from ...serialization.serializables import AnyField, StringField
+from ..core import DATAFRAME_TYPE, SERIES_TYPE, IndexValue
+from ..operators import DataFrameOperator, DataFrameOperatorMixin
+from ..utils import parse_index, validate_axis
 
 
 class DataFrameDrop(DataFrameOperatorMixin, DataFrameOperator):
@@ -42,11 +43,12 @@ class DataFrameDrop(DataFrameOperatorMixin, DataFrameOperator):
         else:
             return dtypes
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs[1:])
-        if len(self._inputs) > 1:
-            self.index = next(inputs_iter)
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameDrop", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs[1:])
+        if len(op._inputs) > 1:
+            op.index = next(inputs_iter)
 
     def __call__(self, df_or_series):
         params = df_or_series.params.copy()

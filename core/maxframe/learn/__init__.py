@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import contrib
+from . import contrib, model_selection, preprocessing
 
-del contrib
+del contrib, model_selection, preprocessing

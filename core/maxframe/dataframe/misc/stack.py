@@ -18,6 +18,7 @@ import numpy as np
 import pandas as pd
 
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import AnyField, BoolField, KeyField
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_df, parse_index
@@ -30,9 +31,10 @@ class DataFrameStack(DataFrameOperator, DataFrameOperatorMixin):
     level = AnyField("level", default=None)
     dropna = BoolField("dropna", default=None)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input_df = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameStack", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op._input_df = op._inputs[0]
 
     @classmethod
     def _calc_size(cls, size: int, level: Union[List, int], dtypes: pd.Series):

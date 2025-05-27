@@ -12,10 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import math
 import sys
-from typing import Any, Callable, Dict, List, Type
+from collections import defaultdict
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Type, Union
 
 import numpy as np
+
+if TYPE_CHECKING:
+    from .. import TileableGraph
 
 try:
     from numpy.core._exceptions import UFuncTypeError
@@ -117,7 +122,7 @@ class TileableOperatorMixin:
         if output_limit is None:
             output_limit = getattr(self, "output_limit")
 
-        self._set_inputs(inputs)
+        self._set_inputs(self, inputs)
         if self.gpu is None:
             self.gpu = self._check_if_gpu(self._inputs)
         if getattr(self, "_key", None) is None:
@@ -182,20 +187,13 @@ class TileableOperatorMixin:
 
         return self.new_tileables(inputs, kws=kws, **kw)[0]
 
-    @classmethod
-    def concat_tileable_chunks(cls, tileable: TileableType):
-        raise NotImplementedError
-
-    @classmethod
-    def create_tileable_from_chunks(
-        cls, chunks: List[ChunkType], inputs: List[TileableType] = None, **kw
-    ) -> TileableType:
-        raise NotImplementedError
-
-    def get_fetch_op_cls(self, obj: ChunkType):
+    def get_fetch_op_cls(self, obj: Union[ChunkType, OutputType]):
         from .shuffle import ShuffleProxy
 
-        output_types = get_output_types(obj, unknown_as=OutputType.object)
+        if isinstance(obj, OutputType):
+            output_types = [obj or OutputType.object]
+        else:
+            output_types = get_output_types(obj, unknown_as=OutputType.object)
         fetch_cls, fetch_shuffle_cls = get_fetch_class(output_types[0])
         if isinstance(self, ShuffleProxy):
             cls = fetch_shuffle_cls
@@ -274,3 +272,28 @@ def estimate_size(results: Dict[str, Any], op: OperatorType):
                 _op_type_to_size_estimator[type(op)] = size_estimator
                 return size_estimator(results, op)
         raise KeyError(f"No handler found for op: {op} to estimate size")
+
+
+def estimate_tileable_execution_size(
+    tileable_graph: "TileableGraph",
+    fetch_sizes: Optional[Dict[str, int]] = None,
+) -> Union[int, float]:
+    ctx = dict()
+    ctx.update(fetch_sizes)
+    ref_counts = defaultdict(lambda: 0)
+    max_size = 0
+
+    for tileable in tileable_graph:
+        for key in set(inp.key for inp in tileable.inputs or ()):
+            ref_counts[key] += 1
+
+    for tileable in tileable_graph.topological_iter():
+        estimate_size(ctx, tileable.op)
+        max_size = max(max_size, sum(ctx.values()))
+        if math.isinf(max_size):
+            return float("inf")
+        for inp in set(inp.key for inp in tileable.inputs or ()):
+            ref_counts[inp] -= 1
+            if ref_counts[inp] <= 0:
+                ctx.pop(inp, None)
+    return max_size

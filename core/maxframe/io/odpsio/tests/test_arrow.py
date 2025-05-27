@@ -17,8 +17,7 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from maxframe.lib.dtypes_extension import dict_
-
+from ....lib.dtypes_extension import dict_
 from ..arrow import arrow_to_pandas, pandas_to_arrow
 
 

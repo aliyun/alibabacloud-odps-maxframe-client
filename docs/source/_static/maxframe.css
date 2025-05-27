@@ -1,0 +1,13 @@
+h1 {
+  word-break: break-word;
+}
+
+div.empty + section>h1 {
+  font-family: var(--pst-font-family-monospace);
+}
+
+.prename {
+  font-family: var(--pst-font-family-monospace);
+  font-size: var(--pst-font-size-h4);
+  word-break: auto-phrase;
+}

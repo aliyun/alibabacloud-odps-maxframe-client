@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import (
     AnyField,
     BoolField,
@@ -68,9 +71,10 @@ class DataFrameToCSV(DataFrameDataStore):
     def output_limit(self):
         return 1 if not self.output_stat else 2
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameToCSV", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op._input = op._inputs[0]
 
     def __call__(self, df):
         index_value = parse_index(df.index_value.to_pandas()[:0], df)

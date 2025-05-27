@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
+
 import numpy as np
 
 from ... import opcodes
+from ...serialization.serializables import BoolField
+from ..datasource import scalar
 from ..utils import infer_dtype
-from .core import TensorBinOp
-from .utils import arithmetic_operator
+from .core import TensorBinOp, TensorMultiOp
+from .utils import TreeReductionBuilder, arithmetic_operator
 
 
 @arithmetic_operator(sparse_mode="binary_and")
 class TensorAdd(TensorBinOp):
     _op_type_ = opcodes.ADD
     _func_name = "add"
+
+    @classmethod
+    def _is_sparse_with_scalar(cls, scalar_val, lhs):
+        return isinstance(scalar_val, (int, float)) and scalar_val == 0
 
 
 @infer_dtype(np.add)
@@ -80,3 +86,27 @@ def add(x1, x2, out=None, where=None, **kwargs):
 def radd(x1, x2, **kwargs):
     op = TensorAdd(**kwargs)
     return op.rcall(x1, x2)
+
+
+class TensorTreeAdd(TensorMultiOp):
+    _op_type_ = opcodes.TREE_ADD
+    _func_name = "add"
+
+    ignore_empty_input = BoolField("ignore_empty_input", default=False)
+
+    @classmethod
+    def _is_sparse(cls, *args):
+        if args and all(hasattr(x, "issparse") and x.issparse() for x in args):
+            return True
+        return False
+
+
+@infer_dtype(lambda *args: functools.reduce(np.add, args))
+def tree_add(*args, combine_size=None, **kwargs):
+    class MultiplyBuilder(TreeReductionBuilder):
+        def _build_reduction(self, inputs, final=False):
+            op = TensorTreeAdd(args=inputs, **kwargs)
+            return op(*inputs)
+
+    args = [scalar(a) if np.isscalar(a) else a for a in args]
+    return MultiplyBuilder(combine_size).build(args)

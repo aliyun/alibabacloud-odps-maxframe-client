@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import pandas as pd
 
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import AnyField, BoolField, Int64Field
 from ...tensor.core import TENSOR_TYPE
 from ..core import SERIES_TYPE
@@ -30,10 +33,11 @@ class DataFrameInsert(DataFrameOperator, DataFrameOperatorMixin):
     value = AnyField("value")
     allow_duplicates = BoolField("allow_duplicates")
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameInsert", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
         if len(inputs) > 1:
-            self._value = self._inputs[-1]
+            op._value = op._inputs[-1]
 
     def __call__(self, df):
         inputs = [df]

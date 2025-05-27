@@ -17,7 +17,7 @@ import itertools
 from typing import TYPE_CHECKING, Iterable, Tuple, Type
 
 if TYPE_CHECKING:
-    from maxframe.codegen import BigDagCodeGenerator
+    from .codegen import DAGCodeGenerator
 
     try:
         import maxframe_framedriver.runners
@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 class MaxFrameExtension(metaclass=abc.ABCMeta):
     @classmethod
     @abc.abstractmethod
-    def get_codegen(cls) -> Type["BigDagCodeGenerator"]:
+    def get_codegen(cls) -> Type["DAGCodeGenerator"]:
         raise NotImplementedError
 
     @classmethod
@@ -41,6 +41,17 @@ class MaxFrameExtension(metaclass=abc.ABCMeta):
         """
         This interface will be called once a session in the framedriver is ended.
 
+        Parameters
+        ----------
+        session_id : str
+            The session id.
+        """
+        pass
+
+    @classmethod
+    async def create_session(cls, session_id: str) -> None:
+        """
+        create the session
         Parameters
         ----------
         session_id : str

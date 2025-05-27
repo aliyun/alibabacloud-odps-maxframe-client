@@ -15,6 +15,7 @@
 import asyncio.events
 import concurrent.futures
 import contextvars
+import copy
 import dataclasses
 import datetime
 import enum
@@ -23,10 +24,12 @@ import importlib
 import inspect
 import io
 import itertools
+import logging
 import numbers
 import os
 import pkgutil
 import random
+import re
 import struct
 import sys
 import threading
@@ -87,6 +90,8 @@ new_random_id = new_random_id
 get_user_call_point = get_user_call_point
 _is_ci = (os.environ.get("CI") or "0").lower() in ("1", "true")
 pd_release_version: Tuple[int] = parse_version(pd.__version__).release
+
+logger = logging.getLogger(__name__)
 
 try:
     from pandas._libs import lib as _pd__libs_lib
@@ -162,8 +167,15 @@ class AttributeDict(dict):
 
 
 def on_serialize_shape(shape: Tuple[int]):
+    def _to_shape_num(x):
+        if np.isnan(x):
+            return -1
+        if isinstance(x, np.generic):
+            return x.item()
+        return x
+
     if shape:
-        return tuple(s if not np.isnan(s) else -1 for s in shape)
+        return tuple(_to_shape_num(s) for s in shape)
     return shape
 
 
@@ -251,8 +263,14 @@ def copy_tileables(tileables: List[TileableType], **kwargs):
     return op.new_tileables(inputs, kws=kws, output_limit=len(kws))
 
 
-def get_dtype(dtype: Union[np.dtype, pd.api.extensions.ExtensionDtype]):
-    if pd.api.types.is_extension_array_dtype(dtype):
+def make_dtype(dtype: Union[np.dtype, pd.api.extensions.ExtensionDtype]):
+    if dtype is None:
+        return None
+    elif (
+        isinstance(dtype, str) and dtype == "category"
+    ) or pd.api.types.is_extension_array_dtype(dtype):
+        # return string dtype directly as legacy python version
+        #  does not support ExtensionDtype
         return dtype
     elif dtype is pd.Timestamp or dtype is datetime.datetime:
         return np.dtype("datetime64[ns]")
@@ -262,6 +280,28 @@ def get_dtype(dtype: Union[np.dtype, pd.api.extensions.ExtensionDtype]):
         return np.dtype(dtype)
 
 
+def make_dtypes(
+    dtypes: Union[
+        list, dict, str, np.dtype, pd.Series, pd.api.extensions.ExtensionDtype
+    ],
+    make_series: bool = True,
+):
+    if dtypes is None:
+        return None
+    elif isinstance(dtypes, np.dtype):
+        return dtypes
+    elif isinstance(dtypes, list):
+        val = [make_dtype(dt) for dt in dtypes]
+        return val if not make_series else pd.Series(val)
+    elif isinstance(dtypes, dict):
+        val = {k: make_dtype(v) for k, v in dtypes.items()}
+        return val if not make_series else pd.Series(val)
+    elif isinstance(dtypes, pd.Series):
+        return dtypes.map(make_dtype)
+    else:
+        return make_dtype(dtypes)
+
+
 def serialize_serializable(serializable, compress: bool = False):
     from .serialization import serialize
 
@@ -269,7 +309,14 @@ def serialize_serializable(serializable, compress: bool = False):
     header, buffers = serialize(serializable)
     buf_sizes = [getattr(buf, "nbytes", len(buf)) for buf in buffers]
     header[0]["buf_sizes"] = buf_sizes
-    s_header = msgpack.dumps(header)
+
+    def encode_np_num(obj):
+        if isinstance(obj, np.generic) and obj.shape == () and not np.isnan(obj):
+            return obj.item()
+        return obj
+
+    s_header = msgpack.dumps(header, default=encode_np_num)
+
     bio.write(struct.pack("<Q", len(s_header)))
     bio.write(s_header)
     for buf in buffers:
@@ -377,6 +424,12 @@ def format_timeout_params(timeout: TimeoutType) -> str:
         return f"?wait=1&timeout={timeout}"
 
 
+def unwrap_partial_function(func):
+    while isinstance(func, functools.partial):
+        func = func.func
+    return func
+
+
 _PrimitiveType = TypeVar("_PrimitiveType")
 
 
@@ -430,6 +483,7 @@ class ToThreadMixin:
         *args,
         wait_on_cancel: bool = False,
         timeout: float = None,
+        debug_task_name: Optional[str] = None,
         **kwargs,
     ) -> _ToThreadRetType:
         if not hasattr(self, "_pool"):
@@ -442,6 +496,31 @@ class ToThreadMixin:
         ctx = contextvars.copy_context()
         func_call = functools.partial(ctx.run, func, *args, **kwargs)
         fut = loop.run_in_executor(self._pool, func_call)
+
+        if loop.get_debug():
+            # create a task and mark its name
+            default_task_name = None
+            try:
+                unwrapped = unwrap_partial_function(func)
+                default_task_name = unwrapped.__qualname__
+                if getattr(unwrapped, "__module__", None):
+                    default_task_name = unwrapped.__module__ + "#" + default_task_name
+            except:  # noqa # pragma: no cover
+                try:
+                    default_task_name = repr(func)
+                except:  # noqa
+                    pass
+            debug_task_name = debug_task_name or default_task_name
+
+            async def _wait_fut(aio_fut):
+                return await aio_fut
+
+            fut = asyncio.create_task(_wait_fut(fut))
+            if sys.version_info[:2] == (3, 7):
+                # In Python3.7 we should hack the task name to print it in debug logs.
+                setattr(fut, "fd_task_name", debug_task_name)
+            else:
+                fut.set_name(debug_task_name)
 
         try:
             coro = fut
@@ -545,6 +624,21 @@ def estimate_pandas_size(
     else:
         sample_size = sys.getsizeof(iloc[indices])
         return sample_size * len(pd_obj) // max_samples
+
+
+def estimate_table_size(odps_entry, full_table_name: str, partitions: List[str] = None):
+    try:
+        data_src = odps_entry.get_table(full_table_name)
+        if isinstance(partitions, str):
+            partitions = [partitions]
+        if not partitions:
+            size_mul = 1
+        else:
+            size_mul = len(partitions)
+            data_src = data_src.partitions[partitions[0]]
+        return size_mul * data_src.size
+    except:
+        return float("inf")
 
 
 class ModulePlaceholder:
@@ -677,7 +771,7 @@ def _get_func_token_values(func):
     if hasattr(func, "__code__"):
         tokens = [func.__code__.co_code]
         if func.__closure__ is not None:
-            cvars = tuple([x.cell_contents for x in func.__closure__])
+            cvars = tuple(x.cell_contents for x in func.__closure__)
             tokens.append(cvars)
         return tokens
     else:
@@ -799,7 +893,8 @@ def adapt_docstring(doc: str) -> str:
             line = line.replace("np.", "mt.").replace("pd.", "md.")
         elif prev_prompt:
             prev_prompt = False
-            if sp:
+            if sp and lines[-1].strip().strip("."):
+                # need prev line contains chars other than dots
                 lines[-1] += ".execute()"
         lines.append(line)
     return "\n".join(lines)
@@ -821,25 +916,101 @@ def stringify_path(path: Union[str, os.PathLike]) -> str:
 
 _memory_size_indices = {"": 0, "k": 1, "m": 2, "g": 3, "t": 4}
 
+_size_pattern = re.compile(r"^([0-9.-]+)\s*([a-z]*)$")
+
 
 def parse_readable_size(value: Union[str, int, float]) -> Tuple[float, bool]:
+    """
+    Parse a human-readable size representation into a numeric value.
+
+    This function converts various size formats into their corresponding
+    float values. It supports:
+    - Raw numbers (e.g., 1024)
+    - Percentages (e.g., "50%")
+    - Size units (e.g., "10KB", "5.5GB", "2MiB")
+
+    The function recognizes standard binary prefixes (K, M, G, T, etc.) and
+    handles different suffix variations (B, iB, etc.).
+
+    Parameters
+    ----------
+    value : Union[str, int, float]
+        The size value to parse, can be a string, int, or float
+
+    Returns
+    -------
+    Tuple[float, bool]
+        A tuple of (parsed_value, is_percentage)
+        - parsed_value: The parsed numeric value
+        - is_percentage: True if the input was a percentage, False otherwise
+    """
     if isinstance(value, numbers.Number):
         return float(value), False
 
+    if not isinstance(value, str):
+        raise TypeError(f"Expected string or number, got {type(value).__name__}")
+
     value = value.strip().lower()
-    num_pos = 0
-    while num_pos < len(value) and value[num_pos] in "0123456789.-":
-        num_pos += 1
 
-    value, suffix = value[:num_pos], value[num_pos:]
-    suffix = suffix.strip()
-    if suffix.endswith("%"):
-        return float(value) / 100, True
+    # Handle percentage values
+    if value.endswith("%"):
+        return float(value[:-1]) / 100, True
 
+    # Parse the value into numeric and unit parts
+    match = _size_pattern.match(value)
+    if not match:
+        raise ValueError(f"Cannot parse size value: {value}")
+
+    number_str, unit = match.groups()
+
+    # convert to float
+    number = float(number_str)
+
+    # if no unit, return the number
+    if not unit:
+        return number, False
+
+    # Validate the unit prefix
+    if unit[0] not in _memory_size_indices:
+        valid_prefixes = ", ".join(sorted(_memory_size_indices.keys()))
+        raise ValueError(
+            f"Unknown unit prefix: '{unit[0]}', valid prefixes are {valid_prefixes}"
+        )
+
+    # Check for valid unit suffix
+    if len(unit) > 1 and unit[1:] not in ("ib", "b", "i", ""):
+        raise ValueError(f"Invalid size unit suffix: {unit}")
+
+    is_binary_unit = "i" in unit.lower()
+    # calc the multiplier
+    base = 1024 if is_binary_unit else 1000
+    multiplier = base ** _memory_size_indices[unit[0]]
+
+    return number * multiplier, False
+
+
+def parse_size_to_megabytes(
+    value: Union[str, int, float], default_number_unit: str = "GiB"
+) -> float:
     try:
-        return float(value) * (1024 ** _memory_size_indices[suffix[:1]]), False
-    except (ValueError, KeyError):
-        raise ValueError(f"Unknown limitation value: {value}")
+        value = float(value)
+    except BaseException:
+        pass
+
+    if isinstance(value, numbers.Number):
+        if not default_number_unit:
+            raise ValueError(
+                "`default_number_unit` must be provided when give a number value"
+            )
+        return parse_size_to_megabytes(
+            f"{value}{default_number_unit}", default_number_unit
+        )
+
+    bytes_number, is_percentage = parse_readable_size(value)
+    if is_percentage:
+        raise ValueError("Percentage size is not supported to parse")
+
+    return bytes_number / (1024**2)  # convert to megabytes
 
 
 def remove_suffix(value: str, suffix: str) -> Tuple[str, bool]:
@@ -1133,7 +1304,7 @@ def sync_pyodps_options():
 
 
 def str_to_bool(s: Optional[str]) -> Optional[bool]:
-    return s.lower().strip() in ("true", "1") if s is not None else None
+    return s.lower().strip() in ("true", "1") if isinstance(s, str) else s
 
 
 def is_empty(val):
@@ -1142,5 +1313,235 @@ def is_empty(val):
     return not bool(val)
 
 
+def extract_class_name(cls):
+    return cls.__module__ + "#" + cls.__qualname__
+
+
+def flatten(nested_iterable: Union[List, Tuple]) -> List:
+    """
+    Flatten a nested iterable into a list.
+
+    Parameters
+    ----------
+    nested_iterable : list or tuple
+        an iterable which can contain other iterables
+
+    Returns
+    -------
+    flattened : list
+
+    Examples
+    --------
+    >>> flatten([[0, 1], [2, 3]])
+    [0, 1, 2, 3]
+    >>> flatten([[0, 1], [[3], [4, 5]]])
+    [0, 1, 3, 4, 5]
+    """
+
+    flattened = []
+    stack = list(nested_iterable)[::-1]
+    while len(stack) > 0:
+        inp = stack.pop()
+        if isinstance(inp, (tuple, list)):
+            stack.extend(inp[::-1])
+        else:
+            flattened.append(inp)
+    return flattened
+
+
+def stack_back(flattened: List, raw: Union[List, Tuple]) -> Union[List, Tuple]:
+    """
+    Organize a new iterable from a flattened list according to raw iterable.
+
+    Parameters
+    ----------
+    flattened : list
+        flattened list
+    raw: list
+        raw iterable
+
+    Returns
+    -------
+    ret : list
+
+    Examples
+    --------
+    >>> raw = [[0, 1], [2, [3, 4]]]
+    >>> flattened = flatten(raw)
+    >>> flattened
+    [0, 1, 2, 3, 4]
+    >>> a = [f + 1 for f in flattened]
+    >>> a
+    [1, 2, 3, 4, 5]
+    >>> stack_back(a, raw)
+    [[1, 2], [3, [4, 5]]]
+    """
+    flattened_iter = iter(flattened)
+    result = list()
+
+    def _stack(container, items):
+        for item in items:
+            if not isinstance(item, (list, tuple)):
+                container.append(next(flattened_iter))
+            else:
+                new_container = list()
+                container.append(new_container)
+                _stack(new_container, item)
+
+        return container
+
+    return _stack(result, raw)
+
+
+_RetryRetType = TypeVar("_RetryRetType")
+
+
+def call_with_retry(
+    func: Callable[..., _RetryRetType],
+    *args,
+    retry_times: Optional[int] = None,
+    retry_timeout: TimeoutType = None,
+    delay: TimeoutType = None,
+    reset_func: Optional[Callable] = None,
+    exc_type: Union[
+        Type[BaseException], Tuple[Type[BaseException], ...]
+    ] = BaseException,
+    allow_interrupt: bool = True,
+    no_raise: bool = False,
+    is_func_async: Optional[bool] = None,
+    **kwargs,
+) -> _RetryRetType:
+    """
+    Retry calling function given specified times or timeout.
+
+    Parameters
+    ----------
+    func: Callable
+        function to be retried
+    args
+        arguments to be passed to the function
+    retry_times: Optional[int]
+        times to retry the function
+    retry_timeout: TimeoutType
+        timeout in seconds to retry the function
+    delay: TimeoutType
+        delay in seconds between every trial
+    reset_func: Callable
+        Function to call after every trial
+    exc_type: Type[BaseException] | Tuple[Type[BaseException], ...]
+        Exception type for retrial
+    allow_interrupt: bool
+        If True, KeyboardInterrupt will stop the retry
+    no_raise: bool
+        If True, no exception will be raised even if all trials failed
+    is_func_async: bool
+        If True, func will be treated as async
+    kwargs
+        keyword arguments to be passed to the function
+
+    Returns
+    -------
+    Return value of the original function
+    """
+    from .config import options
+
+    retry_num = 0
+    retry_times = retry_times if retry_times is not None else options.retry_times
+    delay = delay if delay is not None else options.retry_delay
+    start_time = time.monotonic() if retry_timeout is not None else None
+
+    def raise_or_continue(exc: BaseException):
+        nonlocal retry_num
+        retry_num += 1
+        if allow_interrupt and isinstance(exc, KeyboardInterrupt):
+            raise exc from None
+        if (retry_times is not None and retry_num > retry_times) or (
+            retry_timeout is not None
+            and start_time is not None
+            and time.monotonic() - start_time > retry_timeout
+        ):
+            if no_raise:
+                return sys.exc_info()
+            raise exc from None
+
+    async def async_retry():
+        while True:
+            try:
+                return await func(*args, **kwargs)
+            except exc_type as ex:
+                await asyncio.sleep(delay)
+                res = raise_or_continue(ex)
+                if res is not None:
+                    return res
+
+                if callable(reset_func):
+                    reset_res = reset_func()
+                    if asyncio.iscoroutine(reset_res):
+                        await reset_res
+
+    def sync_retry():
+        while True:
+            try:
+                return func(*args, **kwargs)
+            except exc_type as ex:
+                time.sleep(delay)
+                res = raise_or_continue(ex)
+                if res is not None:
+                    return res
+                if callable(reset_func):
+                    reset_func()
+
+    unwrap_func = func
+    if is_func_async is None:
+        # unwrap to get true result if func is async
+        while isinstance(unwrap_func, functools.partial):
+            unwrap_func = unwrap_func.func
+
+    if is_func_async or asyncio.iscoroutinefunction(unwrap_func):
+        return async_retry()
+    else:
+        return sync_retry()
+
+
+def update_wlm_quota_settings(session_id: str, engine_settings: Dict[str, Any]):
+    from .config import options
+
+    engine_quota = engine_settings.get("odps.task.wlm.quota", None)
+    session_quota = options.session.quota_name or None
+    if engine_quota != session_quota and engine_quota:
+        logger.warning(
+            "[Session=%s] Session quota (%s) is different to SubDag engine quota (%s)",
+            session_id,
+            session_quota,
+            engine_quota,
+        )
+        raise ValueError(
+            "Quota name cannot be changed after sessions are created, "
+            f"session_quota={session_quota}, engine_quota={engine_quota}"
+        )
+
+    if session_quota:
+        engine_settings["odps.task.wlm.quota"] = session_quota
+    elif "odps.task.wlm.quota" in engine_settings:
+        engine_settings.pop("odps.task.wlm.quota")
+
+
 def get_default_table_properties():
     return {"storagestrategy": "archive"}
+
+
+def copy_if_possible(obj: Any, deep=False) -> Any:
+    try:
+        return copy.deepcopy(obj) if deep else copy.copy(obj)
+    except:  # pragma: no cover
+        return obj
+
+
+def cache_tileables(*tileables):
+    from .core import ENTITY_TYPE
+
+    if len(tileables) == 1 and isinstance(tileables[0], (tuple, list)):
+        tileables = tileables[0]
+    for t in tileables:
+        if isinstance(t, ENTITY_TYPE):
+            t.cache = True

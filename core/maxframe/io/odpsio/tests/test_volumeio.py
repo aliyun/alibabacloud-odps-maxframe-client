@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
+
 import pytest
 from odps import ODPS
 
-from ....tests.utils import tn
+from ....tests.utils import create_test_volume, tn
 from ..volumeio import ODPSVolumeReader, ODPSVolumeWriter
 
 
@@ -24,59 +26,31 @@ def create_volume(request, oss_config):
     test_vol_name = tn("test_vol_name_" + request.param)
     odps_entry = ODPS.from_environments()
 
-    try:
-        odps_entry.delete_volume(test_vol_name)
-    except:
-        pass
+    @contextlib.contextmanager
+    def create_parted_volume():
+        try:
+            odps_entry.delete_volume(test_vol_name)
+        except:
+            pass
+        try:
+            odps_entry.create_parted_volume(test_vol_name)
+            yield
+        finally:
+            try:
+                odps_entry.delete_volume(test_vol_name)
+            except BaseException:
+                pass
 
     oss_test_dir_name = None
     if request.param == "parted":
-        odps_entry.create_parted_volume(test_vol_name)
+        ctx = create_parted_volume()
     else:
-        oss_test_dir_name = tn("test_oss_directory")
-        if oss_config is None:
-            pytest.skip("Need oss and its config to run this test")
-        (
-            oss_access_id,
-            oss_secret_access_key,
-            oss_bucket_name,
-            oss_endpoint,
-        ) = oss_config.oss_config
+        ctx = create_test_volume(test_vol_name, oss_config)
 
-        if "test" in oss_endpoint:
-            # offline config
-            test_location = "oss://%s:%s@%s/%s/%s" % (
-                oss_access_id,
-                oss_secret_access_key,
-                oss_endpoint,
-                oss_bucket_name,
-                oss_test_dir_name,
-            )
-            rolearn = None
-        else:
-            # online config
-            endpoint_parts = oss_endpoint.split(".", 1)
-            if "-internal" not in endpoint_parts[0]:
-                endpoint_parts[0] += "-internal"
-            test_location = "oss://%s/%s/%s" % (
-                ".".join(endpoint_parts),
-                oss_bucket_name,
-                oss_test_dir_name,
-            )
-            rolearn = oss_config.oss_rolearn
-
-        oss_config.oss_bucket.put_object(oss_test_dir_name + "/", b"")
-        odps_entry.create_external_volume(
-            test_vol_name, location=test_location, rolearn=rolearn
-        )
     try:
-        yield test_vol_name
+        with ctx:
+            yield test_vol_name
     finally:
-        try:
-            odps_entry.delete_volume(test_vol_name)
-        except BaseException:
-            pass
-
         if oss_test_dir_name is not None:
             import oss2
 

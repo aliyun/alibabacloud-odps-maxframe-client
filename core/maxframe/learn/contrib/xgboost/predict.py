@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
 
 import numpy as np
 
 from .... import opcodes
+from ....core import EntityData
 from ....core.entity.output_types import OutputType
 from ....core.operator.base import Operator
 from ....core.operator.core import TileableOperatorMixin
@@ -45,21 +47,24 @@ class XGBPredict(Operator, TileableOperatorMixin):
     training = BoolField("training", default=False)
     iteration_range = TupleField("iteration_range", default_factory=lambda x: (0, 0))
     strict_shape = BoolField("strict_shape", default=False)
-    flag = BoolField("flag", default=False)
 
     def __init__(self, output_types=None, gpu=None, **kw):
         super().__init__(_output_types=output_types, gpu=gpu, **kw)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.data = self._inputs[0]
-        self.model = self._inputs[1]
+    def has_custom_code(self) -> bool:
+        return True
+
+    @classmethod
+    def _set_inputs(cls, op: "XGBPredict", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.data = op._inputs[0]
+        op.model = op._inputs[1]
 
     def __call__(self):
         num_class = getattr(self.model.op, "num_class", None)
         if num_class is not None:
             num_class = int(num_class)
-        if num_class is not None:
+        if num_class is not None and num_class > 2:
             shape = (self.data.shape[0], num_class)
         else:
             shape = (self.data.shape[0],)
@@ -84,7 +89,7 @@ def predict(
     training=False,
     iteration_range=None,
     strict_shape=False,
-    flag=False,
+    **kwargs,
 ):
     """
     Using MaxFrame XGBoost model to predict data.
@@ -100,7 +105,9 @@ def predict(
     import xgboost
 
     data = check_data(data)
-    if isinstance(model, xgboost.Booster):
+    if not isinstance(model, (Booster, BoosterData, xgboost.Booster)):
+        raise TypeError(f"model has to be a xgboost.Booster, got {type(model)} instead")
+    elif isinstance(model, xgboost.Booster):
         model = to_remote_model(model, model_cls=Booster)
 
     output_types = [OutputType.tensor]
@@ -120,5 +127,5 @@ def predict(
         strict_shape=strict_shape,
         gpu=data.op.gpu,
         output_types=output_types,
-        flag=flag,
+        **kwargs,
     )()

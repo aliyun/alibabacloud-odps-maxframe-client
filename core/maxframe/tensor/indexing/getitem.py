@@ -13,20 +13,15 @@
 # limitations under the License.
 
 from numbers import Integral
+from typing import List
 
 import numpy as np
 
 from ... import opcodes
-from ...core import ENTITY_TYPE
-from ...serialization.serializables import (
-    FieldTypes,
-    Int32Field,
-    KeyField,
-    ListField,
-    TupleField,
-)
+from ...core import ENTITY_TYPE, EntityData
+from ...serialization.serializables import KeyField, ListField
 from ..core import TENSOR_TYPE, TensorOrder
-from ..operators import TensorHasInput, TensorMapReduceOperator, TensorOperatorMixin
+from ..operators import TensorHasInput, TensorOperatorMixin
 from ..utils import filter_inputs
 from .core import calc_shape, process_index
 
@@ -39,14 +34,15 @@ class TensorIndex(TensorHasInput, TensorOperatorMixin):
     _input = KeyField("input")
     indexes = ListField("indexes", default=None)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs[1:])
+    @classmethod
+    def _set_inputs(cls, op: "TensorIndex", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs[1:])
         new_indexes = [
             next(inputs_iter) if isinstance(index, ENTITY_TYPE) else index
-            for index in self.indexes
+            for index in op.indexes
         ]
-        self.indexes = new_indexes
+        op.indexes = new_indexes
 
     def on_output_modify(self, new_output):
         from .setitem import TensorIndexSetValue
@@ -70,35 +66,6 @@ class TensorIndex(TensorHasInput, TensorOperatorMixin):
     def __call__(self, a, index, shape, order):
         self.indexes = list(index)
         return self.new_tensor(filter_inputs([a] + list(index)), shape, order=order)
-
-
-class FancyIndexingDistribute(TensorMapReduceOperator, TensorOperatorMixin):
-    _op_type_ = opcodes.FANCY_INDEX_DISTRIBUTE
-
-    _input = KeyField("input")
-    dest_nsplits = TupleField(
-        "dest_nsplits", FieldTypes.tuple(FieldTypes.uint64), default=None
-    )
-    axes = TupleField("axes", FieldTypes.int32, default=None)
-
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input = self._inputs[0]
-
-    @property
-    def output_limit(self):
-        return len(self.axes) + 1
-
-
-class FancyIndexingConcat(TensorMapReduceOperator, TensorOperatorMixin):
-    _op_type_ = opcodes.FANCY_INDEX_CONCAT
-
-    fancy_index_axis = Int32Field("fancy_index_axis", default=None)
-    fancy_index_shape = TupleField("fancy_index_shape", FieldTypes.int64, default=None)
-
-    @property
-    def input(self):
-        return self._input
 
 
 def _is_bool_index(index_obj):

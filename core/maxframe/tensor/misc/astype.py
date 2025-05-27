@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import KeyField, StringField
-from ...utils import get_dtype
+from ...utils import make_dtype
 from ..operators import TensorHasInput, TensorOperatorMixin
 from ..utils import get_order
 
@@ -33,15 +34,16 @@ class TensorAstype(TensorHasInput, TensorOperatorMixin):
     def __init__(self, dtype=None, sparse=False, **kw):
         super().__init__(dtype=dtype, sparse=sparse, **kw)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "TensorAstype", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op._input = op._inputs[0]
 
     def __call__(self, tensor, order=None):
         return self.new_tensor([tensor], tensor.shape, order=order)
 
 
-def _astype(tensor, dtype, order="K", casting="unsafe", copy=True):
+def astype(tensor, dtype, order="K", casting="unsafe", copy=True):
     """
     Copy of the tensor, cast to a specified type.
 
@@ -102,7 +104,7 @@ def _astype(tensor, dtype, order="K", casting="unsafe", copy=True):
     >>> x.astype(int).execute()
     array([1, 2, 2])
     """
-    dtype = get_dtype(dtype)
+    dtype = make_dtype(dtype)
     tensor_order = get_order(order, tensor.order)
 
     if tensor.dtype == dtype and tensor.order == tensor_order:

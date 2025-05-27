@@ -17,7 +17,7 @@ from typing import List, Union
 import pandas as pd
 
 from ... import opcodes
-from ...core import ENTITY_TYPE, OutputType
+from ...core import ENTITY_TYPE, EntityData, OutputType
 from ...serialization.serializables import (
     AnyField,
     BoolField,
@@ -256,45 +256,24 @@ class GroupByConcat(DataFrameOperator, DataFrameOperatorMixin):
     def groupby_params(self):
         return self._groupby_params
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs)
+    @classmethod
+    def _set_inputs(cls, op: "GroupByConcat", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs)
 
         new_groups = []
-        for _ in self._groups:
+        for _ in op._groups:
             new_groups.append(next(inputs_iter))
-        self._groups = new_groups
+        op._groups = new_groups
 
-        if isinstance(self._groupby_params["by"], list):
+        if isinstance(op._groupby_params["by"], list):
             by = []
-            for v in self._groupby_params["by"]:
+            for v in op._groupby_params["by"]:
                 if isinstance(v, ENTITY_TYPE):
                     by.append(next(inputs_iter))
                 else:
                     by.append(v)
-            self._groupby_params["by"] = by
-
-    @classmethod
-    def execute(cls, ctx, op):
-        input_data = [ctx[input.key] for input in op.groups]
-        obj = pd.concat([d.obj for d in input_data])
-
-        params = op.groupby_params.copy()
-        if isinstance(params["by"], list):
-            by = []
-            for v in params["by"]:
-                if isinstance(v, ENTITY_TYPE):
-                    by.append(ctx[v.key])
-                else:
-                    by.append(v)
-            params["by"] = by
-        selection = params.pop("selection", None)
-
-        result = obj.groupby(**params)
-        if selection:
-            result = result[selection]
-
-        ctx[op.outputs[0].key] = result
+            op._groupby_params["by"] = by
 
 
 def concat(

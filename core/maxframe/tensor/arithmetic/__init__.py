@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +15,7 @@
 from ...core import is_build_mode
 from .abs import TensorAbs, abs
 from .absolute import TensorAbsolute, absolute
-from .add import TensorAdd, add
+from .add import TensorAdd, TensorTreeAdd, add, tree_add
 from .angle import TensorAngle, angle
 from .arccos import TensorArccos, arccos
 from .arccosh import TensorArccosh, arccosh
@@ -89,7 +87,7 @@ from .mod import TensorMod
 from .mod import mod
 from .mod import mod as remainder
 from .modf import TensorModf, modf
-from .multiply import TensorMultiply, multiply
+from .multiply import TensorMultiply, TensorTreeMultiply, multiply, tree_multiply
 from .nan_to_num import TensorNanToNum, nan_to_num
 from .negative import TensorNegative, negative
 from .nextafter import TensorNextafter, nextafter

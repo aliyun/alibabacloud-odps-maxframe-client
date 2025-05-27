@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +13,12 @@
 # limitations under the License.
 
 from numbers import Number
+from typing import List
 
 import numpy as np
 
 from ... import opcodes
-from ...core import ENTITY_TYPE
+from ...core import ENTITY_TYPE, EntityData
 from ...serialization.serializables import AnyField, KeyField
 from ..core import Tensor
 from ..datasource import tensor as astensor
@@ -35,16 +34,17 @@ class TensorClip(TensorOperator, TensorElementWise):
     a_max = AnyField("a_max", default=None)
     out = KeyField("out", default=None)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs)
-        self.a = next(inputs_iter)
-        if isinstance(self.a_min, ENTITY_TYPE):
-            self.a_min = next(inputs_iter)
-        if isinstance(self.a_max, ENTITY_TYPE):
-            self.a_max = next(inputs_iter)
-        if getattr(self, "_out", None) is not None:
-            self.out = next(inputs_iter)
+    @classmethod
+    def _set_inputs(cls, op: "TensorClip", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs)
+        op.a = next(inputs_iter)
+        if isinstance(op.a_min, ENTITY_TYPE):
+            op.a_min = next(inputs_iter)
+        if isinstance(op.a_max, ENTITY_TYPE):
+            op.a_max = next(inputs_iter)
+        if getattr(op, "_out", None) is not None:
+            op.out = next(inputs_iter)
 
     def __call__(self, a, a_min, a_max, out=None):
         a = astensor(a)

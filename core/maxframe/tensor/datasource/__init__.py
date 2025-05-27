@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .arange import arange
+from .arange import TensorArange, arange
 from .array import (
     ArrayDataSource,
     CSRMatrixDataSource,
@@ -22,11 +22,19 @@ from .array import (
     asfortranarray,
     tensor,
 )
+from .diag import TensorDiag, diag
+from .diagflat import diagflat
 from .empty import TensorEmpty, TensorEmptyLike, empty, empty_like
+from .eye import TensorEye, eye
 from .from_dataframe import from_dataframe, from_index, from_series
 from .from_dense import fromdense
 from .from_sparse import fromsparse
 from .full import full, full_like
+from .identity import identity
+from .indices import indices
+from .linspace import TensorLinspace, linspace
+from .meshgrid import meshgrid
 from .ones import TensorOnes, TensorOnesLike, ones, ones_like
 from .scalar import Scalar, scalar
-from .zeros import TensorZeros, zeros
+from .tri_array import TensorTril, TensorTriu, tril, triu
+from .zeros import TensorZeros, TensorZerosLike, zeros, zeros_like

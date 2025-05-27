@@ -19,26 +19,19 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 
+from ....errors import TileableNotExecutedError
+
 try:
     import xgboost
 except ImportError:
     xgboost = None
 
 from ....core import OutputType
-from ...core import Model, ModelData
-from ..models import ModelApplyChunk, to_remote_model
+from ..models import ModelApplyChunk, ModelWithEval, ModelWithEvalData, to_remote_model
 from .dmatrix import DMatrix
 
 
-class BoosterData(ModelData):
-    __slots__ = ("_evals_result",)
-
-    _evals_result: Dict
-
-    def __init__(self, *args, evals_result=None, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._evals_result = evals_result if evals_result is not None else dict()
-
+class BoosterData(ModelWithEvalData):
     @staticmethod
     def _get_booster_score(bst, fmap=None, importance_type="weight"):
         if not fmap:
@@ -65,13 +58,6 @@ class BoosterData(ModelData):
             with open(fmap, "rb") as fmap_file:
                 fmap_data = fmap_file.read()
         return op(self, [{}], fmap=fmap_data, importance_type=importance_type)[0]
-
-    def execute(self, session=None, **kw):
-        # The evals_result should be fetched when BoosterData.execute() is called.
-        result = super().execute(session=session, **kw)
-        if self.op.has_evals_result and self.key == self.op.outputs[0].key:
-            self._evals_result.update(self.op.outputs[1].fetch(session=session))
-        return result
 
     def predict(
         self,
@@ -103,7 +89,7 @@ class BoosterData(ModelData):
         )
 
 
-class Booster(Model):
+class Booster(ModelWithEval):
     pass
 
 
@@ -137,39 +123,64 @@ else:
             return names
 
         def __repr__(self):
-            local_model = self.fetch()
-            return repr(local_model)
+            try:
+                local_model = self.fetch()
+                return repr(local_model)
+            except TileableNotExecutedError:
+                return f"<{type(self).__name__} unexecuted>"
 
         def fit(
             self,
             X,
             y,
-            sample_weights=None,
+            sample_weight=None,
+            base_margin=None,
             eval_set=None,
+            xgb_model=None,
             sample_weight_eval_set=None,
+            base_margin_eval_set=None,
             **kw,
         ):
-            """
-            Fit the regressor. Note that fit() is an eager-execution
-            API. The call will be blocked until training finished.
+            from .train import train
 
-            Parameters
-            ----------
-            X : array_like
-                Feature matrix
-            y : array_like
-                Labels
-            sample_weight : array_like
-                instance weights
-            eval_set : list, optional
-                A list of (X, y) tuple pairs to use as validation sets, for which
-                metrics will be computed.
-                Validation metrics will help us track the performance of the model.
-            sample_weight_eval_set : list, optional
-                A list of the form [L_1, L_2, ..., L_n], where each L_i is a list
-                of group weights on the i-th validation set.
-            """
-            raise NotImplementedError
+            session = kw.pop("session", None)
+            run_kwargs = kw.pop("run_kwargs", dict())
+
+            self._n_features_in = X.shape[1]
+
+            dtrain, evals = wrap_evaluation_matrices(
+                None,
+                X,
+                y,
+                sample_weight,
+                base_margin,
+                eval_set,
+                sample_weight_eval_set,
+                base_margin_eval_set,
+            )
+            params = self.get_xgb_params()
+            if not params.get("objective"):
+                params["objective"] = "reg:squarederror"
+            self.evals_result_ = dict()
+            train_kw = {}
+
+            if getattr(self, "n_classes_", None):
+                train_kw["num_class"] = self.n_classes_
+
+            result = train(
+                params,
+                dtrain,
+                num_boost_round=self.get_num_boosting_rounds(),
+                evals=evals,
+                evals_result=self.evals_result_,
+                xgb_model=xgb_model,
+                callbacks=self.callbacks,
+                session=session,
+                run_kwargs=run_kwargs,
+                **train_kw,
+            )
+            self._Booster = result
+            return self
 
         def predict(self, data, **kw):
             """

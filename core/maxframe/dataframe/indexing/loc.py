@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from numbers import Integral
-from typing import Dict
+from typing import Dict, List
 
 import numpy as np
 import pandas as pd
@@ -21,7 +21,7 @@ from pandas.core.dtypes.cast import find_common_type
 from pandas.core.indexing import IndexingError
 
 from ... import opcodes
-from ...core import ENTITY_TYPE, OutputType
+from ...core import ENTITY_TYPE, EntityData, OutputType
 from ...serialization.serializables import AnyField, KeyField, ListField
 from ...tensor.datasource import asarray
 from ...tensor.utils import calc_sliced_size, filter_inputs
@@ -182,17 +182,18 @@ class DataFrameLocGetItem(DataFrameOperator, DataFrameOperatorMixin):
     def can_index_miss(self):
         return False
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs)
-        self._input = next(inputs_iter)
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameLocGetItem", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs)
+        op._input = next(inputs_iter)
         indexes = []
-        for index in self.indexes:
+        for index in op.indexes:
             if isinstance(index, ENTITY_TYPE):
                 indexes.append(next(inputs_iter))
             else:
                 indexes.append(index)
-        self.indexes = list(indexes)
+        op.indexes = list(indexes)
 
     @classmethod
     def _calc_slice_param(

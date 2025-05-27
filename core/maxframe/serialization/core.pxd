@@ -15,6 +15,9 @@
 from libc.stdint cimport int32_t, uint64_t
 
 
+cdef bint unpickle_allowed
+
+
 cdef class Serializer:
     cdef int _serializer_id
 

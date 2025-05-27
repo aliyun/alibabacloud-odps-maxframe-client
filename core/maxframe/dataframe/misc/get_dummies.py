@@ -12,11 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 import pandas as pd
 
-from ...core import OutputType
-from ...serialization.serializables import AnyField, BoolField, ListField, StringField
+from ...core import EntityData, OutputType
+from ...serialization.serializables import (
+    AnyField,
+    BoolField,
+    KeyField,
+    ListField,
+    StringField,
+)
 from ..datasource.dataframe import from_pandas as from_pandas_df
 from ..datasource.series import from_pandas as from_pandas_series
 from ..initializer import Series as asseries
@@ -34,55 +42,26 @@ class DataFrameGetDummies(DataFrameOperator, DataFrameOperatorMixin):
     drop_first = BoolField("drop_first", default=None)
     dtype = AnyField("dtype", default=None)
 
-    def __init__(self, **kws):
-        super().__init__(**kws)
+    agg_results = KeyField("agg_results", default=None)
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
         self.output_types = [OutputType.dataframe]
 
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameGetDummies", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        if op.agg_results is not None:  # pragma: no branch
+            op.agg_results = inputs[-1]
+
     def __call__(self, data):
-        if isinstance(data, (list, tuple)):
-            data = asseries(data)
-        elif isinstance(data, pd.Series):
-            data = from_pandas_series(data)
-        elif isinstance(data, pd.DataFrame):
-            data = from_pandas_df(data)
+        if not self.columns:
+            self.agg_results = data.agg(["unique"])
+        else:
+            self.agg_results = data[self.columns].agg(["unique"])
 
-        if self.prefix is not None:
-            if isinstance(self.prefix, list):
-                if self.columns is not None:
-                    encoding_col_num = len(self.columns)
-                else:
-                    encoding_col_num = 0
-                    for dtype in data.dtypes.values:
-                        if dtype.kind in _encoding_dtype_kind:
-                            encoding_col_num += 1
-                prefix_num = len(self.prefix)
-                if prefix_num != encoding_col_num:
-                    raise ValueError(
-                        f"Length of 'prefix' ({prefix_num}) did not match "
-                        + f"the length of the columns being encoded ({encoding_col_num})"
-                    )
-            elif isinstance(self.prefix, dict):
-                if self.columns is not None:
-                    encoding_col_num = len(self.columns)
-                    prefix_num = len(self.prefix)
-                    if prefix_num != encoding_col_num:
-                        raise ValueError(
-                            f"Length of 'prefix' ({prefix_num}) did not match "
-                            + f"the length of the columns being encoded ({encoding_col_num})"
-                        )
-                    columns = self.prefix.keys()
-                    for columns_columnname, prefix_columnname in zip(
-                        columns, list(self.columns)
-                    ):
-                        if columns_columnname != prefix_columnname:
-                            raise KeyError(f"{columns_columnname}")
-                else:
-                    self.columns = list(self.prefix.keys())
-                # Convert prefix from dict to list, to simplify tile work
-                self.prefix = list(self.prefix.values())
-
-        return self.new_dataframe(
-            [data],
+        return self.new_tileable(
+            [data, self.agg_results],
             shape=(np.nan, np.nan),
             dtypes=None,
             index_value=data.index_value,
@@ -127,7 +106,7 @@ def get_dummies(
     drop_first : bool, default False
         Whether to get k-1 dummies out of k categorical levels by removing the
         first level.
-    dtype : dtype, default np.uint8
+    dtype : dtype, default bool
         Data type for new columns. Only a single dtype is allowed.
 
     Returns
@@ -194,6 +173,56 @@ def get_dummies(
     """
     if columns is not None and not isinstance(columns, list):
         raise TypeError("Input must be a list-like for parameter `columns`")
+
+    if isinstance(data, (list, tuple)):
+        data = asseries(data)
+    elif isinstance(data, pd.Series):
+        data = from_pandas_series(data)
+    elif isinstance(data, pd.DataFrame):
+        data = from_pandas_df(data)
+
+    dtype = dtype if dtype is not None else np.dtype(bool)
+
+    if prefix is not None:
+        if isinstance(prefix, list):
+            if columns is not None:
+                encoding_col_num = len(columns)
+            else:
+                encoding_col_num = 0
+                for dt in data.dtypes.values:
+                    if dt.kind in _encoding_dtype_kind:
+                        encoding_col_num += 1
+            prefix_num = len(prefix)
+            if prefix_num != encoding_col_num:
+                raise ValueError(
+                    f"Length of 'prefix' ({prefix_num}) did not match "
+                    + f"the length of the columns being encoded ({encoding_col_num})"
+                )
+        elif isinstance(prefix, dict):
+            if columns is not None:
+                encoding_col_num = len(columns)
+                prefix_num = len(prefix)
+                if prefix_num != encoding_col_num:
+                    raise ValueError(
+                        f"Length of 'prefix' ({prefix_num}) did not match "
+                        + f"the length of the columns being encoded ({encoding_col_num})"
+                    )
+                prefix_cols = prefix.keys()
+                for columns_columnname, prefix_columnname in zip(
+                    prefix_cols, list(columns)
+                ):
+                    if columns_columnname != prefix_columnname:
+                        raise KeyError(f"{columns_columnname}")
+            else:
+                columns = list(prefix.keys())
+            # Convert prefix from dict to list, to simplify tile work
+            prefix = list(prefix.values())
+
+    if not columns and data.ndim == 2:
+        columns = []
+        for col_name, dt in data.dtypes.items():
+            if dt.kind in _encoding_dtype_kind:
+                columns.append(col_name)
 
     op = DataFrameGetDummies(
         prefix=prefix,

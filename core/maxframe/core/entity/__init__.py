@@ -17,6 +17,7 @@ from .executable import ExecutableTuple, _ExecuteAndFetchMixin
 from .objects import OBJECT_TYPE, Object, ObjectData
 from .output_types import (
     OutputType,
+    df_output_types,
     get_fetch_class,
     get_output_types,
     get_tileable_types,

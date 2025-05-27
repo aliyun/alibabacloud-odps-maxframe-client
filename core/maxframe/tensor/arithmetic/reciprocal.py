@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,10 +20,14 @@ from .core import TensorUnaryOp
 from .utils import arithmetic_operator
 
 
-@arithmetic_operator(sparse_mode="unary")
+@arithmetic_operator(sparse_mode="always_false")
 class TensorReciprocal(TensorUnaryOp):
     _op_type_ = opcodes.RECIPROCAL
     _func_name = "reciprocal"
+
+    @classmethod
+    def _is_sparse(cls, x):
+        return False
 
 
 @infer_dtype(np.reciprocal)

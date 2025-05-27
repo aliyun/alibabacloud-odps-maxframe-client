@@ -31,7 +31,7 @@ def median_series(df, axis=None, skipna=True, level=None, method=None):
         axis=axis,
         skipna=skipna,
         level=level,
-        output_types=[OutputType.scalar if level is not None else OutputType.scalar],
+        output_types=[OutputType.series if level is not None else OutputType.scalar],
         method=method,
     )
     return op(df)

@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 import pandas as pd
 from pandas.api.types import is_list_like
 
 from ... import opcodes
-from ...core import ENTITY_TYPE
+from ...core import ENTITY_TYPE, EntityData
 from ...serialization.serializables import AnyField, KeyField
 from ...tensor.core import TENSOR_TYPE
 from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
@@ -30,21 +32,22 @@ class DataFrameIsin(DataFrameOperator, DataFrameOperatorMixin):
     input = KeyField("input")
     values = AnyField("values", default=None)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs)
-        self.input = next(inputs_iter)
-        if len(self._inputs) > 1:
-            if isinstance(self.values, dict):
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameIsin", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs)
+        op.input = next(inputs_iter)
+        if len(op._inputs) > 1:
+            if isinstance(op.values, dict):
                 new_values = dict()
-                for k, v in self.values.items():
+                for k, v in op.values.items():
                     if isinstance(v, ENTITY_TYPE):
                         new_values[k] = next(inputs_iter)
                     else:
                         new_values[k] = v
-                self.values = new_values
+                op.values = new_values
             else:
-                self.values = self._inputs[1]
+                op.values = op._inputs[1]
 
     def __call__(self, elements):
         inputs = [elements]

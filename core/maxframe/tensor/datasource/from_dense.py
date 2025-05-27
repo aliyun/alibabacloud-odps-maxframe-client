@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,12 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-from collections.abc import Iterable
-from functools import reduce
-from operator import and_
-
-import pandas as pd
 
 from ... import opcodes
 from ...serialization.serializables import AnyField, KeyField
@@ -34,15 +26,6 @@ class DenseToSparse(TensorHasInput):
 
     def __init__(self, **kw):
         super().__init__(sparse=True, **kw)
-
-    @staticmethod
-    def _get_mask(data, missing):
-        if isinstance(missing, Iterable):
-            return reduce(and_, (DenseToSparse._get_mask(data, m) for m in missing))
-        elif pd.isna(missing):
-            return ~pd.isna(data)
-        else:
-            return data != missing
 
 
 def fromdense(a, missing=None):

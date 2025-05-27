@@ -13,11 +13,12 @@
 # limitations under the License.
 
 from collections.abc import Iterable
+from typing import List
 
 import numpy as np
 
 from ... import opcodes
-from ...core import ENTITY_TYPE
+from ...core import ENTITY_TYPE, EntityData
 from ...serialization.serializables import AnyField, BoolField, KeyField, StringField
 from ..core import TENSOR_TYPE, TensorOrder
 from ..datasource import tensor as astensor
@@ -57,13 +58,14 @@ class TensorQuantile(TensorOperator, TensorOperatorMixin):
         self.q_error_msg = kw.pop("q_error_msg", q_error_msg)
         super().__init__(**kw)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.a = self._inputs[0]
-        if isinstance(self.q, TENSOR_TYPE):
-            self.q = self._inputs[1]
-        if isinstance(self.out, TENSOR_TYPE):
-            self.out = self._inputs[-1]
+    @classmethod
+    def _set_inputs(cls, op: "TensorQuantile", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.a = op._inputs[0]
+        if isinstance(op.q, TENSOR_TYPE):
+            op.q = op._inputs[1]
+        if isinstance(op.out, TENSOR_TYPE):
+            op.out = op._inputs[-1]
 
     def __call__(self, a, q=None, out=None):
         shape = [self.q.size] if self.q.ndim > 0 else []

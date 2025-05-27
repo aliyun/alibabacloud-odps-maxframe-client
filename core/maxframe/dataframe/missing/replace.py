@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import AnyField, Int32Field
 from ...utils import no_default
 from ..operators import SERIES_TYPE, DataFrameOperator, DataFrameOperatorMixin
@@ -28,14 +31,15 @@ class DataFrameReplace(DataFrameOperator, DataFrameOperatorMixin):
     regex = AnyField("regex", default=None)
     method = AnyField("method", default=no_default)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameReplace", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
         input_iter = iter(inputs)
         next(input_iter)
-        if isinstance(self.to_replace, SERIES_TYPE):
-            self.to_replace = next(input_iter)
-        if isinstance(self.value, SERIES_TYPE):
-            self.value = next(input_iter)
+        if isinstance(op.to_replace, SERIES_TYPE):
+            op.to_replace = next(input_iter)
+        if isinstance(op.value, SERIES_TYPE):
+            op.value = next(input_iter)
 
     def __call__(self, df_or_series):
         inputs = [df_or_series]

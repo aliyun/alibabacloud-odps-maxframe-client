@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 
-from ...core import ExecutableTuple
+from ...core import EntityData, ExecutableTuple
 from ...serialization.serializables import (
     AnyField,
     DictField,
@@ -84,22 +84,27 @@ class TensorBinOp(TensorOperator, TensorBinOpMixin):
     def _is_sparse(cls, x1, x2):
         return False
 
+    @classmethod
+    def _is_sparse_with_scalar(cls, scalar_val, lhs):
+        return False
+
     def _set_sparse(self, inputs):
         inputs_iter = iter(inputs)
         x1 = self.lhs if np.isscalar(self.lhs) else next(inputs_iter)
         x2 = self.rhs if np.isscalar(self.rhs) else next(inputs_iter)
         setattr(self, "sparse", self._is_sparse(x1, x2))
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs)
+    @classmethod
+    def _set_inputs(cls, op: "TensorBinOp", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs)
 
-        self.lhs = self.lhs if np.isscalar(self.lhs) else next(inputs_iter)
-        self.rhs = self.rhs if np.isscalar(self.rhs) else next(inputs_iter)
-        if getattr(self, "out", None) is not None:
-            self.out = next(inputs_iter)
-        if getattr(self, "where", None) is not None:
-            self.where = next(inputs_iter)
+        op.lhs = op.lhs if np.isscalar(op.lhs) else next(inputs_iter)
+        op.rhs = op.rhs if np.isscalar(op.rhs) else next(inputs_iter)
+        if getattr(op, "out", None) is not None:
+            op.out = next(inputs_iter)
+        if getattr(op, "where", None) is not None:
+            op.where = next(inputs_iter)
 
     def _process_inputs(self, x1, x2, out, where):
         x1 = x1 if np.isscalar(x1) else astensor(x1)
@@ -237,15 +242,16 @@ class TensorUnaryOp(TensorOperator, TensorUnaryOpMixin):
         else:
             return False
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs)
+    @classmethod
+    def _set_inputs(cls, op: "TensorUnaryOp", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs)
 
-        self._input = next(inputs_iter)
-        if getattr(self, "out", None) is not None:
-            self.out = next(inputs_iter)
-        if getattr(self, "where", None) is not None:
-            self.where = next(inputs_iter)
+        op._input = next(inputs_iter)
+        if getattr(op, "out", None) is not None:
+            op.out = next(inputs_iter)
+        if getattr(op, "where", None) is not None:
+            op.where = next(inputs_iter)
 
     def _process_inputs(self, x, out, where):
         x = astensor(x)
@@ -345,17 +351,18 @@ class TensorOutBinOp(TensorOperator, TensorElementWiseWithInputs):
     def input(self):
         return self._input
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs)
+    @classmethod
+    def _set_inputs(cls, op: "TensorOutBinOp", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs)
 
-        self._input = next(inputs_iter)
-        if getattr(self, "out1", None) is not None:
-            self.out1 = next(inputs_iter)
-        if getattr(self, "out2", None) is not None:
-            self.out2 = next(inputs_iter)
-        if getattr(self, "where", None) is not None:
-            self.where = next(inputs_iter)
+        op._input = next(inputs_iter)
+        if getattr(op, "out1", None) is not None:
+            op.out1 = next(inputs_iter)
+        if getattr(op, "out2", None) is not None:
+            op.out2 = next(inputs_iter)
+        if getattr(op, "where", None) is not None:
+            op.where = next(inputs_iter)
 
     def _process_inputs(self, x, out1, out2, where):
         x = astensor(x)
@@ -491,20 +498,21 @@ class TensorMultiOp(TensorElementWiseWithInputs, TensorOperator):
                 args[idx] = next(inputs_iter)
         setattr(self, "sparse", self._is_sparse(*args))
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
+    @classmethod
+    def _set_inputs(cls, op: "TensorMultiOp", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
         inputs_iter = iter(inputs or ())
 
-        args = list(self.args)
+        args = list(op.args)
         for idx in range(len(args)):
             if not np.isscalar(args[idx]):
                 args[idx] = next(inputs_iter)
-        self.args = args
+        op.args = args
 
-        if getattr(self, "out", None) is not None:
-            self.out = next(inputs_iter)
-        if getattr(self, "where", None) is not None:
-            self.where = next(inputs_iter)
+        if getattr(op, "out", None) is not None:
+            op.out = next(inputs_iter)
+        if getattr(op, "where", None) is not None:
+            op.where = next(inputs_iter)
 
     def _process_inputs(self, *args, out=None):
         self.args = [a if np.isscalar(a) else astensor(a) for a in args]

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from typing import MutableMapping, Union
 
 import numpy as np
 import pandas as pd
@@ -57,6 +57,13 @@ class DataFrameFromRecords(DataFrameOperator, DataFrameOperatorMixin):
             index_value=index_value,
             columns_value=columns_value,
         )
+
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "DataFrameFromRecords"
+    ):  # pragma: no cover
+        # todo implement this to facilitate local computation
+        ctx[op.outputs[0].key] = float("inf")
 
 
 def from_records(

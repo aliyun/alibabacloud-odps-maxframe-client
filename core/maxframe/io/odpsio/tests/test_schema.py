@@ -21,13 +21,15 @@ from odps import types as odps_types
 from .... import dataframe as md
 from .... import tensor as mt
 from ....core import OutputType
-from ....lib.dtypes_extension import dict_
+from ....lib.dtypes_extension import ArrowDtype, dict_, list_
 from ....utils import pd_release_version
 from ..schema import (
     arrow_schema_to_odps_schema,
     build_dataframe_table_meta,
     build_table_column_name,
     odps_schema_to_arrow_schema,
+    odps_schema_to_pandas_dtypes,
+    pandas_dtypes_to_arrow_schema,
     pandas_to_odps_schema,
     pandas_types_to_arrow_schema,
 )
@@ -42,6 +44,8 @@ def _wrap_maxframe_obj(obj, wrap="no"):
         obj = md.Series(obj)
     elif isinstance(obj, pd.Index):
         obj = md.Index(obj)
+    elif isinstance(obj, np.ndarray):
+        obj = mt.tensor(obj)
     else:
         obj = mt.scalar(obj)
     if wrap == "data":
@@ -191,6 +195,24 @@ def test_pandas_to_odps_schema_scalar(wrap_obj):
     assert meta.pd_index_level_names == [None]
 
 
+@pytest.mark.parametrize("wrap_obj", ["no", "yes", "data"])
+def test_pandas_to_odps_schema_tensor(wrap_obj):
+    data = np.array([1, 2, 3])
+
+    test_tensor = _wrap_maxframe_obj(data, wrap=wrap_obj)
+    if wrap_obj != "no":
+        test_tensor.op.data = None
+
+    schema, meta = pandas_to_odps_schema(test_tensor, unknown_as_string=True)
+    assert schema.columns[0].name == "_idx_0"
+    assert schema.columns[0].type.name == "bigint"
+    assert meta.type == OutputType.tensor
+    assert meta.table_column_names == []
+    assert meta.table_index_column_names == ["_idx_0"]
+    assert meta.pd_column_level_names == []
+    assert meta.pd_index_level_names == [None]
+
+
 def test_odps_arrow_schema_conversion():
     odps_schema = odps_types.OdpsSchema(
         [
@@ -275,6 +297,95 @@ def test_odps_arrow_schema_conversion():
         arrow_schema_to_odps_schema(pa.schema([("col1", pa.float16())]))
 
 
+def test_odps_pandas_schema_conversion():
+    odps_schema = odps_types.OdpsSchema(
+        [
+            odps_types.Column("col1", "string"),
+            odps_types.Column("col2", "binary"),
+            odps_types.Column("col3", "tinyint"),
+            odps_types.Column("col4", "smallint"),
+            odps_types.Column("col5", "int"),
+            odps_types.Column("col6", "bigint"),
+            odps_types.Column("col7", "boolean"),
+            odps_types.Column("col8", "float"),
+            odps_types.Column("col9", "double"),
+            # odps_types.Column("col10", "date"),
+            odps_types.Column("col11", "datetime"),
+            odps_types.Column("col12", "timestamp"),
+            # odps_types.Column("col13", "decimal(10, 2)"),
+            odps_types.Column("col14", "array<string>"),
+            odps_types.Column("col15", "map<string, bigint>"),
+            # odps_types.Column("col16", "struct<a1: string, a2: map<string, bigint>>"),
+            # odps_types.Column("col17", "CHAR(15)"),
+            # odps_types.Column("col18", "VARCHAR(15)"),
+            # odps_types.Column("col19", "decimal"),
+        ]
+    )
+    pd_dtypes = odps_schema_to_pandas_dtypes(odps_schema)
+    pd.testing.assert_series_equal(
+        pd_dtypes,
+        pd.Series(
+            [
+                np.dtype("O"),  # string
+                np.dtype("O"),  # binary
+                np.dtype(np.int8),
+                np.dtype(np.int16),
+                np.dtype(np.int32),
+                np.dtype(np.int64),
+                np.dtype(np.bool_),
+                np.dtype(np.float32),
+                np.dtype(np.float64),
+                np.dtype(
+                    "datetime64[ms]" if pd_release_version[0] >= 2 else "datetime64[ns]"
+                ),
+                np.dtype("datetime64[ns]"),
+                ArrowDtype(pa.list_(pa.string())),
+                ArrowDtype(pa.map_(pa.string(), pa.int64())),
+            ],
+            index=[c.name for c in odps_schema.columns],
+        ),
+    )
+
+    expected_odps_schema = odps_types.OdpsSchema(
+        [
+            odps_types.Column("col1", "string"),
+            odps_types.Column("col2", "string"),  # binary
+            odps_types.Column("col3", "tinyint"),
+            odps_types.Column("col4", "smallint"),
+            odps_types.Column("col5", "int"),
+            odps_types.Column("col6", "bigint"),
+            odps_types.Column("col7", "boolean"),
+            odps_types.Column("col8", "float"),
+            odps_types.Column("col9", "double"),
+            # odps_types.Column("col10", "date"),
+            odps_types.Column(
+                "col11", "datetime" if pd_release_version[0] >= 2 else "timestamp"
+            ),
+            odps_types.Column("col12", "timestamp"),
+            # odps_types.Column("col13", "decimal(10, 2)"),
+            odps_types.Column("col14", "array<string>"),
+            odps_types.Column("col15", "map<string, bigint>"),
+            # odps_types.Column("col16", "struct<a1: string, a2: map<string, bigint>>"),
+            # odps_types.Column("col17", "string"),
+            # odps_types.Column("col18", "string"),
+            # odps_types.Column("col19", "decimal(38, 18)"),
+        ]
+    )
+
+    odps_schema2 = arrow_schema_to_odps_schema(
+        pandas_dtypes_to_arrow_schema(pd_dtypes, unknown_as_string=True)
+    )
+    assert [c.name for c in expected_odps_schema.columns] == [
+        c.name for c in odps_schema2.columns
+    ]
+    assert [c.type for c in expected_odps_schema.columns] == [
+        c.type for c in odps_schema2.columns
+    ]
+
+    with pytest.raises(TypeError):
+        arrow_schema_to_odps_schema(pa.schema([("col1", pa.float16())]))
+
+
 def test_build_column_name():
     records = dict()
     assert build_table_column_name(0, "a" * 127, records) == "a" * 127
@@ -345,8 +456,10 @@ def test_pandas_types_to_arrow_schema():
         {
             "int8": pd.Series([], dtype=np.int8),
             "map": pd.Series([], dtype=dict_(pa.string(), pa.string())),
+            "list": pd.Series([], dtype=list_(pa.string())),
         },
     )
     schema = pandas_types_to_arrow_schema(pd_data)
     assert schema.field("int8").type == pa.int8()
     assert schema.field("map").type == pa.map_(pa.string(), pa.string())
+    assert schema.field("list").type == pa.list_(pa.string())

@@ -14,6 +14,8 @@ Searching
    maxframe.tensor.nanargmax
    maxframe.tensor.argmin
    maxframe.tensor.nanargmin
+   maxframe.tensor.nonzero
+   maxframe.tensor.flatnonzero
 
 
 Counting

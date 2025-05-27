@@ -32,6 +32,7 @@ from .entity import (
     Tileable,
     TileableData,
     _ExecuteAndFetchMixin,
+    df_output_types,
     get_fetch_class,
     get_output_types,
     get_tileable_types,

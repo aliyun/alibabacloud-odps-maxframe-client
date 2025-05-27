@@ -97,6 +97,7 @@ Computations / descriptive stats
    Series.sem
    Series.std
    Series.sum
+   Series.unique
    Series.var
    Series.value_counts
 
@@ -112,6 +113,8 @@ Reindexing / selection / label manipulation
    Series.drop_duplicates
    Series.head
    Series.isin
+   Series.reindex
+   Series.reindex_like
    Series.rename
    Series.reset_index
    Series.sample
@@ -122,6 +125,8 @@ Missing data handling
 .. autosummary::
    :toctree: generated/
 
+   Series.dropna
+   Series.fillna
    Series.isna
    Series.notna
    Series.dropna
@@ -293,6 +298,25 @@ Dict methods
    Series.dict.get
    Series.dict.len
    Series.dict.remove
+
+.. _generated.series.list:
+
+List properties
+~~~~~~~~~~~~~~~~~~~~~~~
+
+``Series.list`` can be used to access the methods of the series with list values.
+These can be accessed like ``Series.list.<method>``.
+
+
+List methods
+^^^^^^^^^^^^^^^^
+
+.. autosummary::
+   :toctree: generated/
+   :template: accessor_method.rst
+
+   Series.list.__getitem__
+   Series.list.len
 
 
 Plotting

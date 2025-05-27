@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import MutableMapping, Union
+
 import numpy as np
-import pandas as pd
 
 from ... import opcodes
 from ...core import OutputType
@@ -26,12 +27,13 @@ from ...serialization.serializables import (
     StringField,
     TupleField,
 )
-from ...utils import get_func_token, quiet_stdio, tokenize
+from ...udf import BuiltinFunction, MarkedFunction
+from ...utils import copy_if_possible, get_func_token, make_dtype, make_dtypes, tokenize
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import (
+    InferredDataFrameMeta,
     copy_func_scheduling_hints,
-    make_dtype,
-    make_dtypes,
+    infer_dataframe_return_value,
     parse_index,
     validate_output_types,
 )
@@ -56,6 +58,7 @@ class GroupByApply(
     args = TupleField("args", default_factory=tuple)
     kwds = DictField("kwds", default_factory=dict)
     maybe_agg = BoolField("maybe_agg", default=None)
+
     logic_key = StringField("logic_key", default=None)
     func_key = AnyField("func_key", default=None)
     need_clean_up_func = BoolField("need_clean_up_func", default=False)
@@ -65,6 +68,9 @@ class GroupByApply(
         if hasattr(self, "func"):
             copy_func_scheduling_hints(self.func, self)
 
+    def has_custom_code(self) -> bool:
+        return not isinstance(self.func, BuiltinFunction)
+
     def _update_key(self):
         values = [v for v in self._values_ if v is not self.func] + [
             get_func_token(self.func)
@@ -73,95 +79,65 @@ class GroupByApply(
         return self
 
     def _infer_df_func_returns(
-        self, in_groupby, in_df, dtypes=None, dtype=None, name=None, index=None
-    ):
-        index_value, output_type, new_dtypes = None, None, None
+        self, in_groupby, dtypes=None, dtype=None, name=None, index=None
+    ) -> InferredDataFrameMeta:
+        def infer_func(groupby_obj):
+            args = copy_if_possible(self.args)
+            kwds = copy_if_possible(self.kwds)
+            return groupby_obj.apply(self.func, *args, **kwds)
 
-        if self.output_types is not None and (dtypes is not None or dtype is not None):
-            ret_dtypes = dtypes if dtypes is not None else (dtype, name)
-            ret_index_value = parse_index(index) if index is not None else None
-            return ret_dtypes, ret_index_value
-
-        try:
-            infer_df = in_groupby.op.build_mock_groupby().apply(
-                self.func, *self.args, **self.kwds
-            )
-
-            if len(infer_df) <= 2:
-                # we create mock df with 4 rows, 2 groups
-                # if return df has 2 rows, we assume that
-                # it's an aggregation operation
-                self.maybe_agg = True
-
-            # todo return proper index when sort=True is implemented
-            index_value = parse_index(infer_df.index[:0], in_df.key, self.func)
-
-            # for backward compatibility
-            dtype = dtype if dtype is not None else dtypes
-            if isinstance(infer_df, pd.DataFrame):
-                output_type = output_type or OutputType.dataframe
-                new_dtypes = new_dtypes or infer_df.dtypes
-            elif isinstance(infer_df, pd.Series):
-                output_type = output_type or OutputType.series
-                new_dtypes = new_dtypes or (
-                    name or infer_df.name,
-                    dtype or infer_df.dtype,
-                )
-            else:
-                output_type = OutputType.series
-                new_dtypes = (name, dtype or pd.Series(infer_df).dtype)
-        except:  # noqa: E722  # nosec
-            pass
-
+        output_type = self.output_types[0] if self.output_types else None
+        inferred_meta = infer_dataframe_return_value(
+            in_groupby,
+            infer_func,
+            dtypes=dtypes,
+            dtype=dtype,
+            name=name,
+            index=index,
+            output_type=output_type,
+        )
         self.output_types = (
-            [output_type]
-            if not self.output_types and output_type
+            [inferred_meta.output_type]
+            if not self.output_types and inferred_meta.output_type
             else self.output_types
         )
-        dtypes = new_dtypes if dtypes is None else dtypes
-        index_value = index_value if index is None else parse_index(index)
-        return dtypes, index_value
+        self.maybe_agg = inferred_meta.maybe_agg
+        return inferred_meta
 
     def __call__(self, groupby, dtypes=None, dtype=None, name=None, index=None):
-        in_df = groupby
         if self.output_types and self.output_types[0] == OutputType.df_or_series:
             return self.new_df_or_series([groupby])
-        while in_df.op.output_types[0] not in (OutputType.dataframe, OutputType.series):
-            in_df = in_df.inputs[0]
 
-        with quiet_stdio():
-            dtypes, index_value = self._infer_df_func_returns(
-                groupby, in_df, dtypes, dtype=dtype, name=name, index=index
-            )
-        if index_value is None:
-            index_value = parse_index(None, (in_df.key, in_df.index_value.key))
-        for arg, desc in zip((self.output_types, dtypes), ("output_types", "dtypes")):
-            if arg is None:
-                raise TypeError(
-                    f"Cannot determine {desc} by calculating with enumerate data, "
-                    "please specify it as arguments"
-                )
-
+        inferred_meta = self._infer_df_func_returns(
+            groupby, dtypes=dtypes, dtype=dtype, name=name, index=index
+        )
+        inferred_meta.check_absence("output_type", "dtypes", "dtype")
         if self.output_types[0] == OutputType.dataframe:
-            new_shape = (np.nan, len(dtypes))
+            new_shape = (np.nan, len(inferred_meta.dtypes))
             return self.new_dataframe(
                 [groupby],
                 shape=new_shape,
-                dtypes=dtypes,
-                index_value=index_value,
-                columns_value=parse_index(dtypes.index, store_data=True),
+                dtypes=inferred_meta.dtypes,
+                index_value=inferred_meta.index_value,
+                columns_value=parse_index(inferred_meta.dtypes.index, store_data=True),
             )
         else:
-            name = name or dtypes[0]
-            dtype = dtype or dtypes[1]
             new_shape = (np.nan,)
             return self.new_series(
                 [groupby],
-                name=name,
+                name=inferred_meta.name,
                 shape=new_shape,
-                dtype=dtype,
-                index_value=index_value,
+                dtype=inferred_meta.dtype,
+                index_value=inferred_meta.index_value,
             )
+
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "GroupByApply"
+    ) -> None:
+        if isinstance(op.func, MarkedFunction):
+            ctx[op.outputs[0].key] = float("inf")
+        super().estimate_size(ctx, op)
 
 
 def groupby_apply(

@@ -14,13 +14,13 @@
 
 import functools
 import logging
-from typing import Callable, Dict
+from typing import Callable, Dict, List
 
 import numpy as np
 import pandas as pd
 
 from ... import opcodes
-from ...core import ENTITY_TYPE, OutputType
+from ...core import ENTITY_TYPE, EntityData, OutputType
 from ...serialization.serializables import (
     AnyField,
     DictField,
@@ -155,17 +155,18 @@ class DataFrameGroupByAgg(DataFrameOperator, DataFrameOperatorMixin):
     index_levels = Int32Field("index_levels")
     size_recorder_name = StringField("size_recorder_name")
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs[1:])
-        if len(self._inputs) > 1:
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameGroupByAgg", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs[1:])
+        if len(op._inputs) > 1:
             by = []
-            for v in self.groupby_params["by"]:
+            for v in op.groupby_params["by"]:
                 if isinstance(v, ENTITY_TYPE):
                     by.append(next(inputs_iter))
                 else:
                     by.append(v)
-            self.groupby_params["by"] = by
+            op.groupby_params["by"] = by
 
     def _get_inputs(self, inputs):
         if isinstance(self.groupby_params["by"], list):

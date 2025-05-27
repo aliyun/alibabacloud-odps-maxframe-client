@@ -29,6 +29,10 @@ class MaxFrameDeprecationError(MaxFrameUserError):
     pass
 
 
+class TileableNotExecutedError(MaxFrameError):
+    pass
+
+
 class NoTaskServerResponseError(MaxFrameError):
     pass
 
@@ -36,3 +40,8 @@ class NoTaskServerResponseError(MaxFrameError):
 class SessionAlreadyClosedError(MaxFrameError):
     def __init__(self, session_id: str):
         super().__init__(f"Session {session_id} is already closed")
+
+
+class EngineUnavailableError(MaxFrameIntentionalError):
+    def __init__(self, engine_type: str):
+        super().__init__(f"Engine {engine_type} is not ready")

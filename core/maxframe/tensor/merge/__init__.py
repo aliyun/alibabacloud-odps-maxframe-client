@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .append import append
+from .column_stack import column_stack
 from .concatenate import concatenate
+from .dstack import dstack
+from .hstack import hstack
 from .stack import stack
 from .vstack import vstack

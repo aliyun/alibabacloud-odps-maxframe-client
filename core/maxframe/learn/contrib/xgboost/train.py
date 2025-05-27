@@ -14,11 +14,11 @@
 
 import logging
 from collections import OrderedDict
+from typing import List
 
 from .... import opcodes
-from ....core import OutputType
-from ....core.operator.base import Operator
-from ....core.operator.core import TileableOperatorMixin
+from ....core import EntityData, OutputType
+from ....core.operator import ObjectOperator, ObjectOperatorMixin
 from ....serialization.serializables import (
     AnyField,
     BoolField,
@@ -29,7 +29,9 @@ from ....serialization.serializables import (
     KeyField,
     ListField,
 )
-from .core import Booster
+from ..models import to_remote_model
+from ..utils import TrainingCallback
+from .core import Booster, BoosterData, XGBScikitLearnBase
 from .dmatrix import ToDMatrix, to_dmatrix
 
 logger = logging.getLogger(__name__)
@@ -41,7 +43,7 @@ def _on_serialize_evals(evals_val):
     return [list(x) for x in evals_val]
 
 
-class XGBTrain(Operator, TileableOperatorMixin):
+class XGBTrain(ObjectOperator, ObjectOperatorMixin):
     _op_type_ = opcodes.XGBOOST_TRAIN
 
     params = DictField("params", key_type=FieldTypes.string, default=None)
@@ -52,9 +54,12 @@ class XGBTrain(Operator, TileableOperatorMixin):
     maximize = BoolField("maximize", default=None)
     early_stopping_rounds = Int64Field("early_stopping_rounds", default=None)
     verbose_eval = AnyField("verbose_eval", default=None)
-    xgb_model = AnyField("xgb_model", default=None)
+    xgb_model = KeyField("xgb_model", default=None)
     callbacks = ListField(
-        "callbacks", field_type=FunctionField.field_type, default=None
+        "callbacks",
+        field_type=FunctionField.field_type,
+        default=None,
+        on_serialize=TrainingCallback.from_local,
     )
     custom_metric = FunctionField("custom_metric", default=None)
     num_boost_round = Int64Field("num_boost_round", default=10)
@@ -67,21 +72,35 @@ class XGBTrain(Operator, TileableOperatorMixin):
         if self.has_evals_result:
             self.output_types.append(OutputType.object)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.dtrain = self._inputs[0]
-        rest = self._inputs[1:]
-        if self.has_evals_result:
-            evals_dict = OrderedDict(self.evals)
+    def has_custom_code(self) -> bool:
+        if not self.callbacks:
+            return False
+        return any(
+            not isinstance(cb, TrainingCallback) or cb.has_custom_code()
+            for cb in self.callbacks
+        )
+
+    @classmethod
+    def _set_inputs(cls, op: "XGBTrain", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        input_it = iter(op._inputs)
+        op.dtrain = next(input_it)
+        if op.evals:
+            evals_dict = OrderedDict(op.evals)
             new_evals_dict = OrderedDict()
-            for new_key, val in zip(rest, evals_dict.values()):
+            for val in evals_dict.values():
+                new_key = next(input_it)
                 new_evals_dict[new_key] = val
-            self.evals = list(new_evals_dict.items())
+            op.evals = list(new_evals_dict.items())
+        if op.xgb_model:
+            op.xgb_model = next(input_it)
 
     def __call__(self, evals_result):
         inputs = [self.dtrain]
         if self.has_evals_result:
             inputs.extend(e[0] for e in self.evals)
+        if self.xgb_model is not None:
+            inputs.append(self.xgb_model)
         kws = [{"object_class": Booster}, {}]
         return self.new_tileables(inputs, kws=kws, evals_result=evals_result)[0]
 
@@ -94,7 +113,28 @@ class XGBTrain(Operator, TileableOperatorMixin):
         return self.evals
 
 
-def train(params, dtrain, evals=None, evals_result=None, num_class=None, **kwargs):
+def _get_xgb_booster(xgb_model):
+    import xgboost
+
+    if isinstance(xgb_model, (XGBScikitLearnBase, xgboost.XGBModel)):
+        xgb_model = xgb_model.get_booster()
+
+    if isinstance(xgb_model, (Booster, BoosterData)):
+        return xgb_model
+    elif isinstance(xgb_model, xgboost.Booster):
+        return to_remote_model(xgb_model, model_cls=Booster)
+    raise ValueError(f"Cannot use {type(xgb_model)} as xgb_model")
+
+
+def train(
+    params,
+    dtrain,
+    evals=None,
+    evals_result=None,
+    xgb_model=None,
+    num_class=None,
+    **kwargs,
+):
     """
     Train XGBoost model in MaxFrame manner.
 
@@ -120,11 +160,14 @@ def train(params, dtrain, evals=None, evals_result=None, num_class=None, **kwarg
                 processed_evals.append((eval_dmatrix, name))
             else:
                 processed_evals.append((to_dmatrix(eval_dmatrix), name))
+    if xgb_model is not None:
+        xgb_model = _get_xgb_booster(xgb_model)
     data = XGBTrain(
         params=params,
         dtrain=dtrain,
         evals=processed_evals,
         evals_result=evals_result,
+        xgb_model=xgb_model,
         num_class=num_class,
         **kwargs,
     )(evals_result)

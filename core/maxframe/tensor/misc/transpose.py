@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import FieldTypes, KeyField, ListField
 from ..core import TensorOrder
 from ..datasource import tensor as astensor
@@ -49,9 +52,10 @@ class TensorTranspose(TensorHasInput, TensorOperatorMixin):
             tensor_order = TensorOrder.C_ORDER
         return self.new_tensor([a], shape, order=tensor_order)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "TensorTranspose", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op._input = op._inputs[0]
 
     def on_output_modify(self, new_output):
         op = self.copy().reset_key()
@@ -125,5 +129,5 @@ def transpose(a, axes=None):
         axes = list(range(a.ndim))[::-1]
     else:
         axes = list(axes)
-    op = TensorTranspose(axes, dtype=a.dtype)
+    op = TensorTranspose(axes, dtype=a.dtype, sparse=a.issparse())
     return op(a)

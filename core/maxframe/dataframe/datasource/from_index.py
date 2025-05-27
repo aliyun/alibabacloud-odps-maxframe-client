@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import AnyField, KeyField
 from ..initializer import Index
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
@@ -25,11 +28,12 @@ class SeriesFromIndex(DataFrameOperator, DataFrameOperatorMixin):
     index = KeyField("index")
     name = AnyField("name", default=None)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.input_ = self._inputs[0]
-        if len(self._inputs) > 1:
-            self.index = self._inputs[1]
+    @classmethod
+    def _set_inputs(cls, op: "SeriesFromIndex", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.input_ = op._inputs[0]
+        if len(op._inputs) > 1:
+            op.index = op._inputs[1]
 
     def __call__(self, index, new_index=None, name=None):
         inputs = [index]

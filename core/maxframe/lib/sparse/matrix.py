@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,6 +109,11 @@ def lu_sparse_matrix(a):
         SparseMatrix(l_),
         SparseMatrix(u),
     )
+
+
+def inv_sparse_matrix(a):
+    a = naked(a)
+    return SparseMatrix(splinalg.inv(a))
 
 
 def solve_triangular_sparse_matrix(a, b, lower=False, sparse=True):

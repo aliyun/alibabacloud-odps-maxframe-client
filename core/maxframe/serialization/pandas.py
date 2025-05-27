@@ -39,7 +39,11 @@ class DataFrameSerializer(Serializer):
         self, serialized: List, context: Dict, subs: List[Any]
     ) -> pd.DataFrame:
         dtypes, idx = subs[:2]
-        df = pd.concat([pd.Series(d, index=idx) for d in subs[2:]], axis=1)
+        seriess = [pd.Series(d, index=idx) for d in subs[2:]]
+        if seriess:
+            df = pd.concat([pd.Series(d, index=idx) for d in subs[2:]], axis=1)
+        else:
+            df = pd.DataFrame([], index=idx)
         df.columns = dtypes.index
         df.index = idx
         return df.astype(dtypes)

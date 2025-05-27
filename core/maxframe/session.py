@@ -29,12 +29,11 @@ from weakref import ref
 
 from odps import ODPS
 
-from maxframe.core import TileableType
-from maxframe.lib.aio import Isolation, get_isolation, new_isolation, stop_isolation
-from maxframe.typing_ import ClientType
-from maxframe.utils import classproperty, implements, relay_future
-
 from .config import options
+from .core import TileableType
+from .lib.aio import Isolation, get_isolation, new_isolation, stop_isolation
+from .typing_ import ClientType
+from .utils import classproperty, implements, relay_future
 
 logger = logging.getLogger(__name__)
 
@@ -313,55 +312,6 @@ class AbstractAsyncSession(AbstractSession, metaclass=ABCMeta):
         -------
         web_endpoint : str
             web endpoint
-        """
-
-    @abstractmethod
-    async def create_remote_object(
-        self, session_id: str, name: str, object_cls, *args, **kwargs
-    ):
-        """
-        Create remote object
-
-        Parameters
-        ----------
-        session_id : str
-            Session ID.
-        name : str
-        object_cls
-        args
-        kwargs
-
-        Returns
-        -------
-        actor_ref
-        """
-
-    @abstractmethod
-    async def get_remote_object(self, session_id: str, name: str):
-        """
-        Get remote object.
-
-        Parameters
-        ----------
-        session_id : str
-            Session ID.
-        name : str
-
-        Returns
-        -------
-        actor_ref
-        """
-
-    @abstractmethod
-    async def destroy_remote_object(self, session_id: str, name: str):
-        """
-        Destroy remote object.
-
-        Parameters
-        ----------
-        session_id : str
-            Session ID.
-        name : str
         """
 
     async def stop_server(self):
@@ -720,23 +670,6 @@ class AsyncSession(AbstractAsyncSession):
     @implements(AbstractAsyncSession.get_cluster_versions)
     @_delegate_to_isolated_session
     async def get_cluster_versions(self) -> List[str]:
-        pass  # pragma: no cover
-
-    @implements(AbstractAsyncSession.create_remote_object)
-    @_delegate_to_isolated_session
-    async def create_remote_object(
-        self, session_id: str, name: str, object_cls, *args, **kwargs
-    ):
-        pass  # pragma: no cover
-
-    @implements(AbstractAsyncSession.get_remote_object)
-    @_delegate_to_isolated_session
-    async def get_remote_object(self, session_id: str, name: str):
-        pass  # pragma: no cover
-
-    @implements(AbstractAsyncSession.destroy_remote_object)
-    @_delegate_to_isolated_session
-    async def destroy_remote_object(self, session_id: str, name: str):
         pass  # pragma: no cover
 
     @implements(AbstractAsyncSession.get_web_endpoint)

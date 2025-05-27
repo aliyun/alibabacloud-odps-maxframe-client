@@ -127,6 +127,8 @@ Reindexing / selection / label manipulation
    DataFrame.drop_duplicates
    DataFrame.duplicated
    DataFrame.head
+   DataFrame.reindex
+   DataFrame.reindex_like
    DataFrame.rename
    DataFrame.rename_axis
    DataFrame.reset_index
@@ -142,6 +144,8 @@ Missing data handling
 .. autosummary::
    :toctree: generated/
 
+   DataFrame.dropna
+   DataFrame.fillna
    DataFrame.isna
    DataFrame.isnull
    DataFrame.notna
@@ -152,6 +156,9 @@ Reshaping, sorting, transposing
 .. autosummary::
    :toctree: generated/
 
+   DataFrame.melt
+   DataFrame.pivot
+   DataFrame.pivot_table
    DataFrame.sort_values
    DataFrame.sort_index
 

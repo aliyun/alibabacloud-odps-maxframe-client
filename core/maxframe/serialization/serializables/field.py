@@ -20,7 +20,7 @@ import os
 from abc import ABC, ABCMeta, abstractmethod
 from typing import Any, Callable, Optional, Type, Union
 
-from ...utils import no_default
+from ...utils import no_default, str_to_bool
 from .field_type import (
     AbstractFieldType,
     DictType,
@@ -30,7 +30,7 @@ from .field_type import (
     TupleType,
 )
 
-_is_ci = (os.environ.get("CI") or "0").lower() in ("1", "true")
+_is_ci = bool(str_to_bool(os.environ.get("CI")))
 
 
 class Field(ABC):

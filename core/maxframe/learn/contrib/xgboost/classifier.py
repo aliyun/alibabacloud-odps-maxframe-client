@@ -26,9 +26,7 @@ if not xgboost:
 else:
     from xgboost.sklearn import XGBClassifierBase
 
-    from .core import wrap_evaluation_matrices
     from .predict import predict
-    from .train import train
 
     class XGBClassifier(XGBScikitLearnBase, XGBClassifierBase):
         """
@@ -43,6 +41,15 @@ else:
             super().__init__(**kwargs)
             self._set_model(xgb_model)
 
+        def get_xgb_params(self):
+            params = super().get_xgb_params()
+            if self.n_classes_ > 2:
+                params["objective"] = "multi:softprob"
+                params["num_class"] = self.n_classes_
+            else:
+                params["objective"] = "binary:logistic"
+            return params
+
         def fit(
             self,
             X,
@@ -50,43 +57,32 @@ else:
             sample_weight=None,
             base_margin=None,
             eval_set=None,
+            xgb_model=None,
             sample_weight_eval_set=None,
             base_margin_eval_set=None,
             num_class=None,
             **kw,
         ):
             session = kw.pop("session", None)
-            run_kwargs = kw.pop("run_kwargs", None) or dict()
-            dtrain, evals = wrap_evaluation_matrices(
-                None,
+            run_kwargs = kw.pop("run_kwargs", dict())
+
+            if num_class is not None:
+                self.n_classes_ = num_class
+            else:
+                t_labels = mt.unique(y).execute(session=session, **run_kwargs)
+                self.n_classes_ = t_labels.shape[0]
+
+            super().fit(
                 X,
                 y,
-                sample_weight,
-                base_margin,
-                eval_set,
-                sample_weight_eval_set,
-                base_margin_eval_set,
+                sample_weight=sample_weight,
+                base_margin=base_margin,
+                eval_set=eval_set,
+                xgb_model=xgb_model,
+                sample_weight_eval_set=sample_weight_eval_set,
+                base_margin_eval_set=base_margin_eval_set,
+                **kw,
             )
-            params = self.get_xgb_params()
-            self._n_features_in = X.shape[1]
-            self.n_classes_ = num_class or 1
-            if self.n_classes_ > 2:
-                params["objective"] = "multi:softprob"
-                params["num_class"] = self.n_classes_
-            else:
-                params["objective"] = "binary:logistic"
-            self.evals_result_ = dict()
-            result = train(
-                params,
-                dtrain,
-                num_boost_round=self.get_num_boosting_rounds(),
-                evals=evals,
-                evals_result=self.evals_result_,
-                num_class=num_class,
-                session=session,
-                run_kwargs=run_kwargs,
-            )
-            self._Booster = result
             return self
 
         def predict(self, data, **kw):

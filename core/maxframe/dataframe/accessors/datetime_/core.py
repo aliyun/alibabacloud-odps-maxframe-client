@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import pandas as pd
 
 from .... import opcodes
-from ....core import OutputType
+from ....core import EntityData, OutputType
 from ....serialization.serializables import (
     BoolField,
     DictField,
@@ -45,9 +47,10 @@ class SeriesDatetimeMethod(DataFrameOperator, DataFrameOperatorMixin):
     def input(self):
         return self._input
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "SeriesDatetimeMethod", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op._input = op._inputs[0]
 
     def __call__(self, inp):
         return datetime_method_to_handlers[self.method].call(self, inp)

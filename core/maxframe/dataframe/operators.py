@@ -15,7 +15,7 @@
 import numpy as np
 import pandas as pd
 
-from ..core import ENTITY_TYPE, OutputType
+from ..core import OutputType
 from ..core.operator import Operator, ShuffleProxy, TileableOperatorMixin
 from ..tensor.core import TENSOR_TYPE
 from ..tensor.datasource import tensor as astensor
@@ -207,32 +207,6 @@ class DataFrameOperatorMixin(TileableOperatorMixin):
         return self.new_categoricals(
             inputs, shape=shape, dtype=dtype, categories_value=categories_value, **kw
         )[0]
-
-    @classmethod
-    def _process_groupby_params(cls, groupby_params):
-        new_groupby_params = groupby_params.copy()
-        if isinstance(groupby_params["by"], list):
-            by = []
-            for v in groupby_params["by"]:
-                if isinstance(v, ENTITY_TYPE):
-                    by.append(cls.concat_tileable_chunks(v).chunks[0])
-                else:
-                    by.append(v)
-            new_groupby_params["by"] = by
-        return new_groupby_params
-
-    @classmethod
-    def _get_groupby_inputs(cls, groupby, groupby_params):
-        inputs = [groupby]
-        chunk_inputs = list(groupby.chunks)
-        if isinstance(groupby_params["by"], list):
-            for chunk_v, v in zip(
-                groupby_params["by"], groupby.op.groupby_params["by"]
-            ):
-                if isinstance(v, ENTITY_TYPE):
-                    inputs.append(v)
-                    chunk_inputs.append(chunk_v)
-        return inputs, chunk_inputs
 
     @staticmethod
     def _process_input(x):

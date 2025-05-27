@@ -13,9 +13,10 @@
 # limitations under the License.
 
 from functools import partial
+from typing import List
 
 from .. import opcodes
-from ..core import ENTITY_TYPE
+from ..core import ENTITY_TYPE, EntityData
 from ..core.operator import ObjectOperator, ObjectOperatorMixin
 from ..dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
 from ..serialization.serializables import (
@@ -26,6 +27,7 @@ from ..serialization.serializables import (
     ListField,
 )
 from ..tensor.core import TENSOR_TYPE
+from ..udf import BuiltinFunction
 from ..utils import find_objects, replace_objects
 
 
@@ -54,21 +56,21 @@ class RemoteFunction(ObjectOperatorMixin, ObjectOperator):
             tileable, (TENSOR_TYPE, DATAFRAME_TYPE, SERIES_TYPE, INDEX_TYPE)
         )
 
-    def _set_inputs(self, inputs):
-        raw_inputs = getattr(self, "_inputs", None)
-        super()._set_inputs(inputs)
+    def has_custom_code(self) -> bool:
+        return not isinstance(self.function, BuiltinFunction)
 
-        function_inputs = iter(inp for inp in self._inputs)
-        mapping = {inp: new_inp for inp, new_inp in zip(inputs, self._inputs)}
+    @classmethod
+    def _set_inputs(cls, op: "RemoteFunction", inputs: List[EntityData]):
+        raw_inputs = getattr(op, "_inputs", None)
+        super()._set_inputs(op, inputs)
+
+        function_inputs = iter(inp for inp in op._inputs)
+        mapping = {inp: new_inp for inp, new_inp in zip(inputs, op._inputs)}
         if raw_inputs is not None:
             for raw_inp in raw_inputs:
-                if self._no_prepare(raw_inp):
-                    # not in tile, set_inputs from tileable
-                    mapping[raw_inp] = next(function_inputs)
-                else:
-                    mapping[raw_inp] = next(function_inputs)
-        self.function_args = replace_objects(self.function_args, mapping)
-        self.function_kwargs = replace_objects(self.function_kwargs, mapping)
+                mapping[raw_inp] = next(function_inputs)
+        op.function_args = replace_objects(op.function_args, mapping)
+        op.function_kwargs = replace_objects(op.function_kwargs, mapping)
 
     def __call__(self):
         find_inputs = partial(find_objects, types=ENTITY_TYPE)
@@ -85,7 +87,7 @@ def spawn(
     func,
     args=(),
     kwargs=None,
-    retry_when_fail=False,
+    retry_when_fail=True,
     resolve_tileable_input=False,
     n_output=None,
     **kw,

@@ -13,11 +13,12 @@
 # limitations under the License.
 
 import copy
+from typing import List
 
 import numpy as np
 
 from ... import opcodes
-from ...core import ENTITY_TYPE, get_output_types
+from ...core import ENTITY_TYPE, EntityData, get_output_types
 from ...serialization.serializables import (
     AnyField,
     BoolField,
@@ -46,23 +47,23 @@ class DataFrameSample(DataFrameOperator, DataFrameOperatorMixin):
             random_state = np.random.RandomState(seed)
         super().__init__(random_state=random_state, seed=seed, **kw)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameSample", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
         it = iter(inputs)
         next(it)
-        if isinstance(self.weights, ENTITY_TYPE):
-            self.weights = next(it)
+        if isinstance(op.weights, ENTITY_TYPE):
+            op.weights = next(it)
 
     def __call__(self, df):
         params = df.params
         new_shape = list(df.shape)
 
-        if self.frac is not None and not np.isnan(df.shape[self.axis]):
-            self.size = int(self.frac * df.shape[self.axis])
-            self.frac = None
-
         if self.size is not None:
             new_shape[self.axis] = self.size
+        elif self.frac is not None:
+            new_shape[self.axis] = np.nan
+
         params["shape"] = tuple(new_shape)
         params["index_value"] = parse_index(df.index_value.to_pandas()[:0])
 
@@ -196,6 +197,9 @@ def sample(
     falcon         2          2                 10
     fish           0          0                  8
     """
+    if frac and n:
+        raise ValueError("Please enter a value for `frac` OR `n`, not both.")
+
     axis = validate_axis(axis or 0, df_or_series)
     if axis == 1:
         raise NotImplementedError("Currently cannot sample over columns")

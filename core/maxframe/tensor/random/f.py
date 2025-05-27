@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +20,7 @@ from ..utils import gen_random_seeds
 from .core import TensorDistribution, TensorRandomOperatorMixin, handle_array
 
 
-class TensorF(TensorDistribution, TensorRandomOperatorMixin):
+class TensorFDist(TensorDistribution, TensorRandomOperatorMixin):
     _input_fields_ = ["dfnum", "dfden"]
     _op_type_ = opcodes.RAND_F
 
@@ -131,5 +129,5 @@ def f(random_state, dfnum, dfden, size=None, chunk_size=None, gpu=None, dtype=No
         )
     size = random_state._handle_size(size)
     seed = gen_random_seeds(1, random_state.to_numpy())[0]
-    op = TensorF(seed=seed, size=size, gpu=gpu, dtype=dtype)
+    op = TensorFDist(seed=seed, size=size, gpu=gpu, dtype=dtype)
     return op(dfnum, dfden, chunk_size=chunk_size)

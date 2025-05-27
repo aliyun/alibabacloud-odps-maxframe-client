@@ -19,7 +19,7 @@ from odps import ODPS
 from ....core import OutputType
 from ....core.operator import ObjectOperatorMixin, Operator
 from ....tensor.datasource import ArrayDataSource
-from ....tests.utils import tn
+from ....tests.utils import create_test_volume, tn
 from ...odpsio import ODPSVolumeReader, ODPSVolumeWriter
 from ..core import get_object_io_handler
 
@@ -31,61 +31,9 @@ class TestObjectOp(Operator, ObjectOperatorMixin):
 
 
 @pytest.fixture(scope="module")
-def create_volume(request, oss_config):
-    test_vol_name = tn("test_object_io_volume")
-    odps_entry = ODPS.from_environments()
-
-    try:
-        odps_entry.delete_volume(test_vol_name, auto_remove_dir=True, recursive=True)
-    except:
-        pass
-
-    oss_test_dir_name = tn("test_oss_directory")
-    if oss_config is None:
-        pytest.skip("Need oss and its config to run this test")
-    (
-        oss_access_id,
-        oss_secret_access_key,
-        oss_bucket_name,
-        oss_endpoint,
-    ) = oss_config.oss_config
-
-    if "test" in oss_endpoint:
-        # offline config
-        test_location = "oss://%s:%s@%s/%s/%s" % (
-            oss_access_id,
-            oss_secret_access_key,
-            oss_endpoint,
-            oss_bucket_name,
-            oss_test_dir_name,
-        )
-        rolearn = None
-    else:
-        # online config
-        endpoint_parts = oss_endpoint.split(".", 1)
-        if "-internal" not in endpoint_parts[0]:
-            endpoint_parts[0] += "-internal"
-        test_location = "oss://%s/%s/%s" % (
-            ".".join(endpoint_parts),
-            oss_bucket_name,
-            oss_test_dir_name,
-        )
-        rolearn = oss_config.oss_rolearn
-
-    oss_config.oss_bucket.put_object(oss_test_dir_name + "/", b"")
-    odps_entry.create_external_volume(
-        test_vol_name, location=test_location, rolearn=rolearn
-    )
-
-    try:
+def create_volume(oss_config):
+    with create_test_volume(tn("test_object_io_vol"), oss_config) as test_vol_name:
         yield test_vol_name
-    finally:
-        try:
-            odps_entry.delete_volume(
-                test_vol_name, auto_remove_dir=True, recursive=True
-            )
-        except:
-            pass
 
 
 def test_simple_object_io(create_volume):
@@ -119,6 +67,11 @@ def test_tensor_object_io(create_volume):
         odps_entry, create_volume, obj.key, replace_internal_host=True
     )
 
+    # test write and read full object
     handler = get_object_io_handler(obj)()
     handler.write_object(writer, obj, data)
     np.testing.assert_equal(data, handler.read_object(reader, obj))
+
+    # test read single chunk
+    params = {"index": (0, 0)}
+    np.testing.assert_equal(data, handler.read_object_body(reader, params))

@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 
 from ... import opcodes
-from ...serialization.serializables import AnyField, StringField
+from ...serialization.serializables import AnyField, BoolField, StringField
 from ..operators import DataFrameOperator, DataFrameOperatorMixin, OutputType
 from ..utils import build_empty_df, parse_index
 
@@ -29,6 +29,7 @@ class DataFrameMelt(DataFrameOperator, DataFrameOperatorMixin):
     var_name = StringField("var_name", default=None)
     value_name = StringField("value_name", default=None)
     col_level = AnyField("col_level", default=None)
+    ignore_index = BoolField("ignore_index", default=False)
 
     def __call__(self, df):
         empty_result = build_empty_df(df.dtypes).melt(
@@ -37,6 +38,7 @@ class DataFrameMelt(DataFrameOperator, DataFrameOperatorMixin):
             var_name=self.var_name,
             value_name=self.value_name,
             col_level=self.col_level,
+            ignore_index=self.ignore_index,
         )
         self._output_types = [OutputType.dataframe]
         return self.new_tileable(
@@ -55,6 +57,7 @@ def melt(
     var_name=None,
     value_name="value",
     col_level=None,
+    ignore_index=False,
 ):
     """
     Unpivot a DataFrame from wide to long format, optionally leaving identifiers set.
@@ -79,6 +82,9 @@ def melt(
         Name to use for the 'value' column.
     col_level : int or str, optional
         If columns are a MultiIndex then use this level to melt.
+    ignore_index : bool, default True
+        If True, original index is ignored. If False, the original index
+        is retained. Index labels will be repeated as necessary.
 
     Returns
     -------
@@ -158,5 +164,6 @@ def melt(
         var_name=var_name,
         value_name=value_name,
         col_level=col_level,
+        ignore_index=ignore_index,
     )
     return op(frame)

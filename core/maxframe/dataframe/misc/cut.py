@@ -13,12 +13,13 @@
 # limitations under the License.
 
 from numbers import Integral
+from typing import List
 
 import numpy as np
 import pandas as pd
 
 from ... import opcodes
-from ...core import ENTITY_TYPE, ExecutableTuple, OutputType
+from ...core import ENTITY_TYPE, EntityData, ExecutableTuple, OutputType
 from ...serialization.serializables import (
     AnyField,
     BoolField,
@@ -55,14 +56,15 @@ class DataFrameCut(DataFrameOperator, DataFrameOperatorMixin):
     def output_limit(self):
         return 1 if not self.retbins else 2
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        inputs_iter = iter(self._inputs)
-        self._input = next(inputs_iter)
-        if isinstance(self.bins, ENTITY_TYPE):
-            self.bins = next(inputs_iter)
-        if isinstance(self.labels, ENTITY_TYPE):
-            self.labels = next(inputs_iter)
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameCut", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op._inputs)
+        op._input = next(inputs_iter)
+        if isinstance(op.bins, ENTITY_TYPE):
+            op.bins = next(inputs_iter)
+        if isinstance(op.labels, ENTITY_TYPE):
+            op.labels = next(inputs_iter)
 
     def __call__(self, x):
         if isinstance(x, pd.Series):
@@ -77,7 +79,6 @@ class DataFrameCut(DataFrameOperator, DataFrameOperatorMixin):
         inputs = [x]
         if self.labels is not None and not isinstance(self.labels, (bool, ENTITY_TYPE)):
             self.labels = np.asarray(self.labels)
-
         # infer dtype
         x_empty = (
             pd.Series([1], dtype=x.dtype)

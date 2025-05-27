@@ -13,9 +13,10 @@
 # limitations under the License.
 
 import asyncio
-from typing import List, Optional
+from typing import List, MutableMapping, Optional, Union
 
 from ...serialization.serializables import Int64Field, StringField
+from ...utils import estimate_pandas_size
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 
 
@@ -79,3 +80,9 @@ class IncrementalIndexDatasource(HeadOptimizedDataSource):
 class PandasDataSourceOperator(DataFrameOperator):
     def get_data(self):
         return getattr(self, "data", None)
+
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "PandasDataSourceOperator"
+    ):
+        ctx[op.outputs[0].key] = estimate_pandas_size(op.get_data())

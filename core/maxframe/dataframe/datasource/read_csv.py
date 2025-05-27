@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +13,7 @@
 # limitations under the License.
 
 from io import BytesIO
+from typing import MutableMapping, Union
 from urllib.parse import urlparse
 
 import numpy as np
@@ -128,6 +127,13 @@ class DataFrameReadCSV(
             columns_value=columns_value,
             chunk_bytes=chunk_bytes,
         )
+
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "DataFrameReadCSV"
+    ):  # pragma: no cover
+        # todo implement this to facilitate local computation
+        ctx[op.outputs[0].key] = float("inf")
 
 
 def read_csv(

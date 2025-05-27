@@ -129,13 +129,6 @@ class Entity(Serializable):
     def copy_from(self, obj):
         self.data = obj.data
 
-    def tiles(self):
-        from .tileables import handler
-
-        new_entity = self.copy()
-        new_entity.data = handler.tiles(self.data)
-        return new_entity
-
     def __getattr__(self, attr):
         return getattr(self._data, attr)
 

@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any
+from typing import Any, List
 
 import numpy as np
 import pandas as pd
 from pandas.api.types import is_dict_like, is_scalar
 
 from ... import opcodes
+from ...core import EntityData
 from ...serialization.serializables import AnyField, BoolField, KeyField, StringField
 from ...tensor import tensor as astensor
 from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
@@ -54,9 +55,10 @@ class DataFrameToDatetime(DataFrameOperator, DataFrameOperatorMixin):
             if k not in self._no_copy_attrs_ and k != "arg" and hasattr(self, k)
         )
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self.arg = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameToDatetime", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op.arg = op._inputs[0]
 
     def __call__(self, arg):
         if is_scalar(arg):

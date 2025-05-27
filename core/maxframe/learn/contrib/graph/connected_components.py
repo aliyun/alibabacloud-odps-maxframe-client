@@ -19,8 +19,9 @@ from maxframe import opcodes
 
 from ....core import OutputType
 from ....dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
-from ....dataframe.utils import make_dtypes, parse_index
+from ....dataframe.utils import parse_index
 from ....serialization.serializables import Int32Field, StringField
+from ....utils import make_dtypes
 
 
 class DataFrameConnectedComponentsOperator(DataFrameOperator, DataFrameOperatorMixin):

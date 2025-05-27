@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 from typing import Any, Dict, List
 
 import msgpack
@@ -34,6 +35,13 @@ from maxframe.utils import (
     wait_http_response,
 )
 
+# use long timeout period for debuggers
+_client_req_timeout = (
+    None
+    if "VSCODE_PID" not in os.environ and "PYCHARM_HOSTED" not in os.environ
+    else 1024
+)
+
 
 class FrameDriverClient:
     def __init__(self, endpoint: str):
@@ -45,13 +53,18 @@ class FrameDriverClient:
         )
         req_url = f"{self._endpoint}/api/sessions"
         resp = await httpclient.AsyncHTTPClient().fetch(
-            req_url, method="POST", body=serialize_serializable(req_body)
+            req_url,
+            method="POST",
+            body=serialize_serializable(req_body),
+            request_timeout=_client_req_timeout,
         )
         return SessionInfo.from_json(msgpack.loads(resp.body))
 
     async def get_session(self, session_id: str) -> SessionInfo:
         req_url = f"{self._endpoint}/api/sessions/{session_id}"
-        resp = await httpclient.AsyncHTTPClient().fetch(req_url, method="GET")
+        resp = await httpclient.AsyncHTTPClient().fetch(
+            req_url, method="GET", request_timeout=_client_req_timeout
+        )
         return SessionInfo.from_json(msgpack.loads(resp.body))
 
     async def delete_session(self, session_id: str):
@@ -73,12 +86,15 @@ class FrameDriverClient:
             req_url,
             method="POST",
             body=serialize_serializable(ProtocolBody(body=req_body)),
+            request_timeout=_client_req_timeout,
         )
         return DagInfo.from_json(msgpack.loads(resp.body))
 
     async def get_dag_info(self, session_id: str, dag_id: str) -> DagInfo:
         req_url = f"{self._endpoint}/api/sessions/{session_id}/dags/{dag_id}"
-        resp = await httpclient.AsyncHTTPClient().fetch(req_url, method="GET")
+        resp = await httpclient.AsyncHTTPClient().fetch(
+            req_url, method="GET", request_timeout=_client_req_timeout
+        )
         return DagInfo.from_json(msgpack.loads(resp.body))
 
     async def wait_dag(self, session_id: str, dag_id: str, timeout: TimeoutType = None):

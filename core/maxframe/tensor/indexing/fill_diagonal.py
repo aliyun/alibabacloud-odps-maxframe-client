@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 
 from ... import opcodes
-from ...core import ENTITY_TYPE
+from ...core import ENTITY_TYPE, EntityData
 from ...serialization.serializables import AnyField, BoolField, Int32Field, KeyField
 from ..core import Tensor
 from ..datasource import tensor as astensor
@@ -35,11 +37,12 @@ class TensorFillDiagonal(TensorOperator, TensorOperatorMixin):
     def input(self):
         return self._input
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input = self._inputs[0]
-        if len(self._inputs) == 2:
-            self.val = self._inputs[1]
+    @classmethod
+    def _set_inputs(cls, op: "TensorFillDiagonal", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op._input = op._inputs[0]
+        if len(op._inputs) == 2:
+            op.val = op._inputs[1]
 
     def __call__(self, a, val=None):
         inputs = [a]

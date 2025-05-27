@@ -14,9 +14,12 @@
 # limitations under the License.
 
 import asyncio
+import contextvars
+import copy
 import datetime
 import hashlib
 import importlib
+import os
 import re
 from collections import OrderedDict
 from functools import partial, wraps
@@ -38,7 +41,7 @@ from .._utils cimport TypeDispatcher
 
 from ..lib import wrapped_pickle as pickle
 from ..lib.dtypes_extension import ArrowDtype
-from ..utils import NoDefault, arrow_type_from_str, no_default
+from ..utils import NoDefault, arrow_type_from_str, no_default, str_to_bool
 
 # resolve pandas pickle compatibility between <1.2 and >=1.3
 try:
@@ -98,14 +101,50 @@ cdef:
 cdef dict _type_cache = dict()
 
 
-cpdef object load_type(str class_name, object parent_class):
+cdef object pickle_serial_hook = contextvars.ContextVar("pickle_serial_hook", default=None)
+cdef object pickle_deserial_hook = contextvars.ContextVar("pickle_deserial_hook", default=None)
+
+cdef class PickleHookOptions:
+    cdef:
+        object _serial_hook
+        object _pre_serial_hook
+        object _deserial_hook
+        object _pre_deserial_hook
+
+    def __init__(self, serial_hook: object = None, deserial_hook: object = None):
+        self._serial_hook = serial_hook
+        self._deserial_hook = deserial_hook
+
+    def __enter__(self):
+        self._pre_serial_hook = pickle_serial_hook.set(self._serial_hook)
+        self._pre_deserial_hook = pickle_deserial_hook.set(self._deserial_hook)
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pickle_serial_hook.reset(self._pre_serial_hook)
+        pickle_deserial_hook.reset(self._pre_deserial_hook)
+
+
+cdef bint unpickle_allowed
+
+
+def reload_unpickle_flag():
+    global unpickle_allowed
+    unpickle_allowed = str_to_bool(
+        os.getenv("MAXFRAME_SERIALIZE_UNPICKLE_ALLOWED", "1")
+    )
+
+
+reload_unpickle_flag()
+
+
+cdef object _load_by_name(str class_name):
     if class_name in _type_cache:
         cls = _type_cache[class_name]
     else:
         try:
-            from .deserializer import safe_load_type
+            from .deserializer import safe_load_by_name
 
-            cls = safe_load_type(class_name, parent_class)
+            cls = safe_load_by_name(class_name)
         except ImportError:
             if pickle.is_unpickle_forbidden():
                 raise
@@ -123,10 +162,25 @@ cpdef object load_type(str class_name, object parent_class):
             for sub_cls_name in cls_name.split("."):
                 cls = getattr(cls, sub_cls_name)
         _type_cache[class_name] = cls
+    return cls
 
+
+cpdef object load_type(str class_name, object parent_class):
+    cls = _load_by_name(class_name)
+    if not isinstance(cls, type):
+        raise ValueError(f"Class {class_name} not a type, cannot be deserialized")
     if not issubclass(cls, parent_class):
         raise ValueError(f"Class {class_name} not a {parent_class}")
     return cls
+
+
+cpdef object load_member(str class_name, object restrict_type):
+    member = _load_by_name(class_name)
+    if not isinstance(member, restrict_type):
+        raise ValueError(
+            f"Class {class_name} not a {restrict_type}, cannot be deserialized"
+        )
+    return member
 
 
 cpdef void clear_type_cache():
@@ -358,10 +412,24 @@ cdef class PickleContainer:
         self.buffers = buffers
 
     cpdef get(self):
+        if not unpickle_allowed:
+            raise ValueError("Unpickle not allowed in this environment")
         return unpickle_buffers(self.buffers)
 
     cpdef list get_buffers(self):
         return self.buffers
+
+    def __copy__(self):
+        return PickleContainer(self.buffers)
+
+    def __deepcopy__(self, memo=None):
+        return PickleContainer(copy.deepcopy(self.buffers, memo))
+
+    def __maxframe_tokenize__(self):
+        return self.buffers
+
+    def __reduce__(self):
+        return PickleContainer, (self.buffers, )
 
 
 cdef class PickleSerializer(Serializer):
@@ -369,6 +437,12 @@ cdef class PickleSerializer(Serializer):
 
     cpdef serial(self, obj: Any, dict context):
         cdef uint64_t obj_id
+        cdef object serial_hook
+
+        serial_hook = pickle_serial_hook.get()
+        if serial_hook is not None:
+            serial_hook()
+
         obj_id = _fast_id(<PyObject*>obj)
         if obj_id in context:
             return Placeholder(obj_id)
@@ -380,7 +454,11 @@ cdef class PickleSerializer(Serializer):
 
     cpdef deserial(self, list serialized, dict context, list subs):
         from .deserializer import deserial_pickle
+        cdef object deserial_hook
 
+        deserial_hook = pickle_deserial_hook.get()
+        if deserial_hook is not None:
+            deserial_hook()
         return deserial_pickle(serialized, context, subs)
 
 

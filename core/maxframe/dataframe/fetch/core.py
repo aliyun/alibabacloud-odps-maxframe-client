@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import MutableMapping, Union
+
 from ...core import OutputType, register_fetch_class
-from ...core.operator import Fetch, FetchMixin, FetchShuffle
+from ...core.operator import Fetch, FetchMixin, FetchShuffle, Operator
 from ...serialization.serializables import FieldTypes, TupleField
 from ...utils import on_deserialize_shape, on_serialize_shape
 from ..operators import DataFrameOperatorMixin
@@ -60,6 +62,15 @@ class DataFrameFetch(Fetch, DataFrameFetchMixin):
             self.source_key = kw["_key"]
         new_kws = self._extract_dataframe_or_series_kws(kws, **kw)
         return super()._new_tileables(inputs, kws=new_kws, **kw)
+
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "Operator"
+    ) -> None:
+        # use infinity to show that the size cannot be inferred
+        # todo when local catalyst is implemented, and it should get the estimated size
+        # from the source.
+        ctx[op.outputs[0].key] = float("inf")
 
 
 class DataFrameFetchShuffle(FetchShuffle, DataFrameFetchMixin):

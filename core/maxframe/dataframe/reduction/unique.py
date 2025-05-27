@@ -12,14 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 
 from ... import opcodes
 from ...core import ENTITY_TYPE, OutputType
+from ...io.odpsio.schema import (
+    pandas_dtype_to_arrow_type,
+    pandas_dtypes_to_arrow_schema,
+)
+from ...lib.dtypes_extension import ArrowDtype
+from ...serialization.serializables import BoolField
 from ...tensor.core import TensorOrder
 from ...utils import lazy_import
+from ..core import DATAFRAME_TYPE
 from ..initializer import Series as asseries
 from .core import CustomReduction, DataFrameReductionMixin, DataFrameReductionOperator
 
@@ -40,6 +47,12 @@ class DataFrameUnique(DataFrameReductionOperator, DataFrameReductionMixin):
     _op_type_ = opcodes.UNIQUE
     _func_name = "unique"
 
+    output_list_scalar = BoolField("output_list_scalar", default=False)
+
+    @property
+    def is_atomic(self):
+        return True
+
     @classmethod
     def get_reduction_callable(cls, op):
         return UniqueReduction(name=cls._func_name, is_gpu=op.is_gpu())
@@ -47,10 +60,43 @@ class DataFrameUnique(DataFrameReductionOperator, DataFrameReductionMixin):
     def __call__(self, a):
         if not isinstance(a, ENTITY_TYPE):
             a = asseries(a)
-        self.output_types = [OutputType.tensor]
-        return self.new_tileables(
-            [a], shape=(np.nan,), dtype=a.dtype, order=TensorOrder.C_ORDER
-        )[0]
+        self.axis = 0
+        if isinstance(a, DATAFRAME_TYPE):
+            assert self.output_list_scalar and self.axis == 0
+            pa_schema = pandas_dtypes_to_arrow_schema(a.dtypes, unknown_as_string=True)
+            if len(set(pa_schema.types)) == 1:
+                out_dtype = ArrowDtype(pa.list_(pa_schema.types[0]))
+            else:
+                out_dtype = np.dtype("O")
+            kw = {
+                "dtype": out_dtype,
+                "index_value": a.columns_value,
+                "shape": (a.shape[1],),
+            }
+            self.output_types = [OutputType.series]
+            return self.new_tileables([a], **kw)[0]
+        else:
+            if self.output_list_scalar:
+                arrow_type = pa.list_(
+                    pandas_dtype_to_arrow_type(a.dtype, unknown_as_string=True)
+                )
+                kw = {
+                    "dtype": ArrowDtype(arrow_type),
+                    "shape": (),
+                }
+                self.output_types = [OutputType.scalar]
+            else:
+                kw = {
+                    "dtype": a.dtype,
+                    "shape": (np.nan,),
+                }
+                self.output_types = [OutputType.tensor]
+            return self.new_tileables([a], order=TensorOrder.C_ORDER, **kw)[0]
+
+
+def _unique(values, method="tree", **kwargs):
+    op = DataFrameUnique(method=method, **kwargs)
+    return op(values)
 
 
 def unique(values, method="tree"):
@@ -62,6 +108,7 @@ def unique(values, method="tree"):
     values : 1d array-like
     method : 'shuffle' or 'tree', 'tree' method provide a better performance, 'shuffle'
     is recommended if the number of unique values is very large.
+
     See Also
     --------
     Index.unique
@@ -86,5 +133,4 @@ def unique(values, method="tree"):
     array([Timestamp('2016-01-01 00:00:00-0500', tz='US/Eastern')],
           dtype=object)
     """
-    op = DataFrameUnique(method=method)
-    return op(values)
+    return _unique(values, method=method)

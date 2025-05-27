@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import logging
-from typing import List, Optional, Union
+from typing import List, MutableMapping, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -34,7 +34,7 @@ from ...serialization.serializables import (
     SeriesField,
     StringField,
 )
-from ...utils import is_empty
+from ...utils import estimate_table_size, is_empty
 from ..core import DataFrame  # noqa: F401
 from ..utils import parse_index
 from .core import ColumnPruneSupportedDataSourceMixin, IncrementalIndexDatasource
@@ -46,6 +46,7 @@ class DataFrameReadODPSTable(
     IncrementalIndexDatasource,
     ColumnPruneSupportedDataSourceMixin,
 ):
+    __slots__ = ("_odps_entry",)
     _op_type_ = opcodes.READ_ODPS_TABLE
 
     table_name = StringField("table_name")
@@ -61,7 +62,8 @@ class DataFrameReadODPSTable(
     index_dtypes = SeriesField("index_dtypes", default=None)
 
     def __init__(self, memory_scale=None, **kw):
-        output_type = kw.get("output_type", OutputType.dataframe)
+        output_type = kw.pop("output_type", OutputType.dataframe)
+        self._odps_entry = kw.pop("odps_entry", None)
         super(DataFrameReadODPSTable, self).__init__(
             memory_scale=memory_scale, _output_types=[output_type], **kw
         )
@@ -129,6 +131,18 @@ class DataFrameReadODPSTable(
                 chunk_bytes=chunk_bytes,
                 chunk_size=chunk_size,
             )
+
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "DataFrameReadODPSTable"
+    ) -> None:
+        odps_entry = op._odps_entry or ODPS.from_global() or ODPS.from_environments()
+        if not odps_entry:  # pragma: no cover
+            ctx[op.outputs[0].key] = float("inf")
+            return
+        ctx[op.outputs[0].key] = estimate_table_size(
+            odps_entry, op.table_name, op.partitions
+        )
 
 
 def read_odps_table(
@@ -212,7 +226,8 @@ def read_odps_table(
         index_dtypes = pd.Series(table_index_types, index=index_col)
 
     if columns is not None:
-        table_col_set = set([c.lower() for c in columns])
+        new_columns = [c.lower() for c in columns]
+        table_col_set = set(new_columns)
         col_diff = sorted(table_col_set - set(table_columns))
         if col_diff:
             raise ValueError(
@@ -223,7 +238,6 @@ def read_odps_table(
             raise ValueError("Index columns and columns shall not overlap.")
 
         # reorder columns
-        new_columns = [c for c in table_columns if c in table_col_set]
         df_types = [df_types[table_columns.index(col)] for col in new_columns]
         table_columns = new_columns
         columns = new_columns
@@ -253,6 +267,7 @@ def read_odps_table(
         last_modified_time=to_timestamp(table.last_data_modified_time),
         index_columns=index_col,
         index_dtypes=index_dtypes,
+        odps_entry=odps_entry,
         **kw,
     )
     return op(shape, chunk_bytes=chunk_bytes, chunk_size=chunk_size)

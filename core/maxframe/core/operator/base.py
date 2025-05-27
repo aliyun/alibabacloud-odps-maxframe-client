@@ -16,7 +16,7 @@ import weakref
 from copy import deepcopy
 from enum import Enum
 from functools import lru_cache, partial
-from typing import Any, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Dict, List, MutableMapping, Optional, Tuple, Type, Union
 
 from ...serialization.core import Placeholder
 from ...serialization.serializables import (
@@ -88,6 +88,8 @@ class SchedulingHint(Serializable):
     priority = Int32Field("priority", default=None)
     expect_engine = StringField("expect_engine", default=None)
     expect_resources = DictField("expect_resources", FieldTypes.string, default=None)
+    # id of gang scheduling for machine learning trainings
+    gang_scheduling_id = StringField("gang_scheduling_id", default=None)
 
     @classproperty
     @lru_cache(1)
@@ -127,7 +129,7 @@ def _install_scheduling_hint_properties(cls: Type["Operator"]):
 class OperatorLogicKeyGeneratorMixin:
     """
     This generator will generate an unique and deterministic key for operator compute logic. It should be same
-    for different run if the compute logic doesn't change. This id will be used in subtask speculative
+    for different run if the compute logic doesn't change. This id will be used in substep speculative
     execution and hbo scheduling and so on.
     """
 
@@ -264,6 +266,10 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
             else:
                 extras[k] = kwargs.pop(k)
 
+    @property
+    def op_name(self) -> str:
+        return type(self).__name__
+
     def __repr__(self):
         if self.stage is None:
             return f"{type(self).__name__} <key={self.key}>"
@@ -280,12 +286,13 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
     def _get_inputs_data(cls, inputs):
         return [cls._get_entity_data(inp) for inp in inputs]
 
-    def _set_inputs(self, inputs):
+    @classmethod
+    def _set_inputs(cls, op: "Operator", inputs: List[EntityData]):
         if inputs is not None:
-            inputs = self._get_inputs_data(inputs)
-        if hasattr(self, "check_inputs"):
-            self.check_inputs(inputs)
-        setattr(self, "_inputs", inputs)
+            inputs = cls._get_inputs_data(inputs)
+        if hasattr(op, "check_inputs"):
+            op.check_inputs(inputs)
+        setattr(op, "_inputs", inputs)
 
     def replace_input(self, index: int, replaced_input: ENTITY_TYPE):
         """
@@ -299,7 +306,7 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
             The replaced input object.
         """
         self.inputs[index] = replaced_input
-        self._set_inputs(self.inputs)
+        self._set_inputs(self, self.inputs)
 
     @property
     def inputs(self) -> List[Union[ENTITY_TYPE]]:
@@ -310,7 +317,7 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
 
     @inputs.setter
     def inputs(self, vals):
-        self._set_inputs(vals)
+        self._set_inputs(self, vals)
 
     @property
     def output_limit(self) -> int:
@@ -358,6 +365,9 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
     def is_gpu(self) -> bool:
         return self.gpu
 
+    def has_custom_code(self) -> bool:
+        return False
+
     @property
     def retryable(self) -> bool:
         return True
@@ -385,6 +395,18 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
         if extra_params:
             new_op.extra_params = deepcopy(extra_params)
         return new_op
+
+    @classmethod
+    def estimate_size(
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "Operator"
+    ) -> None:
+        try:
+            total_input_size = sum(ctx[inp.key] for inp in (op.inputs or ()))
+            for out in op.outputs:
+                ctx[out.key] = total_input_size // len(op.outputs)
+        except KeyError:
+            for out in op.outputs:
+                ctx[out.key] = float("inf")
 
     def on_output_modify(self, new_output):
         # when `create_view` is True, if the output is modified,
@@ -445,6 +467,7 @@ class HasInput(Operator):
     def input(self):
         return self._input
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input = self._inputs[0]
+    @classmethod
+    def _set_inputs(cls, op: "Operator", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op._input = op._inputs[0]

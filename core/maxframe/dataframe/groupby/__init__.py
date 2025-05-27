@@ -18,11 +18,14 @@ from .core import NamedAgg
 
 
 def _install():
+    from ...core import CachedAccessor
     from ..core import DATAFRAME_GROUPBY_TYPE, DATAFRAME_TYPE, GROUPBY_TYPE, SERIES_TYPE
     from .aggregation import agg
     from .apply import groupby_apply
+    from .apply_chunk import df_groupby_apply_chunk
     from .core import groupby
     from .cum import cumcount, cummax, cummin, cumprod, cumsum
+    from .extensions import DataFrameGroupByMaxFrameAccessor
     from .fill import bfill, ffill, fillna
     from .getitem import df_groupby_getitem
     from .head import head
@@ -75,8 +78,12 @@ def _install():
         setattr(cls, "backfill", bfill)
         setattr(cls, "fillna", fillna)
 
+    DataFrameGroupByMaxFrameAccessor._register("apply_chunk", df_groupby_apply_chunk)
+
     for cls in DATAFRAME_GROUPBY_TYPE:
         setattr(cls, "__getitem__", df_groupby_getitem)
+        if DataFrameGroupByMaxFrameAccessor._api_count:
+            cls.mf = CachedAccessor("mf", DataFrameGroupByMaxFrameAccessor)
 
 
 _install()

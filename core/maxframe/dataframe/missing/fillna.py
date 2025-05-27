@@ -12,18 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import pandas as pd
 
 from ... import opcodes
-from ...core import ENTITY_TYPE, Entity, get_output_types
+from ...core import ENTITY_TYPE, Entity, EntityData, get_output_types
 from ...serialization.serializables import AnyField, Int64Field, StringField
 from ..core import DATAFRAME_TYPE, SERIES_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import validate_axis
 
 
-class FillNA(DataFrameOperator, DataFrameOperatorMixin):
+class DataFrameFillNA(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.FILL_NA
+    _legacy_name = "FillNA"
 
     value = AnyField(
         "value", on_serialize=lambda x: x.data if isinstance(x, Entity) else x
@@ -33,13 +36,14 @@ class FillNA(DataFrameOperator, DataFrameOperatorMixin):
     limit = Int64Field("limit", default=None)
     downcast = AnyField("downcast", default=None)
 
-    def __init__(self, output_limit=1, **kw):
-        super().__init__(output_limit=output_limit, **kw)
+    def __init__(self, output_limit=1, output_types=None, **kw):
+        super().__init__(output_limit=output_limit, _output_types=output_types, **kw)
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        if self.method is None and len(inputs) > 1:
-            self.value = self._inputs[1]
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameFillNA", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        if op.method is None and len(inputs) > 1:
+            op.value = op._inputs[1]
 
     def __call__(self, a, value_df=None):
         method = getattr(self, "method", None)
@@ -79,6 +83,10 @@ class FillNA(DataFrameOperator, DataFrameOperatorMixin):
                 name=a.name,
                 names=a.names,
             )
+
+
+# keep for import compatibility
+FillNA = DataFrameFillNA
 
 
 def fillna(
@@ -198,7 +206,7 @@ def fillna(
     else:
         value_df = None
 
-    op = FillNA(
+    op = DataFrameFillNA(
         value=value,
         method=method,
         axis=axis,
@@ -267,7 +275,7 @@ def index_fillna(index, value=None, downcast=None):
     if isinstance(value, (list, pd.Series, SERIES_TYPE)):
         raise ValueError("'value' must be a scalar, passed: %s" % type(value))
 
-    op = FillNA(
+    op = DataFrameFillNA(
         value=value,
         downcast=downcast,
         output_types=get_output_types(index),

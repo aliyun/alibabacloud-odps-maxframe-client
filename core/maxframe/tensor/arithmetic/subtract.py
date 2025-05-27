@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,6 +24,10 @@ from .utils import arithmetic_operator
 class TensorSubtract(TensorBinOp):
     _op_type_ = opcodes.SUB
     _func_name = "subtract"
+
+    @classmethod
+    def _is_sparse_with_scalar(cls, scalar_val, lhs):
+        return isinstance(scalar_val, (int, float)) and scalar_val == 0
 
 
 @infer_dtype(np.subtract)

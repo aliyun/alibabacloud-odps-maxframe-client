@@ -24,7 +24,7 @@ from ..utils import validate_axis
 class TensorConcatenate(TensorOperator, TensorOperatorMixin):
     _op_type_ = opcodes.CONCATENATE
 
-    axis = Int32Field("axis", default=0)
+    axis = Int32Field("axis", default=None)
 
     def __call__(self, tensors):
         axis = self.axis
@@ -93,8 +93,9 @@ def concatenate(tensors, axis=0):
 
 def _concatenate(tensors, axis=0):
     dtype = np.result_type(*(t.dtype for t in tensors))
+    sparse = all(t.issparse() for t in tensors)
 
-    op = TensorConcatenate(axis=axis, dtype=dtype)
+    op = TensorConcatenate(axis=axis, dtype=dtype, sparse=sparse)
     return op(tensors)
 
 

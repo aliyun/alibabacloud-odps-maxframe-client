@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+import contextlib
 import functools
 import hashlib
 import os
@@ -158,6 +159,13 @@ def require_cudf(func):
     return func
 
 
+def require_ray(func):
+    if pytest:
+        func = pytest.mark.ray(func)
+    func = pytest.mark.skipif(ray is None, reason="ray not installed")(func)
+    return func
+
+
 def require_hadoop(func):
     if pytest:
         func = pytest.mark.hadoop(func)
@@ -168,7 +176,7 @@ def require_hadoop(func):
 
 
 def get_test_unique_name(size=None):
-    test_name = os.getenv("PYTEST_CURRENT_TEST", "pyodps_test")
+    test_name = os.getenv("PYTEST_CURRENT_TEST", "maxframe_test")
     digest = hashlib.md5(to_binary(test_name)).hexdigest()
     if size:
         digest = digest[:size]
@@ -179,6 +187,64 @@ def assert_mf_index_dtype(idx_obj, dtype):
     from ..dataframe.core import IndexValue
 
     assert isinstance(idx_obj, IndexValue.IndexBase) and idx_obj.dtype == dtype
+
+
+@contextlib.contextmanager
+def create_test_volume(vol_name, oss_config):
+    test_vol_name = vol_name
+    odps_entry = ODPS.from_environments()
+
+    try:
+        odps_entry.delete_volume(test_vol_name, auto_remove_dir=True, recursive=True)
+    except:
+        pass
+
+    oss_test_dir_name = "test_dir_" + vol_name
+    if oss_config is None:
+        pytest.skip("Need oss and its config to run this test")
+    (
+        oss_access_id,
+        oss_secret_access_key,
+        oss_bucket_name,
+        oss_endpoint,
+    ) = oss_config.oss_config
+
+    if "test" in oss_endpoint:
+        # offline config
+        test_location = "oss://%s:%s@%s/%s/%s" % (
+            oss_access_id,
+            oss_secret_access_key,
+            oss_endpoint,
+            oss_bucket_name,
+            oss_test_dir_name,
+        )
+        rolearn = None
+    else:
+        # online config
+        endpoint_parts = oss_endpoint.split(".", 1)
+        if "-internal" not in endpoint_parts[0]:
+            endpoint_parts[0] += "-internal"
+        test_location = "oss://%s/%s/%s" % (
+            ".".join(endpoint_parts),
+            oss_bucket_name,
+            oss_test_dir_name,
+        )
+        rolearn = oss_config.oss_rolearn
+
+    oss_config.oss_bucket.put_object(oss_test_dir_name + "/", b"")
+    odps_entry.create_external_volume(
+        test_vol_name, location=test_location, rolearn=rolearn
+    )
+
+    try:
+        yield test_vol_name
+    finally:
+        try:
+            odps_entry.delete_volume(
+                test_vol_name, auto_remove_dir=True, recursive=True
+            )
+        except:
+            pass
 
 
 def ensure_table_deleted(odps_entry: ODPS, table_name: str) -> None:

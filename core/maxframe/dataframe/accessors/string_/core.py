@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
+
 import numpy as np
 import pandas as pd
 
 from .... import opcodes
-from ....core import OutputType
+from ....core import EntityData, OutputType
 from ....serialization.serializables import DictField, KeyField, StringField, TupleField
 from ....tensor import tensor as astensor
 from ....tensor.core import TENSOR_TYPE
@@ -43,12 +45,13 @@ class SeriesStringMethod(DataFrameOperator, DataFrameOperatorMixin):
     def input(self):
         return self._input
 
-    def _set_inputs(self, inputs):
-        super()._set_inputs(inputs)
-        self._input = self._inputs[0]
-        if len(self._inputs) == 2:
+    @classmethod
+    def _set_inputs(cls, op: "SeriesStringMethod", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        op._input = op._inputs[0]
+        if len(op._inputs) == 2:
             # for method cat
-            self.method_kwargs["others"] = self._inputs[1]
+            op.method_kwargs["others"] = op._inputs[1]
 
     def __call__(self, inp):
         return string_method_to_handlers[self.method].call(self, inp)
