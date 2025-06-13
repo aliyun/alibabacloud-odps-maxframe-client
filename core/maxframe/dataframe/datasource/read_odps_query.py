@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import dataclasses
+import functools
 import io
 import logging
 import re
@@ -22,6 +23,8 @@ from typing import Dict, List, MutableMapping, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 from odps import ODPS
+from odps.errors import ODPSError
+from odps.models import TableSchema
 from odps.types import Column, OdpsSchema, validate_data_type
 from odps.utils import split_sql_by_semicolon
 
@@ -245,13 +248,18 @@ def _parse_explained_schema(explain_string: str) -> OdpsSchema:
         return _parse_full_explain(explain_string)
 
 
-def _build_explain_sql(sql_stmt: str, no_split: bool = False) -> str:
+def _build_explain_sql(
+    sql_stmt: str, no_split: bool = False, use_output: bool = False
+) -> str:
+    clause = "EXPLAIN "
+    if use_output:
+        clause += "OUTPUT "
     if no_split:
-        return "EXPLAIN " + sql_stmt
+        return clause + sql_stmt
     sql_parts = split_sql_by_semicolon(sql_stmt)
     if not sql_parts:
         raise ValueError(f"Cannot explain SQL statement {sql_stmt}")
-    sql_parts[-1] = "EXPLAIN " + sql_parts[-1]
+    sql_parts[-1] = clause + sql_parts[-1]
     return "\n".join(sql_parts)
 
 
@@ -332,6 +340,62 @@ def _check_token_in_sql(token: str, sql: str) -> bool:
         return False
 
 
+def _resolve_schema_by_explain(
+    odps_entry: ODPS,
+    query: str,
+    no_split_sql: bool = False,
+    hints: Dict[str, str] = None,
+    use_explain_output: bool = True,
+) -> OdpsSchema:
+    hints = (hints or dict()).copy()
+    hints["odps.sql.select.output.format"] = "json"
+    explain_stmt = _build_explain_sql(
+        query, no_split=no_split_sql, use_output=use_explain_output
+    )
+    inst = odps_entry.execute_sql(explain_stmt, hints=hints)
+    logger.debug("Explain output instance ID: %s", inst.id)
+    explain_str = list(inst.get_task_results().values())[0]
+    if use_explain_output:
+        if not explain_str or "nothing to explain" in explain_str:
+            raise ValueError("The SQL statement should be an instant query")
+        return TableSchema.parse(None, explain_str)
+    else:
+        return _parse_explained_schema(explain_str)
+
+
+def _resolve_query_schema(
+    odps_entry: ODPS,
+    query: str,
+    no_split_sql: bool = False,
+    hints: Dict[str, str] = None,
+    use_explain_output: Optional[bool] = None,
+) -> OdpsSchema:
+    methods = []
+    if use_explain_output is not False:
+        # None or True
+        methods.append(_resolve_schema_by_explain)
+    if use_explain_output is not True:
+        # None or False
+        methods.append(
+            functools.partial(_resolve_schema_by_explain, use_explain_output=False)
+        )
+    for idx, resolve_method in enumerate(methods):
+        try:
+            return resolve_method(
+                odps_entry, query, no_split_sql=no_split_sql, hints=hints
+            )
+        except ODPSError as ex:
+            msg = (
+                f"Failed to obtain schema from SQL explain: {ex!r}\n"
+                f"Explain instance ID: {ex.instance_id}"
+            )
+            if idx + 1 == len(methods) or "ODPS-0130161" not in str(ex):
+                exc = ValueError(msg)
+                raise exc.with_traceback(ex.__traceback__) from None
+    # will this happen?
+    raise ValueError("Failed to obtain schema from SQL explain")  # pragma: no cover
+
+
 def read_odps_query(
     query: str,
     odps_entry: ODPS = None,
@@ -371,6 +435,8 @@ def read_odps_query(
         DataFrame read from MaxCompute (ODPS) table
     """
     no_split_sql = kw.pop("no_split_sql", False)
+    # if use_explain_output is None, will try two methods.
+    use_explain_output = kw.pop("use_explain_output", None)
 
     hints = options.sql.settings.copy() or {}
     if sql_hints:
@@ -395,19 +461,13 @@ def read_odps_query(
 
     col_renames = {}
     if not skip_schema:
-        explain_stmt = _build_explain_sql(query, no_split=no_split_sql)
-        inst = odps_entry.execute_sql(explain_stmt, hints=hints)
-        logger.debug("Explain instance ID: %s", inst.id)
-        explain_str = list(inst.get_task_results().values())[0]
-
-        try:
-            odps_schema = _parse_explained_schema(explain_str)
-        except BaseException as ex:
-            exc = ValueError(
-                f"Failed to obtain schema from SQL explain: {ex!r}"
-                f"\nExplain instance ID: {inst.id}"
-            )
-            raise exc.with_traceback(ex.__traceback__) from None
+        odps_schema = _resolve_query_schema(
+            odps_entry,
+            query,
+            no_split_sql=no_split_sql,
+            hints=hints,
+            use_explain_output=use_explain_output,
+        )
 
         new_columns = []
         for col in odps_schema.columns:

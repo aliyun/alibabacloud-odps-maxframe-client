@@ -16,6 +16,7 @@ import asyncio
 import contextlib
 import functools
 import hashlib
+import logging
 import os
 import queue
 import socket
@@ -191,13 +192,7 @@ def assert_mf_index_dtype(idx_obj, dtype):
 
 @contextlib.contextmanager
 def create_test_volume(vol_name, oss_config):
-    test_vol_name = vol_name
     odps_entry = ODPS.from_environments()
-
-    try:
-        odps_entry.delete_volume(test_vol_name, auto_remove_dir=True, recursive=True)
-    except:
-        pass
 
     oss_test_dir_name = "test_dir_" + vol_name
     if oss_config is None:
@@ -232,17 +227,14 @@ def create_test_volume(vol_name, oss_config):
         rolearn = oss_config.oss_rolearn
 
     oss_config.oss_bucket.put_object(oss_test_dir_name + "/", b"")
-    odps_entry.create_external_volume(
-        test_vol_name, location=test_location, rolearn=rolearn
-    )
+    odps_entry.create_external_volume(vol_name, location=test_location, rolearn=rolearn)
 
     try:
-        yield test_vol_name
+        yield vol_name
     finally:
         try:
-            odps_entry.delete_volume(
-                test_vol_name, auto_remove_dir=True, recursive=True
-            )
+            logging.warning("Deleting test volume %s", vol_name)
+            odps_entry.delete_volume(vol_name, auto_remove_dir=True, recursive=True)
         except:
             pass
 

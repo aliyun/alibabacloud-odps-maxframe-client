@@ -163,6 +163,7 @@ else:
                 params["objective"] = "reg:squarederror"
             self.evals_result_ = dict()
             train_kw = {}
+            train_kw.update(kw)
 
             if getattr(self, "n_classes_", None):
                 train_kw["num_class"] = self.n_classes_

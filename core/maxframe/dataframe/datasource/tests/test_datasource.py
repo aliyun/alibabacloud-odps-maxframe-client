@@ -17,11 +17,13 @@ import uuid
 from collections import OrderedDict
 from math import isinf
 
+import mock
 import numpy as np
 import pandas as pd
 import pytest
 from odps import ODPS
 from odps import types as odps_types
+from odps.errors import ODPSError
 
 from .... import tensor as mt
 from ....core import OutputType
@@ -50,6 +52,7 @@ from ..read_odps_query import (
     ColumnSchema,
     _parse_full_explain,
     _parse_simple_explain,
+    _resolve_query_schema,
     _resolve_task_sector,
 )
 from ..series import from_pandas as from_pandas_series
@@ -360,7 +363,7 @@ def test_from_odps_query():
 
     with pytest.raises(ValueError) as err_info:
         read_odps_query(
-            f"CREATE TABLE dummy_table_{uuid.uuid4().hex} "
+            f"CREATE TABLE dummy_table_{uuid.uuid4().hex} LIFECYCLE 1 "
             f"AS SELECT * FROM {table1_name}"
         )
     assert "instant query" in err_info.value.args[0]
@@ -578,3 +581,46 @@ def test_resolve_break_lines():
     for col, (exp_nm, exp_tp) in zip(schema.columns, expected_col_types.items()):
         assert col.name == exp_nm
         assert col.type == odps_types.validate_data_type(exp_tp)
+
+
+@pytest.mark.parametrize("use_explain_output", [None, False, True])
+def test_explain_use_explain_output(use_explain_output):
+    class MockInstance:
+        @property
+        def id(self):
+            return "mock_id"
+
+        def get_task_results(self):
+            return {"pot": """{"columns":[{"name":"a_bigint","type":"BIGINT"}]}"""}
+
+    old_execute_sql = ODPS.execute_sql
+    exec_count = 0
+
+    def new_execute_sql(self, sql, *args, **kw):
+        nonlocal exec_count
+        exec_count += 1
+
+        if use_explain_output and sql.lower().startswith("explain output select"):
+            return MockInstance()
+        elif use_explain_output is None and sql.lower().startswith("explain output"):
+            raise ODPSError("ODPS-0130161: mock error")
+        return old_execute_sql(self, sql, *args, **kw)
+
+    odps_entry = ODPS.from_environments()
+
+    with mock.patch("odps.core.ODPS.execute_sql", new=new_execute_sql):
+        with pytest.raises(ValueError):
+            _resolve_query_schema(
+                odps_entry, "not_a_sql", use_explain_output=use_explain_output
+            )
+        assert exec_count == (2 if use_explain_output is None else 1)
+
+        exec_count = 0
+        schema = _resolve_query_schema(
+            odps_entry,
+            "select cast(1 as bigint) as a_bigint",
+            use_explain_output=use_explain_output,
+        )
+        assert schema.columns[0].name == "a_bigint"
+        assert schema.columns[0].type == odps_types.bigint
+        assert exec_count == (2 if use_explain_output is None else 1)

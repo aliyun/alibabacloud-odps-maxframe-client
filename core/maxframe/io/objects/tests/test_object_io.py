@@ -19,7 +19,7 @@ from odps import ODPS
 from ....core import OutputType
 from ....core.operator import ObjectOperatorMixin, Operator
 from ....tensor.datasource import ArrayDataSource
-from ....tests.utils import create_test_volume, tn
+from ....tests.utils import create_test_volume, get_test_unique_name, tn
 from ...odpsio import ODPSVolumeReader, ODPSVolumeWriter
 from ..core import get_object_io_handler
 
@@ -32,7 +32,9 @@ class TestObjectOp(Operator, ObjectOperatorMixin):
 
 @pytest.fixture(scope="module")
 def create_volume(oss_config):
-    with create_test_volume(tn("test_object_io_vol"), oss_config) as test_vol_name:
+    with create_test_volume(
+        tn("test_object_io_vol_" + get_test_unique_name(5)), oss_config
+    ) as test_vol_name:
         yield test_vol_name
 
 

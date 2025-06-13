@@ -17,13 +17,13 @@ import contextlib
 import pytest
 from odps import ODPS
 
-from ....tests.utils import create_test_volume, tn
+from ....tests.utils import create_test_volume, get_test_unique_name, tn
 from ..volumeio import ODPSVolumeReader, ODPSVolumeWriter
 
 
 @pytest.fixture
 def create_volume(request, oss_config):
-    test_vol_name = tn("test_vol_name_" + request.param)
+    test_vol_name = tn(f"test_vol_name_{get_test_unique_name(5)}_" + request.param)
     odps_entry = ODPS.from_environments()
 
     @contextlib.contextmanager
@@ -41,24 +41,13 @@ def create_volume(request, oss_config):
             except BaseException:
                 pass
 
-    oss_test_dir_name = None
     if request.param == "parted":
         ctx = create_parted_volume()
     else:
         ctx = create_test_volume(test_vol_name, oss_config)
 
-    try:
-        with ctx:
-            yield test_vol_name
-    finally:
-        if oss_test_dir_name is not None:
-            import oss2
-
-            keys = [
-                obj.key
-                for obj in oss2.ObjectIterator(oss_config.oss_bucket, oss_test_dir_name)
-            ]
-            oss_config.oss_bucket.batch_delete_objects(keys)
+    with ctx:
+        yield test_vol_name
 
 
 @pytest.mark.parametrize("create_volume", ["external"], indirect=True)

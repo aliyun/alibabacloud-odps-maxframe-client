@@ -14,7 +14,9 @@
 
 import inspect
 from typing import Iterator, List, Optional, Union
+from urllib.parse import urlparse
 
+import requests
 from odps import ODPS
 from odps import __version__ as pyodps_version
 
@@ -74,14 +76,27 @@ class ODPSVolumeWriter:
         self._replace_internal_host = replace_internal_host
 
     def write_file(self, file_name: str, data: Union[bytes, Iterator[bytes]]):
-        kw = {}
-        if _has_replace_internal_host and self._replace_internal_host:
-            kw = {"replace_internal_host": self._replace_internal_host}
-        with self._volume.open_writer(
-            self._volume_dir + "/" + file_name, **kw
-        ) as writer:
+        sign_url = self._volume.get_sign_url(
+            self._volume_dir + "/" + file_name,
+            method="PUT",
+            seconds=3600,
+        )
+        if self._replace_internal_host:
+            parsed_url = urlparse(sign_url)
+            if "-internal." in parsed_url.netloc:
+                new_netloc = parsed_url.netloc.replace("-internal.", ".")
+                sign_url = sign_url.replace(parsed_url.netloc, new_netloc)
+
+        def _to_bytes(d):
+            if not isinstance(d, (bytes, bytearray)):
+                return bytes(d)
+            return d
+
+        def data_func():
             if not inspect.isgenerator(data):
-                writer.write(data)
+                yield _to_bytes(data)
             else:
                 for chunk in data:
-                    writer.write(chunk)
+                    yield _to_bytes(chunk)
+
+        requests.put(sign_url, data=data_func())
