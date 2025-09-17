@@ -70,7 +70,7 @@ def cythonize_all_pyx(repo_root, source_to_ext_include=None):
     source_to_ext_include = source_to_ext_include or dict()
     for root, _, files in os.walk(repo_root):
         # skip build dir
-        if "/build/" in root:
+        if "/build/" in root.replace("\\", "/"):
             continue
 
         for fn in files:
