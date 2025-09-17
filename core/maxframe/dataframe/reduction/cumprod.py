@@ -13,10 +13,10 @@
 # limitations under the License.
 
 from ... import opcodes
-from .core import DataFrameCumReductionMixin, DataFrameCumReductionOperator
+from .core import DataFrameCumReduction, DataFrameCumReductionMixin
 
 
-class DataFrameCumprod(DataFrameCumReductionOperator, DataFrameCumReductionMixin):
+class DataFrameCumprod(DataFrameCumReduction, DataFrameCumReductionMixin):
     _op_type_ = opcodes.CUMPROD
     _func_name = "cumprod"
 

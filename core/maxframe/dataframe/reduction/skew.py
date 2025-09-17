@@ -17,10 +17,36 @@ import numpy as np
 from ... import opcodes
 from ...core import ENTITY_TYPE, OutputType
 from ...serialization.serializables import BoolField
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin, ReductionCallable
 
 
-class DataFrameSkew(DataFrameReductionOperator, DataFrameReductionMixin):
+class SkewReductionCallable(ReductionCallable):
+    def __call__(self, value):
+        from .aggregation import where_function
+
+        skipna, bias = self.kwargs["skipna"], self.kwargs["bias"]
+        cnt = value.count()
+        mean = value.mean(skipna=skipna)
+        divided = (
+            (value**3).mean(skipna=skipna)
+            - 3 * (value**2).mean(skipna=skipna) * mean
+            + 2 * mean**3
+        )
+        var = value.var(skipna=skipna, ddof=0)
+        if isinstance(var, ENTITY_TYPE) or var > 0:
+            val = where_function(var > 0, divided / var**1.5, np.nan)
+        else:
+            val = np.nan
+        if not bias:
+            val = where_function(
+                (var > 0) & (cnt > 2),
+                val * ((cnt * (cnt - 1)) ** 0.5 / (cnt - 2)),
+                np.nan,
+            )
+        return val
+
+
+class DataFrameSkew(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.SKEW
     _func_name = "skew"
 
@@ -28,32 +54,10 @@ class DataFrameSkew(DataFrameReductionOperator, DataFrameReductionMixin):
 
     @classmethod
     def get_reduction_callable(cls, op: "DataFrameSkew"):
-        from .aggregation import where_function
-
         skipna, bias = op.skipna, op.bias
-
-        def skew(x):
-            cnt = x.count()
-            mean = x.mean(skipna=skipna)
-            divided = (
-                (x**3).mean(skipna=skipna)
-                - 3 * (x**2).mean(skipna=skipna) * mean
-                + 2 * mean**3
-            )
-            var = x.var(skipna=skipna, ddof=0)
-            if isinstance(var, ENTITY_TYPE) or var > 0:
-                val = where_function(var > 0, divided / var**1.5, np.nan)
-            else:
-                val = np.nan
-            if not bias:
-                val = where_function(
-                    (var > 0) & (cnt > 2),
-                    val * ((cnt * (cnt - 1)) ** 0.5 / (cnt - 2)),
-                    np.nan,
-                )
-            return val
-
-        return skew
+        return SkewReductionCallable(
+            func_name="skew", kwargs=dict(skipna=skipna, bias=bias)
+        )
 
 
 def skew_series(df, axis=None, skipna=True, level=None, bias=False, method=None):

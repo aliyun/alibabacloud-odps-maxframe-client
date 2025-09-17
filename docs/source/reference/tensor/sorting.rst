@@ -1,6 +1,17 @@
 Sorting, Searching, and Counting
 ================================
 
+Sorting
+-------
+
+.. autosummary::
+   :toctree: generated/
+   :nosignatures:
+
+   maxframe.tensor.sort
+   maxframe.tensor.argsort
+   maxframe.tensor.partition
+   maxframe.tensor.argpartition
 
 
 Searching
@@ -25,4 +36,5 @@ Counting
    :toctree: generated/
    :nosignatures:
 
+   maxframe.tensor.argwhere
    maxframe.tensor.count_nonzero

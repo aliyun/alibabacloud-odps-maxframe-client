@@ -77,6 +77,83 @@ def from_records(
     sparse=False,
     **kw
 ):
+    """
+    Convert structured or record ndarray to DataFrame.
+
+    Creates a DataFrame object from a structured ndarray, sequence of
+    tuples or dicts, or DataFrame.
+
+    Parameters
+    ----------
+    data : structured ndarray, sequence of tuples or dicts, or DataFrame
+        Structured input data.
+
+        .. deprecated:: 2.1.0
+            Passing a DataFrame is deprecated.
+    index : str, list of fields, array-like
+        Field of array to use as the index, alternately a specific set of
+        input labels to use.
+    exclude : sequence, default None
+        Columns or fields to exclude.
+    columns : sequence, default None
+        Column names to use. If the passed data do not have names
+        associated with them, this argument provides names for the
+        columns. Otherwise this argument indicates the order of the columns
+        in the result (any names not found in the data will become all-NA
+        columns).
+    coerce_float : bool, default False
+        Attempt to convert values of non-string, non-numeric objects (like
+        decimal.Decimal) to floating point, useful for SQL result sets.
+    nrows : int, default None
+        Number of rows to read if data is an iterator.
+
+    Returns
+    -------
+    DataFrame
+
+    See Also
+    --------
+    DataFrame.from_dict : DataFrame from dict of array-like or dicts.
+    DataFrame : DataFrame object creation using constructor.
+
+    Examples
+    --------
+    Data can be provided as a structured ndarray:
+
+    >>> import maxframe.tensor as mt
+    >>> import maxframe.dataframe as md
+    >>> data = mt.array([(3, 'a'), (2, 'b'), (1, 'c'), (0, 'd')],
+    ...                 dtype=[('col_1', 'i4'), ('col_2', 'U1')])
+    >>> md.DataFrame.from_records(data).execute()
+       col_1 col_2
+    0      3     a
+    1      2     b
+    2      1     c
+    3      0     d
+
+    Data can be provided as a list of dicts:
+
+    >>> data = [{'col_1': 3, 'col_2': 'a'},
+    ...         {'col_1': 2, 'col_2': 'b'},
+    ...         {'col_1': 1, 'col_2': 'c'},
+    ...         {'col_1': 0, 'col_2': 'd'}]
+    >>> md.DataFrame.from_records(data).execute()
+       col_1 col_2
+    0      3     a
+    1      2     b
+    2      1     c
+    3      0     d
+
+    Data can be provided as a list of tuples with corresponding columns:
+
+    >>> data = [(3, 'a'), (2, 'b'), (1, 'c'), (0, 'd')]
+    >>> md.DataFrame.from_records(data, columns=['col_1', 'col_2']).execute()
+       col_1 col_2
+    0      3     a
+    1      2     b
+    2      1     c
+    3      0     d
+    """
     if isinstance(data, np.ndarray):
         from .dataframe import from_pandas
 

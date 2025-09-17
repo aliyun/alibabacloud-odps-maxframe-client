@@ -53,6 +53,11 @@ class EntityData(Base):
     def is_sparse(self):
         return self.op.is_sparse()
 
+    def is_fetch(self):
+        from ..operator import Fetch
+
+        return isinstance(self.op, Fetch)
+
     issparse = is_sparse
 
     @property

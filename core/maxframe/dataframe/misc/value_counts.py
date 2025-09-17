@@ -22,9 +22,10 @@ from ...core import EntityData, OutputType
 from ...serialization.serializables import BoolField, Int64Field, KeyField, StringField
 from ...utils import pd_release_version
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_series, parse_index
+from ..utils import build_df, build_series, parse_index
 
 _keep_original_order = pd_release_version >= (1, 3, 0)
+_name_count_or_proportion = pd_release_version >= (2, 0, 0)
 
 
 class DataFrameValueCounts(DataFrameOperator, DataFrameOperatorMixin):
@@ -50,7 +51,16 @@ class DataFrameValueCounts(DataFrameOperator, DataFrameOperatorMixin):
         op.input = op._inputs[0]
 
     def __call__(self, inp):
-        test_series = build_series(inp).value_counts(normalize=self.normalize)
+        if inp.ndim == 2:
+            idx = pd.MultiIndex.from_frame(build_df(inp))
+            test_series = build_series(index=idx, dtype=int)
+            if _name_count_or_proportion:
+                out_name = "proportion" if self.normalize else "count"
+            else:
+                out_name = None
+        else:
+            test_series = build_series(inp).value_counts(normalize=self.normalize)
+            out_name = test_series.name
         if self.bins is not None:
             from .cut import cut
 
@@ -66,7 +76,7 @@ class DataFrameValueCounts(DataFrameOperator, DataFrameOperatorMixin):
                 [inp],
                 shape=(np.nan,),
                 index_value=parse_index(pd.CategoricalIndex([]), inp, store_data=False),
-                name=inp.name,
+                name=out_name,
                 dtype=test_series.dtype,
             )
         else:
@@ -74,7 +84,7 @@ class DataFrameValueCounts(DataFrameOperator, DataFrameOperatorMixin):
                 [inp],
                 shape=(np.nan,),
                 index_value=parse_index(test_series.index, store_data=False),
-                name=inp.name,
+                name=out_name,
                 dtype=test_series.dtype,
             )
 
@@ -170,3 +180,27 @@ def value_counts(
         method=method,
     )
     return op(series)
+
+
+def df_value_counts(
+    df,
+    subset=None,
+    normalize=False,
+    sort=True,
+    ascending=False,
+    dropna=True,
+    method="auto",
+):
+    if not subset:
+        df_to_count = df
+    else:
+        df_to_count = df[subset]
+
+    op = DataFrameValueCounts(
+        normalize=normalize,
+        sort=sort,
+        ascending=ascending,
+        dropna=dropna,
+        method=method,
+    )
+    return op(df_to_count)

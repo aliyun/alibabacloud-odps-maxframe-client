@@ -157,3 +157,23 @@ def test_dataframe_sort_index_by_all(df2):
         " na_position='last', ignore_index=False, level=None, sort_remaining=True)"
     ]
     assert results == expected_results
+
+
+def test_dataframe_nlargest(df1):
+    df = df1.nlargest(10, "A", keep="last")
+    adapter = DataFrameSortValuesAdapter()
+    context = SPECodeContext()
+    assert adapter.accepts(df.op) == EngineAcceptance.ACCEPT
+    results = adapter.generate_code(df.op, context)
+    expected_results = ["var_1 = var_0.nlargest(10, keep='last', columns='A')"]
+    assert results == expected_results
+
+
+def test_series_nsmallest(s2):
+    s = s2.nsmallest(10, keep="last")
+    adapter = DataFrameSortValuesAdapter()
+    context = SPECodeContext()
+    assert adapter.accepts(s.op) == EngineAcceptance.ACCEPT
+    results = adapter.generate_code(s.op, context)
+    expected_results = ["var_1 = var_0.nsmallest(10, keep='last')"]
+    assert results == expected_results

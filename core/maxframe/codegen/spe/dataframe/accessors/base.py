@@ -51,3 +51,21 @@ class SeriesStringMethodAdapter(SPEOperatorAdapter):
         )
         args = ", ".join(args_list)
         return [f"{res_var_name} = {method_str}({args})"]
+
+
+class SeriesTemplateMethodAdapter(SPEOperatorAdapter):
+    _templates = None
+
+    def generate_code(self, op, context: SPECodeContext) -> List[str]:
+        kw = {
+            "input_var": context.get_input_tileable_variable(op.inputs[0]),
+            "output_var": context.get_output_tileable_variable(op.outputs[0]),
+            "output_name_var": self.translate_var(context, op.outputs[0].name),
+            "output_dtype_var": context.register_operator_constants(
+                op.outputs[0].dtype
+            ),
+        }
+        kw.update(
+            {k: self.translate_var(context, v) for k, v in op.method_kwargs.items()}
+        )
+        return [self._templates.get(op.method).format(**kw)]

@@ -17,28 +17,34 @@ from typing import List
 import pandas as pd
 from pandas.api.types import is_list_like
 
-from ...core import EntityData
+from ...core import ENTITY_TYPE, EntityData
 from ...core.operator import MapReduceOperator
 from ...serialization.serializables import AnyField, KeyField, StringField
 from ..operators import DataFrameOperatorMixin
 
 
-class DuplicateOperand(MapReduceOperator, DataFrameOperatorMixin):
+class BaseDuplicateOp(MapReduceOperator, DataFrameOperatorMixin):
+    _legacy_name = "DuplicateOperand"  # since 2.2.0
+
     input = KeyField("input")
     subset = AnyField("subset", default=None)
     keep = AnyField("keep", default="first")
     method = StringField("method", default=None)
 
     @classmethod
-    def _set_inputs(cls, op: "DuplicateOperand", inputs: List[EntityData]):
+    def _set_inputs(cls, op: "BaseDuplicateOp", inputs: List[EntityData]):
         super()._set_inputs(op, inputs)
         op.input = op._inputs[0]
+
+
+# keep for import compatibility
+DuplicateOperand = BaseDuplicateOp
 
 
 def validate_subset(df, subset):
     if subset is None:
         return subset
-    if not is_list_like(subset):
+    if not is_list_like(subset) or isinstance(subset, ENTITY_TYPE):
         subset = [subset]
     else:
         subset = list(subset)

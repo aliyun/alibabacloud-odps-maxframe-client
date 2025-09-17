@@ -75,6 +75,16 @@ class Unpickler(pickle_mod.Unpickler):
             raise ValueError("Unpickle is forbidden here")
         return super().load()
 
+    def find_class(self, module, name):
+        try:
+            return super().find_class(module, name)
+        except ImportError:
+            # workaround for pickle incompatibility since numpy>=2.0
+            if not module.startswith("numpy._core"):
+                raise
+            module = module.replace("numpy._core", "numpy.core")
+            return super().find_class(module, name)
+
 
 @functools.wraps(pickle_mod.load)
 def load(file, **kwargs):

@@ -22,8 +22,10 @@ from ...core import OutputType
 from ...lib.version import parse as parse_version
 from ...serialization.serializables import (
     DictField,
+    FieldTypes,
     FunctionField,
     Int32Field,
+    ListField,
     TupleField,
 )
 from ...udf import BuiltinFunction, MarkedFunction
@@ -31,6 +33,7 @@ from ...utils import copy_if_possible
 from ..core import (
     DATAFRAME_GROUPBY_TYPE,
     GROUPBY_TYPE,
+    INDEX_TYPE,
     DataFrameGroupBy,
     IndexValue,
     SeriesGroupBy,
@@ -61,6 +64,8 @@ class GroupByApplyChunk(DataFrameOperatorMixin, DataFrameOperator):
     kwargs = DictField("kwargs", default=None)
 
     groupby_params = DictField("groupby_params", default=None)
+    order_cols = ListField("order_cols", default=None)
+    ascending = ListField("ascending", FieldTypes.bool, default_factory=lambda: [True])
 
     def __init__(self, output_type=None, **kw):
         if output_type:
@@ -240,14 +245,14 @@ class GroupByApplyChunk(DataFrameOperatorMixin, DataFrameOperator):
         if self.output_types:
             inferred_meta.output_type = self.output_types[0]
         inferred_meta.dtypes = dtypes if dtypes is not None else inferred_meta.dtypes
+        if isinstance(index, INDEX_TYPE):
+            index = index.index_value
         if index is not None:
             inferred_meta.index_value = (
                 parse_index(index)
                 if index is not input_groupby.index_value
                 else input_groupby.index_value
             )
-        else:
-            inferred_meta.index_value = inferred_meta.index_value
         inferred_meta.elementwise = elementwise or inferred_meta.elementwise
         return inferred_meta
 
@@ -272,6 +277,8 @@ def df_groupby_apply_chunk(
     output_type=None,
     index=None,
     skip_infer=False,
+    order_cols=None,
+    ascending=True,
     args=(),
     **kwargs,
 ):
@@ -373,6 +380,13 @@ def df_groupby_apply_chunk(
     if skip_infer and output_type is None:
         output_type = OutputType.df_or_series
 
+    if order_cols and not isinstance(order_cols, list):
+        order_cols = [order_cols]
+    if not isinstance(ascending, list):
+        ascending = [ascending]
+    elif len(order_cols) != len(ascending):
+        raise ValueError("order_cols and ascending must have same length")
+
     # bind args and kwargs
     op = GroupByApplyChunk(
         func=func,
@@ -380,6 +394,8 @@ def df_groupby_apply_chunk(
         output_type=output_type,
         args=args,
         kwargs=kwargs,
+        order_cols=order_cols,
+        ascending=ascending,
         groupby_params=dataframe_groupby.op.groupby_params,
     )
 

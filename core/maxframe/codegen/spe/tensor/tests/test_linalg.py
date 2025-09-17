@@ -14,7 +14,21 @@
 
 from ..... import tensor as mt
 from ...core import SPECodeContext
-from ..linalg import TensorQRAdapter, TensorTensorDotAdapter
+from ..linalg import TensorEinsumAdapter, TensorQRAdapter, TensorTensorDotAdapter
+
+
+def test_einsum():
+    a = mt.arange(25).reshape(5, 5)
+    b = mt.arange(5)
+    adapter = TensorEinsumAdapter()
+    r = mt.einsum("ij,j", a, b)
+    context = SPECodeContext()
+    results = adapter.generate_code(r.op, context)
+    expected_results = [
+        "var_2 = np.einsum('ij,j->i', var_0, var_1, dtype=np.dtype('int64'),"
+        " order='K', casting='safe')"
+    ]
+    assert results == expected_results
 
 
 def test_qr():

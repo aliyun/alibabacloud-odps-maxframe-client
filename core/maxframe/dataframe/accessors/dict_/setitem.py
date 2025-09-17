@@ -13,29 +13,17 @@
 # limitations under the License.
 
 from .... import opcodes
-from ....core.entity.output_types import OutputType
 from ....serialization.serializables.field import AnyField
 from ...core import TILEABLE_TYPE
-from ...operators import DataFrameOperator, DataFrameOperatorMixin
+from .core import LegacySeriesDictOperator, SeriesDictMethod
 
 
-class SeriesDictSetItemOperator(DataFrameOperator, DataFrameOperatorMixin):
+class SeriesDictSetItemOperator(LegacySeriesDictOperator):
+    # operator class deprecated since v2.3.0
     _op_type_ = opcodes.SERIES_DICT_SETITEM
+    _method_name = "setitem"
     query_key = AnyField("query_key", default=None)
     value = AnyField("default_value", default=None)
-
-    def __init__(self, **kw):
-        super().__init__(_output_types=[OutputType.series], **kw)
-
-    def __call__(self, series):
-        new_series = self.new_series(
-            [series],
-            shape=series.shape,
-            index_value=series.index_value,
-            dtype=series.dtype,
-            name=series.name,
-        )
-        series.data = new_series.data
 
 
 def series_dict_setitem(series, query_key, value):
@@ -67,7 +55,7 @@ def series_dict_setitem(series, query_key, value):
     >>> s = md.Series(
     ...     data=[[("k1", 1), ("k2", 2)], [("k1", 3)], None],
     ...     index=[1, 2, 3],
-    ...     dtype=map_(pa.string(), pa.int64()),
+    ...     dtype=dict_(pa.string(), pa.int64()),
     ... )
     >>> s.execute()
     1    [('k1', 1), ('k2', 2)]
@@ -86,4 +74,6 @@ def series_dict_setitem(series, query_key, value):
         raise NotImplementedError(
             "Set the value with a dataframe/series is not allowed yet"
         )
-    return SeriesDictSetItemOperator(query_key=query_key, value=value)(series)
+    method_kwargs = dict(query_key=query_key, value=value)
+    new_series = SeriesDictMethod(method="setitem", method_kwargs=method_kwargs)(series)
+    series.data = new_series.data

@@ -23,7 +23,7 @@ from ...core import EntityData, OutputType
 from ...serialization.serializables import AnyField, KeyField
 from ...tensor.core import TENSOR_TYPE
 from ...utils import pd_release_version
-from ..core import DATAFRAME_TYPE, SERIES_TYPE, DataFrame
+from ..core import DATAFRAME_TYPE, ENTITY_TYPE, SERIES_TYPE, DataFrame
 from ..initializer import DataFrame as asframe
 from ..initializer import Series as asseries
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
@@ -77,7 +77,7 @@ class DataFrameSetitem(DataFrameOperator, DataFrameOperatorMixin):
                 value_dtype = pd.Series(list(value.dtypes), index=self.indexes)
             elif is_list_like(value) or isinstance(value, TENSOR_TYPE):
                 # convert to numpy to get actual dim and shape
-                if is_list_like(value):
+                if is_list_like(value) and not isinstance(value, ENTITY_TYPE):
                     value = np.array(value)
 
                 if value.ndim == 1:
@@ -108,7 +108,7 @@ class DataFrameSetitem(DataFrameOperator, DataFrameOperatorMixin):
 
         try:
             dtypes.loc[self.indexes] = value_dtype
-        except KeyError:
+        except (AttributeError, KeyError):
             # when some index not exist, try update one by one
             if isinstance(value_dtype, pd.Series):
                 for idx in self.indexes:

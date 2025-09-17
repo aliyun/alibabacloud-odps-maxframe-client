@@ -20,6 +20,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import numpy as np
 
 from ....errors import TileableNotExecutedError
+from ....udf import builtin_function
 
 try:
     import xgboost
@@ -27,8 +28,15 @@ except ImportError:
     xgboost = None
 
 from ....core import OutputType
+from ...utils.odpsio import ToODPSModelMixin
 from ..models import ModelApplyChunk, ModelWithEval, ModelWithEvalData, to_remote_model
 from .dmatrix import DMatrix
+
+_xgb_type_to_np_type = {
+    "float": "float32",
+    "int": "int32",
+    "i": "bool",
+}
 
 
 class BoosterData(ModelWithEvalData):
@@ -88,6 +96,58 @@ class BoosterData(ModelWithEvalData):
             strict_shape=strict_shape,
         )
 
+    @staticmethod
+    @builtin_function
+    def _get_training_info(bst, evals_result, local_info):
+        model_infos = {
+            "iteration": bst.num_boosted_rounds(),
+        }
+        if evals_result:
+            model_infos.update(
+                dict(
+                    duration_ms=evals_result.get("duration_ms"),
+                )
+            )
+        if bst.feature_names:
+            model_infos["feature_names"] = bst.feature_names
+            model_infos["feature_types"] = [
+                _xgb_type_to_np_type[x] for x in bst.feature_types
+            ]
+        model_infos.update(local_info or {})
+
+        try:
+            config = json.loads(bst.save_config())
+            stack = [config]
+            internal = {}
+            while stack:
+                obj = stack.pop()
+                for k, v in obj.items():
+                    if k.endswith("_param"):
+                        for p_k, p_v in v.items():
+                            internal[p_k] = p_v
+                    elif isinstance(v, dict):
+                        stack.append(v)
+
+            for k, v in internal.items():
+                for t in (int, float, str):
+                    try:
+                        model_infos[k] = t(v)
+                        break
+                    except ValueError:
+                        continue
+        except ValueError:
+            pass
+
+        return model_infos
+
+    def get_training_info(self, evals_result: dict = None, local_info: dict = None):
+        evals_result = getattr(self, "_evals_result", None) or evals_result
+        args = (evals_result, local_info)
+        op = ModelApplyChunk(
+            func=self._get_training_info, output_types=[OutputType.object]
+        )
+        return op(self, [{}], args=args)[0]
+
 
 class Booster(ModelWithEval):
     pass
@@ -97,7 +157,7 @@ if not xgboost:
     XGBScikitLearnBase = None
 else:
 
-    class XGBScikitLearnBase(xgboost.XGBModel):
+    class XGBScikitLearnBase(xgboost.XGBModel, ToODPSModelMixin):
         """
         Base class for implementing scikit-learn interface
         """
@@ -181,6 +241,7 @@ else:
                 **train_kw,
             )
             self._Booster = result
+            self.evals_result_t_ = result.op.outputs[-1]
             return self
 
         def predict(self, data, **kw):
@@ -275,6 +336,30 @@ else:
                 importance_type=self.importance_type,
                 n_features=self._n_features_in,
             )[0]
+
+        @property
+        def training_info_(self):
+            local_info = {}
+            attrs = [
+                "n_classes_",
+                "learning_rate",
+            ]
+            for attr in attrs:
+                if getattr(self, attr, None):
+                    local_info[attr] = getattr(self, attr)
+            return self._Booster.get_training_info(
+                evals_result=self.evals_result_t_, local_info=local_info
+            )
+
+        def _get_odps_model_info(self) -> ToODPSModelMixin.ODPSModelInfo:
+            model_format = (
+                "BOOSTED_TREE_CLASSIFIER"
+                if hasattr(self, "predict_proba")
+                else "BOOSTED_TREE_REGRESSOR"
+            )
+            return ToODPSModelMixin.ODPSModelInfo(
+                model_format=model_format, model_params=self._Booster
+            )
 
     def wrap_evaluation_matrices(
         missing: float,

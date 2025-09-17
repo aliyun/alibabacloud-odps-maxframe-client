@@ -91,10 +91,15 @@ logger = logging.getLogger(__name__)
 
 class MaxFrameServiceCaller(metaclass=abc.ABCMeta):
     def get_settings_to_upload(self) -> Dict[str, Any]:
+        odps_entry = getattr(self, "_odps_entry", None)
+        entry_quota_name = getattr(odps_entry, "quota_name", None)
+
         sql_settings = (odps_options.sql.settings or {}).copy()
         sql_settings.update(options.sql.settings or {})
-        quota_name = options.session.quota_name or getattr(
-            odps_options, "quota_name", None
+        quota_name = (
+            options.session.quota_name
+            or entry_quota_name
+            or getattr(odps_options, "quota_name", None)
         )
         quota_settings = {
             sql_settings.get("odps.task.wlm.quota", None),

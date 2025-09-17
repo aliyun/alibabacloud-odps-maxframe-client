@@ -14,10 +14,18 @@
 
 from ... import opcodes
 from ...core import OutputType
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin, ReductionCallable
 
 
-class DataFrameCount(DataFrameReductionOperator, DataFrameReductionMixin):
+class CountReductionCallable(ReductionCallable):
+    def __call__(self, value):
+        skipna, numeric_only = self.kwargs["skipna"], self.kwargs["numeric_only"]
+        if value.ndim == 1:
+            return value.count()
+        return value.count(skipna=skipna, numeric_only=numeric_only)
+
+
+class DataFrameCount(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.COUNT
     _func_name = "count"
 
@@ -28,13 +36,9 @@ class DataFrameCount(DataFrameReductionOperator, DataFrameReductionMixin):
     @classmethod
     def get_reduction_callable(cls, op):
         skipna, numeric_only = op.skipna, op.numeric_only
-
-        def count(value):
-            if value.ndim == 1:
-                return value.count()
-            return value.count(skipna=skipna, numeric_only=numeric_only)
-
-        return count
+        return CountReductionCallable(
+            func_name="count", kwargs={"skipna": skipna, "numeric_only": numeric_only}
+        )
 
 
 def count_series(series, level=None, **kw):

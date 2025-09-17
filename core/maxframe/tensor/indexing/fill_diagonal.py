@@ -18,7 +18,7 @@ import numpy as np
 
 from ... import opcodes
 from ...core import ENTITY_TYPE, EntityData
-from ...serialization.serializables import AnyField, BoolField, Int32Field, KeyField
+from ...serialization.serializables import AnyField, BoolField, Int32Field
 from ..core import Tensor
 from ..datasource import tensor as astensor
 from ..operators import TensorOperator, TensorOperatorMixin
@@ -27,20 +27,14 @@ from ..operators import TensorOperator, TensorOperatorMixin
 class TensorFillDiagonal(TensorOperator, TensorOperatorMixin):
     _op_type_ = opcodes.FILL_DIAGONAL
 
-    _input = KeyField("input")
     val = AnyField("val", default=None)
     wrap = BoolField("wrap", default=None)
     # used for chunk
     k = Int32Field("k", default=None)
 
-    @property
-    def input(self):
-        return self._input
-
     @classmethod
     def _set_inputs(cls, op: "TensorFillDiagonal", inputs: List[EntityData]):
         super()._set_inputs(op, inputs)
-        op._input = op._inputs[0]
         if len(op._inputs) == 2:
             op.val = op._inputs[1]
 

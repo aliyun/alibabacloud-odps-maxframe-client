@@ -29,3 +29,12 @@ Indexing-like operations
    maxframe.tensor.choose
    maxframe.tensor.compress
    maxframe.tensor.diag
+
+Inserting data into arrays
+--------------------------
+
+.. autosummary::
+   :toctree: generated/
+   :nosignatures:
+
+   maxframe.tensor.fill_diagonal

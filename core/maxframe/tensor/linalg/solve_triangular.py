@@ -30,8 +30,8 @@ class TensorSolveTriangular(TensorOperator, TensorOperatorMixin):
 
     a = KeyField("a")
     b = KeyField("b")
-    lower = BoolField("lower")
-    strict = BoolField("strict")
+    lower = BoolField("lower", default=None)
+    strict = BoolField("strict", default=None)
 
     @classmethod
     def _set_inputs(cls, op: "TensorSolveTriangular", inputs: List[EntityData]):

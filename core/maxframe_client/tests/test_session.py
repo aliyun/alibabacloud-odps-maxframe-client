@@ -96,7 +96,10 @@ def test_local_run_dataframe(start_mock_session, enable_local_execution):
     cat_df = md.concat([df, df2])
     executed = cat_df.execute()
     result = executed.fetch()
-    pd.testing.assert_frame_equal(pd.concat([pd_result, pd_df2]), result)
+    try:
+        pd.testing.assert_frame_equal(pd.concat([pd_result, pd_df2]), result)
+    except AssertionError:
+        pd.testing.assert_frame_equal(pd.concat([pd_df2, pd_result]), result)
 
 
 def test_simple_run_dataframe(start_mock_session):

@@ -148,31 +148,31 @@ class UserCodeMixin:
     def generate_pickled_codes(
         cls,
         code_to_pickle: Any,
-        unpicked_data_var_name: Union[str, None] = "pickled_data",
+        main_entry_var_name: Union[str, None] = "udf_main_entry",
     ) -> str:
         """
-        Generate pickled codes. The final pickled variable is called 'pickled_data'.
+        Generate pickled codes. The final pickled variable is called 'udf_main_entry'.
 
         Parameters
         ----------
         code_to_pickle: Any
             The code to be pickled.
-        unpicked_data_var_name: str
+        main_entry_var_name: str
             The variables in code used to hold the loads object from the cloudpickle
 
         Returns
         -------
         str :
             The code snippets of pickling, the final variable is called
-            'pickled_data' by default.
+            'udf_main_entry' by default.
         """
         pickled, buffers = cls.dump_pickled_data(code_to_pickle)
         pickle_loads_expr = (
             f"cloudpickle.loads({cls.obj_to_python_expr(pickled)}, "
             f"buffers={cls.obj_to_python_expr(buffers)})"
         )
-        if unpicked_data_var_name:
-            return f"{unpicked_data_var_name} = {pickle_loads_expr}"
+        if main_entry_var_name:
+            return f"{main_entry_var_name} = {pickle_loads_expr}"
 
         return pickle_loads_expr
 

@@ -12,5 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .argpartition import argpartition
 from .argsort import argsort
+from .partition import partition
 from .sort import sort

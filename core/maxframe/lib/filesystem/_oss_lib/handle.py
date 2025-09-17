@@ -15,7 +15,7 @@
 from io import IOBase
 
 from ....utils import lazy_import
-from .common import oss_stat, parse_osspath
+from .common import get_oss_bucket, oss_stat, parse_osspath
 
 oss2 = lazy_import("oss2", placeholder=True)
 
@@ -23,19 +23,19 @@ oss2 = lazy_import("oss2", placeholder=True)
 class OSSIOBase(IOBase):
     def __init__(self, path, mode):
         self._path = path
-        (
-            self._bucket_name,
-            self._key_name,
-            self._access_key_id,
-            self._access_key_secret,
-            self._end_point,
-        ) = parse_osspath(self._path)
-        self._bucket = self._get_bucket()
+        self._parsed_path = parse_osspath(self._path)
+        self._bucket = get_oss_bucket(self._parsed_path)
         self._current_pos = 0
         self._size = None
         self._buffer = b""
         self._buffer_size = 1 * 1024
         self._mode = mode
+
+        if mode and mode.startswith("w"):
+            try:
+                self._bucket.delete_object(self._parsed_path.key)
+            except oss2.exceptions.NoSuchKey:
+                pass
 
     @property
     def mode(self):
@@ -43,16 +43,6 @@ class OSSIOBase(IOBase):
 
     def fileno(self) -> int:
         raise AttributeError
-
-    def _get_bucket(self):
-        return oss2.Bucket(
-            auth=oss2.Auth(
-                access_key_id=self._access_key_id,
-                access_key_secret=self._access_key_secret,
-            ),
-            endpoint=self._end_point,
-            bucket_name=self._bucket_name,
-        )
 
     def _get_size(self):
         if self._size is None:
@@ -79,7 +69,7 @@ class OSSIOBase(IOBase):
         return self._current_pos
 
     def seekable(self):
-        return True
+        return "r" in self._mode
 
     def read(self, size=-1):
         """
@@ -97,12 +87,12 @@ class OSSIOBase(IOBase):
             return b""
         elif size < 0:
             obj = self._bucket.get_object(
-                self._key_name, byte_range=(self._current_pos, None)
+                self._parsed_path.key, byte_range=(self._current_pos, None)
             )
             self._current_pos = self._get_size()
         else:
             obj = self._bucket.get_object(
-                self._key_name,
+                self._parsed_path.key,
                 byte_range=(self._current_pos, self._current_pos + size - 1),
             )
             self._current_pos = self._current_pos + size
@@ -117,7 +107,7 @@ class OSSIOBase(IOBase):
                 self._get_size() - 1, self._current_pos + self._buffer_size - 1
             )
             buffer = self._bucket.get_object(
-                self._key_name, byte_range=(self._current_pos, read_to)
+                self._parsed_path.key, byte_range=(self._current_pos, read_to)
             ).read()
             if not buffer:
                 return 1
@@ -145,11 +135,17 @@ class OSSIOBase(IOBase):
                 break
         return bytes(res)
 
+    def write(self, block):
+        append_result = self._bucket.append_object(
+            self._parsed_path.key, self._current_pos, block
+        )
+        self._current_pos = append_result.next_position
+
     def readable(self):
-        return True
+        return "r" in self._mode
 
     def writable(self):
-        return False
+        return "w" in self._mode or "a" in self._mode
 
     def close(self):
         # already closed by oss

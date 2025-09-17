@@ -274,6 +274,7 @@ class TunnelTableIO(ODPSTableIO):
         full_table_name: str,
         partitions: List[Optional[str]] = None,
         reopen: bool = False,
+        timeout: Optional[float] = None,
     ) -> Dict[Optional[str], TableDownloadSession]:
         table = odps_entry.get_table(full_table_name)
         tunnel = TableTunnel(odps_entry, quota_name=options.tunnel_quota_name)
@@ -295,14 +296,18 @@ class TunnelTableIO(ODPSTableIO):
             ):
                 down_id = cls._down_session_ids[part_key]
                 down_session = tunnel.create_download_session(
-                    table, async_mode=True, partition_spec=part, download_id=down_id
+                    table,
+                    async_mode=True,
+                    partition_spec=part,
+                    download_id=down_id,
+                    timeout=timeout,
                 )
                 if down_session.status != TableDownloadStatus.Normal:
                     down_session = None
 
             if down_session is None:
                 down_session = tunnel.create_download_session(
-                    table, async_mode=True, partition_spec=part
+                    table, async_mode=True, partition_spec=part, timeout=timeout
                 )
 
             while len(cls._down_session_ids) >= _DOWNLOAD_ID_CACHE_SIZE:

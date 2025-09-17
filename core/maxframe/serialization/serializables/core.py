@@ -453,8 +453,8 @@ class SerializableSerializer(Serializer):
             self._set_field_values(obj, primitives, cls_to_prim_key, True)
         if obj_class._NON_PRIMITIVE_FIELDS:
             self._set_field_values(obj, subs[0], cls_to_non_prim_key, False)
-        obj.__on_deserialize__()
-        return obj
+        ret = obj.__on_deserialize__()
+        return obj if ret is None else ret
 
 
 class NoFieldValueSerializer(Serializer):

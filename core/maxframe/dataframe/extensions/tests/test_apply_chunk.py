@@ -91,15 +91,22 @@ def test_apply_chunk_infer_dtypes_and_index(df1, df2, df3):
     assert result.index_value is df2.index_value
     assert result.dtypes.equals(df2.dtypes)
 
+    def process(data, param, k) -> pd.DataFrame[df2.dtypes]:
+        return data * param * k
+
+    result = df2.mf.apply_chunk(process, batch_rows=3, args=(4,), k=1)
+    assert result.index_value is df2.index_value
+    assert result.dtypes.equals(df2.dtypes)
+
     # mark functions
     from ....udf import with_python_requirements, with_resources
 
     @with_resources("empty.txt")
     @with_python_requirements("numpy")
-    def process(data, k):
+    def process(data, k) -> pd.DataFrame[df1.dtypes]:
         return data
 
-    result = df1.mf.apply_chunk(process, batch_rows=3, output_type="dataframe", k=1)
+    result = df1.mf.apply_chunk(process, batch_rows=3, k=1)
     assert result.index_value is df1.index_value
     assert result.dtypes.equals(df1.dtypes)
     assert isinstance(result.op.func, MarkedFunction)

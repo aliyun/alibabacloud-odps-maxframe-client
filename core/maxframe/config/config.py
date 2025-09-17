@@ -18,7 +18,7 @@ import os
 import traceback
 import warnings
 from copy import deepcopy
-from typing import Any, Dict, Optional, Union
+from typing import Any, Callable, Dict, Optional, Union
 
 from odps.lib import tzlocal
 
@@ -33,13 +33,17 @@ from ..utils import get_python_tag
 from .validators import (
     ValidatorType,
     all_validator,
+    dtype_backend_validator,
     is_all_dict_keys_in,
     is_bool,
     is_dict,
     is_float,
+    is_great_than,
     is_in,
     is_integer,
+    is_less_than_or_equal_to,
     is_non_negative_integer,
+    is_notnull,
     is_null,
     is_numeric,
     is_string,
@@ -59,6 +63,7 @@ _DEFAULT_TASK_START_TIMEOUT = 60
 _DEFAULT_TASK_RESTART_TIMEOUT = 300
 _DEFAULT_LOGVIEW_HOURS = 24 * 30
 _DEFAULT_FUNCTION_RUNNING_OPTIONS = {"cpu": 1, "memory": "4GiB", "gpu": 0}
+_DEFAULT_MAX_MEMORY_CPU_RATIO = 12
 
 
 class OptionError(Exception):
@@ -66,11 +71,19 @@ class OptionError(Exception):
 
 
 class Redirection:
-    def __init__(self, item: str, warn: Optional[str] = None):
+    def __init__(
+        self,
+        item: str,
+        warn: Optional[str] = None,
+        getter: Callable = None,
+        setter: Callable = None,
+    ):
         self._items = item.split(".")
         self._warn = warn
         self._warned = True
         self._parent = None
+        self._getter = getter
+        self._setter = setter
 
     def bind(self, attr_dict):
         self._parent = attr_dict
@@ -88,6 +101,8 @@ class Redirection:
         conf = self._parent.root
         for it in self._items:
             conf = getattr(conf, it)
+        if callable(self._getter):
+            conf = self._getter(conf)
         return conf
 
     def setvalue(self, value: str, silent: bool = False) -> None:
@@ -97,6 +112,8 @@ class Redirection:
         conf = self._parent.root
         for it in self._items[:-1]:
             conf = getattr(conf, it)
+        if callable(self._setter):
+            value = self._setter(value)
         setattr(conf, self._items[-1], value)
 
 
@@ -251,9 +268,19 @@ class Config:
             self._remote_options.add(option)
 
     def redirect_option(
-        self, option: str, target: str, warn: str = _DEFAULT_REDIRECT_WARN
+        self,
+        option: str,
+        target: str,
+        warn: str = _DEFAULT_REDIRECT_WARN,
+        getter: Callable = None,
+        setter: Callable = None,
     ) -> None:
-        redir = Redirection(target, warn=warn.format(source=option, target=target))
+        redir = Redirection(
+            target,
+            warn=warn.format(source=option, target=target),
+            getter=getter,
+            setter=setter,
+        )
         self.register_option(option, redir)
 
     def unregister_option(self, option: str) -> None:
@@ -315,10 +342,18 @@ class Config:
 
 
 def _get_legal_local_tz_name() -> Optional[str]:
-    """Sometimes we may get illegal tz name from tzlocal.get_localzone()"""
-    tz_name = str(tzlocal.get_localzone())
-    if tz_name not in available_timezones():
-        return None
+    """
+    Sometimes we may get illegal tz name from tzlocal.get_localzone().
+    In some environments we can't get any tz name.
+    """
+    tz_name = None
+    try:
+        tz_name = str(tzlocal.get_localzone())
+        if tz_name not in available_timezones():
+            tz_name = None
+    except:
+        pass
+
     return tz_name
 
 
@@ -401,6 +436,9 @@ default_options.register_option(
     "session.quota_name", None, validator=is_null | is_string, remote=True
 )
 default_options.register_option(
+    "session.region_id", None, validator=is_null | is_string, remote=True
+)
+default_options.register_option(
     "session.enable_schema", None, validator=is_null | is_bool, remote=True
 )
 default_options.register_option(
@@ -446,7 +484,15 @@ default_options.register_option(
 )
 
 default_options.register_option("warn_duplicated_execution", False, validator=is_bool)
-default_options.register_option("dataframe.use_arrow_dtype", True, validator=is_bool)
+default_options.register_option(
+    "dataframe.dtype_backend", "numpy", validator=dtype_backend_validator
+)
+default_options.redirect_option(
+    "dataframe.use_arrow_dtype",
+    "dataframe.dtype_backend",
+    getter=lambda x: x == "pyarrow",
+    setter=lambda x: "pyarrow" if x else "numpy",
+)
 default_options.register_option(
     "dataframe.arrow_array.pandas_only", True, validator=is_bool
 )
@@ -462,6 +508,15 @@ default_options.register_option(
     "function.default_running_options",
     _DEFAULT_FUNCTION_RUNNING_OPTIONS,
     validator=is_dict | is_all_dict_keys_in("cpu", "memory", "gpu"),
+)
+
+default_options.register_option(
+    "function.allowed_max_memory_cpu_ratio",
+    _DEFAULT_MAX_MEMORY_CPU_RATIO,
+    validator=is_integer
+    & is_notnull
+    & is_less_than_or_equal_to(_DEFAULT_MAX_MEMORY_CPU_RATIO)
+    & is_great_than(0),
 )
 
 ################
@@ -505,8 +560,14 @@ default_options.register_option(
 assume_finite = os.environ.get("SKLEARN_ASSUME_FINITE")
 if assume_finite is not None:
     assume_finite = bool(assume_finite)
+working_memory = os.environ.get("SKLEARN_WORKING_MEMORY")
+if working_memory is not None:
+    working_memory = int(working_memory)
 default_options.register_option(
     "learn.assume_finite", assume_finite, validator=is_null | is_bool
+)
+default_options.register_option(
+    "learn.working_memory", working_memory, validator=is_null | is_integer
 )
 
 _options_ctx_var = contextvars.ContextVar("_options_ctx_var")

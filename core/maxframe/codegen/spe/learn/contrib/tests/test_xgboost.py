@@ -50,8 +50,9 @@ def test_spe_xgb_train_script():
     results = adapter.generate_code(model.op, context)
     assert results == [
         "start_time = time.time()",
+        "var_2 = dict()",
         "logger.info('Trained data size: (%s, %s)', var_1.num_row(), var_1.num_col())",
-        "var_0 = xgboost.train(params={}, dtrain=var_1, evals=[], num_boost_round=10)",
+        "var_0 = xgboost.train(params={}, dtrain=var_1, evals=[], num_boost_round=10, evals_result=var_2)",
         "logger.info('Train cost: %.2f s', time.time() - start_time)",
     ]
 

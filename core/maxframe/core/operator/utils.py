@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
+import sys
+
 from ...typing_ import EntityType, TileableType
 from ..entity import TILEABLE_TYPE
 
@@ -53,3 +56,13 @@ def build_fetch(entity: EntityType, **kw) -> EntityType:
 
 def add_fetch_builder(entity_type, builder_func):
     _type_to_builder.append((entity_type, builder_func))
+
+
+@contextlib.contextmanager
+def rewrite_stop_iteration():
+    try:
+        yield
+    except StopIteration:
+        raise RuntimeError("Unexpected StopIteration happened.").with_traceback(
+            sys.exc_info()[2]
+        ) from None

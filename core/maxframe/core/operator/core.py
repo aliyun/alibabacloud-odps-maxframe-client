@@ -18,6 +18,9 @@ from collections import defaultdict
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Type, Union
 
 import numpy as np
+import pandas as pd
+
+from .utils import rewrite_stop_iteration
 
 if TYPE_CHECKING:
     from .. import TileableGraph
@@ -82,7 +85,7 @@ class TileableOperatorMixin:
             nsplits = tuple(nsplits)
             shape = list(shape)
             for idx, (s, sp) in enumerate(zip(shape, nsplits)):
-                if not np.isnan(s):
+                if not pd.isna(s):
                     continue
                 s = sum(sp)
                 if not np.isnan(s):
@@ -118,11 +121,16 @@ class TileableOperatorMixin:
     def _new_tileables(
         self, inputs: List[TileableType], kws: List[dict] = None, **kw
     ) -> List[TileableType]:
+        assert (
+            isinstance(inputs, (list, tuple)) or inputs is None
+        ), f"{inputs} is not a list"
+
         output_limit = kw.pop("output_limit", None)
         if output_limit is None:
             output_limit = getattr(self, "output_limit")
 
-        self._set_inputs(self, inputs)
+        with rewrite_stop_iteration():
+            self._set_inputs(self, inputs)
         if self.gpu is None:
             self.gpu = self._check_if_gpu(self._inputs)
         if getattr(self, "_key", None) is None:

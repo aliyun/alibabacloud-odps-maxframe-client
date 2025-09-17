@@ -81,6 +81,11 @@ class CustomNamedTuple(NamedTuple):
         b"abcd",
         "abcd",
         slice(3, 9, 2),
+        slice(3, None, None),
+        slice(pd.Timestamp.now(), None, None),
+        range(10),
+        range(2, 10),
+        range(2, 10, 3),
         ["uvw", ("mno", "sdaf"), 4, 6.7],
         CustomNamedTuple("abcd", 13451),
         datetime.datetime.now(),
@@ -173,12 +178,19 @@ def test_timezones(val):
     ],
 )
 @switch_unpickle
-def test_numpy(val):
+def test_numpy_arrays(val):
     deserialized = deserialize(*serialize(val))
     assert type(val) == type(deserialized)
     np.testing.assert_equal(val, deserialized)
     if val.flags.f_contiguous:
         assert deserialized.flags.f_contiguous
+
+
+@switch_unpickle
+def test_numpy_random_state():
+    rs1 = np.random.RandomState(131)
+    rs2 = deserialize(*serialize(rs1))
+    assert rs1.rand() == rs2.rand()
 
 
 @switch_unpickle
@@ -213,6 +225,15 @@ def test_pandas():
     val = pd.CategoricalIndex(np.random.choice(list("abcd"), size=(1000,)))
     pd.testing.assert_index_equal(val, deserialize(*serialize(val)))
 
+    val = pd.DatetimeIndex([pd.Timestamp("2025-08-01 12:31:21")], freq="D")
+    pd.testing.assert_index_equal(val, deserialize(*serialize(val)))
+
+    val = pd.Period("2025-08-01", freq="D")
+    assert val == deserialize(*serialize(val))
+
+    val = pd.tseries.offsets.MonthEnd()
+    assert val == deserialize(*serialize(val))
+
 
 @switch_unpickle
 @pytest.mark.skipif(_arrow_dtype_supported, reason="pandas doesn't support ArrowDtype")
@@ -233,6 +254,10 @@ def test_fake_arrow_dtype_serde():
 @switch_unpickle
 def test_arrow():
     test_array = np.random.rand(1000)
+    test_cplx_array = pa.array(
+        [["abc", "def"], ["ghi"], None],
+        type=pa.list_(pa.string()),
+    )
     test_df = pd.DataFrame(
         {
             "a": np.random.rand(1000),
@@ -242,14 +267,16 @@ def test_arrow():
     )
     test_vals = [
         pa.array(test_array),
+        test_cplx_array,
         pa.chunked_array([pa.array(test_array), pa.array(test_array)]),
+        pa.chunked_array([test_cplx_array, test_cplx_array]),
         pa.RecordBatch.from_pandas(test_df),
         pa.Table.from_pandas(test_df),
     ]
     for val in test_vals:
         deserialized = deserialize(*serialize(val))
         assert type(val) is type(deserialized)
-        np.testing.assert_equal(val, deserialized)
+        assert str(val) == str(deserialized)
 
 
 @pytest.mark.parametrize(

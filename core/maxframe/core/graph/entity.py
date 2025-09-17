@@ -26,7 +26,6 @@ from ...serialization.serializables import (
 )
 from ...serialization.serializables.core import SerializableSerializer
 from ...utils import extract_class_name, tokenize
-from ..operator import Fetch
 from .core import DAG
 
 
@@ -123,7 +122,7 @@ class SerializableGraph(Serializable):
     def from_graph(cls, graph: EntityGraph) -> "SerializableGraph":
         return SerializableGraph(
             _is_chunk=False,
-            _fetch_nodes=[chunk for chunk in graph if isinstance(chunk.op, Fetch)],
+            _fetch_nodes=[chunk for chunk in graph if chunk.is_fetch()],
             _nodes=graph._nodes,
             _predecessors=graph._predecessors,
             _successors=graph._successors,

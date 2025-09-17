@@ -15,6 +15,8 @@
 # noinspection PyUnresolvedReferences
 from ..core import DataFrameGroupBy, GroupBy, SeriesGroupBy
 from .core import NamedAgg
+from .expanding import ExpandingGroupby
+from .rolling import RollingGroupby
 
 
 def _install():
@@ -24,12 +26,15 @@ def _install():
     from .apply import groupby_apply
     from .apply_chunk import df_groupby_apply_chunk
     from .core import groupby
-    from .cum import cumcount, cummax, cummin, cumprod, cumsum
+    from .expanding import cumcount, cummax, cummin, cumprod, cumsum, expanding
     from .extensions import DataFrameGroupByMaxFrameAccessor
     from .fill import bfill, ffill, fillna
     from .getitem import df_groupby_getitem
     from .head import head
+    from .rank import rank
+    from .rolling import rolling
     from .sample import groupby_sample
+    from .shift import shift
     from .transform import groupby_transform
 
     for cls in DATAFRAME_TYPE:
@@ -68,6 +73,12 @@ def _install():
         setattr(cls, "cummax", cummax)
         setattr(cls, "cumprod", cumprod)
         setattr(cls, "cumsum", cumsum)
+
+        setattr(cls, "expanding", expanding)
+        setattr(cls, "rolling", rolling)
+
+        setattr(cls, "shift", shift)
+        setattr(cls, "rank", rank)
 
         setattr(cls, "head", head)
 

@@ -15,12 +15,14 @@
 from ...core import CachedAccessor
 from .accessor import TensorMaxFrameAccessor
 from .apply_chunk import apply_chunk
+from .rebalance import rebalance
 
 
 def _install():
     from ..core import TENSOR_TYPE
 
     TensorMaxFrameAccessor._register("apply_chunk", apply_chunk)
+    TensorMaxFrameAccessor._register("rebalance", rebalance)
 
     if TensorMaxFrameAccessor._api_count:
         for t in TENSOR_TYPE:

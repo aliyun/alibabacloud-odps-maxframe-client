@@ -46,6 +46,25 @@ def list_(value_type: Union[pa.DataType, pa.Field]):
     return pd.ArrowDtype(pa.list_(value_type))
 
 
+def struct_(fields: Union[pa.Schema, list]):
+    """
+    Create ``pd.ArrowDtype(pa.StructType)`` instance from fields.
+
+    Parameters
+    ----------
+    fields : pyarrow.Schema or list of pyarrow.Field
+        The fields to create the struct type from.
+
+    Returns
+    -------
+    ArrowDtype
+        An ArrowDtype instance with a StructType.
+    """
+    if ArrowDtype is None:
+        raise ImportError("ArrowDtype is not supported in current environment")
+    return pd.ArrowDtype(pa.struct(fields))
+
+
 def is_map_dtype(dtype: ArrowDtype) -> bool:
     """
     Check whether the dtype is a map type.
@@ -63,4 +82,25 @@ def is_list_dtype(dtype: ArrowDtype) -> bool:
         raise ImportError("ArrowDtype is not supported in current environment")
     return isinstance(dtype, ArrowDtype) and isinstance(
         dtype.pyarrow_dtype, pa.ListType
+    )
+
+
+def is_struct_dtype(dtype: ArrowDtype) -> bool:
+    """
+    Check whether the dtype is a struct dtype.
+
+    Parameters
+    ----------
+    dtype : ArrowDtype
+        The dtype to check.
+
+    Returns
+    -------
+    bool
+        True if the dtype is a struct type, False otherwise.
+    """
+    if ArrowDtype is None:
+        raise ImportError("ArrowDtype is not supported in current environment")
+    return isinstance(dtype, ArrowDtype) and isinstance(
+        dtype.pyarrow_dtype, pa.StructType
     )

@@ -38,8 +38,9 @@ from ..utils import (
 _with_convert_dtype = pd_release_version < (1, 2, 0)
 
 
-class TransformOperator(DataFrameOperator, DataFrameOperatorMixin):
+class DataFrameTransform(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.TRANSFORM
+    _legacy_name = "TransformOperator"
 
     func = AnyField("func", default=None)
     axis = AnyField("axis", default=None)
@@ -141,11 +142,15 @@ class TransformOperator(DataFrameOperator, DataFrameOperatorMixin):
 
     @classmethod
     def estimate_size(
-        cls, ctx: MutableMapping[str, Union[int, float]], op: "TransformOperator"
+        cls, ctx: MutableMapping[str, Union[int, float]], op: "DataFrameTransform"
     ) -> None:
         if isinstance(op.func, MarkedFunction):
             ctx[op.outputs[0].key] = float("inf")
         super().estimate_size(ctx, op)
+
+
+# keep for import compatibility
+TransformOperator = DataFrameTransform
 
 
 def get_packed_funcs(df, output_type, func, *args, **kwds) -> Any:
@@ -235,7 +240,7 @@ def df_transform(df, func, axis=0, *args, dtypes=None, skip_infer=False, **kwarg
     """
     call_agg = kwargs.pop("_call_agg", False)
     func = get_packed_funcs(df, OutputType.dataframe, func, *args, **kwargs)
-    op = TransformOperator(
+    op = DataFrameTransform(
         func=func,
         axis=axis,
         args=args,
@@ -327,13 +332,15 @@ def series_transform(
     """
     call_agg = kwargs.pop("_call_agg", False)
     func = get_packed_funcs(series, OutputType.series, func, *args, **kwargs)
-    op = TransformOperator(
+    op = DataFrameTransform(
         func=func,
         axis=axis,
         convert_dtype=convert_dtype,
         args=args,
         kwds=kwargs,
-        output_types=[OutputType.series],
+        output_types=[OutputType.series]
+        if not call_agg and not isinstance(func, list)
+        else None,
         call_agg=call_agg,
     )
     return op(series, dtype=dtype, name=series.name, skip_infer=skip_infer)

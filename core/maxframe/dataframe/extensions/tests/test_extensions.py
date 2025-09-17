@@ -60,6 +60,40 @@ def df3():
     )
 
 
+@pytest.fixture
+def df4():
+    return DataFrame(
+        {
+            "name1": ["a", "b", "c", "d"],
+            "name2": ["a", "b", "c", "d"],
+            "num": [1, 2, 3, 4],
+            "kv": [
+                "k1=1.1,k2=3.1,k3=1.0",
+                "k1=7.1,k4=8.2",
+                "k5=1.2,k7=1.5",
+                "k3=1.1,k9=1",
+            ],
+            "vk": ["v1=1.1,v2=1.2", "v3=1.1,v4=1.2", "v5=1.1,v6=1.2", "v7=1.1,v8=1.2"],
+        }
+    )
+
+
+@pytest.fixture
+def df5():
+    return DataFrame(
+        {
+            "name1": ["name1", "name2", "name3", "name4", "name5"],
+            "name2": ["name1", "name2", "name3", "name4", "name5"],
+            "k1": [1.0, None, 7.1, None, None],
+            "k2": [3.0, 3.0, None, 1.2, 1.0],
+            "k3": [None, 5.1, None, 1.5, None],
+            "k5": [10.0, None, None, None, None],
+            "k7": [None, None, 8.2, None, None],
+            "k9": [None, None, None, None, 1.1],
+        }
+    )
+
+
 def test_flatmap(df1, df2, df3):
     def f(x, keys):
         if x["a"] in keys:
@@ -142,3 +176,23 @@ def test_flatjson():
         )
     with pytest.raises(ValueError):
         s1.mf.flatjson(["$.a"])
+
+
+def test_extract_kv(df4):
+    extract_kv_df = df4.mf.extract_kv(
+        columns=["kv", "vk"], kv_delim=",", item_delim="="
+    )
+    assert extract_kv_df.shape == (4, np.nan)
+    assert extract_kv_df.index_value.key == df4.index_value.key
+    with pytest.raises(ValueError):
+        df4.mf.extract_kv(columns=["name"])
+    with pytest.raises(ValueError):
+        df4.mf.extract_kv(columns=["num"])
+
+
+def test_collect_kv(df5):
+    collect_kv_df = df5.mf.collect_kv(columns=["k1", "k2", "k3", "k5", "k7", "k9"])
+    assert collect_kv_df.shape == (5, 3)
+    assert collect_kv_df.index_value.key == df5.index_value.key
+    with pytest.raises(ValueError):
+        df5.mf.collect_kv(columns=["num"])

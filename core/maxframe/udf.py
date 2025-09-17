@@ -17,6 +17,7 @@ from typing import Callable, List, Optional, Union
 
 from odps.models import Resource
 
+from .config.validators import is_positive_integer
 from .serialization import load_member
 from .serialization.serializables import (
     BoolField,
@@ -106,6 +107,7 @@ class MarkedFunction(Serializable):
     expect_resources = DictField(
         "expect_resources", FieldTypes.string, default_factory=dict
     )
+    gpu = BoolField("gpu", default=False)
 
     def __init__(self, func: Optional[Callable] = None, **kw):
         super().__init__(func=func, **kw)
@@ -177,6 +179,8 @@ def with_running_options(
     engine: Optional[str] = None,
     cpu: Optional[int] = None,
     memory: Optional[Union[str, int]] = None,
+    gu: Optional[int] = None,
+    gu_quota: Optional[Union[str, List[str]]] = None,
     **kwargs,
 ):
     """
@@ -191,6 +195,10 @@ def with_running_options(
     memory: Optional[Union[str, int]]
         The memory to run the UDF. If it is an int, it is in GB.
         If it is a str, it is in the format of "10GiB", "30MiB", etc.
+    gu: Optional[int]
+        The GU number to run the UDF.
+    gu_quota: Optional[Union[str, List[str]]]
+        The GU quota nicknames to run the UDF. The order is the priority of the usage.
     kwargs
         Other running options.
     """
@@ -204,20 +212,37 @@ def with_running_options(
             raise TypeError("memory must be an int or str")
         if isinstance(memory, int) and memory <= 0:
             raise ValueError("memory must be greater than 0")
+    if gu is not None and gu <= 0:
+        raise ValueError("gu must be greater than 0")
+    if gu is not None and (cpu or memory):
+        raise ValueError("gu can't be specified with cpu or memory")
 
     if cpu:
         resources["cpu"] = cpu
     if memory:
         resources["memory"] = memory
 
+    if isinstance(gu_quota, str):
+        gu_quota = [gu_quota]
+
+    resources["gpu"] = gu
+    resources["gu_quota"] = gu_quota
+    use_gpu = is_positive_integer(gu)
+
     def func_wrapper(func):
-        if all(v is None for v in (engine, cpu, memory)):
+        if all(v is None for v in (engine, cpu, memory, gu, gu_quota)):
             return func
         if isinstance(func, MarkedFunction):
             func.expect_engine = engine
             func.expect_resources = resources
+            func.gpu = use_gpu
             return func
-        return MarkedFunction(func, expect_engine=engine, expect_resources=resources)
+        return MarkedFunction(
+            func,
+            expect_engine=engine,
+            expect_resources=resources,
+            gpu=use_gpu,
+        )
 
     return func_wrapper
 

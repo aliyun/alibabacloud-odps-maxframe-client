@@ -59,12 +59,8 @@ def test_codegen_with_udf(codegen):
 
     udf_1_body = base64.b64encode(pickle.dumps(f1, protocol=pickle.DEFAULT_PROTOCOL))
     udf_2_body = base64.b64encode(pickle.dumps(f2, protocol=pickle.DEFAULT_PROTOCOL))
-    udf_1_value = (
-        f"pickled_data = cloudpickle.loads(base64.b64decode({udf_1_body}), buffers=[])"
-    )
-    udf_2_value = (
-        f"pickled_data = cloudpickle.loads(base64.b64decode({udf_2_body}), buffers=[])"
-    )
+    udf_1_value = f"udf_main_entry = cloudpickle.loads(base64.b64decode({udf_1_body}), buffers=[])"
+    udf_2_value = f"udf_main_entry = cloudpickle.loads(base64.b64decode({udf_2_body}), buffers=[])"
     udf_1 = f"user_udf_f1_{hashlib.md5(udf_1_value.encode('utf-8')).hexdigest()}"
     udf_2 = f"user_udf_f2_{hashlib.md5(udf_2_value.encode('utf-8')).hexdigest()}"
 
@@ -74,9 +70,9 @@ def test_codegen_with_udf(codegen):
     import base64
     import cloudpickle
     {udf_1_value}
-    {udf_1} = pickled_data
+    {udf_1} = udf_main_entry
     {udf_2_value}
-    {udf_2} = pickled_data
+    {udf_2} = udf_main_entry
     if not running:
         raise RuntimeError('CANCELLED')
     var_0 = np.random.rand(1, 3)
@@ -111,9 +107,7 @@ def test_codegen_with_udf_and_args(codegen):
             protocol=pickle.DEFAULT_PROTOCOL,
         )
     )
-    udf_1_value = (
-        f"pickled_data = cloudpickle.loads(base64.b64decode({udf_1_body}), buffers=[])"
-    )
+    udf_1_value = f"udf_main_entry = cloudpickle.loads(base64.b64decode({udf_1_body}), buffers=[])"
     udf_1 = f"user_udf_f1_{hashlib.md5(udf_1_value.encode('utf-8')).hexdigest()}"
 
     expected_contents = f"""
@@ -122,7 +116,7 @@ def test_codegen_with_udf_and_args(codegen):
     import base64
     import cloudpickle
     {udf_1_value}
-    {udf_1} = pickled_data
+    {udf_1} = udf_main_entry
     if not running:
         raise RuntimeError('CANCELLED')
     var_0 = np.random.rand(1, 3)

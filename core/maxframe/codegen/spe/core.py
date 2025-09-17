@@ -299,7 +299,7 @@ class SPECodeGenerator(DAGCodeGenerator):
         udf_codes = list()
         for func in self.get_udfs():
             udf_codes.extend(func.encoded_content)
-            udf_codes.append(f"{func.name} = pickled_data")
+            udf_codes.append(f"{func.name} = udf_main_entry")
         return udf_codes
 
 

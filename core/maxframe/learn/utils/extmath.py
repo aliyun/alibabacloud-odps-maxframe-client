@@ -49,6 +49,19 @@ def _safe_accumulator_op(op, x, *args, **kwargs):
     return result
 
 
+def logsumexp_real(a, axis=None, keepdims=False):
+    """Simplified logsumexp for real arrays without biases"""
+    from ... import tensor as mt
+
+    x = mt.tensor(a)
+    x_max = mt.amax(a, axis=axis, keepdims=True)
+    exp_x_shifted = mt.exp(x - x_max)
+    ret = mt.log(mt.sum(exp_x_shifted, axis=axis, keepdims=True)) + x_max
+    if keepdims:
+        return ret
+    return mt.squeeze(ret, axis=1)
+
+
 def _incremental_mean_and_var(
     X, last_mean, last_variance, last_sample_count, sample_weight=None
 ):
@@ -174,3 +187,27 @@ def _incremental_mean_and_var(
         updated_variance = updated_unnormalized_variance / updated_sample_count
 
     return updated_mean, updated_variance, updated_sample_count
+
+
+def row_norms(X, squared=False):
+    """Row-wise (squared) Euclidean norm of X.
+
+    Performs no input validation.
+
+    Parameters
+    ----------
+    X : array_like
+        The input tensor
+    squared : bool, optional (default = False)
+        If True, return squared norms.
+
+    Returns
+    -------
+    array_like
+        The row-wise (squared) Euclidean norm of X.
+    """
+
+    norms = (X**2).sum(axis=1)
+    if not squared:
+        norms = mt.sqrt(norms)
+    return norms

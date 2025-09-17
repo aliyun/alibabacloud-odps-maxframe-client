@@ -20,13 +20,13 @@ class BaseMaxFrameAccessor:
         self.obj = obj
 
     @classmethod
-    def _register(cls, name, func):
+    def _register(cls, name, func, is_property=False):
         @functools.wraps(func)
         def wrapped(self, *args, **kw):
             return func(self.obj, *args, **kw)
 
         wrapped.__name__ = name
-        setattr(cls, name, wrapped)
+        setattr(cls, name, wrapped if not is_property else property(wrapped))
         if hasattr(cls, "_api_count"):  # pragma: no branch
             cls._api_count += 1
 

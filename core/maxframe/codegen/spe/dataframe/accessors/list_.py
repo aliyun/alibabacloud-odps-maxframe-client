@@ -12,18 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
-
-from .....dataframe.accessors.list_.getitem import SeriesListGetItemOperator
-from .....dataframe.accessors.list_.length import SeriesListLengthOperator
-from ...core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
+from .....dataframe.accessors.list_.core import SeriesListMethod
+from ...core import register_op_adapter
+from .base import SeriesTemplateMethodAdapter
 
 _get_template = """
 def _inner_get(data):
     try:
-        return data[{index_var}]
+        return data[{query_index}]
     except IndexError:
-        if {ignore_index_error_var}:
+        if {ignore_index_error}:
             return None
         else:
             raise
@@ -32,49 +30,15 @@ def _inner_get(data):
 {output_var}.name = None
 """
 
-_length_template = """
+_len_template = """
 {output_var} = {input_var}.map(len, na_action="ignore").astype({output_dtype_var})
 {output_var}.name = None
 """
 
 
-@register_op_adapter(SeriesListGetItemOperator)
-class SeriesListGetItemOperatorAdapter(SPEOperatorAdapter):
-    def generate_code(
-        self, op: SeriesListGetItemOperator, context: SPECodeContext
-    ) -> List[str]:
-        input_var = context.get_input_tileable_variable(op.inputs[0])
-        output_var = context.get_output_tileable_variable(op.outputs[0])
-        index_var = self.translate_var(context, op.query_index)
-        output_name_var = self.translate_var(context, op.outputs[0].name)
-        ignore_index_error_var = self.translate_var(context, op.ignore_index_error)
-        output_dtype_var = context.register_operator_constants(op.outputs[0].dtype)
-        return [
-            _get_template.format(
-                input_var=input_var,
-                output_var=output_var,
-                index_var=index_var,
-                ignore_index_error_var=ignore_index_error_var,
-                output_name_var=output_name_var,
-                output_dtype_var=output_dtype_var,
-            )
-        ]
-
-
-@register_op_adapter(SeriesListLengthOperator)
-class SeriesListLengthOperatorAdapter(SPEOperatorAdapter):
-    def generate_code(
-        self, op: SeriesListLengthOperator, context: SPECodeContext
-    ) -> List[str]:
-        input_var = context.get_input_tileable_variable(op.inputs[0])
-        output_var = context.get_output_tileable_variable(op.outputs[0])
-        output_name_var = self.translate_var(context, op.outputs[0].name)
-        output_dtype_var = context.register_operator_constants(op.outputs[0].dtype)
-        return [
-            _length_template.format(
-                input_var=input_var,
-                output_var=output_var,
-                output_name_var=output_name_var,
-                output_dtype_var=output_dtype_var,
-            )
-        ]
+@register_op_adapter(SeriesListMethod)
+class SeriesListMethodAdapter(SeriesTemplateMethodAdapter):
+    _templates = {
+        "getitem": _get_template,
+        "len": _len_template,
+    }

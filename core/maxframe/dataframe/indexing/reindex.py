@@ -16,6 +16,8 @@ from typing import List
 
 import numpy as np
 
+from ...core.operator import OperatorStage
+
 try:
     import scipy.sparse as sps
 except ImportError:  # pragma: no cover
@@ -31,7 +33,7 @@ from ...serialization.serializables import (
     StringField,
 )
 from ...tensor import tensor as astensor
-from ...utils import lazy_import, pd_release_version
+from ...utils import is_full_slice, lazy_import, pd_release_version
 from ..core import INDEX_TYPE
 from ..core import Index as DataFrameIndexType
 from ..initializer import Index as asindex
@@ -92,12 +94,19 @@ class DataFrameReindex(DataFrameOperator, DataFrameOperatorMixin):
     @classmethod
     def _set_inputs(cls, op: "DataFrameReindex", inputs: List[EntityData]):
         super()._set_inputs(op, inputs)
-        inputs_iter = iter(op._inputs)
+        if getattr(op, "indexes", None):
+            op.index, op.columns = [
+                None if is_full_slice(idx) else idx for idx in list(op.indexes) + [None]
+            ][:2]
+        inputs_iter = iter(inputs)
         op._input = next(inputs_iter)
         if op.index is not None and isinstance(op.index, ENTITY_TYPE):
             op.index = next(inputs_iter)
-        if op.fill_value is not None and isinstance(op.fill_value, ENTITY_TYPE):
-            op.fill_value = next(inputs_iter)
+        if op.fill_value is not None:
+            if op.stage == OperatorStage.agg:
+                op.fill_value = None
+            elif isinstance(op.fill_value, ENTITY_TYPE):
+                op.fill_value = next(inputs_iter)
 
     def __call__(self, df_or_series):
         inputs = [df_or_series]
@@ -363,7 +372,7 @@ def reindex(
     axes_kwargs = dict(index=index, columns=columns, axis=axis)
     axes = validate_axis_style_args(
         df_or_series,
-        (labels,),
+        (labels,) if labels is not None else (),
         {k: v for k, v in axes_kwargs.items() if v is not None},
         "labels",
         "reindex",

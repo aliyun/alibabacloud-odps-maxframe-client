@@ -34,6 +34,7 @@ class DataFrameCorr(DataFrameOperator, DataFrameOperatorMixin):
     min_periods = Int32Field("min_periods", default=None)
     axis = Int32Field("axis", default=None)
     drop = BoolField("drop", default=None)
+    ddof = Int32Field("ddof", default=0)
 
     @classmethod
     def _set_inputs(cls, op: "DataFrameCorr", inputs: List[EntityData]):

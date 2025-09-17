@@ -23,7 +23,7 @@ from ..utils import parse_index
 
 class GroupByFill(DataFrameOperator, DataFrameOperatorMixin):
     _op_module_ = "dataframe.groupby"
-    _legacy_name = "GroupByFillOperator"
+    _legacy_name = "GroupByFillOperator"  # since v2.0.0
 
     value = AnyField("value", default=None)
     method = StringField("method", default=None)

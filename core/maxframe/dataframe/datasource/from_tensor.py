@@ -39,6 +39,7 @@ class DataFrameFromTensor(DataFrameOperator, DataFrameOperatorMixin):
     input = AnyField("input")
     index = AnyField("index")
     columns = AnyField("columns")
+    axis = AnyField("axis")
 
     def __init__(self, *args, **kwargs):
         kwargs["_output_types"] = [OutputType.dataframe]
@@ -120,46 +121,82 @@ class DataFrameFromTensor(DataFrameOperator, DataFrameOperatorMixin):
             if isinstance(tileable, ENTITY_TYPE):
                 tileables.append(tileable)
 
-        if index is not None:
-            tileable_size = tileables[0].shape[0]
-            if hasattr(index, "shape"):
-                index_size = index.shape[0]
+        if self.axis == 0:
+            if index is not None:
+                raise NotImplementedError("Cannot accept index when axis=0")
             else:
-                index_size = len(index)
-            if (
-                not pd.isna(tileable_size)
-                and not pd.isna(index_size)
-                and tileable_size != index_size
-            ):
-                raise ValueError(
-                    f"index {index} should have the same shape "
-                    f"with tensor: {tileable_size}"
-                )
-            index_value = self._process_index(index, tileables)
-        else:
-            if np.isnan(tileables[0].shape[0]):
-                index = pd.RangeIndex(0)
+                index = pd.Index(list(input_1d_tileables.keys()))
+                index_value = parse_index(index, store_data=True)
+                self.index = index
+
+            if columns is not None:
+                tileable_size = tileables[0].shape[0] if tileables else 0
+                if not isinstance(columns, pd.Index):
+                    columns = self.columns = pd.Index(columns)
+                column_size = columns.shape[0]
+                if (
+                    not pd.isna(tileable_size)
+                    and not pd.isna(column_size)
+                    and tileable_size != column_size
+                ):
+                    raise ValueError(
+                        f"columns {columns} should have the same shape "
+                        f"with tensor: {tileable_size}"
+                    )
+                columns_value = self._process_index(columns, tileables)
             else:
-                index = pd.RangeIndex(0, tileables[0].shape[0])
-            self.index = index
-            index_value = parse_index(index)
+                if not tileables or np.isnan(tileables[0].shape[0]):
+                    columns = columns_value = None
+                else:
+                    columns = pd.RangeIndex(0, tileables[0].shape[0])
+                    columns_value = parse_index(columns, store_data=True)
+                self.columns = columns
 
-        if columns is not None:
-            if len(input_1d_tileables) != len(columns):
-                raise ValueError(
-                    f"columns {columns} should have size {len(input_1d_tileables)}"
-                )
-            if not isinstance(columns, pd.Index):
-                if isinstance(columns, ENTITY_TYPE):
-                    raise NotImplementedError("The columns value cannot be a tileable")
-                columns = pd.Index(columns)
-            columns_value = parse_index(columns, store_data=True)
+            shape = (len(input_1d_tileables), shape[0] if shape else 0)
         else:
-            columns_value = parse_index(
-                pd.RangeIndex(0, len(input_1d_tileables)), store_data=True
-            )
+            if index is not None:
+                tileable_size = tileables[0].shape[0] if tileables else 0
+                if hasattr(index, "shape"):
+                    index_size = index.shape[0]
+                else:
+                    index_size = len(index)
+                if (
+                    not pd.isna(tileable_size)
+                    and not pd.isna(index_size)
+                    and tileable_size != index_size
+                ):
+                    raise ValueError(
+                        f"index {index} should have the same shape "
+                        f"with tensor: {tileable_size}"
+                    )
+                index_value = self._process_index(index, tileables)
+            else:
+                if not tileables or np.isnan(tileables[0].shape[0]):
+                    index = pd.RangeIndex(0)
+                else:
+                    index = pd.RangeIndex(0, tileables[0].shape[0])
+                self.index = index
+                index_value = parse_index(index)
 
-        shape = (shape[0], len(input_1d_tileables))
+            if columns is not None:
+                if len(input_1d_tileables) != len(columns):
+                    raise ValueError(
+                        f"columns {columns} should have size {len(input_1d_tileables)}"
+                    )
+                if not isinstance(columns, pd.Index):
+                    if isinstance(columns, ENTITY_TYPE):
+                        raise NotImplementedError(
+                            "The columns value cannot be a tileable"
+                        )
+                    columns = pd.Index(columns)
+                columns_value = parse_index(columns, store_data=True)
+            else:
+                columns_value = parse_index(
+                    pd.RangeIndex(0, len(input_1d_tileables)), store_data=True
+                )
+
+            shape = (shape[0] if shape else 0, len(input_1d_tileables))
+
         return self.new_dataframe(
             tileables,
             shape,
@@ -278,6 +315,9 @@ def dataframe_from_tensor(
     gpu: bool = None,
     sparse: bool = False,
 ):
+    if isinstance(columns, list) and columns and isinstance(columns[0], tuple):
+        columns = pd.MultiIndex.from_tuples(columns)
+
     if tensor is not None:
         if tensor.ndim > 2 or tensor.ndim <= 0:
             raise TypeError(
@@ -299,6 +339,8 @@ def dataframe_from_tensor(
             dtypes = pd.Series([], index=pd.Index([], dtype=object))
     if index is not None and not isinstance(index, ENTITY_TYPE):
         index = pd.Index(index)
+        if isinstance(index[0], tuple):
+            index = pd.MultiIndex.from_tuples(index)
     op = DataFrameFromTensor(
         input=tensor, index=index, columns=columns, gpu=gpu, sparse=sparse
     )
@@ -311,7 +353,10 @@ def dataframe_from_1d_tileables(
     columns: Union[pd.Index, list] = None,
     gpu: bool = None,
     sparse: bool = False,
+    axis: int = 1,
 ):
+    from pandas.core.dtypes.cast import find_common_type
+
     data = dict()
     for k, v in d.items():
         if isinstance(v, (list, tuple)) and any(
@@ -322,9 +367,9 @@ def dataframe_from_1d_tileables(
             data[k] = v
     d = data
     if columns is not None:
-        tileables = [d.get(c) for c in columns]
+        tileables = [d.get(c) for c in columns] if axis == 1 else list(d.values())
     else:
-        columns = list(d.keys())
+        columns = list(d.keys()) if axis == 1 else None
         tileables = list(d.values())
 
     gpu = (
@@ -332,14 +377,37 @@ def dataframe_from_1d_tileables(
         if gpu is None
         else gpu
     )
-    dtypes = pd.Series(
-        [t.dtype if hasattr(t, "dtype") else pd.Series(t).dtype for t in tileables],
-        index=columns,
-    )
+
+    if axis == 0:
+        col_num = (
+            tileables[0].shape[0]
+            if hasattr(tileables[0], "shape")
+            else len(tileables[0])
+        )
+        if pd.isna(col_num):
+            dtypes = None
+        else:
+            common_dtype = find_common_type(
+                [
+                    t.dtype if hasattr(t, "dtype") else pd.Series(t).dtype
+                    for t in tileables
+                ]
+            )
+            dtypes = pd.Series(
+                [common_dtype] * col_num,
+                index=columns if columns is not None else pd.RangeIndex(col_num),
+            )
+    else:
+        dtypes = pd.Series(
+            [t.dtype if hasattr(t, "dtype") else pd.Series(t).dtype for t in tileables],
+            index=columns,
+        )
+
     if index is not None and not isinstance(index, ENTITY_TYPE):
         index = pd.Index(index)
+
     op = DataFrameFromTensor(
-        input=d, index=index, columns=columns, gpu=gpu, sparse=sparse
+        input=d, index=index, columns=columns, gpu=gpu, sparse=sparse, axis=axis
     )
     return op(d, index, columns, dtypes)
 

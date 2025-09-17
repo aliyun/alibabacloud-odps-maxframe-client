@@ -14,10 +14,10 @@
 
 from ... import opcodes
 from ...core import OutputType
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin
 
 
-class DataFrameSize(DataFrameReductionOperator, DataFrameReductionMixin):
+class DataFrameSize(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.REDUCTION_SIZE
     _func_name = "size"
 

@@ -15,10 +15,18 @@
 from ... import opcodes
 from ...core import OutputType
 from ...serialization.serializables import Int32Field
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin, ReductionCallable
 
 
-class DataFrameSem(DataFrameReductionOperator, DataFrameReductionMixin):
+class SemReductionCallable(ReductionCallable):
+    def __call__(self, value):
+        skipna, ddof = self.kwargs["skipna"], self.kwargs["ddof"]
+        var = value.var(skipna=skipna, ddof=ddof)
+        cnt = value.count()
+        return (var / cnt) ** 0.5
+
+
+class DataFrameSem(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.SEM
     _func_name = "sem"
 
@@ -27,13 +35,9 @@ class DataFrameSem(DataFrameReductionOperator, DataFrameReductionMixin):
     @classmethod
     def get_reduction_callable(cls, op: "DataFrameSem"):
         skipna, ddof = op.skipna, op.ddof
-
-        def sem(x):
-            var = x.var(skipna=skipna, ddof=ddof)
-            cnt = x.count()
-            return (var / cnt) ** 0.5
-
-        return sem
+        return SemReductionCallable(
+            func_name="sem", kwargs={"skipna": skipna, "ddof": ddof}
+        )
 
 
 def sem_series(series, axis=None, skipna=True, level=None, ddof=1, method=None):

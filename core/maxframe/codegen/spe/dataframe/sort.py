@@ -26,17 +26,27 @@ class _DataFrameSortAdapter(SPEOperatorAdapter):
         self, op: DataFrameSortOperator, context: SPECodeContext
     ) -> List[str]:
         input_var_name = context.get_input_tileable_variable(op.inputs[0])
-        kwargs = {
-            "axis": op.axis,
-            "ascending": op.ascending,
-            "inplace": op.inplace,
-            "na_position": op.na_position,
-            "ignore_index": op.ignore_index,
-        }
+        if op.keep_kind == "head" or not op.nrows:
+            args = []
+            kwargs = {
+                "axis": op.axis,
+                "ascending": op.ascending,
+                "inplace": op.inplace,
+                "na_position": op.na_position,
+                "ignore_index": op.ignore_index,
+            }
+        else:
+            args = [op.nrows]
+            kwargs = {"keep": op.keep_kind}
         kwargs.update(self.extra_args(op, context))
-        args_str = ", ".join(self._translate_call_args(context, **kwargs))
+        args_str = ", ".join(self._translate_call_args(context, *args, **kwargs))
         res_var_name = context.get_output_tileable_variable(op.outputs[0])
-        return [f"{res_var_name} = {input_var_name}.{self.method_name}({args_str})"]
+        ret = [
+            f"{res_var_name} = {input_var_name}.{self.get_method_name(op)}({args_str})"
+        ]
+        if op.keep_kind == "head" and op.nrows:
+            ret.append(f"{res_var_name} = {res_var_name}.head({op.nrows})")
+        return ret
 
     @abstractmethod
     def extra_args(
@@ -44,9 +54,8 @@ class _DataFrameSortAdapter(SPEOperatorAdapter):
     ) -> Dict[str, Any]:
         raise NotImplementedError
 
-    @property
     @abstractmethod
-    def method_name(self) -> str:
+    def get_method_name(self, op: DataFrameSortOperator) -> str:
         raise NotImplementedError
 
 
@@ -54,8 +63,7 @@ class _DataFrameSortAdapter(SPEOperatorAdapter):
 class DataFrameSortIndexAdapter(_DataFrameSortAdapter):
     _method_name = "sort_index"
 
-    @property
-    def method_name(self) -> str:
+    def get_method_name(self, op: DataFrameSortIndex) -> str:
         return self._method_name
 
     def extra_args(
@@ -71,13 +79,18 @@ class DataFrameSortIndexAdapter(_DataFrameSortAdapter):
 class DataFrameSortValuesAdapter(_DataFrameSortAdapter):
     _method_name = "sort_values"
 
-    @property
-    def method_name(self) -> str:
-        return self._method_name
+    def get_method_name(self, op: DataFrameSortValues) -> str:
+        if op.keep_kind == "head" or not op.nrows:
+            return self._method_name
+        else:
+            return "nsmallest" if op.ascending else "nlargest"
 
     def extra_args(
         self, op: DataFrameSortValues, context: SPECodeContext
     ) -> Dict[str, Any]:
         if isinstance(op.outputs[0], DATAFRAME_TYPE):
-            return {"by": op.by}
+            if op.keep_kind == "head" or not op.nrows:
+                return {"by": op.by}
+            else:
+                return {"columns": op.by}
         return {}

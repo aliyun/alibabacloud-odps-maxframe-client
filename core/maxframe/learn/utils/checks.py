@@ -20,7 +20,7 @@ from ... import opcodes
 from ... import tensor as mt
 from ...config import options
 from ...core import ENTITY_TYPE, EntityData, OutputType, get_output_types
-from ...core.operator import Operator, OperatorStage
+from ...core.operator import Operator
 from ...serialization.serializables import (
     BoolField,
     DataTypeField,
@@ -56,7 +56,6 @@ class CheckBase(Operator, LearnOperatorMixin):
         # output input if value not specified
         self.value = value = value if value is not None else x
         self.output_types = get_output_types(value)
-        self.stage = OperatorStage.agg
         return self.new_tileable([x, value], kws=[value.params])
 
 

@@ -29,8 +29,15 @@ from ... import tensor as maxframe_tensor
 from ...core import ENTITY_TYPE, OutputType, enter_mode
 from ...io.odpsio.schema import pandas_dtype_to_arrow_type
 from ...lib.dtypes_extension import ArrowDtype
-from ...serialization.serializables import AnyField, BoolField, DictField, ListField
+from ...serialization.serializables import (
+    AnyField,
+    BoolField,
+    DictField,
+    Int32Field,
+    ListField,
+)
 from ...typing_ import TileableType
+from ...udf import BuiltinFunction
 from ...utils import lazy_import, pd_release_version
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_df, build_empty_df, build_series, parse_index, validate_axis
@@ -89,12 +96,21 @@ class DataFrameAggregate(DataFrameOperator, DataFrameOperatorMixin):
     func = AnyField("func")
     func_rename = ListField("func_rename", default=None)
     axis = AnyField("axis", default=0)
-    numeric_only = BoolField("numeric_only")
-    bool_only = BoolField("bool_only")
+    numeric_only = BoolField("numeric_only", default=None)
+    bool_only = BoolField("bool_only", default=None)
 
-    pre_funcs: List[ReductionPreStep] = ListField("pre_funcs")
-    agg_funcs: List[ReductionAggStep] = ListField("agg_funcs")
-    post_funcs: List[ReductionPostStep] = ListField("post_funcs")
+    pre_funcs: List[ReductionPreStep] = ListField("pre_funcs", default=None)
+    agg_funcs: List[ReductionAggStep] = ListField("agg_funcs", default=None)
+    post_funcs: List[ReductionPostStep] = ListField("post_funcs", default=None)
+    combine_size = Int32Field("combine_size", default=None)
+    use_inf_as_na = BoolField("use_inf_as_na", default=False)
+
+    def has_custom_code(self) -> bool:
+        return any(
+            fun.custom_reduction
+            and not isinstance(fun.custom_reduction, BuiltinFunction)
+            for fun in self.agg_funcs or ()
+        )
 
     @staticmethod
     def _filter_dtypes(op: "DataFrameAggregate", dtypes):
@@ -237,7 +253,11 @@ def is_funcs_aggregate(func, func_kw=None, ndim=2):
         elif isinstance(func, dict):
             if ndim == 2:
                 for f in func.values():
-                    if isinstance(f, Iterable) and not isinstance(f, str):
+                    if (
+                        isinstance(f, Iterable)
+                        and not isinstance(f, ENTITY_TYPE)
+                        and not isinstance(f, str)
+                    ):
                         to_check.extend(f)
                     else:
                         to_check.append(f)
@@ -293,7 +313,11 @@ def normalize_reduction_funcs(op, ndim=None):
             else:
                 op.func = list(raw_func.values())
                 op.func_rename = list(raw_func.keys())
-        elif isinstance(raw_func, Iterable) and not isinstance(raw_func, str):
+        elif (
+            isinstance(raw_func, Iterable)
+            and not isinstance(raw_func, ENTITY_TYPE)
+            and not isinstance(raw_func, str)
+        ):
             op.func = list(raw_func)
         else:
             op.func = [raw_func]
@@ -432,6 +456,7 @@ def aggregate(df, func=None, axis=0, **kw):
     min    1
     """
     axis = validate_axis(axis, df)
+    use_inf_as_na = kw.pop("_use_inf_as_na", pd.get_option("mode.use_inf_as_na"))
     if func == "unique":
         # workaround for direct call of unique function which
         #  returns a tensor directly
@@ -456,6 +481,8 @@ def aggregate(df, func=None, axis=0, **kw):
     dtypes = kw.pop("_dtypes", None)
     index = kw.pop("_index", None)
 
+    combine_size = kw.pop("_combine_size", None) or kw.pop("combine_size", None)
+
     if not is_funcs_aggregate(func, func_kw=kw, ndim=df.ndim):
         return df.transform(func, axis=axis, _call_agg=True)
 
@@ -465,6 +492,8 @@ def aggregate(df, func=None, axis=0, **kw):
         axis=axis,
         numeric_only=numeric_only,
         bool_only=bool_only,
+        combine_size=combine_size,
+        use_inf_as_na=use_inf_as_na,
     )
 
     return op(df, output_type=output_type, dtypes=dtypes, index=index)

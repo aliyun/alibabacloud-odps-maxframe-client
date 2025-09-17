@@ -95,5 +95,16 @@ class NDArraySerializer(Serializer):
         return val
 
 
+class RandomStateSerializer(Serializer):
+    def serial(self, obj: np.random.RandomState, context: Dict):
+        return [], [obj.get_state()], False
+
+    def deserial(self, serialized, context: Dict, subs: List):
+        rs = np.random.RandomState()
+        rs.set_state(subs[0])
+        return rs
+
+
 NDArraySerializer.register(np.generic)
 NDArraySerializer.register(np.ndarray)
+RandomStateSerializer.register(np.random.RandomState)

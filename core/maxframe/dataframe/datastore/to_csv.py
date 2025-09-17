@@ -12,17 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
-
 from ... import opcodes
-from ...core import EntityData
 from ...serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
     Int32Field,
     Int64Field,
-    KeyField,
     ListField,
     StringField,
 )
@@ -33,27 +29,26 @@ from .core import DataFrameDataStore
 class DataFrameToCSV(DataFrameDataStore):
     _op_type_ = opcodes.TO_CSV
 
-    input = KeyField("input")
-    path = AnyField("path")
-    sep = StringField("sep")
-    na_rep = StringField("na_rep")
-    float_format = StringField("float_format")
-    columns = ListField("columns")
-    header = AnyField("header")
-    index = BoolField("index")
-    index_label = AnyField("index_label")
-    mode = StringField("mode")
-    encoding = StringField("encoding")
-    compression = AnyField("compression")
-    quoting = Int32Field("quoting")
-    quotechar = StringField("quotechar")
-    line_terminator = StringField("line_terminator")
-    chunksize = Int64Field("chunksize")
-    date_format = StringField("date_format")
-    doublequote = BoolField("doublequote")
-    escapechar = StringField("escapechar")
-    decimal = StringField("decimal")
-    storage_options = DictField("storage_options")
+    path = AnyField("path", default=None)
+    sep = StringField("sep", default=None)
+    na_rep = StringField("na_rep", default=None)
+    float_format = StringField("float_format", default=None)
+    columns = ListField("columns", default=None)
+    header = AnyField("header", default=None)
+    index = BoolField("index", default=None)
+    index_label = AnyField("index_label", default=None)
+    mode = StringField("mode", default=None)
+    encoding = StringField("encoding", default=None)
+    compression = AnyField("compression", default=None)
+    quoting = Int32Field("quoting", default=None)
+    quotechar = StringField("quotechar", default=None)
+    line_terminator = StringField("line_terminator", default=None)
+    chunksize = Int64Field("chunksize", default=None)
+    date_format = StringField("date_format", default=None)
+    doublequote = BoolField("doublequote", default=None)
+    escapechar = StringField("escapechar", default=None)
+    decimal = StringField("decimal", default=None)
+    storage_options = DictField("storage_options", default=None)
 
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
@@ -62,19 +57,6 @@ class DataFrameToCSV(DataFrameDataStore):
     def one_file(self):
         # if wildcard in path, write csv into multiple files
         return "*" not in self.path
-
-    @property
-    def output_stat(self):
-        return self.output_stat
-
-    @property
-    def output_limit(self):
-        return 1 if not self.output_stat else 2
-
-    @classmethod
-    def _set_inputs(cls, op: "DataFrameToCSV", inputs: List[EntityData]):
-        super()._set_inputs(op, inputs)
-        op._input = op._inputs[0]
 
     def __call__(self, df):
         index_value = parse_index(df.index_value.to_pandas()[:0], df)
@@ -110,13 +92,14 @@ def to_csv(
     compression="infer",
     quoting=None,
     quotechar='"',
-    line_terminator=None,
+    lineterminator=None,
     chunksize=None,
     date_format=None,
     doublequote=True,
     escapechar=None,
     decimal=".",
     storage_options=None,
+    **kw,
 ):
     r"""
     Write object to a comma-separated values (csv) file.
@@ -169,7 +152,7 @@ def to_csv(
         will treat them as non-numeric.
     quotechar : str, default '\"'
         String of length 1. Character used to quote fields.
-    line_terminator : str, optional
+    lineterminator : str, optional
         The newline character or character sequence to use in the output
         file. Defaults to `os.linesep`, which depends on the OS in which
         this method is called ('\n' for linux, '\r\n' for Windows, i.e.).
@@ -203,6 +186,11 @@ def to_csv(
     ...                    'weapon': ['sai', 'bo staff']})
     >>> df.to_csv('out.csv', index=False).execute()
     """
+    lineterminator = lineterminator or kw.pop("line_terminator", None)
+    if kw:
+        raise TypeError(
+            f"to_csv() got an unexpected keyword argument '{next(iter(kw))}'"
+        )
 
     if mode != "w":  # pragma: no cover
         raise NotImplementedError("only support to_csv with mode 'w' for now")
@@ -220,7 +208,7 @@ def to_csv(
         compression=compression,
         quoting=quoting,
         quotechar=quotechar,
-        line_terminator=line_terminator,
+        line_terminator=lineterminator,
         chunksize=chunksize,
         date_format=date_format,
         doublequote=doublequote,

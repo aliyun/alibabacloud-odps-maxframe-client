@@ -1,3 +1,5 @@
+import asyncio
+import functools
 from typing import TYPE_CHECKING, Callable, List, Sequence, Tuple, Union
 
 import numpy as np
@@ -143,3 +145,41 @@ def case_when(
 def patch_pandas():
     if not hasattr(pd.Series, "case_when"):
         pd.Series.case_when = case_when
+
+
+class cached_property:
+    """
+    A property that is only computed once per instance and then replaces itself
+    with an ordinary attribute. Deleting the attribute resets the property.
+    Source: https://github.com/bottlepy/bottle/commit/fa7733e075da0d790d809aa3d2f53071897e6f76
+    """  # noqa
+
+    def __init__(self, func):
+        self.__doc__ = getattr(func, "__doc__")
+        self.func = func
+
+    def __get__(self, obj, cls):
+        if obj is None:
+            return self
+
+        if asyncio.iscoroutinefunction(self.func):
+            return self._wrap_in_coroutine(obj)
+
+        value = obj.__dict__[self.func.__name__] = self.func(obj)
+        return value
+
+    def _wrap_in_coroutine(self, obj):
+        @functools.wraps(obj)
+        def wrapper():
+            future = asyncio.ensure_future(self.func(obj))
+            obj.__dict__[self.func.__name__] = future
+            return future
+
+        return wrapper()
+
+
+# isort: off
+try:
+    from functools import cached_property  # noqa: F811, F401
+except ImportError:
+    pass

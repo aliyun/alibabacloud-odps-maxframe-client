@@ -27,7 +27,7 @@ from ...serialization.serializables import AnyField, KeyField, ListField
 from ...tensor import asarray
 from ...tensor.indexing.core import calc_shape
 from ..operators import DATAFRAME_TYPE, DataFrameOperator, DataFrameOperatorMixin
-from ..utils import indexing_index_value
+from ..utils import indexing_index_value, validate_axis
 
 _ILOC_ERROR_MSG = (
     "Location based indexing can only have [integer, "
@@ -36,13 +36,16 @@ _ILOC_ERROR_MSG = (
 )
 
 
-def process_iloc_indexes(inp, indexes):
+def process_iloc_indexes(inp, indexes, axis=0):
     ndim = inp.ndim
 
     if not isinstance(indexes, tuple):
         indexes = (indexes,)
     if len(indexes) < ndim:
-        indexes += (slice(None),) * (ndim - len(indexes))
+        if not axis:
+            indexes += (slice(None),) * (ndim - len(indexes))
+        else:
+            indexes = (slice(None),) * (ndim - len(indexes)) + indexes
     if len(indexes) > ndim:
         raise IndexingError("Too many indexers")
 
@@ -105,31 +108,34 @@ def process_iloc_indexes(inp, indexes):
 
 
 class DataFrameIloc:
-    def __init__(self, obj):
+    def __init__(self, obj, axis=None):
         self._obj = obj
+        self._axis = axis
 
     def __getitem__(self, indexes):
+        indexes = process_iloc_indexes(self._obj, indexes, axis=self._axis)
         if isinstance(self._obj, DATAFRAME_TYPE):
-            op = DataFrameIlocGetItem(indexes=process_iloc_indexes(self._obj, indexes))
+            op = DataFrameIlocGetItem(indexes=indexes)
         else:
-            op = SeriesIlocGetItem(indexes=process_iloc_indexes(self._obj, indexes))
+            op = SeriesIlocGetItem(indexes=indexes)
         return op(self._obj)
 
     def __setitem__(self, indexes, value):
         if not np.isscalar(value):
             raise NotImplementedError("Only scalar value is supported to set by iloc")
 
+        indexes = process_iloc_indexes(self._obj, indexes, axis=self._axis)
         if isinstance(self._obj, DATAFRAME_TYPE):
-            op = DataFrameIlocSetItem(
-                indexes=process_iloc_indexes(self._obj, indexes), value=value
-            )
+            op = DataFrameIlocSetItem(indexes=indexes, value=value)
         else:
-            op = SeriesIlocSetItem(
-                indexes=process_iloc_indexes(self._obj, indexes), value=value
-            )
+            op = SeriesIlocSetItem(indexes=indexes, value=value)
 
         ret = op(self._obj)
         self._obj.data = ret.data
+
+    def __call__(self, axis):
+        axis = validate_axis(axis, self._obj)
+        return DataFrameIloc(self._obj, axis)
 
 
 class HeadTailOptimizedOperatorMixin(DataFrameOperatorMixin):
@@ -420,6 +426,140 @@ def index_setitem(_idx, *_):
 
 
 def iloc(a):
+    """
+    Purely integer-location based indexing for selection by position.
+
+    ``.iloc[]`` is primarily integer position based (from ``0`` to
+    ``length-1`` of the axis), but may also be used with a boolean
+    array.
+
+    Allowed inputs are:
+
+    - An integer, e.g. ``5``.
+    - A list or array of integers, e.g. ``[4, 3, 0]``.
+    - A slice object with ints, e.g. ``1:7``.
+    - A boolean array.
+    - A ``callable`` function with one argument (the calling Series or
+      DataFrame) and that returns valid output for indexing (one of the above).
+      This is useful in method chains, when you don't have a reference to the
+      calling object, but would like to base your selection on some value.
+
+    ``.iloc`` will raise ``IndexError`` if a requested indexer is
+    out-of-bounds, except *slice* indexers which allow out-of-bounds
+    indexing (this conforms with python/numpy *slice* semantics).
+
+    See more at :ref:`Selection by Position <indexing.integer>`.
+
+    See Also
+    --------
+    DataFrame.iat : Fast integer location scalar accessor.
+    DataFrame.loc : Purely label-location based indexer for selection by label.
+    Series.iloc : Purely integer-location based indexing for
+                   selection by position.
+
+    Examples
+    --------
+    >>> import maxframe.dataframe as md
+    >>> mydict = [{'a': 1, 'b': 2, 'c': 3, 'd': 4},
+    ...           {'a': 100, 'b': 200, 'c': 300, 'd': 400},
+    ...           {'a': 1000, 'b': 2000, 'c': 3000, 'd': 4000 }]
+    >>> df = md.DataFrame(mydict)
+    >>> df.execute()
+          a     b     c     d
+    0     1     2     3     4
+    1   100   200   300   400
+    2  1000  2000  3000  4000
+
+    **Indexing just the rows**
+
+    With a scalar integer.
+
+    >>> type(df.iloc[0]).execute()
+    <class 'pandas.core.series.Series'>
+    >>> df.iloc[0].execute()
+    a    1
+    b    2
+    c    3
+    d    4
+    Name: 0, dtype: int64
+
+    With a list of integers.
+
+    >>> df.iloc[[0]].execute()
+       a  b  c  d
+    0  1  2  3  4
+    >>> type(df.iloc[[0]]).execute()
+    <class 'pandas.core.frame.DataFrame'>
+
+    >>> df.iloc[[0, 1]].execute()
+         a    b    c    d
+    0    1    2    3    4
+    1  100  200  300  400
+
+    With a `slice` object.
+
+    >>> df.iloc[:3].execute()
+          a     b     c     d
+    0     1     2     3     4
+    1   100   200   300   400
+    2  1000  2000  3000  4000
+
+    With a boolean mask the same length as the index.
+
+    >>> df.iloc[[True, False, True]].execute()
+          a     b     c     d
+    0     1     2     3     4
+    2  1000  2000  3000  4000
+
+    With a callable, useful in method chains. The `x` passed
+    to the ``lambda`` is the DataFrame being sliced. This selects
+    the rows whose index label even.
+
+    >>> df.iloc[lambda x: x.index % 2 == 0].execute()
+          a     b     c     d
+    0     1     2     3     4
+    2  1000  2000  3000  4000
+
+    **Indexing both axes**
+
+    You can mix the indexer types for the index and columns. Use ``:`` to
+    select the entire axis.
+
+    With scalar integers.
+
+    >>> df.iloc[0, 1].execute()
+    2
+
+    With lists of integers.
+
+    >>> df.iloc[[0, 2], [1, 3]].execute()
+          b     d
+    0     2     4
+    2  2000  4000
+
+    With `slice` objects.
+
+    >>> df.iloc[1:3, 0:3].execute()
+          a     b     c
+    1   100   200   300
+    2  1000  2000  3000
+
+    With a boolean array whose length matches the columns.
+
+    >>> df.iloc[:, [True, False, True, False]].execute()
+          a     c
+    0     1     3
+    1   100   300
+    2  1000  3000
+
+    With a callable function that expects the Series or DataFrame.
+
+    >>> df.iloc[:, lambda df: [0, 2]].execute()
+          a     c
+    0     1     3
+    1   100   300
+    2  1000  3000
+    """
     return DataFrameIloc(a)
 
 

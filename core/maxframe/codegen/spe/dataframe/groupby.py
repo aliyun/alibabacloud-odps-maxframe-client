@@ -21,12 +21,15 @@ from ....dataframe.groupby.apply import GroupByApply
 from ....dataframe.groupby.apply_chunk import GroupByApplyChunk
 from ....dataframe.groupby.core import DataFrameGroupByOp
 from ....dataframe.groupby.cum import GroupByCumcount, GroupByCumReductionOperator
+from ....dataframe.groupby.expanding import GroupByExpandingAgg
 from ....dataframe.groupby.fill import GroupByFill
 from ....dataframe.groupby.getitem import GroupByIndex
 from ....dataframe.groupby.head import GroupByHead
+from ....dataframe.groupby.rolling import GroupByRollingAgg
 from ....dataframe.groupby.sample import GroupBySample
 from ....dataframe.groupby.transform import GroupByTransform
 from ....dataframe.utils import make_column_list
+from ....dataframe.window.rolling import Rolling
 from ....lib.version import parse as parse_version
 from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
 from ..utils import build_method_call_adapter
@@ -141,6 +144,8 @@ class GroupByApplyChunkAdapter(SPEGroupByOperatorAdapter):
 
 @register_op_adapter(GroupByCumReductionOperator)
 class GroupByCumReductionAdapter(SPEOperatorAdapter):
+    # legacy adapter kept for compatibility
+
     def generate_code(
         self, op: GroupByCumReductionOperator, context: SPECodeContext
     ) -> List[str]:
@@ -222,3 +227,86 @@ class GroupByTransformAdapter(SPEOperatorAdapter):
         args_list = self._translate_call_args(context, op.func, *op.args, **op.kwds)
         args = ", ".join(args_list)
         return [f"{res_var_name} = {input_var_name}.transform({args})"]
+
+
+@register_op_adapter(GroupByExpandingAgg)
+class GroupByExpandingAggAdapter(SPEGroupByOperatorAdapter):
+    def generate_code(
+        self, op: GroupByExpandingAgg, context: SPECodeContext
+    ) -> List[str]:
+        input_var_name = context.get_input_tileable_variable(op.inputs[0])
+        res_var_name = context.get_output_tileable_variable(op.outputs[0])
+
+        by_call = self.build_groupby_call(context, op.groupby_params)
+        op_kwargs = (op.kwargs or dict()).copy()
+        op_kwargs.pop("cumcount", None)
+        func_kw_str = ", ".join(self._translate_call_args(context, **op_kwargs))
+
+        min_periods = op.window_params.get("min_periods", 1)
+        shift = op.window_params.get("shift", 0)
+        reverse_range = op.window_params.get("reverse_range", False)
+
+        if (
+            min_periods == 1
+            and shift == 0
+            and not reverse_range
+            and op.func in ("count", "sum", "prod", "min", "max")
+        ):
+            # can be simplified as cumxxx function
+            cumfunc = "cum" + op.func
+            return [
+                f"{res_var_name} = {input_var_name}.{by_call}.{cumfunc}({func_kw_str})"
+            ]
+
+        agg_func_str = self.translate_var(context, op.func)
+        min_periods_str = self.translate_var(context, min_periods)
+        inv_shift_str = self.translate_var(context, -shift)
+
+        # need to call groupby.apply() as groupby.expanding() is not a standard API
+        func_kw_str = (", " + func_kw_str) if func_kw_str else ""
+        lines = [
+            f"def _exp_fun_{res_var_name}(frame, **_):",
+            f'    func = {agg_func_str} if func != "prod" else lambda x: x.prod()',
+            f"    frame = frame.shift({inv_shift_str})" if shift else None,
+            f"    frame = frame.iloc[::-1]" if reverse_range else None,
+            f"    out_frame = frame.expanding(min_periods={min_periods_str}).agg(func{func_kw_str})",
+            f"    out_frame = out_frame.iloc[::-1]" if reverse_range else None,
+            f"    return out_frame",
+            f"{res_var_name} = {input_var_name}.{by_call}.apply("
+            f"_exp_fun_{res_var_name}, include_groups=False)",
+        ]
+        return [line for line in lines if line is not None]
+
+
+@register_op_adapter(GroupByRollingAgg)
+class GroupByRollingAggAdapter(SPEGroupByOperatorAdapter):
+    def generate_code(
+        self, op: GroupByRollingAgg, context: SPECodeContext
+    ) -> List[str]:
+        input_var_name = context.get_input_tileable_variable(op.inputs[0])
+        res_var_name = context.get_output_tileable_variable(op.outputs[0])
+
+        by_call = self.build_groupby_call(context, op.groupby_params)
+        agg_func_str = self.translate_var(context, op.func)
+
+        window_params = op.window_params.copy()
+        shift = window_params.pop("shift", 0)
+        for key in Rolling._mf_specific_fields:
+            window_params.pop(key, None)
+
+        window_params_kw_str = ", ".join(
+            self._translate_call_args(context, **window_params)
+        )
+        func_kw_str = ", ".join(self._translate_call_args(context, **op.kwargs))
+        func_kw_str = (", " + func_kw_str) if func_kw_str else ""
+        inv_shift_str = self.translate_var(context, -shift)
+
+        # need to call groupby.apply() as groupby.rolling() is not a standard API
+        return [
+            f"def _roll_fun_{res_var_name}(frame, **_):",
+            f'    func = {agg_func_str} if func != "prod" else lambda x: x.prod()',
+            f"    frame = frame.shift({inv_shift_str})",
+            f"    return frame.rolling({window_params_kw_str}).agg(func{func_kw_str})",
+            f"{res_var_name} = {input_var_name}.{by_call}.apply("
+            f"_roll_fun_{res_var_name}, include_groups=False)",
+        ]

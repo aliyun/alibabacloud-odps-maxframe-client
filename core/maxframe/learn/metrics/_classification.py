@@ -33,6 +33,7 @@ from ...serialization.serializables import (
 from ...tensor.core import TensorOrder
 from ...typing_ import EntityType
 from ..core import LearnOperatorMixin
+from ..utils import check_array, check_consistent_length
 from ._check_targets import _check_targets
 
 
@@ -161,6 +162,150 @@ def accuracy_score(
     if not execute:
         return score
     return score.execute(session=session, **(run_kwargs or dict()))
+
+
+class LogLoss(Operator, LearnOperatorMixin):
+    _op_type_ = opcodes.LOG_LOSS
+
+    y_true = AnyField("y_true")
+    y_pred = AnyField("y_pred")
+    eps = Float64Field("eps", default=1e-15)
+    normalize = BoolField("normalize", default=True)
+    sample_weight = AnyField("sample_weight", default=None)
+    labels = AnyField("labels", default=None)
+
+    @classmethod
+    def _set_inputs(cls, op: "LogLoss", inputs: List[EntityType]):
+        super()._set_inputs(op, inputs)
+        inputs_iter = iter(op.inputs)
+        op.y_true = next(inputs_iter)
+        op.y_pred = next(inputs_iter)
+        if isinstance(op.sample_weight, ENTITY_TYPE):
+            op.sample_weight = next(inputs_iter)
+        if isinstance(op.labels, ENTITY_TYPE):
+            op.labels = next(inputs_iter)
+
+    def __call__(self, y_true, y_pred, sample_weight=None, labels=None):
+        self._output_types = [OutputType.tensor]
+        self.sample_weight = sample_weight
+        self.labels = labels
+        inputs = [y_true, y_pred]
+        if isinstance(self.sample_weight, ENTITY_TYPE):
+            inputs.append(self.sample_weight)
+        if isinstance(self.labels, ENTITY_TYPE):
+            inputs.append(self.labels)
+
+        dtype = (
+            np.dtype(float)
+            if self.normalize
+            else np.result_type(y_true.dtype, y_pred.dtype)
+        )
+        return self.new_tileable(
+            inputs, dtype=dtype, shape=(), order=TensorOrder.C_ORDER
+        )
+
+
+def log_loss(
+    y_true,
+    y_pred,
+    *,
+    eps=1e-15,
+    normalize=True,
+    sample_weight=None,
+    labels=None,
+    execute=False,
+    session=None,
+    run_kwargs=None,
+):
+    r"""Log loss, aka logistic loss or cross-entropy loss.
+
+    This is the loss function used in (multinomial) logistic regression
+    and extensions of it such as neural networks, defined as the negative
+    log-likelihood of a logistic model that returns ``y_pred`` probabilities
+    for its training data ``y_true``.
+    The log loss is only defined for two or more labels.
+    For a single sample with true label :math:`y \in \{0,1\}` and
+    and a probability estimate :math:`p = \operatorname{Pr}(y = 1)`, the log
+    loss is:
+
+    .. math::
+        L_{\log}(y, p) = -(y \log (p) + (1 - y) \log (1 - p))
+
+    Read more in the :ref:`User Guide <log_loss>`.
+
+    Parameters
+    ----------
+    y_true : array-like or label indicator matrix
+        Ground truth (correct) labels for n_samples samples.
+
+    y_pred : array-like of float, shape = (n_samples, n_classes) or (n_samples,)
+        Predicted probabilities, as returned by a classifier's
+        predict_proba method. If ``y_pred.shape = (n_samples,)``
+        the probabilities provided are assumed to be that of the
+        positive class. The labels in ``y_pred`` are assumed to be
+        ordered alphabetically, as done by
+        :class:`preprocessing.LabelBinarizer`.
+
+    eps : float, default=1e-15
+        Log loss is undefined for p=0 or p=1, so probabilities are
+        clipped to max(eps, min(1 - eps, p)).
+
+    normalize : bool, default=True
+        If true, return the mean loss per sample.
+        Otherwise, return the sum of the per-sample losses.
+
+    sample_weight : array-like of shape (n_samples,), default=None
+        Sample weights.
+
+    labels : array-like, default=None
+        If not provided, labels will be inferred from y_true. If ``labels``
+        is ``None`` and ``y_pred`` has shape (n_samples,) the labels are
+        assumed to be binary and are inferred from ``y_true``.
+
+    Returns
+    -------
+    loss : float
+
+    Notes
+    -----
+    The logarithm used is the natural logarithm (base-e).
+
+    Examples
+    --------
+    >>> from maxframe.learn.metrics import log_loss
+    >>> log_loss(["spam", "ham", "ham", "spam"],
+    ...          [[.1, .9], [.9, .1], [.8, .2], [.35, .65]])
+    0.21616...
+
+    References
+    ----------
+    C.M. Bishop (2006). Pattern Recognition and Machine Learning. Springer,
+    p. 209.
+    """
+    if not isinstance(y_true, (ENTITY_TYPE, np.ndarray)):
+        y_true = mt.array(y_true)
+    if not isinstance(y_pred, (ENTITY_TYPE, np.ndarray)):
+        y_pred = mt.array(y_pred)
+    if sample_weight is not None and not isinstance(y_pred, (ENTITY_TYPE, np.ndarray)):
+        sample_weight = mt.array(sample_weight)
+    if labels is not None and not isinstance(labels, (ENTITY_TYPE, np.ndarray)):
+        labels = mt.array(labels)
+
+    y_pred = check_array(y_pred, ensure_2d=False)
+    y_pred, y_true, sample_weight = check_consistent_length(
+        y_pred, y_true, sample_weight
+    )
+
+    op = LogLoss(eps=eps, normalize=normalize)
+    res = op(
+        y_true=y_true,
+        y_pred=y_pred,
+        sample_weight=sample_weight,
+        labels=labels,
+    )
+    if execute:
+        return res.execute(session=session, **(run_kwargs or {}))
+    return res
 
 
 class MultiLabelConfusionMatrix(Operator, LearnOperatorMixin):

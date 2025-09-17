@@ -312,7 +312,7 @@ class HasShapeTileableData(TileableData):
 
     @property
     def ndim(self):
-        return len(self.shape)
+        return len(self.shape) if self.shape is not None else np.nan
 
     def __len__(self):
         try:

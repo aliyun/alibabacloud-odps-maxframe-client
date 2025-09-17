@@ -23,6 +23,7 @@ from ....core.operator.core import TileableOperatorMixin
 from ....dataframe.core import SERIES_TYPE
 from ....dataframe.operators import DataFrameOperatorMixin
 from ....dataframe.utils import parse_index
+from ....serialization.serializables import Int32Field
 from ....serialization.serializables.core import Serializable
 from ....serialization.serializables.field import AnyField, DictField, StringField
 
@@ -39,6 +40,7 @@ class LLMTaskOperator(Operator, DataFrameOperatorMixin):
     model = AnyField("model", default=None)
     params = DictField("params", default=None)
     running_options: Dict[str, Any] = DictField("running_options", default=None)
+    timeout = Int32Field("timeout", default=None)
 
     def __init__(self, output_types=None, **kw):
         if output_types is None:

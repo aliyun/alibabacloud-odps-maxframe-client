@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .core import SeriesStringMethod
+from .core import SeriesStringMethod, string_method_to_handlers
+
+methods = set(string_method_to_handlers.keys())
+del string_method_to_handlers
 
 
 def _install():

@@ -12,11 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...serialization.serializables import KeyField, Serializable
+from ...serialization.serializables import FieldTypes, KeyField, ListField, Serializable
 
 
 class Window(Serializable):
+    _mf_specific_fields = ["order_cols", "ascending"]
+
     input = KeyField("input", default=None)
+    order_cols = ListField("order_cols", default=None)
+    ascending = ListField("ascending", FieldTypes.bool, default=None)
+
+    def __init__(self, *, order_cols=None, ascending=True, **kwargs):
+        if order_cols and not isinstance(order_cols, list):
+            order_cols = [order_cols]
+        if not isinstance(ascending, list):
+            ascending = [ascending]
+        elif order_cols and len(order_cols) != len(ascending):
+            raise ValueError("order_cols and ascending must have same length")
+        super().__init__(order_cols=order_cols, ascending=ascending, **kwargs)
 
     @property
     def params(self):

@@ -33,6 +33,13 @@ Modifying and computations
    Index.min
    Index.rename
 
+Selecting
+---------
+.. autosummary::
+   :toctree: generated/
+
+   Index.get_level_values
+
 Compatibility with MultiIndex
 -----------------------------
 .. autosummary::
@@ -58,3 +65,4 @@ Conversion
    :toctree: generated/
 
    Index.astype
+   Index.to_series

@@ -12,6 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import contrib, model_selection, preprocessing
+from . import (
+    cluster,
+    contrib,
+    linear_model,
+    metrics,
+    model_selection,
+    preprocessing,
+    utils,
+)
 
-del contrib, model_selection, preprocessing
+del cluster, contrib, linear_model, metrics, model_selection, preprocessing, utils

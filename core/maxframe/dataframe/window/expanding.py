@@ -12,49 +12,53 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 from collections import OrderedDict
 
 from ... import opcodes
-from ...serialization.serializables import (
-    BoolField,
-    Int32Field,
-    Int64Field,
-    StringField,
-)
-from ...utils import pd_release_version
-from ..utils import validate_axis
+from ...serialization.serializables import BoolField, Int64Field
 from .aggregation import BaseDataFrameExpandingAgg
 from .core import Window
-
-_window_has_method = pd_release_version >= (1, 3, 0)
-_window_has_center = pd_release_version < (2, 0, 0)
 
 
 class DataFrameExpandingAgg(BaseDataFrameExpandingAgg):
     _op_type_ = opcodes.EXPANDING_AGG
 
-    center = BoolField("center", default=None)
+    def __init__(self, *args, **kw):
+        # suspend MF-specific args by now
+        for key in Expanding._mf_specific_fields:
+            kw.pop(key, None)
+        super().__init__(*args, **kw)
 
 
 class Expanding(Window):
+    _mf_specific_fields = Window._mf_specific_fields + ["shift", "reverse_range"]
+
     min_periods = Int64Field("min_periods")
-    axis = Int32Field("axis")
-    center = BoolField("center")
-    method = StringField("method", default="single")
+    # MF specific argument for position shift of window
+    shift = Int64Field("shift", default=None)
+    # MF specific argument for reversed window (sort of "narrowing")
+    reverse_range = BoolField("reverse_range", default=False)
 
     def __call__(self, df):
-        return df.expanding(**self.params)
+        try:
+            return df.expanding(**self.params)
+        except TypeError:
+            params = (self.params or dict()).copy()
+            for key in self._mf_specific_fields:
+                params.pop(key, None)
+            return df.expanding(**params)
 
     @property
     def params(self):
         p = OrderedDict()
 
-        args = ["min_periods", "center", "axis", "method"]
-        if not _window_has_method:  # pragma: no cover
-            args = [a for a in args if a != "method"]
-        if not _window_has_center:
-            args = [a for a in args if a != "center"]
+        args = [
+            "min_periods",
+            "shift",
+            "reverse_range",
+            "order_cols",
+            "ascending",
+        ]
 
         for k in args:
             p[k] = getattr(self, k)
@@ -73,6 +77,9 @@ class Expanding(Window):
     def sum(self):
         return self.aggregate("sum")
 
+    def prod(self):
+        return self.aggregate("prod")
+
     def count(self):
         return self.aggregate("count")
 
@@ -85,14 +92,14 @@ class Expanding(Window):
     def mean(self):
         return self.aggregate("mean")
 
-    def var(self):
-        return self.aggregate("var")
+    def var(self, **kwargs):
+        return self.aggregate("var", **kwargs)
 
-    def std(self):
-        return self.aggregate("std")
+    def std(self, **kwargs):
+        return self.aggregate("std", **kwargs)
 
 
-def expanding(obj, min_periods=1, center=False, axis=0):
+def expanding(obj, min_periods=1, shift=0, reverse_range=False):
     """
     Provide expanding transformations.
 
@@ -139,11 +146,6 @@ def expanding(obj, min_periods=1, center=False, axis=0):
     3  3.0
     4  7.0
     """
-    axis = validate_axis(axis, obj)
-
-    if center:
-        raise NotImplementedError("center == True is not supported")
-    if axis == 1:
-        raise NotImplementedError("axis other than 0 is not supported")
-
-    return Expanding(input=obj, min_periods=min_periods, center=center, axis=axis)
+    return Expanding(
+        input=obj, min_periods=min_periods, shift=shift, reverse_range=reverse_range
+    )

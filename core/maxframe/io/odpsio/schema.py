@@ -22,9 +22,10 @@ import pyarrow as pa
 from odps import types as odps_types
 from pandas.api import types as pd_types
 
+from ...config import options
 from ...core import TILEABLE_TYPE, OutputType
 from ...dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
-from ...lib.dtypes_extension import ArrowDtype
+from ...lib.dtypes_extension import ArrowBlobType, ArrowDtype
 from ...protocol import DataFrameTableMeta
 from ...tensor.core import TENSOR_TYPE
 from ...utils import build_temp_table_name
@@ -65,7 +66,11 @@ _odps_type_to_arrow = {
     odps_types.timestamp_ntz: pa.timestamp("ns"),
 }
 
-_based_for_pandas_pa_types = (pa.ListType, pa.MapType)
+if hasattr(odps_types, "blob"):
+    _arrow_to_odps_types[ArrowBlobType()] = odps_types.blob
+    _odps_type_to_arrow[odps_types.blob] = ArrowBlobType()
+
+_based_for_pandas_pa_types = (pa.ListType, pa.MapType, pa.StructType)
 
 
 def is_based_for_pandas_dtype(arrow_type: pa.DataType) -> bool:
@@ -204,9 +209,10 @@ def odps_schema_to_pandas_dtypes(
 def arrow_table_to_pandas_dataframe(
     table: pa.Table, meta: DataFrameTableMeta = None
 ) -> pd.DataFrame:
+    use_arrow_backend = options.dataframe.dtype_backend == "pyarrow"
     df = table.to_pandas(
         types_mapper=lambda x: (
-            ArrowDtype(x) if is_based_for_pandas_dtype(x) else None
+            ArrowDtype(x) if is_based_for_pandas_dtype(x) or use_arrow_backend else None
         ),
         ignore_metadata=True,
     )

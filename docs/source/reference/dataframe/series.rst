@@ -22,10 +22,12 @@ Attributes
    :toctree: generated/
 
    Series.dtype
-   Series.shape
-   Series.T
+   Series.hasnans
+   Series.memory_usage
    Series.ndim
    Series.name
+   Series.shape
+   Series.T
 
 Conversion
 ----------
@@ -34,6 +36,20 @@ Conversion
 
    Series.astype
    Series.copy
+   Series.to_frame
+
+Index, iteration
+----------------
+.. autosummary::
+   :toctree: generated/
+
+   Series.at
+   Series.iat
+   Series.iloc
+   Series.loc
+   Series.mask
+   Series.xs
+   Series.where
 
 Binary operator functions
 -------------------------
@@ -62,6 +78,7 @@ Binary operator functions
    Series.ge
    Series.ne
    Series.eq
+   Series.combine_first
 
 Function application, groupby & window
 --------------------------------------
@@ -71,8 +88,11 @@ Function application, groupby & window
    Series.apply
    Series.agg
    Series.aggregate
+   Series.ewm
+   Series.expanding
    Series.groupby
    Series.map
+   Series.rolling
    Series.transform
 
 .. _generated.series.stats:
@@ -85,21 +105,32 @@ Computations / descriptive stats
    Series.abs
    Series.all
    Series.any
+   Series.between
+   Series.clip
+   Series.corr
    Series.count
+   Series.cov
+   Series.describe
+   Series.is_monotonic_increasing
+   Series.is_monotonic_decreasing
+   Series.is_unique
    Series.max
    Series.mean
    Series.min
    Series.median
+   Series.nlargest
+   Series.nsmallest
    Series.nunique
    Series.prod
    Series.product
+   Series.quantile
    Series.round
    Series.sem
    Series.std
    Series.sum
    Series.unique
-   Series.var
    Series.value_counts
+   Series.var
 
 Reindexing / selection / label manipulation
 -------------------------------------------
@@ -108,10 +139,15 @@ Reindexing / selection / label manipulation
 
    Series.add_prefix
    Series.add_suffix
+   Series.align
    Series.case_when
    Series.drop
    Series.drop_duplicates
+   Series.droplevel
+   Series.filter
    Series.head
+   Series.idxmax
+   Series.idxmin
    Series.isin
    Series.reindex
    Series.reindex_like
@@ -119,6 +155,8 @@ Reindexing / selection / label manipulation
    Series.reset_index
    Series.sample
    Series.set_axis
+   Series.take
+   Series.truncate
 
 Missing data handling
 ---------------------
@@ -137,8 +175,34 @@ Reshaping, sorting
 .. autosummary::
    :toctree: generated/
 
+   Series.argmax
+   Series.argmin
+   Series.argsort
+   Series.explode
+   Series.reorder_levels
    Series.sort_values
    Series.sort_index
+   Series.swaplevel
+   Series.unstack
+
+Combining / comparing / joining / merging
+-----------------------------------------
+.. autosummary::
+   :toctree: generated/
+
+   Series.append
+   Series.compare
+   Series.update
+
+Time Series-related
+-------------------
+.. autosummary::
+   :toctree: generated/
+
+   Series.first_valid_index
+   Series.last_valid_index
+   Series.shift
+   Series.tshift
 
 Accessors
 ---------
@@ -317,6 +381,23 @@ List methods
 
    Series.list.__getitem__
    Series.list.len
+
+Struct properties
+~~~~~~~~~~~~~~~~~~~~~~~
+
+``Series.struct`` can be used to access the methods of the series with struct values.
+These can be accessed like ``Series.struct.<method>``.
+
+
+Struct methods
+^^^^^^^^^^^^^^^^
+
+.. autosummary::
+   :toctree: generated/
+   :template: accessor_method.rst
+
+   Series.struct.dtypes
+   Series.struct.field
 
 
 Plotting

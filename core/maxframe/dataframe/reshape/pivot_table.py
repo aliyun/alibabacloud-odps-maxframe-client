@@ -39,6 +39,7 @@ class DataFramePivotTable(DataFrameOperator, DataFrameOperatorMixin):
     margins_name = StringField("margins_name", default=None)
     sort = BoolField("sort", default=False)
 
+    # generate intermediate agg result to infer value of columns
     agg_results = KeyField("agg_results", default=None)
 
     def __init__(self, aggfunc=None, **kw):

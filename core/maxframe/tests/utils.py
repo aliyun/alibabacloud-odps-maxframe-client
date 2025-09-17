@@ -16,7 +16,6 @@ import asyncio
 import contextlib
 import functools
 import hashlib
-import logging
 import os
 import queue
 import socket
@@ -233,7 +232,6 @@ def create_test_volume(vol_name, oss_config):
         yield vol_name
     finally:
         try:
-            logging.warning("Deleting test volume %s", vol_name)
             odps_entry.delete_volume(vol_name, auto_remove_dir=True, recursive=True)
         except:
             pass

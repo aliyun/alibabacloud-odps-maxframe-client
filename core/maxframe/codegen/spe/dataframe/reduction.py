@@ -18,7 +18,11 @@ from ....dataframe.reduction import (
     DataFrameAggregate,
     DataFrameAll,
     DataFrameAny,
+    DataFrameArgMax,
+    DataFrameArgMin,
     DataFrameCount,
+    DataFrameIdxMax,
+    DataFrameIdxMin,
     DataFrameKurtosis,
     DataFrameMax,
     DataFrameMean,
@@ -32,21 +36,18 @@ from ....dataframe.reduction import (
     DataFrameUnique,
     DataFrameVar,
 )
-from ....dataframe.reduction.core import (
-    DataFrameCumReductionOperator,
-    DataFrameReductionOperator,
-)
+from ....dataframe.reduction.core import DataFrameCumReduction, DataFrameReduction
 from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
 
 
-@register_op_adapter(DataFrameCumReductionOperator)
+@register_op_adapter(DataFrameCumReduction)
 class DataFrameCumsumAdapter(SPEOperatorAdapter):
     """
     TODO: Refine this in window functions
     """
 
     def generate_code(
-        self, op: DataFrameCumReductionOperator, context: SPECodeContext
+        self, op: DataFrameCumReduction, context: SPECodeContext
     ) -> List[str]:
         input_var_name = context.get_input_tileable_variable(op.inputs[0])
         args = []
@@ -78,7 +79,11 @@ class DataFrameAggregateAdapter(SPEOperatorAdapter):
     [
         DataFrameAll,
         DataFrameAny,
+        DataFrameArgMax,
+        DataFrameArgMin,
         DataFrameCount,
+        DataFrameIdxMax,
+        DataFrameIdxMin,
         DataFrameMax,
         DataFrameMean,
         DataFrameMedian,
@@ -90,13 +95,13 @@ class DataFrameAggregateAdapter(SPEOperatorAdapter):
 class DataFrameReductionAdapter(SPEOperatorAdapter):
     _common_args = ["axis", "skipna", "numeric_only", "bool_only", "level", "min_count"]
 
-    def extra_args(self, op: DataFrameReductionOperator) -> Dict[str, Any]:
+    def extra_args(self, op: DataFrameReduction) -> Dict[str, Any]:
         """
         Get the extra arguments of the API call.
 
         Parameters
         ----------
-        op : DataFrameReductionOperator
+        op : DataFrameReduction
             The DataFrameReductionOperator instance.
 
         Returns
@@ -107,7 +112,7 @@ class DataFrameReductionAdapter(SPEOperatorAdapter):
         return dict()
 
     def generate_code(
-        self, op: DataFrameReductionOperator, context: SPECodeContext
+        self, op: DataFrameReduction, context: SPECodeContext
     ) -> List[str]:
         input_var_name = context.get_input_tileable_variable(op.inputs[0])
         kwargs = dict()

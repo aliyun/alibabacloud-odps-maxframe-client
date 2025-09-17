@@ -16,10 +16,23 @@ import numpy as np
 
 from ... import opcodes
 from ...core import OutputType
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin, ReductionCallable
 
 
-class DataFrameSum(DataFrameReductionOperator, DataFrameReductionMixin):
+class SumReductionCallable(ReductionCallable):
+    def __call__(self, value):
+        from .aggregation import where_function
+
+        skipna, min_count = self.kwargs["skipna"], self.kwargs["min_count"]
+        if min_count == 0:
+            return value.sum(skipna=skipna)
+        else:
+            return where_function(
+                value.count() >= min_count, value.sum(skipna=skipna), np.nan
+            )
+
+
+class DataFrameSum(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.SUM
     _func_name = "sum"
 
@@ -29,19 +42,10 @@ class DataFrameSum(DataFrameReductionOperator, DataFrameReductionMixin):
 
     @classmethod
     def get_reduction_callable(cls, op):
-        from .aggregation import where_function
-
         skipna, min_count = op.skipna, op.min_count
-
-        def sum_(value):
-            if min_count == 0:
-                return value.sum(skipna=skipna)
-            else:
-                return where_function(
-                    value.count() >= min_count, value.sum(skipna=skipna), np.nan
-                )
-
-        return sum_
+        return SumReductionCallable(
+            func_name="sum", kwargs=dict(skipna=skipna, min_count=min_count)
+        )
 
 
 def sum_series(df, axis=None, skipna=True, level=None, min_count=0, method=None):

@@ -12,14 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .to_csv import to_csv
 from .to_odps import to_odps_table
 
 
 def _install():
-    from ..core import DATAFRAME_TYPE
+    from ..core import DATAFRAME_TYPE, SERIES_TYPE
 
     for t in DATAFRAME_TYPE:
+        t.to_csv = to_csv
         t.to_odps_table = to_odps_table
+    for t in SERIES_TYPE:
+        t.to_csv = to_csv
 
 
 _install()

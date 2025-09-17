@@ -13,13 +13,16 @@
 # limitations under the License.
 
 import sys
+import warnings
 from abc import ABC, abstractmethod
 from numbers import Integral
 from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
+import numpy as np
 import pandas as pd
 import pyarrow as pa
 from odps import ODPS
+from odps.errors import ODPSError
 from odps.models import ExternalVolume
 
 from maxframe import utils
@@ -175,6 +178,36 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
         table = self._odps_entry.get_table(table_name)
         return getattr(table, "comment", None)
 
+    def _get_table_record_num(self, table, part_specs):
+        if not part_specs or part_specs == [None]:
+            rec_num = getattr(table, "record_num", None)
+        else:
+            rec_num = 0
+            for part_spec in part_specs:
+                pt_rec_num = getattr(table.get_partition(part_spec), "record_num", None)
+                if pt_rec_num is None or pt_rec_num < 0:
+                    rec_num = None
+                    break
+                else:
+                    rec_num += pt_rec_num
+
+        if rec_num is not None and rec_num >= 0:
+            return rec_num
+
+        try:
+            part_sessions = TunnelTableIO.create_download_sessions(
+                self._odps_entry, table.full_table_name, part_specs
+            )
+            return sum(session.count for session in part_sessions.values())
+        except ODPSError as ex:
+            if "StatusConflict" not in str(ex):
+                raise
+            warnings.warn(
+                f"Failed to obtain record count of table {table.full_table_name}. "
+                f"The original error is:\n{ex}"
+            )
+            return None
+
     async def update_tileable_meta(
         self,
         tileable: TileableType,
@@ -204,10 +237,8 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
                     dtypes = odps_schema_to_pandas_dtypes(table.table_schema)
                     tileable.refresh_from_dtypes(dtypes)
 
-                part_sessions = TunnelTableIO.create_download_sessions(
-                    self._odps_entry, info.full_table_name, part_specs
-                )
-                total_records = sum(session.count for session in part_sessions.values())
+                total_records = self._get_table_record_num(table, part_specs)
+                total_records = np.nan if total_records is None else total_records
 
             new_shape_list = list(tileable.shape)
             new_shape_list[0] = total_records

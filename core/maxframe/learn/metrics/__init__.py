@@ -17,9 +17,15 @@ from ._classification import (
     accuracy_score,
     f1_score,
     fbeta_score,
+    log_loss,
     multilabel_confusion_matrix,
     precision_recall_fscore_support,
     precision_score,
     recall_score,
 )
+from ._ranking import auc, roc_auc_score, roc_curve
 from ._regression import r2_score
+from .pairwise import pairwise_distances
+
+# isort: off
+from ._scorer import get_scorer

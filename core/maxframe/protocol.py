@@ -39,6 +39,7 @@ from .serialization.serializables import (
     SeriesField,
     StringField,
 )
+from .utils import combine_error_message_and_traceback
 
 pickling_support.install()
 
@@ -244,6 +245,9 @@ class ErrorInfo(JsonSerializable):
         "raw_error_source", ErrorSource, FieldTypes.int8, default=None
     )
     raw_error_data: Optional[Exception] = AnyField("raw_error_data", default=None)
+    displayed_error_message: Optional[str] = StringField(
+        "displayed_error_message", default=None
+    )
 
     @classmethod
     def from_exception(cls, exc: Exception):
@@ -282,6 +286,7 @@ class ErrorInfo(JsonSerializable):
             "error_messages": self.error_messages,
             "error_tracebacks": self.error_tracebacks,
             "raw_error_source": self.raw_error_source.value,
+            "displayed_error_message": self.displayed_error_message,
         }
         err_data_bufs = None
         if isinstance(self.raw_error_data, (PickleContainer, RemoteException)):
@@ -298,6 +303,13 @@ class ErrorInfo(JsonSerializable):
                 base64.b64encode(s).decode() for s in err_data_bufs
             ]
         return ret
+
+    def get_displayed_error_message(self) -> str:
+        if self.displayed_error_message is not None:
+            return self.displayed_error_message
+        return combine_error_message_and_traceback(
+            self.error_messages, self.error_tracebacks
+        )
 
 
 class DagInfo(JsonSerializable):

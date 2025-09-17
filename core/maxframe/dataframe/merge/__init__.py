@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .append import DataFrameAppend, append
+from .append import append
+from .combine_first import df_combine_first, series_combine_first
+from .compare import DataFrameCompare, df_compare, series_compare
 from .concat import DataFrameConcat, concat
 from .merge import (
     DataFrameMerge,
@@ -22,14 +24,23 @@ from .merge import (
     join,
     merge,
 )
+from .update import DataFrameUpdate, df_update, series_update
 
 
 def _install():
     from ..core import DATAFRAME_TYPE, SERIES_TYPE
 
     for cls in DATAFRAME_TYPE:
+        setattr(cls, "combine_first", df_combine_first)
+        setattr(cls, "compare", df_compare)
         setattr(cls, "join", join)
         setattr(cls, "merge", merge)
+        setattr(cls, "update", df_update)
+
+    for cls in SERIES_TYPE:
+        setattr(cls, "combine_first", series_combine_first)
+        setattr(cls, "compare", series_compare)
+        setattr(cls, "update", series_update)
 
     for cls in DATAFRAME_TYPE + SERIES_TYPE:
         setattr(cls, "append", append)

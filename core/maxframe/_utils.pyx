@@ -299,6 +299,18 @@ cdef inline _extract_range_index_attr(object range_index, str attr):
         return getattr(range_index, '_' + attr)
 
 
+cdef list tokenize_type(ob):
+    try:
+        pickle.dumps(ob)
+        return [ob]
+    except:
+        pass
+    try:
+        return [cloudpickle.dumps(ob)]
+    except:
+        raise TypeError(f'Cannot generate token for {ob}, type: {type(ob)}') from None
+
+
 cdef list tokenize_pandas_index(ob):
     cdef long long start
     cdef long long stop
@@ -411,7 +423,7 @@ def tokenize_cudf(ob):
 cdef Tokenizer tokenize_handler = Tokenizer()
 
 cdef set _primitive_types = {
-    int, float, str, unicode, bytes, complex, type(None), type, slice, date, datetime, timedelta
+    int, float, str, unicode, bytes, complex, type(None), slice, date, datetime, timedelta
 }
 for t in _primitive_types:
     tokenize_handler.register(t, lambda ob: ob)
@@ -422,6 +434,7 @@ for t in (np.dtype, np.generic):
 for t in (list, tuple, dict, set):
     tokenize_handler.register(t, iterative_tokenize)
 
+tokenize_handler.register(type, tokenize_type)
 tokenize_handler.register(np.ndarray, tokenize_numpy)
 tokenize_handler.register(np.random.RandomState, lambda ob: iterative_tokenize(ob.get_state()))
 tokenize_handler.register(memoryview, lambda ob: mmh3_hash_from_buffer(ob))

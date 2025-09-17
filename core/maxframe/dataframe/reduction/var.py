@@ -15,10 +15,21 @@
 from ... import opcodes
 from ...core import OutputType
 from ...serialization.serializables import Int32Field
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin, ReductionCallable
 
 
-class DataFrameVar(DataFrameReductionOperator, DataFrameReductionMixin):
+class VarReductionCallable(ReductionCallable):
+    def __call__(self, value):
+        skipna, ddof = self.kwargs["skipna"], self.kwargs["ddof"]
+        cnt = value.count()
+        if ddof == 0:
+            return (value**2).mean(skipna=skipna) - (value.mean(skipna=skipna)) ** 2
+        return (
+            (value**2).sum(skipna=skipna) - value.sum(skipna=skipna) ** 2 / cnt
+        ) / (cnt - ddof)
+
+
+class DataFrameVar(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.VAR
     _func_name = "var"
 
@@ -27,16 +38,9 @@ class DataFrameVar(DataFrameReductionOperator, DataFrameReductionMixin):
     @classmethod
     def get_reduction_callable(cls, op: "DataFrameVar"):
         skipna, ddof = op.skipna, op.ddof
-
-        def var(x):
-            cnt = x.count()
-            if ddof == 0:
-                return (x**2).mean(skipna=skipna) - (x.mean(skipna=skipna)) ** 2
-            return ((x**2).sum(skipna=skipna) - x.sum(skipna=skipna) ** 2 / cnt) / (
-                cnt - ddof
-            )
-
-        return var
+        return VarReductionCallable(
+            func_name="var", kwargs={"skipna": skipna, "ddof": ddof}
+        )
 
 
 def var_series(series, axis=None, skipna=True, level=None, ddof=1, method=None):

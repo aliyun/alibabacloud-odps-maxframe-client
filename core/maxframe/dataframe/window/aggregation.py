@@ -19,14 +19,14 @@ import numpy as np
 import pandas as pd
 
 from ...serialization.serializables import AnyField, BoolField, Int32Field, Int64Field
-from ..core import DATAFRAME_TYPE
+from ..core import DATAFRAME_TYPE, ENTITY_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_df, build_empty_series, parse_index
 
 
 class BaseDataFrameExpandingAgg(DataFrameOperator, DataFrameOperatorMixin):
     min_periods = Int64Field("min_periods", default=None)
-    axis = Int32Field("axis", default=None)
+    axis = Int32Field("axis", default=0)
     func = AnyField("func", default=None)
 
     # always treat count as valid. this behavior is cancelled in pandas 1.0
@@ -52,7 +52,7 @@ class BaseDataFrameExpandingAgg(DataFrameOperator, DataFrameOperatorMixin):
                 index_value = parse_index(
                     test_df.index, expanding.params, inp, store_data=False
                 )
-            self._append_index = test_df.columns.nlevels != empty_df.columns.nlevels
+            self.append_index = test_df.columns.nlevels != empty_df.columns.nlevels
             return self.new_dataframe(
                 [inp],
                 shape=(inp.shape[0], test_df.shape[1]),
@@ -92,5 +92,9 @@ class BaseDataFrameExpandingAgg(DataFrameOperator, DataFrameOperatorMixin):
                 else:
                     new_func[k] = v
             self.func = new_func
-        elif isinstance(self.func, Iterable) and not isinstance(self.func, str):
+        elif (
+            isinstance(self.func, Iterable)
+            and not isinstance(self.func, ENTITY_TYPE)
+            and not isinstance(self.func, str)
+        ):
             self.func = list(self.func)

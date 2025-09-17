@@ -15,8 +15,8 @@
 from typing import List
 
 from ... import opcodes
-from ...core import EntityData
-from ...serialization.serializables import AnyField, Int32Field
+from ...core import ENTITY_TYPE, EntityData
+from ...serialization.serializables import AnyField, FieldTypes, Int32Field, ListField
 from ...utils import no_default
 from ..operators import SERIES_TYPE, DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_df, build_series
@@ -31,15 +31,18 @@ class DataFrameReplace(DataFrameOperator, DataFrameOperatorMixin):
     regex = AnyField("regex", default=None)
     method = AnyField("method", default=no_default)
 
+    fill_chunks = ListField("fill_chunks", FieldTypes.key, default=None)
+
     @classmethod
     def _set_inputs(cls, op: "DataFrameReplace", inputs: List[EntityData]):
         super()._set_inputs(op, inputs)
         input_iter = iter(inputs)
         next(input_iter)
-        if isinstance(op.to_replace, SERIES_TYPE):
+        if isinstance(op.to_replace, ENTITY_TYPE):
             op.to_replace = next(input_iter)
-        if isinstance(op.value, SERIES_TYPE):
+        if isinstance(op.value, ENTITY_TYPE):
             op.value = next(input_iter)
+        op.fill_chunks = list(input_iter)
 
     def __call__(self, df_or_series):
         inputs = [df_or_series]

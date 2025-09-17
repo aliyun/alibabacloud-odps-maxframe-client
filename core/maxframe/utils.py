@@ -25,6 +25,7 @@ import inspect
 import io
 import itertools
 import logging
+import math
 import numbers
 import os
 import pkgutil
@@ -32,10 +33,12 @@ import random
 import re
 import struct
 import sys
+import tempfile
 import threading
 import time
 import tokenize as pytokenize
 import types
+import warnings
 import weakref
 import zlib
 from collections.abc import Hashable, Mapping
@@ -45,6 +48,7 @@ from typing import (
     Awaitable,
     Callable,
     Dict,
+    Generator,
     Iterable,
     List,
     Optional,
@@ -547,6 +551,20 @@ class ToThreadMixin:
         return self.to_thread(func, *args, wait_on_cancel=wait_on_cancel, **kwargs)
 
 
+class PatchableMixin:
+    """Patch not None field to dest_obj"""
+
+    __slots__ = ()
+
+    _patchable_attrs = tuple()
+
+    def patch_to(self, dest_obj) -> None:
+        for attr in self._patchable_attrs:
+            val = getattr(self, attr, None)
+            if val is not None:
+                setattr(dest_obj, attr, val)
+
+
 def config_odps_default_options():
     from odps import options as odps_options
 
@@ -712,7 +730,10 @@ def sbytes(x: Any) -> bytes:
     elif isinstance(x, str):
         return bytes(x, encoding="utf-8")
     else:
-        return bytes(x)
+        try:
+            return bytes(x)
+        except TypeError:
+            return bytes(str(x), encoding="utf-8")
 
 
 def is_full_slice(slc: Any) -> bool:
@@ -914,7 +935,7 @@ def stringify_path(path: Union[str, os.PathLike]) -> str:
         raise TypeError("not a path-like object")
 
 
-_memory_size_indices = {"": 0, "k": 1, "m": 2, "g": 3, "t": 4}
+_memory_size_indices = {"": 0, "b": 0, "k": 1, "m": 2, "g": 3, "t": 4}
 
 _size_pattern = re.compile(r"^([0-9.-]+)\s*([a-z]*)$")
 
@@ -1050,13 +1071,19 @@ def remove_suffix(value: str, suffix: str) -> Tuple[str, bool]:
         return value, match
 
 
-def find_objects(nested: Union[List, Dict], types: Union[Type, Tuple[Type]]) -> List:
+def find_objects(
+    nested: Union[List, Dict],
+    types: Union[None, Type, Tuple[Type]] = None,
+    checker: Callable[..., bool] = None,
+) -> List:
     found = []
     stack = [nested]
 
     while len(stack) > 0:
         it = stack.pop()
-        if isinstance(it, types):
+        if (types is not None and isinstance(it, types)) or (
+            checker is not None and checker(it)
+        ):
             found.append(it)
             continue
 
@@ -1184,7 +1211,7 @@ def arrow_type_from_str(type_str: str) -> pa.DataType:
     token_iter = pytokenize.tokenize(io.BytesIO(type_str.encode()).readline)
     value_stack, op_stack = [], []
 
-    def _pop_make_type(with_args: bool = False, combined: bool = True) -> None:
+    def _pop_make_type(with_args: bool = False, combined: bool = True):
         """
         Pops tops of value stacks, creates a DataType instance and push back
 
@@ -1208,6 +1235,23 @@ def arrow_type_from_str(type_str: str) -> pa.DataType:
         else:  # pragma: no cover
             value_stack.append(type_name)
 
+    def _pop_make_struct_field():
+        """parameterized sub-types need to be represented as tuples"""
+        nonlocal value_stack
+
+        op_stack.pop(-1)
+        if isinstance(value_stack[-1], str) and value_stack[-1].lower() in (
+            "null",
+            "not null",
+        ):
+            values = value_stack[-3:]
+            value_stack = value_stack[:-3]
+            values[-1] = values[-1] == "null"
+        else:
+            values = value_stack[-2:]
+            value_stack = value_stack[:-2]
+        value_stack.append(tuple(values))
+
     for token in token_iter:
         if token.type == pytokenize.OP:
             if token.string == ":":
@@ -1216,13 +1260,9 @@ def arrow_type_from_str(type_str: str) -> pa.DataType:
                 # gather previous sub-types
                 if op_stack[-1] in ("<", ":"):
                     _pop_make_type()
-
                 if op_stack[-1] == ":":
-                    # parameterized sub-types need to be represented as tuples
-                    op_stack.pop(-1)
-                    values = value_stack[-2:]
-                    value_stack = value_stack[:-2]
-                    value_stack.append(tuple(values))
+                    _pop_make_struct_field()
+
                 # put generated item into the parameter list
                 val = value_stack.pop(-1)
                 value_stack[-1].append(val)
@@ -1239,22 +1279,20 @@ def arrow_type_from_str(type_str: str) -> pa.DataType:
                 op_stack.pop(-1)
             elif token.string == ">":
                 _pop_make_type()
-
                 if op_stack[-1] == ":":
-                    # parameterized sub-types need to be represented as tuples
-                    op_stack.pop(-1)
-                    values = value_stack[-2:]
-                    value_stack = value_stack[:-2]
-                    value_stack.append(tuple(values))
+                    _pop_make_struct_field()
 
                 # put generated item into the parameter list
                 val = value_stack.pop(-1)
                 value_stack[-1].append(val)
                 # make DataType (i.e., list / map / struct) given args
-                _pop_make_type(True)
+                _pop_make_type(with_args=True)
                 op_stack.pop(-1)
         elif token.type == pytokenize.NAME:
-            value_stack.append(token.string)
+            if value_stack and value_stack[-1] == "not":
+                value_stack[-1] += " " + token.string
+            else:
+                value_stack.append(token.string)
         elif token.type == pytokenize.NUMBER:
             value_stack.append(int(token.string))
         elif token.type == pytokenize.ENDMARKER:
@@ -1545,3 +1583,139 @@ def cache_tileables(*tileables):
     for t in tileables:
         if isinstance(t, ENTITY_TYPE):
             t.cache = True
+
+
+def ignore_warning(func: Callable):
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            return func(*args, **kwargs)
+
+    return inner
+
+
+class ServiceLoggerAdapter(logging.LoggerAdapter):
+    extra_key_mapping = {}
+
+    def process(self, msg, kwargs):
+        merged_extra = (self.extra or {}).copy()
+        merged_extra.update(kwargs)
+
+        prefix = " ".join(
+            f"{self.extra_key_mapping.get(k) or k.capitalize()}={merged_extra[k]}"
+            for k in merged_extra.keys()
+        )
+        msg = f"[{prefix}] {msg}"
+        return msg, kwargs
+
+
+@contextmanager
+def atomic_writer(filename, mode="w", **kwargs):
+    """
+    Write to a file in an atomic way.
+    """
+    temp_fd, temp_path = tempfile.mkstemp(dir=os.path.dirname(filename) or ".")
+    os.chmod(temp_path, 0o644)
+    os.close(temp_fd)  # Close the file descriptor immediately and we reopen this later.
+
+    try:
+        # Write to temp file.
+        with open(temp_path, mode, **kwargs) as temp_file:
+            yield temp_file
+
+        # Replace the original file with the temp file atomically.
+        os.replace(temp_path, filename)
+    finally:
+        try:
+            os.remove(temp_path)
+        except OSError:
+            pass
+
+
+def prevent_called_from_pandas(level=2):
+    """Prevent method from being called from pandas"""
+    frame = sys._getframe(level)
+    called_frame = sys._getframe(1)
+    pd_pack_location = os.path.dirname(pd.__file__)
+    if frame.f_code.co_filename.startswith(pd_pack_location):
+        raise AttributeError(called_frame.f_code.co_name)
+
+
+def combine_error_message_and_traceback(
+    messages: List[str], tracebacks: List[List[str]]
+) -> str:
+    tbs = []
+    for msg, tb in zip(messages, tracebacks):
+        tbs.append("".join([msg + "\n"] + tb))
+    return "\nCaused by:\n".join(tbs)
+
+
+def generate_unique_id(byte_len: int) -> Generator[str, None, None]:
+    """
+    The ids are ensured to be unique in one generator.
+    DO NOT use this generator in global scope or singleton class members,
+    as it may not free the set.
+    """
+    generated_ids = set()
+    while True:
+        new_id = new_random_id(byte_len).hex()
+        if new_id not in generated_ids:
+            generated_ids.add(new_id)
+            yield new_id
+
+
+def validate_and_adjust_resource_ratio(
+    expect_resources: Dict[str, Any],
+    max_memory_cpu_ratio: float = None,
+    adjust: bool = False,
+) -> Tuple[Dict[str, Any], bool]:
+    """
+    Validate and optionally adjust CPU:memory ratio to meet maximum requirements.
+
+    Args:
+        expect_resources: Dictionary containing resource specifications
+        max_memory_cpu_ratio: Maximum memory/cpu ratio (if None, will use config value)
+        adjust: Whether to automatically adjust resources to meet ratio
+
+    Returns:
+        Tuple of (adjusted_resources, was_adjusted)
+    """
+    cpu = expect_resources.get("cpu") or 1
+    memory = expect_resources.get("memory")
+
+    if cpu is None or memory is None or max_memory_cpu_ratio is None:
+        return expect_resources, False
+
+    # Convert memory to GiB if it's a string
+    cpu = max(cpu, 1)
+    memory_gib = parse_size_to_megabytes(memory, default_number_unit="GiB") / 1024
+    current_ratio = memory_gib / cpu
+
+    if current_ratio > max_memory_cpu_ratio:
+        # Adjust CPU to meet maximum ratio, don't reduce resources
+        recommended_cpu = math.ceil(memory_gib / max_memory_cpu_ratio)
+        new_ratio = memory_gib / recommended_cpu
+        if adjust:
+            adjusted_resources = expect_resources.copy()
+            adjusted_resources["cpu"] = recommended_cpu
+
+            warnings.warn(
+                f"UDF resource auto-adjustment: Current UDF settings"
+                f" (CPU: {cpu}, Memory: {memory_gib}Gib, Ratio: {current_ratio:.2f})"
+                f" exceed maximum allowed ratio {max_memory_cpu_ratio:.1f}. "
+                f"Automatically adjusted to (CPU: {recommended_cpu},"
+                f" Memory: {memory_gib:.2f}:1Gib,"
+                f" Ratio: {new_ratio:.2f}:1) to meet requirements."
+            )
+            return adjusted_resources, True
+        else:
+            warnings.warn(
+                f"UDF resource ratio warning: Current UDF settings"
+                f" (CPU: {cpu}, Memory: {memory_gib}Gib, Ratio: {current_ratio:.2f})"
+                f" exceed maximum allowed ratio {max_memory_cpu_ratio:.1f}. "
+                f"Consider adjusting CPU to at least {recommended_cpu}"
+                f" (which would result in Ratio: {new_ratio:.2f}) to meet requirements."
+            )
+
+    return expect_resources, False

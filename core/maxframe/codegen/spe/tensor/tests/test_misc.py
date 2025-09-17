@@ -15,7 +15,11 @@
 from ..... import tensor as mt
 from ...core import SPECodeContext
 from ..misc import (
+    TensorCopyToAdapter,
+    TensorGetShapeAdapter,
+    TensorInsertAdapter,
     TensorIsInAdapter,
+    TensorSplitAdapter,
     TensorSqueezeAdapter,
     TensorTransposeAdapter,
     TensorUniqueAdapter,
@@ -40,7 +44,7 @@ def test_transpose():
     adapter = TensorTransposeAdapter()
     context = SPECodeContext()
     results = adapter.generate_code(result.op, context)
-    expected_results = ["var_1 = np.transpose(var_0, axes=[1, 0, 2])"]
+    expected_results = ["var_0 = np.transpose(var_1, axes=[1, 0, 2])"]
     assert results == expected_results
 
 
@@ -50,7 +54,7 @@ def test_squeeze():
     adapter = TensorSqueezeAdapter()
     context = SPECodeContext()
     results = adapter.generate_code(result.op, context)
-    expected_results = ["var_1 = np.squeeze(var_0, axis=(0,))"]
+    expected_results = ["var_0 = np.squeeze(var_1, axis=(0,))"]
     assert results == expected_results
 
 
@@ -90,5 +94,51 @@ def test_unique():
     expected_results = [
         "var_1, var_2, var_3, var_4 = "
         "np.unique(var_0, return_index=True, return_inverse=True, return_counts=True, axis=0)"
+    ]
+    assert results == expected_results
+
+
+def test_insert():
+    result = mt.insert(mt.array([[1, 1], [2, 2], [3, 3]]), 1, 5)
+
+    adapter = TensorInsertAdapter()
+    context = SPECodeContext()
+    results = adapter.generate_code(result.op, context)
+    expected_results = ["var_0 = np.insert(var_1, 1, values=5)"]
+    assert results == expected_results
+
+
+def test_split():
+    res_tp = mt.split(mt.array([1, 2, 3, 4, 5, 6]), 3)
+
+    adapter = TensorSplitAdapter()
+    context = SPECodeContext()
+    results = adapter.generate_code(res_tp[0].op, context)
+    expected_results = ["var_1, var_2, var_3 = np.split(var_0, 3 axis=0)"]
+    assert results == expected_results
+
+
+def test_get_shape():
+    inp = mt.array([[1, 1], [2, 2], [3, 3]])
+    res = mt.shape(inp[:, inp[0, :] == 1])
+
+    adapter = TensorGetShapeAdapter()
+    context = SPECodeContext()
+    results = adapter.generate_code(res[0].op, context)
+    expected_results = ["var_1, var_2 = np.shape(var_0)"]
+    assert results == expected_results
+
+
+def test_copyto():
+    dest = mt.array([[1, 1], [2, 2], [3, 3]])
+    src = mt.array([[1, 1], [2, 2], [3, 4]])
+    mt.copyto(dest, src)
+
+    adapter = TensorCopyToAdapter()
+    context = SPECodeContext()
+    results = adapter.generate_code(dest.op, context)
+    expected_results = [
+        "var_2 = var_0.copy()",
+        "np.copyto(var_2, var_1, casting='same_kind')",
     ]
     assert results == expected_results

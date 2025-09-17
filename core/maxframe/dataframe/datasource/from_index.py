@@ -51,7 +51,7 @@ class SeriesFromIndex(DataFrameOperator, DataFrameOperatorMixin):
 
 
 def series_from_index(ind, index=None, name=None):
-    name = name or ind.name or 0
+    name = name or ind.name
     if index is not None:
         index = Index(index)
     op = SeriesFromIndex(input_=ind, index=index, name=name)

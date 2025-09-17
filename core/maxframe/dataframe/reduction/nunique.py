@@ -22,12 +22,12 @@ from ...config import options
 from ...core import OutputType
 from ...serialization.serializables import BoolField
 from ...utils import lazy_import
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin, ReductionCallable
 
 cudf = lazy_import("cudf")
 
 
-class DataFrameNunique(DataFrameReductionOperator, DataFrameReductionMixin):
+class DataFrameNunique(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.NUNIQUE
     _func_name = "nunique"
 
@@ -38,17 +38,18 @@ class DataFrameNunique(DataFrameReductionOperator, DataFrameReductionMixin):
     def is_atomic(self):
         return True
 
+    def get_reduction_args(self, axis=None):
+        args = dict(dropna=self.dropna)
+        if self.inputs and self.inputs[0].ndim > 1:
+            args["axis"] = axis
+        return {k: v for k, v in args.items() if v is not None}
+
     @classmethod
     def get_reduction_callable(cls, op):
         func_name = getattr(op, "_func_name")
         kw = dict(dropna=op.dropna)
         kw = {k: v for k, v in kw.items() if v is not None}
-
-        def fun(value):
-            return value.nunique(**kw)
-
-        fun.__name__ = func_name
-        return fun
+        return ReductionCallable(func_name=func_name, kwargs=kw)
 
 
 def nunique_dataframe(df, axis=0, dropna=True):

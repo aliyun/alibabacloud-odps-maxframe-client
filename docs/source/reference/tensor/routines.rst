@@ -15,9 +15,13 @@ The following pages describe Numpy-compatible routines. These functions cover a 
    indexing
    manipulation
    binary
+   fft
+   indexing
+   linalg
    logic
    math
    random
    sets
    sorting
+   special
    statistics

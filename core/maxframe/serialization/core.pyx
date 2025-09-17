@@ -53,6 +53,11 @@ except (ImportError, AttributeError):
     pass
 
 try:
+    import pyarrow as pa
+except ImportError:
+    pa = None
+
+try:
     import pytz
     from pytz import BaseTzInfo as PyTZ_BaseTzInfo
 except ImportError:
@@ -95,6 +100,8 @@ cdef:
     int SLICE_SERIALIZER = 13
     int REGEX_SERIALIZER = 14
     int NO_DEFAULT_SERIALIZER = 15
+    int ARROW_BUFFER_SERIALIZER = 16
+    int RANGE_SERIALIZER = 17
     int PLACEHOLDER_SERIALIZER = 4096
 
 
@@ -874,10 +881,26 @@ cdef class SliceSerializer(Serializer):
     serializer_id = SLICE_SERIALIZER
 
     cpdef serial(self, object obj: slice, dict context):
+        cdef list elems = [obj.start, obj.stop, obj.step]
+        for x in elems:
+            if x is not None and not isinstance(x, int):
+                return [], elems, False
+        return elems, [], True
+
+    cpdef deserial(self, list serialized, dict context, list subs):
+        if len(serialized) == 0:
+            return slice(subs[0], subs[1], subs[2])
+        return slice(*serialized[:3])
+
+
+cdef class RangeSerializer(Serializer):
+    serializer_id = RANGE_SERIALIZER
+
+    cpdef serial(self, object obj: range, dict context):
         return [obj.start, obj.stop, obj.step], [], True
 
     cpdef deserial(self, list serialized, dict context, list subs):
-        return slice(*serialized[:3])
+        return range(*serialized[:3])
 
 
 cdef class RegexSerializer(Serializer):
@@ -904,6 +927,18 @@ cdef class NoDefaultSerializer(Serializer):
 
     cpdef deserial(self, list obj, dict context, list subs):
         return no_default
+
+
+cdef class ArrowBufferSerializer(Serializer):
+    serializer_id = ARROW_BUFFER_SERIALIZER
+
+    cpdef serial(self, object obj, dict context):
+        return [], [obj], True
+
+    cpdef deserial(self, list obj, dict context, list subs):
+        if not isinstance(subs[0], pa.Buffer):
+            return pa.py_buffer(subs[0])
+        return subs[0]
 
 
 cdef class Placeholder:
@@ -959,8 +994,11 @@ DtypeSerializer.register(np.dtype)
 DtypeSerializer.register(ExtensionDtype)
 ComplexSerializer.register(complex)
 SliceSerializer.register(slice)
+RangeSerializer.register(range)
 RegexSerializer.register(re.Pattern)
 NoDefaultSerializer.register(NoDefault)
+if pa is not None:
+    ArrowBufferSerializer.register(pa.Buffer)
 PlaceholderSerializer.register(Placeholder)
 
 

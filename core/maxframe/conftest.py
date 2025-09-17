@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
 import faulthandler
 import os
 from configparser import ConfigParser, NoOptionError, NoSectionError
@@ -87,17 +88,19 @@ def _get_bearer_token_env(test_config: ConfigParser, section_name: str) -> ODPS:
     )
 
 
-@pytest.fixture(scope="session")
-def odps_with_schema(test_config):
-    try:
-        return _get_bearer_token_env(test_config, "odps_with_schema")
-    except NoSectionError:
-        pytest.skip("Need to specify odps_with_schema section in test.conf")
-
-
-@pytest.fixture(scope="session", autouse=True)
-def odps_envs(test_config):
-    entry = _get_bearer_token_env(test_config, "odps")
+@contextlib.contextmanager
+def _enter_odps_envs(entry, drop_temp_tables=True):
+    stored_envs = {}
+    for env_name in (
+        "ODPS_BEARER_TOKEN",
+        "ODPS_PROJECT_NAME",
+        "ODPS_ENDPOINT",
+        "RAY_ISOLATION_UT_ENV",
+        "ODPS_TUNNEL_ENDPOINT",
+    ):
+        if env_name in os.environ:
+            stored_envs[env_name] = os.environ[env_name]
+            del os.environ[env_name]
 
     os.environ["ODPS_BEARER_TOKEN"] = entry.account.token
     os.environ["ODPS_PROJECT_NAME"] = entry.project
@@ -115,13 +118,37 @@ def odps_envs(test_config):
         os.environ.pop("ODPS_TUNNEL_ENDPOINT", None)
         os.environ.pop("RAY_ISOLATION_UT_ENV", None)
 
-        from .tests.utils import _test_tables_to_drop
+        for env_name, val in stored_envs.items():
+            os.environ[env_name] = val
 
-        for table_name in _test_tables_to_drop:
-            try:
-                entry.delete_table(table_name, wait=False)
-            except:
-                pass
+        if drop_temp_tables:
+            from .tests.utils import _test_tables_to_drop
+
+            for table_name in _test_tables_to_drop:
+                try:
+                    entry.delete_table(table_name, wait=False)
+                except:
+                    pass
+
+
+@pytest.fixture
+def odps_with_schema(test_config, request):
+    try:
+        entry = _get_bearer_token_env(test_config, "odps_with_schema")
+    except NoSectionError:
+        pytest.skip("Need to specify odps_with_schema section in test.conf")
+        raise
+
+    with _enter_odps_envs(entry, drop_temp_tables=False):
+        yield entry
+
+
+@pytest.fixture(scope="session", autouse=True)
+def odps_envs(test_config):
+    entry = _get_bearer_token_env(test_config, "odps")
+
+    with _enter_odps_envs(entry):
+        yield
 
 
 @pytest.fixture(scope="session")

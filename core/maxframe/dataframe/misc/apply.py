@@ -64,7 +64,7 @@ class DataFrameApply(
     DataFrameOperator, DataFrameOperatorMixin, ApplyOperandLogicKeyGeneratorMixin
 ):
     _op_type_ = opcodes.APPLY
-    _legacy_name = "ApplyOperator"
+    _legacy_name = "ApplyOperator"  # since v2.0.0
 
     func = FunctionField("func")
     axis = AnyField("axis", default=0)

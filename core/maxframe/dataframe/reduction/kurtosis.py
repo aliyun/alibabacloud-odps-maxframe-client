@@ -17,10 +17,42 @@ import numpy as np
 from ... import opcodes
 from ...core import ENTITY_TYPE, OutputType
 from ...serialization.serializables import BoolField
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin, ReductionCallable
 
 
-class DataFrameKurtosis(DataFrameReductionOperator, DataFrameReductionMixin):
+class KurtosisReductionCallable(ReductionCallable):
+    def __call__(self, value):
+        from .aggregation import where_function
+
+        skipna = self.kwargs["skipna"]
+        bias = self.kwargs["bias"]
+        fisher = self.kwargs["fisher"]
+
+        cnt = value.count()
+        mean = value.mean(skipna=skipna)
+        divided = (
+            (value**4).mean(skipna=skipna)
+            - 4 * (value**3).mean(skipna=skipna) * mean
+            + 6 * (value**2).mean(skipna=skipna) * mean**2
+            - 3 * mean**4
+        )
+        var = value.var(skipna=skipna, ddof=0)
+        if isinstance(var, ENTITY_TYPE) or var > 0:
+            val = where_function(var > 0, divided / var**2, np.nan)
+        else:
+            val = np.nan
+        if not bias:
+            val = where_function(
+                (var > 0) & (cnt > 3),
+                (val * (cnt**2 - 1) - 3 * (cnt - 1) ** 2) / (cnt - 2) / (cnt - 3),
+                np.nan,
+            )
+        if not fisher:
+            val += 3
+        return val
+
+
+class DataFrameKurtosis(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.KURTOSIS
     _func_name = "kurt"
 
@@ -29,35 +61,10 @@ class DataFrameKurtosis(DataFrameReductionOperator, DataFrameReductionMixin):
 
     @classmethod
     def get_reduction_callable(cls, op):
-        from .aggregation import where_function
-
         skipna, bias, fisher = op.skipna, op.bias, op.fisher
-
-        def kurt(x):
-            cnt = x.count()
-            mean = x.mean(skipna=skipna)
-            divided = (
-                (x**4).mean(skipna=skipna)
-                - 4 * (x**3).mean(skipna=skipna) * mean
-                + 6 * (x**2).mean(skipna=skipna) * mean**2
-                - 3 * mean**4
-            )
-            var = x.var(skipna=skipna, ddof=0)
-            if isinstance(var, ENTITY_TYPE) or var > 0:
-                val = where_function(var > 0, divided / var**2, np.nan)
-            else:
-                val = np.nan
-            if not bias:
-                val = where_function(
-                    (var > 0) & (cnt > 3),
-                    (val * (cnt**2 - 1) - 3 * (cnt - 1) ** 2) / (cnt - 2) / (cnt - 3),
-                    np.nan,
-                )
-            if not fisher:
-                val += 3
-            return val
-
-        return kurt
+        return KurtosisReductionCallable(
+            func_name="kurt", kwargs=dict(skipna=skipna, bias=bias, fisher=fisher)
+        )
 
 
 def kurt_series(

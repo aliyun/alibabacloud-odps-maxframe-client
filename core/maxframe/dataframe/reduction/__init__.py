@@ -15,6 +15,8 @@
 from .aggregation import DataFrameAggregate
 from .all import DataFrameAll
 from .any import DataFrameAny
+from .argmax import DataFrameArgMax
+from .argmin import DataFrameArgMin
 from .core import CustomReduction
 from .count import DataFrameCount
 from .cummax import DataFrameCummax
@@ -22,6 +24,8 @@ from .cummin import DataFrameCummin
 from .cumprod import DataFrameCumprod
 from .cumsum import DataFrameCumsum
 from .custom_reduction import DataFrameCustomReduction
+from .idxmax import DataFrameIdxMax
+from .idxmin import DataFrameIdxMin
 from .kurtosis import DataFrameKurtosis
 from .max import DataFrameMax
 from .mean import DataFrameMean
@@ -43,11 +47,16 @@ def _install():
     from .aggregation import aggregate
     from .all import all_dataframe, all_index, all_series
     from .any import any_dataframe, any_index, any_series
+    from .argmax import argmax_series
+    from .argmin import argmin_series
     from .count import count_dataframe, count_series
+    from .cov import cov_dataframe, cov_series
     from .cummax import cummax
     from .cummin import cummin
     from .cumprod import cumprod
     from .cumsum import cumsum
+    from .idxmax import idxmax_dataframe, idxmax_series
+    from .idxmin import idxmin_dataframe, idxmin_series
     from .kurtosis import kurt_dataframe, kurt_series
     from .max import max_dataframe, max_index, max_series
     from .mean import mean_dataframe, mean_series
@@ -63,31 +72,36 @@ def _install():
     from .var import var_dataframe, var_series
 
     funcs = [
-        ("sum", sum_series, sum_dataframe),
-        ("prod", prod_series, prod_dataframe),
-        ("product", prod_series, prod_dataframe),
-        ("max", max_series, max_dataframe),
-        ("min", min_series, min_dataframe),
-        ("count", count_series, count_dataframe),
-        ("mean", mean_series, mean_dataframe),
-        ("median", median_series, median_dataframe),
-        ("var", var_series, var_dataframe),
-        ("std", std_series, std_dataframe),
+        ("agg", aggregate, aggregate),
+        ("aggregate", aggregate, aggregate),
         ("all", all_series, all_dataframe),
         ("any", any_series, any_dataframe),
+        ("argmax", argmax_series, None),
+        ("argmin", argmin_series, None),
+        ("count", count_series, count_dataframe),
+        ("cov", cov_series, cov_dataframe),
         ("cummax", cummax, cummax),
         ("cummin", cummin, cummin),
         ("cumprod", cumprod, cumprod),
         ("cumsum", cumsum, cumsum),
-        ("agg", aggregate, aggregate),
-        ("aggregate", aggregate, aggregate),
-        ("nunique", nunique_series, nunique_dataframe),
-        ("sem", sem_series, sem_dataframe),
-        ("skew", skew_series, skew_dataframe),
+        ("idxmax", idxmax_series, idxmax_dataframe),
+        ("idxmin", idxmin_series, idxmin_dataframe),
         ("kurt", kurt_series, kurt_dataframe),
         ("kurtosis", kurt_series, kurt_dataframe),
+        ("max", max_series, max_dataframe),
+        ("mean", mean_series, mean_dataframe),
+        ("median", median_series, median_dataframe),
+        ("min", min_series, min_dataframe),
+        ("nunique", nunique_series, nunique_dataframe),
+        ("prod", prod_series, prod_dataframe),
+        ("product", prod_series, prod_dataframe),
+        ("sem", sem_series, sem_dataframe),
+        ("skew", skew_series, skew_dataframe),
+        ("std", std_series, std_dataframe),
+        ("sum", sum_series, sum_dataframe),
         ("unique", unique, None),
-        ("_reduction_size", size_dataframe, size_series),
+        ("var", var_series, var_dataframe),
+        ("_reduction_size", size_series, size_dataframe),
     ]
     for func_name, series_func, df_func in funcs:
         if df_func is not None:  # pragma: no branch

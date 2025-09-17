@@ -207,7 +207,8 @@ def test_set_tensor_inputs():
     assert t3.op.inputs == [t1.data, t2.data]
     assert t3.inputs == [t1.data, t2.data]
 
-    with pytest.raises(StopIteration):
+    msg = "Unexpected StopIteration happened"
+    with pytest.raises(RuntimeError, match=msg):
         t3.inputs = []
 
     t1 = tensor([1, 2], chunk_size=2)

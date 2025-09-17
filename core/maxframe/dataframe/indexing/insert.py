@@ -37,7 +37,7 @@ class DataFrameInsert(DataFrameOperator, DataFrameOperatorMixin):
     def _set_inputs(cls, op: "DataFrameInsert", inputs: List[EntityData]):
         super()._set_inputs(op, inputs)
         if len(inputs) > 1:
-            op._value = op._inputs[-1]
+            op.value = op._inputs[-1]
 
     def __call__(self, df):
         inputs = [df]

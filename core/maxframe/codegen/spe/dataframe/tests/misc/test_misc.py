@@ -30,11 +30,8 @@ from ...misc import (
     DataFrameExplodeAdapter,
     DataFrameIsinAdapter,
     DataFrameMapAdapter,
-    DataFrameMeltAdapter,
     DataFrameMemoryUsageAdapter,
-    DataFramePivotTableAdapter,
     DataFrameShiftAdapter,
-    DataFrameStackAdapter,
     DataFrameToNumericAdapter,
 )
 
@@ -181,17 +178,6 @@ def test_map(df1):
     assert results == expected_results
 
 
-def test_melt(df1):
-    context = SPECodeContext()
-
-    v1 = df1.melt(id_vars=["A"], value_vars=["B"])
-    results = DataFrameMeltAdapter().generate_code(v1.op, context)
-    assert (
-        results[0]
-        == "var_1 = var_0.melt(id_vars=['A'], value_vars=['B'], value_name='value')"
-    )
-
-
 def test_memory_usage(df1):
     context = SPECodeContext()
     v1 = df1.memory_usage(index=False)
@@ -199,29 +185,11 @@ def test_memory_usage(df1):
     assert results[0] == "var_1 = var_0.memory_usage(index=False, deep=False)"
 
 
-def test_pivot_table(midx_df1):
-    df = midx_df1.pivot_table(columns="B", values="C")
-    context = SPECodeContext()
-    results = DataFramePivotTableAdapter().generate_code(df.op, context)
-    assert results[0] == (
-        "var_1 = var_0.pivot_table(values='C', columns='B', "
-        "aggfunc='mean', margins=False, dropna=True, margins_name='All', "
-        "sort=True)"
-    )
-
-
 def test_shift(df1):
     df = df1.shift(periods=1)
     context = SPECodeContext()
     results = DataFrameShiftAdapter().generate_code(df.op, context)
     assert results[0] == "var_1 = var_0.shift(periods=1, axis=0)"
-
-
-def test_stack(midx_df1):
-    df = midx_df1.stack([0])
-    context = SPECodeContext()
-    results = DataFrameStackAdapter().generate_code(df.op, context)
-    assert results[0] == "var_1 = var_0.stack(level=[0], dropna=True)"
 
 
 def test_to_numeric():

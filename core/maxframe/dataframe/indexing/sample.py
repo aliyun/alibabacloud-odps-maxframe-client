@@ -25,6 +25,7 @@ from ...serialization.serializables import (
     Float64Field,
     Int8Field,
     Int64Field,
+    KeyField,
 )
 from ...tensor.random import RandomStateField
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
@@ -41,6 +42,11 @@ class DataFrameSample(DataFrameOperator, DataFrameOperatorMixin):
     axis = Int8Field("axis", default=None)
     seed = Int64Field("seed", default=None)
     random_state = RandomStateField("random_state", default=None)
+    always_multinomial = BoolField("always_multinomial", default=None)
+
+    # for chunks
+    # num of instances for chunks
+    chunk_samples = KeyField("chunk_samples", default=None)
 
     def __init__(self, random_state=None, seed=None, **kw):
         if random_state is None:
@@ -54,6 +60,8 @@ class DataFrameSample(DataFrameOperator, DataFrameOperatorMixin):
         next(it)
         if isinstance(op.weights, ENTITY_TYPE):
             op.weights = next(it)
+        if isinstance(op.chunk_samples, ENTITY_TYPE):
+            op.chunk_samples = next(it)
 
     def __call__(self, df):
         params = df.params

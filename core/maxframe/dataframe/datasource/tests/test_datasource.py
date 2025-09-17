@@ -184,6 +184,23 @@ def test_from_tensor():
     df = dataframe_from_1d_tileables(d)
     pd.testing.assert_index_equal(df.columns_value.to_pandas(), pd.RangeIndex(2))
 
+    # test axis parameter for dataframe_from_1d_tileables
+    d = OrderedDict(
+        [("a", mt.tensor(np.random.rand(4))), ("b", mt.tensor(np.random.rand(4)))]
+    )
+
+    # axis=1 (default behavior) - keys become columns
+    df = dataframe_from_1d_tileables(d, axis=1)
+    assert df.shape == (4, 2)
+    pd.testing.assert_index_equal(df.columns_value.to_pandas(), pd.Index(["a", "b"]))
+    pd.testing.assert_index_equal(df.index_value.to_pandas(), pd.RangeIndex(4))
+
+    # axis=0 - keys become index (rows)
+    df = dataframe_from_1d_tileables(d, axis=0)
+    assert df.shape == (2, 4)
+    pd.testing.assert_index_equal(df.index_value.to_pandas(), pd.Index(["a", "b"]))
+    pd.testing.assert_index_equal(df.columns_value.to_pandas(), pd.RangeIndex(4))
+
     series = series_from_tensor(mt.random.rand(4))
     pd.testing.assert_index_equal(series.index_value.to_pandas(), pd.RangeIndex(4))
 
@@ -206,6 +223,26 @@ def test_from_tensor():
     # columns have wrong shape
     with pytest.raises(ValueError):
         dataframe_from_tensor(mt.random.rand(4, 3), columns=["a", "b"])
+
+    # 1-d tensors should have same shape
+    with pytest.raises(ValueError):
+        dataframe_from_1d_tileables(
+            OrderedDict(
+                [(0, mt.tensor(np.random.rand(3))), (1, mt.tensor(np.random.rand(2)))]
+            )
+        )
+
+    # index has wrong shape
+    with pytest.raises(ValueError):
+        dataframe_from_1d_tileables(
+            {0: mt.tensor(np.random.rand(3))}, index=mt.tensor(np.random.rand(2))
+        )
+
+    # columns have wrong shape
+    with pytest.raises(ValueError):
+        dataframe_from_1d_tileables(
+            {0: mt.tensor(np.random.rand(3))}, columns=["a", "b"]
+        )
 
     # index should be 1-d
     with pytest.raises(ValueError):

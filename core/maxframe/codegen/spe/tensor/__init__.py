@@ -17,6 +17,7 @@ from . import (
     datasource,
     extensions,
     fetch,
+    fft,
     indexing,
     linalg,
     merge,
@@ -24,5 +25,7 @@ from . import (
     random,
     reduction,
     reshape,
+    spatial,
     special,
+    statistics,
 )

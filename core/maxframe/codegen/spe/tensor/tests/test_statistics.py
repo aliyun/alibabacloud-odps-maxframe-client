@@ -14,7 +14,7 @@
 
 from ..... import tensor as mt
 from ...core import SPECodeContext
-from ..statistics import TensorBinCountAdapter
+from ..statistics import TensorBinCountAdapter, TensorHistogramAdapter
 
 
 def test_bincount():
@@ -26,4 +26,18 @@ def test_bincount():
     context = SPECodeContext()
     results = adapter.generate_code(result.op, context)
     expected_results = ["var_0 = np.bincount(var_1, weights=var_2, minlength=0)"]
+    assert results == expected_results
+
+
+def test_histogram():
+    arr = mt.arange(5)
+    result, _bins = mt.histogram(arr, bins=3)
+
+    adapter = TensorHistogramAdapter()
+    context = SPECodeContext()
+    results = adapter.generate_code(result.op, context)
+    expected_results = [
+        "var_1, _ = np.histogram(var_0, bins=var_2, range=None, density=None, "
+        "weights=None)"
+    ]
     assert results == expected_results

@@ -16,10 +16,10 @@ import numpy as np
 
 from ... import opcodes
 from ...core import OutputType
-from .core import DATAFRAME_TYPE, DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DATAFRAME_TYPE, DataFrameReduction, DataFrameReductionMixin
 
 
-class DataFrameAny(DataFrameReductionOperator, DataFrameReductionMixin):
+class DataFrameAny(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.ANY
     _func_name = "any"
 

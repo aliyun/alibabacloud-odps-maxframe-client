@@ -26,7 +26,9 @@ from ...serialization.serializables import (
     AnyField,
     BoolField,
     DataTypeField,
+    DictField,
     Int32Field,
+    Serializable,
     StringField,
 )
 from ...typing_ import TileableType
@@ -48,8 +50,12 @@ _level_reduction_keep_object = pd_release_version[:2] < (1, 3)
 # results in object.
 _reduce_bool_as_object = pd_release_version[:2] != (1, 2)
 
+_idx_reduction_without_numeric_only = pd_release_version[:2] < (1, 5)
 
-class DataFrameReductionOperator(DataFrameOperator):
+
+class DataFrameReduction(DataFrameOperator):
+    _legacy_name = "DataFrameReductionOperator"  # since v2.2.0
+
     axis = AnyField("axis", default=None)
     skipna = BoolField("skipna", default=True)
     level = AnyField("level", default=None)
@@ -59,8 +65,13 @@ class DataFrameReductionOperator(DataFrameOperator):
     method = StringField("method", default=None)
 
     dtype = DataTypeField("dtype", default=None)
+    combine_size = Int32Field("combine_size", default=None)
+    use_inf_as_na = BoolField("use_inf_as_na", default=None)
 
     def __init__(self, gpu=None, sparse=None, output_types=None, **kw):
+        kw["use_inf_as_na"] = kw.pop(
+            "use_inf_as_na", pd.get_option("mode.use_inf_as_na")
+        )
         super().__init__(gpu=gpu, sparse=sparse, _output_types=output_types, **kw)
 
     @property
@@ -78,23 +89,28 @@ class DataFrameReductionOperator(DataFrameOperator):
         return {k: v for k, v in args.items() if v is not None}
 
 
-class DataFrameCumReductionOperator(DataFrameOperator):
+# Keep for import compatibility
+DataFrameReductionOperator = DataFrameReduction
+
+
+class DataFrameCumReduction(DataFrameOperator):
+    _legacy_name = "DataFrameCumReductionOperator"  # since v2.2.0
+
     axis = AnyField("axis", default=None)
     skipna = BoolField("skipna", default=None)
 
     dtype = DataTypeField("dtype", default=None)
+    use_inf_as_na = BoolField("use_inf_as_na", default=None)
 
     def __init__(self, gpu=None, sparse=None, output_types=None, **kw):
+        kw["use_inf_as_na"] = kw.pop(
+            "use_inf_as_na", pd.get_option("mode.use_inf_as_na")
+        )
         super().__init__(gpu=gpu, sparse=sparse, _output_types=output_types, **kw)
 
 
-def _default_agg_fun(value, func_name=None, **kw):
-    if value.ndim == 1:
-        kw.pop("bool_only", None)
-        kw.pop("numeric_only", None)
-        return getattr(value, func_name)(**kw)
-    else:
-        return getattr(value, func_name)(**kw)
+# Keep for import compatibility
+DataFrameCumReductionOperator = DataFrameCumReduction
 
 
 @functools.lru_cache(100)
@@ -117,6 +133,8 @@ def _get_series_reduction_dtype(
         reduced = test_series.size
     elif func_name == "str_concat":
         reduced = pd.Series([test_series.str.cat()])
+    elif func_name in ("idxmin", "idxmax", "argmin", "argmax"):
+        reduced = getattr(test_series, func_name)(axis=axis, skipna=skipna)
     else:
         reduced = getattr(test_series, func_name)(
             axis=axis, skipna=skipna, numeric_only=numeric_only
@@ -135,6 +153,8 @@ def _get_df_reduction_dtype(
         reduced = getattr(test_df, func_name)(axis=axis)
     elif func_name in ("all", "any"):
         reduced = getattr(test_df, func_name)(axis=axis, bool_only=bool_only)
+    elif _idx_reduction_without_numeric_only and func_name in ("idxmin", "idxmax"):
+        reduced = getattr(test_df, func_name)(axis=axis, skipna=skipna)
     elif func_name == "str_concat":
         reduced = test_df.apply(lambda s: s.str.cat(), axis=axis)
     else:
@@ -146,6 +166,27 @@ def _get_df_reduction_dtype(
     return reduced.dtype
 
 
+class ReductionCallable(Serializable):
+    func_name = StringField("func_name")
+    kwargs = DictField("kwargs", default=None)
+
+    def __name__(self):
+        return self.func_name
+
+    def __call__(self, value):
+        kw = self.kwargs.copy()
+        if value.ndim == 1:
+            kw.pop("bool_only", None)
+            kw.pop("numeric_only", None)
+            return getattr(value, self.func_name)(**kw)
+        else:
+            return getattr(value, self.func_name)(**kw)
+
+    def __maxframe_tokenize__(self):
+        # make sure compiled functions are correctly cached
+        return type(self), self.func_name, self.kwargs
+
+
 class DataFrameReductionMixin(DataFrameOperatorMixin):
     @classmethod
     def get_reduction_callable(cls, op):
@@ -154,9 +195,7 @@ class DataFrameReductionMixin(DataFrameOperatorMixin):
             skipna=op.skipna, numeric_only=op.numeric_only, bool_only=op.bool_only
         )
         kw = {k: v for k, v in kw.items() if v is not None}
-        fun = functools.partial(_default_agg_fun, func_name=func_name, **kw)
-        fun.__name__ = func_name
-        return fun
+        return ReductionCallable(func_name=func_name, kwargs=kw)
 
     def _call_groupby_level(self, df, level):
         return df.groupby(level=level).agg(
@@ -426,6 +465,8 @@ _func_name_converts = dict(
     true_divide="truediv",
     floor_divide="floordiv",
     power="pow",
+    subtract="sub",
+    multiply="mul",
 )
 _func_compile_cache = dict()  # type: Dict[str, ReductionSteps]
 
@@ -442,8 +483,8 @@ _idl_primitive_types = (
 
 IN_VAR_IDL_OP = "in_var"
 OUT_VAR_IDL_OP = "out_var"
-MASK_VAR_OP = "mask"
-WHERE_VAR_OP = "where"
+MASK_VAR_IDL_OP = "mask"
+WHERE_VAR_IDL_OP = "where"
 LET_VAR_OP = "let"
 UNARY_IDL_OP_PREFIX = "unary:"
 BINARY_IDL_OP_PREFIX = "bin:"
@@ -471,7 +512,7 @@ class ReductionCompiler:
     def _check_function_valid(cls, func):
         if isinstance(func, functools.partial):
             return cls._check_function_valid(func.func)
-        elif isinstance(func, CustomReduction):
+        elif isinstance(func, (CustomReduction, ReductionCallable)):
             return
 
         func_code = func.__code__
@@ -569,6 +610,7 @@ class ReductionCompiler:
         from ..datasource.dataframe import DataFrameDataSource
         from ..datasource.series import SeriesDataSource
         from ..indexing.where import DataFrameWhere
+        from .custom_reduction import DataFrameCustomReduction
 
         func_token = tokenize(func, self._axis, func_name, ndim)
         if func_token in _func_compile_cache:
@@ -639,6 +681,9 @@ class ReductionCompiler:
             else:
                 map_func_name, agg_func_name = step_func_name, step_func_name
 
+            if isinstance(t.op, DataFrameCustomReduction):
+                custom_reduction = custom_reduction or t.op.custom_reduction
+
             # build agg description
             agg_funcs.append(
                 ReductionAggStep(
@@ -705,7 +750,7 @@ class ReductionCompiler:
         input_op_types = (
             DataFrameDataSource,
             SeriesDataSource,
-            DataFrameReductionOperator,
+            DataFrameReduction,
         )
 
         def _gen_expr_str(t):
@@ -776,9 +821,11 @@ class ReductionCompiler:
                     cond = _interpret_var(t.op.condition)
                     x = _interpret_var(t.op.x)
                     y = _interpret_var(t.op.y)
-                    statements = [[WHERE_VAR_OP, var_name, [cond, x, y], {}]]
+                    statements = [[WHERE_VAR_IDL_OP, var_name, [cond, x, y], {}]]
                 elif isinstance(t.op, DataFrameWhere):
-                    func_name = MASK_VAR_OP if t.op.replace_true else WHERE_VAR_OP
+                    func_name = (
+                        MASK_VAR_IDL_OP if t.op.replace_true else WHERE_VAR_IDL_OP
+                    )
                     inp = _interpret_var(t.op.input)
                     cond = _interpret_var(t.op.cond)
                     other = _interpret_var(t.op.other)

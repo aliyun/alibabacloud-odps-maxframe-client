@@ -24,6 +24,7 @@ from . import (
     misc,
     missing,
     reduction,
+    reshape,
     sort,
     statistics,
     tseries,

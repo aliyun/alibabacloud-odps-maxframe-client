@@ -15,6 +15,7 @@
 import numpy as np
 import pandas as pd
 
+from ... import opcodes
 from ...core import ENTITY_TYPE, OutputType
 from ...serialization.serializables import StringField
 from ...tensor import tensor as astensor
@@ -23,6 +24,8 @@ from ..operators import DataFrameOperator, DataFrameOperatorMixin
 
 
 class DataFrameToNumeric(DataFrameOperator, DataFrameOperatorMixin):
+    _op_type_ = opcodes.TO_NUMERIC
+
     errors = StringField("errors")
     downcast = StringField("downcast")
 

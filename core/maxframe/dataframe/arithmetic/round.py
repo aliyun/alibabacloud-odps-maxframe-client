@@ -18,9 +18,10 @@ from ...utils import classproperty
 from .core import DataFrameUnaryUfunc
 
 
-class DataFrameAround(DataFrameUnaryUfunc):
+class DataFrameRound(DataFrameUnaryUfunc):
     _op_type_ = opcodes.AROUND
-    _func_name = "around"
+    _func_name = "round"
+    _legacy_name = "DataFrameAround"  # since v2.3.0
 
     decimals = Int32Field("decimals", default=None)
 
@@ -34,17 +35,20 @@ class DataFrameAround(DataFrameUnaryUfunc):
         return TensorAround
 
 
-def around(df, decimals=0, *args, **kwargs):
+def round(df, decimals=0, *args, **kwargs):
     if len(args) > 0:
         raise TypeError(
             f"round() takes 0 positional arguments but {len(args)} was given"
         )
-    op = DataFrameAround(decimals=decimals, **kwargs)
+    op = DataFrameRound(decimals=decimals, **kwargs)
     return op(df)
 
 
-# FIXME Series input of decimals not supported yet
-around.__frame_doc__ = """
+# keep for import compatibility
+DataFrameAround = DataFrameRound
+
+
+round.__frame_doc__ = """
 Round a DataFrame to a variable number of decimal places.
 
 Parameters
@@ -108,7 +112,7 @@ places as value
 2   0.7   0.0
 3   0.2   0.0
 """
-around.__series_doc__ = """
+round.__series_doc__ = """
 Round each value in a Series to the given number of decimals.
 
 Parameters

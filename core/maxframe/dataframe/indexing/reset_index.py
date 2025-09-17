@@ -18,9 +18,11 @@ import pandas as pd
 from ... import opcodes
 from ...core import OutputType
 from ...serialization.serializables import AnyField, BoolField
-from ...utils import no_default
+from ...utils import no_default, pd_release_version
 from ..operators import DATAFRAME_TYPE, DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_empty_df, build_empty_series, parse_index
+
+_reset_index_has_names = pd_release_version >= (1, 5)
 
 
 class DataFrameResetIndex(DataFrameOperator, DataFrameOperatorMixin):
@@ -29,8 +31,10 @@ class DataFrameResetIndex(DataFrameOperator, DataFrameOperatorMixin):
     level = AnyField("level", default=None)
     drop = BoolField("drop", default=False)
     name = AnyField("name", default=None)
-    col_level = AnyField("col_level", default=0)
-    col_fill = AnyField("col_fill", default="")
+    col_level = AnyField("col_level", default=None)
+    col_fill = AnyField("col_fill", default=None)
+    incremental_index = BoolField("incremental_index", default=False)
+    names = AnyField("names", default=None)
 
     def __init__(self, output_types=None, **kwargs):
         super().__init__(_output_types=output_types, **kwargs)
@@ -76,9 +80,26 @@ class DataFrameResetIndex(DataFrameOperator, DataFrameOperatorMixin):
         else:
             empty_df = build_empty_df(a.dtypes)
             empty_df.index = a.index_value.to_pandas()[:0]
-            empty_df = empty_df.reset_index(
-                level=self.level, col_level=self.col_level, col_fill=self.col_fill
-            )
+
+            if self.names and _reset_index_has_names:
+                empty_df = empty_df.reset_index(
+                    level=self.level,
+                    col_level=self.col_level,
+                    col_fill=self.col_fill,
+                    names=self.names,
+                )
+            else:
+                empty_df = empty_df.reset_index(
+                    level=self.level, col_level=self.col_level, col_fill=self.col_fill
+                )
+                if self.names:
+                    names = (
+                        [self.names] if not isinstance(self.names, list) else self.names
+                    )
+                    cols = list(empty_df.columns)
+                    cols[: len(names)] = names
+                    empty_df.columns = pd.Index(cols, name=empty_df.columns.name)
+
             shape = (a.shape[0], len(empty_df.columns))
             columns_value = parse_index(empty_df.columns, store_data=True)
             dtypes = empty_df.dtypes
@@ -105,6 +126,8 @@ def df_reset_index(
     inplace=False,
     col_level=0,
     col_fill="",
+    names=None,
+    incremental_index=False,
 ):
     """
     Reset the index, or a level of it.
@@ -255,6 +278,8 @@ def df_reset_index(
         drop=drop,
         col_level=col_level,
         col_fill=col_fill,
+        names=names,
+        incremental_index=incremental_index,
         output_types=[OutputType.dataframe],
     )
     ret = op(df)
@@ -270,6 +295,7 @@ def series_reset_index(
     drop=False,
     name=no_default,
     inplace=False,
+    incremental_index=False,
 ):
     """
     Generate a new DataFrame or Series with the index reset.
@@ -389,6 +415,7 @@ def series_reset_index(
         level=level,
         drop=drop,
         name=name,
+        incremental_index=incremental_index,
         output_types=[OutputType.series if drop else OutputType.dataframe],
     )
     ret = op(series)

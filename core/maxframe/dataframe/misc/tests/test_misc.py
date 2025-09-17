@@ -16,6 +16,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from maxframe import options
+
 from .... import opcodes
 from ....core import OutputType
 from ....dataframe import DataFrame
@@ -124,6 +126,7 @@ def test_dataframe_apply():
         dtypes=pd.Series([np.dtype(float)] * 3),
     )
     assert df2.ndim == 2
+    assert df2.op.expect_resources == options.function.default_running_options
 
 
 def test_series_apply():
@@ -180,6 +183,8 @@ def test_series_apply():
         pd.Series, output_type="dataframe", dtypes=dtypes, index=pd.RangeIndex(2)
     )
     assert r.ndim == 2
+    assert r.op.expect_resources == options.function.default_running_options
+
     pd.testing.assert_series_equal(r.dtypes, dtypes)
     assert r.shape == (2, 3)
 
@@ -305,6 +310,7 @@ def test_transform():
     assert r.shape == series.shape
     assert r.op._op_type_ == opcodes.TRANSFORM
     assert r.op.output_types[0] == OutputType.series
+    assert r.op.expect_resources == options.function.default_running_options
 
 
 def test_series_isin():
@@ -563,12 +569,17 @@ def test_apply():
     )
     assert apply_df.shape == (3, 2)
     assert apply_df.op.expect_engine == "SPE"
-    assert apply_df.op.expect_resources == {"cpu": 1, "memory": "40GB", "gpu": 0}
+    assert apply_df.op.expect_resources == {
+        "cpu": 4,
+        "memory": "40GB",
+        "gpu": 0,
+        "gu_quota": None,
+    }
 
 
 def test_pivot_table():
     from ...groupby.aggregation import DataFrameGroupByAgg
-    from ...misc.pivot_table import DataFramePivotTable
+    from ...reshape.pivot_table import DataFramePivotTable
 
     raw = pd.DataFrame(
         {

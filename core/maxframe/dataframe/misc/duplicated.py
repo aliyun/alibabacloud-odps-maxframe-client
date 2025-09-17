@@ -16,10 +16,10 @@ import numpy as np
 
 from ... import opcodes
 from ...core import OutputType
-from ._duplicate import DuplicateOperand, validate_subset
+from ._duplicate import BaseDuplicateOp, validate_subset
 
 
-class DataFrameDuplicated(DuplicateOperand):
+class DataFrameDuplicated(BaseDuplicateOp):
     _op_type_ = opcodes.DUPLICATED
 
     def __init__(self, output_types=None, **kw):

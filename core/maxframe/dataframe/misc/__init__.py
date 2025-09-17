@@ -21,6 +21,8 @@ from .check_monotonic import (
     is_monotonic_decreasing,
     is_monotonic_increasing,
 )
+from .check_unique import is_unique
+from .clip import clip
 from .cut import cut
 from .describe import describe
 from .diff import df_diff, series_diff
@@ -34,20 +36,17 @@ from .duplicated import df_duplicated, index_duplicated, series_duplicated
 from .eval import df_eval, df_query
 from .explode import df_explode, series_explode
 from .isin import df_isin, series_isin
-from .map import index_map, series_map
-from .melt import melt
+from .map import df_map, index_map, series_map
 from .memory_usage import df_memory_usage, index_memory_usage, series_memory_usage
 from .pct_change import pct_change
-from .pivot import pivot
-from .pivot_table import pivot_table
 from .qcut import qcut
 from .rechunk import rechunk
 from .select_dtypes import select_dtypes
 from .shift import shift, tshift
-from .stack import stack
 from .transform import df_transform, series_transform
 from .transpose import transpose
-from .value_counts import value_counts
+from .valid_index import first_valid_index, last_valid_index
+from .value_counts import df_value_counts, value_counts
 
 
 def _install():
@@ -55,7 +54,9 @@ def _install():
 
     for t in DATAFRAME_TYPE:
         setattr(t, "apply", df_apply)
+        setattr(t, "applymap", df_map)
         setattr(t, "astype", astype)
+        setattr(t, "clip", clip)
         setattr(t, "describe", describe)
         setattr(
             t, "__delitem__", lambda df, items: df_drop(df, items, axis=1, inplace=True)
@@ -66,37 +67,41 @@ def _install():
         setattr(t, "drop", df_drop)
         setattr(t, "eval", df_eval)
         setattr(t, "explode", df_explode)
+        setattr(t, "first_valid_index", first_valid_index)
         setattr(t, "isin", df_isin)
-        setattr(t, "melt", melt)
+        setattr(t, "last_valid_index", last_valid_index)
+        setattr(t, "map", df_map)
         setattr(t, "memory_usage", df_memory_usage)
         setattr(t, "pct_change", pct_change)
-        setattr(t, "pivot", pivot)
-        setattr(t, "pivot_table", pivot_table)
         setattr(t, "pop", df_pop)
         setattr(t, "query", df_query)
         setattr(t, "rechunk", rechunk)
         setattr(t, "select_dtypes", select_dtypes)
         setattr(t, "shift", shift)
-        setattr(t, "stack", stack)
         setattr(t, "transform", df_transform)
         setattr(t, "transpose", transpose)
         setattr(t, "tshift", tshift)
+        setattr(t, "value_counts", df_value_counts)
 
     for t in SERIES_TYPE:
         setattr(t, "apply", series_apply)
         setattr(t, "astype", astype)
         setattr(t, "case_when", case_when)
         setattr(t, "check_monotonic", check_monotonic)
+        setattr(t, "clip", clip)
         setattr(t, "describe", describe)
         setattr(t, "diff", series_diff)
         setattr(t, "drop", series_drop)
         setattr(t, "drop_duplicates", series_drop_duplicates)
         setattr(t, "duplicated", series_duplicated)
         setattr(t, "explode", series_explode)
+        setattr(t, "first_valid_index", first_valid_index)
         setattr(t, "is_monotonic", property(fget=is_monotonic))
         setattr(t, "is_monotonic_decreasing", property(fget=is_monotonic_decreasing))
         setattr(t, "is_monotonic_increasing", property(fget=is_monotonic_increasing))
         setattr(t, "isin", series_isin)
+        setattr(t, "is_unique", property(fget=is_unique))
+        setattr(t, "last_valid_index", last_valid_index)
         setattr(t, "map", series_map)
         setattr(t, "memory_usage", series_memory_usage)
         setattr(t, "pct_change", pct_change)
@@ -109,6 +114,7 @@ def _install():
     for t in INDEX_TYPE:
         setattr(t, "astype", index_astype)
         setattr(t, "check_monotonic", check_monotonic)
+        setattr(t, "clip", clip)
         setattr(t, "drop", index_drop)
         setattr(t, "drop_duplicates", index_drop_duplicates)
         setattr(t, "duplicated", index_duplicated)

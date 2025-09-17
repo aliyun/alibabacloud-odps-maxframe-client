@@ -14,8 +14,20 @@
 
 from typing import List
 
-from ....dataframe.merge import DataFrameConcat, DataFrameMerge
+from ....dataframe.merge import (
+    DataFrameCompare,
+    DataFrameConcat,
+    DataFrameMerge,
+    DataFrameUpdate,
+)
 from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
+from ..utils import build_method_call_adapter
+
+DataFrameCompareAdapter = build_method_call_adapter(
+    DataFrameCompare,
+    "compare",
+    kw_keys=["align_axis", "keep_shape", "keep_equal", "result_names"],
+)
 
 
 @register_op_adapter(DataFrameMerge)
@@ -71,3 +83,24 @@ class DataFrameConcatAdapter(SPEOperatorAdapter):
         )
         context.register_import("pandas", "pd")
         return [f"{res_var_name} = pd.concat({args})"]
+
+
+@register_op_adapter(DataFrameUpdate)
+class DataFrameUpdateAdapter(SPEOperatorAdapter):
+    def generate_code(self, op: DataFrameUpdate, context: SPECodeContext) -> List[str]:
+        input_var = context.get_input_tileable_variable(op.inputs[0])
+        res_var_name = context.get_output_tileable_variable(op.outputs[0])
+        context.register_import("pandas", "pd")
+        if op.join == "outer":
+            method = "combine_first"
+            args = self.generate_call_args_with_attributes(op, context, 1)
+            return [f"{res_var_name} = {input_var}.{method}({args})"]
+        else:
+            method = "update"
+            args = self.generate_call_args_with_attributes(
+                op, context, 1, kw_keys=["join", "overwrite", "filter_func", "errors"]
+            )
+            return [
+                f"{res_var_name} = {input_var}.copy()",
+                f"{res_var_name}.{method}({args})",
+            ]

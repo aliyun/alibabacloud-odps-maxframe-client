@@ -12,15 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import List
+from typing import List, Union
 
 from ....dataframe.core import DATAFRAME_TYPE, INDEX_TYPE
 from ....dataframe.indexing.align import DataFrameAlign
+from ....dataframe.indexing.droplevel import DataFrameDropLevel
+from ....dataframe.indexing.filter import DataFrameFilter
+from ....dataframe.indexing.get_level_values import IndexGetLevelValues
 from ....dataframe.indexing.getitem import DataFrameIndex, SeriesIndex
-from ....dataframe.indexing.iloc import DataFrameIlocGetItem, SeriesIlocGetItem
+from ....dataframe.indexing.iloc import (
+    DataFrameIlocGetItem,
+    DataFrameIlocSetItem,
+    IndexIlocGetItem,
+    SeriesIlocGetItem,
+    SeriesIlocSetItem,
+)
 from ....dataframe.indexing.insert import DataFrameInsert
+from ....dataframe.indexing.loc import DataFrameLocGetItem, DataFrameLocSetItem
 from ....dataframe.indexing.reindex import DataFrameReindex
 from ....dataframe.indexing.rename import DataFrameRename
+from ....dataframe.indexing.rename_axis import DataFrameRenameAxis
+from ....dataframe.indexing.reorder_levels import DataFrameReorderLevels
 from ....dataframe.indexing.reset_index import DataFrameResetIndex
 from ....dataframe.indexing.sample import DataFrameSample
 from ....dataframe.indexing.set_axis import DataFrameSetAxis
@@ -52,6 +64,12 @@ class DataFrameAlignAdapter(SPEOperatorAdapter):
         return [f"{out_lhs_var}, {out_rhs_var} = {input_var}.align({args_str})"]
 
 
+DataFrameDropLevelAdapter = build_method_call_adapter(
+    DataFrameDropLevel, "droplevel", skip_none=True, kw_keys=["level", "axis"]
+)
+IndexGetLevelValuesAdapter = build_method_call_adapter(
+    IndexGetLevelValues, "get_level_values", "level"
+)
 DataFrameInsertAdapter = build_method_call_adapter(
     DataFrameInsert, "insert", kw_keys=["loc", "column", "value"], allow_duplicates=None
 )
@@ -134,10 +152,12 @@ class DataFrameSetitemAdapter(SPEOperatorAdapter):
         ]
 
 
-@register_op_adapter([SeriesIlocGetItem, DataFrameIlocGetItem])
+@register_op_adapter([DataFrameIlocGetItem, SeriesIlocGetItem, IndexIlocGetItem])
 class DataFrameIlocGetItemAdapter(SPEOperatorAdapter):
     def generate_code(
-        self, op: SeriesIlocGetItem, context: SPECodeContext
+        self,
+        op: Union[DataFrameIlocGetItem, SeriesIlocGetItem, IndexIlocGetItem],
+        context: SPECodeContext,
     ) -> List[str]:
         input_var = context.get_input_tileable_variable(op.inputs[0])
         output_var = context.get_output_tileable_variable(op.outputs[0])
@@ -146,6 +166,62 @@ class DataFrameIlocGetItemAdapter(SPEOperatorAdapter):
         if len(op.indexes) > 1:
             col_exp = f", {self.translate_var(context, op.indexes[1])}"
         return [f"{output_var} = {input_var}.iloc[{row_exp}{col_exp}]"]
+
+
+@register_op_adapter([DataFrameIlocSetItem, SeriesIlocSetItem])
+class DataFrameIlocSetItemAdapter(SPEOperatorAdapter):
+    def generate_code(
+        self,
+        op: Union[DataFrameIlocSetItem, SeriesIlocSetItem],
+        context: SPECodeContext,
+    ) -> List[str]:
+        input_var = context.get_input_tileable_variable(op.inputs[0])
+        output_var = context.get_output_tileable_variable(op.outputs[0])
+        value_exp = self.translate_var(context, op.value)
+        row_exp = self.translate_var(context, op.indexes[0])
+        col_exp = ""
+        if len(op.indexes) > 1:
+            col_exp = f", {self.translate_var(context, op.indexes[1])}"
+        return [
+            f"{output_var} = {input_var}.copy()",
+            f"{output_var}.iloc[{row_exp}{col_exp}] = {value_exp}",
+        ]
+
+
+@register_op_adapter(DataFrameLocGetItem)
+class DataFrameLocGetItemAdapter(SPEOperatorAdapter):
+    def generate_code(
+        self,
+        op: DataFrameLocGetItem,
+        context: SPECodeContext,
+    ) -> List[str]:
+        input_var = context.get_input_tileable_variable(op.inputs[0])
+        output_var = context.get_output_tileable_variable(op.outputs[0])
+        row_exp = self.translate_var(context, op.indexes[0])
+        col_exp = ""
+        if len(op.indexes) > 1:
+            col_exp = f", {self.translate_var(context, op.indexes[1])}"
+        return [f"{output_var} = {input_var}.loc[{row_exp}{col_exp}]"]
+
+
+@register_op_adapter(DataFrameLocSetItem)
+class DataFrameLocSetItemAdapter(SPEOperatorAdapter):
+    def generate_code(
+        self,
+        op: DataFrameLocSetItem,
+        context: SPECodeContext,
+    ) -> List[str]:
+        input_var = context.get_input_tileable_variable(op.inputs[0])
+        output_var = context.get_output_tileable_variable(op.outputs[0])
+        value_exp = self.translate_var(context, op.value)
+        row_exp = self.translate_var(context, op.indexes[0])
+        col_exp = ""
+        if len(op.indexes) > 1:
+            col_exp = f", {self.translate_var(context, op.indexes[1])}"
+        return [
+            f"{output_var} = {input_var}.copy()",
+            f"{output_var}.loc[{row_exp}{col_exp}] = {value_exp}",
+        ]
 
 
 @register_op_adapter(DataFrameSample)
@@ -235,4 +311,23 @@ DataFrameReindexAdapter = build_method_call_adapter(
         "fill_value",
         "limit",
     ],
+)
+
+DataFrameFilterAdapter = build_method_call_adapter(
+    DataFrameFilter,
+    "filter",
+    skip_none=True,
+    kw_keys=["items", "like", "regex", "axis"],
+)
+
+
+DataFrameReorderLevelsAdapter = build_method_call_adapter(
+    DataFrameReorderLevels, "reorder_levels", kw_keys=["order", "axis"]
+)
+
+DataFrameRenameAxisAdapter = build_method_call_adapter(
+    DataFrameRenameAxis,
+    "rename_axis",
+    skip_none=True,
+    kw_keys=["mapper", "index", "columns", "axis", "copy", "level", "inplace"],
 )

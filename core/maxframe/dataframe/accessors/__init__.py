@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import datetime_, dict_, list_, plotting, string_
+from . import datetime_, dict_, list_, plotting, string_, struct_

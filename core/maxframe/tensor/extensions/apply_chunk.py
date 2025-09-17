@@ -33,9 +33,9 @@ class TensorApplyChunk(TensorOperator, TensorOperatorMixin):
 
     func = FunctionField("func")
     elementwise = BoolField("elementwise")
-    args = TupleField("args")
-    kwargs = DictField("kwargs")
-    with_chunk_index = BoolField("with_chunk_index")
+    args = TupleField("args", default=None)
+    kwargs = DictField("kwargs", default=None)
+    with_chunk_index = BoolField("with_chunk_index", default=False)
 
     @classmethod
     def _set_inputs(cls, op: "TensorApplyChunk", inputs):

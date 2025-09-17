@@ -79,8 +79,6 @@ class DataFrameWhere(DataFrameOperator, DataFrameOperatorMixin):
             other=mock_other,
             axis=self.axis,
             level=self.level,
-            errors=self.errors,
-            try_cast=self.try_cast,
         )
 
         inputs = filter_inputs([df_or_series, self.cond, self.other])
@@ -135,15 +133,6 @@ axis : int, default None
     Alignment axis if needed.
 level : int, default None
     Alignment level if needed.
-errors : str, {{'raise', 'ignore'}}, default 'raise'
-    Note that currently this parameter won't affect
-    the results and will always coerce to a suitable dtype.
-
-    - 'raise' : allow exceptions to be raised.
-    - 'ignore' : suppress exceptions. On error return original object.
-
-try_cast : bool, default False
-    Try to cast the result back to the input type (if possible).
 
 Returns
 -------

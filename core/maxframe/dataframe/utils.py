@@ -28,7 +28,8 @@ import pandas as pd
 from pandas.api.types import is_string_dtype
 from pandas.core.dtypes.inference import is_dict_like, is_list_like
 
-from ..core import Entity, ExecutableTuple, OutputType, get_output_types
+from ..core import ENTITY_TYPE, Entity, ExecutableTuple, OutputType, get_output_types
+from ..lib.dtypes_extension import ExternalBlobDtype, SolidBlob
 from ..lib.mmh3 import hash as mmh_hash
 from ..udf import MarkedFunction
 from ..utils import (
@@ -40,6 +41,7 @@ from ..utils import (
     quiet_stdio,
     sbytes,
     tokenize,
+    validate_and_adjust_resource_ratio,
 )
 
 if TYPE_CHECKING:
@@ -57,7 +59,7 @@ cudf = lazy_import("cudf", rename="cudf")
 logger = logging.getLogger(__name__)
 
 try:
-    from pandas import ArrowDtype
+    from ..lib.dtypes_extension import ArrowDtype
 except ImportError:
     ArrowDtype = None
 
@@ -456,7 +458,7 @@ def build_split_idx_to_origin_idx(splits, increase=True):
 
 
 def _generate_value(dtype, fill_value):
-    if ArrowDtype and isinstance(dtype, pd.ArrowDtype):
+    if ArrowDtype and isinstance(dtype, ArrowDtype):
         return _generate_value(dtype.pyarrow_dtype, fill_value)
 
     if isinstance(dtype, pa.ListType):
@@ -470,8 +472,18 @@ def _generate_value(dtype, fill_value):
             )
         ]
 
+    if isinstance(dtype, pa.StructType):
+        result = {}
+        for i in range(dtype.num_fields):
+            field = dtype[i]
+            result[field.name] = _generate_value(field.type, fill_value)
+        return result
+
     if isinstance(dtype, pa.DataType):
         return _generate_value(dtype.to_pandas_dtype(), fill_value)
+
+    if isinstance(dtype, ExternalBlobDtype):
+        return SolidBlob(str(fill_value).encode())
 
     # special handle for datetime64 and timedelta64
     dispatch = {
@@ -1305,7 +1317,7 @@ def pack_func_args(df, funcs, *args, args_bind_position=1, **kwargs) -> Any:
     if is_dict_like(funcs):
         return {k: pack_func_args(df, v, *args, **kwargs) for k, v in funcs.items()}
 
-    if is_list_like(funcs):
+    if is_list_like(funcs) and not isinstance(funcs, ENTITY_TYPE):
         return [pack_func_args(df, v, *args, **kwargs) for v in funcs]
 
     f = get_callable_by_name(df, funcs) if isinstance(funcs, str) else funcs
@@ -1406,23 +1418,54 @@ def infer_dataframe_return_value(
     inherit_index=False,
     build_kw=None,
     elementwise=None,
+    skip_infer=False,
 ) -> InferredDataFrameMeta:
-    from .core import GROUPBY_TYPE
+    from .core import GROUPBY_TYPE, INDEX_TYPE
+    from .typing_ import get_function_output_meta
+
+    unwrapped_func = func
+    if isinstance(unwrapped_func, MarkedFunction):
+        unwrapped_func = unwrapped_func.func
+    while True:
+        if isinstance(unwrapped_func, functools.partial):
+            unwrapped_func = unwrapped_func.func
+        elif hasattr(unwrapped_func, "__wrapped__"):
+            unwrapped_func = unwrapped_func.__wrapped__
+        else:
+            break
+
+    func_annotation_meta = get_function_output_meta(unwrapped_func, df_obj)
+    func_index_value = None
+    if func_annotation_meta:
+        output_type = output_type or func_annotation_meta.output_type
+        dtypes = dtypes if dtypes is not None else func_annotation_meta.dtypes
+        dtype = dtype if dtype is not None else func_annotation_meta.dtype
+        name = name if name is not None else func_annotation_meta.name
+        func_index_value = func_annotation_meta.index_value
+
+    if skip_infer:
+        if isinstance(index, INDEX_TYPE):
+            ret_index_value = index.index_value
+        elif index is not None:
+            ret_index_value = parse_index(index, df_obj.key)
+        else:
+            ret_index_value = func_index_value
+
+        return InferredDataFrameMeta(
+            output_type=output_type,
+            dtypes=dtypes,
+            dtype=dtype,
+            name=name,
+            index_value=ret_index_value,
+        )
+
+    if isinstance(index, INDEX_TYPE):
+        index = index.index_value
 
     if elementwise is None:
-        unwrapped_func = func
-        if isinstance(unwrapped_func, MarkedFunction):
-            unwrapped_func = unwrapped_func.func
-        while True:
-            if isinstance(unwrapped_func, functools.partial):
-                unwrapped_func = unwrapped_func.func
-            elif hasattr(unwrapped_func, "__wrapped__"):
-                unwrapped_func = unwrapped_func.__wrapped__
-            else:
-                break
         elementwise = isinstance(unwrapped_func, np.ufunc)
 
-    ret_index_value = None
+    ret_index_value = func_index_value
     if output_type is not None and (dtypes is not None or dtype is not None):
         if inherit_index:
             ret_index_value = df_obj.index_value
@@ -1530,20 +1573,37 @@ def infer_dataframe_return_value(
 def copy_func_scheduling_hints(func, op: "DataFrameOperator") -> None:
     from ..config import options
 
-    if not isinstance(func, MarkedFunction):
-        return
-    if func.expect_engine:
-        op.expect_engine = func.expect_engine
+    expect_engine = None
+    expect_gpu = None
+    default_options = options.function.default_running_options or {}
 
-    expect_resources = func.expect_resources or {}
-    default_function_running_options = options.function.default_running_options or {}
+    if isinstance(func, MarkedFunction):
+        # copy from marked function
+        expect_engine = func.expect_engine
+        expect_resources = func.expect_resources or {}
+        expect_gpu = func.gpu
 
-    for key, value in default_function_running_options.items():
-        if key not in expect_resources or expect_resources.get(key) is None:
-            expect_resources[key] = value
+        # merge default options if not set
+        for key, value in default_options.items():
+            if key not in expect_resources or expect_resources.get(key) is None:
+                expect_resources[key] = value
+    else:
+        # copy from default options
+        expect_resources = default_options
 
-    if func.expect_resources:
+    # Validate and adjust resource ratio constraints on client side
+    expect_resources, _ = validate_and_adjust_resource_ratio(
+        expect_resources,
+        max_memory_cpu_ratio=options.function.allowed_max_memory_cpu_ratio,
+        adjust=True,
+    )
+
+    if expect_engine:
+        op.expect_engine = expect_engine
+    if expect_resources:
         op.expect_resources = expect_resources
+    if expect_gpu:
+        op.gpu = expect_gpu
 
 
 def make_column_list(col, dtypes_or_columns, level=None):
@@ -1576,3 +1636,12 @@ def make_column_list(col, dtypes_or_columns, level=None):
             return idx[mask]
     except (IndexError, TypeError, ValueError):
         return col
+
+
+def call_groupby_with_params(df_or_series, groupby_params: dict):
+    params = groupby_params.copy()
+    selection = params.pop("selection", None)
+    res = df_or_series.groupby(**params)
+    if selection:
+        res = res[selection]
+    return res

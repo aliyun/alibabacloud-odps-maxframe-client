@@ -23,12 +23,20 @@ Top-level missing data
    notna
    notnull
 
+Top-level dealing with numeric data
+-----------------------------------
+.. autosummary::
+   :toctree: generated/
+
+   to_numeric
+
 Top-level dealing with datetimelike
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. autosummary::
    :toctree: generated/
 
    to_datetime
+   date_range
 
 Top-level evaluation
 ~~~~~~~~~~~~~~~~~~~~

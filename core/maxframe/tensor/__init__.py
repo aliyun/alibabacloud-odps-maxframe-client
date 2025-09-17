@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import extensions, fetch, linalg, random, special, statistics
+from . import extensions, fetch, fft, linalg, random, spatial, special, statistics
 from .arithmetic import absolute
 from .arithmetic import absolute as abs
 from .arithmetic import (
@@ -58,6 +58,7 @@ from .arithmetic import invert as bitwise_not
 from .arithmetic import (
     isclose,
     iscomplex,
+    iscomplexobj,
     isfinite,
     isinf,
     isnan,
@@ -152,32 +153,49 @@ from .indexing import (
     take,
     unravel_index,
 )
-from .linalg.dot import dot
-from .linalg.inner import inner, innerproduct
-from .linalg.matmul import matmul
-from .linalg.tensordot import tensordot
-from .linalg.vdot import vdot
+from .linalg import dot, einsum, inner, innerproduct, matmul, tensordot, vdot
 from .merge import append, column_stack, concatenate, dstack, hstack, stack, vstack
 from .misc import (
+    argwhere,
+    array_split,
     astype,
     atleast_1d,
     atleast_2d,
     atleast_3d,
+    broadcast_arrays,
     broadcast_to,
     copy,
+    copyto,
+    delete,
     diff,
+    dsplit,
+    ediff1d,
+    expand_dims,
+    flip,
+    fliplr,
+    flipud,
+    hsplit,
     in1d,
+    insert,
     isin,
+    moveaxis,
     ndim,
     ravel,
     repeat,
+    result_type,
+    roll,
+    rollaxis,
     searchsorted,
     setdiff1d,
+    shape,
+    split,
     squeeze,
     swapaxes,
+    tile,
     transpose,
     trapezoid,
     unique,
+    vsplit,
     where,
 )
 from .rechunk import rechunk
@@ -214,8 +232,20 @@ from .reduction import prod
 from .reduction import prod as product
 from .reduction import std, sum, var
 from .reshape import reshape
-from .sort import argsort, sort
-from .statistics import average, bincount, percentile, quantile
+from .sort import argpartition, argsort, partition, sort
+from .statistics import (
+    average,
+    bincount,
+    corrcoef,
+    cov,
+    digitize,
+    histogram,
+    histogram_bin_edges,
+    median,
+    percentile,
+    ptp,
+    quantile,
+)
 from .ufunc import ufunc
 
 # isort: off

@@ -35,6 +35,7 @@ class DataFramePivot(DataFrameOperator, DataFrameOperatorMixin):
     columns = AnyField("columns", default=None)
 
     agg_results = KeyField("agg_results", default=None)
+    fill_value = AnyField("fill_value", default=None)
 
     def __init__(self, aggfunc=None, **kw):
         if aggfunc is None:

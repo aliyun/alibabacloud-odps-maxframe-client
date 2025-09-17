@@ -16,6 +16,7 @@ import warnings
 
 from ... import opcodes
 from ...core import get_output_types
+from ...serialization import PickleContainer
 from ...serialization.serializables import AnyField, StringField
 from ..core import INDEX_TYPE, SERIES_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
@@ -33,6 +34,11 @@ class DataFrameRename(DataFrameOperator, DataFrameOperatorMixin):
 
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
+
+    def has_custom_code(self) -> bool:
+        return isinstance(self.columns_mapper, PickleContainer) or isinstance(
+            self.index_mapper, PickleContainer
+        )
 
     def _calc_renamed_df(self, df, errors="ignore"):
         empty_df = build_df(df)

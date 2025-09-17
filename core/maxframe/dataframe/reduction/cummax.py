@@ -13,10 +13,10 @@
 # limitations under the License.
 
 from ... import opcodes
-from .core import DataFrameCumReductionMixin, DataFrameCumReductionOperator
+from .core import DataFrameCumReduction, DataFrameCumReductionMixin
 
 
-class DataFrameCummax(DataFrameCumReductionOperator, DataFrameCumReductionMixin):
+class DataFrameCummax(DataFrameCumReduction, DataFrameCumReductionMixin):
     _op_type_ = opcodes.CUMMAX
     _func_name = "cummax"
 

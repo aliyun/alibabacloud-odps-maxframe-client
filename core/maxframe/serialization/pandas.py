@@ -20,6 +20,11 @@ import pandas as pd
 from pandas.api.extensions import ExtensionArray
 from pandas.arrays import IntervalArray
 
+try:
+    from pandas.tseries.offsets import BaseOffset as PdBaseOffset
+except ImportError:
+    PdBaseOffset = type("FakeBaseOffset", (), {})
+
 from ..utils import no_default
 from .core import Serializer, buffered
 
@@ -39,14 +44,16 @@ class DataFrameSerializer(Serializer):
         self, serialized: List, context: Dict, subs: List[Any]
     ) -> pd.DataFrame:
         dtypes, idx = subs[:2]
-        seriess = [pd.Series(d, index=idx) for d in subs[2:]]
+        seriess = [
+            pd.Series(d, name=nm, index=idx).astype(dt)
+            for d, (nm, dt) in zip(subs[2:], dtypes.items())
+        ]
         if seriess:
-            df = pd.concat([pd.Series(d, index=idx) for d in subs[2:]], axis=1)
+            df = pd.concat(seriess, axis=1)
+            df.columns = dtypes.index
         else:
             df = pd.DataFrame([], index=idx)
-        df.columns = dtypes.index
-        df.index = idx
-        return df.astype(dtypes)
+        return df
 
 
 class SeriesSerializer(Serializer):
@@ -63,9 +70,26 @@ class SeriesSerializer(Serializer):
         return pd.Series(data, index=idx, name=name).astype(dtype)
 
 
+class PeriodSerializer(Serializer):
+    def serial(self, obj: pd.Period, context: Dict):
+        return [obj.strftime("%Y-%m-%d %H:%M:%S"), obj.freqstr], [], True
+
+    def deserial(self, serialized, context: Dict, subs: List):
+        return pd.Period(serialized[0], freq=serialized[1])
+
+
+class PdOffsetSerializer(Serializer):
+    def serial(self, obj: PdBaseOffset, context: Dict):
+        return [obj.freqstr], [], True
+
+    def deserial(self, serialized, context: Dict, subs: List):
+        return pd.tseries.frequencies.to_offset(serialized[0])
+
+
 _TYPE_CHAR_MULTI_INDEX = "M"
 _TYPE_CHAR_RANGE_INDEX = "R"
 _TYPE_CHAR_CATEGORICAL_INDEX = "C"
+_TYPE_CHAR_DATETIME_INDEX = "D"
 
 
 class IndexSerializer(Serializer):
@@ -80,6 +104,9 @@ class IndexSerializer(Serializer):
         elif isinstance(obj, pd.CategoricalIndex):
             data = [obj.name, obj.values]
             header = [_TYPE_CHAR_CATEGORICAL_INDEX]
+        elif isinstance(obj, pd.DatetimeIndex):
+            data = [obj.name, obj.values]
+            header = [_TYPE_CHAR_DATETIME_INDEX, obj.freqstr, None]
         else:
             if getattr(obj.dtype, "hasobject", False):
                 values = obj.tolist()
@@ -100,6 +127,10 @@ class IndexSerializer(Serializer):
         elif header[0] == _TYPE_CHAR_CATEGORICAL_INDEX:
             name, data = subs[:2]
             return pd.CategoricalIndex(data, name=name)
+        elif header[0] == _TYPE_CHAR_DATETIME_INDEX:
+            name, data = subs[:2]
+            freq, tz = header[1:]
+            return pd.DatetimeIndex(data, name=name, freq=freq, tz=tz)
         elif header[0] is None:  # Normal index
             dtype, name, values = subs
             return pd.Index(values, dtype=dtype, name=name)
@@ -162,9 +193,12 @@ class PdTimestampSerializer(Serializer):
             zone_info = []
             ts = obj.to_pydatetime().timestamp()
         elements = [int(ts), obj.microsecond, obj.nanosecond]
-        if hasattr(obj, "unit"):
-            elements.append(str(obj.unit))
-        return elements, zone_info, bool(zone_info)
+        for attr in ("unit", "freqstr"):
+            if getattr(obj, attr, None):
+                elements.append(str(getattr(obj, attr)))
+            else:
+                elements.append(None)
+        return elements, zone_info, not bool(zone_info)
 
     def deserial(self, serialized: List, context: Dict, subs: List):
         if subs:
@@ -196,7 +230,8 @@ class PdTimestampSerializer(Serializer):
                 "nanosecond": serialized[2],
             }
             if len(serialized) >= 4:
-                kwargs["unit"] = serialized[3]
+                ext_kw = dict(zip(("unit", "freq"), serialized[3:]))
+                kwargs.update({k: v for k, v in ext_kw.items() if v})
             val = pd.Timestamp(**kwargs)
         return val
 
@@ -238,4 +273,6 @@ CategoricalSerializer.register(pd.Categorical)
 ArraySerializer.register(ExtensionArray)
 PdTimestampSerializer.register(pd.Timestamp)
 PdTimedeltaSerializer.register(pd.Timedelta)
+PeriodSerializer.register(pd.Period)
+PdOffsetSerializer.register(PdBaseOffset)
 NoDefaultSerializer.register(type(no_default))

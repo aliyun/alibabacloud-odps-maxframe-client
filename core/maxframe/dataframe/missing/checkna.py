@@ -30,6 +30,7 @@ class DataFrameCheckNA(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.CHECK_NA
 
     positive = BoolField("positive", default=None)
+    use_inf_as_na = BoolField("use_inf_as_na", default=None)
 
     def __call__(self, df):
         if isinstance(df, DATAFRAME_TYPE):
@@ -45,11 +46,15 @@ class DataFrameCheckNA(DataFrameOperator, DataFrameOperatorMixin):
                 f"Expecting maxframe dataframe, series, index, or tensor, got {type(df)}"
             )
 
-        params = df.params.copy()
+        params = df.params
         if self.output_types[0] == OutputType.dataframe:
-            params["dtypes"] = pd.Series(
-                [np.dtype("bool")] * len(df.dtypes), index=df.columns_value.to_pandas()
-            )
+            if df.dtypes is None:
+                params["dtypes"] = None
+            else:
+                params["dtypes"] = pd.Series(
+                    [np.dtype("bool")] * len(df.dtypes),
+                    index=df.columns_value.to_pandas(),
+                )
         else:
             params["dtype"] = np.dtype("bool")
         return self.new_tileable([df], **params)
@@ -133,13 +138,14 @@ def isna(obj):
     2     True
     dtype: bool
     """
+    use_inf_as_na = pd.get_option("mode.use_inf_as_na")
     if isinstance(obj, MultiIndex):
         raise NotImplementedError("isna is not defined for MultiIndex")
     elif isinstance(obj, ENTITY_TYPE):
         if isinstance(obj, TENSOR_TYPE):
             return mt.isnan(obj)
         else:
-            op = DataFrameCheckNA(positive=True)
+            op = DataFrameCheckNA(positive=True, use_inf_as_na=use_inf_as_na)
             return op(obj)
     else:
         return _from_pandas(pd.isna(obj))
@@ -207,13 +213,14 @@ def notna(obj):
     2    False
     dtype: bool
     """
+    use_inf_as_na = pd.get_option("mode.use_inf_as_na")
     if isinstance(obj, MultiIndex):
         raise NotImplementedError("isna is not defined for MultiIndex")
     elif isinstance(obj, ENTITY_TYPE):
         if isinstance(obj, TENSOR_TYPE):
             return ~mt.isnan(obj)
         else:
-            op = DataFrameCheckNA(positive=False)
+            op = DataFrameCheckNA(positive=False, use_inf_as_na=use_inf_as_na)
             return op(obj)
     else:
         return _from_pandas(pd.notna(obj))

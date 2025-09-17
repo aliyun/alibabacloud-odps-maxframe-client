@@ -16,24 +16,13 @@ import pandas as pd
 import pyarrow as pa
 
 from .... import opcodes
-from ....core.entity.output_types import OutputType
-from ...operators import DataFrameOperator, DataFrameOperatorMixin
+from .core import LegacySeriesListOperator, SeriesListMethod
 
 
-class SeriesListLengthOperator(DataFrameOperator, DataFrameOperatorMixin):
+class SeriesListLengthOperator(LegacySeriesListOperator):
+    # operator class deprecated since v2.3.0
     _op_type_ = opcodes.SERIES_LIST_LENGTH
-
-    def __init__(self, **kw):
-        super().__init__(_output_types=[OutputType.series], **kw)
-
-    def __call__(self, series):
-        return self.new_series(
-            [series],
-            shape=series.shape,
-            index_value=series.index_value,
-            dtype=pd.ArrowDtype(pa.int64()),
-            name=None,
-        )
+    _method_name = "len"
 
 
 def series_list_length(series):
@@ -70,4 +59,6 @@ def series_list_length(series):
     3    <NA>
     dtype: int64[pyarrow]
     """
-    return SeriesListLengthOperator()(series)
+    return SeriesListMethod(method="len")(
+        series, name=None, dtype=pd.ArrowDtype(pa.int64())
+    )

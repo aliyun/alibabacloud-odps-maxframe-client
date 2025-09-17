@@ -14,21 +14,23 @@
 
 from ... import opcodes
 from ...core import OutputType
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin, ReductionCallable
 
 
-class DataFrameMean(DataFrameReductionOperator, DataFrameReductionMixin):
+class MeanReductionCallable(ReductionCallable):
+    def __call__(self, value):
+        skipna = self.kwargs["skipna"]
+        return value.sum(skipna=skipna) / value.count()
+
+
+class DataFrameMean(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.MEAN
     _func_name = "mean"
 
     @classmethod
     def get_reduction_callable(cls, op):
         skipna = op.skipna
-
-        def mean(x):
-            return x.sum(skipna=skipna) / x.count()
-
-        return mean
+        return MeanReductionCallable(func_name="mean", kwargs=dict(skipna=skipna))
 
 
 def mean_series(df, axis=None, skipna=True, level=None, method=None):

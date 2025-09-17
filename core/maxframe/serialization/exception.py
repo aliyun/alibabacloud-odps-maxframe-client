@@ -18,6 +18,7 @@ from typing import Dict, List
 
 from ..errors import MaxFrameError
 from ..lib import wrapped_pickle as pickle
+from ..utils import combine_error_message_and_traceback
 from .core import Serializer, buffered, pickle_buffers, unpickle_buffers
 
 logger = logging.getLogger(__name__)
@@ -53,10 +54,7 @@ class RemoteException(MaxFrameError):
         return unpickle_buffers(self.buffers) if self.buffers else self
 
     def __str__(self):
-        tbs = []
-        for msg, tb in zip(self.messages, self.tracebacks):
-            tbs.append("".join([msg + "\n"] + tb))
-        return "\nCaused by:\n".join(tbs)
+        return combine_error_message_and_traceback(self.messages, self.tracebacks)
 
 
 class ExceptionSerializer(Serializer):

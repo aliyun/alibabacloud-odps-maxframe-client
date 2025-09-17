@@ -49,7 +49,7 @@ def get_fs(path: path_type, storage_options: Dict = None) -> FileSystem:
 
     if scheme in _filesystems:
         file_system_type = _filesystems[scheme]
-        if scheme == "file" or scheme == "oss":
+        if scheme == "file":
             # local file systems are singletons.
             return file_system_type.get_instance()
         else:

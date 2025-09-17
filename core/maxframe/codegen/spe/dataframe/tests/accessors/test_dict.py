@@ -21,13 +21,7 @@ from ...... import dataframe as md
 from ......lib.dtypes_extension import dict_
 from ......utils import ARROW_DTYPE_NOT_SUPPORTED
 from ....core import SPECodeContext
-from ...accessors.dict_ import (
-    SeriesDictContainsOperatorAdapter,
-    SeriesDictGetItemOperatorAdapter,
-    SeriesDictLengthOperatorAdapter,
-    SeriesDictRemoveOperatorAdapter,
-    SeriesDictSetItemOperatorAdapter,
-)
+from ...accessors.dict_ import SeriesDictMethodAdapter
 
 pytestmark = pytest.mark.skipif(
     ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported"
@@ -66,7 +60,7 @@ def md_df_1(pd_df_1):
 def test_getitem(md_df_1, pd_df_1):
     s1 = md_df_1["A"].dict["k1"]
     context = SPECodeContext()
-    adapter = SeriesDictGetItemOperatorAdapter()
+    adapter = SeriesDictMethodAdapter()
     results = adapter.generate_code(s1.op, context)
 
     expected_results = [
@@ -102,7 +96,7 @@ var_1.name = 'k1'
 def test_getitem_with_default_value(md_df_1, pd_df_1):
     s1 = md_df_1["A"].dict.get("k2", 9)
     context = SPECodeContext()
-    adapter = SeriesDictGetItemOperatorAdapter()
+    adapter = SeriesDictMethodAdapter()
     results = adapter.generate_code(s1.op, context)
 
     expected_results = [
@@ -137,7 +131,7 @@ var_1.name = 'k2'
 def test_getitem_with_key_error(md_df_1, pd_df_1):
     s1 = md_df_1["A"].dict["k2"]
     context = SPECodeContext()
-    adapter = SeriesDictGetItemOperatorAdapter()
+    adapter = SeriesDictMethodAdapter()
     results = adapter.generate_code(s1.op, context)
 
     expected_results = [
@@ -167,7 +161,7 @@ def test_setitem(md_df_1, pd_df_1):
     s1 = md_df_1["A"]
     s1.dict["k2"] = 9
     context = SPECodeContext()
-    adapter = SeriesDictSetItemOperatorAdapter()
+    adapter = SeriesDictMethodAdapter()
     results = adapter.generate_code(s1.op, context)
 
     expected_results = [
@@ -207,7 +201,7 @@ var_1 = var_0.map(_inner_set, na_action="ignore").astype(const_0)
 def test_length(md_df_1, pd_df_1):
     s1 = md_df_1["A"].dict.len()
     context = SPECodeContext()
-    adapter = SeriesDictLengthOperatorAdapter()
+    adapter = SeriesDictMethodAdapter()
     results = adapter.generate_code(s1.op, context)
 
     expected_results = [
@@ -227,7 +221,7 @@ var_1.name = None
 def test_remove_with_ignore_key_error(md_df_1, pd_df_1):
     s1 = md_df_1["A"].dict.remove("k2", ignore_key_error=True)
     context = SPECodeContext()
-    adapter = SeriesDictRemoveOperatorAdapter()
+    adapter = SeriesDictMethodAdapter()
     results = adapter.generate_code(s1.op, context)
 
     expected_results = [
@@ -262,7 +256,7 @@ var_1 = var_0.map(_inner_remove, na_action="ignore").astype(const_0)
 def test_remove_with_key_error(md_df_1, pd_df_1):
     s1 = md_df_1["A"].dict.remove("k2", ignore_key_error=False)
     context = SPECodeContext()
-    adapter = SeriesDictRemoveOperatorAdapter()
+    adapter = SeriesDictMethodAdapter()
     results = adapter.generate_code(s1.op, context)
 
     expected_results = [
@@ -290,7 +284,7 @@ var_1 = var_0.map(_inner_remove, na_action="ignore").astype(const_0)
 def test_contains(md_df_1, pd_df_1):
     s1 = md_df_1["A"].dict.contains("k2")
     context = SPECodeContext()
-    adapter = SeriesDictContainsOperatorAdapter()
+    adapter = SeriesDictMethodAdapter()
     results = adapter.generate_code(s1.op, context)
 
     expected_results = [

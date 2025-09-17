@@ -25,6 +25,10 @@ cudf = lazy_import("cudf")
 
 
 class GroupByCumReductionOperator(DataFrameOperatorMixin, DataFrameOperator):
+    """
+    NOTE: this operator has been deprecated and merged with GroupByExpandingAgg.
+    """
+
     _op_module_ = "dataframe.groupby"
 
     axis = AnyField("axis", default=None)
@@ -96,28 +100,3 @@ class GroupByCumprod(GroupByCumReductionOperator):
 class GroupByCumcount(GroupByCumReductionOperator):
     _op_type_ = opcodes.CUMCOUNT
     _func_name = "cumcount"
-
-
-def cumcount(groupby, ascending: bool = True):
-    op = GroupByCumcount(ascending=ascending)
-    return op(groupby)
-
-
-def cummin(groupby, axis=0):
-    op = GroupByCummin(axis=axis)
-    return op(groupby)
-
-
-def cummax(groupby, axis=0):
-    op = GroupByCummax(axis=axis)
-    return op(groupby)
-
-
-def cumprod(groupby, axis=0):
-    op = GroupByCumprod(axis=axis)
-    return op(groupby)
-
-
-def cumsum(groupby, axis=0):
-    op = GroupByCumsum(axis=axis)
-    return op(groupby)

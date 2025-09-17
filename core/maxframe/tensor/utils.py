@@ -167,7 +167,7 @@ def normalize_axis_tuple(axis, ndim, argname=None, allow_duplicate=False):
         except TypeError:
             pass
     # Going via an iterator directly is slower than via list comprehension.
-    axis = tuple([validate_axis(ndim, ax, argname) for ax in axis])
+    axis = tuple(validate_axis(ndim, ax, argname) for ax in axis)
     if not allow_duplicate and len(set(axis)) != len(axis):
         if argname:
             raise ValueError(f"repeated axis in `{argname}` argument")
@@ -709,8 +709,8 @@ def implement_scipy(scipy_fun_name):
     return wrapper
 
 
-def infer_scipy_dtype(scipy_fun_name):
+def infer_scipy_dtype(scipy_fun_name, **kw):
     scipy_fun = _load_scipy_func(scipy_fun_name)
     if scipy_fun is None:
         return lambda x: x
-    return infer_dtype(scipy_fun)
+    return infer_dtype(scipy_fun, **kw)

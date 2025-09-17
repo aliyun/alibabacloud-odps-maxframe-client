@@ -16,10 +16,10 @@ import numpy as np
 
 from ... import opcodes
 from ...core import OutputType
-from .core import DATAFRAME_TYPE, DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DATAFRAME_TYPE, DataFrameReduction, DataFrameReductionMixin
 
 
-class DataFrameAll(DataFrameReductionOperator, DataFrameReductionMixin):
+class DataFrameAll(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.ALL
     _func_name = "all"
 

@@ -14,11 +14,13 @@
 
 import uuid
 
+import mock
 import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pytest
 from odps import ODPS
+from odps.errors import ODPSError
 
 import maxframe.dataframe as md
 from maxframe.config import options
@@ -40,9 +42,9 @@ def switch_table_io(request):
 
 
 @pytest.mark.parametrize("switch_table_io", [False, True], indirect=True)
-async def test_table_fetcher(switch_table_io):
+async def test_fetch_table_data(switch_table_io):
     odps_entry = ODPS.from_environments()
-    halo_table_io = ODPSTableIO(odps_entry)
+    table_io = ODPSTableIO(odps_entry)
     fetcher = ODPSTableFetcher(odps_entry)
 
     data = pd.DataFrame(
@@ -60,7 +62,7 @@ async def test_table_fetcher(switch_table_io):
     odps_entry.create_table(
         table_name, "_idx_0 bigint, a double, b bigint, c string", lifecycle=1
     )
-    with halo_table_io.open_writer(table_name) as writer:
+    with table_io.open_writer(table_name) as writer:
         writer.write(pa.Table.from_pandas(data, preserve_index=False))
 
     raw_data = data[list("abc")]
@@ -105,3 +107,74 @@ async def test_table_fetcher(switch_table_io):
     pd.testing.assert_frame_equal(raw_data.iloc[-1:-6:-1, :1], fetched)
 
     odps_entry.delete_table(table_name, if_exists=True)
+
+
+async def test_fetch_data_shape():
+    odps_entry = ODPS.from_environments()
+    table_io = ODPSTableIO(odps_entry)
+    fetcher = ODPSTableFetcher(odps_entry)
+
+    data = pd.DataFrame(
+        {
+            "_idx_0": np.arange(1000),
+            "a": np.random.rand(1000),
+            "b": np.random.randint(0, 10, 1000),
+            "c": np.random.choice(list("ABC"), 1000),
+        }
+    )
+
+    table_names = [
+        tn("mf_test_groupby_table_" + str(uuid.uuid4().hex)) for _ in range(3)
+    ]
+    pt_specs = [None, None, ["pt='2020-01-01'"]]
+    for tn_to_check in table_names:
+        odps_entry.delete_table(tn_to_check, if_exists=True)
+
+    odps_entry.create_table(
+        table_names[0], "_idx_0 bigint, a double, b bigint, c string", lifecycle=1
+    )
+    odps_entry.create_table(
+        table_names[1], "_idx_0 bigint, a double, b bigint, c string", lifecycle=1
+    )
+    odps_entry.create_table(
+        table_names[2],
+        ("_idx_0 bigint, a double, b bigint, c string", "pt string"),
+        lifecycle=1,
+    )
+    with table_io.open_writer(table_names[0]) as writer:
+        writer.write(pa.Table.from_pandas(data, preserve_index=False))
+
+    odps_entry.execute_sql(
+        f"insert overwrite table {table_names[1]} select * from {table_names[0]}"
+    )
+    odps_entry.execute_sql(
+        f"insert overwrite table {table_names[2]} partition ({pt_specs[-1][0]}) "
+        f"select * from {table_names[0]}"
+    )
+
+    for tn_to_check, pt_spec in zip(table_names, pt_specs):
+        tileable = md.read_pandas(data[list("abc")])
+        tileable._shape = (np.nan, 3)
+        result_info = ODPSTableResultInfo(
+            ResultType.ODPS_TABLE, full_table_name=tn_to_check, partition_specs=pt_spec
+        )
+        await fetcher.update_tileable_meta(tileable, result_info)
+        assert tileable.shape == (1000, 3)
+
+    def _create_session_with_error(*_, **__):
+        raise ODPSError("StatusConflict: mock")
+
+    with mock.patch(
+        "maxframe.io.odpsio.tableio.TunnelTableIO.create_download_sessions",
+        new=_create_session_with_error,
+    ):
+        tileable = md.read_pandas(data[list("abc")])
+        tileable._shape = (np.nan, 3)
+        result_info = ODPSTableResultInfo(
+            ResultType.ODPS_TABLE, full_table_name=table_names[0]
+        )
+        await fetcher.update_tileable_meta(tileable, result_info)
+        assert tileable.shape == (np.nan, 3)
+
+    for tn_to_check in table_names:
+        odps_entry.delete_table(tn_to_check, if_exists=True, wait=False)

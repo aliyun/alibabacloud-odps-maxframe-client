@@ -24,20 +24,36 @@ from .apply_chunk import (
     df_apply_chunk,
     series_apply_chunk,
 )
+from .cartesian_chunk import cartesian_chunk
+from .collect_kv import collect_kv
+from .extract_kv import extract_kv
 from .flatjson import series_flatjson
 from .flatmap import df_flatmap, series_flatmap
+from .map_reduce import map_reduce
+from .rebalance import DataFrameRebalance, rebalance
 from .reshuffle import DataFrameReshuffle, df_reshuffle
 
 
 def _install():
     from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
 
-    DataFrameMaxFrameAccessor._register("reshuffle", df_reshuffle)
-    DataFrameMaxFrameAccessor._register("flatmap", df_flatmap)
     DataFrameMaxFrameAccessor._register("apply_chunk", df_apply_chunk)
-    SeriesMaxFrameAccessor._register("flatmap", series_flatmap)
-    SeriesMaxFrameAccessor._register("flatjson", series_flatjson)
+    DataFrameMaxFrameAccessor._register("cartesian_chunk", cartesian_chunk)
+    DataFrameMaxFrameAccessor._register("collect_kv", collect_kv)
+    DataFrameMaxFrameAccessor._register("extract_kv", extract_kv)
+    DataFrameMaxFrameAccessor._register("flatmap", df_flatmap)
+    DataFrameMaxFrameAccessor._register("map_reduce", map_reduce)
+    DataFrameMaxFrameAccessor._register("rebalance", rebalance)
+    DataFrameMaxFrameAccessor._register("reshuffle", df_reshuffle)
+
     SeriesMaxFrameAccessor._register("apply_chunk", series_apply_chunk)
+    SeriesMaxFrameAccessor._register("cartesian_chunk", cartesian_chunk)
+    SeriesMaxFrameAccessor._register("extract_kv", extract_kv)
+    SeriesMaxFrameAccessor._register("flatjson", series_flatjson)
+    SeriesMaxFrameAccessor._register("flatmap", series_flatmap)
+    SeriesMaxFrameAccessor._register("rebalance", rebalance)
+
+    IndexMaxFrameAccessor._register("rebalance", rebalance)
 
     if DataFrameMaxFrameAccessor._api_count:
         for t in DATAFRAME_TYPE:

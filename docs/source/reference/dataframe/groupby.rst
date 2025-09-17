@@ -25,8 +25,10 @@ Function application
 .. autosummary::
    :toctree: generated/
 
+   GroupBy.apply
    GroupBy.agg
    GroupBy.aggregate
+   GroupBy.transform
 
 Computations / descriptive stats
 --------------------------------
@@ -35,11 +37,19 @@ Computations / descriptive stats
 
    GroupBy.all
    GroupBy.any
+   GroupBy.cumcount
+   GroupBy.cummax
+   GroupBy.cummean
+   GroupBy.cummin
+   GroupBy.cumprod
+   GroupBy.cumsum
    GroupBy.count
+   GroupBy.expanding
    GroupBy.max
    GroupBy.mean
    GroupBy.median
    GroupBy.min
+   GroupBy.rolling
    GroupBy.size
    GroupBy.sem
    GroupBy.std
@@ -57,6 +67,13 @@ application to columns of a specific data type.
 
    DataFrameGroupBy.count
    DataFrameGroupBy.nunique
+   DataFrameGroupBy.cummax
+   DataFrameGroupBy.cummin
+   DataFrameGroupBy.cumprod
+   DataFrameGroupBy.cumsum
+   DataFrameGroupBy.fillna
+   DataFrameGroupBy.nunique
+   DataFrameGroupBy.sample
 
 The following methods are available only for ``SeriesGroupBy`` objects.
 

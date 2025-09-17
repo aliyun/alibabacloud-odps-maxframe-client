@@ -15,7 +15,7 @@
 from collections.abc import Iterable
 
 from ... import opcodes
-from ...core import OutputType
+from ...core import ENTITY_TYPE, OutputType
 from ...serialization.serializables import AnyField
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import parse_index
@@ -38,7 +38,8 @@ class GroupByIndex(DataFrameOperatorMixin, DataFrameOperator):
 
     def build_mock_groupby(self, **kwargs):
         groupby_op = self.inputs[0].op
-        return groupby_op.build_mock_groupby(**kwargs)[self.selection]
+        selection = kwargs.pop("selection", None) or self.selection
+        return groupby_op.build_mock_groupby(**kwargs)[selection]
 
     def __call__(self, groupby):
         indexed = groupby.op.build_mock_groupby()[self.selection]
@@ -55,8 +56,10 @@ class GroupByIndex(DataFrameOperatorMixin, DataFrameOperator):
         else:
             self.output_types = [OutputType.dataframe_groupby]
 
-            if isinstance(self.selection, Iterable) and not isinstance(
-                self.selection, str
+            if (
+                isinstance(self.selection, Iterable)
+                and not isinstance(self.selection, str)
+                and not isinstance(self.selection, ENTITY_TYPE)
             ):
                 item_list = list(self.selection)
             else:
@@ -80,7 +83,11 @@ def df_groupby_getitem(df_groupby, item):
 
     if hashable and item in df_groupby.dtypes:
         output_types = [OutputType.series_groupby]
-    elif isinstance(item, Iterable) and all(it in df_groupby.dtypes for it in item):
+    elif (
+        isinstance(item, Iterable)
+        and not isinstance(item, ENTITY_TYPE)
+        and all(it in df_groupby.dtypes for it in item)
+    ):
         output_types = [OutputType.dataframe_groupby]
     else:
         raise NameError(f"Cannot slice groupby with {item!r}")

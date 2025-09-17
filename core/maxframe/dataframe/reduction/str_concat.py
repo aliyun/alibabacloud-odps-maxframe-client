@@ -15,10 +15,15 @@
 from ... import opcodes
 from ...core import OutputType
 from ...serialization.serializables import StringField
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin, ReductionCallable
 
 
-class DataFrameStrConcat(DataFrameReductionOperator, DataFrameReductionMixin):
+class StrLenReductionCallable(ReductionCallable):
+    def __call__(self, value):
+        return build_str_concat_object(value, **self.kwargs)
+
+
+class DataFrameStrConcat(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.STR_CONCAT
     _func_name = "str_concat"
 
@@ -35,11 +40,9 @@ class DataFrameStrConcat(DataFrameReductionOperator, DataFrameReductionMixin):
     @classmethod
     def get_reduction_callable(cls, op: "DataFrameStrConcat"):
         sep, na_rep = op.sep, op.na_rep
-
-        def str_concat(obj):
-            return build_str_concat_object(obj, sep=sep, na_rep=na_rep)
-
-        return str_concat
+        return StrLenReductionCallable(
+            func_name="str_concat", kwargs=dict(sep=sep, na_rep=na_rep)
+        )
 
 
 def build_str_concat_object(df, sep=None, na_rep=None):

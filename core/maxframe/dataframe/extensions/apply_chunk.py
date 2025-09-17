@@ -26,9 +26,10 @@ from ...serialization.serializables import (
     Int32Field,
     TupleField,
 )
+from ...typing_ import TileableType
 from ...udf import BuiltinFunction, MarkedFunction
 from ...utils import copy_if_possible, make_dtype, make_dtypes
-from ..core import DATAFRAME_TYPE, DataFrame, IndexValue, Series
+from ..core import DATAFRAME_TYPE, INDEX_TYPE, DataFrame, IndexValue, Series
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import (
     InferredDataFrameMeta,
@@ -43,7 +44,7 @@ from ..utils import (
 
 class DataFrameApplyChunk(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.APPLY_CHUNK
-    _legacy_name = "DataFrameApplyChunkOperator"
+    _legacy_name = "DataFrameApplyChunkOperator"  # since v2.0.0
 
     func = FunctionField("func")
     batch_rows = Int32Field("batch_rows", default=None)
@@ -60,16 +61,26 @@ class DataFrameApplyChunk(DataFrameOperator, DataFrameOperatorMixin):
     def has_custom_code(self) -> bool:
         return not isinstance(self.func, BuiltinFunction)
 
+    def check_inputs(self, inputs: List[TileableType]):
+        # for apply_chunk we allow called on non-deterministic tileables
+        pass
+
     def _call_dataframe(self, df, dtypes, dtype, name, index_value, element_wise):
         # return dataframe
         if self.output_types[0] == OutputType.dataframe:
             dtypes = make_dtypes(dtypes)
+            if dtypes is not None:
+                shape = df.shape if element_wise else (np.nan, len(dtypes))
+                cols_value = parse_index(dtypes.index, store_data=True)
+            else:
+                shape = (np.nan, np.nan)
+                cols_value = None
             # apply_chunk will use generate new range index for results
             return self.new_dataframe(
                 [df],
-                shape=df.shape if element_wise else (np.nan, len(dtypes)),
+                shape=shape,
                 index_value=index_value,
-                columns_value=parse_index(dtypes.index, store_data=True),
+                columns_value=cols_value,
                 dtypes=dtypes,
             )
 
@@ -106,11 +117,17 @@ class DataFrameApplyChunk(DataFrameOperator, DataFrameOperatorMixin):
         name: Any = None,
         output_type=None,
         index=None,
+        skip_infer=False,
     ):
         args = self.args or ()
         kwargs = self.kwargs or {}
         # if not dtypes and not skip_infer:
-        packed_func = get_packed_func(df_or_series, self.func, *args, **kwargs)
+        try:
+            packed_func = get_packed_func(df_or_series, self.func, *args, **kwargs)
+        except:
+            if not skip_infer:
+                raise
+            packed_func = self.func
 
         # if skip_infer, directly build a frame
         if self.output_types and self.output_types[0] == OutputType.df_or_series:
@@ -125,13 +142,15 @@ class DataFrameApplyChunk(DataFrameOperator, DataFrameOperatorMixin):
             dtype=dtype,
             name=name,
             index=index,
+            skip_infer=skip_infer,
         )
 
         if inferred_meta.index_value is None:
             inferred_meta.index_value = parse_index(
                 None, (df_or_series.key, df_or_series.index_value.key, self.func)
             )
-        inferred_meta.check_absence("output_type", "dtypes", "dtype")
+        if not skip_infer:
+            inferred_meta.check_absence("output_type", "dtypes", "dtype")
 
         if isinstance(df_or_series, DATAFRAME_TYPE):
             return self._call_dataframe(
@@ -163,6 +182,7 @@ class DataFrameApplyChunk(DataFrameOperator, DataFrameOperatorMixin):
         name: Any = None,
         index: Union[pd.Index, IndexValue] = None,
         elementwise: bool = None,
+        skip_infer: bool = False,
         **kwargs,
     ) -> InferredDataFrameMeta:
         inferred_meta = infer_dataframe_return_value(
@@ -174,7 +194,10 @@ class DataFrameApplyChunk(DataFrameOperator, DataFrameOperatorMixin):
             name=name,
             index=index,
             elementwise=elementwise,
+            skip_infer=skip_infer,
         )
+        if skip_infer:
+            return inferred_meta
 
         # merge specified and inferred index, dtypes, output_type
         # elementwise used to decide shape
@@ -186,6 +209,8 @@ class DataFrameApplyChunk(DataFrameOperator, DataFrameOperatorMixin):
         if self.output_types:
             inferred_meta.output_type = self.output_types[0]
         inferred_meta.dtypes = dtypes if dtypes is not None else inferred_meta.dtypes
+        if isinstance(index, INDEX_TYPE):
+            index = index.index_value
         if index is not None:
             inferred_meta.index_value = (
                 parse_index(index)
@@ -458,6 +483,7 @@ def df_apply_chunk(
         name=name,
         index=index,
         output_type=output_type,
+        skip_infer=skip_infer,
     )
 
 

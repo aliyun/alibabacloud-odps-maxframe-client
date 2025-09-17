@@ -17,13 +17,15 @@ from typing import Dict, List, Type
 from ....core import ENTITY_TYPE
 from ....dataframe.arithmetic import (
     DataFrameAnd,
-    DataFrameAround,
+    DataFrameDot,
     DataFrameOr,
+    DataFrameRound,
     DataFrameXor,
 )
 from ....dataframe.arithmetic.core import DataFrameBinOp, DataFrameUnaryOp
 from ....dataframe.core import SERIES_TYPE
 from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
+from ..utils import build_method_call_adapter
 
 
 @register_op_adapter(DataFrameUnaryOp)
@@ -34,7 +36,7 @@ class DataFrameUnaryFuncAdapter(SPEOperatorAdapter):
         inp_var = context.get_input_tileable_variable(op.inputs[0])
         res_var_name = context.get_output_tileable_variable(op.outputs[0])
         func = getattr(op, "_func_name")
-        if isinstance(op, DataFrameAround):
+        if isinstance(op, DataFrameRound):
             decimals_var = self.translate_var(context, op.decimals)
             return [f"{res_var_name} = {inp_var}.round({decimals_var})"]
         else:
@@ -82,3 +84,6 @@ class DataFrameBitwiseBinOpAdapter(SPEOperatorAdapter):
         res_var = context.get_output_tileable_variable(op.outputs[0])
         right_var = self._translate_call_args(context, rhs)[0]
         return [f"{res_var} = {left_var} {self._python_op[type(op)]} {right_var}"]
+
+
+DataFrameDotAdapter = build_method_call_adapter(DataFrameDot, "dot", "rhs")

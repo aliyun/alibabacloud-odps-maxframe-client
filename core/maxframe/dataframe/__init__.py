@@ -21,6 +21,7 @@ from . import (
     fetch,
     groupby,
     indexing,
+    merge,
     misc,
     missing,
     reduction,
@@ -45,13 +46,13 @@ from .merge import concat, merge
 from .misc.cut import cut
 from .misc.eval import maxframe_eval as eval  # pylint: disable=redefined-builtin
 from .misc.get_dummies import get_dummies
-from .misc.melt import melt
-from .misc.pivot import pivot
-from .misc.pivot_table import pivot_table
 from .misc.qcut import qcut
 from .misc.to_numeric import to_numeric
 from .missing import isna, isnull, notna, notnull
 from .reduction import CustomReduction, unique
+from .reshape.melt import melt
+from .reshape.pivot import pivot
+from .reshape.pivot_table import pivot_table
 from .tseries.to_datetime import to_datetime
 
 try:
@@ -80,3 +81,9 @@ del (
 )
 
 from_pandas = read_pandas
+
+# isort: off
+from .typing_ import register_pandas_typing_funcs
+
+register_pandas_typing_funcs()
+del register_pandas_typing_funcs

@@ -56,8 +56,11 @@ from ..utils import (
     ceildiv,
     estimate_pandas_size,
     on_serialize_numpy_type,
+    pd_release_version,
+    prevent_called_from_pandas,
     tokenize,
 )
+from .typing_ import DataFrameType, IndexType, SeriesType
 from .utils import (
     ReprSeries,
     apply_if_callable,
@@ -65,6 +68,8 @@ from .utils import (
     merge_index_value,
     parse_index,
 )
+
+_df_with_iteritems = pd_release_version[:2] < (2, 0)
 
 
 class IndexValue(Serializable):
@@ -478,9 +483,17 @@ _lazy_chunk_meta_properties = (
 )
 
 
+def _calc_cum_nsplit(nsplit: Tuple[int]) -> List[int]:
+    return [0] + np.cumsum(nsplit).tolist()
+
+
+def calc_cum_nsplits(nsplits: Tuple[Tuple[int]]) -> List[List[int]]:
+    return tuple(_calc_cum_nsplit(nsplit) for nsplit in nsplits)
+
+
 @functools.lru_cache(maxsize=128)
 def _get_cum_nsplit(nsplit: Tuple[int]) -> List[int]:
-    return [0] + np.cumsum(nsplit).tolist()
+    return _calc_cum_nsplit(nsplit)
 
 
 def _calc_axis_slice(nsplit: Tuple[int], index: int) -> slice:
@@ -685,6 +698,10 @@ class IndexData(HasShapeTileableData, _ToPandasMixin):
         return getattr(self, "_names", None) or [self.name]
 
     @property
+    def nlevels(self) -> int:
+        return len(self.names)
+
+    @property
     def index_value(self) -> IndexValue:
         return self._index_value
 
@@ -817,6 +834,9 @@ class Index(HasShapeTileable, _ToPandasMixin):
 
     def __len__(self):
         return len(self._data)
+
+    def __class_getitem__(cls, item):
+        return IndexType.from_getitem_args(item)
 
     def __maxframe_tensor__(self, dtype=None, order="K"):
         return self._data.__maxframe_tensor__(dtype=dtype, order=order)
@@ -1049,12 +1069,6 @@ class BaseSeriesData(HasShapeTileableData, _ToPandasMixin):
 
         return from_series(self, dtype=dtype)
 
-    @staticmethod
-    def from_tensor(in_tensor, index=None, name=None):
-        from .datasource.from_tensor import series_from_tensor
-
-        return series_from_tensor(in_tensor, index=index, name=name)
-
 
 class SeriesData(_BatchedFetcher, BaseSeriesData):
     type_name = "Series"
@@ -1065,8 +1079,9 @@ class SeriesData(_BatchedFetcher, BaseSeriesData):
         return tensor.astype(dtype=dtype, order=order, copy=False)
 
     def iteritems(self, batch_size=10000, session=None):
+        method_name = "iteritems" if _df_with_iteritems else "items"
         for batch_data in self.iterbatch(batch_size=batch_size, session=session):
-            yield from getattr(batch_data, "iteritems")()
+            yield from getattr(batch_data, method_name)()
 
     items = iteritems
 
@@ -1082,11 +1097,38 @@ class SeriesData(_BatchedFetcher, BaseSeriesData):
         name = name or self.name or 0
         return dataframe_from_tensor(self, columns=[name])
 
+    @property
+    def hasnans(self):
+        """
+        Return True if there are any NaNs.
+
+        Returns
+        -------
+        bool
+
+        Examples
+        --------
+        >>> import maxframe.dataframe as md
+        >>> s = md.Series([1, 2, 3, None])
+        >>> s.execute()
+        0    1.0
+        1    2.0
+        2    3.0
+        3    NaN
+        dtype: float64
+        >>> s.hasnans.execute()
+        True
+        """
+        return self.isna().any()
+
 
 class Series(HasShapeTileable, _ToPandasMixin):
     __slots__ = ("_cache",)
     _allow_data_type_ = (SeriesData,)
     type_name = "Series"
+
+    def __class_getitem__(cls, item):
+        return SeriesType.from_getitem_args(item)
 
     def to_tensor(self, dtype=None):
         return self._data.to_tensor(dtype=dtype)
@@ -1184,6 +1226,11 @@ class Series(HasShapeTileable, _ToPandasMixin):
             return super().copy()
         else:
             return super()._view()
+
+    def __iter__(self):
+        # prevent being called by pandas to make sure `__eq__` works
+        prevent_called_from_pandas()
+        return (tp[1] for tp in self.items())
 
     def __len__(self):
         return len(self._data)
@@ -1296,98 +1343,6 @@ class Series(HasShapeTileable, _ToPandasMixin):
         2    c
         """
         return self._data.to_frame(name=name)
-
-    def between(self, left, right, inclusive="both"):
-        """
-        Return boolean Series equivalent to left <= series <= right.
-        This function returns a boolean vector containing `True` wherever the
-        corresponding Series element is between the boundary values `left` and
-        `right`. NA values are treated as `False`.
-
-        Parameters
-        ----------
-        left : scalar or list-like
-            Left boundary.
-        right : scalar or list-like
-            Right boundary.
-        inclusive : {"both", "neither", "left", "right"}
-            Include boundaries. Whether to set each bound as closed or open.
-
-        Returns
-        -------
-        Series
-            Series representing whether each element is between left and
-            right (inclusive).
-
-        See Also
-        --------
-        Series.gt : Greater than of series and other.
-        Series.lt : Less than of series and other.
-
-        Notes
-        -----
-        This function is equivalent to ``(left <= ser) & (ser <= right)``
-
-        Examples
-        --------
-        >>> import maxframe.dataframe as md
-        >>> s = md.Series([2, 0, 4, 8, np.nan])
-
-        Boundary values are included by default:
-
-        >>> s.between(1, 4).execute()
-        0     True
-        1    False
-        2     True
-        3    False
-        4    False
-        dtype: bool
-
-        With `inclusive` set to ``"neither"`` boundary values are excluded:
-
-        >>> s.between(1, 4, inclusive="neither").execute()
-        0     True
-        1    False
-        2    False
-        3    False
-        4    False
-        dtype: bool
-
-        `left` and `right` can be any scalar value:
-
-        >>> s = md.Series(['Alice', 'Bob', 'Carol', 'Eve'])
-        >>> s.between('Anna', 'Daniel').execute()
-        0    False
-        1     True
-        2     True
-        3    False
-        dtype: bool
-        """
-        if isinstance(inclusive, bool):  # pragma: no cover
-            # for pandas < 1.3.0
-            if inclusive:
-                inclusive = "both"
-            else:
-                inclusive = "neither"
-        if inclusive == "both":
-            lmask = self >= left
-            rmask = self <= right
-        elif inclusive == "left":
-            lmask = self >= left
-            rmask = self < right
-        elif inclusive == "right":
-            lmask = self > left
-            rmask = self <= right
-        elif inclusive == "neither":
-            lmask = self > left
-            rmask = self < right
-        else:
-            raise ValueError(
-                "Inclusive has to be either string of 'both',"
-                "'left', 'right', or 'neither'."
-            )
-
-        return lmask & rmask
 
     # def median(
     #     self, axis=None, skipna=True, out=None, overwrite_input=False, keepdims=False
@@ -1589,18 +1544,6 @@ class BaseDataFrameData(HasShapeTileableData, _ToPandasMixin):
 
         return from_dataframe(self, dtype=dtype)
 
-    @staticmethod
-    def from_tensor(in_tensor, index=None, columns=None):
-        from .datasource.from_tensor import dataframe_from_tensor
-
-        return dataframe_from_tensor(in_tensor, index=index, columns=columns)
-
-    @staticmethod
-    def from_records(records, **kw):
-        from .datasource.from_records import from_records
-
-        return from_records(records, **kw)
-
     @property
     def index(self):
         from .datasource.index import from_tileable
@@ -1747,12 +1690,6 @@ class DataFrame(HasShapeTileable, _ToPandasMixin):
     def to_tensor(self):
         return self._data.to_tensor()
 
-    def from_tensor(self, in_tensor, index=None, columns=None):
-        return self._data.from_tensor(in_tensor, index=index, columns=columns)
-
-    def from_records(self, records, **kw):
-        return self._data.from_records(records, **kw)
-
     def __maxframe_tensor__(self, dtype=None, order="K"):
         return self._data.__maxframe_tensor__(dtype=dtype, order=order)
 
@@ -1771,6 +1708,14 @@ class DataFrame(HasShapeTileable, _ToPandasMixin):
             result
             + [k for k in self.dtypes.index if isinstance(k, str) and k.isidentifier()]
         )
+
+    def __iter__(self):
+        # prevent being called by pandas to make sure `__eq__` works
+        prevent_called_from_pandas()
+        return iter(self.dtypes.index)
+
+    def __class_getitem__(cls, item):
+        return DataFrameType.from_getitem_args(item)
 
     @property
     def T(self):

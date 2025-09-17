@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pandas as pd
+
 from ... import opcodes
 from ...core import OutputType
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
@@ -30,10 +32,20 @@ class DataFrameTranspose(DataFrameOperator, DataFrameOperatorMixin):
         new_shape = arg.shape[::-1]
         columns_value = arg.index_value
         index_value = parse_index(arg.dtypes.index)
+
+        if not arg.index_value.has_value:
+            dtypes = None
+        else:
+            from pandas.core.dtypes.cast import find_common_type
+
+            dtype = find_common_type(list(arg.dtypes))
+            pd_index = arg.index_value.to_pandas()
+            dtypes = pd.Series([dtype] * len(pd_index), index=pd_index)
+
         return self.new_dataframe(
             [arg],
             shape=new_shape,
-            dtypes=None,
+            dtypes=dtypes,
             columns_value=columns_value,
             index_value=index_value,
         )

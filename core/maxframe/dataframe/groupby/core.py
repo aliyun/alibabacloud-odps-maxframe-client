@@ -13,19 +13,27 @@
 # limitations under the License.
 
 from collections import namedtuple
-from typing import List
+from typing import Any, Dict, List
 
 import pandas as pd
 
 from ... import opcodes
 from ...core import ENTITY_TYPE, Entity, EntityData, OutputType
 from ...core.operator import MapReduceOperator
-from ...serialization.serializables import AnyField, BoolField, Int32Field
-from ...utils import lazy_import, no_default
-from ..core import SERIES_TYPE
+from ...serialization import PickleContainer
+from ...serialization.serializables import AnyField, BoolField, DictField, Int32Field
+from ...udf import BuiltinFunction
+from ...utils import find_objects, lazy_import, no_default
+from ..core import GROUPBY_TYPE, SERIES_TYPE
 from ..initializer import Series as asseries
-from ..operators import DataFrameOperatorMixin
-from ..utils import build_df, build_series, parse_index
+from ..operators import DataFrameOperator, DataFrameOperatorMixin
+from ..utils import (
+    build_df,
+    build_series,
+    call_groupby_with_params,
+    make_column_list,
+    parse_index,
+)
 
 cudf = lazy_import("cudf")
 
@@ -35,7 +43,7 @@ NamedAgg = namedtuple("NamedAgg", ["column", "aggfunc"])
 
 class DataFrameGroupByOp(MapReduceOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.GROUPBY
-    _legacy_name = "DataFrameGroupByOperator"
+    _legacy_name = "DataFrameGroupByOperator"  # since v2.0.0
 
     by = AnyField(
         "by",
@@ -60,6 +68,12 @@ class DataFrameGroupByOp(MapReduceOperator, DataFrameOperatorMixin):
             elif output_types[0] == OutputType.series:
                 output_types = [OutputType.series_groupby]
             self.output_types = output_types
+
+    def has_custom_code(self) -> bool:
+        callable_bys = find_objects(self.by, types=PickleContainer, checker=callable)
+        if not callable_bys:
+            return False
+        return any(not isinstance(fun, BuiltinFunction) for fun in callable_bys)
 
     @property
     def is_dataframe_obj(self):
@@ -93,8 +107,8 @@ class DataFrameGroupByOp(MapReduceOperator, DataFrameOperatorMixin):
                 ensure_string=True,
             )
 
-        new_kw = self.groupby_params
-        new_kw.update(kwargs)
+        new_kw = self.groupby_params.copy()
+        new_kw.update({k: v for k, v in kwargs.items()})
         if isinstance(new_kw["by"], list):
             new_by = []
             for v in new_kw["by"]:
@@ -110,7 +124,7 @@ class DataFrameGroupByOp(MapReduceOperator, DataFrameOperatorMixin):
                 else:
                     new_by.append(v)
             new_kw["by"] = new_by
-        return mock_obj.groupby(**new_kw)
+        return call_groupby_with_params(mock_obj, new_kw)
 
     @classmethod
     def _set_inputs(cls, op: "DataFrameGroupByOp", inputs: List[EntityData]):
@@ -118,8 +132,8 @@ class DataFrameGroupByOp(MapReduceOperator, DataFrameOperatorMixin):
         inputs_iter = iter(op._inputs[1:])
         if len(inputs) > 1:
             by = []
-            for k in op.by:
-                if isinstance(k, SERIES_TYPE):
+            for k in op.by or ():
+                if isinstance(k, ENTITY_TYPE):
                     by.append(next(inputs_iter))
                 else:
                     by.append(k)
@@ -240,3 +254,73 @@ def groupby(df, by=None, level=None, as_index=True, sort=True, group_keys=True):
         output_types=output_types,
     )
     return op(df)
+
+
+class BaseGroupByWindowOp(DataFrameOperatorMixin, DataFrameOperator):
+    _op_module_ = "dataframe.groupby"
+
+    groupby_params = DictField("groupby_params", default=None)
+    window_params = DictField("window_params", default=None)
+
+    def __init__(self, output_types=None, **kw):
+        super().__init__(_output_types=output_types, **kw)
+
+    def _calc_mock_result_df(self, mock_groupby):
+        raise NotImplementedError
+
+    def get_sort_cols_to_asc(self) -> Dict[Any, bool]:
+        order_cols = self.window_params.get("order_cols") or []
+        asc_list = self.window_params.get("ascending") or [True]
+        if len(asc_list) < len(order_cols):
+            asc_list = [asc_list[0]] * len(order_cols)
+        return dict(zip(order_cols, asc_list))
+
+    def _calc_out_dtypes(self, in_groupby):
+        in_obj = in_groupby
+        groupby_params = in_groupby.op.groupby_params
+        while isinstance(in_obj, GROUPBY_TYPE):
+            in_obj = in_obj.inputs[0]
+
+        if in_groupby.ndim == 1:
+            selection = None
+        else:
+            by_cols = (
+                make_column_list(groupby_params.get("by"), in_groupby.dtypes) or []
+            )
+            selection = groupby_params.get("selection")
+            if not selection:
+                selection = [c for c in in_obj.dtypes.index if c not in by_cols]
+
+        mock_groupby = in_groupby.op.build_mock_groupby(
+            group_keys=False, selection=selection
+        )
+
+        result_df = self._calc_mock_result_df(mock_groupby)
+
+        if isinstance(result_df, pd.DataFrame):
+            self.output_types = [OutputType.dataframe]
+            return result_df.dtypes
+        else:
+            self.output_types = [OutputType.series]
+            return result_df.name, result_df.dtype
+
+    def __call__(self, groupby):
+        in_df = groupby
+        while in_df.op.output_types[0] not in (OutputType.dataframe, OutputType.series):
+            in_df = in_df.inputs[0]
+
+        out_dtypes = self._calc_out_dtypes(groupby)
+
+        kw = in_df.params.copy()
+        if self.output_types[0] == OutputType.dataframe:
+            kw.update(
+                dict(
+                    columns_value=parse_index(out_dtypes.index, store_data=True),
+                    dtypes=out_dtypes,
+                    shape=(groupby.shape[0], len(out_dtypes)),
+                )
+            )
+        else:
+            name, dtype = out_dtypes
+            kw.update(dtype=dtype, name=name, shape=(groupby.shape[0],))
+        return self.new_tileable([in_df], **kw)

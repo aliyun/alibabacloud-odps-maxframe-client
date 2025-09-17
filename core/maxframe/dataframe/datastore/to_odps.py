@@ -56,6 +56,7 @@ class DataFrameToODPSTable(DataFrameDataStore):
     index_label = ListField("index_label", FieldTypes.string, default=None)
     lifecycle = Int64Field("lifecycle", default=None)
     table_properties = DictField("table_properties", default=None)
+    primary_key = ListField("primary_key", FieldTypes.string, default=None)
 
     def __init__(self, **kw):
         super().__init__(_output_types=[OutputType.dataframe], **kw)
@@ -100,11 +101,12 @@ def to_odps_table(
     partition: Optional[str] = None,
     partition_col: Union[None, str, List[str]] = None,
     overwrite: bool = False,
-    unknown_as_string: Optional[bool] = None,
+    unknown_as_string: Optional[bool] = True,
     index: bool = True,
     index_label: Union[None, str, List[str]] = None,
     lifecycle: Optional[int] = None,
     table_properties: Optional[dict] = None,
+    primary_key: Union[None, str, List[str]] = None,
 ):
     """
     Write DataFrame object into a MaxCompute (ODPS) table.
@@ -145,6 +147,10 @@ def to_odps_table(
         Specify lifecycle of the output table.
     table_properties: Optional[dict]
         Specify properties of the output table.
+    primary_key: Union[None, str, List[str]]
+        If provided and target table does not exist, target table
+        will be a delta table with columns specified in this argument
+        as primary key.
 
     Returns
     -------
@@ -201,12 +207,14 @@ def to_odps_table(
         index_table_intersect = index_cols & table_cols
         if index_table_intersect:
             raise ValueError(
-                f"Index column(s) {index_table_intersect} conflict with column(s) of the input dataframe."
+                f"Index column(s) {index_table_intersect} conflict with "
+                f"column(s) of the input dataframe."
             )
         index_partition_intersect = index_cols & partition_col_set
         if index_partition_intersect:
             raise ValueError(
-                f"Index column(s) {index_partition_intersect} conflict with partition column(s)."
+                f"Index column(s) {index_partition_intersect} conflict "
+                f"with partition column(s)."
             )
 
     if partition_col:
@@ -216,6 +224,23 @@ def to_odps_table(
                 f"Partition column(s) {partition_diff}"
                 " is not the data column(s) of the input dataframe."
             )
+
+    table_properties = table_properties or {}
+    if primary_key is not None:
+        table_properties["transactional"] = "true"
+    if odps_entry.exist_table(table):
+        table_obj = odps_entry.get_table(table)
+        if table_obj.is_transactional:
+            table_properties = table_properties or {}
+            table_properties["transactional"] = "true"
+            primary_key = primary_key or table_obj.primary_key or ()
+            if set(primary_key) != set(table_obj.primary_key or ()):
+                raise ValueError(
+                    f"Primary keys between existing table {table} and "
+                    f"provided arguments are not same."
+                )
+    if primary_key and not isinstance(primary_key, (list, tuple)):
+        primary_key = [primary_key]
 
     op = DataFrameToODPSTable(
         dtypes=df.dtypes,
@@ -227,6 +252,7 @@ def to_odps_table(
         index=index,
         index_label=index_label,
         lifecycle=lifecycle or options.session.table_lifecycle,
-        table_properties=table_properties,
+        table_properties=table_properties or None,
+        primary_key=primary_key or None,
     )
     return op(df)

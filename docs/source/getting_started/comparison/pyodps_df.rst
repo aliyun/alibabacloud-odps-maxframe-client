@@ -74,10 +74,11 @@ Note that you need to read API documents of these functions before rewriting you
 .. csv-table::
    :header: "PyODPS DataFrame API", "MaxFrame API"
 
-   "DataFrame.append_id", "Not implemented yet"
+   "DataFrame.append_id", "Not needed. DataFrame index is added by default"
    "DataFrame.bloom_filter", "Not implemented yet"
    "DataFrame.boxplot", "DataFrame.plot.boxplot"
    "DataFrame.concat", "maxframe.dataframe.concat"
+   "DataFrame.describe", "DataFrame.describe"
    "DataFrame.distinct", "DataFrame.drop_duplicates"
    "DataFrame.except\_", "DataFrame.merge with filter"
    "DataFrame.exclude", "DataFrame.drop"
@@ -87,7 +88,7 @@ Note that you need to read API documents of these functions before rewriting you
    "DataFrame.intersect", "DataFrame.merge"
    "DataFrame.left_join", "DataFrame.merge"
    "DataFrame.limit", "DataFrame.head"
-   "DataFrame.map_reduce", "Not implemented yet"
+   "DataFrame.map_reduce", "DataFrame.mf.map_reduce"
    "DataFrame.min_max_scale", "Not implemented yet"
    "DataFrame.outer_join", "DataFrame.merge"
    "DataFrame.persist", "DataFrame.to_odps_table"

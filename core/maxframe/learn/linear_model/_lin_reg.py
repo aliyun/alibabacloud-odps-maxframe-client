@@ -22,7 +22,7 @@ from ._base import LinearModel, _rescale_data
 try:
     from sklearn.base import MultiOutputMixin
 except ImportError:
-    MultiOutputMixin = object
+    MultiOutputMixin = type("MultiOutputMixin", (object,), {})
 
 
 class LinearRegression(MultiOutputMixin, RegressorMixin, LinearModel):

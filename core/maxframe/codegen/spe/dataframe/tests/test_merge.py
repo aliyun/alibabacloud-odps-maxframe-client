@@ -17,7 +17,11 @@ import pytest
 
 from ..... import dataframe as md
 from ...core import SPECodeContext
-from ..merge import DataFrameConcatAdapter, DataFrameMergeAdapter
+from ..merge import (
+    DataFrameConcatAdapter,
+    DataFrameMergeAdapter,
+    DataFrameUpdateAdapter,
+)
 
 
 @pytest.fixture
@@ -397,4 +401,26 @@ def test_concat_columns_from_dataframes(df2, df6):
         " levels=None, names=None, verify_integrity=False, sort=False,"
         " objs=[var_1, var_2], copy=True)"
     ]
+    assert results == expected_results
+
+
+def test_update_dataframe(df5, df6):
+    adapter = DataFrameUpdateAdapter()
+    df5.update(df6)
+    context = SPECodeContext()
+    results = adapter.generate_code(df5.op, context)
+    expected_results = [
+        "var_1 = var_0.copy()",
+        "var_1.update(var_2, join='left', overwrite=True, filter_func=None,"
+        " errors='ignore')",
+    ]
+    assert results == expected_results
+
+
+def test_combine_first_dataframe(df5, df6):
+    adapter = DataFrameUpdateAdapter()
+    df = df5.combine_first(df6)
+    context = SPECodeContext()
+    results = adapter.generate_code(df.op, context)
+    expected_results = ["var_1 = var_0.combine_first(var_2)"]
     assert results == expected_results

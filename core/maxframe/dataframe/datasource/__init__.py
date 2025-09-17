@@ -13,3 +13,21 @@
 # limitations under the License.
 
 from .core import PandasDataSourceOperator
+from .from_dict import dataframe_from_dict
+from .from_records import from_records
+from .from_tensor import dataframe_from_tensor, series_from_tensor
+
+
+def _install():
+    from ..core import DATAFRAME_TYPE, SERIES_TYPE
+
+    for t in DATAFRAME_TYPE:
+        t.from_dict = staticmethod(dataframe_from_dict)
+        t.from_records = staticmethod(from_records)
+        t.from_tensor = staticmethod(dataframe_from_tensor)
+    for t in SERIES_TYPE:
+        t.from_tensor = staticmethod(series_from_tensor)
+
+
+_install()
+del _install

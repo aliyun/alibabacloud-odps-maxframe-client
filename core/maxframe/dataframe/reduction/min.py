@@ -14,10 +14,10 @@
 
 from ... import opcodes
 from ...core import OutputType
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin
 
 
-class DataFrameMin(DataFrameReductionOperator, DataFrameReductionMixin):
+class DataFrameMin(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.MIN
     _func_name = "min"
 

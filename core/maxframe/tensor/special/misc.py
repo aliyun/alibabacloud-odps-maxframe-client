@@ -12,6 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from ..utils import implement_scipy, infer_scipy_dtype
+from .core import TensorSpecialBinOp, _register_special_op
+
+
+@_register_special_op
+class TensorXLogY(TensorSpecialBinOp):
+    _func_name = "xlogy"
+
+    @classmethod
+    def _is_sparse(cls, x1, x2):
+        if hasattr(x1, "issparse") and x1.issparse():
+            return True
+        return False
+
+
+@implement_scipy("scipy.special.xlogy")
+@infer_scipy_dtype("scipy.special.xlogy")
+def xlogy(x1, x2, out=None, where=None, **kwargs):
+    op = TensorXLogY(**kwargs)
+    return op(x1, x2, out=out, where=where)
+
 
 def softmax(x, axis=None):
     r"""

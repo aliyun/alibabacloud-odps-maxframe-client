@@ -14,6 +14,7 @@
 
 from . import dataframe, learn, remote, tensor
 from .config import options
+from .lib.dtypes_extension import ExternalBlobDtype
 from .session import execute, fetch, new_session, stop_server
 
 

@@ -222,6 +222,41 @@ class TransformerMixin:
             return self.fit(X, y, **fit_params).transform(X)
 
 
+class ClassifierMixin:
+    """Mixin class for all classifiers in scikit-learn."""
+
+    _estimator_type = "classifier"
+
+    def score(self, X, y, sample_weight=None):
+        """
+        Return the mean accuracy on the given test data and labels.
+
+        In multi-label classification, this is the subset accuracy
+        which is a harsh metric since you require for each sample that
+        each label set be correctly predicted.
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            Test samples.
+
+        y : array-like of shape (n_samples,) or (n_samples, n_outputs)
+            True labels for X.
+
+        sample_weight : array-like of shape (n_samples,), default=None
+            Sample weights.
+
+        Returns
+        -------
+        score : Tensor
+            Mean accuracy of self.predict(X) wrt. y.
+        """
+        from .metrics import accuracy_score
+
+        result = accuracy_score(y, self.predict(X), sample_weight=sample_weight)
+        return result
+
+
 class RegressorMixin:
     """Mixin class for all regression estimators in scikit-learn."""
 
@@ -276,3 +311,34 @@ class RegressorMixin:
 
     def _more_tags(self):  # noqa: R0201  # pylint: disable=no-self-use
         return {"requires_y": True}
+
+
+class ClusterMixin:
+    """Mixin class for all cluster estimators in scikit-learn."""
+
+    _estimator_type = "clusterer"
+
+    def fit_predict(self, X, y=None):
+        """
+        Perform clustering on `X` and returns cluster labels.
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            Input data.
+
+        y : Ignored
+            Not used, present for API consistency by convention.
+
+        Returns
+        -------
+        labels : ndarray of shape (n_samples,), dtype=np.int64
+            Cluster labels.
+        """
+        # non-optimized default implementation; override when a better
+        # method is possible for a given clustering algorithm
+        self.fit(X)
+        return self.labels_
+
+    def _more_tags(self):
+        return {"preserves_dtype": []}

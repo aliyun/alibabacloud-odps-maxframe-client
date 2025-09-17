@@ -15,6 +15,7 @@
 from numbers import Integral
 from typing import List, TypeVar, Union
 
+import numpy as np
 import pandas as pd
 import pyarrow as pa
 
@@ -22,6 +23,7 @@ SlicesType = List[Union[None, Integral, slice]]
 
 TimeoutType = Union[int, float, None]
 
+PandasDType = Union[np.dtype, pd.api.extensions.ExtensionDtype]
 
 ArrowTableType = Union[pa.Table, pa.RecordBatch]
 PandasObjectTypes = Union[

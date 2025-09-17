@@ -19,10 +19,10 @@ from ... import opcodes
 from ...serialization.serializables import BoolField
 from ..operators import OutputType
 from ..utils import gen_unknown_index_value, parse_index
-from ._duplicate import DuplicateOperand, validate_subset
+from ._duplicate import BaseDuplicateOp, validate_subset
 
 
-class DataFrameDropDuplicates(DuplicateOperand):
+class DataFrameDropDuplicates(BaseDuplicateOp):
     _op_type_ = opcodes.DROP_DUPLICATES
 
     ignore_index = BoolField("ignore_index", default=True)

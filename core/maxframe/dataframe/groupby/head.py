@@ -17,8 +17,10 @@ import pandas as pd
 
 from ... import opcodes
 from ...core import OutputType
+from ...serialization import PickleContainer
 from ...serialization.serializables import BoolField, DictField, Int64Field
-from ...utils import pd_release_version
+from ...udf import BuiltinFunction
+from ...utils import find_objects, pd_release_version
 from ..core import IndexValue
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import parse_index
@@ -33,6 +35,14 @@ class GroupByHead(DataFrameOperator, DataFrameOperatorMixin):
     row_count = Int64Field("row_count", default=5)
     groupby_params = DictField("groupby_params", default=dict())
     enable_negative = BoolField("enable_negative", default=_pandas_enable_negative)
+
+    def has_custom_code(self) -> bool:
+        callable_bys = find_objects(
+            self.groupby_params.get("by"), types=PickleContainer, checker=callable
+        )
+        if not callable_bys:
+            return False
+        return any(not isinstance(fun, BuiltinFunction) for fun in callable_bys)
 
     def __call__(self, groupby):
         df = groupby

@@ -14,5 +14,11 @@
 
 from .average import average
 from .bincount import bincount
+from .corrcoef import corrcoef
+from .cov import cov
+from .digitize import digitize
+from .histogram import histogram, histogram_bin_edges
+from .median import median
 from .percentile import percentile
+from .ptp import ptp
 from .quantile import quantile

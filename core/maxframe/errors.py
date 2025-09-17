@@ -43,5 +43,5 @@ class SessionAlreadyClosedError(MaxFrameError):
 
 
 class EngineUnavailableError(MaxFrameIntentionalError):
-    def __init__(self, engine_type: str):
-        super().__init__(f"Engine {engine_type} is not ready")
+    def __init__(self, msg: str):
+        super().__init__(msg)

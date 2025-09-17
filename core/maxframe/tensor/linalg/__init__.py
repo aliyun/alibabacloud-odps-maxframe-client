@@ -12,16 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .cholesky import TensorCholesky, cholesky
 from .dot import TensorDot, dot
+from .einsum import TensorEinsum, einsum
 from .inner import inner, innerproduct
 from .inv import TensorInv, inv
+from .lstsq import lstsq
 from .lu import TensorLU, lu
 from .matmul import TensorMatmul, matmul
+from .matrix_norm import matrix_norm
+from .norm import TensorNorm, norm
 from .qr import TensorQR, qr
+from .solve import solve
 from .solve_triangular import TensorSolveTriangular, solve_triangular
 from .svd import TensorSVD, svd
 from .tensordot import TensorTensorDot, tensordot
 from .vdot import vdot
+from .vector_norm import vector_norm
 
 
 def _install():

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import time
 from io import BytesIO
 
@@ -21,7 +22,7 @@ import pytest
 from .. import oss
 from .._oss_lib import glob as og
 from .._oss_lib.common import OSSFileEntry
-from ..oss import build_oss_path
+from ..oss import HostEnforceType, _rewrite_internal_endpoint, build_oss_path
 
 
 class OSSObjInfo:
@@ -54,19 +55,25 @@ class MockObject:
 
 
 class SideEffectBucket:
+    cached_ctx = {}
+
     def __init__(self, *_, **__):
-        self.obj_dict = {
-            "file.csv": "id1,id2,id3\n1,2,3\n",
-            "dir/": "",
-            "dir/file1.csv": "2",
-            "dir/file2.csv": "3",
-            "dir/subdir/": "",
-            "dir/subdir/file3.csv": "s4",
-            "dir/subdir/file4.csv": "s5",
-            "dir2/": "",
-            "dir2/file6.csv": "6",
-            "dir2/file7.csv": "7",
-        }
+        cur_test = os.environ["PYTEST_CURRENT_TEST"]
+        if cur_test in self.cached_ctx:
+            self.obj_dict = self.cached_ctx[cur_test]
+        else:
+            self.obj_dict = self.cached_ctx[cur_test] = {
+                "file.csv": "id1,id2,id3\n1,2,3\n",
+                "dir/": "",
+                "dir/file1.csv": "2",
+                "dir/file2.csv": "3",
+                "dir/subdir/": "",
+                "dir/subdir/file3.csv": "s4",
+                "dir/subdir/file4.csv": "s5",
+                "dir2/": "",
+                "dir2/file6.csv": "6",
+                "dir2/file7.csv": "7",
+            }
 
     def get_object_meta(self, key):
         return ObjectMeta(key, self.obj_dict)
@@ -76,6 +83,17 @@ class SideEffectBucket:
 
     def get_object(self, key, byte_range):
         return MockObject(self.obj_dict, key, byte_range)
+
+    def copy_object(self, bucket, src_key, dst_key):
+        self.obj_dict[dst_key] = self.obj_dict[src_key]
+
+    def delete_object(self, key):
+        from oss2.exceptions import NoSuchKey
+
+        try:
+            del self.obj_dict[key]
+        except KeyError:
+            raise NoSuchKey(404, {}, key, {})
 
 
 class SideEffectObjIter:
@@ -96,28 +114,29 @@ def test_oss_filesystem(fake_obj_iter, fake_oss_bucket):
     access_key_secret = "your_access_key_secret"
     end_point = "your_endpoint"
 
-    file_path = f"oss://bucket/file.csv"
-    dir_path = f"oss://bucket/dir/"
-    dir_path_content_magic = f"oss://bucket/dir*/"
+    file_path = f"oss://your_endpoint/bucket/file.csv"
+    new_file_path = f"oss://your_endpoint/bucket/file1.csv"
+    dir_path = f"oss://your_endpoint/bucket/dir/"
+    dir_path_content_magic = f"oss://your_endpoint/bucket/dir*/"
     other_scheme_path = f"scheme://netloc/path"
-    not_exist_file_path = f"oss://bucket/not_exist.csv"
+    not_exist_file_path = f"oss://your_endpoint/bucket/not_exist.csv"
 
     fake_file_path = build_oss_path(
-        file_path, access_key_id, access_key_secret, end_point
+        file_path, end_point, access_key_id, access_key_secret
+    )
+    fake_new_file_path = build_oss_path(
+        new_file_path, end_point, access_key_id, access_key_secret
     )
     fake_dir_path = build_oss_path(
-        dir_path, access_key_id, access_key_secret, end_point
+        dir_path, end_point, access_key_id, access_key_secret
     )
     fake_dir_path_contains_magic = build_oss_path(
-        dir_path_content_magic, access_key_id, access_key_secret, end_point
-    )
-    fake_other_scheme_path = build_oss_path(
-        other_scheme_path, access_key_id, access_key_secret, end_point
+        dir_path_content_magic, end_point, access_key_id, access_key_secret
     )
     fake_not_exist_file_path = build_oss_path(
-        not_exist_file_path, access_key_id, access_key_secret, end_point
+        not_exist_file_path, end_point, access_key_id, access_key_secret
     )
-    fs = oss.OSSFileSystem.get_instance()
+    fs = oss.OSSFileSystem()
 
     # Test OSSFileSystem.
     assert len(fs.ls(fake_dir_path)) == 4
@@ -131,21 +150,15 @@ def test_oss_filesystem(fake_obj_iter, fake_oss_bucket):
     assert fs.stat(fake_dir_path)["type"] == "directory"
     assert fs.glob(fake_dir_path) == [fake_dir_path]
 
-    with pytest.raises(ValueError) as e:
-        fs.exists(fake_other_scheme_path)
-    msg1 = e.value.args[0]
-    assert (
-        msg1 == f"Except scheme oss, but got scheme: "
-        f"scheme in path: {fake_other_scheme_path}"
-    )
+    msg1 = f"Except scheme oss, but got scheme: scheme in path: {other_scheme_path}"
+    with pytest.raises(ValueError, match=msg1):
+        fs.exists(other_scheme_path)
 
-    with pytest.raises(RuntimeError) as e:
+    with pytest.raises(ValueError, match="No credentials provided"):
         fs.exists(file_path)
-    msg2 = e.value.args[0]
-    assert msg2 == "Please use build_oss_path to add OSS info"
 
     with pytest.raises(OSError):
-        print(fs.ls(fake_file_path))
+        fs.ls(fake_file_path)
 
     assert len(fs.glob(fake_file_path)) == 1
     assert len(fs.glob(fake_dir_path + "*", recursive=True)) == 4
@@ -180,3 +193,28 @@ def test_oss_filesystem(fake_obj_iter, fake_oss_bucket):
 
     fe = OSSFileEntry(fake_file_path)
     assert fe.path == fake_file_path
+
+    fs.rename(fake_file_path, fake_new_file_path)
+    assert not fs.exists(fake_file_path)
+    assert fs.exists(fake_new_file_path)
+
+    with pytest.raises(FileNotFoundError):
+        fs.delete(fake_not_exist_file_path)
+
+
+def test_host_rewrite():
+    assert "cn-shanghai.oss.service.com" == _rewrite_internal_endpoint(
+        "cn-shanghai.oss.service.com", HostEnforceType.force_external
+    )
+    assert "cn-shanghai.oss.service.com" == _rewrite_internal_endpoint(
+        "cn-shanghai-internal.oss.service.com", HostEnforceType.force_external
+    )
+    assert "cn-shanghai-internal.oss.service.com" == _rewrite_internal_endpoint(
+        "cn-shanghai.oss.service.com", HostEnforceType.force_internal
+    )
+    assert "cn-shanghai-internal.oss.service.com" == _rewrite_internal_endpoint(
+        "cn-shanghai-internal.oss.service.com", HostEnforceType.force_internal
+    )
+    assert "1.2.3.4" == _rewrite_internal_endpoint(
+        "1.2.3.4", HostEnforceType.force_internal
+    )

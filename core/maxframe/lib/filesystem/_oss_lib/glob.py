@@ -104,7 +104,7 @@ def _glob0(dirname, basename, dironly):
         if oss_isdir(dirname):
             return [basename]
     else:
-        if oss_exists(os.path.join(dirname, basename)):
+        if oss_exists("/".join([dirname, basename])):
             return [basename]
     return []
 

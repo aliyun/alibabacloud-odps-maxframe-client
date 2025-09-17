@@ -17,7 +17,7 @@ import pyarrow as pa
 import pytest
 
 from ....utils import ARROW_DTYPE_NOT_SUPPORTED
-from ..dtypes import dict_, is_list_dtype, is_map_dtype, list_
+from ..dtypes import dict_, is_list_dtype, is_map_dtype, is_struct_dtype, list_, struct_
 
 try:
     from pandas import ArrowDtype
@@ -46,3 +46,18 @@ def test_list_dtype():
     dt = pd.ArrowDtype(pa.map_(pa.int64(), pa.string()))
     assert not is_list_dtype(dt)
     assert not is_list_dtype(pd.Int64Dtype)
+
+
+def test_struct_dtype():
+    fields = [pa.field("a", pa.int64()), pa.field("b", pa.string())]
+    dt = struct_(fields)
+    assert is_struct_dtype(dt)
+
+    # Test with schema
+    schema = pa.schema(fields)
+    dt2 = struct_(schema)
+    assert is_struct_dtype(dt2)
+
+    dt = pd.ArrowDtype(pa.map_(pa.int64(), pa.string()))
+    assert not is_struct_dtype(dt)
+    assert not is_struct_dtype(pd.Int64Dtype)

@@ -20,13 +20,13 @@ def _install():
     from .getitem import series_list_getitem, series_list_getitem_with_index_error
     from .length import series_list_length
 
-    dict_method_to_handlers = {
+    list_method_to_handlers = {
         "__getitem__": series_list_getitem_with_index_error,
         "get": series_list_getitem,
         "len": series_list_length,
     }
 
-    for name, handler in dict_method_to_handlers.items():
+    for name, handler in list_method_to_handlers.items():
         ListAccessor._register(name, handler)
 
     for series in SERIES_TYPE:

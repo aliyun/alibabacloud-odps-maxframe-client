@@ -35,6 +35,7 @@ from ..serialization.serializables import (
     Serializable,
     StringField,
 )
+from ..utils import make_dtype
 from .utils import fetch_corner_data, get_chunk_slices
 
 logger = logging.getLogger(__name__)
@@ -73,7 +74,7 @@ class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
         super().__init__(
             _op=op,
             _shape=shape,
-            _dtype=dtype,
+            _dtype=make_dtype(dtype),
             _order=order,
             **kw,
         )
@@ -520,7 +521,7 @@ class Tensor(HasShapeTileable):
         >>> a.execute()
         array([1, 2, 3, 4])
         """
-        from .misc import partition
+        from .sort import partition
 
         self._data = partition(self, kth, axis=axis, kind=kind, order=order, **kw).data
 

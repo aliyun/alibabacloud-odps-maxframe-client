@@ -13,27 +13,16 @@
 # limitations under the License.
 
 from .... import opcodes
-from ....core.entity.output_types import OutputType
 from ....serialization.serializables.field import AnyField, BoolField
-from ...operators import DataFrameOperator, DataFrameOperatorMixin
+from .core import LegacySeriesDictOperator, SeriesDictMethod
 
 
-class SeriesDictRemoveOperator(DataFrameOperator, DataFrameOperatorMixin):
+class SeriesDictRemoveOperator(LegacySeriesDictOperator):
+    # operator class deprecated since v2.3.0
     _op_type_ = opcodes.SERIES_DICT_REMOVE
+    _method_name = "remove"
     query_key = AnyField("query_key", default=None)
     ignore_key_error = BoolField("ignore_key_error", default=False)
-
-    def __init__(self, **kw):
-        super().__init__(_output_types=[OutputType.series], **kw)
-
-    def __call__(self, series):
-        return self.new_series(
-            [series],
-            shape=series.shape,
-            index_value=series.index_value,
-            dtype=series.dtype,
-            name=series.name,
-        )
 
 
 def series_dict_remove(series, query_key, ignore_key_error: bool = False):
@@ -82,6 +71,5 @@ def series_dict_remove(series, query_key, ignore_key_error: bool = False):
     3           <NA>
     dtype: map<string, int64>[pyarrow]
     """
-    return SeriesDictRemoveOperator(
-        query_key=query_key, ignore_key_error=ignore_key_error
-    )(series)
+    method_kwargs = dict(query_key=query_key, ignore_key_error=ignore_key_error)
+    return SeriesDictMethod(method="remove", method_kwargs=method_kwargs)(series)

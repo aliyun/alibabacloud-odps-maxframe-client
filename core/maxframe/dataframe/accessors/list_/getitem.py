@@ -15,27 +15,16 @@
 import pandas as pd
 
 from .... import opcodes
-from ....core.entity.output_types import OutputType
 from ....serialization.serializables.field import AnyField, BoolField
-from ...operators import DataFrameOperator, DataFrameOperatorMixin
+from .core import LegacySeriesListOperator, SeriesListMethod
 
 
-class SeriesListGetItemOperator(DataFrameOperator, DataFrameOperatorMixin):
+class SeriesListGetItemOperator(LegacySeriesListOperator):
+    # operator class deprecated since v2.3.0
     _op_type_ = opcodes.SERIES_LIST_GETITEM
+    _method_name = "getitem"
     query_index = AnyField("query_index", default=None)
     ignore_index_error = BoolField("ignore_index_error", default=False)
-
-    def __init__(self, **kw):
-        super().__init__(_output_types=[OutputType.series], **kw)
-
-    def __call__(self, series):
-        arrow_list_type = series.dtype.pyarrow_dtype
-        return self.new_series(
-            [series],
-            shape=series.shape,
-            dtype=pd.ArrowDtype(arrow_list_type.value_type),
-            index_value=series.index_value,
-        )
 
 
 def series_list_getitem(series, query_index):
@@ -77,8 +66,10 @@ def series_list_getitem(series, query_index):
     3    <NA>
     dtype: int64[pyarrow]
     """
-    return SeriesListGetItemOperator(query_index=query_index, ignore_index_error=True)(
-        series
+    kw = dict(query_index=query_index, ignore_index_error=True)
+    arrow_list_type = series.dtype.pyarrow_dtype
+    return SeriesListMethod(method="getitem", method_kwargs=kw)(
+        series, dtype=pd.ArrowDtype(arrow_list_type.value_type)
     )
 
 
@@ -130,6 +121,8 @@ def series_list_getitem_with_index_error(series, query_index):
     3    <NA>
     dtype: int64[pyarrow]
     """
-    return SeriesListGetItemOperator(query_index=query_index, ignore_index_error=False)(
-        series
+    kw = dict(query_index=query_index, ignore_index_error=False)
+    arrow_list_type = series.dtype.pyarrow_dtype
+    return SeriesListMethod(method="getitem", method_kwargs=kw)(
+        series, dtype=pd.ArrowDtype(arrow_list_type.value_type)
     )

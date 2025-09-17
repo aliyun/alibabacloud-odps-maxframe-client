@@ -12,7 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import arrow, exception, maxframe_objects, numpy, pandas, scipy, serializables
+from . import (
+    arrow,
+    blob,
+    exception,
+    maxframe_objects,
+    numpy,
+    pandas,
+    scipy,
+    serializables,
+)
 from .core import (
     PickleContainer,
     PickleHookOptions,
@@ -27,4 +36,4 @@ from .core import (
 )
 from .exception import RemoteException
 
-del arrow, numpy, scipy, pandas, maxframe_objects, exception
+del arrow, blob, exception, maxframe_objects, numpy, pandas, scipy

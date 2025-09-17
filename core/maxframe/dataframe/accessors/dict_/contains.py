@@ -16,26 +16,15 @@ import pandas as pd
 import pyarrow as pa
 
 from .... import opcodes
-from ....core.entity.output_types import OutputType
 from ....serialization.serializables.field import AnyField
-from ...operators import DataFrameOperator, DataFrameOperatorMixin
+from .core import LegacySeriesDictOperator, SeriesDictMethod
 
 
-class SeriesDictContainsOperator(DataFrameOperator, DataFrameOperatorMixin):
+class SeriesDictContainsOperator(LegacySeriesDictOperator):
+    # operator class deprecated since v2.3.0
     _op_type_ = opcodes.SERIES_DICT_CONTAINS
+    _method_name = "contains"
     query_key = AnyField("query_key", default=None)
-
-    def __init__(self, **kw):
-        super().__init__(_output_types=[OutputType.series], **kw)
-
-    def __call__(self, series):
-        return self.new_series(
-            [series],
-            shape=series.shape,
-            dtype=pd.ArrowDtype(pa.bool_()),
-            index_value=series.index_value,
-            name=None,
-        )
 
 
 def series_dict_contains(series, query_key):
@@ -78,4 +67,6 @@ def series_dict_contains(series, query_key):
     3     <NA>
     dtype: bool[pyarrow]
     """
-    return SeriesDictContainsOperator(query_key=query_key)(series)
+    return SeriesDictMethod(method="contains", method_kwargs=dict(query_key=query_key))(
+        series, dtype=pd.ArrowDtype(pa.bool_()), name=None
+    )

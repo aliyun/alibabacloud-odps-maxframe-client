@@ -23,38 +23,42 @@ from ...serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
+    FieldTypes,
     Int32Field,
     Int64Field,
     KeyField,
+    ListField,
     StringField,
     TupleField,
 )
-from ...utils import pd_release_version
 from ..core import DATAFRAME_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_empty_df, build_empty_series, parse_index, validate_axis
 from .core import Window
-
-_window_has_method = pd_release_version >= (1, 3, 0)
-_with_pandas_issue_38908 = pd_release_version == (1, 2, 0)
 
 
 class DataFrameRollingAgg(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.ROLLING_AGG
 
     input = KeyField("input")
-    window = AnyField("window")
-    min_periods = Int64Field("min_periods")
-    center = BoolField("center")
-    win_type = StringField("win_type")
-    on = StringField("on")
-    axis = Int32Field("axis")
-    closed = StringField("closed")
-    func = AnyField("func")
-    func_args = TupleField("func_args")
-    func_kwargs = DictField("func_kwargs")
+    window = AnyField("window", default=None)
+    min_periods = Int64Field("min_periods", default=None)
+    center = BoolField("center", default=None)
+    win_type = StringField("win_type", default=None)
+    on = StringField("on", default=None)
+    axis = Int32Field("axis", default=None)
+    closed = StringField("closed", default=None)
+    func = AnyField("func", default=None)
+    func_args = TupleField("func_args", default=None)
+    func_kwargs = DictField("func_kwargs", default=None)
+    # for chunks
+    preds = ListField("preds", FieldTypes.key, default=None)
+    succs = ListField("succs", FieldTypes.key, default=None)
 
     def __init__(self, output_types=None, **kw):
+        # suspend MF-specific args by now
+        for key in Rolling._mf_specific_fields:
+            kw.pop(key, None)
         super().__init__(_output_types=output_types, **kw)
 
     @classmethod
@@ -62,6 +66,10 @@ class DataFrameRollingAgg(DataFrameOperator, DataFrameOperatorMixin):
         super()._set_inputs(op, inputs)
         input_iter = iter(op._inputs)
         op.input = next(input_iter)
+        if op.preds is not None:
+            op.preds = [next(input_iter) for _ in op.preds]
+        if op.succs is not None:
+            op.succs = [next(input_iter) for _ in op.succs]
 
     def __call__(self, rolling):
         inp = rolling.input
@@ -74,6 +82,8 @@ class DataFrameRollingAgg(DataFrameOperator, DataFrameOperatorMixin):
                 params["win_type"] = None
             if self.func != "count":
                 empty_df = empty_df._get_numeric_data()
+            for key in Rolling._mf_specific_fields:
+                params.pop(key, None)
             test_df = empty_df.rolling(**params).agg(self.func)
             if self.axis == 0:
                 index_value = inp.index_value
@@ -93,7 +103,10 @@ class DataFrameRollingAgg(DataFrameOperator, DataFrameOperatorMixin):
             empty_series = build_empty_series(
                 inp.dtype, index=pd_index[:0], name=inp.name
             )
-            test_obj = empty_series.rolling(**rolling.params).agg(self.func)
+            rolling_params = rolling.params.copy()
+            for k in Rolling._mf_specific_fields:
+                rolling_params.pop(k, None)
+            test_obj = empty_series.rolling(**rolling_params).agg(self.func)
             if isinstance(test_obj, pd.DataFrame):
                 return self.new_dataframe(
                     [inp],
@@ -113,6 +126,8 @@ class DataFrameRollingAgg(DataFrameOperator, DataFrameOperatorMixin):
 
 
 class Rolling(Window):
+    _mf_specific_fields = Window._mf_specific_fields + ["shift"]
+
     window = AnyField("window", default=None)
     min_periods = Int64Field("min_periods", default=None)
     center = BoolField("center", default=None)
@@ -120,33 +135,25 @@ class Rolling(Window):
     on = StringField("on", default=None)
     axis = Int32Field("axis", default=None)
     closed = StringField("closed", default=None)
-    method = StringField("method", default="single")
+    # MF specific argument for position shift of window
+    shift = Int64Field("shift", default=None)
 
     @property
     def params(self):
         p = OrderedDict()
 
-        if not _window_has_method:  # pragma: no cover
-            args = [
-                "window",
-                "min_periods",
-                "center",
-                "win_type",
-                "axis",
-                "on",
-                "closed",
-            ]
-        else:
-            args = [
-                "window",
-                "min_periods",
-                "center",
-                "win_type",
-                "axis",
-                "on",
-                "closed",
-                "method",
-            ]
+        args = [
+            "window",
+            "min_periods",
+            "center",
+            "win_type",
+            "axis",
+            "on",
+            "closed",
+            "shift",
+            "order_cols",
+            "ascending",
+        ]
 
         for attr in args:
             p[attr] = getattr(self, attr)
@@ -164,8 +171,11 @@ class Rolling(Window):
             empty_obj = build_empty_series(
                 self.input.dtype, index=pd_index[:0], name=self.input.name
             )
-        pd_rolling = empty_obj.rolling(**self.params)
-        for k in self.params:
+        params = (self.params or dict()).copy()
+        for key in self._mf_specific_fields:
+            params.pop(key, None)
+        pd_rolling = empty_obj.rolling(**params)
+        for k in params:
             # update value according to pandas rolling
             setattr(self, k, getattr(pd_rolling, k))
 

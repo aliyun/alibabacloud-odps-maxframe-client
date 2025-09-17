@@ -37,6 +37,8 @@ def build_method_call_adapter(
         def generate_code(self, op: OperatorType, context: SPECodeContext) -> List[str]:
             if source_module in _import_aliases:
                 context.register_import(_import_aliases[source_module], source_module)
+            elif source_module:
+                context.register_import(source_module)
 
             input_var_name = source_module or context.get_input_tileable_variable(
                 op.inputs[0]

@@ -14,7 +14,7 @@
 
 from typing import Any, Dict, List, Union
 
-from ..utils import arrow_type_from_str
+from ..utils import arrow_type_from_str, extract_class_name
 from .core import Serializer, buffered
 
 try:
@@ -30,30 +30,54 @@ except ImportError:  # pragma: no cover
 
 _TYPE_CHAR_ARROW_ARRAY = "A"
 _TYPE_CHAR_ARROW_CHUNKED_ARRAY = "C"
+_TYPE_CHAR_ARROW_REDUCED = "R"
+
+
+class ArrowDataTypeSerializer(Serializer):
+    def serial(self, obj: pa.DataType, context):
+        return [str(obj)], [], True
+
+    def deserial(self, serialized, context, subs):
+        return arrow_type_from_str(serialized[0])
 
 
 class ArrowArraySerializer(Serializer):
     @buffered
     def serial(self, obj: PA_ARRAY_TYPES, context: Dict):
-        data_type = str(obj.type)
-        if isinstance(obj, pa.Array):
-            array_type = _TYPE_CHAR_ARROW_ARRAY
-            buffers = obj.buffers()
-            sizes = len(obj)
-        elif isinstance(obj, pa.ChunkedArray):
-            array_type = _TYPE_CHAR_ARROW_CHUNKED_ARRAY
-            buffers = [c.buffers() for c in obj.chunks]
-            sizes = [len(c) for c in obj.chunks]
-        else:  # pragma: no cover
+        if not isinstance(obj, (pa.Array, pa.ChunkedArray)):
             raise NotImplementedError(f"Array type {type(obj)} not supported")
-        return [array_type, data_type, sizes], buffers, True
+
+        if obj.type.num_fields == 0:
+            # use legacy serialization in case arrow changes deserializer method
+            data_type = str(obj.type)
+            if isinstance(obj, pa.Array):
+                array_type = _TYPE_CHAR_ARROW_ARRAY
+                buffers = obj.buffers()
+                sizes = len(obj)
+            else:  # ChunkedArray
+                array_type = _TYPE_CHAR_ARROW_CHUNKED_ARRAY
+                buffers = [c.buffers() for c in obj.chunks]
+                sizes = [len(c) for c in obj.chunks]
+            return [array_type, data_type, sizes], buffers, False
+
+        meth, extracted = obj.__reduce__()
+        meth_name = extract_class_name(meth)
+        return [_TYPE_CHAR_ARROW_REDUCED, meth_name, None], list(extracted), False
 
     def deserial(self, serialized: List, context: Dict, subs: List):
         array_type, data_type_str, sizes = serialized[:3]
-        data_type = arrow_type_from_str(data_type_str)
+        if array_type == _TYPE_CHAR_ARROW_REDUCED:
+            if data_type_str == "pyarrow.lib#chunked_array":
+                return pa.chunked_array(*subs)
+            elif data_type_str == "pyarrow.lib#_restore_array":
+                return pa.lib._restore_array(*subs)
+            else:
+                raise NotImplementedError(f"Unknown array type: {array_type}")
         if array_type == _TYPE_CHAR_ARROW_ARRAY:
+            data_type = arrow_type_from_str(data_type_str)
             return pa.Array.from_buffers(data_type, sizes, subs)
         elif array_type == _TYPE_CHAR_ARROW_CHUNKED_ARRAY:
+            data_type = arrow_type_from_str(data_type_str)
             chunks = [
                 pa.Array.from_buffers(data_type, size, bufs)
                 for size, bufs in zip(sizes, subs)
@@ -89,6 +113,7 @@ class ArrowBatchSerializer(Serializer):
 
 
 if pa is not None:  # pragma: no branch
+    ArrowDataTypeSerializer.register(pa.DataType)
     ArrowArraySerializer.register(pa.Array)
     ArrowArraySerializer.register(pa.ChunkedArray)
     ArrowBatchSerializer.register(pa.Table)

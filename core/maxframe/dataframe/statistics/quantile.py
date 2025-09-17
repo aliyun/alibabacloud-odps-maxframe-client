@@ -213,7 +213,7 @@ class DataFrameQuantile(DataFrameOperator, DataFrameOperatorMixin):
             return self._call_series(a, inputs)
 
 
-def quantile_series(series, q=0.5, interpolation="linear"):
+def series_quantile(series, q=0.5, interpolation="linear"):
     """
     Return value at the given quantile.
 
@@ -268,7 +268,7 @@ def quantile_series(series, q=0.5, interpolation="linear"):
     return op(series, q_input=q_input)
 
 
-def quantile_dataframe(df, q=0.5, axis=0, numeric_only=True, interpolation="linear"):
+def dataframe_quantile(df, q=0.5, axis=0, numeric_only=True, interpolation="linear"):
     # FIXME: Timedelta not support. Data invalid: ODPS-0010000:InvalidArgument:duration[ns] is not equal to string
     """
     Return values at the given quantile over requested axis.

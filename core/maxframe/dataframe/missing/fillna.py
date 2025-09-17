@@ -26,7 +26,7 @@ from ..utils import validate_axis
 
 class DataFrameFillNA(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.FILL_NA
-    _legacy_name = "FillNA"
+    _legacy_name = "FillNA"  # since v2.0.0
 
     value = AnyField(
         "value", on_serialize=lambda x: x.data if isinstance(x, Entity) else x

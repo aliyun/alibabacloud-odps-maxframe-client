@@ -16,11 +16,23 @@ import numpy as np
 
 from ... import opcodes
 from ...core import OutputType
-from .aggregation import where_function
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin, ReductionCallable
 
 
-class DataFrameProd(DataFrameReductionOperator, DataFrameReductionMixin):
+class ProdReductionCallable(ReductionCallable):
+    def __call__(self, value):
+        from .aggregation import where_function
+
+        skipna, min_count = self.kwargs["skipna"], self.kwargs["min_count"]
+        if min_count == 0:
+            return value.prod(skipna=skipna)
+        else:
+            return where_function(
+                value.count() >= min_count, value.prod(skipna=skipna), np.nan
+            )
+
+
+class DataFrameProd(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.PROD
     _func_name = "prod"
 
@@ -31,16 +43,9 @@ class DataFrameProd(DataFrameReductionOperator, DataFrameReductionMixin):
     @classmethod
     def get_reduction_callable(cls, op):
         skipna, min_count = op.skipna, op.min_count
-
-        def prod(value):
-            if min_count == 0:
-                return value.prod(skipna=skipna)
-            else:
-                return where_function(
-                    value.count() >= min_count, value.prod(skipna=skipna), np.nan
-                )
-
-        return prod
+        return ProdReductionCallable(
+            func_name="prod", kwargs=dict(skipna=skipna, min_count=min_count)
+        )
 
 
 def prod_series(df, axis=None, skipna=True, level=None, min_count=0, method=None):

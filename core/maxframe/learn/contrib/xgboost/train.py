@@ -50,7 +50,7 @@ class XGBTrain(ObjectOperator, ObjectOperatorMixin):
     dtrain = KeyField("dtrain", default=None)
     evals = ListField("evals", on_serialize=_on_serialize_evals, default=None)
     obj = FunctionField("obj", default=None)
-    feval = FunctionField("obj", default=None)
+    feval = FunctionField("feval", default=None)
     maximize = BoolField("maximize", default=None)
     early_stopping_rounds = Int64Field("early_stopping_rounds", default=None)
     verbose_eval = AnyField("verbose_eval", default=None)
@@ -64,8 +64,11 @@ class XGBTrain(ObjectOperator, ObjectOperatorMixin):
     custom_metric = FunctionField("custom_metric", default=None)
     num_boost_round = Int64Field("num_boost_round", default=10)
     num_class = Int64Field("num_class", default=None)
+    _has_evals_result = BoolField("has_evals_result", default=False)
 
     def __init__(self, gpu=None, **kw):
+        if kw.get("evals_result") is not None:
+            kw["_has_evals_result"] = True
         super().__init__(gpu=gpu, **kw)
         if self.output_types is None:
             self.output_types = [OutputType.object]
@@ -110,7 +113,7 @@ class XGBTrain(ObjectOperator, ObjectOperatorMixin):
 
     @property
     def has_evals_result(self) -> bool:
-        return self.evals
+        return self._has_evals_result or self.evals
 
 
 def _get_xgb_booster(xgb_model):

@@ -20,8 +20,7 @@ import pytest
 from ..... import dataframe as md
 from .....lib.dtypes_extension import list_
 from .....utils import ARROW_DTYPE_NOT_SUPPORTED
-from ..getitem import SeriesListGetItemOperator
-from ..length import SeriesListLengthOperator
+from ..core import SeriesListMethod
 
 pytestmark = pytest.mark.skipif(
     ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported"
@@ -52,9 +51,10 @@ def test_getitem(df):
     assert s1.shape == (1,)
     assert s1.index_value == df.index_value
     op = s1.op
-    assert isinstance(op, SeriesListGetItemOperator)
-    assert op.query_index == 1
-    assert op.ignore_index_error is False
+    assert isinstance(op, SeriesListMethod)
+    assert op.method == "getitem"
+    assert op.method_kwargs["query_index"] == 1
+    assert op.method_kwargs["ignore_index_error"] is False
 
 
 def test_getitem_ignore_index_err(df):
@@ -64,9 +64,10 @@ def test_getitem_ignore_index_err(df):
     assert s1.shape == (1,)
     assert s1.index_value == df.index_value
     op = s1.op
-    assert isinstance(op, SeriesListGetItemOperator)
-    assert op.query_index == 1
-    assert op.ignore_index_error is True
+    assert isinstance(op, SeriesListMethod)
+    assert op.method == "getitem"
+    assert op.method_kwargs["query_index"] == 1
+    assert op.method_kwargs["ignore_index_error"] is True
 
 
 def test_length(df):
@@ -76,4 +77,5 @@ def test_length(df):
     assert s1.shape == (1,)
     assert s1.index_value == df.index_value
     op = s1.op
-    assert isinstance(op, SeriesListLengthOperator)
+    assert isinstance(op, SeriesListMethod)
+    assert op.method == "len"

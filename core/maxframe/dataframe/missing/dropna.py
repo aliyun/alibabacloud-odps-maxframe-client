@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import numpy as np
+import pandas as pd
 
 from ... import opcodes
 from ...core import OutputType
@@ -39,6 +40,8 @@ class DataFrameDropNA(DataFrameOperator, DataFrameOperatorMixin):
     subset_size = Int32Field("subset_size", default=None)
     # if True, drop index
     ignore_index = BoolField("ignore_index", default=False)
+
+    use_inf_as_na = BoolField("use_inf_as_na", default=None)
 
     def __init__(self, sparse=None, output_types=None, **kw):
         super().__init__(_output_types=output_types, sparse=sparse, **kw)
@@ -155,6 +158,7 @@ def df_dropna(
     1  Batman  Batmobile 1940-04-25
     """
     axis = validate_axis(axis, df)
+    use_inf_as_na = pd.get_option("mode.use_inf_as_na")
     if axis != 0:
         raise NotImplementedError("Does not support dropna on DataFrame when axis=1")
     if (
@@ -174,6 +178,7 @@ def df_dropna(
         thresh=thresh,
         subset=subset,
         ignore_index=ignore_index,
+        use_inf_as_na=use_inf_as_na,
         output_types=[OutputType.dataframe],
     )
     out_df = op(df)

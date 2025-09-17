@@ -17,6 +17,7 @@ Note that some experimental features may undergo changes in future releases.
 .. toctree::
     :maxdepth: 2
 
+    cluster
     datasets
     lightgbm
     llm

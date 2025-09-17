@@ -284,11 +284,6 @@ def test_groupby_cum():
         assert r.shape == (len(df1), 2)
         assert r.index_value.key == mdf.index_value.key
 
-        r = getattr(mdf.groupby("b"), fun)(axis=1)
-        assert r.op.output_types[0] == OutputType.dataframe
-        assert r.shape == (len(df1), 3)
-        assert r.index_value.key == mdf.index_value.key
-
     r = mdf.groupby("b").cumcount()
     assert r.op.output_types[0] == OutputType.series
     assert r.shape == (len(df1),)

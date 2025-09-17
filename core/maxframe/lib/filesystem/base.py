@@ -247,7 +247,7 @@ class FileSystem(ABC):
     def parse_from_path(uri: str):
         parsed_uri = urlparse(uri)
         options = dict()
-        options["host"] = parsed_uri.netloc.rsplit("@", 1)[-1].rsplit(":", 1)[0]
+        options["host"] = parsed_uri.hostname
         if parsed_uri.port:
             options["port"] = parsed_uri.port
         if parsed_uri.username:

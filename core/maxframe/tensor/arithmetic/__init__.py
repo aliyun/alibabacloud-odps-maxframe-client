@@ -63,6 +63,7 @@ from .imag import TensorImag, imag
 from .invert import TensorInvert, invert
 from .isclose import TensorIsclose, isclose
 from .iscomplex import TensorIsComplex, iscomplex
+from .iscomplexobj import iscomplexobj
 from .isfinite import TensorIsFinite, isfinite
 from .isinf import TensorIsInf, isinf
 from .isnan import TensorIsNan, isnan
@@ -117,14 +118,6 @@ from .truediv import TensorTrueDiv, truediv
 from .trunc import TensorTrunc, trunc
 
 
-def _wrap_iop(func):
-    def inner(self, *args, **kwargs):
-        kwargs["out"] = self
-        return func(self, *args, **kwargs)
-
-    return inner
-
-
 def _install():
     from ..core import TENSOR_TYPE, Tensor, TensorData
     from ..datasource import tensor as astensor
@@ -149,6 +142,22 @@ def _install():
             return func(x1, x2, **kwargs)
 
         return eq
+
+    def _wrap_iop(func):
+        def inner(self, *args, **kwargs):
+            kwargs["out"] = self
+            return func(self, *args, **kwargs)
+
+        return inner
+
+    def _wrap_magic(func):
+        def inner(lhs, rhs, **kwargs):
+            ret = func(lhs, rhs, **kwargs)
+            if isinstance(ret, TENSOR_TYPE):
+                ret.op.magic = True
+            return ret
+
+        return inner
 
     for cls in TENSOR_TYPE:
         setattr(cls, "__add__", add)
@@ -182,8 +191,8 @@ def _install():
         setattr(cls, "__irshift__", _wrap_iop(rshift))
         setattr(cls, "__rrshift__", rrshift)
 
-        setattr(cls, "__eq__", _wrap_equal(equal))
-        setattr(cls, "__ne__", not_equal)
+        setattr(cls, "__eq__", _wrap_magic(_wrap_equal(equal)))
+        setattr(cls, "__ne__", _wrap_magic(not_equal))
         setattr(cls, "__lt__", less)
         setattr(cls, "__le__", less_equal)
         setattr(cls, "__gt__", greater)

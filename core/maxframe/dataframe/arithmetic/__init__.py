@@ -29,14 +29,15 @@ from .arcsin import DataFrameArcsin
 from .arcsinh import DataFrameArcsinh
 from .arctan import DataFrameArctan
 from .arctanh import DataFrameArctanh
-from .around import DataFrameAround, around
+from .between import between
 from .bitwise_and import DataFrameAnd, bitand, rbitand
-from .bitwise_or import DataFrameOr, bitor, rbitor
+from .bitwise_or import DataFrameOr, DataFrameTreeOr, bitor, rbitor
 from .bitwise_xor import DataFrameXor, bitxor, rbitxor
 from .ceil import DataFrameCeil
 from .cos import DataFrameCos
 from .cosh import DataFrameCosh
 from .degrees import DataFrameDegrees
+from .dot import DataFrameDot, dot, rdot
 from .equal import DataFrameEqual, eq
 from .exp import DataFrameExp
 from .exp2 import DataFrameExp2
@@ -58,6 +59,7 @@ from .negative import DataFrameNegative, negative
 from .not_equal import DataFrameNotEqual, ne
 from .power import DataFramePower, power, rpower
 from .radians import DataFrameRadians
+from .round import DataFrameRound, round
 from .sin import DataFrameSin
 from .sinh import DataFrameSinh
 from .sqrt import DataFrameSqrt
@@ -220,7 +222,7 @@ def _install():
         DataFrameDegrees,
         DataFrameCeil,
         DataFrameFloor,
-        DataFrameAround,
+        DataFrameRound,
         DataFrameExp,
         DataFrameExp2,
         DataFrameExpm1,
@@ -255,7 +257,8 @@ def _install():
     for entity in DATAFRAME_TYPE + SERIES_TYPE:
         setattr(entity, "__abs__", abs_)
         setattr(entity, "abs", abs_)
-        _register_method(entity, "round", around)
+        _register_method(entity, "around", round)
+        _register_method(entity, "round", round)
         setattr(entity, "__invert__", invert)
 
         setattr(entity, "__add__", wrap_notimplemented_exception(add))
@@ -310,6 +313,10 @@ def _install():
         _register_bin_method(entity, "ge", ge)
         _register_bin_method(entity, "le", le)
 
+        setattr(entity, "__matmul__", dot)
+        setattr(entity, "__rmatmul__", rdot)
+        _register_method(entity, "dot", dot)
+
         setattr(entity, "__and__", wrap_notimplemented_exception(bitand))
         setattr(entity, "__rand__", wrap_notimplemented_exception(rbitand))
 
@@ -320,6 +327,9 @@ def _install():
         setattr(entity, "__rxor__", wrap_notimplemented_exception(rbitxor))
 
         setattr(entity, "__neg__", wrap_notimplemented_exception(negative))
+
+    for entity in SERIES_TYPE:
+        setattr(entity, "between", between)
 
     for entity in INDEX_TYPE:
         setattr(entity, "__eq__", _wrap_eq())

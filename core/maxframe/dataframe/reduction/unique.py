@@ -28,12 +28,19 @@ from ...tensor.core import TensorOrder
 from ...utils import lazy_import
 from ..core import DATAFRAME_TYPE
 from ..initializer import Series as asseries
-from .core import CustomReduction, DataFrameReductionMixin, DataFrameReductionOperator
+from .core import (
+    CustomReduction,
+    DataFrameReduction,
+    DataFrameReductionMixin,
+    ReductionCallable,
+)
 
 cudf = lazy_import("cudf")
 
 
 class UniqueReduction(CustomReduction):
+    _func_name = "unique"
+
     def agg(self, data):  # noqa: W0221  # pylint: disable=arguments-differ
         xdf = cudf if self.is_gpu() else pd
         # convert to series data
@@ -43,7 +50,12 @@ class UniqueReduction(CustomReduction):
         return data.unique()
 
 
-class DataFrameUnique(DataFrameReductionOperator, DataFrameReductionMixin):
+class UniqueReductionCallable(ReductionCallable):
+    def __call__(self, value):
+        return UniqueReduction(name="unique", is_gpu=self.kwargs["is_gpu"])(value)
+
+
+class DataFrameUnique(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.UNIQUE
     _func_name = "unique"
 
@@ -53,9 +65,14 @@ class DataFrameUnique(DataFrameReductionOperator, DataFrameReductionMixin):
     def is_atomic(self):
         return True
 
+    def get_reduction_args(self, axis=None):
+        return {}
+
     @classmethod
     def get_reduction_callable(cls, op):
-        return UniqueReduction(name=cls._func_name, is_gpu=op.is_gpu())
+        return UniqueReductionCallable(
+            func_name=cls._func_name, kwargs=dict(is_gpu=op.is_gpu())
+        )
 
     def __call__(self, a):
         if not isinstance(a, ENTITY_TYPE):

@@ -20,16 +20,21 @@ import numpy as np
 import pandas as pd
 
 from ... import opcodes
+from ...config import options
 from ...core import ENTITY_TYPE, EntityData, OutputType
+from ...serialization import PickleContainer
 from ...serialization.serializables import (
     AnyField,
+    BoolField,
     DictField,
+    Int8Field,
     Int32Field,
     Int64Field,
     ListField,
     StringField,
 )
-from ...utils import lazy_import, pd_release_version
+from ...udf import BuiltinFunction
+from ...utils import find_objects, lazy_import, pd_release_version
 from ..core import GROUPBY_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..reduction.aggregation import (
@@ -46,19 +51,7 @@ logger = logging.getLogger(__name__)
 CV_THRESHOLD = 0.2
 MEAN_RATIO_THRESHOLD = 2 / 3
 _support_get_group_without_as_index = pd_release_version[:2] > (1, 0)
-
-
-class SizeRecorder:
-    def __init__(self):
-        self._raw_records = []
-        self._agg_records = []
-
-    def record(self, raw_record: int, agg_record: int):
-        self._raw_records.append(raw_record)
-        self._agg_records.append(agg_record)
-
-    def get(self):
-        return self._raw_records, self._agg_records
+_support_multi_index_as_index = pd_release_version[:2] > (2, 0)
 
 
 _agg_functions = {
@@ -86,24 +79,28 @@ _series_col_name = "col_name"
 
 def _patch_groupby_kurt():
     try:
-        from pandas.core.groupby import DataFrameGroupBy, SeriesGroupBy
+        try:
+            from pandas.api.typing import DataFrameGroupBy, SeriesGroupBy
+        except ImportError:
+            from pandas.core.groupby import DataFrameGroupBy, SeriesGroupBy
 
-        if not hasattr(DataFrameGroupBy, "kurt"):  # pragma: no branch
+        if hasattr(DataFrameGroupBy, "kurt"):  # pragma: no branch
+            return
 
-            def _kurt_by_frame(a, *args, **kwargs):
-                data = a.to_frame().kurt(*args, **kwargs).iloc[0]
-                if is_cudf(data):  # pragma: no cover
-                    data = data.copy()
-                return data
+        def _kurt_by_frame(a, *args, **kwargs):
+            data = a.to_frame().kurt(*args, **kwargs).iloc[0]
+            if is_cudf(data):  # pragma: no cover
+                data = data.copy()
+            return data
 
-            def _group_kurt(x, *args, **kwargs):
-                if kwargs.get("numeric_only") is not None:
-                    return x.agg(functools.partial(_kurt_by_frame, *args, **kwargs))
-                else:
-                    return x.agg(functools.partial(pd.Series.kurt, *args, **kwargs))
+        def _group_kurt(x, *args, **kwargs):
+            if kwargs.get("numeric_only") is not None:
+                return x.agg(functools.partial(_kurt_by_frame, *args, **kwargs))
+            else:
+                return x.agg(functools.partial(pd.Series.kurt, *args, **kwargs))
 
-            DataFrameGroupBy.kurt = DataFrameGroupBy.kurtosis = _group_kurt
-            SeriesGroupBy.kurt = SeriesGroupBy.kurtosis = _group_kurt
+        DataFrameGroupBy.kurt = DataFrameGroupBy.kurtosis = _group_kurt
+        SeriesGroupBy.kurt = SeriesGroupBy.kurtosis = _group_kurt
     except (AttributeError, ImportError):  # pragma: no cover
         pass
 
@@ -137,23 +134,43 @@ def build_mock_agg_result(
 class DataFrameGroupByAgg(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.GROUPBY_AGG
 
-    raw_func = AnyField("raw_func")
-    raw_func_kw = DictField("raw_func_kw")
-    func = AnyField("func")
+    raw_func = AnyField("raw_func", default=None)
+    raw_func_kw = DictField("raw_func_kw", default=None)
+    func = AnyField("func", default=None)
     func_rename = ListField("func_rename", default=None)
 
-    raw_groupby_params = DictField("raw_groupby_params")
-    groupby_params = DictField("groupby_params")
+    raw_groupby_params = DictField("raw_groupby_params", default=None)
+    groupby_params = DictField("groupby_params", default=None)
 
-    method = StringField("method")
+    method = StringField("method", default=None)
 
     # for chunk
-    chunk_store_limit = Int64Field("chunk_store_limit")
-    pre_funcs = ListField("pre_funcs")
-    agg_funcs = ListField("agg_funcs")
-    post_funcs = ListField("post_funcs")
-    index_levels = Int32Field("index_levels")
-    size_recorder_name = StringField("size_recorder_name")
+    chunk_store_limit = Int64Field("chunk_store_limit", default=None)
+    pre_funcs = ListField("pre_funcs", default=None)
+    agg_funcs = ListField("agg_funcs", default=None)
+    post_funcs = ListField("post_funcs", default=None)
+    index_levels = Int32Field("index_levels", default=None)
+    size_recorder_name = StringField("size_recorder_name", default=None)
+    combine_size = Int32Field("combine_size", default=None)
+
+    use_inf_as_na = BoolField("use_inf_as_na", default=None)
+    input_ndim = Int8Field("input_ndim", default=1)
+    append_level = BoolField("append_level", default=False)
+
+    def has_custom_code(self) -> bool:
+        callable_bys = find_objects(
+            self.groupby_params.get("by"), types=PickleContainer, checker=callable
+        )
+        if callable_bys and any(
+            not isinstance(fun, BuiltinFunction) for fun in callable_bys
+        ):
+            return True
+
+        return any(
+            fun.custom_reduction
+            and not isinstance(fun.custom_reduction, BuiltinFunction)
+            for fun in self.agg_funcs or ()
+        )
 
     @classmethod
     def _set_inputs(cls, op: "DataFrameGroupByAgg", inputs: List[EntityData]):
@@ -193,7 +210,9 @@ class DataFrameGroupByAgg(DataFrameOperator, DataFrameOperatorMixin):
 
     def _fix_as_index(self, result_index: pd.Index):
         # make sure if as_index=False takes effect
-        if isinstance(result_index, pd.MultiIndex):
+        if not _support_multi_index_as_index and isinstance(
+            result_index, pd.MultiIndex
+        ):
             # if MultiIndex, as_index=False definitely takes no effect
             self.groupby_params["as_index"] = True
         elif result_index.name is not None:
@@ -217,11 +236,16 @@ class DataFrameGroupByAgg(DataFrameOperator, DataFrameOperatorMixin):
                 agg_df.index, groupby.key, groupby.index_value.key
             )
 
+        self.input_ndim = 2
+
         # make sure if as_index=False takes effect
         self._fix_as_index(agg_df.index)
 
         # determine num of indices to group in intermediate steps
         self.index_levels = self._get_index_levels(groupby, agg_df.index)
+
+        # if True, name of agg funcs will be appended as the last level
+        self.append_level = agg_df.dtypes.index.nlevels > input_df.dtypes.index.nlevels
 
         inputs = self._get_inputs([input_df])
         return self.new_dataframe(
@@ -246,6 +270,8 @@ class DataFrameGroupByAgg(DataFrameOperator, DataFrameOperatorMixin):
         )
 
         inputs = self._get_inputs([in_series])
+
+        self.input_ndim = 1
 
         # determine num of indices to group in intermediate steps
         self.index_levels = self._get_index_levels(groupby, agg_result.index)
@@ -376,6 +402,10 @@ def agg(groupby, func=None, method="auto", *args, **kwargs):
             f"Method {method} is not available, please specify 'tree' or 'shuffle"
         )
 
+    combine_size = (
+        kwargs.pop("combine_size", None) or options.dpe.reduction.combine_size
+    )
+
     if not is_funcs_aggregate(func, ndim=groupby.ndim):
         # pass index to transform, otherwise it will lose name info for index
         agg_result = build_mock_agg_result(
@@ -400,5 +430,8 @@ def agg(groupby, func=None, method="auto", *args, **kwargs):
         method=method,
         raw_groupby_params=groupby.op.groupby_params,
         groupby_params=groupby.op.groupby_params,
+        combine_size=combine_size,
+        chunk_store_limit=options.chunk_store_limit,
+        use_inf_as_na=pd.get_option("mode.use_inf_as_na"),
     )
     return agg_op(groupby)

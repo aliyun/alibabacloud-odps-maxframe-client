@@ -13,10 +13,10 @@
 # limitations under the License.
 
 from ... import opcodes
-from .core import DataFrameCumReductionMixin, DataFrameCumReductionOperator
+from .core import DataFrameCumReduction, DataFrameCumReductionMixin
 
 
-class DataFrameCumsum(DataFrameCumReductionOperator, DataFrameCumReductionMixin):
+class DataFrameCumsum(DataFrameCumReduction, DataFrameCumReductionMixin):
     _op_type_ = opcodes.CUMSUM
     _func_name = "cumsum"
 

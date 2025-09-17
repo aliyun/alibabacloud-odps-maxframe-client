@@ -21,10 +21,11 @@ from ..groupby import (
     DataFrameGroupByOpAdapter,
     GroupByApplyAdapter,
     GroupByApplyChunkAdapter,
-    GroupByCumReductionAdapter,
+    GroupByExpandingAggAdapter,
     GroupByFillOperatorAdapter,
     GroupByHeadAdapter,
     GroupByIndexAdapter,
+    GroupByRollingAggAdapter,
     GroupBySampleAdapter,
     GroupByTransformAdapter,
     _need_enforce_group_keys,
@@ -73,30 +74,92 @@ def test_dataframe_groupby_agg(df1):
 @pytest.mark.parametrize(
     "func, func_kwargs, expected_results",
     [
-        ("cumcount", {}, ["var_1 = var_0.cumcount(ascending=True)"]),
-        ("cumcount", {"ascending": True}, ["var_1 = var_0.cumcount(ascending=True)"]),
-        ("cumcount", {"ascending": False}, ["var_1 = var_0.cumcount(ascending=False)"]),
-        ("cumsum", {}, ["var_1 = var_0.cumsum(axis=0)"]),
-        ("cumsum", {"axis": 0}, ["var_1 = var_0.cumsum(axis=0)"]),
-        ("cumsum", {"axis": 1}, ["var_1 = var_0.cumsum(axis=1)"]),
-        ("cumprod", {}, ["var_1 = var_0.cumprod(axis=0)"]),
-        ("cumprod", {"axis": 0}, ["var_1 = var_0.cumprod(axis=0)"]),
-        ("cumprod", {"axis": 1}, ["var_1 = var_0.cumprod(axis=1)"]),
-        ("cummax", {}, ["var_1 = var_0.cummax(axis=0)"]),
-        ("cummax", {"axis": 0}, ["var_1 = var_0.cummax(axis=0)"]),
-        ("cummax", {"axis": 1}, ["var_1 = var_0.cummax(axis=1)"]),
-        ("cummin", {}, ["var_1 = var_0.cummin(axis=0)"]),
-        ("cummin", {"axis": 0}, ["var_1 = var_0.cummin(axis=0)"]),
-        ("cummin", {"axis": 1}, ["var_1 = var_0.cummin(axis=1)"]),
+        ("cumcount", {}, ["var_1 = {G}.cumcount(ascending=True)"]),
+        ("cumcount", {"ascending": True}, ["var_1 = {G}.cumcount(ascending=True)"]),
+        ("cumcount", {"ascending": False}, ["var_1 = {G}.cumcount(ascending=False)"]),
+        ("cumsum", {}, ["var_1 = {G}.cumsum()"]),
+        ("cumprod", {}, ["var_1 = {G}.cumprod()"]),
+        ("cummax", {}, ["var_1 = {G}.cummax()"]),
+        ("cummin", {}, ["var_1 = {G}.cummin()"]),
     ],
 )
 def test_dataframe_groupby_cum(df1, func, func_kwargs, expected_results):
     context = SPECodeContext()
-    adapter = GroupByCumReductionAdapter()
+    adapter = GroupByExpandingAggAdapter()
 
+    groupby_code = "var_0.groupby(by=['A'], as_index=True, sort=True, group_keys=True)"
     res = getattr(df1.groupby("A"), func)(**func_kwargs)
     results = adapter.generate_code(res.op, context)
-    assert results == expected_results
+    assert results == [s.replace("{G}", groupby_code) for s in expected_results]
+
+
+def test_dataframe_groupby_expanding(df1):
+    context = SPECodeContext()
+    adapter = GroupByExpandingAggAdapter()
+    res = df1.groupby("A").expanding(2).sum()
+    results = adapter.generate_code(res.op, context)
+    assert results == [
+        "def _exp_fun_var_1(frame, **_):",
+        "    func = 'sum' if func != \"prod\" else lambda x: x.prod()",
+        "    out_frame = frame.expanding(min_periods=2).agg(func)",
+        "    return out_frame",
+        "var_1 = var_0.groupby(by=['A'], as_index=True, sort=True, group_keys=True"
+        ").apply(_exp_fun_var_1, include_groups=False)",
+    ]
+
+    res = df1.groupby("A").expanding(2, shift=1).sum()
+    results = adapter.generate_code(res.op, context)
+    assert results == [
+        "def _exp_fun_var_2(frame, **_):",
+        "    func = 'sum' if func != \"prod\" else lambda x: x.prod()",
+        "    frame = frame.shift(-1)",
+        "    out_frame = frame.expanding(min_periods=2).agg(func)",
+        "    return out_frame",
+        "var_2 = var_0.groupby(by=['A'], as_index=True, sort=True, "
+        "group_keys=True).apply(_exp_fun_var_2, include_groups=False)",
+    ]
+
+    res = df1.groupby("A").expanding(2, shift=1, reverse_range=True).sum()
+    results = adapter.generate_code(res.op, context)
+    assert results == [
+        "def _exp_fun_var_3(frame, **_):",
+        "    func = 'sum' if func != \"prod\" else lambda x: x.prod()",
+        "    frame = frame.shift(-1)",
+        "    frame = frame.iloc[::-1]",
+        "    out_frame = frame.expanding(min_periods=2).agg(func)",
+        "    out_frame = out_frame.iloc[::-1]",
+        "    return out_frame",
+        "var_3 = var_0.groupby(by=['A'], as_index=True, sort=True, "
+        "group_keys=True).apply(_exp_fun_var_3, include_groups=False)",
+    ]
+
+
+def test_dataframe_groupby_rolling(df1):
+    context = SPECodeContext()
+    adapter = GroupByRollingAggAdapter()
+    res = df1.groupby("A").rolling(3).sum()
+    results = adapter.generate_code(res.op, context)
+    assert results == [
+        "def _roll_fun_var_1(frame, **_):",
+        "    func = 'sum' if func != \"prod\" else lambda x: x.prod()",
+        "    frame = frame.shift(0)",
+        "    return frame.rolling(window=3, min_periods=None, center=False, "
+        "win_type=None, axis=0, on=None, closed=None).agg(func)",
+        "var_1 = var_0.groupby(by=['A'], as_index=True, sort=True, "
+        "group_keys=True).apply(_roll_fun_var_1, include_groups=False)",
+    ]
+
+    res = df1.groupby("A").rolling(3, shift=1).sum()
+    results = adapter.generate_code(res.op, context)
+    assert results == [
+        "def _roll_fun_var_2(frame, **_):",
+        "    func = 'sum' if func != \"prod\" else lambda x: x.prod()",
+        "    frame = frame.shift(-1)",
+        "    return frame.rolling(window=3, min_periods=None, center=False, "
+        "win_type=None, axis=0, on=None, closed=None).agg(func)",
+        "var_2 = var_0.groupby(by=['A'], as_index=True, sort=True, "
+        "group_keys=True).apply(_roll_fun_var_2, include_groups=False)",
+    ]
 
 
 def test_dataframe_groupby_fill(df1):

@@ -14,10 +14,10 @@
 
 from ... import opcodes
 from ...core import OutputType
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin
 
 
-class DataFrameMax(DataFrameReductionOperator, DataFrameReductionMixin):
+class DataFrameMax(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.MAX
     _func_name = "max"
 

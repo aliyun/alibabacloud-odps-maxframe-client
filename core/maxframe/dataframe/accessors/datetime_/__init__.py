@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .core import SeriesDatetimeMethod
+from .core import SeriesDatetimeMethod, datetime_method_to_handlers
+
+methods = set(datetime_method_to_handlers.keys())
+del datetime_method_to_handlers
 
 
 def _install():

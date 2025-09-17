@@ -48,6 +48,7 @@ def array_equal(a1, a2):
     False
 
     """
+    from ..arithmetic import equal
     from ..datasource import tensor as astensor
     from ..datasource.scalar import scalar
     from .all import all
@@ -59,4 +60,4 @@ def array_equal(a1, a2):
 
     if a1.shape != a2.shape:
         return scalar(False)
-    return all(astensor(a1 == a2))
+    return all(astensor(equal(a1, a2, magic=True)))

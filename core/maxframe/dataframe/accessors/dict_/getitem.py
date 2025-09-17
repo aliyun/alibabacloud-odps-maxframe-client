@@ -15,29 +15,17 @@
 import pandas as pd
 
 from .... import opcodes
-from ....core.entity.output_types import OutputType
 from ....serialization.serializables.field import AnyField, BoolField
-from ...operators import DataFrameOperator, DataFrameOperatorMixin
+from .core import LegacySeriesDictOperator, SeriesDictMethod
 
 
-class SeriesDictGetItemOperator(DataFrameOperator, DataFrameOperatorMixin):
+class SeriesDictGetItemOperator(LegacySeriesDictOperator):
+    # operator class deprecated since v2.3.0
     _op_type_ = opcodes.SERIES_DICT_GETITEM
+    _method_name = "getitem"
     query_key = AnyField("query_key", default=None)
     default_value = AnyField("default_value", default=None)
     ignore_key_error = BoolField("ignore_key_error", default=False)
-
-    def __init__(self, **kw):
-        super().__init__(_output_types=[OutputType.series], **kw)
-
-    def __call__(self, series):
-        arrow_map_type = series.dtype.pyarrow_dtype
-        return self.new_series(
-            [series],
-            shape=series.shape,
-            dtype=pd.ArrowDtype(arrow_map_type.item_type),
-            index_value=series.index_value,
-            name=str(self.query_key),
-        )
 
 
 def series_dict_getitem(series, query_key, default_value=None):
@@ -85,9 +73,14 @@ def series_dict_getitem(series, query_key, default_value=None):
     3    <NA>
     Name: k2, dtype: int64[pyarrow]
     """
-    return SeriesDictGetItemOperator(
+    method_kw = dict(
         query_key=query_key, default_value=default_value, ignore_key_error=True
-    )(series)
+    )
+    arrow_map_type = series.dtype.pyarrow_dtype
+    dtype = pd.ArrowDtype(arrow_map_type.item_type)
+    return SeriesDictMethod(method="getitem", method_kwargs=method_kw)(
+        series, name=str(query_key), dtype=dtype
+    )
 
 
 def series_dict_getitem_with_key_error(series, query_key):
@@ -139,6 +132,9 @@ def series_dict_getitem_with_key_error(series, query_key):
     3    <NA>
     Name: k1, dtype: int64[pyarrow]
     """
-    return SeriesDictGetItemOperator(
-        query_key=query_key, default_value=None, ignore_key_error=False
-    )(series)
+    method_kw = dict(query_key=query_key, default_value=None, ignore_key_error=False)
+    arrow_map_type = series.dtype.pyarrow_dtype
+    dtype = pd.ArrowDtype(arrow_map_type.item_type)
+    return SeriesDictMethod(method="getitem", method_kwargs=method_kw)(
+        series, name=str(query_key), dtype=dtype
+    )

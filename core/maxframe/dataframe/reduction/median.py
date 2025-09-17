@@ -14,10 +14,10 @@
 
 from ... import opcodes
 from ...core import OutputType
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin
 
 
-class DataFrameMedian(DataFrameReductionOperator, DataFrameReductionMixin):
+class DataFrameMedian(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.MEDIAN
     _func_name = "median"
 

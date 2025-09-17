@@ -25,12 +25,14 @@ from ...serialization.serializables import (
     ListField,
     StringField,
 )
+from ...utils import make_dtype, pd_release_version
 from ..datasource.dataframe import from_pandas as from_pandas_df
 from ..datasource.series import from_pandas as from_pandas_series
 from ..initializer import Series as asseries
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 
 _encoding_dtype_kind = ["O", "S", "U"]
+_ret_uint8 = pd_release_version < (2, 0, 0)
 
 
 class DataFrameGetDummies(DataFrameOperator, DataFrameOperatorMixin):
@@ -181,7 +183,9 @@ def get_dummies(
     elif isinstance(data, pd.DataFrame):
         data = from_pandas_df(data)
 
-    dtype = dtype if dtype is not None else np.dtype(bool)
+    dtype = make_dtype(
+        dtype if dtype is not None else np.dtype(np.uint8 if _ret_uint8 else bool)
+    )
 
     if prefix is not None:
         if isinstance(prefix, list):

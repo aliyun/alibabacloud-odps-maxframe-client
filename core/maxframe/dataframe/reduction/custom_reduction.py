@@ -15,10 +15,10 @@
 from ... import opcodes
 from ...core import OutputType
 from ...serialization.serializables import AnyField
-from .core import DataFrameReductionMixin, DataFrameReductionOperator
+from .core import DataFrameReduction, DataFrameReductionMixin
 
 
-class DataFrameCustomReduction(DataFrameReductionOperator, DataFrameReductionMixin):
+class DataFrameCustomReduction(DataFrameReduction, DataFrameReductionMixin):
     _op_type_ = opcodes.CUSTOM_REDUCTION
     _func_name = "custom_reduction"
 

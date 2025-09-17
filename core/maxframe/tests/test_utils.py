@@ -32,7 +32,7 @@ import pytest
 
 from .. import utils
 from ..serialization import PickleContainer
-from ..utils import parse_size_to_megabytes
+from ..utils import parse_size_to_megabytes, validate_and_adjust_resource_ratio
 
 
 def test_string_conversion():
@@ -369,6 +369,12 @@ def test_arrow_type_from_string():
     _assert_arrow_type_convert(
         pa.struct([("key", pa.string()), ("value", pa.list_(pa.int64()))])
     )
+    _assert_arrow_type_convert(
+        pa.struct([("key", pa.string(), False), ("value", pa.list_(pa.int64()))])
+    )
+    _assert_arrow_type_convert(
+        pa.struct([("key", pa.string()), ("value", pa.list_(pa.int64()), False)])
+    )
 
 
 @pytest.mark.parametrize("use_async", [False, True])
@@ -527,6 +533,7 @@ def test_numeric_inputs_with_default_units(value, default_unit):
     "input_string, expected",
     [
         # Basic binary units
+        ("1B", 1 / BYTES_PER_MIB),
         ("1KiB", BYTES_PER_KIB / BYTES_PER_MIB),
         ("5miB", 5),
         ("2giB", 2 * BYTES_PER_GIB / BYTES_PER_MIB),
@@ -571,3 +578,38 @@ def test_parse_size_to_mega_bytes_invalid_inputs(invalid_input, default_unit):
     """Test invalid inputs that should raise ValueError"""
     with pytest.raises(ValueError):  # Catch ValueError
         parse_size_to_megabytes(invalid_input, default_number_unit=default_unit)
+
+
+@pytest.mark.parametrize(
+    "udf_resources, max_memory_cpu_ratio, adjust, expected_resources, expected_adjusted, should_warn",
+    [
+        ({"other": "value"}, 4, False, {"other": "value"}, False, False),
+        ({"memory": 8}, 4, False, {"memory": 8}, False, False),
+        ({"cpu": 2}, 4, False, {"cpu": 2}, False, False),
+        ({"cpu": 2, "memory": 2}, 4, True, {"cpu": 2, "memory": 2}, False, False),
+        ({"cpu": 2, "memory": 8}, 4, False, {"cpu": 2, "memory": 8}, False, False),
+        ({"cpu": 1, "memory": 8}, 4, False, {"cpu": 1, "memory": 8}, False, False),
+        ({"cpu": 2, "memory": 8}, 4, False, {"cpu": 2, "memory": 8}, False, False),
+        ({"cpu": 2, "memory": 8}, 4, False, {"cpu": 2, "memory": 8}, False, False),
+        ({"cpu": 1, "memory": 8}, 4, True, {"cpu": 2, "memory": 8}, True, True),
+        ({"cpu": 1, "memory": 18}, 7, True, {"cpu": 3, "memory": 18}, True, True),
+        ({"cpu": 1, "memory": 7.5}, 4, True, {"cpu": 2, "memory": 7.5}, True, True),
+    ],
+)
+def test_validate_and_adjust_resource_ratio(
+    udf_resources,
+    max_memory_cpu_ratio,
+    adjust,
+    expected_resources,
+    expected_adjusted,
+    should_warn,
+    recwarn,
+):
+    result_resources, was_adjusted = validate_and_adjust_resource_ratio(
+        udf_resources, max_memory_cpu_ratio, adjust
+    )
+    assert result_resources == expected_resources
+    assert was_adjusted == expected_adjusted
+    if should_warn:
+        # check warning
+        assert len(recwarn) == 1

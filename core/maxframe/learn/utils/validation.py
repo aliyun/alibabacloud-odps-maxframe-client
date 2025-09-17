@@ -695,9 +695,9 @@ def _check_sample_weight(
         dtype = np.float64
 
     if sample_weight is None:
-        sample_weight = np.ones(n_samples, dtype=dtype)
+        sample_weight = mt.ones(n_samples, dtype=dtype)
     elif isinstance(sample_weight, numbers.Number):
-        sample_weight = np.full(n_samples, sample_weight, dtype=dtype)
+        sample_weight = mt.full(n_samples, sample_weight, dtype=dtype)
     else:
         if dtype is None:
             dtype = [np.float64, np.float32]

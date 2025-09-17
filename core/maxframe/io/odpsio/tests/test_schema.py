@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
 import numpy as np
 import pandas as pd
 import pyarrow as pa
@@ -19,9 +21,11 @@ import pytest
 from odps import types as odps_types
 
 from .... import dataframe as md
+from .... import env
 from .... import tensor as mt
+from ....config import option_context, options
 from ....core import OutputType
-from ....lib.dtypes_extension import ArrowDtype, dict_, list_
+from ....lib.dtypes_extension import ArrowBlobType, ArrowDtype, dict_, list_
 from ....utils import pd_release_version
 from ..schema import (
     arrow_schema_to_odps_schema,
@@ -33,6 +37,16 @@ from ..schema import (
     pandas_to_odps_schema,
     pandas_types_to_arrow_schema,
 )
+
+
+@pytest.fixture
+def set_dtype_backend(request):
+    os.environ[env.MAXFRAME_INSIDE_TASK] = "1"
+    with option_context({"dataframe.dtype_backend": request.param}):
+        try:
+            yield request.param
+        finally:
+            os.environ.pop(env.MAXFRAME_INSIDE_TASK)
 
 
 def _wrap_maxframe_obj(obj, wrap="no"):
@@ -54,7 +68,9 @@ def _wrap_maxframe_obj(obj, wrap="no"):
 
 
 @pytest.mark.parametrize("wrap_obj", ["no", "yes", "data"])
-def test_pandas_to_odps_schema_dataframe(wrap_obj):
+@pytest.mark.parametrize("set_dtype_backend", ["numpy", "pyarrow"], indirect=True)
+def test_pandas_to_odps_schema_dataframe(wrap_obj, set_dtype_backend):
+    # Test with a simple DataFrame
     data = pd.DataFrame(np.random.rand(100, 5), columns=list("ABCDE"))
 
     test_df = _wrap_maxframe_obj(data, wrap=wrap_obj)
@@ -71,6 +87,7 @@ def test_pandas_to_odps_schema_dataframe(wrap_obj):
     assert meta.pd_column_level_names == [None]
     assert meta.pd_index_level_names == [None]
 
+    # Test with ignore_index=True to exclude index from schema
     test_df = _wrap_maxframe_obj(data, wrap=wrap_obj)
     schema, meta = pandas_to_odps_schema(test_df, ignore_index=True)
     assert [c.name for c in schema.columns] == list(test_df.dtypes.index.str.lower())
@@ -81,6 +98,7 @@ def test_pandas_to_odps_schema_dataframe(wrap_obj):
     assert meta.pd_column_level_names == [None]
     assert meta.pd_index_level_names == []
 
+    # Test with MultiIndex columns and index
     data.columns = pd.MultiIndex.from_tuples(
         [("A", "A"), ("A", "B"), ("A", "C"), ("B", "A"), ("B", "B")], names=["c1", "c2"]
     )
@@ -105,7 +123,9 @@ def test_pandas_to_odps_schema_dataframe(wrap_obj):
 
 
 @pytest.mark.parametrize("wrap_obj", ["no", "yes", "data"])
-def test_pandas_to_odps_schema_series(wrap_obj):
+@pytest.mark.parametrize("set_dtype_backend", ["numpy", "pyarrow"], indirect=True)
+def test_pandas_to_odps_schema_series(wrap_obj, set_dtype_backend):
+    # Test with a simple Series
     data = pd.Series(np.random.rand(100))
 
     test_s = _wrap_maxframe_obj(data, wrap=wrap_obj)
@@ -119,6 +139,7 @@ def test_pandas_to_odps_schema_series(wrap_obj):
     assert meta.pd_column_level_names == [None]
     assert meta.pd_index_level_names == [None]
 
+    # Test with ignore_index=True to exclude index from schema
     schema, meta = pandas_to_odps_schema(test_s, ignore_index=True)
     assert [c.name for c in schema.columns] == ["_data"]
     assert [c.type.name for c in schema.columns] == ["double"]
@@ -128,6 +149,7 @@ def test_pandas_to_odps_schema_series(wrap_obj):
     assert meta.pd_column_level_names == [None]
     assert meta.pd_index_level_names == []
 
+    # Test with named Series and MultiIndex
     data.index = pd.MultiIndex.from_arrays(
         [np.random.choice(list("ABC"), 100), np.random.randint(0, 10, 100)],
         names=["c1", "c2"],
@@ -146,7 +168,9 @@ def test_pandas_to_odps_schema_series(wrap_obj):
 
 
 @pytest.mark.parametrize("wrap_obj", ["no", "yes", "data"])
-def test_pandas_to_odps_schema_index(wrap_obj):
+@pytest.mark.parametrize("set_dtype_backend", ["numpy", "pyarrow"], indirect=True)
+def test_pandas_to_odps_schema_index(wrap_obj, set_dtype_backend):
+    # Test with a simple Index
     data = pd.Index(np.random.randint(0, 100, 100))
 
     test_idx = _wrap_maxframe_obj(data, wrap=wrap_obj)
@@ -162,6 +186,7 @@ def test_pandas_to_odps_schema_index(wrap_obj):
         assert meta.pd_column_level_names == []
         assert meta.pd_index_level_names == [None]
 
+    # Test with MultiIndex
     data = pd.MultiIndex.from_arrays(
         [np.random.choice(list("ABC"), 100), np.random.randint(0, 10, 100)],
         names=["c1", "c2"],
@@ -178,7 +203,8 @@ def test_pandas_to_odps_schema_index(wrap_obj):
 
 
 @pytest.mark.parametrize("wrap_obj", ["no", "yes", "data"])
-def test_pandas_to_odps_schema_scalar(wrap_obj):
+@pytest.mark.parametrize("set_dtype_backend", ["numpy", "pyarrow"], indirect=True)
+def test_pandas_to_odps_schema_scalar(wrap_obj, set_dtype_backend):
     data = 1234.56
 
     test_scalar = _wrap_maxframe_obj(data, wrap=wrap_obj)
@@ -196,7 +222,8 @@ def test_pandas_to_odps_schema_scalar(wrap_obj):
 
 
 @pytest.mark.parametrize("wrap_obj", ["no", "yes", "data"])
-def test_pandas_to_odps_schema_tensor(wrap_obj):
+@pytest.mark.parametrize("set_dtype_backend", ["numpy", "pyarrow"], indirect=True)
+def test_pandas_to_odps_schema_tensor(wrap_obj, set_dtype_backend):
     data = np.array([1, 2, 3])
 
     test_tensor = _wrap_maxframe_obj(data, wrap=wrap_obj)
@@ -214,6 +241,7 @@ def test_pandas_to_odps_schema_tensor(wrap_obj):
 
 
 def test_odps_arrow_schema_conversion():
+    # Create an ODPS schema with various data types
     odps_schema = odps_types.OdpsSchema(
         [
             odps_types.Column("col1", "string"),
@@ -293,110 +321,168 @@ def test_odps_arrow_schema_conversion():
         c.type for c in odps_schema2.columns
     ]
 
+    # Test that unsupported data types raise TypeError
     with pytest.raises(TypeError):
         arrow_schema_to_odps_schema(pa.schema([("col1", pa.float16())]))
 
 
-def test_odps_pandas_schema_conversion():
-    odps_schema = odps_types.OdpsSchema(
-        [
-            odps_types.Column("col1", "string"),
-            odps_types.Column("col2", "binary"),
-            odps_types.Column("col3", "tinyint"),
-            odps_types.Column("col4", "smallint"),
-            odps_types.Column("col5", "int"),
-            odps_types.Column("col6", "bigint"),
-            odps_types.Column("col7", "boolean"),
-            odps_types.Column("col8", "float"),
-            odps_types.Column("col9", "double"),
-            # odps_types.Column("col10", "date"),
-            odps_types.Column("col11", "datetime"),
-            odps_types.Column("col12", "timestamp"),
-            # odps_types.Column("col13", "decimal(10, 2)"),
-            odps_types.Column("col14", "array<string>"),
-            odps_types.Column("col15", "map<string, bigint>"),
-            # odps_types.Column("col16", "struct<a1: string, a2: map<string, bigint>>"),
-            # odps_types.Column("col17", "CHAR(15)"),
-            # odps_types.Column("col18", "VARCHAR(15)"),
-            # odps_types.Column("col19", "decimal"),
-        ]
-    )
-    pd_dtypes = odps_schema_to_pandas_dtypes(odps_schema)
-    pd.testing.assert_series_equal(
-        pd_dtypes,
-        pd.Series(
-            [
-                np.dtype("O"),  # string
-                np.dtype("O"),  # binary
-                np.dtype(np.int8),
-                np.dtype(np.int16),
-                np.dtype(np.int32),
-                np.dtype(np.int64),
-                np.dtype(np.bool_),
-                np.dtype(np.float32),
-                np.dtype(np.float64),
-                np.dtype(
-                    "datetime64[ms]" if pd_release_version[0] >= 2 else "datetime64[ns]"
-                ),
-                np.dtype("datetime64[ns]"),
-                ArrowDtype(pa.list_(pa.string())),
-                ArrowDtype(pa.map_(pa.string(), pa.int64())),
-            ],
-            index=[c.name for c in odps_schema.columns],
+def _get_odps_schema_for_test(cast_result=False):
+    test_pyarrow = options.dataframe.dtype_backend == "pyarrow"
+    cols = [
+        odps_types.Column("col1", "string"),
+        odps_types.Column(
+            "col2", "binary" if test_pyarrow or not cast_result else "string"
         ),
+        odps_types.Column("col3", "tinyint"),
+        odps_types.Column("col4", "smallint"),
+        odps_types.Column("col5", "int"),
+        odps_types.Column("col6", "bigint"),
+        odps_types.Column("col7", "boolean"),
+        odps_types.Column("col8", "float"),
+        odps_types.Column("col9", "double"),
+        odps_types.Column("col10", "date") if test_pyarrow else None,
+        odps_types.Column(
+            "col11",
+            "datetime" if test_pyarrow or pd_release_version[0] >= 2 else "timestamp",
+        ),
+        odps_types.Column("col12", "timestamp"),
+        odps_types.Column("col13", "decimal(10, 2)") if test_pyarrow else None,
+        odps_types.Column("col14", "array<string>"),
+        odps_types.Column("col15", "map<string, bigint>"),
+        odps_types.Column("col16", "struct<a1: string, a2: map<string, bigint>>"),
+        odps_types.Column("col17", "CHAR(15)" if not cast_result else "string")
+        if test_pyarrow
+        else None,
+        odps_types.Column("col18", "VARCHAR(15)" if not cast_result else "string")
+        if test_pyarrow
+        else None,
+    ]
+    return odps_types.OdpsSchema([c for c in cols if c is not None])
+
+
+def _assert_odps_schema_equal(left, right):
+    assert [c.name for c in left.columns] == [c.name for c in right.columns]
+    assert [c.type for c in left.columns] == [c.type for c in right.columns]
+
+
+@pytest.mark.parametrize("set_dtype_backend", ["numpy"], indirect=True)
+def test_odps_pandas_schema_conversion_with_numpy(set_dtype_backend):
+    # Create an ODPS schema with various data types
+    odps_schema = _get_odps_schema_for_test()
+    pd_dtypes = odps_schema_to_pandas_dtypes(odps_schema)
+
+    expected_series = pd.Series(
+        [
+            np.dtype("O"),  # string
+            np.dtype("O"),  # binary
+            np.dtype(np.int8),
+            np.dtype(np.int16),
+            np.dtype(np.int32),
+            np.dtype(np.int64),
+            np.dtype(np.bool_),
+            np.dtype(np.float32),
+            np.dtype(np.float64),
+            np.dtype(
+                "datetime64[ms]" if pd_release_version[0] >= 2 else "datetime64[ns]"
+            ),
+            np.dtype("datetime64[ns]"),
+            ArrowDtype(pa.list_(pa.string())),
+            ArrowDtype(pa.map_(pa.string(), pa.int64())),
+            ArrowDtype(
+                pa.struct(
+                    [
+                        pa.field("a1", pa.string()),
+                        pa.field("a2", pa.map_(pa.string(), pa.int64())),
+                    ]
+                )
+            ),
+        ],
+        index=[c.name for c in odps_schema.columns],
     )
 
-    expected_odps_schema = odps_types.OdpsSchema(
-        [
-            odps_types.Column("col1", "string"),
-            odps_types.Column("col2", "string"),  # binary
-            odps_types.Column("col3", "tinyint"),
-            odps_types.Column("col4", "smallint"),
-            odps_types.Column("col5", "int"),
-            odps_types.Column("col6", "bigint"),
-            odps_types.Column("col7", "boolean"),
-            odps_types.Column("col8", "float"),
-            odps_types.Column("col9", "double"),
-            # odps_types.Column("col10", "date"),
-            odps_types.Column(
-                "col11", "datetime" if pd_release_version[0] >= 2 else "timestamp"
-            ),
-            odps_types.Column("col12", "timestamp"),
-            # odps_types.Column("col13", "decimal(10, 2)"),
-            odps_types.Column("col14", "array<string>"),
-            odps_types.Column("col15", "map<string, bigint>"),
-            # odps_types.Column("col16", "struct<a1: string, a2: map<string, bigint>>"),
-            # odps_types.Column("col17", "string"),
-            # odps_types.Column("col18", "string"),
-            # odps_types.Column("col19", "decimal(38, 18)"),
-        ]
-    )
+    pd.testing.assert_series_equal(pd_dtypes, expected_series)
+
+    expected_odps_schema = _get_odps_schema_for_test(cast_result=True)
 
     odps_schema2 = arrow_schema_to_odps_schema(
         pandas_dtypes_to_arrow_schema(pd_dtypes, unknown_as_string=True)
     )
-    assert [c.name for c in expected_odps_schema.columns] == [
-        c.name for c in odps_schema2.columns
-    ]
-    assert [c.type for c in expected_odps_schema.columns] == [
-        c.type for c in odps_schema2.columns
-    ]
+    _assert_odps_schema_equal(expected_odps_schema, odps_schema2)
 
+    # Test that unsupported data types raise TypeError
     with pytest.raises(TypeError):
         arrow_schema_to_odps_schema(pa.schema([("col1", pa.float16())]))
 
 
+@pytest.mark.parametrize("set_dtype_backend", ["pyarrow"], indirect=True)
+def test_odps_pandas_schema_conversion_with_pyarrow(set_dtype_backend):
+    # Create an ODPS schema with various data types
+    odps_schema = _get_odps_schema_for_test()
+    pd_dtypes = odps_schema_to_pandas_dtypes(odps_schema)
+
+    # When dtype_backend is pyarrow, complex types should be ArrowDtype
+    expected_series = pd.Series(
+        [
+            ArrowDtype(pa.string()),
+            ArrowDtype(pa.binary()),
+            ArrowDtype(pa.int8()),
+            ArrowDtype(pa.int16()),
+            ArrowDtype(pa.int32()),
+            ArrowDtype(pa.int64()),
+            ArrowDtype(pa.bool_()),
+            ArrowDtype(pa.float32()),
+            ArrowDtype(pa.float64()),
+            ArrowDtype(pa.date32()),
+            ArrowDtype(pa.timestamp("ms")),
+            ArrowDtype(pa.timestamp("ns")),
+            ArrowDtype(pa.decimal128(10, 2)),
+            ArrowDtype(pa.list_(pa.string())),
+            ArrowDtype(pa.map_(pa.string(), pa.int64())),
+            ArrowDtype(
+                pa.struct(
+                    [
+                        pa.field("a1", pa.string()),
+                        pa.field("a2", pa.map_(pa.string(), pa.int64())),
+                    ]
+                )
+            ),
+            ArrowDtype(pa.string()),
+            ArrowDtype(pa.string()),
+        ],
+        index=[c.name for c in odps_schema.columns],
+    )
+
+    pd.testing.assert_series_equal(pd_dtypes, expected_series)
+
+    expected_odps_schema = _get_odps_schema_for_test(cast_result=True)
+
+    odps_schema2 = arrow_schema_to_odps_schema(
+        pandas_dtypes_to_arrow_schema(pd_dtypes, unknown_as_string=True)
+    )
+    _assert_odps_schema_equal(expected_odps_schema, odps_schema2)
+
+
 def test_build_column_name():
     records = dict()
+    # Test that long valid names are preserved
     assert build_table_column_name(0, "a" * 127, records) == "a" * 127
+
+    # Test that valid names with underscores and alphanumeric chars are preserved
     assert build_table_column_name(1, "_abc123", records) == "_abc123"
+
+    # Test that names with invalid characters are replaced with generated names
     assert build_table_column_name(2, "_abc'123", records) == "_column_2"
+
+    # Test that overly long names are replaced with generated names
     assert build_table_column_name(3, "a" * 256, records) == "_column_3"
+
+    # Test that tuple names are converted to underscore-separated strings
     assert build_table_column_name(4, ("A", 1), records) == "a_1"
 
 
 @pytest.mark.parametrize("wrap_obj", ["no", "yes", "data"])
-def test_build_table_meta(wrap_obj):
+@pytest.mark.parametrize("set_dtype_backend", ["numpy", "pyarrow"], indirect=True)
+def test_build_table_meta(wrap_obj, set_dtype_backend):
     data = pd.DataFrame(
         np.random.rand(100, 7),
         columns=["A", "A", "A_0", "A_1", "a_1", "B", "C"],
@@ -411,7 +497,9 @@ def test_build_table_meta(wrap_obj):
 @pytest.mark.skipif(
     pd_release_version[0] < 2, reason="only run under pandas 2.0 or greater"
 )
-def test_table_meta_with_datetime():
+@pytest.mark.parametrize("set_dtype_backend", ["numpy", "pyarrow"], indirect=True)
+def test_table_meta_with_datetime(set_dtype_backend):
+    # Test DataFrame with datetime column
     raw_df = pd.DataFrame(
         [
             [1, "abc", "2024-10-01 11:23:12"],
@@ -423,6 +511,7 @@ def test_table_meta_with_datetime():
     schema, _ = pandas_to_odps_schema(df, unknown_as_string=True)
     assert schema.columns[3].type == odps_types.datetime
 
+    # Test Series with datetime dtype
     raw_series = pd.Series(
         ["2024-10-01 11:23:12", "2024-10-02 22:55:13"], dtype="datetime64[ms]"
     )
@@ -430,6 +519,7 @@ def test_table_meta_with_datetime():
     schema, _ = pandas_to_odps_schema(s, unknown_as_string=True)
     assert schema.columns[1].type == odps_types.datetime
 
+    # Test Index with datetime dtype
     raw_index = pd.Index(
         ["2024-10-01 11:23:12", "2024-10-02 22:55:13"], dtype="datetime64[ms]"
     )
@@ -437,6 +527,7 @@ def test_table_meta_with_datetime():
     schema, _ = pandas_to_odps_schema(idx, unknown_as_string=True)
     assert schema.columns[0].type == odps_types.datetime
 
+    # Test MultiIndex with datetime column
     src_df = pd.DataFrame(
         [[1, "2024-10-01 11:23:12"], [3, "2024-10-02 22:55:13"]],
         columns=["A", "B"],
@@ -463,3 +554,27 @@ def test_pandas_types_to_arrow_schema():
     assert schema.field("int8").type == pa.int8()
     assert schema.field("map").type == pa.map_(pa.string(), pa.string())
     assert schema.field("list").type == pa.list_(pa.string())
+
+
+@pytest.mark.skipif(
+    not hasattr(odps_types, "blob"),
+    reason="need pyodps to support blob type to run this test",
+)
+def test_blob_types_conversion():
+    pd_data = pd.DataFrame(
+        {
+            "int_col": pd.Series([1, 2], dtype=np.int64),
+            "blob_col": pd.Series([b"abcd", b"efgh"], dtype="blob"),
+        },
+    )
+    arrow_schema = pandas_types_to_arrow_schema(pd_data)
+    assert arrow_schema.field("int_col").type == pa.int64()
+    assert arrow_schema.field("blob_col").type == ArrowBlobType()
+
+    odps_schema = arrow_schema_to_odps_schema(arrow_schema)
+    assert odps_schema.columns[0].type == odps_types.bigint
+    assert odps_schema.columns[1].type == odps_types.blob
+
+    arrow_schema2 = odps_schema_to_arrow_schema(odps_schema)
+    assert arrow_schema2.field("int_col").type == pa.int64()
+    assert arrow_schema2.field("blob_col").type == ArrowBlobType()

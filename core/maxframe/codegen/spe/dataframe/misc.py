@@ -19,6 +19,7 @@ from ....dataframe.misc.apply import DataFrameApply
 from ....dataframe.misc.astype import DataFrameAstype
 from ....dataframe.misc.case_when import DataFrameCaseWhen
 from ....dataframe.misc.check_monotonic import DataFrameCheckMonotonic
+from ....dataframe.misc.clip import DataFrameClip
 from ....dataframe.misc.cut import DataFrameCut
 from ....dataframe.misc.describe import DataFrameDescribe
 from ....dataframe.misc.diff import DataFrameDiff
@@ -30,14 +31,10 @@ from ....dataframe.misc.explode import DataFrameExplode
 from ....dataframe.misc.get_dummies import DataFrameGetDummies
 from ....dataframe.misc.isin import DataFrameIsin
 from ....dataframe.misc.map import DataFrameMap
-from ....dataframe.misc.melt import DataFrameMelt
 from ....dataframe.misc.memory_usage import DataFrameMemoryUsage
-from ....dataframe.misc.pivot import DataFramePivot
-from ....dataframe.misc.pivot_table import DataFramePivotTable
 from ....dataframe.misc.shift import DataFrameShift
-from ....dataframe.misc.stack import DataFrameStack
 from ....dataframe.misc.to_numeric import DataFrameToNumeric
-from ....dataframe.misc.transform import TransformOperator
+from ....dataframe.misc.transform import DataFrameTransform
 from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
 from ..utils import build_method_call_adapter
 
@@ -58,6 +55,11 @@ class DataFrameCheckMonotonicAdapter(SPEOperatorAdapter):
         else:
             prop = "is_monotonic_increasing"
         return [f"{res_var_name} = {inst_var_name}.{prop}"]
+
+
+DataFrameClipAdapter = build_method_call_adapter(
+    DataFrameClip, "clip", skip_none=True, kw_keys=["lower", "upper", "axis"]
+)
 
 
 @register_op_adapter(DataFrameCut)
@@ -108,11 +110,6 @@ class DataFrameEvalAdapter(SPEOperatorAdapter):
 DataFrameExplodeAdapter = build_method_call_adapter(
     DataFrameExplode, "explode", "column", ignore_index=None
 )
-DataFrameMeltAdapter = build_method_call_adapter(
-    DataFrameMelt,
-    "melt",
-    kw_keys=["id_vars", "value_vars", "var_name", "value_name", "col_level"],
-)
 DataFrameMemoryUsageAdapter = build_method_call_adapter(
     DataFrameMemoryUsage, "memory_usage", kw_keys=["index", "deep"]
 )
@@ -133,27 +130,6 @@ DataFrameMapAdapter = build_method_call_adapter(
 DataFrameShiftAdapter = build_method_call_adapter(
     DataFrameShift, "shift", kw_keys=["periods", "freq", "axis", "fill_value"]
 )
-DataFrameStackAdapter = build_method_call_adapter(
-    DataFrameStack, "stack", kw_keys=["level", "dropna"]
-)
-DataFramePivotAdapter = build_method_call_adapter(
-    DataFramePivot, "pivot", kw_keys=["columns", "index", "values"]
-)
-DataFramePivotTableAdapter = build_method_call_adapter(
-    DataFramePivotTable,
-    "pivot_table",
-    kw_keys=[
-        "values",
-        "index",
-        "columns",
-        "aggfunc",
-        "fill_value",
-        "margins",
-        "dropna",
-        "margins_name",
-        "sort",
-    ],
-)
 
 
 @register_op_adapter(DataFrameToNumeric)
@@ -171,10 +147,10 @@ class DataFrameToNumericAdapter(SPEOperatorAdapter):
         return [f"{res_var_name} = pd.to_numeric({args})"]
 
 
-@register_op_adapter(TransformOperator)
+@register_op_adapter(DataFrameTransform)
 class TransformOperatorAdapter(SPEOperatorAdapter):
     def generate_code(
-        self, op: TransformOperator, context: SPECodeContext
+        self, op: DataFrameTransform, context: SPECodeContext
     ) -> List[str]:
         input_var = context.get_input_tileable_variable(op.inputs[0])
         output_var = context.get_output_tileable_variable(op.outputs[0])

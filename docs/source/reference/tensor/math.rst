@@ -69,6 +69,7 @@ Sums, products, differences
    maxframe.tensor.nancumprod
    maxframe.tensor.nancumsum
    maxframe.tensor.diff
+   maxframe.tensor.ediff1d
    maxframe.tensor.trapezoid
 
 

@@ -12,4 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .dtypes import ArrowDtype, dict_, is_list_dtype, is_map_dtype, list_
+from .blob import (
+    ArrowBlobType,
+    ExternalBlobDtype,
+    ExternalBlobExtensionArray,
+    SolidBlob,
+    new_blob,
+)
+from .dtypes import (
+    ArrowDtype,
+    dict_,
+    is_list_dtype,
+    is_map_dtype,
+    is_struct_dtype,
+    list_,
+    struct_,
+)

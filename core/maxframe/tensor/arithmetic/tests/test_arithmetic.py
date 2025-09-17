@@ -450,3 +450,9 @@ def test_tree_arithmetic():
     assert len(t.inputs) == 3
     assert len(t.inputs[0].inputs) == 4
     assert len(t.inputs[-1].inputs) == 2
+
+
+def test_iscomplexobj():
+    assert not iscomplexobj(1)
+    assert iscomplexobj(1 + 0j)
+    assert iscomplexobj([3, 1 + 0j, True])

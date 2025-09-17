@@ -16,11 +16,17 @@ from typing import List
 
 import numpy as np
 
+from ....tensor.indexing import TensorFillDiagonal
 from ....tensor.misc import (
+    TensorArgwhere,
+    TensorCopyTo,
+    TensorDelete,
     TensorDiff,
+    TensorGetShape,
     TensorIsIn,
     TensorRepeat,
     TensorSearchsorted,
+    TensorSplit,
     TensorSqueeze,
     TensorSwapAxes,
     TensorTranspose,
@@ -28,14 +34,38 @@ from ....tensor.misc import (
     TensorUnique,
     TensorWhere,
 )
+from ....tensor.misc.insert import TensorInsert
 from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
 from ..utils import build_method_call_adapter
 
 _trapz_func = "trapezoid" if hasattr(np, "trapezoid") else "trapz"
 
 
+TensorArgwhereAdapter = build_method_call_adapter(
+    TensorArgwhere, "argwhere", 0, source_module="np"
+)
+TensorDeleteAdapter = build_method_call_adapter(
+    TensorDelete, "delete", 0, "index_obj", kw_keys=["axis"], source_module="np"
+)
 TensorDiffAdapter = build_method_call_adapter(
     TensorDiff, "diff", 0, skip_none=True, kw_keys=["n", "axis"], source_module="np"
+)
+TensorFillDiagonalAdapter = build_method_call_adapter(
+    TensorFillDiagonal,
+    "fill_diagonal",
+    0,
+    "val",
+    skip_none=True,
+    kw_keys=["wrap"],
+    source_module="np",
+)
+TensorInsertAdapter = build_method_call_adapter(
+    TensorInsert,
+    "insert",
+    0,
+    "index_obj",
+    kw_keys=["values", "axis"],
+    source_module="np",
 )
 TensorIsInAdapter = build_method_call_adapter(
     TensorIsIn,
@@ -62,18 +92,6 @@ TensorSearchsortedAdapter = build_method_call_adapter(
     kw_keys=["side", "sorter"],
     source_module="np",
 )
-
-
-@register_op_adapter(TensorTranspose)
-class TensorTransposeAdapter(SPEOperatorAdapter):
-    def generate_code(self, op: TensorTranspose, context: SPECodeContext) -> List[str]:
-        context.register_import("numpy", "np")
-        input_var_name = context.get_input_tileable_variable(op.inputs[0])
-        res_var_name = context.get_output_tileable_variable(op.outputs[0])
-        axes_var = self.translate_var(context, op.axes)
-        return [f"{res_var_name} = np.transpose({input_var_name}, axes={axes_var})"]
-
-
 TensorTrapezoidAdapter = build_method_call_adapter(
     TensorTrapezoid,
     _trapz_func,
@@ -81,16 +99,60 @@ TensorTrapezoidAdapter = build_method_call_adapter(
     kw_keys=["y", "x", "dx", "axis"],
     source_module="np",
 )
+TensorSqueezeAdapter = build_method_call_adapter(
+    TensorSqueeze, "squeeze", 0, kw_keys=["axis"], source_module="np"
+)
+TensorSwapAxesAdapter = build_method_call_adapter(
+    TensorSwapAxes, "swapaxes", "axis1", "axis2", source_module="np"
+)
+TensorTransposeAdapter = build_method_call_adapter(
+    TensorTranspose, "transpose", 0, kw_keys=["axes"], source_module="np"
+)
+TensorWhereAdapter = build_method_call_adapter(
+    TensorWhere, "where", "condition", "x", "y", source_module="np"
+)
 
 
-@register_op_adapter(TensorSqueeze)
-class TensorSqueezeAdapter(SPEOperatorAdapter):
-    def generate_code(self, op: TensorSqueeze, context: SPECodeContext) -> List[str]:
+@register_op_adapter(TensorCopyTo)
+class TensorCopyToAdapter(SPEOperatorAdapter):
+    def generate_code(self, op: TensorCopyTo, context: SPECodeContext) -> List[str]:
+        context.register_import("numpy", "np")
+        dst_var_name = context.get_input_tileable_variable(op.inputs[1])
+        src_var_name = context.get_input_tileable_variable(op.inputs[0])
+        res_var_name = context.get_output_tileable_variable(op.outputs[0])
+        args_str = self.generate_call_args_with_attributes(
+            op, context, kw_keys=["casting", "where"], skip_none=True
+        )
+        return [
+            f"{res_var_name} = {dst_var_name}.copy()",
+            f"np.copyto({res_var_name}, {src_var_name}, {args_str})",
+        ]
+
+
+@register_op_adapter(TensorGetShape)
+class TensorGetShapeAdapter(SPEOperatorAdapter):
+    def generate_code(self, op: TensorGetShape, context: SPECodeContext) -> List[str]:
         context.register_import("numpy", "np")
         input_var_name = context.get_input_tileable_variable(op.inputs[0])
-        res_var_name = context.get_output_tileable_variable(op.outputs[0])
+        res_var_names = ", ".join(
+            context.get_output_tileable_variable(out) for out in op.outputs
+        )
+        return [f"{res_var_names} = np.shape({input_var_name})"]
+
+
+@register_op_adapter(TensorSplit)
+class TensorSplitAdapter(SPEOperatorAdapter):
+    def generate_code(self, op: TensorSplit, context: SPECodeContext) -> List[str]:
+        context.register_import("numpy", "np")
+        input_var_name = context.get_input_tileable_variable(op.inputs[0])
+        res_var_names = ", ".join(
+            context.get_output_tileable_variable(out) for out in op.outputs
+        )
+        idx_var = self.translate_var(context, op.indices_or_sections)
         axis_var = self.translate_var(context, op.axis)
-        return [f"{res_var_name} = np.squeeze({input_var_name}, axis={axis_var})"]
+        return [
+            f"{res_var_names} = np.split({input_var_name}, {idx_var} axis={axis_var})"
+        ]
 
 
 @register_op_adapter(TensorUnique)
@@ -111,11 +173,3 @@ class TensorUniqueAdapter(SPEOperatorAdapter):
             f"return_inverse={return_inverse_var}, return_counts={return_counts_var}, "
             f"axis={axis_var})"
         ]
-
-
-TensorSwapAxesAdapter = build_method_call_adapter(
-    TensorSwapAxes, "swapaxes", "axis1", "axis2", source_module="np"
-)
-TensorWhereAdapter = build_method_call_adapter(
-    TensorWhere, "where", "condition", "x", "y", source_module="np"
-)

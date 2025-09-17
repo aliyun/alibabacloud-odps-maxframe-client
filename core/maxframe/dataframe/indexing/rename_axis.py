@@ -85,8 +85,8 @@ def rename_axis_with_level(
         else:
             columns = mapper
     op = DataFrameRenameAxis(
-        index=None if index is no_default else index,
-        columns=None if columns is no_default else columns,
+        index=index,
+        columns=columns,
         copy_value=copy,
         level=level,
         axis=0 if index is not no_default else 1,

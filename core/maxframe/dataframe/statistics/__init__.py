@@ -16,15 +16,15 @@
 def _install():
     from ..core import DATAFRAME_TYPE, SERIES_TYPE
     from .corr import df_corr, df_corrwith, series_autocorr, series_corr
-    from .quantile import quantile_dataframe, quantile_series
+    from .quantile import dataframe_quantile, series_quantile
 
     for t in SERIES_TYPE:
-        t.quantile = quantile_series
+        t.quantile = series_quantile
         t.corr = series_corr
         t.autocorr = series_autocorr
 
     for t in DATAFRAME_TYPE:
-        t.quantile = quantile_dataframe
+        t.quantile = dataframe_quantile
         t.corr = df_corr
         t.corrwith = df_corrwith
 

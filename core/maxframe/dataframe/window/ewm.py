@@ -36,8 +36,6 @@ _window_has_method = pd_release_version >= (1, 4, 0)
 class DataFrameEwmAgg(BaseDataFrameExpandingAgg):
     _op_type_ = opcodes.EWM_AGG
 
-    _exec_cache = dict()
-
     alpha = Float64Field("alpha")
     adjust = BoolField("adjust")
     alpha_ignore_na = BoolField("alpha_ignore_na")
@@ -234,7 +232,7 @@ def ewm(
         raise ValueError("alpha must satisfy: 0 < alpha <= 1")
 
     if alpha == 1:
-        return obj.expanding(min_periods=min_periods, axis=axis)
+        return obj.expanding(min_periods=min_periods)
 
     if _default_min_period_1:
         min_periods = min_periods or 1

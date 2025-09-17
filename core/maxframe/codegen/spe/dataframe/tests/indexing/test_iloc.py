@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from ....core import SPECodeContext
-from ...indexing import DataFrameIlocGetItemAdapter
+from ...indexing import DataFrameIlocGetItemAdapter, DataFrameIlocSetItemAdapter
 
 
 def test_series_iloc_single_row(s1):
@@ -21,6 +21,14 @@ def test_series_iloc_single_row(s1):
     context = SPECodeContext()
     results = DataFrameIlocGetItemAdapter().generate_code(df.op, context)
     expected_results = ["var_1 = var_0.iloc[2]"]
+    assert results == expected_results
+
+
+def test_series_iloc_set_single_row(s1):
+    s1.iloc[2] = 2
+    context = SPECodeContext()
+    results = DataFrameIlocSetItemAdapter().generate_code(s1.op, context)
+    expected_results = ["var_1 = var_0.copy()", "var_1.iloc[2] = 2"]
     assert results == expected_results
 
 
@@ -45,6 +53,17 @@ def test_dataframe_iloc_only_columns(df1):
     context = SPECodeContext()
     results = DataFrameIlocGetItemAdapter().generate_code(df.op, context)
     expected_results = ["var_1 = var_0.iloc[slice(None, None, None), [0, 1]]"]
+    assert results == expected_results
+
+
+def test_dataframe_iloc_set_only_column(df1):
+    df1.iloc[:, 0] = 5
+    context = SPECodeContext()
+    results = DataFrameIlocSetItemAdapter().generate_code(df1.op, context)
+    expected_results = [
+        "var_1 = var_0.copy()",
+        "var_1.iloc[slice(None, None, None), 0] = 5",
+    ]
     assert results == expected_results
 
 

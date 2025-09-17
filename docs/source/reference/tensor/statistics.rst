@@ -8,6 +8,9 @@ Order statistics
    :toctree: generated/
    :nosignatures:
 
+   maxframe.tensor.ptp
+   maxframe.tensor.percentile
+   maxframe.tensor.quantile
    maxframe.tensor.nanmin
    maxframe.tensor.nanmax
 
@@ -19,6 +22,7 @@ Average and variances
    :toctree: generated/
    :nosignatures:
 
+   maxframe.tensor.median
    maxframe.tensor.average
    maxframe.tensor.mean
    maxframe.tensor.std
@@ -28,6 +32,17 @@ Average and variances
    maxframe.tensor.nanvar
 
 
+Correlating
+-----------
+
+.. autosummary::
+   :toctree: generated/
+   :nosignatures:
+
+   maxframe.tensor.corrcoef
+   maxframe.tensor.cov
+
+
 Histograms
 ----------
 
@@ -35,4 +50,7 @@ Histograms
    :toctree: generated/
    :nosignatures:
 
+   maxframe.tensor.histogram
    maxframe.tensor.bincount
+   maxframe.tensor.histogram_bin_edges
+   maxframe.tensor.digitize

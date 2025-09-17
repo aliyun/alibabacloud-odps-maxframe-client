@@ -133,7 +133,7 @@ def series_isin(elements, values):
     5    False
     Name: animal, dtype: bool
     """
-    if is_list_like(values):
+    if is_list_like(values) and not isinstance(values, ENTITY_TYPE):
         values = list(values)
     elif not isinstance(values, (SERIES_TYPE, TENSOR_TYPE, INDEX_TYPE)):
         raise TypeError(
@@ -207,7 +207,7 @@ def df_isin(df, values):
     falcon      True       True
     dog        False      False
     """
-    if is_list_like(values) and not isinstance(values, dict):
+    if is_list_like(values) and not isinstance(values, (dict, ENTITY_TYPE)):
         values = list(values)
     elif not isinstance(
         values, (SERIES_TYPE, DATAFRAME_TYPE, TENSOR_TYPE, INDEX_TYPE, dict)

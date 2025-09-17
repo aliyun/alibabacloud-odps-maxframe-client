@@ -40,6 +40,7 @@ from ..entity.core import ENTITY_TYPE, Entity, EntityData
 from ..entity.output_types import OutputType
 from ..entity.tileables import Tileable
 from ..mode import enter_mode
+from .utils import rewrite_stop_iteration
 
 
 class OperatorMetaclass(SerializableMeta):
@@ -90,6 +91,10 @@ class SchedulingHint(Serializable):
     expect_resources = DictField("expect_resources", FieldTypes.string, default=None)
     # id of gang scheduling for machine learning trainings
     gang_scheduling_id = StringField("gang_scheduling_id", default=None)
+
+    def __init__(self, *, pure_depends=None, **kwargs):
+        kwargs["_pure_depends"] = pure_depends or kwargs.get("_pure_depends") or []
+        super().__init__(**kwargs)
 
     @classproperty
     @lru_cache(1)
@@ -306,7 +311,8 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
             The replaced input object.
         """
         self.inputs[index] = replaced_input
-        self._set_inputs(self, self.inputs)
+        with rewrite_stop_iteration():
+            self._set_inputs(self, self.inputs)
 
     @property
     def inputs(self) -> List[Union[ENTITY_TYPE]]:
@@ -317,7 +323,8 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
 
     @inputs.setter
     def inputs(self, vals):
-        self._set_inputs(self, vals)
+        with rewrite_stop_iteration():
+            self._set_inputs(self, vals)
 
     @property
     def output_limit(self) -> int:

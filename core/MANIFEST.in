@@ -3,6 +3,7 @@ global-include *.pyx
 global-include *.pxd
 global-exclude *.c
 global-exclude *.cpp
+include _cythonize_all.py
 include pyproject.toml
 include README.rst
 include maxframe/lib/mmh3_src/*

@@ -21,10 +21,7 @@ from ...... import dataframe as md
 from ......lib.dtypes_extension import list_
 from ......utils import ARROW_DTYPE_NOT_SUPPORTED
 from ....core import SPECodeContext
-from ...accessors.list_ import (
-    SeriesListGetItemOperatorAdapter,
-    SeriesListLengthOperatorAdapter,
-)
+from ...accessors.list_ import SeriesListMethodAdapter
 
 pytestmark = pytest.mark.skipif(
     ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported"
@@ -63,7 +60,7 @@ def md_df_1(pd_df_1):
 def test_getitem(md_df_1, pd_df_1):
     s1 = md_df_1["A"].list.get(0)
     context = SPECodeContext()
-    adapter = SeriesListGetItemOperatorAdapter()
+    adapter = SeriesListMethodAdapter()
     results = adapter.generate_code(s1.op, context)
 
     expected_results = [
@@ -94,7 +91,7 @@ var_1.name = None
 def test_getitem_with_index_error(md_df_1, pd_df_1):
     s1 = md_df_1["A"].list[3]
     context = SPECodeContext()
-    adapter = SeriesListGetItemOperatorAdapter()
+    adapter = SeriesListMethodAdapter()
     results = adapter.generate_code(s1.op, context)
 
     expected_results = [
@@ -120,7 +117,7 @@ var_1.name = None
 def test_length(md_df_1, pd_df_1):
     s1 = md_df_1["A"].list.len()
     context = SPECodeContext()
-    adapter = SeriesListLengthOperatorAdapter()
+    adapter = SeriesListMethodAdapter()
     results = adapter.generate_code(s1.op, context)
 
     expected_results = [
