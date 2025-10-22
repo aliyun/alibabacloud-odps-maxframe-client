@@ -1,0 +1,130 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.eval.rst:2
+msgid "maxframe.dataframe.DataFrame.eval"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_eval:1 of
+msgid "Evaluate a string describing operations on DataFrame columns."
+msgstr "对描述 DataFrame 列操作的字符串进行求值。"
+
+#: maxframe.dataframe.misc.eval.df_eval:3 of
+msgid ""
+"Operates on columns only, not specific rows or elements.  This allows "
+"`eval` to run arbitrary code, which can make you vulnerable to code "
+"injection if you pass user input to this function."
+msgstr ""
+"仅对列进行操作，不对特定行或元素进行操作。这使得 `eval` 可以运行任意代码"
+"，如果您将用户输入传递给此函数，可能会导致代码注入漏洞。"
+
+#: maxframe.dataframe.misc.eval.df_eval of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_eval:7 of
+msgid "The expression string to evaluate."
+msgstr "要求值的表达式字符串。"
+
+#: maxframe.dataframe.misc.eval.df_eval:9 of
+msgid ""
+"If the expression contains an assignment, whether to perform the "
+"operation inplace and mutate the existing DataFrame. Otherwise, a new "
+"DataFrame is returned."
+msgstr ""
+"如果表达式包含赋值操作，是否就地执行操作并修改现有的 DataFrame。否则，将"
+"返回一个新的 DataFrame。"
+
+#: maxframe.dataframe.misc.eval.df_eval:13 of
+msgid ""
+"See the documentation for :func:`eval` for complete details on the "
+"keyword arguments accepted by :meth:`~pandas.DataFrame.query`."
+msgstr ""
+"有关 :meth:`~pandas.DataFrame.query` 接受的关键字参数的完整详细信息，"
+"请参阅 :func:`eval` 的文档。"
+
+#: maxframe.dataframe.misc.eval.df_eval of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_eval:17 of
+msgid "The result of the evaluation."
+msgstr "求值的结果。"
+
+#: maxframe.dataframe.misc.eval.df_eval of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_eval:22 of
+msgid ":py:obj:`DataFrame.query`"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_eval:23 of
+msgid "Evaluates a boolean expression to query the columns of a frame."
+msgstr "对布尔表达式进行求值，以查询帧的列。"
+
+#: maxframe.dataframe.misc.eval.df_eval:25 of
+msgid ":py:obj:`DataFrame.assign`"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_eval:26 of
+msgid "Can evaluate an expression or function to create new values for a column."
+msgstr "可以对表达式或函数进行求值，以为列创建新值。"
+
+#: maxframe.dataframe.misc.eval.df_eval:28 of
+msgid ":py:obj:`eval`"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_eval:29 of
+msgid "Evaluate a Python expression as a string using various backends."
+msgstr "使用各种后端将 Python 表达式作为字符串进行求值。"
+
+#: maxframe.dataframe.misc.eval.df_eval:32 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_eval:33 of
+msgid ""
+"For more details see the API documentation for :func:`~eval`. For "
+"detailed examples see :ref:`enhancing performance with eval "
+"<enhancingperf.eval>`."
+msgstr ""
+"有关更多详细信息，请参阅 :func:`~eval` 的 API 文档。有关详细示例，请参阅 "
+":ref:`使用 eval 提高性能 <enhancingperf.eval>`。"
+
+#: maxframe.dataframe.misc.eval.df_eval:38 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_eval:56 of
+msgid ""
+"Assignment is allowed though by default the original DataFrame is not "
+"modified."
+msgstr "允许赋值操作，但默认情况下不会修改原始 DataFrame。"
+
+#: maxframe.dataframe.misc.eval.df_eval:74 of
+msgid "Use ``inplace=True`` to modify the original DataFrame."
+msgstr "使用 ``inplace=True`` 修改原始 DataFrame。"
+
+#: maxframe.dataframe.misc.eval.df_eval:85 of
+msgid "Multiple columns can be assigned to using multi-line expressions:"
+msgstr "可以使用多行表达式为多个列赋值："
+

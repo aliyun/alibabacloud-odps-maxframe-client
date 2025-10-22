@@ -1,0 +1,107 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.tile.rst:2
+msgid "maxframe.tensor.tile"
+msgstr ""
+
+#: maxframe.tensor.misc.tile.tile:1 of
+msgid "Construct a tensor by repeating A the number of times given by reps."
+msgstr "通过重复 A 给定次数来构造一个 tensor。"
+
+#: maxframe.tensor.misc.tile.tile:3 of
+msgid ""
+"If `reps` has length ``d``, the result will have dimension of ``max(d, "
+"A.ndim)``."
+msgstr "如果 `reps` 的长度为 ``d``，则结果的维度将是 ``max(d, A.ndim)``。"
+
+#: maxframe.tensor.misc.tile.tile:6 of
+msgid ""
+"If ``A.ndim < d``, `A` is promoted to be d-dimensional by prepending new "
+"axes. So a shape (3,) array is promoted to (1, 3) for 2-D replication, or"
+" shape (1, 1, 3) for 3-D replication. If this is not the desired "
+"behavior, promote `A` to d-dimensions manually before calling this "
+"function."
+msgstr ""
+"如果 ``A.ndim < d``，则通过在前面添加新轴将 `A` 提升为 d 维。例如，形状为"
+" (3,) 的数组在 2D 复制时会变成 (1, 3)，在 3D 复制时变成 (1, 1, 3)。如果这"
+"不是期望的行为，请在调用此函数之前手动将 `A` 提升为 d 维。"
+
+#: maxframe.tensor.misc.tile.tile:12 of
+msgid ""
+"If ``A.ndim > d``, `reps` is promoted to `A`.ndim by prepending 1's to "
+"it. Thus for an `A` of shape (2, 3, 4, 5), a `reps` of (2, 2) is treated "
+"as (1, 1, 2, 2)."
+msgstr ""
+"如果 ``A.ndim > d``，则在 `reps` 前面添加 1 使其长度与 `A`.ndim 相同。"
+"例如，对于形状为 (2, 3, 4, 5) 的 `A`，`reps` 为 (2, 2) 时会被视为 (1, 1, "
+"2, 2)。"
+
+#: maxframe.tensor.misc.tile.tile:16 of
+msgid ""
+"Note : Although tile may be used for broadcasting, it is strongly "
+"recommended to use MaxFrame's broadcasting operations and functions."
+msgstr "注意：虽然 tile 可用于广播，但强烈建议使用 MaxFrame 的广播操作和函数。"
+
+#: maxframe.tensor.misc.tile.tile of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.tile.tile:19 of
+msgid "The input tensor."
+msgstr "输入 tensor。"
+
+#: maxframe.tensor.misc.tile.tile:21 of
+msgid "The number of repetitions of `A` along each axis."
+msgstr "`A` 沿每个轴重复的次数。"
+
+#: maxframe.tensor.misc.tile.tile of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.tile.tile:24 of
+msgid "**c** -- The tiled output tensor."
+msgstr "**c** -- 平铺后的输出 tensor。"
+
+#: maxframe.tensor.misc.tile.tile of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.tile.tile:29 of
+msgid ":py:obj:`repeat`"
+msgstr ""
+
+#: maxframe.tensor.misc.tile.tile:30 of
+msgid "Repeat elements of a tensor."
+msgstr "重复 tensor 中的元素。"
+
+#: maxframe.tensor.misc.tile.tile:32 of
+msgid ":py:obj:`broadcast_to`"
+msgstr ""
+
+#: maxframe.tensor.misc.tile.tile:33 of
+msgid "Broadcast a tensor to a new shape"
+msgstr "将 tensor 广播到新的形状"
+
+#: maxframe.tensor.misc.tile.tile:36 of
+msgid "示例"
+msgstr ""
+

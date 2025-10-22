@@ -1,0 +1,85 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.hypot.rst:2
+msgid "maxframe.tensor.hypot"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.hypot.hypot:1 of
+msgid "Given the \"legs\" of a right triangle, return its hypotenuse."
+msgstr "给定直角三角形的“直角边”，返回其斜边。"
+
+#: maxframe.tensor.arithmetic.hypot.hypot:3 of
+msgid ""
+"Equivalent to ``sqrt(x1**2 + x2**2)``, element-wise.  If `x1` or `x2` is "
+"scalar_like (i.e., unambiguously cast-able to a scalar type), it is "
+"broadcast for use with each element of the other argument. (See Examples)"
+msgstr ""
+"等价于 ``sqrt(x1**2 + x2**2)``，逐元素计算。如果 `x1` 或 `x2` 是标量类型"
+"（即可以明确地转换为标量类型），它将被广播以与另一个参数的每个元素一起"
+"使用。（参见示例）"
+
+#: maxframe.tensor.arithmetic.hypot.hypot of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.hypot.hypot:8
+#: maxframe.tensor.arithmetic.hypot.hypot:10 of
+msgid "Leg of the triangle(s)."
+msgstr "三角形的直角边。"
+
+#: maxframe.tensor.arithmetic.hypot.hypot:12 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated array is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，其形状必须与输入广播后的形状一致。如果未"
+"提供或为 `None`，则返回一个新分配的数组。元组（只能作为关键字参数）的长度"
+"必须等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.hypot.hypot:17 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.hypot.hypot of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.hypot.hypot:22 of
+msgid "**z** -- The hypotenuse of the triangle(s)."
+msgstr "**z** -- 三角形的斜边。"
+
+#: maxframe.tensor.arithmetic.hypot.hypot of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.hypot.hypot:26 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.hypot.hypot:34 of
+msgid "Example showing broadcast of scalar_like argument:"
+msgstr "展示标量类型参数广播的示例："
+

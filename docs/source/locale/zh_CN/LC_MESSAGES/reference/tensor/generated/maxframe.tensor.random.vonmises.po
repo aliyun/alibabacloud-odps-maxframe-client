@@ -1,0 +1,167 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.vonmises.rst:2
+msgid "maxframe.tensor.random.vonmises"
+msgstr ""
+
+#: maxframe.tensor.random.vonmises.vonmises:1 of
+msgid "Draw samples from a von Mises distribution."
+msgstr "从冯·米塞斯分布中抽取样本。"
+
+#: maxframe.tensor.random.vonmises.vonmises:3 of
+msgid ""
+"Samples are drawn from a von Mises distribution with specified mode (mu) "
+"and dispersion (kappa), on the interval [-pi, pi]."
+msgstr "从具有指定模式（mu）和离散度（kappa）的冯·米塞斯分布中抽取样本，区间为 [-pi, pi]。"
+
+#: maxframe.tensor.random.vonmises.vonmises:6 of
+msgid ""
+"The von Mises distribution (also known as the circular normal "
+"distribution) is a continuous probability distribution on the unit "
+"circle.  It may be thought of as the circular analogue of the normal "
+"distribution."
+msgstr "冯·米塞斯分布（也称为圆形正态分布）是单位圆上的连续概率分布。它可被视为正态分布的圆形类比。"
+
+#: maxframe.tensor.random.vonmises.vonmises of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.vonmises.vonmises:11 of
+msgid "Mode (\"center\") of the distribution."
+msgstr "分布的模式（“中心”）。"
+
+#: maxframe.tensor.random.vonmises.vonmises:13 of
+msgid "Dispersion of the distribution, has to be >=0."
+msgstr "分布的离散度，必须 >=0。"
+
+#: maxframe.tensor.random.vonmises.vonmises:15 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``mu`` and ``kappa`` are both scalars. Otherwise, "
+"``np.broadcast(mu, kappa).size`` samples are drawn."
+msgstr ""
+"输出形状。如果给定的形状是，例如 ``(m, n, k)``，则会抽取 ``m * n * k`` 个"
+"样本。如果 size 为 ``None``（默认），并且 ``mu`` 和 ``kappa`` 都是标量，"
+"则返回单个值。否则，抽取 ``np.broadcast(mu, kappa).size`` 个样本。"
+
+#: maxframe.tensor.random.vonmises.vonmises:20 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.random.vonmises.vonmises:22 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.vonmises.vonmises:24 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.vonmises.vonmises of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.vonmises.vonmises:27 of
+msgid "**out** -- Drawn samples from the parameterized von Mises distribution."
+msgstr "**out** -- 从参数化的冯·米塞斯分布中抽取的样本。"
+
+#: maxframe.tensor.random.vonmises.vonmises of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.vonmises.vonmises:32 of
+msgid ":py:obj:`scipy.stats.vonmises`"
+msgstr ""
+
+#: maxframe.tensor.random.vonmises.vonmises:33 of
+msgid ""
+"probability density function, distribution, or cumulative density "
+"function, etc."
+msgstr "概率密度函数、分布或累积密度函数等。"
+
+#: maxframe.tensor.random.vonmises.vonmises:36 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.vonmises.vonmises:37 of
+msgid "The probability density for the von Mises distribution is"
+msgstr "冯·米塞斯分布的概率密度为"
+
+#: maxframe.tensor.random.vonmises.vonmises:39 of
+msgid ""
+"p(x) = \\frac{e^{\\kappa cos(x-\\mu)}}{2\\pi I_0(\\kappa)},\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.vonmises.vonmises:41 of
+msgid ""
+"where :math:`\\mu` is the mode and :math:`\\kappa` the dispersion, and "
+":math:`I_0(\\kappa)` is the modified Bessel function of order 0."
+msgstr ""
+"其中 :math:`\\mu` 是模式，:math:`\\kappa` 是离散度，:math:`I_0(\\kappa)` "
+"是 0 阶修正贝塞尔函数。"
+
+#: maxframe.tensor.random.vonmises.vonmises:44 of
+msgid ""
+"The von Mises is named for Richard Edler von Mises, who was born in "
+"Austria-Hungary, in what is now the Ukraine.  He fled to the United "
+"States in 1939 and became a professor at Harvard.  He worked in "
+"probability theory, aerodynamics, fluid mechanics, and philosophy of "
+"science."
+msgstr ""
+"冯·米塞斯以理查德·埃德勒·冯·米塞斯命名，他出生在奥匈帝国，即现在的乌克兰"
+"。他于1939年逃到美国，并成为哈佛大学的教授。他从事概率论、空气动力学、"
+"流体力学和科学哲学的研究。"
+
+#: maxframe.tensor.random.vonmises.vonmises:51 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.vonmises.vonmises:52 of
+msgid ""
+"Abramowitz, M. and Stegun, I. A. (Eds.). \"Handbook of Mathematical "
+"Functions with Formulas, Graphs, and Mathematical Tables, 9th printing,\""
+" New York: Dover, 1972."
+msgstr ""
+"Abramowitz, M. 和 Stegun, I. A. (编). \"数学函数手册：公式、图表和数学表"
+"，第9版，\" 纽约：Dover，1972年。"
+
+#: maxframe.tensor.random.vonmises.vonmises:55 of
+msgid ""
+"von Mises, R., \"Mathematical Theory of Probability and Statistics\", New"
+" York: Academic Press, 1964."
+msgstr "von Mises, R., \"概率与统计的数学理论\", 纽约: Academic Press, 1964."
+
+#: maxframe.tensor.random.vonmises.vonmises:59 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.vonmises.vonmises:60 of
+msgid "Draw samples from the distribution:"
+msgstr "从分布中抽取样本："
+
+#: maxframe.tensor.random.vonmises.vonmises:67 of
+msgid ""
+"Display the histogram of the samples, along with the probability density "
+"function:"
+msgstr "显示样本的直方图，以及概率密度函数："
+

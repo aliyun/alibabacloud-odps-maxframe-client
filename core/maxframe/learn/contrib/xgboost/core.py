@@ -24,11 +24,11 @@ from ....udf import builtin_function
 
 try:
     import xgboost
-except ImportError:
+except ImportError:  # pragma: no cover
     xgboost = None
 
-from ....core import OutputType
-from ...utils.odpsio import ToODPSModelMixin
+from ....core import OutputType, enter_mode, is_kernel_mode
+from ...utils.odpsio import ODPSModelMixin, ReadODPSModel
 from ..models import ModelApplyChunk, ModelWithEval, ModelWithEvalData, to_remote_model
 from .dmatrix import DMatrix
 
@@ -40,6 +40,14 @@ _xgb_type_to_np_type = {
 
 
 class BoosterData(ModelWithEvalData):
+    def save_config(self) -> str:
+        try:
+            return self.fetch().save_config()
+        except:
+            if is_kernel_mode():
+                return "{}"
+            raise
+
     @staticmethod
     def _get_booster_score(bst, fmap=None, importance_type="weight"):
         if not fmap:
@@ -157,7 +165,7 @@ if not xgboost:
     XGBScikitLearnBase = None
 else:
 
-    class XGBScikitLearnBase(xgboost.XGBModel, ToODPSModelMixin):
+    class XGBScikitLearnBase(xgboost.XGBModel, ODPSModelMixin):
         """
         Base class for implementing scikit-learn interface
         """
@@ -218,7 +226,8 @@ else:
                 sample_weight_eval_set,
                 base_margin_eval_set,
             )
-            params = self.get_xgb_params()
+            with enter_mode(kernel=True):
+                params = self.get_xgb_params()
             if not params.get("objective"):
                 params["objective"] = "reg:squarederror"
             self.evals_result_ = dict()
@@ -351,15 +360,30 @@ else:
                 evals_result=self.evals_result_t_, local_info=local_info
             )
 
-        def _get_odps_model_info(self) -> ToODPSModelMixin.ODPSModelInfo:
+        def _get_odps_model_info(self) -> ODPSModelMixin.ODPSModelInfo:
             model_format = (
                 "BOOSTED_TREE_CLASSIFIER"
                 if hasattr(self, "predict_proba")
                 else "BOOSTED_TREE_REGRESSOR"
             )
-            return ToODPSModelMixin.ODPSModelInfo(
+            return ODPSModelMixin.ODPSModelInfo(
                 model_format=model_format, model_params=self._Booster
             )
+
+        @classmethod
+        def _build_odps_source_model(cls, op: ReadODPSModel) -> Any:
+            if not (
+                op.format == "BOOSTED_TREE_CLASSIFIER" and hasattr(cls, "predict_proba")
+            ) and not (
+                op.format == "BOOSTED_TREE_REGRESSOR"
+                and not hasattr(cls, "predict_proba")
+            ):
+                return None
+            op._output_types = [OutputType.object]
+            booster = op.new_tileable(None, object_class=Booster)
+            estimator = cls()
+            estimator._Booster = booster
+            return estimator
 
     def wrap_evaluation_matrices(
         missing: float,

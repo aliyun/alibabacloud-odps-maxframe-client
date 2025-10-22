@@ -1,0 +1,114 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.nancumsum.rst:2
+msgid "maxframe.tensor.nancumsum"
+msgstr ""
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum:1 of
+msgid ""
+"Return the cumulative sum of tensor elements over a given axis treating "
+"Not a Numbers (NaNs) as zero.  The cumulative sum does not change when "
+"NaNs are encountered and leading NaNs are replaced by zeros."
+msgstr ""
+"返回在给定轴上将 NaN（非数字）视为零的张量元素的累积和。当遇到 NaN 时，"
+"累积和不会改变，且开头的 NaN 会被替换为零。"
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum:5 of
+msgid "Zeros are returned for slices that are all-NaN or empty."
+msgstr "对于全部为 NaN 或空的切片，将返回零。"
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum:7 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum:9 of
+msgid ""
+"Axis along which the cumulative sum is computed. The default (None) is to"
+" compute the cumsum over the flattened tensor."
+msgstr "计算累积和的轴。默认值（None）是对展平的张量进行 cumsum 计算。"
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum:12 of
+msgid ""
+"Type of the returned tensor and of the accumulator in which the elements "
+"are summed.  If `dtype` is not specified, it defaults to the dtype of "
+"`a`, unless `a` has an integer dtype with a precision less than that of "
+"the default platform integer.  In that case, the default platform integer"
+" is used."
+msgstr ""
+"返回张量的类型和元素求和的累加器的类型。如果未指定 `dtype`，则默认为 `a` "
+"的 dtype，除非 `a` 是精度低于默认平台整数的整数类型。在这种情况下，将使用"
+"默认平台整数。"
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum:18 of
+msgid ""
+"Alternative output tensor in which to place the result. It must have the "
+"same shape and buffer length as the expected output but the type will be "
+"cast if necessary. See `doc.ufuncs` (Section \"Output arguments\") for "
+"more details."
+msgstr ""
+"用于放置结果的替代输出张量。它必须具有与预期输出相同的形状和缓冲区长度，"
+"但类型在必要时会进行转换。有关更多详细信息，请参见 `doc.ufuncs`（“输出"
+"参数”一节）。"
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum:24 of
+msgid ""
+"**nancumsum** -- A new tensor holding the result is returned unless `out`"
+" is specified, in which it is returned. The result has the same size as "
+"`a`, and the same shape as `a` if `axis` is not None or `a` is a 1-d "
+"tensor."
+msgstr ""
+"**nancumsum** —— 除非指定了 `out`，否则将返回一个包含结果的新张量。结果的"
+"大小与 `a` 相同，如果 `axis` 不为 None 或者 `a` 是一维张量，则形状也相同"
+"。"
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum:32 of
+msgid ":py:obj:`numpy.cumsum`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum:33 of
+msgid "Cumulative sum across tensor propagating NaNs."
+msgstr "沿张量传播 NaN 的累积和。"
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum:35 of
+msgid ":py:obj:`isnan`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum:36 of
+msgid "Show which elements are NaN."
+msgstr "显示哪些元素是 NaN。"
+
+#: maxframe.tensor.reduction.nancumsum.nancumsum:39 of
+msgid "示例"
+msgstr ""
+

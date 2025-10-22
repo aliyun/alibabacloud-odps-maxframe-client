@@ -1,0 +1,166 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.any.rst:2
+msgid "maxframe.tensor.any"
+msgstr ""
+
+#: maxframe.tensor.reduction.any.any:1 of
+msgid "Test whether any tensor element along a given axis evaluates to True."
+msgstr "测试沿给定轴的张量元素是否为 True。"
+
+#: maxframe.tensor.reduction.any.any:3 of
+msgid "Returns single boolean unless `axis` is not ``None``"
+msgstr "除非 `axis` 不为 ``None``，否则返回单个布尔值"
+
+#: maxframe.tensor.reduction.any.any of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.reduction.any.any:5 of
+msgid "Input tensor or object that can be converted to an array."
+msgstr "输入张量或可以转换为数组的对象。"
+
+#: maxframe.tensor.reduction.any.any:7 of
+msgid ""
+"Axis or axes along which a logical OR reduction is performed. The default"
+" (`axis` = `None`) is to perform a logical OR over all the dimensions of "
+"the input array. `axis` may be negative, in which case it counts from the"
+" last to the first axis.  If this is a tuple of ints, a reduction is "
+"performed on multiple axes, instead of a single axis or all the axes as "
+"before."
+msgstr ""
+"执行逻辑或归约的轴。默认值（`axis` = `None`）是对输入数组的所有维度执行"
+"逻辑或操作。`axis` 可以为负数，此时从最后一个轴开始向前计数。如果这是一个"
+"整数元组，则在多个轴上进行归约，而不是像之前那样在单个轴或所有轴上进行。"
+
+#: maxframe.tensor.reduction.any.any:7 of
+#, fuzzy
+msgid ""
+"Axis or axes along which a logical OR reduction is performed. The default"
+" (`axis` = `None`) is to perform a logical OR over all the dimensions of "
+"the input array. `axis` may be negative, in which case it counts from the"
+" last to the first axis."
+msgstr ""
+"执行逻辑或归约的轴。默认值（`axis` = `None`）是对输入数组的所有维度执行"
+"逻辑或操作。`axis` 可以为负数，此时从最后一个轴开始向前计数。如果这是一个"
+"整数元组，则在多个轴上进行归约，而不是像之前那样在单个轴或所有轴上进行。"
+
+#: maxframe.tensor.reduction.any.any:12 of
+msgid ""
+"If this is a tuple of ints, a reduction is performed on multiple axes, "
+"instead of a single axis or all the axes as before."
+msgstr ""
+
+#: maxframe.tensor.reduction.any.any:15 of
+msgid ""
+"Alternate output tensor in which to place the result.  It must have the "
+"same shape as the expected output and its type is preserved (e.g., if it "
+"is of type float, then it will remain so, returning 1.0 for True and 0.0 "
+"for False, regardless of the type of `a`). See `doc.ufuncs` (Section "
+"\"Output arguments\") for details."
+msgstr ""
+"用于放置结果的替代输出张量。它必须与期望的输出具有相同的形状，并且其类型"
+"会被保留（例如，如果它是浮点型，那么它将保持不变，对 True 返回 1.0，对 "
+"False 返回 0.0，无论 `a` 的类型是什么）。详见 `doc.ufuncs`（“输出参数”"
+"部分）。"
+
+#: maxframe.tensor.reduction.any.any:21 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the input tensor.  If the default value is passed, "
+"then `keepdims` will not be passed through to the `any` method of sub-"
+"classes of `Tensor`, however any non-default value will be.  If the sub-"
+"classes `sum` method does not implement `keepdims` any exceptions will be"
+" raised."
+msgstr ""
+"如果设置为 True，则被归约的轴将保留在结果中，其大小为 1。使用此选项，结果"
+"将能够正确地与输入张量进行广播。如果传入默认值，则 `keepdims` 不会传递给 "
+"`Tensor` 子类的 `any` 方法，但任何非默认值都会传递。如果子类的 `sum` 方法"
+"未实现 `keepdims`，则会抛出异常。"
+
+#: maxframe.tensor.reduction.any.any:21 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the input tensor."
+msgstr ""
+
+#: maxframe.tensor.reduction.any.any:25 of
+#, fuzzy
+msgid ""
+"If the default value is passed, then `keepdims` will not be passed "
+"through to the `any` method of sub-classes of `Tensor`, however any non-"
+"default value will be.  If the sub-classes `sum` method does not "
+"implement `keepdims` any exceptions will be raised."
+msgstr ""
+"如果设置为 True，则被归约的轴将保留在结果中，其大小为 1。使用此选项，结果"
+"将能够正确地与输入张量进行广播。如果传入默认值，则 `keepdims` 不会传递给 "
+"`Tensor` 子类的 `any` 方法，但任何非默认值都会传递。如果子类的 `sum` 方法"
+"未实现 `keepdims`，则会抛出异常。"
+
+#: maxframe.tensor.reduction.any.any of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.reduction.any.any:32 of
+msgid ""
+"**any** -- A new boolean or `Tensor` is returned unless `out` is "
+"specified, in which case a reference to `out` is returned."
+msgstr ""
+"**any** -- 除非指定了 `out`，否则返回一个新的布尔值或 `Tensor`；如果指定"
+"了 `out`，则返回对 `out` 的引用。"
+
+#: maxframe.tensor.reduction.any.any of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.reduction.any.any:38 of
+msgid ":py:obj:`Tensor.any`"
+msgstr ""
+
+#: maxframe.tensor.reduction.any.any:39 of
+msgid "equivalent method"
+msgstr "等效方法"
+
+#: maxframe.tensor.reduction.any.any:41 of
+msgid ":py:obj:`all`"
+msgstr ""
+
+#: maxframe.tensor.reduction.any.any:42 of
+msgid "Test whether all elements along a given axis evaluate to True."
+msgstr "测试沿给定轴的所有元素是否为 True。"
+
+#: maxframe.tensor.reduction.any.any:45 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.reduction.any.any:46 of
+msgid ""
+"Not a Number (NaN), positive infinity and negative infinity evaluate to "
+"`True` because these are not equal to zero."
+msgstr "非数字（NaN）、正无穷大和负无穷大都会被评估为 `True`，因为它们不等于零。"
+
+#: maxframe.tensor.reduction.any.any:50 of
+msgid "示例"
+msgstr ""
+

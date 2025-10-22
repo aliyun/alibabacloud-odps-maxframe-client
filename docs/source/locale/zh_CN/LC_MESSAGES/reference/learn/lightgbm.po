@@ -1,0 +1,87 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/lightgbm.rst:4
+msgid "LightGBM Integration"
+msgstr "LightGBM 集成"
+
+#: ../../source/reference/learn/lightgbm.rst:9
+msgid "Data Structure"
+msgstr "数据结构"
+
+#: ../../source/reference/learn/lightgbm.rst:15:<autosummary>:1
+msgid ""
+":py:obj:`lightgbm.Dataset <maxframe.learn.contrib.lightgbm.Dataset>`\\ "
+"\\(data\\[\\, label\\, reference\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/lightgbm.rst:17
+msgid "Training"
+msgstr "训练"
+
+#: ../../source/reference/learn/lightgbm.rst:24:<autosummary>:1
+msgid ""
+":py:obj:`lightgbm.predict <maxframe.learn.contrib.lightgbm.predict>`\\ "
+"\\(booster\\, data\\[\\, raw\\_score\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/lightgbm.rst:24:<autosummary>:1
+msgid ""
+":py:obj:`lightgbm.train <maxframe.learn.contrib.lightgbm.train>`\\ "
+"\\(params\\, train\\_set\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/lightgbm.rst:26
+msgid "Callbacks"
+msgstr "回调函数"
+
+#: ../../source/reference/learn/lightgbm.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`lightgbm.callback.early_stopping "
+"<maxframe.learn.contrib.lightgbm.callback.early_stopping>`\\ "
+"\\(stopping\\_rounds\\)"
+msgstr ""
+
+#: ../../source/reference/learn/lightgbm.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`lightgbm.callback.reset_parameter "
+"<maxframe.learn.contrib.lightgbm.callback.reset_parameter>`\\ "
+"\\(\\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/learn/lightgbm.rst:35
+msgid "Scikit-learn API"
+msgstr ""
+
+#: ../../source/reference/learn/lightgbm.rst:41:<autosummary>:1
+msgid ""
+":py:obj:`lightgbm.LGBMClassifier "
+"<maxframe.learn.contrib.lightgbm.LGBMClassifier>`\\ \\(\\*args\\, "
+"\\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/learn/lightgbm.rst:41:<autosummary>:1
+msgid ""
+":py:obj:`lightgbm.LGBMRegressor "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor>`\\ \\(\\*args\\, "
+"\\*\\*kwargs\\)"
+msgstr ""
+

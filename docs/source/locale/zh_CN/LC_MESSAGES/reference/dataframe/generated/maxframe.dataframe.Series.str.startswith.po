@@ -1,0 +1,100 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.str.startswith.rst:2
+msgid "maxframe.dataframe.Series.str.startswith"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.startswith:1
+msgid "Test if the start of each string element matches a pattern."
+msgstr "测试每个字符串元素的开头是否匹配某个模式。"
+
+#: of pandas.core.strings.accessor.StringMethods.startswith:3
+msgid "Equivalent to :meth:`str.startswith`."
+msgstr "等价于 :meth:`str.startswith`。"
+
+#: of pandas.core.strings.accessor.StringMethods.startswith
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.startswith:5
+msgid ""
+"Character sequence or tuple of strings. Regular expressions are not "
+"accepted."
+msgstr "字符序列或字符串元组。不接受正则表达式。"
+
+#: of pandas.core.strings.accessor.StringMethods.startswith:8
+msgid ""
+"Object shown if element tested is not a string. The default depends on "
+"dtype of the array. For object-dtype, ``numpy.nan`` is used. For the "
+"nullable ``StringDtype``, ``pandas.NA`` is used. For the ``\"str\"`` "
+"dtype, ``False`` is used."
+msgstr ""
+"如果测试的元素不是字符串，则显示的对象。默认值取决于数组的 dtype。对于 "
+"object-dtype，使用 ``numpy.nan``。对于可空的 ``StringDtype``，使用 ``"
+"pandas.NA``。对于 ``\"str\"`` dtype，使用 ``False``。"
+
+#: of pandas.core.strings.accessor.StringMethods.startswith
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.startswith:14
+msgid ""
+"A Series of booleans indicating whether the given pattern matches the "
+"start of each string element."
+msgstr "一个布尔值 Series，指示给定模式是否匹配每个字符串元素的开头。"
+
+#: of pandas.core.strings.accessor.StringMethods.startswith
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.startswith:20
+msgid ":py:obj:`str.startswith`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.startswith:21
+msgid "Python standard library string method."
+msgstr "Python 标准库字符串方法。"
+
+#: of pandas.core.strings.accessor.StringMethods.startswith:23
+msgid ":py:obj:`Series.str.endswith`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.startswith:24
+msgid "Same as startswith, but tests the end of string."
+msgstr "与 startswith 相同，但测试字符串的结尾。"
+
+#: of pandas.core.strings.accessor.StringMethods.startswith:26
+msgid ":py:obj:`Series.str.contains`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.startswith:27
+msgid "Tests if string element contains a pattern."
+msgstr "测试字符串元素是否包含某个模式。"
+
+#: of pandas.core.strings.accessor.StringMethods.startswith:30
+msgid "示例"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.startswith:55
+msgid "Specifying `na` to be `False` instead of `NaN`."
+msgstr "指定 `na` 为 `False` 而不是 `NaN`。"
+

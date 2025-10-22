@@ -16,7 +16,6 @@ import numpy as np
 import pytest
 import scipy.sparse as sps
 
-from ....core import enter_mode
 from ....utils import collect_leaf_operators
 from ...core import SparseTensor, Tensor
 from ...datasource import array, empty, ones, tensor
@@ -389,14 +388,6 @@ def test_get_set_real():
 
     with pytest.raises(ValueError):
         a.real = [2, 4]
-
-
-def test_build_mode():
-    t1 = ones((2, 3), chunk_size=2)
-    assert t1 == 2
-
-    with enter_mode(build=True):
-        assert t1 != 2
 
 
 def test_unary_op_func_name():

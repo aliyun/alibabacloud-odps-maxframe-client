@@ -32,6 +32,7 @@ from ....dataframe.misc.get_dummies import DataFrameGetDummies
 from ....dataframe.misc.isin import DataFrameIsin
 from ....dataframe.misc.map import DataFrameMap
 from ....dataframe.misc.memory_usage import DataFrameMemoryUsage
+from ....dataframe.misc.repeat import DataFrameRepeat
 from ....dataframe.misc.shift import DataFrameShift
 from ....dataframe.misc.to_numeric import DataFrameToNumeric
 from ....dataframe.misc.transform import DataFrameTransform
@@ -127,6 +128,7 @@ class DataFrameIsinAdapter(SPEOperatorAdapter):
 DataFrameMapAdapter = build_method_call_adapter(
     DataFrameMap, "map", "arg", na_action=None
 )
+DataFrameRepeatAdapter = build_method_call_adapter(DataFrameRepeat, "repeat", "repeats")
 DataFrameShiftAdapter = build_method_call_adapter(
     DataFrameShift, "shift", kw_keys=["periods", "freq", "axis", "fill_value"]
 )

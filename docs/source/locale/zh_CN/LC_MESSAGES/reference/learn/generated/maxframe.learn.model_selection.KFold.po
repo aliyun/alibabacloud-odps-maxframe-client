@@ -1,0 +1,164 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.model_selection.KFold.rst:2
+msgid "maxframe.learn.model\\_selection.KFold"
+msgstr ""
+
+#: maxframe.learn.model_selection._split.KFold:1 of
+msgid "K-Folds cross-validator"
+msgstr "K 折交叉验证器"
+
+#: maxframe.learn.model_selection._split.KFold:3 of
+msgid ""
+"Provides train/test indices to split data in train/test sets. Split "
+"dataset into k consecutive folds (without shuffling by default)."
+msgstr ""
+"提供训练/测试索引以将数据划分为训练集和测试集。默认情况下将数据集分割为 k"
+" 个连续的折（不打乱顺序）。"
+
+#: maxframe.learn.model_selection._split.KFold:6 of
+msgid ""
+"Each fold is then used once as a validation while the k - 1 remaining "
+"folds form the training set."
+msgstr "每一轮中使用一个折作为验证集，而其余的 k - 1 个折组成训练集。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.model_selection.KFold.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.model_selection._split.KFold:9 of
+msgid ""
+"Number of folds. Must be at least 2.  .. versionchanged:: 0.22     "
+"``n_splits`` default value changed from 3 to 5."
+msgstr ""
+"折数。必须至少为 2。 .. versionchanged:: 0.22 ``n_splits`` 默认值从 3 "
+"改为 5。"
+
+#: maxframe.learn.model_selection._split.KFold:9 of
+msgid "Number of folds. Must be at least 2."
+msgstr ""
+
+#: maxframe.learn.model_selection._split.KFold:11 of
+msgid "``n_splits`` default value changed from 3 to 5."
+msgstr ""
+
+#: maxframe.learn.model_selection._split.KFold:14 of
+msgid ""
+"Whether to shuffle the data before splitting into batches. Note that the "
+"samples within each split will not be shuffled."
+msgstr "是否在分割成批次之前打乱数据。注意，每个分割中的样本不会被打乱。"
+
+#: maxframe.learn.model_selection._split.KFold:17 of
+msgid ""
+"When `shuffle` is True, `random_state` affects the ordering of the "
+"indices, which controls the randomness of each fold. Otherwise, this "
+"parameter has no effect. Pass an int for reproducible output across "
+"multiple function calls. See :term:`Glossary <random_state>`."
+msgstr ""
+"当 `shuffle` 为 True 时，`random_state` 会影响索引的排序，从而控制每一折"
+"的随机性。否则此参数无效。传递一个整数可在多次函数调用中产生可重现的结果"
+"。参见 :term:`术语表 <random_state>`。"
+
+#: maxframe.learn.model_selection._split.KFold:25 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.model_selection._split.KFold:43 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.model_selection._split.KFold:44 of
+msgid ""
+"The first ``n_samples % n_splits`` folds have size ``n_samples // "
+"n_splits + 1``, other folds have size ``n_samples // n_splits``, where "
+"``n_samples`` is the number of samples."
+msgstr ""
+"前 ``n_samples % n_splits`` 个折的大小为 ``n_samples // n_splits + 1``，"
+"其余折的大小为 ``n_samples // n_splits``，其中 ``n_samples`` 是样本数量。"
+
+#: maxframe.learn.model_selection._split.KFold:48 of
+msgid ""
+"Randomized CV splitters may return different results for each call of "
+"split. You can make the results identical by setting `random_state` to an"
+" integer."
+msgstr ""
+"随机化的交叉验证分割器在每次调用 split 时可能返回不同的结果。你可以通过将"
+" `random_state` 设置为一个整数来使结果一致。"
+
+#: maxframe.learn.model_selection._split.KFold:54 of
+msgid ":py:obj:`StratifiedKFold`"
+msgstr ""
+
+#: maxframe.learn.model_selection._split.KFold:55 of
+msgid ""
+"Takes group information into account to avoid building folds with "
+"imbalanced class distributions (for binary or multiclass classification "
+"tasks)."
+msgstr "考虑到类别信息，避免构建具有不平衡类别分布的折（用于二分类或多分类任务）。"
+
+#: maxframe.learn.model_selection._split.KFold:57 of
+msgid ":py:obj:`GroupKFold`"
+msgstr ""
+
+#: maxframe.learn.model_selection._split.KFold:58 of
+msgid "K-fold iterator variant with non-overlapping groups."
+msgstr "非重叠组的 K 折迭代器变体。"
+
+#: maxframe.learn.model_selection._split.KFold:60 of
+msgid ":py:obj:`RepeatedKFold`"
+msgstr ""
+
+#: maxframe.learn.model_selection._split.KFold:61 of
+msgid "Repeats K-Fold n times."
+msgstr "重复 K 折 n 次。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.model_selection.KFold.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.model_selection.KFold.rst:18:<autosummary>:1
+msgid ""
+":py:obj:`__init__ <maxframe.learn.model_selection.KFold.__init__>`\\ "
+"\\(\\[n\\_splits\\, shuffle\\, random\\_state\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.model_selection.KFold.rst:18:<autosummary>:1
+msgid ""
+":py:obj:`get_n_splits "
+"<maxframe.learn.model_selection.KFold.get_n_splits>`\\ \\(\\[X\\, y\\, "
+"groups\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.model_selection.KFold.rst:18:<autosummary>:1
+msgid "Returns the number of splitting iterations in the cross-validator"
+msgstr "返回交叉验证器中的分割迭代次数"
+
+#: ../../source/reference/learn/generated/maxframe.learn.model_selection.KFold.rst:18:<autosummary>:1
+msgid ""
+":py:obj:`split <maxframe.learn.model_selection.KFold.split>`\\ \\(X\\[\\,"
+" y\\, groups\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.model_selection.KFold.rst:18:<autosummary>:1
+msgid "Generate indices to split data into training and test set."
+msgstr "生成将数据划分为训练集和测试集的索引。"
+

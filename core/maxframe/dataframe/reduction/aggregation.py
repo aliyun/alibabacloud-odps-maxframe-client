@@ -38,7 +38,7 @@ from ...serialization.serializables import (
 )
 from ...typing_ import TileableType
 from ...udf import BuiltinFunction
-from ...utils import lazy_import, pd_release_version
+from ...utils import get_pd_option, lazy_import, pd_release_version
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_df, build_empty_df, build_series, parse_index, validate_axis
 from .core import (
@@ -92,8 +92,8 @@ class DataFrameAggregate(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.AGGREGATE
 
     raw_func = AnyField("raw_func")
-    raw_func_kw = DictField("raw_func_kw")
-    func = AnyField("func")
+    raw_func_kw = DictField("raw_func_kw", default=None)
+    func = AnyField("func", default=None)
     func_rename = ListField("func_rename", default=None)
     axis = AnyField("axis", default=0)
     numeric_only = BoolField("numeric_only", default=None)
@@ -199,7 +199,7 @@ class DataFrameAggregate(DataFrameOperator, DataFrameOperatorMixin):
         normalize_reduction_funcs(self, ndim=df.ndim)
         compile_reduction_funcs(self, df)
         if output_type is None or dtypes is None:
-            with enter_mode(kernel=False, build=False):
+            with enter_mode(kernel=False, build=False, mock=True):
                 dtypes, index = self._calc_result_shape(df)
         else:
             self.output_types = [output_type]
@@ -231,7 +231,7 @@ class DataFrameAggregate(DataFrameOperator, DataFrameOperatorMixin):
             return self.new_series(
                 [df],
                 shape=new_shape,
-                dtype=dtypes[0],
+                dtype=dtypes.iloc[0],
                 name=dtypes.index[0],
                 index_value=new_index,
             )
@@ -456,7 +456,7 @@ def aggregate(df, func=None, axis=0, **kw):
     min    1
     """
     axis = validate_axis(axis, df)
-    use_inf_as_na = kw.pop("_use_inf_as_na", pd.get_option("mode.use_inf_as_na"))
+    use_inf_as_na = kw.pop("_use_inf_as_na", get_pd_option("mode.use_inf_as_na", False))
     if func == "unique":
         # workaround for direct call of unique function which
         #  returns a tensor directly

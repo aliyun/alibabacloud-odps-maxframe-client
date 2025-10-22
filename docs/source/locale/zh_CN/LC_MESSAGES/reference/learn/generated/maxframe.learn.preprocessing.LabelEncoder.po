@@ -1,0 +1,218 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:2
+msgid "maxframe.learn.preprocessing.LabelEncoder"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_encoder.LabelEncoder:1 of
+msgid "Encode target labels with value between 0 and n_classes-1."
+msgstr "使用介于 0 和 n_classes-1 之间的值对目标标签进行编码。"
+
+#: maxframe.learn.preprocessing._label._label_encoder.LabelEncoder:3 of
+msgid ""
+"This transformer should be used to encode target values, *i.e.* `y`, and "
+"not the input `X`."
+msgstr "此转换器应用于编码目标值，即 `y`，而不是输入 `X`。"
+
+#: maxframe.learn.preprocessing._label._label_encoder.LabelEncoder:6 of
+msgid "Read more in the :ref:`User Guide <preprocessing_targets>`."
+msgstr "更多内容请参见 :ref:`用户指南 <preprocessing_targets>`。"
+
+#: maxframe.learn.preprocessing._label._label_encoder.LabelEncoder:10 of
+msgid "Holds the label for each class."
+msgstr "保存每个类别的标签。"
+
+#: maxframe.learn.preprocessing._label._label_encoder.LabelEncoder of
+msgid "type"
+msgstr "类型"
+
+#: maxframe.learn.preprocessing._label._label_encoder.LabelEncoder:12 of
+msgid "ndarray of shape (n_classes,)"
+msgstr "形状为 (n_classes,) 的 ndarray"
+
+#: maxframe.learn.preprocessing._label._label_encoder.LabelEncoder:16 of
+msgid ":py:obj:`OrdinalEncoder`"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_encoder.LabelEncoder:17 of
+msgid "Encode categorical features using an ordinal encoding scheme."
+msgstr "使用序数编码方案对分类特征进行编码。"
+
+#: maxframe.learn.preprocessing._label._label_encoder.LabelEncoder:19 of
+msgid ":py:obj:`OneHotEncoder`"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_encoder.LabelEncoder:20 of
+msgid "Encode categorical features as a one-hot numeric array."
+msgstr "将分类特征编码为独热（one-hot）数值数组。"
+
+#: maxframe.learn.preprocessing._label._label_encoder.LabelEncoder:23 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_encoder.LabelEncoder:24 of
+msgid "`LabelEncoder` can be used to normalize labels."
+msgstr "`LabelEncoder` 可用于标准化标签。"
+
+#: maxframe.learn.preprocessing._label._label_encoder.LabelEncoder:37 of
+msgid ""
+"It can also be used to transform non-numerical labels (as long as they "
+"are hashable and comparable) to numerical labels."
+msgstr "它还可以用于将非数值标签（只要它们是可哈希和可比较的）转换为数值标签。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`__init__ <maxframe.learn.preprocessing.LabelEncoder.__init__>`\\"
+" \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`execute <maxframe.learn.preprocessing.LabelEncoder.execute>`\\ "
+"\\(\\[session\\, run\\_kwargs\\, extra\\_tileables\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`fetch <maxframe.learn.preprocessing.LabelEncoder.fetch>`\\ "
+"\\(\\[session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`fit <maxframe.learn.preprocessing.LabelEncoder.fit>`\\ "
+"\\(y\\[\\, execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid "Fit label encoder."
+msgstr "拟合标签编码器。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`fit_transform "
+"<maxframe.learn.preprocessing.LabelEncoder.fit_transform>`\\ \\(y\\[\\, "
+"execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid "Fit label encoder and return encoded labels."
+msgstr "拟合标签编码器并返回编码后的标签。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`get_metadata_routing "
+"<maxframe.learn.preprocessing.LabelEncoder.get_metadata_routing>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid "Get metadata routing of this object."
+msgstr "获取此对象的元数据路由。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`get_params "
+"<maxframe.learn.preprocessing.LabelEncoder.get_params>`\\ "
+"\\(\\[deep\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid "Get parameters for this estimator."
+msgstr "获取此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`inverse_transform "
+"<maxframe.learn.preprocessing.LabelEncoder.inverse_transform>`\\ "
+"\\(y\\[\\, execute\\, session\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid "Transform labels back to original encoding."
+msgstr "将标签转换回原始编码。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`set_fit_request "
+"<maxframe.learn.preprocessing.LabelEncoder.set_fit_request>`\\ "
+"\\(\\*\\[\\, execute\\, run\\_kwargs\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``fit`` method."
+msgstr "配置是否应请求将元数据传递给 ``fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`set_inverse_transform_request "
+"<maxframe.learn.preprocessing.LabelEncoder.set_inverse_transform_request>`\\"
+" \\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``inverse_transform`` method."
+msgstr "配置是否应请求将元数据传递给 ``inverse_transform`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`set_params "
+"<maxframe.learn.preprocessing.LabelEncoder.set_params>`\\ "
+"\\(\\*\\*params\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid "Set the parameters of this estimator."
+msgstr "设置此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`set_transform_request "
+"<maxframe.learn.preprocessing.LabelEncoder.set_transform_request>`\\ "
+"\\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``transform`` method."
+msgstr "配置是否应请求将元数据传递给 ``transform`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`transform "
+"<maxframe.learn.preprocessing.LabelEncoder.transform>`\\ \\(y\\[\\, "
+"execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelEncoder.rst:28:<autosummary>:1
+msgid "Transform labels to normalized encoding."
+msgstr "将标签转换为标准化编码。"
+

@@ -27,6 +27,7 @@ from ..serialization.serializables import (
     ListField,
 )
 from ..tensor.core import TENSOR_TYPE
+from ..typing_ import TileableType
 from ..udf import BuiltinFunction
 from ..utils import find_objects, replace_objects
 
@@ -58,6 +59,9 @@ class RemoteFunction(ObjectOperatorMixin, ObjectOperator):
 
     def has_custom_code(self) -> bool:
         return not isinstance(self.function, BuiltinFunction)
+
+    def check_inputs(self, inputs: List[TileableType]):
+        return
 
     @classmethod
     def _set_inputs(cls, op: "RemoteFunction", inputs: List[EntityData]):

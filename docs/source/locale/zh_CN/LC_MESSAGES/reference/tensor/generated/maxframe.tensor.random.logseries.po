@@ -1,0 +1,171 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.logseries.rst:2
+msgid "maxframe.tensor.random.logseries"
+msgstr ""
+
+#: maxframe.tensor.random.logseries.logseries:1 of
+msgid "Draw samples from a logarithmic series distribution."
+msgstr "从对数级数分布中抽取样本。"
+
+#: maxframe.tensor.random.logseries.logseries:3 of
+msgid ""
+"Samples are drawn from a log series distribution with specified shape "
+"parameter, 0 < ``p`` < 1."
+msgstr "样本从具有指定形状参数的对数级数分布中抽取，其中 0 < ``p`` < 1。"
+
+#: maxframe.tensor.random.logseries.logseries of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.logseries.logseries:6 of
+msgid "Shape parameter for the distribution.  Must be in the range (0, 1)."
+msgstr "分布的形状参数。必须在 (0, 1) 范围内。"
+
+#: maxframe.tensor.random.logseries.logseries:8 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``p`` is a scalar.  Otherwise, ``np.array(p).size`` samples "
+"are drawn."
+msgstr ""
+"输出形状。如果给定形状为 ``(m, n, k)``，则抽取 ``m * n * k`` 个样本。如果"
+" size 为 ``None``（默认），当 ``p`` 为标量时返回单个值。否则抽取 ``np."
+"array(p).size`` 个样本。"
+
+#: maxframe.tensor.random.logseries.logseries:13 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.random.logseries.logseries:15 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.logseries.logseries:17 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.logseries.logseries of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.logseries.logseries:20 of
+msgid ""
+"**out** -- Drawn samples from the parameterized logarithmic series "
+"distribution."
+msgstr "**out** -- 从参数化的对数级数分布中抽取的样本。"
+
+#: maxframe.tensor.random.logseries.logseries of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.logseries.logseries:25 of
+msgid ":py:obj:`scipy.stats.logser`"
+msgstr ""
+
+#: maxframe.tensor.random.logseries.logseries:26 of
+msgid ""
+"probability density function, distribution or cumulative density "
+"function, etc."
+msgstr "概率密度函数、分布或累积密度函数等。"
+
+#: maxframe.tensor.random.logseries.logseries:29 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.logseries.logseries:30 of
+msgid "The probability density for the Log Series distribution is"
+msgstr "对数级数分布的概率密度为"
+
+#: maxframe.tensor.random.logseries.logseries:32 of
+#, python-brace-format
+msgid ""
+"P(k) = \\frac{-p^k}{k \\ln(1-p)},\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.logseries.logseries:34 of
+msgid "where p = probability."
+msgstr "其中 p = 概率。"
+
+#: maxframe.tensor.random.logseries.logseries:36 of
+msgid ""
+"The log series distribution is frequently used to represent species "
+"richness and occurrence, first proposed by Fisher, Corbet, and Williams "
+"in 1943 [2].  It may also be used to model the numbers of occupants seen "
+"in cars [3]."
+msgstr ""
+"对数级数分布常用于表示物种丰富度和出现频率，最早由 Fisher、Corbet 和 "
+"Williams 在 1943 年提出 [2]。它也可以用于建模汽车中观察到的乘客数量 [3]。"
+
+#: maxframe.tensor.random.logseries.logseries:42 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.logseries.logseries:43 of
+msgid ""
+"Buzas, Martin A.; Culver, Stephen J.,  Understanding regional species "
+"diversity through the log series distribution of occurrences: "
+"BIODIVERSITY RESEARCH Diversity & Distributions, Volume 5, Number 5, "
+"September 1999 , pp. 187-195(9)."
+msgstr ""
+"Buzas, Martin A.; Culver, Stephen J., 通过出现的对数级数分布理解区域物种"
+"多样性：BIODIVERSITY RESEARCH Diversity & Distributions, 第 5 卷, 第 5 期"
+", 1999 年 9 月, 第 187-195 页(9)。"
+
+#: maxframe.tensor.random.logseries.logseries:47 of
+msgid ""
+"Fisher, R.A,, A.S. Corbet, and C.B. Williams. 1943. The relation between "
+"the number of species and the number of individuals in a random sample of"
+" an animal population. Journal of Animal Ecology, 12:42-58."
+msgstr ""
+"Fisher, R.A., A.S. Corbet, 和 C.B. Williams. 1943. 动物种群随机样本中物种"
+"数量与个体数量之间的关系。Journal of Animal Ecology, 12:42-58。"
+
+#: maxframe.tensor.random.logseries.logseries:51 of
+msgid ""
+"D. J. Hand, F. Daly, D. Lunn, E. Ostrowski, A Handbook of Small Data "
+"Sets, CRC Press, 1994."
+msgstr ""
+"D. J. Hand, F. Daly, D. Lunn, E. Ostrowski, 小数据集手册, CRC Press, 1994"
+"。"
+
+#: maxframe.tensor.random.logseries.logseries:53 of
+msgid ""
+"Wikipedia, \"Logarithmic distribution\", "
+"http://en.wikipedia.org/wiki/Logarithmic_distribution"
+msgstr ""
+"Wikipedia, \"对数分布\", http://en.wikipedia.org/wiki/Logarithmic_"
+"distribution"
+
+#: maxframe.tensor.random.logseries.logseries:57 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.logseries.logseries:58 of
+msgid "Draw samples from the distribution:"
+msgstr "从分布中抽取样本："
+
+#: maxframe.tensor.random.logseries.logseries:67 of
+msgid "#   plot against distribution"
+msgstr "#   与分布进行对比绘图"
+

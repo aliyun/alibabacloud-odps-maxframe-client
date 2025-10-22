@@ -1,0 +1,393 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.histogram_bin_edges.rst:2
+msgid "maxframe.tensor.histogram\\_bin\\_edges"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:1 of
+msgid ""
+"Function to calculate only the edges of the bins used by the `histogram` "
+"function."
+msgstr "仅计算 `histogram` 函数使用的 bin 边缘的函数。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:4 of
+msgid "Input data. The histogram is computed over the flattened tensor."
+msgstr "输入数据。直方图是在展平后的 tensor 上计算的。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:6 of
+msgid ""
+"If `bins` is an int, it defines the number of equal-width bins in the "
+"given range (10, by default). If `bins` is a sequence, it defines the bin"
+" edges, including the rightmost edge, allowing for non-uniform bin "
+"widths.  If `bins` is a string from the list below, `histogram_bin_edges`"
+" will use the method chosen to calculate the optimal bin width and "
+"consequently the number of bins (see `Notes` for more detail on the "
+"estimators) from the data that falls within the requested range. While "
+"the bin width will be optimal for the actual data in the range, the "
+"number of bins will be computed to fill the entire range, including the "
+"empty portions. For visualisation, using the 'auto' option is suggested. "
+"Weighted data is not supported for automated bin size selection.  'auto'"
+"     Maximum of the 'sturges' and 'fd' estimators. Provides good     all "
+"around performance.  'fd' (Freedman Diaconis Estimator)     Robust "
+"(resilient to outliers) estimator that takes into     account data "
+"variability and data size.  'doane'     An improved version of Sturges' "
+"estimator that works better     with non-normal datasets.  'scott'     "
+"Less robust estimator that that takes into account data     variability "
+"and data size.  'stone'     Estimator based on leave-one-out cross-"
+"validation estimate of     the integrated squared error. Can be regarded "
+"as a generalization     of Scott's rule.  'rice'     Estimator does not "
+"take variability into account, only data     size. Commonly overestimates"
+" number of bins required.  'sturges'     R's default method, only "
+"accounts for data size. Only     optimal for gaussian data and "
+"underestimates number of bins     for large non-gaussian datasets.  "
+"'sqrt'     Square root (of data size) estimator, used by Excel and     "
+"other programs for its speed and simplicity."
+msgstr ""
+"如果 `bins` 是一个整数，它定义了在给定范围内的等宽 bins 数量（默认为 10）"
+"。如果 `bins` 是一个序列，它定义了 bin 的边缘，包括最右边的边缘，允许非"
+"均匀的 bin 宽度。如果 `bins` 是下面列表中的字符串，`histogram_bin_edges` "
+"将使用所选的方法，基于落在请求范围内的数据来计算最优的 bin 宽度，进而计算"
+"出 bin 的数量（关于估计器的更多细节，请参见 `Notes`）。虽然 bin 宽度对"
+"实际范围内的数据是最优的，但 bin 数量会计算为填充整个范围，包括没有数据的"
+"部分。对于可视化，建议使用 'auto' 选项。带权重的数据不支持自动选择 bin "
+"大小。  'auto'     'sturges' 和 'fd' 估计器的最大值。提供良好的整体性能。"
+"  'fd' (Freedman Diaconis 估计器)     对异常值鲁棒的估计器，考虑了数据的"
+"可变性和数据量。  'doane'     Sturges 估计器的改进版本，适用于非正态数据"
+"集。  'scott'     较不鲁棒的估计器，考虑了数据的可变性和数据量。  'stone'"
+"     基于留一交叉验证的集成平方误差估计的估计器。可以视为 Scott 规则的"
+"推广。  'rice'     估计器不考虑数据的可变性，只考虑数据量。通常会高估所需"
+"的 bin 数量。  'sturges'     R 的默认方法，仅考虑数据量。仅对高斯数据最优"
+"，并且对于大型非高斯数据集会低估 bin 数量。  'sqrt'     平方根（数据量）"
+"估计器，被 Excel 和其他程序用于其速度和简单性。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:6 of
+msgid ""
+"If `bins` is an int, it defines the number of equal-width bins in the "
+"given range (10, by default). If `bins` is a sequence, it defines the bin"
+" edges, including the rightmost edge, allowing for non-uniform bin "
+"widths."
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:11 of
+msgid ""
+"If `bins` is a string from the list below, `histogram_bin_edges` will use"
+" the method chosen to calculate the optimal bin width and consequently "
+"the number of bins (see `Notes` for more detail on the estimators) from "
+"the data that falls within the requested range. While the bin width will "
+"be optimal for the actual data in the range, the number of bins will be "
+"computed to fill the entire range, including the empty portions. For "
+"visualisation, using the 'auto' option is suggested. Weighted data is not"
+" supported for automated bin size selection."
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:21 of
+msgid "'auto'"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:22 of
+#, fuzzy
+msgid ""
+"Maximum of the 'sturges' and 'fd' estimators. Provides good all around "
+"performance."
+msgstr "'auto'（'sturges' 和 'fd' 估计器的最大值）"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:25
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:94 of
+msgid "'fd' (Freedman Diaconis Estimator)"
+msgstr "'fd' (Freedman Diaconis 估计器)"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:26 of
+msgid ""
+"Robust (resilient to outliers) estimator that takes into account data "
+"variability and data size."
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:29
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:127 of
+msgid "'doane'"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:30 of
+msgid ""
+"An improved version of Sturges' estimator that works better with non-"
+"normal datasets."
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:33
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:102 of
+msgid "'scott'"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:34 of
+#, fuzzy
+msgid ""
+"Less robust estimator that that takes into account data variability and "
+"data size."
+msgstr "最简单且最快的估计器。仅考虑数据大小。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:37 of
+msgid "'stone'"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:38 of
+msgid ""
+"Estimator based on leave-one-out cross-validation estimate of the "
+"integrated squared error. Can be regarded as a generalization of Scott's "
+"rule."
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:42
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:112 of
+msgid "'rice'"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:43 of
+msgid ""
+"Estimator does not take variability into account, only data size. "
+"Commonly overestimates number of bins required."
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:46
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:119 of
+msgid "'sturges'"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:47 of
+msgid ""
+"R's default method, only accounts for data size. Only optimal for "
+"gaussian data and underestimates number of bins for large non-gaussian "
+"datasets."
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:51
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:139 of
+msgid "'sqrt'"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:52 of
+msgid ""
+"Square root (of data size) estimator, used by Excel and other programs "
+"for its speed and simplicity."
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:55 of
+msgid ""
+"The lower and upper range of the bins.  If not provided, range is simply "
+"``(a.min(), a.max())``.  Values outside the range are ignored. The first "
+"element of the range must be less than or equal to the second. `range` "
+"affects the automatic bin computation as well. While bin width is "
+"computed to be optimal based on the actual data within `range`, the bin "
+"count will fill the entire range including portions containing no data."
+msgstr ""
+"bins 的下限和上限范围。如果未提供，范围就是 ``（a.min(), a.max())``。范围"
+"外的值将被忽略。范围的第一个元素必须小于或等于第二个。`range` 同样会影响"
+"自动 bin 计算。虽然 bin 宽度是基于 `range` 内的实际数据计算的最优值，但 "
+"bin 数量会填充整个范围，包括不含数据的部分。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:63 of
+msgid ""
+"A tensor of weights, of the same shape as `a`.  Each value in `a` only "
+"contributes its associated weight towards the bin count (instead of 1). "
+"This is currently not used by any of the bin estimators, but may be in "
+"the future."
+msgstr ""
+"一个与 `a` 相同形状的权重 tensor。`a` 中的每个值只会将其对应的权重贡献给 "
+"bin 计数（而不是 1）。目前任何 bin 估计器都不使用这个参数，但未来可能会"
+"使用。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:69 of
+msgid "**bin_edges** -- The edges to pass into `histogram`"
+msgstr "**bin_edges** -- 要传递给 `histogram` 的边缘"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:72 of
+msgid ":py:obj:`histogram`"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:75 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:76 of
+#, python-brace-format
+msgid ""
+"The methods to estimate the optimal number of bins are well founded in "
+"literature, and are inspired by the choices R provides for histogram "
+"visualisation. Note that having the number of bins proportional to "
+":math:`n^{1/3}` is asymptotically optimal, which is why it appears in "
+"most estimators. These are simply plug-in methods that give good starting"
+" points for number of bins. In the equations below, :math:`h` is the "
+"binwidth and :math:`n_h` is the number of bins. All estimators that "
+"compute bin counts are recast to bin width using the `ptp` of the data. "
+"The final bin count is obtained from ``np.round(np.ceil(range / h))``."
+msgstr ""
+"估计最优箱数的方法在文献中有充分的理论基础，并受到 R 语言中直方图可视化的"
+"启发。注意，箱数与 :math:`n^{1/3}` 成比例在渐近意义上是最优的，这也是"
+"为什么它出现在大多数估计器中的原因。这些只是插件方法，为箱数提供了良好的"
+"起点。在以下方程中，:math:`h` 是箱宽，:math:`n_h` 是箱数。所有计算箱数的"
+"估计器都会通过数据的 `ptp` 转换为箱宽。最终的箱数由 ``np.round(np.ceil("
+"range / h))`` 得出。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:87 of
+msgid "'auto' (maximum of the 'sturges' and 'fd' estimators)"
+msgstr "'auto'（'sturges' 和 'fd' 估计器的最大值）"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:88 of
+msgid ""
+"A compromise to get a good value. For small datasets the Sturges value "
+"will usually be chosen, while larger datasets will usually default to FD."
+"  Avoids the overly conservative behaviour of FD and Sturges for small "
+"and large datasets respectively. Switchover point is usually "
+":math:`a.size \\approx 1000`."
+msgstr ""
+"一种折中方法以获得较好的值。对于小数据集通常会选择 Sturges 值，而大数据"
+"集则默认使用 FD。这种方法避免了 FD 和 Sturges 在小数据集和大数据集上过于"
+"保守的行为。切换点通常为 :math:`a.size \\approx 1000`。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:95 of
+msgid ""
+"h = 2 \\frac{IQR}{n^{1/3}}\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:97 of
+msgid ""
+"The binwidth is proportional to the interquartile range (IQR) and "
+"inversely proportional to cube root of a.size. Can be too conservative "
+"for small datasets, but is quite good for large datasets. The IQR is very"
+" robust to outliers."
+msgstr ""
+"箱宽与四分位距（IQR）成正比，与 a.size 的立方根成反比。对于小数据集可能"
+"过于保守，但对大数据集效果很好。IQR 对异常值非常稳健。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:103 of
+msgid ""
+"h = \\sigma \\sqrt[3]{\\frac{24 * \\sqrt{\\pi}}{n}}\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:105 of
+msgid ""
+"The binwidth is proportional to the standard deviation of the data and "
+"inversely proportional to cube root of ``x.size``. Can be too "
+"conservative for small datasets, but is quite good for large datasets. "
+"The standard deviation is not very robust to outliers. Values are very "
+"similar to the Freedman-Diaconis estimator in the absence of outliers."
+msgstr ""
+"箱宽与数据的标准差成正比，与 ``x.size`` 的立方根成反比。对小数据集可能"
+"过于保守，但对大数据集效果不错。标准差对异常值不够稳健。在没有异常值的"
+"情况下，其值与 Freedman-Diaconis 估计器非常相似。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:113 of
+#, python-brace-format
+msgid ""
+"n_h = 2n^{1/3}\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:115 of
+msgid ""
+"The number of bins is only proportional to cube root of ``a.size``. It "
+"tends to overestimate the number of bins and it does not take into "
+"account data variability."
+msgstr ""
+"箱数仅与 ``a.size`` 的立方根成正比。它倾向于高估箱数，且未考虑数据的"
+"变异性。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:120 of
+#, python-brace-format
+msgid ""
+"n_h = \\log _{2}n+1\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:122 of
+msgid ""
+"The number of bins is the base 2 log of ``a.size``.  This estimator "
+"assumes normality of data and is too conservative for larger, non-normal "
+"datasets. This is the default method in R's ``hist`` method."
+msgstr ""
+"箱数为 ``a.size`` 的以 2 为底的对数。该估计器假设数据服从正态分布，对于"
+"较大且非正态的数据集过于保守。这是 R 语言中 ``hist`` 方法的默认方式。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:128 of
+msgid ""
+"n_h = 1 + \\log_{2}(n) +\n"
+"            \\log_{2}(1 + \\frac{|g_1|}{\\sigma_{g_1}})\n"
+"\n"
+"g_1 = mean[(\\frac{x - \\mu}{\\sigma})^3]\n"
+"\n"
+"\\sigma_{g_1} = \\sqrt{\\frac{6(n - 2)}{(n + 1)(n + 3)}}"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:135 of
+msgid ""
+"An improved version of Sturges' formula that produces better estimates "
+"for non-normal datasets. This estimator attempts to account for the skew "
+"of the data."
+msgstr ""
+"Sturges 公式的改进版本，能为非正态数据集提供更好的估计。该估计器尝试考虑"
+"数据的偏度。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:140 of
+msgid ""
+"n_h = \\sqrt n\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:142 of
+msgid "The simplest and fastest estimator. Only takes into account the data size."
+msgstr "最简单且最快的估计器。仅考虑数据大小。"
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:146 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:154 of
+msgid ""
+"For consistency with histogram, a tensor of pre-computed bins is passed "
+"through unmodified:"
+msgstr "为了与 histogram 保持一致，预先计算好的箱数组将以不变形式传入："
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:160 of
+msgid ""
+"This function allows one set of bins to be computed, and reused across "
+"multiple histograms:"
+msgstr "此函数允许计算一组箱，并在多个直方图中重复使用："
+
+#: maxframe.tensor.statistics.histogram.histogram_bin_edges:181 of
+msgid ""
+"Which gives more easily comparable results than using separate bins for "
+"each histogram:"
+msgstr "这比为每个直方图使用不同箱所得到的结果更易于比较："
+

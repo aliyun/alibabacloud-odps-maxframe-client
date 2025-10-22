@@ -1,0 +1,127 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.plot.pie.rst:2
+msgid "maxframe.dataframe.Series.plot.pie"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:1
+#: of
+msgid "Generate a pie plot."
+msgstr "生成一个饼图。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:3
+#: of
+msgid ""
+"A pie plot is a proportional representation of the numerical data in a "
+"column. This function wraps :meth:`matplotlib.pyplot.pie` for the "
+"specified column. If no column reference is passed and ``subplots=True`` "
+"a pie plot is drawn for each numerical column independently."
+msgstr ""
+"饼图是列中数值数据的比例表示。此函数对指定列封装了 :meth:`matplotlib."
+"pyplot.pie`。如果未传递列引用且 ``subplots=True``，则为每个数值列独立绘制"
+"一个饼图。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:9
+#: of
+msgid ""
+"Label or position of the column to plot. If not provided, "
+"``subplots=True`` argument must be passed."
+msgstr "要绘制的列的标签或位置。如果未提供，则必须传递 ``subplots=True`` 参数。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:12
+#: of
+msgid "Keyword arguments to pass on to :meth:`DataFrame.plot`."
+msgstr "传递给 :meth:`DataFrame.plot` 的关键字参数。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:14
+#: of
+msgid "A NumPy array is returned when `subplots` is True."
+msgstr "当 `subplots` 为 True 时，返回一个 NumPy 数组。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:19
+#: of
+msgid ":py:obj:`Series.plot.pie`"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:20
+#: of
+msgid "Generate a pie plot for a Series."
+msgstr "为 Series 生成一个饼图。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:22
+#: of
+msgid ":py:obj:`DataFrame.plot`"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:23
+#: of
+msgid "Make plots of a DataFrame."
+msgstr "绘制 DataFrame 的图表。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:26
+#: of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:27
+#: of
+msgid ""
+"In the example below we have a DataFrame with the information about "
+"planet's mass and radius. We pass the 'mass' column to the pie function "
+"to get a pie plot."
+msgstr ""
+"在下面的示例中，我们有一个包含行星质量和半径信息的 DataFrame。我们将 '"
+"mass' 列传递给 pie 函数以获得饼图。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.plot.pie.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-Series-plot-pie-1.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-Series-plot-pie-1.py>`)"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.plot.pie.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-Series-plot-pie-2.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-Series-plot-pie-2.py>`)"
+

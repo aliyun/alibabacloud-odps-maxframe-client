@@ -1,0 +1,127 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.dropna.rst:2
+msgid "maxframe.dataframe.Series.dropna"
+msgstr ""
+
+#: maxframe.dataframe.missing.dropna.series_dropna:1 of
+msgid "Return a new Series with missing values removed."
+msgstr "返回一个新的 Series，其中缺失值已被移除。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna:3 of
+msgid ""
+"See the :ref:`User Guide <missing_data>` for more on which values are "
+"considered missing, and how to work with missing data."
+msgstr ""
+"请参阅 :ref:`用户指南 <missing_data>` 了解哪些值被视为缺失值，以及如何"
+"处理缺失数据。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.missing.dropna.series_dropna:6 of
+msgid "There is only one axis to drop values from."
+msgstr "只有一个轴可以从中删除值。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna:8 of
+msgid "If True, do operation inplace and return None."
+msgstr "如果为 True，则就地操作并返回 None。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna:10 of
+msgid "Not in use. Kept for compatibility."
+msgstr "未使用。保留以保持兼容性。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna:12 of
+msgid "If True, the resulting axis will be labeled 0, 1, …, n - 1."
+msgstr "如果为 True，则结果轴将被标记为 0, 1, …, n - 1。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.missing.dropna.series_dropna:15 of
+msgid "Series with NA entries dropped from it."
+msgstr "从中删除了 NA 条目的 Series。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.missing.dropna.series_dropna:20 of
+msgid ":py:obj:`Series.isna`"
+msgstr ""
+
+#: maxframe.dataframe.missing.dropna.series_dropna:21 of
+msgid "Indicate missing values."
+msgstr "指示缺失值。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna:23 of
+msgid ":py:obj:`Series.notna`"
+msgstr ""
+
+#: maxframe.dataframe.missing.dropna.series_dropna:24 of
+msgid "Indicate existing (non-missing) values."
+msgstr "指示存在的（非缺失）值。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna:26 of
+msgid ":py:obj:`Series.fillna`"
+msgstr ""
+
+#: maxframe.dataframe.missing.dropna.series_dropna:27 of
+msgid "Replace missing values."
+msgstr "替换缺失值。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna:29 of
+msgid ":py:obj:`DataFrame.dropna`"
+msgstr ""
+
+#: maxframe.dataframe.missing.dropna.series_dropna:30 of
+msgid "Drop rows or columns which contain NA values."
+msgstr "删除包含 NA 值的行或列。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna:32 of
+msgid ":py:obj:`Index.dropna`"
+msgstr ""
+
+#: maxframe.dataframe.missing.dropna.series_dropna:33 of
+msgid "Drop missing indices."
+msgstr "删除缺失的索引。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna:36 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.missing.dropna.series_dropna:45 of
+msgid "Drop NA values from a Series."
+msgstr "从 Series 中删除 NA 值。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna:52 of
+msgid "Keep the Series with valid entries in the same variable."
+msgstr "将包含有效条目的 Series 保留在同一变量中。"
+
+#: maxframe.dataframe.missing.dropna.series_dropna:60 of
+msgid ""
+"Empty strings are not considered NA values. ``None`` is considered an NA "
+"value."
+msgstr "空字符串不被视为 NA 值。``None`` 被视为 NA 值。"
+

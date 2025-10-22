@@ -1,0 +1,83 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.linalg.solve_triangular.rst:2
+msgid "maxframe.tensor.linalg.solve\\_triangular"
+msgstr ""
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular:1 of
+msgid "Solve the equation `a x = b` for `x`, assuming a is a triangular matrix."
+msgstr "求解方程 `a x = b` 中的 `x`，假设 a 是一个三角矩阵。"
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular:3 of
+msgid "A triangular matrix"
+msgstr "一个三角矩阵"
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular:5 of
+msgid "Right-hand side matrix in `a x = b`"
+msgstr "方程 `a x = b` 中的右端矩阵"
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular:7 of
+msgid ""
+"Use only data contained in the lower triangle of `a`. Default is to use "
+"upper triangle."
+msgstr "仅使用 `a` 的下三角部分的数据。默认使用上三角部分。"
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular:10 of
+msgid "Return sparse value or not."
+msgstr "是否返回稀疏值。"
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular:13 of
+msgid "**x** -- Solution to the system `a x = b`.  Shape of return matches `b`."
+msgstr "**x** -- 方程组 `a x = b` 的解。返回值的形状与 `b` 相同。"
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular:17 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular:18 of
+msgid "Solve the lower triangular system a x = b, where::"
+msgstr "求解下三角系统 a x = b，其中："
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular:19 of
+msgid "[3  0  0  0]       [4]"
+msgstr ""
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular:20 of
+msgid "a =  [2  1  0  0]   b = [2]"
+msgstr ""
+
+#: maxframe.tensor.linalg.solve_triangular.solve_triangular:21 of
+msgid "[1  0  1  0]       [4] [1  1  1  1]       [2]"
+msgstr ""
+

@@ -42,6 +42,10 @@ def is_build_mode():
     return bool(getattr(_internal_mode, "build", False))
 
 
+def is_mock_mode():
+    return bool(getattr(_internal_mode, "mock", False))
+
+
 class _EnterModeFuncWrapper:
     def __init__(self, mode_name_to_value):
         self.mode_name_to_value = mode_name_to_value
@@ -86,10 +90,11 @@ class _EnterModeFuncWrapper:
         return _inner
 
 
-def enter_mode(kernel=None, build=None):
+def enter_mode(kernel=None, build=None, mock=None):
     mode_name_to_value = {
         "kernel": kernel,
         "build": build,
+        "mock": mock,
     }
     mode_name_to_value = {k: v for k, v in mode_name_to_value.items() if v is not None}
 

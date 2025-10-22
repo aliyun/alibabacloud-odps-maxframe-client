@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.fft.rfft2.rst:2
+msgid "maxframe.tensor.fft.rfft2"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft2.rfft2:1 of
+msgid "Compute the 2-dimensional FFT of a real tensor."
+msgstr "计算实数张量的二维快速傅里叶变换。"
+
+#: maxframe.tensor.fft.rfft2.rfft2 of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft2.rfft2:3 of
+msgid "Input tensor, taken to be real."
+msgstr "输入张量，被当作实数处理。"
+
+#: maxframe.tensor.fft.rfft2.rfft2:5 of
+msgid "Shape of the FFT."
+msgstr "FFT 的形状。"
+
+#: maxframe.tensor.fft.rfft2.rfft2:7 of
+msgid "Axes over which to compute the FFT."
+msgstr "进行 FFT 计算的轴。"
+
+#: maxframe.tensor.fft.rfft2.rfft2:9 of
+msgid "Normalization mode (see `mt.fft`). Default is None."
+msgstr "归一化模式（参见 `mt.fft`）。默认为 None。"
+
+#: maxframe.tensor.fft.rfft2.rfft2 of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft2.rfft2:12 of
+msgid "**out** -- The result of the real 2-D FFT."
+msgstr "**out** -- 实数二维快速傅里叶变换的结果。"
+
+#: maxframe.tensor.fft.rfft2.rfft2 of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft2.rfft2:17 of
+msgid ":py:obj:`rfftn`"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft2.rfft2:18 of
+msgid "Compute the N-dimensional discrete Fourier Transform for real input."
+msgstr "计算实数输入的 N 维离散傅里叶变换。"
+
+#: maxframe.tensor.fft.rfft2.rfft2:21 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft2.rfft2:22 of
+msgid ""
+"This is really just `rfftn` with different default behavior. For more "
+"details see `rfftn`."
+msgstr "这实际上是 `rfftn`，只是默认行为不同。更多详情请参见 `rfftn`。"
+

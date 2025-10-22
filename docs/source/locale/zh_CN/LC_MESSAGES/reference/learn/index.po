@@ -1,0 +1,52 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/index.rst:5
+msgid "MaxFrame Learn"
+msgstr ""
+
+#: ../../source/reference/learn/index.rst:7
+msgid ""
+"This document provides a comprehensive reference for MaxFrame's machine "
+"learning capabilities, including:"
+msgstr "本文档全面介绍了 MaxFrame 的机器学习功能，包括："
+
+#: ../../source/reference/learn/index.rst:9
+msgid "Machine learning algorithms"
+msgstr "机器学习算法"
+
+#: ../../source/reference/learn/index.rst:10
+msgid "Large Language Model (LLM) operations"
+msgstr "大语言模型（LLM）操作"
+
+#: ../../source/reference/learn/index.rst:11
+msgid "Related utility functions and classes"
+msgstr "相关工具函数和类"
+
+#: ../../source/reference/learn/index.rst:13
+msgid ""
+"The following APIs are available through the ``maxframe.learn.*`` "
+"namespace. Note that some experimental features may undergo changes in "
+"future releases."
+msgstr ""
+"以下 API 可通过 ``maxframe.learn.*`` 命名空间使用。请注意，一些实验性功能"
+"在未来版本中可能会发生变化。"
+

@@ -1,0 +1,211 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.arctan2.rst:2
+msgid "maxframe.tensor.arctan2"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:1 of
+msgid "Element-wise arc tangent of ``x1/x2`` choosing the quadrant correctly."
+msgstr "逐元素计算 ``x1/x2`` 的反正切值，并正确选择象限。"
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:3 of
+msgid ""
+"The quadrant (i.e., branch) is chosen so that ``arctan2(x1, x2)`` is the "
+"signed angle in radians between the ray ending at the origin and passing "
+"through the point (1,0), and the ray ending at the origin and passing "
+"through the point (`x2`, `x1`).  (Note the role reversal: the "
+"\"`y`-coordinate\" is the first function parameter, the "
+"\"`x`-coordinate\" is the second.)  By IEEE convention, this function is "
+"defined for `x2` = +/-0 and for either or both of `x1` and `x2` = +/-inf "
+"(see Notes for specific values)."
+msgstr ""
+"选择象限（即分支），使得 ``arctan2(x1, x2)`` 是以弧度为单位的有符号角度，"
+"该角度介于从原点出发经过点 (1,0) 的射线与从原点出发经过点 (`x2`, `x1`) 的"
+"射线之间。（注意角色互换：第一个函数参数是 \"`y` 坐标\"，第二个是 \"`x` "
+"坐标\"。）根据 IEEE 规范，此函数在 `x2` = +/-0 以及 `x1` 和/或 `x2` = +/-"
+"inf 时有定义（具体值见注释）。"
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:12 of
+msgid ""
+"This function is not defined for complex-valued arguments; for the so-"
+"called argument of complex values, use `angle`."
+msgstr "此函数不适用于复数值参数；对于复数值的所谓幅角，请使用 `angle`。"
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2 of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:15 of
+msgid "`y`-coordinates."
+msgstr "`y` 坐标。"
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:17 of
+msgid ""
+"`x`-coordinates. `x2` must be broadcastable to match the shape of `x1` or"
+" vice versa."
+msgstr "`x` 坐标。`x2` 必须可以广播以匹配 `x1` 的形状，反之亦然。"
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:20 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，它必须具有输入广播后的形状。如果未提供或为 "
+"`None`，则返回一个新分配的 tensor。元组（只能作为关键字参数）的长度必须"
+"等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:25 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的原值。"
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2 of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:30 of
+msgid "**angle** -- Array of angles in radians, in the range ``[-pi, pi]``."
+msgstr "**angle** -- 以弧度为单位的角度数组，范围为 ``[-pi, pi]``。"
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2 of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:33 of
+msgid ":py:obj:`arctan`, :py:obj:`tan`, :py:obj:`angle`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:36 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:37 of
+msgid ""
+"*arctan2* is identical to the `atan2` function of the underlying C "
+"library.  The following special values are defined in the C standard: "
+"[1]_"
+msgstr "*arctan2* 与底层 C 库的 `atan2` 函数相同。以下特殊值在 C 标准中定义：[1]_"
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:42 of
+msgid "`x1`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:42 of
+msgid "`x2`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:42 of
+msgid "`arctan2(x1,x2)`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:44
+#: maxframe.tensor.arithmetic.arctan2.arctan2:45 of
+msgid "+/- 0"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:44 of
+msgid "+0"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:45 of
+msgid "-0"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:45 of
+msgid "+/- pi"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:46 of
+msgid "> 0"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:46
+#: maxframe.tensor.arithmetic.arctan2.arctan2:47
+#: maxframe.tensor.arithmetic.arctan2.arctan2:48
+#: maxframe.tensor.arithmetic.arctan2.arctan2:49 of
+msgid "+/-inf"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:46 of
+msgid "+0 / +pi"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:47 of
+msgid "< 0"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:47 of
+msgid "-0 / -pi"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:48 of
+msgid "+inf"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:48 of
+msgid "+/- (pi/4)"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:49 of
+msgid "-inf"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:49 of
+msgid "+/- (3*pi/4)"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:52 of
+msgid ""
+"Note that +0 and -0 are distinct floating point numbers, as are +inf and "
+"-inf."
+msgstr "注意 +0 和 -0 是不同的浮点数，+inf 和 -inf 也是如此。"
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:56 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:57 of
+msgid "ISO/IEC standard 9899:1999, \"Programming language C.\""
+msgstr "ISO/IEC 标准 9899:1999, \"C 语言编程\""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:60 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:61 of
+msgid ""
+"Consider four points in different quadrants: >>> import maxframe.tensor "
+"as mt"
+msgstr "考虑四个位于不同象限的点：>>> import maxframe.tensor as mt"
+
+#: maxframe.tensor.arithmetic.arctan2.arctan2:69 of
+msgid ""
+"Note the order of the parameters. `arctan2` is defined also when `x2` = 0"
+" and at several other special points, obtaining values in the range "
+"``[-pi, pi]``:"
+msgstr ""
+"请注意参数的顺序。`arctan2` 在 `x2` = 0 时以及其他一些特殊点处也有定义，"
+"其值在 ``[-pi, pi]`` 范围内："
+

@@ -1,0 +1,69 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.fillna.rst:2
+msgid "maxframe.dataframe.Index.fillna"
+msgstr ""
+
+#: maxframe.dataframe.missing.fillna.index_fillna:1 of
+msgid "Fill NA/NaN values with the specified value."
+msgstr "使用指定值填充 NA/NaN 值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.fillna.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.missing.fillna.index_fillna:3 of
+msgid ""
+"Scalar value to use to fill holes (e.g. 0). This value cannot be a list-"
+"likes."
+msgstr "用于填充缺失值的标量值（例如 0）。该值不能是列表类型。"
+
+#: maxframe.dataframe.missing.fillna.index_fillna:6 of
+msgid ""
+"A dict of item->dtype of what to downcast if possible, or the string "
+"'infer' which will try to downcast to an appropriate equal type (e.g. "
+"float64 to int64 if possible)."
+msgstr ""
+"一个 item->dtype 的字典，表示如果可能的话要向下转换的数据类型，或者字符串"
+" 'infer'，它将尝试向下转换为合适的相等类型（例如，如果可能的话，从 "
+"float64 转换为 int64）。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.fillna.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.missing.fillna.index_fillna:15 of
+msgid ":py:obj:`DataFrame.fillna`"
+msgstr ""
+
+#: maxframe.dataframe.missing.fillna.index_fillna:16 of
+msgid "Fill NaN values of a DataFrame."
+msgstr "填充 DataFrame 中的 NaN 值。"
+
+#: maxframe.dataframe.missing.fillna.index_fillna:18 of
+msgid ":py:obj:`Series.fillna`"
+msgstr ""
+
+#: maxframe.dataframe.missing.fillna.index_fillna:19 of
+msgid "Fill NaN Values of a Series."
+msgstr "填充 Series 中的 NaN 值。"
+

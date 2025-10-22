@@ -1,0 +1,75 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.repeat.rst:2
+msgid "maxframe.tensor.repeat"
+msgstr ""
+
+#: maxframe.tensor.misc.repeat.repeat:1 of
+msgid "Repeat elements of a tensor."
+msgstr "重复张量的元素。"
+
+#: maxframe.tensor.misc.repeat.repeat of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.repeat.repeat:3 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.misc.repeat.repeat:5 of
+msgid ""
+"The number of repetitions for each element.  `repeats` is broadcasted to "
+"fit the shape of the given axis."
+msgstr "每个元素的重复次数。`repeats` 会被广播以适应给定轴的形状。"
+
+#: maxframe.tensor.misc.repeat.repeat:8 of
+msgid ""
+"The axis along which to repeat values.  By default, use the flattened "
+"input tensor, and return a flat output tensor."
+msgstr "沿其重复值的轴。默认情况下，使用展平的输入张量，并返回一个展平的输出张量。"
+
+#: maxframe.tensor.misc.repeat.repeat of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.repeat.repeat:12 of
+msgid ""
+"**repeated_tensor** -- Output array which has the same shape as `a`, "
+"except along the given axis."
+msgstr "**repeated_tensor** -- 输出数组，其形状与 `a` 相同，除了沿给定轴外。"
+
+#: maxframe.tensor.misc.repeat.repeat of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.repeat.repeat:18 of
+msgid ":py:obj:`tile`"
+msgstr ""
+
+#: maxframe.tensor.misc.repeat.repeat:19 of
+msgid "Tile a tensor."
+msgstr "平铺一个张量。"
+
+#: maxframe.tensor.misc.repeat.repeat:22 of
+msgid "示例"
+msgstr ""
+

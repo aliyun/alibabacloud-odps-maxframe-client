@@ -1,0 +1,130 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.arcsin.rst:2
+msgid "maxframe.tensor.arcsin"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:1 of
+msgid "Inverse sine, element-wise."
+msgstr "逐元素计算反正弦值。"
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:3 of
+msgid "`y`-coordinate on the unit circle."
+msgstr "单位圆上的 `y` 坐标。"
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:5 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供了该参数，则其形状必须可以广播到输入形状。"
+"如果未提供或为 `None`，则返回一个新分配的 tensor。元组（只能作为关键字"
+"参数）的长度必须等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:10 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:15 of
+msgid ""
+"**angle** -- The inverse sine of each element in `x`, in radians and in "
+"the closed interval ``[-pi/2, pi/2]``.  If `x` is a scalar, a scalar is "
+"returned, otherwise a tensor."
+msgstr ""
+"**angle** -- `x` 中每个元素的反正弦值，单位为弧度，范围在闭区间 ``[-pi/2,"
+" pi/2]`` 内。如果 `x` 是标量，则返回标量，否则返回 tensor。"
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:20 of
+msgid ""
+":py:obj:`sin`, :py:obj:`cos`, :py:obj:`arccos`, :py:obj:`tan`, "
+":py:obj:`arctan`, :py:obj:`arctan2`, :py:obj:`emath.arcsin`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:23 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:24 of
+msgid ""
+"`arcsin` is a multivalued function: for each `x` there are infinitely "
+"many numbers `z` such that :math:`sin(z) = x`.  The convention is to "
+"return the angle `z` whose real part lies in [-pi/2, pi/2]."
+msgstr ""
+"`arcsin` 是一个多值函数：对于每个 `x`，有无穷多个数 `z` 使得 :math:`sin(z"
+") = x`。约定返回其实部位于 [-pi/2, pi/2] 区间内的角 `z`。"
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:28 of
+msgid ""
+"For real-valued input data types, *arcsin* always returns real output. "
+"For each value that cannot be expressed as a real number or infinity, it "
+"yields ``nan`` and sets the `invalid` floating point error flag."
+msgstr ""
+"对于实数类型的输入数据，*arcsin* 总是返回实数输出。对于无法表示为实数或"
+"无穷大的值，它会返回 ``nan`` 并设置 `invalid` 浮点数错误标志。"
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:32 of
+msgid ""
+"For complex-valued input, `arcsin` is a complex analytic function that "
+"has, by convention, the branch cuts [-inf, -1] and [1, inf]  and is "
+"continuous from above on the former and from below on the latter."
+msgstr ""
+"对于复数输入，`arcsin` 是一个复解析函数，按惯例其分支切割为 [-inf, -1] 和"
+" [1, inf]，并在前一个区间上从上方连续，在后一个区间上从下方连续。"
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:36 of
+#, python-brace-format
+msgid "The inverse sine is also known as `asin` or sin^{-1}."
+msgstr "反正弦也被称为 `asin` 或 sin^{-1}。"
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:39 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:40 of
+msgid ""
+"Abramowitz, M. and Stegun, I. A., *Handbook of Mathematical Functions*, "
+"10th printing, New York: Dover, 1964, pp. 79ff. "
+"http://www.math.sfu.ca/~cbm/aands/"
+msgstr ""
+"Abramowitz, M. 和 Stegun, I. A.，《数学函数手册》，第10版，纽约：Dover，"
+"1964年，第79页及以后。http://www.math.sfu.ca/~cbm/aands/"
+
+#: maxframe.tensor.arithmetic.arcsin.arcsin:45 of
+msgid "示例"
+msgstr ""
+

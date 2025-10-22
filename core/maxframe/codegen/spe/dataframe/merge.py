@@ -15,6 +15,7 @@
 from typing import List
 
 from ....dataframe.merge import (
+    DataFrameCombine,
     DataFrameCompare,
     DataFrameConcat,
     DataFrameMerge,
@@ -23,6 +24,9 @@ from ....dataframe.merge import (
 from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
 from ..utils import build_method_call_adapter
 
+DataFrameCombineAdapter = build_method_call_adapter(
+    DataFrameCombine, "combine", 1, "func", kw_keys=["fill_value"]
+)
 DataFrameCompareAdapter = build_method_call_adapter(
     DataFrameCompare,
     "compare",

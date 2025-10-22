@@ -22,7 +22,7 @@ from .... import opcodes
 from ....core import OutputType
 from ....dataframe import DataFrame
 from ....tensor.core import TENSOR_TYPE
-from ....udf import with_running_options
+from ....udf import ODPSFunction, with_running_options
 from ... import eval as maxframe_eval
 from ... import get_dummies, to_numeric
 from ...arithmetic import DataFrameGreater, DataFrameLess
@@ -613,3 +613,37 @@ def test_pivot_table():
     t = df.pivot_table(index=["A", "B"], columns="C", aggfunc="sum")
     assert isinstance(t.op, DataFramePivotTable)
     assert t.shape == (np.nan, np.nan)
+
+
+def test_map_with_functions():
+    raw = pd.Series([1, 2, 3], name="s_name")
+    series = from_pandas_series(raw, chunk_size=2)
+
+    # inferred type may not be exact
+    def fn1(val):
+        return val
+
+    with pytest.raises(ValueError, match="int type"):
+        series.map(fn1)
+    mapped = series.map(fn1, dtype="float64", skip_infer=True)
+    assert mapped.dtype == np.dtype("float64")
+
+    # test when type infer is valid
+    def fn2(val):
+        return val * 1.0
+
+    mapped = series.map(fn2)
+    assert mapped.dtype == np.dtype("float64")
+
+    # test function with type annotations
+    def fn3(val) -> int:
+        return val
+
+    mapped = series.map(fn3)
+    assert mapped.dtype == np.dtype("int64")
+
+    # test odps function
+    odps_func = ODPSFunction("test_odps_udf", dtype=np.float64)
+    mapped = series.map(odps_func)
+    assert isinstance(mapped.op.arg, ODPSFunction)
+    assert mapped.dtype == np.dtype("float64")

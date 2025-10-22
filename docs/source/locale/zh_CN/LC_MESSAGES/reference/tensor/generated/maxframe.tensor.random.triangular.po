@@ -1,0 +1,140 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.triangular.rst:2
+msgid "maxframe.tensor.random.triangular"
+msgstr ""
+
+#: maxframe.tensor.random.triangular.triangular:1 of
+msgid ""
+"Draw samples from the triangular distribution over the interval ``[left, "
+"right]``."
+msgstr "从区间 ``[left, right]`` 上的三角分布中抽取样本。"
+
+#: maxframe.tensor.random.triangular.triangular:4 of
+msgid ""
+"The triangular distribution is a continuous probability distribution with"
+" lower limit left, peak at mode, and upper limit right. Unlike the other "
+"distributions, these parameters directly define the shape of the pdf."
+msgstr ""
+"三角分布是一种连续概率分布，其下限为 left，峰值在 mode，上限为 right。与"
+"其他分布不同，这些参数直接定义了概率密度函数的形状。"
+
+#: maxframe.tensor.random.triangular.triangular of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.triangular.triangular:9 of
+msgid "Lower limit."
+msgstr "下限。"
+
+#: maxframe.tensor.random.triangular.triangular:11 of
+msgid ""
+"The value where the peak of the distribution occurs. The value should "
+"fulfill the condition ``left <= mode <= right``."
+msgstr "分布峰值出现的值。该值应满足条件 ``left <= mode <= right``。"
+
+#: maxframe.tensor.random.triangular.triangular:14 of
+msgid "Upper limit, should be larger than `left`."
+msgstr "上限，应大于 `left`。"
+
+#: maxframe.tensor.random.triangular.triangular:16 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``left``, ``mode``, and ``right`` are all scalars.  "
+"Otherwise, ``mt.broadcast(left, mode, right).size`` samples are drawn."
+msgstr ""
+"输出形状。如果给定形状为，例如 ``(m, n, k)``，则抽取 ``m * n * k`` 个样本"
+"。如果 size 为 ``None``（默认），且 ``left``、``mode`` 和 ``right`` 都是"
+"标量，则返回单个值。否则抽取 ``mt.broadcast(left, mode, right).size`` 个"
+"样本。"
+
+#: maxframe.tensor.random.triangular.triangular:22 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.random.triangular.triangular:24 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.triangular.triangular:26 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.triangular.triangular of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.triangular.triangular:29 of
+msgid "**out** -- Drawn samples from the parameterized triangular distribution."
+msgstr "**out** -- 从参数化的三角分布中抽取的样本。"
+
+#: maxframe.tensor.random.triangular.triangular of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.triangular.triangular:33 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.triangular.triangular:34 of
+msgid "The probability density function for the triangular distribution is"
+msgstr "三角分布的概率密度函数为"
+
+#: maxframe.tensor.random.triangular.triangular:36 of
+#, python-brace-format
+msgid ""
+"P(x;l, m, r) = \\begin{cases}\n"
+"\\frac{2(x-l)}{(r-l)(m-l)}& \\text{for $l \\leq x \\leq m$},\\\\\n"
+"\\frac{2(r-x)}{(r-l)(r-m)}& \\text{for $m \\leq x \\leq r$},\\\\\n"
+"0& \\text{otherwise}.\n"
+"\\end{cases}\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.triangular.triangular:42 of
+msgid ""
+"The triangular distribution is often used in ill-defined problems where "
+"the underlying distribution is not known, but some knowledge of the "
+"limits and mode exists. Often it is used in simulations."
+msgstr ""
+"三角分布常用于底层分布未知但对极限和模式有一定了解的未明确定义的问题中。"
+"它通常用于模拟。"
+
+#: maxframe.tensor.random.triangular.triangular:48 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.triangular.triangular:49 of
+msgid ""
+"Wikipedia, \"Triangular distribution\" "
+"http://en.wikipedia.org/wiki/Triangular_distribution"
+msgstr ""
+
+#: maxframe.tensor.random.triangular.triangular:53 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.triangular.triangular:54 of
+msgid "Draw values from the distribution and plot the histogram:"
+msgstr "从分布中抽取值并绘制直方图："
+

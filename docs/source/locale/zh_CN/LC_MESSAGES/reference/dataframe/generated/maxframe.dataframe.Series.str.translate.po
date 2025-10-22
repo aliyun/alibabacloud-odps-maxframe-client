@@ -1,0 +1,56 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.str.translate.rst:2
+msgid "maxframe.dataframe.Series.str.translate"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.translate:1
+msgid "Map all characters in the string through the given mapping table."
+msgstr "通过给定的映射表将字符串中的所有字符进行映射。"
+
+#: of pandas.core.strings.accessor.StringMethods.translate:3
+msgid "Equivalent to standard :meth:`str.translate`."
+msgstr "等效于标准的 :meth:`str.translate`。"
+
+#: of pandas.core.strings.accessor.StringMethods.translate
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.translate:5
+msgid ""
+"Table is a mapping of Unicode ordinals to Unicode ordinals, strings, or "
+"None. Unmapped characters are left untouched. Characters mapped to None "
+"are deleted. :meth:`str.maketrans` is a helper function for making "
+"translation tables."
+msgstr ""
+"表是 Unicode 序数到 Unicode 序数、字符串或 None 的映射。未映射的字符保持"
+"不变。映射为 None 的字符将被删除。:meth:`str.maketrans` 是用于创建转换表"
+"的辅助函数。"
+
+#: of pandas.core.strings.accessor.StringMethods.translate
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.translate:14
+msgid "示例"
+msgstr ""
+

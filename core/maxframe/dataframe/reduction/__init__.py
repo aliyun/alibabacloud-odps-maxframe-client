@@ -17,7 +17,7 @@ from .all import DataFrameAll
 from .any import DataFrameAny
 from .argmax import DataFrameArgMax
 from .argmin import DataFrameArgMin
-from .core import CustomReduction
+from .core import CustomReduction, NamedAgg
 from .count import DataFrameCount
 from .cummax import DataFrameCummax
 from .cummin import DataFrameCummin
@@ -31,6 +31,7 @@ from .max import DataFrameMax
 from .mean import DataFrameMean
 from .median import DataFrameMedian
 from .min import DataFrameMin
+from .mode import DataFrameMode
 from .nunique import DataFrameNunique
 from .prod import DataFrameProd
 from .reduction_size import DataFrameSize
@@ -47,8 +48,8 @@ def _install():
     from .aggregation import aggregate
     from .all import all_dataframe, all_index, all_series
     from .any import any_dataframe, any_index, any_series
-    from .argmax import argmax_series
-    from .argmin import argmin_series
+    from .argmax import argmax_series_index
+    from .argmin import argmin_series_index
     from .count import count_dataframe, count_series
     from .cov import cov_dataframe, cov_series
     from .cummax import cummax
@@ -62,6 +63,7 @@ def _install():
     from .mean import mean_dataframe, mean_series
     from .median import median_dataframe, median_series
     from .min import min_dataframe, min_index, min_series
+    from .mode import mode_dataframe, mode_series
     from .nunique import nunique_dataframe, nunique_series
     from .prod import prod_dataframe, prod_series
     from .reduction_size import size_dataframe, size_series
@@ -76,8 +78,8 @@ def _install():
         ("aggregate", aggregate, aggregate),
         ("all", all_series, all_dataframe),
         ("any", any_series, any_dataframe),
-        ("argmax", argmax_series, None),
-        ("argmin", argmin_series, None),
+        ("argmax", argmax_series_index, None),
+        ("argmin", argmin_series_index, None),
         ("count", count_series, count_dataframe),
         ("cov", cov_series, cov_dataframe),
         ("cummax", cummax, cummax),
@@ -92,6 +94,7 @@ def _install():
         ("mean", mean_series, mean_dataframe),
         ("median", median_series, median_dataframe),
         ("min", min_series, min_dataframe),
+        ("mode", mode_series, mode_dataframe),
         ("nunique", nunique_series, nunique_dataframe),
         ("prod", prod_series, prod_dataframe),
         ("product", prod_series, prod_dataframe),
@@ -118,6 +121,8 @@ def _install():
         setattr(t, "any", any_index)
         setattr(t, "min", min_index)
         setattr(t, "max", max_index)
+        setattr(t, "argmin", argmin_series_index)
+        setattr(t, "argmax", argmax_series_index)
 
 
 _install()

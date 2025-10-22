@@ -1,0 +1,191 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.ewm.rst:2
+msgid "maxframe.dataframe.DataFrame.ewm"
+msgstr ""
+
+#: maxframe.dataframe.window.ewm.ewm:1 of
+msgid "Provide exponential weighted functions."
+msgstr "提供指数加权函数。"
+
+#: maxframe.dataframe.window.ewm.ewm of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.window.ewm.ewm:3 of
+#, python-brace-format
+msgid ""
+"Specify decay in terms of center of mass, :math:`\\alpha = 1 / (1 + "
+"com),\\text{ for } com \\geq 0`."
+msgstr ""
+"以质心（center of mass）的形式指定衰减，:math:`\\alpha = 1 / (1 + com),\\"
+"text{ 其中 } com \\geq 0`。"
+
+#: maxframe.dataframe.window.ewm.ewm:6 of
+#, python-brace-format
+msgid ""
+"Specify decay in terms of span, :math:`\\alpha = 2 / (span + 1),\\text{ "
+"for } span \\geq 1`."
+msgstr ""
+"以跨度（span）的形式指定衰减，:math:`\\alpha = 2 / (span + 1),\\text{ "
+"其中 } span \\geq 1`。"
+
+#: maxframe.dataframe.window.ewm.ewm:9 of
+#, python-brace-format
+msgid ""
+"Specify decay in terms of half-life, :math:`\\alpha = 1 - exp(log(0.5) / "
+"halflife),\\text{for} halflife > 0`."
+msgstr ""
+"以半衰期（half-life）的形式指定衰减，:math:`\\alpha = 1 - exp(log(0.5) / "
+"halflife),\\text{其中} halflife > 0`。"
+
+#: maxframe.dataframe.window.ewm.ewm:12 of
+msgid ""
+"Specify smoothing factor :math:`\\alpha` directly, :math:`0 < \\alpha "
+"\\leq 1`."
+msgstr "直接指定平滑因子 :math:`\\alpha`，:math:`0 < \\alpha \\leq 1`。"
+
+#: maxframe.dataframe.window.ewm.ewm:15 of
+msgid ""
+"Minimum number of observations in window required to have a value "
+"(otherwise result is NA)."
+msgstr "窗口中需要具有值的最小观测数 （否则结果为 NA）。"
+
+#: maxframe.dataframe.window.ewm.ewm:18 of
+msgid ""
+"Divide by decaying adjustment factor in beginning periods to account for "
+"imbalance in relative weightings (viewing EWMA as a moving average)."
+msgstr ""
+"在开始阶段除以衰减调整因子，以考虑 相对权重的不平衡（将 EWMA 视为移动平均"
+"）。"
+
+#: maxframe.dataframe.window.ewm.ewm:22 of
+msgid ""
+"Ignore missing values when calculating weights; specify True to reproduce"
+" pre-0.15.0 behavior."
+msgstr "计算权重时忽略缺失值；指定 True 以重现 0.15.0 之前的行为。"
+
+#: maxframe.dataframe.window.ewm.ewm:25 of
+msgid ""
+"The axis to use. The value 0 identifies the rows, and 1 identifies the "
+"columns."
+msgstr "要使用的轴。值 0 表示行，1 表示 列。"
+
+#: maxframe.dataframe.window.ewm.ewm of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.window.ewm.ewm:29 of
+msgid "A Window sub-classed for the particular operation."
+msgstr "为特定操作子类化的 Window 对象。"
+
+#: maxframe.dataframe.window.ewm.ewm of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.window.ewm.ewm:34 of
+msgid ":py:obj:`rolling`"
+msgstr ""
+
+#: maxframe.dataframe.window.ewm.ewm:35 of
+msgid "Provides rolling window calculations."
+msgstr "提供滚动窗口计算。"
+
+#: maxframe.dataframe.window.ewm.ewm:37 of
+msgid ":py:obj:`expanding`"
+msgstr ""
+
+#: maxframe.dataframe.window.ewm.ewm:38 of
+msgid "Provides expanding transformations."
+msgstr "提供扩展变换。"
+
+#: maxframe.dataframe.window.ewm.ewm:41 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.window.ewm.ewm:42 of
+msgid ""
+"Exactly one of center of mass, span, half-life, and alpha must be "
+"provided."
+msgstr "必须提供质心、跨度、半衰期和 alpha 中的 恰好一个。"
+
+#: maxframe.dataframe.window.ewm.ewm:44 of
+msgid ""
+"Allowed values and relationship between the parameters are specified in "
+"the parameter descriptions above; see the link at the end of this section"
+" for a detailed explanation."
+msgstr ""
+"允许的值以及参数之间的关系已在 上述参数描述中指定；有关详细解释，请参阅本"
+"节末尾的链接。"
+
+#: maxframe.dataframe.window.ewm.ewm:48 of
+msgid ""
+"When adjust is True (default), weighted averages are calculated using "
+"weights (1-alpha)**(n-1), (1-alpha)**(n-2), ..., 1-alpha, 1."
+msgstr ""
+"当 adjust 为 True（默认）时，使用 权重 (1-alpha)**(n-1), (1-alpha)**(n-2)"
+", ..., 1-alpha, 1 计算加权平均。"
+
+#: maxframe.dataframe.window.ewm.ewm:51 of
+msgid "When adjust is False, weighted averages are calculated recursively as:"
+msgstr "当 adjust 为 False 时，加权平均按以下方式递归计算："
+
+#: maxframe.dataframe.window.ewm.ewm:53 of
+msgid ""
+"weighted_average[0] = arg[0]; weighted_average[i] = "
+"(1-alpha)*weighted_average[i-1] + alpha*arg[i]."
+msgstr ""
+
+#: maxframe.dataframe.window.ewm.ewm:56 of
+msgid ""
+"When ignore_na is False (default), weights are based on absolute "
+"positions. For example, the weights of x and y used in calculating the "
+"final weighted average of [x, None, y] are (1-alpha)**2 and 1 (if adjust "
+"is True), and (1-alpha)**2 and alpha (if adjust is False)."
+msgstr ""
+"当 ignore_na 为 False（默认）时，权重基于绝对 位置。例如，在计算 [x, None"
+", y] 的 最终加权平均时，x 和 y 的权重分别为 (1-alpha)**2 和 1（如果 "
+"adjust 为 True），以及 (1-alpha)**2 和 alpha（如果 adjust 为 False）。"
+
+#: maxframe.dataframe.window.ewm.ewm:61 of
+msgid ""
+"When ignore_na is True (reproducing pre-0.15.0 behavior), weights are "
+"based on relative positions. For example, the weights of x and y used in "
+"calculating the final weighted average of [x, None, y] are 1-alpha and 1 "
+"(if adjust is True), and 1-alpha and alpha (if adjust is False)."
+msgstr ""
+"当 ignore_na 为 True（重现 0.15.0 之前的行为）时，权重 基于相对位置。例如"
+"，在计算 [x, None, y] 的 最终加权平均时，x 和 y 的权重分别为 1-alpha 和 1"
+" （如果 adjust 为 True），以及 1-alpha 和 alpha（如果 adjust 为 False）。"
+
+#: maxframe.dataframe.window.ewm.ewm:66 of
+msgid ""
+"More details can be found at https://pandas.pydata.org/pandas-"
+"docs/stable/user_guide/computation.html#exponentially-weighted-windows"
+msgstr ""
+"更多详情请参见 https://pandas.pydata.org/pandas-docs/stable/user_guide/"
+"computation.html#exponentially-weighted-windows"
+
+#: maxframe.dataframe.window.ewm.ewm:70 of
+msgid "示例"
+msgstr ""
+

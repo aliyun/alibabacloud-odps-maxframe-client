@@ -1,0 +1,57 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.reorder_levels.rst:2
+msgid "maxframe.dataframe.DataFrame.reorder\\_levels"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reorder_levels.df_reorder_levels:1 of
+msgid ""
+"Rearrange index levels using input order. May not drop or duplicate "
+"levels."
+msgstr "使用输入的顺序重新排列索引层级。不能删除或重复层级。"
+
+#: maxframe.dataframe.indexing.reorder_levels.df_reorder_levels of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reorder_levels.df_reorder_levels:3 of
+msgid ""
+"List representing new level order. Reference level by number (position) "
+"or by key (label)."
+msgstr "表示新层级顺序的列表。通过数字（位置）或键（标签）引用层级。"
+
+#: maxframe.dataframe.indexing.reorder_levels.df_reorder_levels:6 of
+msgid "Where to reorder levels."
+msgstr "在何处重新排序层级。"
+
+#: maxframe.dataframe.indexing.reorder_levels.df_reorder_levels of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reorder_levels.df_reorder_levels:12 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reorder_levels.df_reorder_levels:28 of
+msgid "Let's reorder the levels of the index:"
+msgstr "让我们重新排序索引的层级："
+

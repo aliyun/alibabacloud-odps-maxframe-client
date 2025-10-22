@@ -1,0 +1,209 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.to_numeric.rst:2
+msgid "maxframe.dataframe.to\\_numeric"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:1 of
+msgid "Convert argument to a numeric type."
+msgstr "将参数转换为数值类型。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:3 of
+msgid ""
+"The default return dtype is `float64` or `int64` depending on the data "
+"supplied. Use the `downcast` parameter to obtain other dtypes."
+msgstr ""
+"默认返回的 dtype 是 `float64` 或 `int64`，取决于提供的数据。使用 `"
+"downcast` 参数可以获得其他 dtype。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:7 of
+msgid ""
+"Please note that precision loss may occur if really large numbers are "
+"passed in. Due to the internal limitations of `ndarray`, if numbers "
+"smaller than `-9223372036854775808` (np.iinfo(np.int64).min) or larger "
+"than `18446744073709551615` (np.iinfo(np.uint64).max) are passed in, it "
+"is very likely they will be converted to float so that they can stored in"
+" an `ndarray`. These warnings apply similarly to `Series` since it "
+"internally leverages `ndarray`."
+msgstr ""
+"请注意，如果传入非常大的数字，可能会发生精度丢失。由于 `ndarray` 的内部"
+"限制，如果传入小于 `-9223372036854775808` (np.iinfo(np.int64).min) 或大于"
+" `18446744073709551615` (np.iinfo(np.uint64).max) 的数字，很可能会被转换"
+"为 float 以便存储在 `ndarray` 中。这些警告同样适用于 `Series`，因为它内部"
+"使用了 `ndarray`。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:15 of
+msgid "Argument to be converted."
+msgstr "要转换的参数。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:17 of
+msgid ""
+"- If 'raise', then invalid parsing will raise an exception. - If "
+"'coerce', then invalid parsing will be set as NaN. - If 'ignore', then "
+"invalid parsing will return the input."
+msgstr ""
+"- 如果为 'raise'，则无效解析将引发异常。 - 如果为 'coerce'，则无效解析将"
+"被设置为 NaN。 - 如果为 'ignore'，则无效解析将返回输入。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:18 of
+msgid "If 'raise', then invalid parsing will raise an exception."
+msgstr "如果为 'raise'，则无效解析将引发异常。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:19 of
+msgid "If 'coerce', then invalid parsing will be set as NaN."
+msgstr "如果为 'coerce'，则无效解析将被设置为 NaN。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:20 of
+msgid "If 'ignore', then invalid parsing will return the input."
+msgstr "如果为 'ignore'，则无效解析将返回输入。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:22 of
+msgid ""
+"If not None, and if the data has been successfully cast to a numerical "
+"dtype (or if the data was numeric to begin with), downcast that resulting"
+" data to the smallest numerical dtype possible according to the following"
+" rules:  - 'integer' or 'signed': smallest signed int dtype (min.: "
+"np.int8) - 'unsigned': smallest unsigned int dtype (min.: np.uint8) - "
+"'float': smallest float dtype (min.: np.float32)  As this behaviour is "
+"separate from the core conversion to numeric values, any errors raised "
+"during the downcasting will be surfaced regardless of the value of the "
+"'errors' input.  In addition, downcasting will only occur if the size of "
+"the resulting data's dtype is strictly larger than the dtype it is to be "
+"cast to, so if none of the dtypes checked satisfy that specification, no "
+"downcasting will be performed on the data."
+msgstr ""
+"如果不为 None，并且数据已成功转换为数值类型（或者数据本身就是数值类型），"
+"则根据以下规则将结果数据向下转换为可能的最小数值类型： - 'integer' 或 '"
+"signed'：最小的有符号整数类型（最小值：np.int8） - 'unsigned'：最小的无"
+"符号整数类型（最小值：np.uint8） - 'float'：最小的浮点数类型（最小值：np."
+"float32） 由于此行为与核心数值转换是分开的，因此在向下转换期间引发的任何"
+"错误都会被抛出，而不管 'errors' 输入的值是什么。 此外，仅当结果数据的 "
+"dtype 大小严格大于要转换到的 dtype 时才会发生向下转换，因此如果没有满足该"
+"规范的 dtype，则不会对数据执行向下转换。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:22 of
+msgid ""
+"If not None, and if the data has been successfully cast to a numerical "
+"dtype (or if the data was numeric to begin with), downcast that resulting"
+" data to the smallest numerical dtype possible according to the following"
+" rules:"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:27 of
+msgid "'integer' or 'signed': smallest signed int dtype (min.: np.int8)"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:28 of
+msgid "'unsigned': smallest unsigned int dtype (min.: np.uint8)"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:29 of
+msgid "'float': smallest float dtype (min.: np.float32)"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:31 of
+msgid ""
+"As this behaviour is separate from the core conversion to numeric values,"
+" any errors raised during the downcasting will be surfaced regardless of "
+"the value of the 'errors' input."
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:35 of
+msgid ""
+"In addition, downcasting will only occur if the size of the resulting "
+"data's dtype is strictly larger than the dtype it is to be cast to, so if"
+" none of the dtypes checked satisfy that specification, no downcasting "
+"will be performed on the data."
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:42 of
+msgid ""
+"Numeric if parsing succeeded. Return type depends on input.  Series if "
+"Series, otherwise Tensor."
+msgstr ""
+"如果解析成功则返回数值。返回类型取决于输入。如果是 Series 则返回 Series，"
+"否则返回 Tensor。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:48 of
+msgid ":py:obj:`DataFrame.astype`"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:49 of
+msgid "Cast argument to a specified dtype."
+msgstr "将参数转换为指定的 dtype。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:51 of
+msgid ":py:obj:`to_datetime`"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:52 of
+msgid "Convert argument to datetime."
+msgstr "将参数转换为 datetime。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:54 of
+msgid ":py:obj:`to_timedelta`"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:55 of
+msgid "Convert argument to timedelta."
+msgstr "将参数转换为 timedelta。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:57 of
+msgid ":py:obj:`numpy.ndarray.astype`"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:58 of
+msgid "Cast a numpy array to a specified type."
+msgstr "将 numpy 数组转换为指定类型。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:60 of
+msgid ":py:obj:`DataFrame.convert_dtypes`"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:61 of
+msgid "Convert dtypes."
+msgstr "转换数据类型。"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:64 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:65 of
+msgid "Take separate series and convert to numeric, coercing when told to"
+msgstr "获取独立的 Series 并转换为数值类型，在指示时进行强制转换"
+
+#: maxframe.dataframe.misc.to_numeric.to_numeric:97 of
+msgid "Downcasting of nullable integer and floating dtypes is supported:"
+msgstr "支持可空整数和浮点数类型的向下转换："
+

@@ -1,0 +1,152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.drop.rst:2
+msgid "maxframe.dataframe.DataFrame.drop"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.df_drop:1 of
+msgid "Drop specified labels from rows or columns."
+msgstr "从行或列中删除指定的标签。"
+
+#: maxframe.dataframe.misc.drop.df_drop:3 of
+msgid ""
+"Remove rows or columns by specifying label names and corresponding axis, "
+"or by specifying directly index or column names. When using a multi-"
+"index, labels on different levels can be removed by specifying the level."
+msgstr ""
+"通过指定标签名称和对应的轴，或者直接指定索引或列名称来删除行或列。在使用"
+"多级索引时，可以指定级别来删除不同级别的标签。"
+
+#: maxframe.dataframe.misc.drop.df_drop of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.df_drop:8 of
+msgid "Index or column labels to drop."
+msgstr "要删除的索引或列标签。"
+
+#: maxframe.dataframe.misc.drop.df_drop:10 of
+msgid ""
+"Whether to drop labels from the index (0 or 'index') or columns (1 or "
+"'columns')."
+msgstr "是从索引（0 或 'index'）还是列（1 或 'columns'）中删除标签。"
+
+#: maxframe.dataframe.misc.drop.df_drop:13 of
+msgid ""
+"Alternative to specifying axis (``labels, axis=0`` is equivalent to "
+"``index=labels``)."
+msgstr "指定轴的替代方式（``labels, axis=0`` 等价于 ``index=labels``）。"
+
+#: maxframe.dataframe.misc.drop.df_drop:16 of
+msgid ""
+"Alternative to specifying axis (``labels, axis=1`` is equivalent to "
+"``columns=labels``)."
+msgstr "指定轴的替代方式（``labels, axis=1`` 等价于 ``columns=labels``）。"
+
+#: maxframe.dataframe.misc.drop.df_drop:19 of
+msgid "For MultiIndex, level from which the labels will be removed."
+msgstr "对于 MultiIndex，指定要从中删除标签的级别。"
+
+#: maxframe.dataframe.misc.drop.df_drop:21 of
+msgid "If True, do operation inplace and return None."
+msgstr "如果为 True，则就地操作并返回 None。"
+
+#: maxframe.dataframe.misc.drop.df_drop:23 of
+msgid ""
+"If 'ignore', suppress error and only existing labels are dropped. Note "
+"that errors for missing indices will not raise."
+msgstr ""
+"如果为 'ignore'，则忽略错误，仅删除存在的标签。注意，缺失索引的错误不会"
+"引发异常。"
+
+#: maxframe.dataframe.misc.drop.df_drop of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.df_drop:27 of
+msgid "DataFrame without the removed index or column labels."
+msgstr "删除了指定索引或列标签的 DataFrame。"
+
+#: maxframe.dataframe.misc.drop.df_drop of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.df_drop of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.df_drop:30 of
+msgid "If any of the labels is not found in the selected axis."
+msgstr "如果在所选轴中找不到任何标签。"
+
+#: maxframe.dataframe.misc.drop.df_drop:34 of
+msgid ":py:obj:`DataFrame.loc`"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.df_drop:35 of
+msgid "Label-location based indexer for selection by label."
+msgstr "基于标签位置的索引器，用于按标签选择。"
+
+#: maxframe.dataframe.misc.drop.df_drop:37 of
+msgid ":py:obj:`DataFrame.dropna`"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.df_drop:38 of
+msgid ""
+"Return DataFrame with labels on given axis omitted where (all or any) "
+"data are missing."
+msgstr "返回在给定轴上省略了标签的 DataFrame，其中（全部或部分）数据缺失。"
+
+#: maxframe.dataframe.misc.drop.df_drop:40 of
+msgid ":py:obj:`DataFrame.drop_duplicates`"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.df_drop:41 of
+msgid ""
+"Return DataFrame with duplicate rows removed, optionally only considering"
+" certain columns."
+msgstr "返回删除了重复行的 DataFrame，可选择仅考虑某些列。"
+
+#: maxframe.dataframe.misc.drop.df_drop:43 of
+msgid ":py:obj:`Series.drop`"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.df_drop:44 of
+msgid "Return Series with specified index labels removed."
+msgstr "返回删除了指定索引标签的 Series。"
+
+#: maxframe.dataframe.misc.drop.df_drop:47 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.df_drop:59 of
+msgid "Drop columns"
+msgstr "删除列"
+
+#: maxframe.dataframe.misc.drop.df_drop:73 of
+msgid "Drop a row by index"
+msgstr "通过索引删除行"
+
+#: maxframe.dataframe.misc.drop.df_drop:79 of
+msgid "Drop columns and/or rows of MultiIndex DataFrame"
+msgstr "删除 MultiIndex DataFrame 的列和/或行"
+

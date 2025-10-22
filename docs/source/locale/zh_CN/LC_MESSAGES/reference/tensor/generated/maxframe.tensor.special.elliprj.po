@@ -1,0 +1,224 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.elliprj.rst:2
+msgid "maxframe.tensor.special.elliprj"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:1 of
+msgid "Symmetric elliptic integral of the third kind."
+msgstr "第三类对称椭圆积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:3 of
+msgid "The function RJ is defined as [1]_"
+msgstr "函数 RJ 定义为 [1]_"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:5 of
+msgid ""
+"R_{\\mathrm{J}}(x, y, z, p) =\n"
+"   \\frac{3}{2} \\int_0^{+\\infty} [(t + x) (t + y) (t + z)]^{-1/2}\n"
+"   (t + p)^{-1} dt"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:12 of
+msgid ""
+"This function should be considered experimental when the inputs are "
+"unbalanced.  Check correctness with another independent implementation."
+msgstr "当输入不平衡时，此函数应被视为实验性。请使用另一个独立实现检查正确性。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.elliprj.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:15
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:20
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:25
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:30 of
+msgid ""
+"Real or complex input parameters. `x`, `y`, or `z` are numbers in the "
+"complex plane cut along the negative real axis (subject to further "
+"constraints, see Notes), and at most one of them can be zero. `p` must be"
+" non-zero."
+msgstr ""
+"实数或复数输入参数。`x`、`y` 或 `z` 是复平面上沿负实轴切割的数字（受"
+"进一步约束，参见注释），其中至多有一个为零。`p` 必须非零。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:35 of
+msgid "Optional output array for the function values"
+msgstr "函数值的可选输出数组"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.elliprj.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:38 of
+msgid ""
+"**R** -- Value of the integral. If all of `x`, `y`, `z`, and `p` are "
+"real, the return value is real. Otherwise, the return value is complex.  "
+"If `p` is real and negative, while `x`, `y`, and `z` are real, non-"
+"negative, and at most one of them is zero, the Cauchy principal value is "
+"returned. [1]_ [2]_"
+msgstr ""
+"**R** -- 积分值。如果 `x`、`y`、`z` 和 `p` 都是实数，则返回值为实数。否则"
+"，返回值为复数。如果 `p` 是实数且为负数，而 `x`、`y` 和 `z` 是实数、非"
+"负数，且其中最多一个为零，则返回柯西主值。[1]_ [2]_"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:38 of
+#, fuzzy
+msgid ""
+"**R** -- Value of the integral. If all of `x`, `y`, `z`, and `p` are "
+"real, the return value is real. Otherwise, the return value is complex."
+msgstr ""
+"**R** -- 积分值。如果 `x`、`y`、`z` 和 `p` 都是实数，则返回值为实数。否则"
+"，返回值为复数。如果 `p` 是实数且为负数，而 `x`、`y` 和 `z` 是实数、非"
+"负数，且其中最多一个为零，则返回柯西主值。[1]_ [2]_"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:41 of
+#, fuzzy
+msgid ""
+"If `p` is real and negative, while `x`, `y`, and `z` are real, non-"
+"negative, and at most one of them is zero, the Cauchy principal value is "
+"returned. [1]_ [2]_"
+msgstr ""
+"**R** -- 积分值。如果 `x`、`y`、`z` 和 `p` 都是实数，则返回值为实数。否则"
+"，返回值为复数。如果 `p` 是实数且为负数，而 `x`、`y` 和 `z` 是实数、非"
+"负数，且其中最多一个为零，则返回柯西主值。[1]_ [2]_"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.elliprj.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:48 of
+msgid ":py:obj:`elliprc`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:49 of
+msgid "Degenerate symmetric integral."
+msgstr "退化的对称积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:51 of
+msgid ":py:obj:`elliprd`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:52 of
+msgid "Symmetric elliptic integral of the second kind."
+msgstr "第二类对称椭圆积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:54 of
+msgid ":py:obj:`elliprf`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:55 of
+msgid "Completely-symmetric elliptic integral of the first kind."
+msgstr "第一类完全对称椭圆积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:57 of
+msgid ":py:obj:`elliprg`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:58 of
+msgid "Completely-symmetric elliptic integral of the second kind."
+msgstr "第二类完全对称椭圆积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:61 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:62 of
+msgid ""
+"The code implements Carlson's algorithm based on the duplication theorems"
+" and series expansion up to the 7th order. [3]_ The algorithm is slightly"
+" different from its earlier incarnation as it appears in [1]_, in that "
+"the call to `elliprc` (or ``atan``/``atanh``, see [4]_) is no longer "
+"needed in the inner loop. Asymptotic approximations are used where "
+"arguments differ widely in the order of magnitude. [5]_"
+msgstr ""
+"代码实现了基于倍增定理和级数展开至七阶的 Carlson 算法。[3]_ 该算法与其在 "
+"[1]_ 中的早期形式略有不同，因为在内循环中不再需要调用 `elliprc`（或 ``"
+"atan``/``atanh``，见 [4]_）。当参数在数量级上差异很大时使用渐近近似。[5]_"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:69 of
+msgid ""
+"The input values are subject to certain sufficient but not necessary "
+"constraints when input arguments are complex. Notably, ``x``, ``y``, and "
+"``z`` must have non-negative real parts, unless two of them are non-"
+"negative and complex-conjugates to each other while the other is a real "
+"non-negative number. [1]_ If the inputs do not satisfy the sufficient "
+"condition described in Ref. [1]_ they are rejected outright with the "
+"output set to NaN."
+msgstr ""
+"当输入参数为复数时，输入值需满足某些充分但非必要的约束。特别地，``x``、``"
+"y`` 和 ``z`` 必须具有非负实部，除非其中两个为非负数且互为复共轭，而另一个"
+"为实数非负数。[1]_ 如果输入不满足参考文献 [1]_ 中描述的充分条件，则直接"
+"拒绝输入并将输出设为 NaN。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:77 of
+msgid ""
+"In the case where one of ``x``, ``y``, and ``z`` is equal to ``p``, the "
+"function ``elliprd`` should be preferred because of its less restrictive "
+"domain."
+msgstr ""
+"当 ``x``、``y`` 和 ``z`` 中有一个等于 ``p`` 时，应优先使用函数 ``elliprd`"
+"`，因为其定义域限制较少。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:82 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:83 of
+msgid ""
+"B. C. Carlson, \"Numerical computation of real or complex elliptic "
+"integrals,\" Numer. Algorithm, vol. 10, no. 1, pp. 13-26, 1995. "
+"https://arxiv.org/abs/math/9409227 https://doi.org/10.1007/BF02198293"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:87 of
+msgid ""
+"B. C. Carlson, ed., Chapter 19 in \"Digital Library of Mathematical "
+"Functions,\" NIST, US Dept. of Commerce. https://dlmf.nist.gov/19.20.iii"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:90 of
+msgid ""
+"B. C. Carlson, J. FitzSimmons, \"Reduction Theorems for Elliptic "
+"Integrands with the Square Root of Two Quadratic Factors,\" J. Comput. "
+"Appl. Math., vol. 118, nos. 1-2, pp. 71-85, 2000. "
+"https://doi.org/10.1016/S0377-0427(00)00282-X"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:94 of
+msgid ""
+"F. Johansson, \"Numerical Evaluation of Elliptic Functions, Elliptic "
+"Integrals and Modular Forms,\" in J. Blumlein, C. Schneider, P. Paule, "
+"eds., \"Elliptic Integrals, Elliptic Functions and Modular Forms in "
+"Quantum Field Theory,\" pp. 269-293, 2019 (Cham, Switzerland: Springer "
+"Nature Switzerland) https://arxiv.org/abs/1806.06725 "
+"https://doi.org/10.1007/978-3-030-04480-0"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprj:101 of
+msgid ""
+"B. C. Carlson, J. L. Gustafson, \"Asymptotic Approximations for Symmetric"
+" Elliptic Integrals,\" SIAM J. Math. Anls., vol. 25, no. 2, pp. 288-303, "
+"1994. https://arxiv.org/abs/math/9310223 "
+"https://doi.org/10.1137/S0036141092228477"
+msgstr ""
+

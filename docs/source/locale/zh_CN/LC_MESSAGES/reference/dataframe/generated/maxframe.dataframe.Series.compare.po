@@ -1,0 +1,165 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.compare.rst:2
+msgid "maxframe.dataframe.Series.compare"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:1 of
+msgid "Compare to another Series and show the differences."
+msgstr "与另一个 Series 比较并显示差异。"
+
+#: maxframe.dataframe.merge.compare.series_compare of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:3 of
+msgid "Object to compare with."
+msgstr "用于比较的对象。"
+
+#: maxframe.dataframe.merge.compare.series_compare:5 of
+msgid ""
+"Determine which axis to align the comparison on.  * 0, or 'index' : "
+"Resulting differences are stacked vertically     with rows drawn "
+"alternately from self and other. * 1, or 'columns' : Resulting "
+"differences are aligned horizontally     with columns drawn alternately "
+"from self and other."
+msgstr ""
+"确定比较结果对齐的轴。  * 0 或 'index'：结果差异垂直堆叠，行交替地从 self"
+" 和 other 中提取。* 1 或 'columns'：结果差异水平对齐，列交替地从 self 和 "
+"other 中提取。"
+
+#: maxframe.dataframe.merge.compare.series_compare:5 of
+msgid "Determine which axis to align the comparison on."
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:7 of
+msgid "0, or 'index'"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:-1 of
+msgid "Resulting differences are stacked vertically"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:8 of
+msgid "with rows drawn alternately from self and other."
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:9 of
+msgid "1, or 'columns'"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:-1 of
+msgid "Resulting differences are aligned horizontally"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:10 of
+msgid "with columns drawn alternately from self and other."
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:12 of
+msgid ""
+"If true, all rows and columns are kept. Otherwise, only the ones with "
+"different values are kept."
+msgstr "如果为 True，则保留所有行和列。否则，只保留值不同的项。"
+
+#: maxframe.dataframe.merge.compare.series_compare:15 of
+msgid ""
+"If true, the result keeps values that are equal. Otherwise, equal values "
+"are shown as NaNs."
+msgstr "如果为 True，则结果保留相等的值。否则，相等的值显示为 NaN。"
+
+#: maxframe.dataframe.merge.compare.series_compare:18 of
+msgid "Set the dataframes names in the comparison."
+msgstr "在比较中设置 DataFrame 的名称。"
+
+#: maxframe.dataframe.merge.compare.series_compare of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:21 of
+msgid ""
+"If axis is 0 or 'index' the result will be a Series. The resulting index "
+"will be a MultiIndex with 'self' and 'other' stacked alternately at the "
+"inner level.  If axis is 1 or 'columns' the result will be a DataFrame. "
+"It will have two columns namely 'self' and 'other'."
+msgstr ""
+"如果 axis 为 0 或 'index'，结果将是一个 Series。其索引将是一个 MultiIndex"
+"，'self' 和 'other' 在内层交替堆叠。如果 axis 为 1 或 'columns'，结果将是"
+"一个 DataFrame，它将包含两个列，即 'self' 和 'other'。"
+
+#: maxframe.dataframe.merge.compare.series_compare:21 of
+#, fuzzy
+msgid ""
+"If axis is 0 or 'index' the result will be a Series. The resulting index "
+"will be a MultiIndex with 'self' and 'other' stacked alternately at the "
+"inner level."
+msgstr ""
+"如果 axis 为 0 或 'index'，结果将是一个 Series。其索引将是一个 MultiIndex"
+"，'self' 和 'other' 在内层交替堆叠。如果 axis 为 1 或 'columns'，结果将是"
+"一个 DataFrame，它将包含两个列，即 'self' 和 'other'。"
+
+#: maxframe.dataframe.merge.compare.series_compare:25 of
+msgid ""
+"If axis is 1 or 'columns' the result will be a DataFrame. It will have "
+"two columns namely 'self' and 'other'."
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:31 of
+msgid ":py:obj:`DataFrame.compare`"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:32 of
+msgid "Compare with another DataFrame and show differences."
+msgstr "与另一个 DataFrame 比较并显示差异。"
+
+#: maxframe.dataframe.merge.compare.series_compare:35 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:36 of
+msgid "Matching NaNs will not appear as a difference."
+msgstr "匹配的 NaN 不会被视为差异。"
+
+#: maxframe.dataframe.merge.compare.series_compare:39 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.series_compare:44 of
+msgid "Align the differences on columns"
+msgstr "将差异按列对齐"
+
+#: maxframe.dataframe.merge.compare.series_compare:51 of
+msgid "Stack the differences on indices"
+msgstr "将差异按索引堆叠"
+
+#: maxframe.dataframe.merge.compare.series_compare:60 of
+msgid "Keep all original rows"
+msgstr "保留所有原始行"
+
+#: maxframe.dataframe.merge.compare.series_compare:70 of
+msgid "Keep all original rows and also all original values"
+msgstr "保留所有原始行和所有原始值"
+

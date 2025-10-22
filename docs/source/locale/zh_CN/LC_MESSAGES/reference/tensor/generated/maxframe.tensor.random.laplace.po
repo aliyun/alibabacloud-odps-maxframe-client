@@ -1,0 +1,169 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.laplace.rst:2
+msgid "maxframe.tensor.random.laplace"
+msgstr ""
+
+#: maxframe.tensor.random.laplace.laplace:1 of
+msgid ""
+"Draw samples from the Laplace or double exponential distribution with "
+"specified location (or mean) and scale (decay)."
+msgstr "从具有指定位置（或均值）和尺度（衰减）的拉普拉斯或双指数分布中抽取样本。"
+
+#: maxframe.tensor.random.laplace.laplace:4 of
+msgid ""
+"The Laplace distribution is similar to the Gaussian/normal distribution, "
+"but is sharper at the peak and has fatter tails. It represents the "
+"difference between two independent, identically distributed exponential "
+"random variables."
+msgstr ""
+"拉普拉斯分布与高斯/正态分布相似，但在峰值处更尖锐，尾部更厚。它表示两个"
+"独立且同分布的指数随机变量之间的差值。"
+
+#: maxframe.tensor.random.laplace.laplace of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.laplace.laplace:9 of
+msgid "The position, :math:`\\mu`, of the distribution peak. Default is 0."
+msgstr "分布峰值的位置 :math:`\\mu`。默认为 0。"
+
+#: maxframe.tensor.random.laplace.laplace:11 of
+msgid ":math:`\\lambda`, the exponential decay. Default is 1."
+msgstr ":math:`\\lambda`，指数衰减。默认为 1。"
+
+#: maxframe.tensor.random.laplace.laplace:13 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``loc`` and ``scale`` are both scalars. Otherwise, "
+"``np.broadcast(loc, scale).size`` samples are drawn."
+msgstr ""
+"输出形状。如果给定的形状是例如 ``(m, n, k)``，则抽取 ``m * n * k`` 个样本"
+"。如果 size 为 ``None``（默认），当 ``loc`` 和 ``scale`` 都是标量时返回"
+"单个值。否则抽取 ``np.broadcast(loc, scale).size`` 个样本。"
+
+#: maxframe.tensor.random.laplace.laplace:18 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.random.laplace.laplace:20 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.laplace.laplace:22 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.laplace.laplace of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.laplace.laplace:25 of
+msgid "**out** -- Drawn samples from the parameterized Laplace distribution."
+msgstr "**out** -- 从参数化的拉普拉斯分布中抽取的样本。"
+
+#: maxframe.tensor.random.laplace.laplace of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.laplace.laplace:29 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.laplace.laplace:30 of
+msgid "It has the probability density function"
+msgstr "其概率密度函数为"
+
+#: maxframe.tensor.random.laplace.laplace:32 of
+#, python-brace-format
+msgid ""
+"f(x; \\mu, \\lambda) = \\frac{1}{2\\lambda}\n"
+"\\exp\\left(-\\frac{|x - \\mu|}{\\lambda}\\right).\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.laplace.laplace:35 of
+msgid ""
+"The first law of Laplace, from 1774, states that the frequency of an "
+"error can be expressed as an exponential function of the absolute "
+"magnitude of the error, which leads to the Laplace distribution. For many"
+" problems in economics and health sciences, this distribution seems to "
+"model the data better than the standard Gaussian distribution."
+msgstr ""
+"拉普拉斯第一定律（1774年）指出，误差的频率可以表示为误差绝对值的指数函数"
+"，这导致了拉普拉斯分布。在经济学和健康科学的许多问题中，该分布似乎比标准"
+"高斯分布更好地拟合数据。"
+
+#: maxframe.tensor.random.laplace.laplace:43 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.laplace.laplace:44 of
+msgid ""
+"Abramowitz, M. and Stegun, I. A. (Eds.). \"Handbook of Mathematical "
+"Functions with Formulas, Graphs, and Mathematical Tables, 9th printing,\""
+" New York: Dover, 1972."
+msgstr ""
+"Abramowitz, M. 和 Stegun, I. A.（编）。《数学函数手册：公式、图表和数学表"
+"，第9版》，纽约：Dover，1972年。"
+
+#: maxframe.tensor.random.laplace.laplace:47 of
+msgid ""
+"Kotz, Samuel, et. al. \"The Laplace Distribution and Generalizations, \" "
+"Birkhauser, 2001."
+msgstr "Kotz, Samuel 等。《拉普拉斯分布及其推广》，Birkhauser，2001年。"
+
+#: maxframe.tensor.random.laplace.laplace:49 of
+msgid ""
+"Weisstein, Eric W. \"Laplace Distribution.\" From MathWorld--A Wolfram "
+"Web Resource. http://mathworld.wolfram.com/LaplaceDistribution.html"
+msgstr ""
+"Weisstein, Eric W. “拉普拉斯分布。” 来自 MathWorld--Wolfram 网络资源。"
+"http://mathworld.wolfram.com/LaplaceDistribution.html"
+
+#: maxframe.tensor.random.laplace.laplace:52 of
+msgid ""
+"Wikipedia, \"Laplace distribution\", "
+"http://en.wikipedia.org/wiki/Laplace_distribution"
+msgstr ""
+"Wikipedia，“拉普拉斯分布”，http://en.wikipedia.org/wiki/Laplace_"
+"distribution"
+
+#: maxframe.tensor.random.laplace.laplace:56 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.laplace.laplace:57 of
+msgid "Draw samples from the distribution"
+msgstr "从分布中抽取样本"
+
+#: maxframe.tensor.random.laplace.laplace:64 of
+msgid ""
+"Display the histogram of the samples, along with the probability density "
+"function:"
+msgstr "显示样本的直方图以及概率密度函数："
+
+#: maxframe.tensor.random.laplace.laplace:73 of
+msgid "Plot Gaussian for comparison:"
+msgstr "绘制高斯分布进行比较："
+

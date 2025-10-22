@@ -1,0 +1,116 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.where.rst:2
+msgid "maxframe.dataframe.Series.where"
+msgstr ""
+
+#: maxframe.dataframe.indexing.where.where:1 of
+msgid "Replace values where the condition is False."
+msgstr "替换条件为 False 的值。"
+
+#: maxframe.dataframe.indexing.where.where of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.where.where:3 of
+msgid ""
+"Where `cond` is False, keep the original value. Where True, replace with "
+"corresponding value from `other`. If `cond` is callable, it is computed "
+"on the Series/DataFrame and should return boolean Series/DataFrame or "
+"array. The callable must not change input Series/DataFrame (though pandas"
+" doesn't check it)."
+msgstr ""
+"当 `cond` 为 False 时，保留原始值。当为 True 时，使用 `other` 中对应的值"
+"进行替换。如果 `cond` 是可调用对象，则在 Series/DataFrame 上计算，并应"
+"返回布尔型 Series/DataFrame 或数组。该可调用对象不得更改输入的 Series/"
+"DataFrame（尽管 pandas 不会检查）。"
+
+#: maxframe.dataframe.indexing.where.where:9 of
+msgid ""
+"Entries where `cond` is True are replaced with corresponding value from "
+"`other`. If other is callable, it is computed on the Series/DataFrame and"
+" should return scalar or Series/DataFrame. The callable must not change "
+"input Series/DataFrame (though pandas doesn't check it)."
+msgstr ""
+"当 `cond` 为 True 时，使用 `other` 中对应的值进行替换。如果 `other` 是可"
+"调用对象，则在 Series/DataFrame 上计算，并应返回标量或 Series/DataFrame。"
+"该可调用对象不得更改输入的 Series/DataFrame（尽管 pandas 不会检查）。"
+
+#: maxframe.dataframe.indexing.where.where:15 of
+msgid "Whether to perform the operation in place on the data."
+msgstr "是否在数据上就地执行操作。"
+
+#: maxframe.dataframe.indexing.where.where:17 of
+msgid "Alignment axis if needed."
+msgstr "如需对齐的轴。"
+
+#: maxframe.dataframe.indexing.where.where:19 of
+msgid "Alignment level if needed."
+msgstr "如需对齐的级别。"
+
+#: maxframe.dataframe.indexing.where.where of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.where.where:26 of
+msgid ":func:`DataFrame.mask`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.where.where:27 of
+msgid "Return an object of same shape as self."
+msgstr "返回与自身形状相同的对象。"
+
+#: maxframe.dataframe.indexing.where.where:30 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.indexing.where.where:31 of
+msgid ""
+"The mask method is an application of the if-then idiom. For each element "
+"in the calling DataFrame, if ``cond`` is ``False`` the element is used; "
+"otherwise the corresponding element from the DataFrame ``other`` is used."
+msgstr ""
+"mask 方法是 if-then 用法的一种应用。对于调用 DataFrame 中的每个元素，如果"
+" ``cond`` 为 ``False``，则使用该元素；否则使用 DataFrame ``other`` 中对应"
+"的元素。"
+
+#: maxframe.dataframe.indexing.where.where:36 of
+msgid ""
+"The signature for :func:`DataFrame.where` differs from "
+":func:`numpy.where`. Roughly ``df1.where(m, df2)`` is equivalent to "
+"``np.where(m, df1, df2)``."
+msgstr ""
+":func:`DataFrame.where` 的签名与 :func:`numpy.where` 不同。大致上 ``df1."
+"where(m, df2)`` 等价于 ``np.where(m, df1, df2)``。"
+
+#: maxframe.dataframe.indexing.where.where:40 of
+msgid ""
+"For further details and examples see the ``mask`` documentation in "
+":ref:`indexing <indexing.where_mask>`."
+msgstr ""
+"更多详情和示例请参见 :ref:`indexing <indexing.where_mask>` 中的 ``mask`` "
+"文档。"
+
+#: maxframe.dataframe.indexing.where.where:44 of
+msgid "示例"
+msgstr ""
+

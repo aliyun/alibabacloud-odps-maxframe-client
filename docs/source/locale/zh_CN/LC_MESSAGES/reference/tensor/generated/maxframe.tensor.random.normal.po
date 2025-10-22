@@ -1,0 +1,180 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.normal.rst:2
+msgid "maxframe.tensor.random.normal"
+msgstr ""
+
+#: maxframe.tensor.random.normal.normal:1 of
+msgid "Draw random samples from a normal (Gaussian) distribution."
+msgstr "从正态（高斯）分布中抽取随机样本。"
+
+#: maxframe.tensor.random.normal.normal:3 of
+msgid ""
+"The probability density function of the normal distribution, first "
+"derived by De Moivre and 200 years later by both Gauss and Laplace "
+"independently [2]_, is often called the bell curve because of its "
+"characteristic shape (see the example below)."
+msgstr ""
+"正态分布的概率密度函数最初由 De Moivre 推导出来，200 年后由 Gauss 和 "
+"Laplace 独立重新推导 [2]_，由于其典型的形状常被称为钟形曲线（参见下面的"
+"示例）。"
+
+#: maxframe.tensor.random.normal.normal:8 of
+msgid ""
+"The normal distributions occurs often in nature.  For example, it "
+"describes the commonly occurring distribution of samples influenced by a "
+"large number of tiny, random disturbances, each with its own unique "
+"distribution [2]_."
+msgstr ""
+"正态分布在自然界中经常出现。例如，它描述了受大量微小、随机干扰影响的样本"
+"的常见分布，每个干扰都有其独特的分布 [2]_。"
+
+#: maxframe.tensor.random.normal.normal of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.normal.normal:13 of
+msgid "Mean (\"centre\") of the distribution."
+msgstr "分布的均值（“中心”）。"
+
+#: maxframe.tensor.random.normal.normal:15 of
+msgid "Standard deviation (spread or \"width\") of the distribution."
+msgstr "分布的标准差（离散度或“宽度”）。"
+
+#: maxframe.tensor.random.normal.normal:17 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``loc`` and ``scale`` are both scalars. Otherwise, "
+"``mt.broadcast(loc, scale).size`` samples are drawn."
+msgstr ""
+"输出形状。如果给定形状为，例如 ``(m, n, k)``，则会抽取 ``m * n * k`` 个"
+"样本。如果 size 为 ``None``（默认），且 ``loc`` 和 ``scale`` 都为标量，则"
+"返回单个值。否则，抽取 ``mt.broadcast(loc, scale).size`` 个样本。"
+
+#: maxframe.tensor.random.normal.normal:22 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的分块大小"
+
+#: maxframe.tensor.random.normal.normal:24 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.normal.normal:26 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.normal.normal of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.normal.normal:29 of
+msgid "**out** -- Drawn samples from the parameterized normal distribution."
+msgstr "**out** -- 从参数化的正态分布中抽取的样本。"
+
+#: maxframe.tensor.random.normal.normal of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.normal.normal:34 of
+msgid ":py:obj:`scipy.stats.norm`"
+msgstr ""
+
+#: maxframe.tensor.random.normal.normal:35 of
+msgid ""
+"probability density function, distribution or cumulative density "
+"function, etc."
+msgstr "概率密度函数、分布或累积密度函数等。"
+
+#: maxframe.tensor.random.normal.normal:38 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.normal.normal:39 of
+msgid "The probability density for the Gaussian distribution is"
+msgstr "高斯分布的概率密度为"
+
+#: maxframe.tensor.random.normal.normal:41 of
+msgid ""
+"p(x) = \\frac{1}{\\sqrt{ 2 \\pi \\sigma^2 }}\n"
+"e^{ - \\frac{ (x - \\mu)^2 } {2 \\sigma^2} },\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.normal.normal:44 of
+msgid ""
+"where :math:`\\mu` is the mean and :math:`\\sigma` the standard "
+"deviation. The square of the standard deviation, :math:`\\sigma^2`, is "
+"called the variance."
+msgstr ""
+"其中 :math:`\\mu` 是均值，:math:`\\sigma` 是标准差。标准差的平方 :math:`"
+"\\sigma^2`，称为方差。"
+
+#: maxframe.tensor.random.normal.normal:48 of
+msgid ""
+"The function has its peak at the mean, and its \"spread\" increases with "
+"the standard deviation (the function reaches 0.607 times its maximum at "
+":math:`x + \\sigma` and :math:`x - \\sigma` [2]_).  This implies that "
+"`numpy.random.normal` is more likely to return samples lying close to the"
+" mean, rather than those far away."
+msgstr ""
+"该函数在均值处达到峰值，其“离散度”随标准差增加而增大（函数在 :math:`x +"
+" \\sigma` 和 :math:`x - \\sigma` 处达到最大值的 0.607 倍 [2]_）。这意味着"
+" `numpy.random.normal` 更可能返回接近均值的样本，而不是远离均值的样本。"
+
+#: maxframe.tensor.random.normal.normal:55 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.normal.normal:56 of
+msgid ""
+"Wikipedia, \"Normal distribution\", "
+"http://en.wikipedia.org/wiki/Normal_distribution"
+msgstr ""
+
+#: maxframe.tensor.random.normal.normal:58 of
+msgid ""
+"P. R. Peebles Jr., \"Central Limit Theorem\" in \"Probability, Random "
+"Variables and Random Signal Principles\", 4th ed., 2001, pp. 51, 51, 125."
+msgstr ""
+"P. R. Peebles Jr., \"Central Limit Theorem\" in \"Probability, Random "
+"Variables and Random Signal Principles\", 第 4 版, 2001, 第 51, 51, 125 "
+"页。"
+
+#: maxframe.tensor.random.normal.normal:63 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.normal.normal:64 of
+msgid "Draw samples from the distribution:"
+msgstr "从分布中抽取样本："
+
+#: maxframe.tensor.random.normal.normal:71 of
+msgid "Verify the mean and the variance:"
+msgstr "验证均值和方差："
+
+#: maxframe.tensor.random.normal.normal:79 of
+msgid ""
+"Display the histogram of the samples, along with the probability density "
+"function:"
+msgstr "显示样本的直方图以及概率密度函数："
+

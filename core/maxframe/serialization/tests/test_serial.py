@@ -239,11 +239,11 @@ def test_pandas():
 @pytest.mark.skipif(_arrow_dtype_supported, reason="pandas doesn't support ArrowDtype")
 def test_fake_arrow_dtype_serde():
     serializer = DtypeSerializer()
-    payload, data, ok = serializer.serial(
+    payload, data, is_leaf = serializer.serial(
         FakeArrowDtype(pa.map_(pa.int64(), pa.string())), dict()
     )
 
-    assert ok
+    assert is_leaf
     assert data == []
     assert payload == ["PA", "map<int64, string>"]
     new_dtype = serializer.deserial(payload, dict(), list())

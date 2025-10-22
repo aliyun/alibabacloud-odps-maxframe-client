@@ -1,0 +1,45 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.ndim.rst:2
+msgid "maxframe.dataframe.Series.ndim"
+msgstr ""
+
+#: maxframe.dataframe.Series.ndim:1 of
+msgid "Return an int representing the number of axes / array dimensions."
+msgstr "返回一个表示轴数/数组维度的整数。"
+
+#: maxframe.dataframe.Series.ndim:3 of
+msgid "Return 1 if Series. Otherwise return 2 if DataFrame."
+msgstr "如果为 Series 则返回 1，否则如果为 DataFrame 则返回 2。"
+
+#: maxframe.dataframe.Series.ndim:7 of
+msgid ":py:obj:`ndarray.ndim`"
+msgstr ""
+
+#: maxframe.dataframe.Series.ndim:8 of
+msgid "Number of array dimensions."
+msgstr "数组维度的数量。"
+
+#: maxframe.dataframe.Series.ndim:11 of
+msgid "示例"
+msgstr ""
+

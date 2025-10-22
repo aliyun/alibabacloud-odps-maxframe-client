@@ -1,0 +1,177 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.str.contains.rst:2
+msgid "maxframe.dataframe.Series.str.contains"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.contains:1
+msgid ""
+"Test if pattern or regex is contained within a string of a Series or "
+"Index."
+msgstr "测试模式或正则表达式是否包含在 Series 或 Index 的字符串中。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:3
+msgid ""
+"Return boolean Series or Index based on whether a given pattern or regex "
+"is contained within a string of a Series or Index."
+msgstr ""
+"根据给定的模式或正则表达式是否包含在 Series 或 Index 的字符串中返回布尔值"
+" Series 或 Index。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.contains:6
+msgid "Character sequence or regular expression."
+msgstr "字符序列或正则表达式。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:8
+msgid "If True, case sensitive."
+msgstr "如果为 True，则区分大小写。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:10
+msgid "Flags to pass through to the re module, e.g. re.IGNORECASE."
+msgstr "传递给 re 模块的标志，例如 re.IGNORECASE。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:12
+msgid ""
+"Fill value for missing values. The default depends on dtype of the array."
+" For object-dtype, ``numpy.nan`` is used. For the nullable "
+"``StringDtype``, ``pandas.NA`` is used. For the ``\"str\"`` dtype, "
+"``False`` is used."
+msgstr ""
+"缺失值的填充值。默认值取决于数组的数据类型。对于 object-dtype，使用 ``"
+"numpy.nan``。对于可为空的 ``StringDtype``，使用 ``pandas.NA``。对于 ``\""
+"str\"`` 数据类型，使用 ``False``。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:17
+msgid ""
+"If True, assumes the pat is a regular expression.  If False, treats the "
+"pat as a literal string."
+msgstr ""
+"如果为 True，则假定 pat 是正则表达式。如果为 False，则将 pat 视为字面"
+"字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:17
+#, fuzzy
+msgid "If True, assumes the pat is a regular expression."
+msgstr ""
+"如果为 True，则假定 pat 是正则表达式。如果为 False，则将 pat 视为字面"
+"字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:19
+#, fuzzy
+msgid "If False, treats the pat as a literal string."
+msgstr ""
+"如果为 True，则假定 pat 是正则表达式。如果为 False，则将 pat 视为字面"
+"字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.contains:22
+msgid ""
+"A Series or Index of boolean values indicating whether the given pattern "
+"is contained within the string of each element of the Series or Index."
+msgstr ""
+"一个布尔值 Series 或 Index，表示给定模式是否包含在 Series 或 Index 的每个"
+"元素的字符串中。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.contains:29
+msgid ":py:obj:`match`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.contains:30
+msgid "Analogous, but stricter, relying on re.match instead of re.search."
+msgstr "类似的，但更严格，依赖于 re.match 而不是 re.search。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:32
+msgid ":py:obj:`Series.str.startswith`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.contains:33
+msgid "Test if the start of each string element matches a pattern."
+msgstr "测试每个字符串元素的开头是否与模式匹配。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:35
+msgid ":py:obj:`Series.str.endswith`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.contains:36
+msgid "Same as startswith, but tests the end of string."
+msgstr "与 startswith 相同，但测试字符串的结尾。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:39
+msgid "示例"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.contains:40
+msgid "Returning a Series of booleans using only a literal pattern."
+msgstr "仅使用字面模式返回一个布尔值 Series。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:53
+msgid "Returning an Index of booleans using only a literal pattern."
+msgstr "仅使用字面模式返回一个布尔值 Index。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:59
+msgid "Specifying case sensitivity using `case`."
+msgstr "使用 `case` 指定是否区分大小写。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:69
+msgid ""
+"Specifying `na` to be `False` instead of `NaN` replaces NaN values with "
+"`False`. If Series or Index does not contain NaN values the resultant "
+"dtype will be `bool`, otherwise, an `object` dtype."
+msgstr ""
+"指定 `na` 为 `False` 而不是 `NaN`，会将 NaN 值替换为 `False`。如果 Series"
+" 或 Index 不包含 NaN 值，则结果数据类型将是 `bool`，否则为 `object` "
+"数据类型。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:81
+msgid "Returning 'house' or 'dog' when either expression occurs in a string."
+msgstr "当字符串中出现任一表达式时返回 'house' 或 'dog'。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:91
+msgid "Ignoring case sensitivity using `flags` with regex."
+msgstr "使用带有 `flags` 的正则表达式忽略大小写。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:102
+msgid "Returning any digit using regular expression."
+msgstr "使用正则表达式返回任意数字。"
+
+#: of pandas.core.strings.accessor.StringMethods.contains:112
+msgid ""
+"Ensure `pat` is a not a literal pattern when `regex` is set to True. Note"
+" in the following example one might expect only `s2[1]` and `s2[3]` to "
+"return `True`. However, '.0' as a regex matches any character followed by"
+" a 0."
+msgstr ""
+"当 `regex` 设置为 True 时，确保 `pat` 不是字面模式。注意在以下示例中，"
+"可能有人会期望只有 `s2[1]` 和 `s2[3]` 返回 `True`。然而，'.0' 作为"
+"正则表达式会匹配任何后面跟着 0 的字符。"
+

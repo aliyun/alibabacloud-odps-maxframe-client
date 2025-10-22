@@ -1,0 +1,152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.area.rst:2
+msgid "maxframe.dataframe.DataFrame.plot.area"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:1
+#: of
+msgid "Draw a stacked area plot."
+msgstr "绘制堆叠面积图。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:3
+#: of
+msgid ""
+"An area plot displays quantitative data visually. This function wraps the"
+" matplotlib area function."
+msgstr "面积图以可视化方式展示定量数据。此函数封装了 matplotlib 的 area 函数。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:6
+#: of
+msgid "Coordinates for the X axis. By default uses the index."
+msgstr "X 轴的坐标。默认使用索引。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:8
+#: of
+msgid "Column to plot. By default uses all columns."
+msgstr "要绘制的列。默认使用所有列。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:10
+#: of
+msgid ""
+"Area plots are stacked by default. Set to False to create a unstacked "
+"plot."
+msgstr "面积图默认是堆叠的。设置为 False 可创建非堆叠图。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:13
+#: of
+msgid "Additional keyword arguments are documented in :meth:`DataFrame.plot`."
+msgstr "其他关键字参数详见 :meth:`DataFrame.plot`。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:16
+#: of
+msgid "Area plot, or array of area plots if subplots is True."
+msgstr "面积图，如果 subplots 为 True，则返回面积图数组。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:21
+#: of
+msgid ":py:obj:`DataFrame.plot`"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:22
+#: of
+msgid "Make plots of DataFrame using matplotlib / pylab."
+msgstr "使用 matplotlib / pylab 绘制 DataFrame 图形。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:25
+#: of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:26
+#: of
+msgid "Draw an area plot based on basic business metrics:"
+msgstr "根据基本业务指标绘制面积图："
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.area.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-area-1.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-DataFrame-plot-area-1.py>`)"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:40
+#: of
+msgid ""
+"Area plots are stacked by default. To produce an unstacked plot, pass "
+"``stacked=False``:"
+msgstr "面积图默认是堆叠的。要生成非堆叠图，请传递 ``stacked=False``："
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.area.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-area-2.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-DataFrame-plot-area-2.py>`)"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:48
+#: of
+msgid "Draw an area plot for a single column:"
+msgstr "为单个列绘制面积图："
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.area.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-area-3.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-DataFrame-plot-area-3.py>`)"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:55
+#: of
+msgid "Draw with a different `x`:"
+msgstr "使用不同的 `x` 绘图："
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.area.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-area-4.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-DataFrame-plot-area-4.py>`)"
+

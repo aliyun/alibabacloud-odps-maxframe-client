@@ -15,6 +15,7 @@
 from typing import List
 
 import numpy as np
+import pandas as pd
 
 from .... import opcodes
 from ....core import EntityData
@@ -62,9 +63,10 @@ class XGBPredict(Operator, TileableOperatorMixin):
 
     def __call__(self):
         num_class = getattr(self.model.op, "num_class", None)
-        if num_class is not None:
+        output_ndim = getattr(self.model.op, "output_ndim", None)
+        if num_class is not None and not pd.isna(num_class):
             num_class = int(num_class)
-        if num_class is not None and num_class > 2:
+        if num_class is not None and (num_class > 2 or output_ndim == 2):
             shape = (self.data.shape[0], num_class)
         else:
             shape = (self.data.shape[0],)

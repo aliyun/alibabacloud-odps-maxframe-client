@@ -1,0 +1,113 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.transform.rst:2
+msgid "maxframe.dataframe.Series.transform"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.series_transform:1 of
+msgid "Call ``func`` on self producing a Series with transformed values."
+msgstr "在自身上调用 ``func`` 以生成一个包含转换值的 Series。"
+
+#: maxframe.dataframe.misc.transform.series_transform:3 of
+msgid "Produced Series will have same axis length as self."
+msgstr "生成的 Series 将具有与自身相同的轴长度。"
+
+#: maxframe.dataframe.misc.transform.series_transform of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.series_transform:17 of
+msgid "Parameter needed for compatibility with DataFrame."
+msgstr "为与 DataFrame 兼容而需要的参数。"
+
+#: maxframe.dataframe.misc.transform.series_transform:19 of
+msgid "Specify dtypes of returned DataFrames. See `Notes` for more details."
+msgstr "指定返回的 DataFrames 的数据类型。详见“说明”部分。"
+
+#: maxframe.dataframe.misc.transform.series_transform:21 of
+msgid "Whether infer dtypes when dtypes or output_type is not specified."
+msgstr "当未指定 dtypes 或 output_type 时是否推断数据类型。"
+
+#: maxframe.dataframe.misc.transform.series_transform:23 of
+msgid "Positional arguments to pass to `func`."
+msgstr "传递给 `func` 的位置参数。"
+
+#: maxframe.dataframe.misc.transform.series_transform:24 of
+msgid "Keyword arguments to pass to `func`."
+msgstr "传递给 `func` 的关键字参数。"
+
+#: maxframe.dataframe.misc.transform.series_transform of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.series_transform:26 of
+msgid "* *Series* * *A Series that must have the same length as self.*"
+msgstr "* *Series* * *必须与自身具有相同长度的 Series。*"
+
+#: maxframe.dataframe.misc.transform.series_transform:26 of
+msgid "*Series*"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.series_transform:27 of
+msgid "*A Series that must have the same length as self.*"
+msgstr "*必须与自身具有相同长度的 Series。*"
+
+#: maxframe.dataframe.misc.transform.series_transform:29 of
+msgid ""
+":raises ValueError : If the returned Series has a different length than "
+"self.:"
+msgstr ":raises ValueError : 如果返回的 Series 与自身的长度不同:"
+
+#: maxframe.dataframe.misc.transform.series_transform:33 of
+msgid ":py:obj:`Series.agg`"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.series_transform:34 of
+msgid "Only perform aggregating type operations."
+msgstr "仅执行聚合类型的操作。"
+
+#: maxframe.dataframe.misc.transform.series_transform:36 of
+msgid ":py:obj:`Series.apply`"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.series_transform:37 of
+msgid "Invoke function on a Series."
+msgstr "在 Series 上调用函数。"
+
+#: maxframe.dataframe.misc.transform.series_transform:40 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.series_transform:41 of
+msgid ""
+"When deciding output dtypes and shape of the return value, MaxFrame will "
+"try applying ``func`` onto a mock Series, and the transform call may "
+"fail. When this happens, you need to specify ``dtype`` of output Series."
+msgstr ""
+"在确定输出数据类型和返回值形状时，MaxFrame 会尝试将 ``func`` 应用于一个"
+"模拟 Series，此时 transform 调用可能会失败。发生这种情况时，您需要指定"
+"输出 Series 的 ``dtype``。"
+
+#: maxframe.dataframe.misc.transform.series_transform:47 of
+msgid "示例"
+msgstr ""
+

@@ -1,0 +1,120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.append.rst:2
+msgid "maxframe.dataframe.DataFrame.append"
+msgstr ""
+
+#: maxframe.dataframe.merge.append.append:1 of
+msgid "Append rows of `other` to the end of caller, returning a new object."
+msgstr "将 `other` 的行追加到调用者的末尾，返回一个新对象。"
+
+#: maxframe.dataframe.merge.append.append:3 of
+msgid "Columns in `other` that are not in the caller are added as new columns."
+msgstr "`other` 中不在调用者中的列将作为新列添加。"
+
+#: maxframe.dataframe.merge.append.append of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.merge.append.append:5 of
+msgid "The data to append."
+msgstr "要追加的数据。"
+
+#: maxframe.dataframe.merge.append.append:7 of
+msgid "If True, the resulting axis will be labeled 0, 1, …, n - 1."
+msgstr "如果为 True，则结果轴将标记为 0, 1, …, n - 1。"
+
+#: maxframe.dataframe.merge.append.append:9 of
+msgid "If True, raise ValueError on creating index with duplicates."
+msgstr "如果为 True，在创建具有重复值的索引时将引发 ValueError。"
+
+#: maxframe.dataframe.merge.append.append:11 of
+msgid "Sort columns if the columns of `self` and `other` are not aligned."
+msgstr "如果 `self` 和 `other` 的列未对齐，则对列进行排序。"
+
+#: maxframe.dataframe.merge.append.append of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.merge.append.append:14 of
+msgid "A new DataFrame consisting of the rows of caller and the rows of `other`."
+msgstr "一个由调用者和 `other` 的行组成的新 DataFrame。"
+
+#: maxframe.dataframe.merge.append.append of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.merge.append.append:19 of
+msgid ":py:obj:`concat`"
+msgstr ""
+
+#: maxframe.dataframe.merge.append.append:20 of
+msgid "General function to concatenate DataFrame or Series objects."
+msgstr "用于连接 DataFrame 或 Series 对象的通用函数。"
+
+#: maxframe.dataframe.merge.append.append:23 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.merge.append.append:24 of
+msgid ""
+"If a list of dict/series is passed and the keys are all contained in the "
+"DataFrame's index, the order of the columns in the resulting DataFrame "
+"will be unchanged."
+msgstr ""
+"如果传递了 dict/series 列表且键都包含在 DataFrame 的索引中，则结果 "
+"DataFrame 中的列顺序将保持不变。"
+
+#: maxframe.dataframe.merge.append.append:28 of
+msgid ""
+"Iteratively appending rows to a DataFrame can be more computationally "
+"intensive than a single concatenate. A better solution is to append those"
+" rows to a list and then concatenate the list with the original DataFrame"
+" all at once."
+msgstr ""
+"迭代地向 DataFrame 追加行可能比一次性连接更消耗计算资源。更好的解决方案是"
+"将这些行追加到列表中，然后一次性将列表与原始 DataFrame 连接。"
+
+#: maxframe.dataframe.merge.append.append:34 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.merge.append.append:49 of
+msgid "With `ignore_index` set to True:"
+msgstr "当 `ignore_index` 设置为 True 时："
+
+#: maxframe.dataframe.merge.append.append:58 of
+msgid ""
+"The following, while not recommended methods for generating DataFrames, "
+"show two ways to generate a DataFrame from multiple data sources."
+msgstr ""
+"以下内容虽然不推荐作为生成 DataFrame 的方法，但展示了从多个数据源生成 "
+"DataFrame 的两种方式。"
+
+#: maxframe.dataframe.merge.append.append:61 of
+msgid "Less efficient:"
+msgstr "效率较低的方式："
+
+#: maxframe.dataframe.merge.append.append:74 of
+msgid "More efficient:"
+msgstr "更高效的方式："
+

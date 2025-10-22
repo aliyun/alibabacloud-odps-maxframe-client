@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/user_guide/general/execution.rst:2
+msgid "Executing and getting results"
+msgstr "执行并获取结果"
+
+#: ../../source/user_guide/general/execution.rst:5
+msgid "Lazy execution"
+msgstr "延迟执行"
+
+#: ../../source/user_guide/general/execution.rst:6
+msgid ""
+"MaxFrame uses lazy execution to make use of global optimization. That is,"
+" unless execution results are needed at client side locally, MaxFrame "
+"expressions are not executed without manual execution. For instance,"
+msgstr ""
+"MaxFrame 使用延迟执行来利用全局优化。也就是说，除非客户端本地需要执行结果"
+"，否则MaxFrame 表达式在手动执行前不会被执行。例如，"
+
+#: ../../source/user_guide/general/execution.rst:15
+msgid "is not executed, while"
+msgstr "不会被执行，而"
+
+#: ../../source/user_guide/general/execution.rst:25
+msgid ""
+"will trigger execution. Here we list several conditions that will trigger"
+" execution below."
+msgstr "将触发执行。以下列出了一些会触发执行的条件。"
+
+#: ../../source/user_guide/general/execution.rst:28
+msgid "Direct ``execute()`` calls."
+msgstr "直接调用``execute()``。"
+
+#: ../../source/user_guide/general/execution.rst:29
+msgid ":func:`maxframe.dataframe.DataFrame.to_pandas` calls."
+msgstr ":func:`maxframe.dataframe.DataFrame.to_pandas` 调用。"
+
+#: ../../source/user_guide/general/execution.rst:30
+msgid ""
+"All plot functions for DataFrame and Series, including "
+":func:`maxframe.dataframe.DataFrame.plot`, "
+":func:`maxframe.dataframe.DataFrame.plot.bar` and so on."
+msgstr ""
+"DataFrame 和 Series 的所有绘图函数，包括 :func:`maxframe.dataframe."
+"DataFrame.plot`、:func:`maxframe.dataframe.DataFrame.plot.bar` 等。"
+
+#: ../../source/user_guide/general/execution.rst:34
+msgid "Asynchrous execution"
+msgstr "异步执行"
+
+#: ../../source/user_guide/general/execution.rst:35
+msgid ""
+"Specifying ``wait=False`` can make execuiton asynchronous. A `Future "
+"object <https://docs.python.org/3/library/concurrent.futures.html#future-"
+"objects>`_ will be returned."
+msgstr ""
+"指定 ``wait=False`` 可以使执行异步进行。将返回一个 `Future 对象 <https://"
+"docs.python.org/3/library/concurrent.futures.html#future-objects>`_ 。"
+
+#: ../../source/user_guide/general/execution.rst:49
+msgid "Obtaining results"
+msgstr "获取结果"
+
+#: ../../source/user_guide/general/execution.rst:50
+msgid ""
+"You can use ``fetch()`` function to fetch execution result from executed "
+"objects. The fetched data is a local Python object (i.e., pandas objects "
+"or numpy arrays) that can be handled by local Python libraries."
+msgstr ""
+"您可以使用 ``fetch()`` 函数从已执行的对象中获取执行结果。获取的数据是一个"
+"本地Python对象（即pandas对象或numpy数组），可以由本地Python库处理。"
+
+#: ../../source/user_guide/general/execution.rst:62
+msgid ""
+"Note that ``fetch()`` will fetch all data behind the MaxFrame object. If "
+"you just need to preview several data, just use ``repr()`` function or "
+"simply call ``execute()`` method in an interactive Python environment "
+"like IPython or JupyterLab. MaxFrame will simply peek first and last "
+"rows."
+msgstr ""
+"请注意，``fetch()`` 将获取MaxFrame对象背后的所有数据。如果您只需要预览"
+"几条数据，只需在IPython或JupyterLab等交互式Python环境中调用``execute()``"
+"方法或简单地调用``execute()``方法。MaxFrame将简单地查看第一行和最后一行。"
+

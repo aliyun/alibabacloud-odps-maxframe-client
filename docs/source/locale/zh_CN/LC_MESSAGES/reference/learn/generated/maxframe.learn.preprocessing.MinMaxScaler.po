@@ -1,0 +1,321 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-10 10:10+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:2
+msgid "maxframe.learn.preprocessing.MinMaxScaler"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:1 of
+msgid "Transform features by scaling each feature to a given range."
+msgstr "通过将每个特征缩放到给定范围来转换特征。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:3 of
+msgid ""
+"This estimator scales and translates each feature individually such that "
+"it is in the given range on the training set, e.g. between zero and one."
+msgstr ""
+"该估计器单独缩放和平移每个特征，使其在训练集上的取值处于给定范围内，例如"
+"在0和1之间。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:7 of
+msgid "The transformation is given by::"
+msgstr "变换公式如下::"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:12 of
+msgid "where min, max = feature_range."
+msgstr "其中 min, max = feature_range。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:14 of
+msgid ""
+"This transformation is often used as an alternative to zero mean, unit "
+"variance scaling."
+msgstr "这种变换通常作为零均值、单位方差缩放的替代方法。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:17 of
+msgid "Read more in the :ref:`User Guide <preprocessing_scaler>`."
+msgstr "更多内容请参见 :ref:`用户指南 <preprocessing_scaler>`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:19 of
+msgid "Desired range of transformed data."
+msgstr "变换后数据的期望范围。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:21 of
+msgid ""
+"Set to False to perform inplace row normalization and avoid a copy (if "
+"the input is already a numpy array)."
+msgstr "设为 False 以执行原地行归一化并避免复制（如果输入已经是 numpy 数组）。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:24 of
+msgid ""
+"Set to True to clip transformed values of held-out data to provided "
+"`feature range`."
+msgstr "设为 True 以将保留数据的变换值裁剪到提供的 `feature range`。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:30 of
+msgid ""
+"Per feature adjustment for minimum. Equivalent to ``min - X.min(axis=0) *"
+" self.scale_``"
+msgstr "每个特征的最小值调整。等价于 ``min - X.min(axis=0) * self.scale_``"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler of
+msgid "type"
+msgstr "类型"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:33
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:40 of
+msgid "Tensor of shape (n_features,)"
+msgstr "形状为 (n_features,) 的张量"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:37 of
+msgid ""
+"Per feature relative scaling of the data. Equivalent to ``(max - min) / "
+"(X.max(axis=0) - X.min(axis=0))``"
+msgstr ""
+"每个特征数据的相对缩放。等价于 ``(max - min) / (X.max(axis=0) - X.min("
+"axis=0))``"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:44 of
+msgid "Per feature minimum seen in the data"
+msgstr "数据中每个特征的最小值"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:46
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:52
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:58 of
+msgid "ndarray of shape (n_features,)"
+msgstr "形状为 (n_features,) 的 ndarray"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:50 of
+msgid "Per feature maximum seen in the data"
+msgstr "数据中每个特征的最大值"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:56 of
+msgid "Per feature range ``(data_max_ - data_min_)`` seen in the data"
+msgstr "数据中每个特征的范围 ``(data_max_ - data_min_)``"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:62 of
+msgid ""
+"The number of samples processed by the estimator. It will be reset on new"
+" calls to fit, but increments across ``partial_fit`` calls."
+msgstr ""
+"估计器处理的样本数。在新的 fit 调用时会重置，但在 ``partial_fit`` 调用"
+"之间会递增。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:66 of
+msgid "int"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:69 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:87 of
+msgid ":py:obj:`minmax_scale`"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:88 of
+msgid "Equivalent function without the estimator API."
+msgstr "不使用估计器 API 的等效函数。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:91 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:92 of
+msgid ""
+"NaNs are treated as missing values: disregarded in fit, and maintained in"
+" transform."
+msgstr "NaN 被视为缺失值：在 fit 中忽略，在 transform 中保留。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:95 of
+msgid ""
+"For a comparison of the different scalers, transformers, and normalizers,"
+" see :ref:`examples/preprocessing/plot_all_scaling.py "
+"<sphx_glr_auto_examples_preprocessing_plot_all_scaling.py>`."
+msgstr ""
+"有关不同缩放器、变换器和归一化器的比较，请参见 :ref:`examples/"
+"preprocessing/plot_all_scaling.py <sphx_glr_auto_examples_preprocessing_"
+"plot_all_scaling.py>`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`__init__ <maxframe.learn.preprocessing.MinMaxScaler.__init__>`\\"
+" \\(\\[feature\\_range\\, copy\\, clip\\, validate\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`execute <maxframe.learn.preprocessing.MinMaxScaler.execute>`\\ "
+"\\(\\[session\\, run\\_kwargs\\, extra\\_tileables\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`fetch <maxframe.learn.preprocessing.MinMaxScaler.fetch>`\\ "
+"\\(\\[session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`fit <maxframe.learn.preprocessing.MinMaxScaler.fit>`\\ "
+"\\(X\\[\\, y\\, execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid "Compute the minimum and maximum to be used for later scaling."
+msgstr "计算用于后续缩放的最小值和最大值。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`fit_transform "
+"<maxframe.learn.preprocessing.MinMaxScaler.fit_transform>`\\ \\(X\\[\\, "
+"y\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid "Fit to data, then transform it."
+msgstr "拟合数据，然后对其进行转换。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`get_metadata_routing "
+"<maxframe.learn.preprocessing.MinMaxScaler.get_metadata_routing>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid "Get metadata routing of this object."
+msgstr "获取此对象的元数据路由。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`get_params "
+"<maxframe.learn.preprocessing.MinMaxScaler.get_params>`\\ "
+"\\(\\[deep\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid "Get parameters for this estimator."
+msgstr "获取此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`inverse_transform "
+"<maxframe.learn.preprocessing.MinMaxScaler.inverse_transform>`\\ "
+"\\(X\\[\\, execute\\, session\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid "Undo the scaling of X according to feature_range."
+msgstr "根据 feature_range 对 X 进行反向缩放。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`partial_fit "
+"<maxframe.learn.preprocessing.MinMaxScaler.partial_fit>`\\ \\(X\\[\\, "
+"y\\, execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid "Online computation of min and max on X for later scaling."
+msgstr "对 X 在线计算最小值和最大值以供后续缩放使用。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`set_fit_request "
+"<maxframe.learn.preprocessing.MinMaxScaler.set_fit_request>`\\ "
+"\\(\\*\\[\\, execute\\, run\\_kwargs\\, ...\\]\\)"
+msgstr "设置 fit 请求"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``fit`` method."
+msgstr "配置是否应将元数据传递给 ``fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`set_inverse_transform_request "
+"<maxframe.learn.preprocessing.MinMaxScaler.set_inverse_transform_request>`\\"
+" \\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``inverse_transform`` method."
+msgstr "配置是否应将元数据传递给 ``inverse_transform`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`set_params "
+"<maxframe.learn.preprocessing.MinMaxScaler.set_params>`\\ "
+"\\(\\*\\*params\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid "Set the parameters of this estimator."
+msgstr "设置此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`set_partial_fit_request "
+"<maxframe.learn.preprocessing.MinMaxScaler.set_partial_fit_request>`\\ "
+"\\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``partial_fit`` method."
+msgstr "配置是否应将元数据传递给 ``partial_fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`set_transform_request "
+"<maxframe.learn.preprocessing.MinMaxScaler.set_transform_request>`\\ "
+"\\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``transform`` method."
+msgstr "配置是否应将元数据传递给 ``transform`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`transform "
+"<maxframe.learn.preprocessing.MinMaxScaler.transform>`\\ \\(X\\[\\, "
+"execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.MinMaxScaler.rst:30:<autosummary>:1
+msgid "Scale features of X according to feature_range."
+msgstr "根据 feature_range 缩放 X 的特征。"
+

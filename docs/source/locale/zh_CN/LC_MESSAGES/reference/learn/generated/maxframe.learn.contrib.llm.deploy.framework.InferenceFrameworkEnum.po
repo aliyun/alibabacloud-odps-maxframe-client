@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev817+g0d9b3d99d.d20251019\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-19 21:54+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:2
+msgid "maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:21:<autosummary>:1
+msgid ""
+":py:obj:`from_string "
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.from_string>`\\"
+" \\(label\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:23
+msgid "Attributes"
+msgstr "属性"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`LLAMA_CPP_PYTHON_TEXT "
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.LLAMA_CPP_PYTHON_TEXT>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`LLAMA_CPP_SERVE_TEXT "
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.LLAMA_CPP_SERVE_TEXT>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`DASH_SCOPE_TEXT "
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.DASH_SCOPE_TEXT>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`DASH_SCOPE_MULTIMODAL "
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.DASH_SCOPE_MULTIMODAL>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`VLLM_SERVE_TEXT "
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.VLLM_SERVE_TEXT>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`OPENAI_REMOTE_TEXT "
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.OPENAI_REMOTE_TEXT>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`OTHER "
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.OTHER>`\\"
+msgstr ""
+

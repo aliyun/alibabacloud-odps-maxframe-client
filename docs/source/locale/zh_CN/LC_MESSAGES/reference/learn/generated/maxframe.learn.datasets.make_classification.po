@@ -1,0 +1,238 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.datasets.make_classification.rst:2
+msgid "maxframe.learn.datasets.make\\_classification"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_classification:1 of
+msgid "Generate a random n-class classification problem."
+msgstr "生成一个随机的 n 类分类问题。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:3 of
+msgid ""
+"This initially creates clusters of points normally distributed (std=1) "
+"about vertices of an ``n_informative``-dimensional hypercube with sides "
+"of length ``2*class_sep`` and assigns an equal number of clusters to each"
+" class. It introduces interdependence between these features and adds "
+"various types of further noise to the data."
+msgstr ""
+"该函数首先创建一个正态分布（标准差为 1）的点簇，这些点簇分布在 ``n_"
+"informative`` 维超立方体的顶点周围，超立方体的边长为 ``2*class_sep``，并"
+"将相等数量的簇分配给每个类别。它引入了这些特征之间的相互依赖关系，并向"
+"数据中添加了各种类型的噪声。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:9 of
+msgid ""
+"Without shuffling, ``X`` horizontally stacks features in the following "
+"order: the primary ``n_informative`` features, followed by "
+"``n_redundant`` linear combinations of the informative features, followed"
+" by ``n_repeated`` duplicates, drawn randomly with replacement from the "
+"informative and redundant features. The remaining features are filled "
+"with random noise. Thus, without shuffling, all useful features are "
+"contained in the columns ``X[:, :n_informative + n_redundant + "
+"n_repeated]``."
+msgstr ""
+"如果不进行打乱，``X`` 会按以下顺序水平堆叠特征：首先是主要的 ``n_"
+"informative`` 个特征，然后是信息特征的 ``n_redundant`` 个线性组合，接着是"
+" ``n_repeated`` 个重复特征，这些重复特征是从信息特征和冗余特征中随机有放"
+"回地抽取的。其余特征则用随机噪声填充。因此，若不进行打乱，所有有用特征都"
+"包含在 ``X[:, :n_informative + n_redundant + n_repeated]`` 列中。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:17 of
+msgid "Read more in the :ref:`User Guide <sample_generators>`."
+msgstr "更多信息请参阅 :ref:`用户指南 <sample_generators>`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.datasets.make_classification.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_classification:19 of
+msgid "The number of samples."
+msgstr "样本数量。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:21 of
+msgid ""
+"The total number of features. These comprise ``n_informative`` "
+"informative features, ``n_redundant`` redundant features, ``n_repeated`` "
+"duplicated features and ``n_features-n_informative-n_redundant-"
+"n_repeated`` useless features drawn at random."
+msgstr ""
+"特征总数。这些包括 ``n_informative`` 个信息特征、``n_redundant`` 个冗余"
+"特征、``n_repeated`` 个重复特征，以及 ``n_features-n_informative-n_"
+"redundant-n_repeated`` 个随机抽取的无用特征。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:27 of
+msgid ""
+"The number of informative features. Each class is composed of a number of"
+" gaussian clusters each located around the vertices of a hypercube in a "
+"subspace of dimension ``n_informative``. For each cluster, informative "
+"features are drawn independently from  N(0, 1) and then randomly linearly"
+" combined within each cluster in order to add covariance. The clusters "
+"are then placed on the vertices of the hypercube."
+msgstr ""
+"信息特征的数量。每个类别由若干高斯簇组成，这些簇分布在 ``n_informative`` "
+"维子空间中超立方体的顶点周围。对于每个簇，信息特征独立地从 N(0, 1) 中抽取"
+"，然后在簇内随机线性组合以增加协方差。这些簇随后被放置在超立方体的顶点上"
+"。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:35 of
+msgid ""
+"The number of redundant features. These features are generated as random "
+"linear combinations of the informative features."
+msgstr "冗余特征的数量。这些特征是信息特征的随机线性组合生成的。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:38 of
+msgid ""
+"The number of duplicated features, drawn randomly from the informative "
+"and the redundant features."
+msgstr "重复特征的数量，这些特征是从信息特征和冗余特征中随机抽取的。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:41 of
+msgid "The number of classes (or labels) of the classification problem."
+msgstr "分类问题的类别（或标签）数量。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:43 of
+msgid "The number of clusters per class."
+msgstr "每个类别的簇数量。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:45 of
+msgid ""
+"The proportions of samples assigned to each class. If None, then classes "
+"are balanced. Note that if ``len(weights) == n_classes - 1``, then the "
+"last class weight is automatically inferred. More than ``n_samples`` "
+"samples may be returned if the sum of ``weights`` exceeds 1."
+msgstr ""
+"分配给每个类别的样本比例。如果为 None，则类别是平衡的。注意，如果 ``len("
+"weights) == n_classes - 1``，则最后一个类别的权重会自动推断。如果 ``"
+"weights`` 的总和超过 1，返回的样本数量可能超过 ``n_samples``。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:51 of
+msgid ""
+"The fraction of samples whose class are randomly exchanged. Larger values"
+" introduce noise in the labels and make the classification task harder."
+msgstr "随机交换类别标签的样本比例。较大的值会在标签中引入噪声，使分类任务更困难。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:55 of
+msgid ""
+"The factor multiplying the hypercube size.  Larger values spread out the "
+"clusters/classes and make the classification task easier."
+msgstr "超立方体大小的乘法因子。较大的值会使簇/类别分布更分散，使分类任务更容易。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:58 of
+msgid ""
+"If True, the clusters are put on the vertices of a hypercube. If False, "
+"the clusters are put on the vertices of a random polytope."
+msgstr ""
+"如果为 True，则簇被放置在超立方体的顶点上。如果为 False，则簇被放置在随机"
+"多面体的顶点上。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:61 of
+msgid ""
+"Shift features by the specified value. If None, then features are shifted"
+" by a random value drawn in [-class_sep, class_sep]."
+msgstr ""
+"将特征按指定值进行平移。如果为 None，则特征会按 [-class_sep, class_sep] "
+"区间内随机抽取的值进行平移。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:64 of
+msgid ""
+"Multiply features by the specified value. If None, then features are "
+"scaled by a random value drawn in [1, 100]. Note that scaling happens "
+"after shifting."
+msgstr ""
+"将特征乘以指定值。如果为 None，则特征会按 [1, 100] 区间内随机抽取的值进行"
+"缩放。请注意，缩放是在平移之后进行的。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:68 of
+msgid "Shuffle the samples and the features."
+msgstr "打乱样本和特征的顺序。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:70 of
+msgid ""
+"Determines random number generation for dataset creation. Pass an int for"
+" reproducible output across multiple function calls. See :term:`Glossary "
+"<random_state>`."
+msgstr ""
+"确定数据集创建时的随机数生成方式。传入一个整数以获得在多次函数调用中可"
+"复现的结果。详见 :term:`术语表 <random_state>`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.datasets.make_classification.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_classification:75 of
+msgid ""
+"* **X** (*tensor of shape [n_samples, n_features]*) -- The generated "
+"samples. * **y** (*tensor of shape [n_samples]*) -- The integer labels "
+"for class membership of each sample."
+msgstr ""
+"* **X** (*tensor of shape [n_samples, n_features]*) -- 生成的样本。\n"
+"* **y** (*tensor of shape [n_samples]*) -- 每个样本所属类别的整数标签。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:75 of
+msgid ""
+"**X** (*tensor of shape [n_samples, n_features]*) -- The generated "
+"samples."
+msgstr "**X** (*tensor of shape [n_samples, n_features]*) -- 生成的样本。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:76 of
+msgid ""
+"**y** (*tensor of shape [n_samples]*) -- The integer labels for class "
+"membership of each sample."
+msgstr "**y** (*tensor of shape [n_samples]*) -- 每个样本所属类别的整数标签。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:79 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_classification:80 of
+msgid ""
+"The algorithm is adapted from Guyon [1] and was designed to generate the "
+"\"Madelon\" dataset."
+msgstr "该算法改编自 Guyon [1]，旨在生成 \"Madelon\" 数据集。"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:84 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_classification:85 of
+msgid ""
+"I. Guyon, \"Design of experiments for the NIPS 2003 variable selection "
+"benchmark\", 2003."
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_classification:90 of
+msgid ":py:obj:`make_blobs`"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_classification:91 of
+msgid "simplified variant"
+msgstr "简化变体"
+
+#: maxframe.learn.datasets.samples_generator.make_classification:93 of
+msgid ":py:obj:`make_multilabel_classification`"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_classification:94 of
+msgid "unrelated generator for multilabel tasks"
+msgstr "多标签任务的无关生成器"
+

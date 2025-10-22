@@ -1,0 +1,99 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.gammaln.rst:2
+msgid "maxframe.tensor.special.gammaln"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaln:1 of
+msgid "Logarithm of the absolute value of the Gamma function."
+msgstr "伽马函数绝对值的对数。"
+
+#: maxframe.tensor.special.gamma_funcs.gammaln of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaln:3 of
+msgid "Values on the real line at which to compute ``gammaln``"
+msgstr "用于计算 ``gammaln`` 的实数轴上的值"
+
+#: maxframe.tensor.special.gamma_funcs.gammaln:5 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，其形状必须可以广播到输入的形状。如果未提供"
+"或为 `None`，则返回一个新分配的张量。元组（仅可作为关键字参数）的长度必须"
+"等于输出的数量。"
+
+#: maxframe.tensor.special.gamma_funcs.gammaln:10 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.special.gamma_funcs.gammaln of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaln:15 of
+msgid "**gammaln** -- Values of ``gammaln`` at x."
+msgstr "**gammaln** -- x 处的 ``gammaln`` 值。"
+
+#: maxframe.tensor.special.gamma_funcs.gammaln of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaln:20 of
+msgid ":py:obj:`gammasgn`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaln:21 of
+msgid "sign of the gamma function"
+msgstr "伽马函数的符号"
+
+#: maxframe.tensor.special.gamma_funcs.gammaln:23 of
+msgid ":py:obj:`loggamma`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaln:24 of
+msgid "principal branch of the logarithm of the gamma function"
+msgstr "伽马函数对数的主分支"
+
+#: maxframe.tensor.special.gamma_funcs.gammaln:27 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaln:28 of
+msgid ""
+"When used in conjunction with `gammasgn`, this function is useful for "
+"working in logspace on the real axis without having to deal with complex "
+"numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``."
+msgstr ""
+"与 `gammasgn` 结合使用时，此函数通过关系式 ``exp(gammaln(x)) = gammasgn(x"
+")*gamma(x)``，可以在实轴上以对数空间进行计算，而无需处理复数。"
+
+#: maxframe.tensor.special.gamma_funcs.gammaln:32 of
+msgid "For complex-valued log-gamma, use `loggamma` instead of `gammaln`."
+msgstr "对于复数值的对数伽马函数，请使用 `loggamma` 而不是 `gammaln`。"
+

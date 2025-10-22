@@ -14,6 +14,7 @@
 
 from .core import convert_to_tensor_or_dataframe
 from .multiclass import check_classification_targets
+from .odpsio import read_odps_model
 from .shuffle import shuffle
 from .sparsefuncs import count_nonzero
 from .validation import check_array, check_consistent_length

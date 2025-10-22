@@ -1,0 +1,213 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.var.rst:2
+msgid "maxframe.tensor.var"
+msgstr ""
+
+#: maxframe.tensor.reduction.var.var:1 of
+msgid "Compute the variance along the specified axis."
+msgstr "计算沿指定轴的方差。"
+
+#: maxframe.tensor.reduction.var.var:3 of
+msgid ""
+"Returns the variance of the tensor elements, a measure of the spread of a"
+" distribution.  The variance is computed for the flattened tensor by "
+"default, otherwise over the specified axis."
+msgstr ""
+"返回张量元素的方差，是分布离散程度的一种度量。默认情况下，方差是针对"
+"扁平化后的张量计算的，否则就在指定轴上计算。"
+
+#: maxframe.tensor.reduction.var.var of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.reduction.var.var:7 of
+msgid ""
+"Tensor containing numbers whose variance is desired.  If `a` is not a "
+"tensor, a conversion is attempted."
+msgstr "包含所需方差数值的张量。如果 `a` 不是一个张量，则尝试进行转换。"
+
+#: maxframe.tensor.reduction.var.var:10 of
+msgid ""
+"Axis or axes along which the variance is computed.  The default is to "
+"compute the variance of the flattened array.  If this is a tuple of ints,"
+" a variance is performed over multiple axes, instead of a single axis or "
+"all the axes as before."
+msgstr ""
+"计算方差的轴或多个轴。默认情况下是计算扁平化数组的方差。如果这是一个整数"
+"元组，则在多个轴上执行方差计算，而不是单个轴或所有轴。"
+
+#: maxframe.tensor.reduction.var.var:10 of
+#, fuzzy
+msgid ""
+"Axis or axes along which the variance is computed.  The default is to "
+"compute the variance of the flattened array."
+msgstr ""
+"计算方差的轴或多个轴。默认情况下是计算扁平化数组的方差。如果这是一个整数"
+"元组，则在多个轴上执行方差计算，而不是单个轴或所有轴。"
+
+#: maxframe.tensor.reduction.var.var:13 of
+#, fuzzy
+msgid ""
+"If this is a tuple of ints, a variance is performed over multiple axes, "
+"instead of a single axis or all the axes as before."
+msgstr ""
+"计算方差的轴或多个轴。默认情况下是计算扁平化数组的方差。如果这是一个整数"
+"元组，则在多个轴上执行方差计算，而不是单个轴或所有轴。"
+
+#: maxframe.tensor.reduction.var.var:16 of
+msgid ""
+"Type to use in computing the variance.  For arrays of integer type the "
+"default is `float32`; for tensors of float types it is the same as the "
+"tensor type."
+msgstr ""
+"用于计算方差的数据类型。对于整数类型的数组，默认为 `float32`；对于浮点"
+"类型的张量，其与张量类型相同。"
+
+#: maxframe.tensor.reduction.var.var:20 of
+msgid ""
+"Alternate output array in which to place the result.  It must have the "
+"same shape as the expected output, but the type is cast if necessary."
+msgstr ""
+"用来放置结果的替代输出数组。它必须具有与预期输出相同的形状，但如有必要"
+"将会进行类型转换。"
+
+#: maxframe.tensor.reduction.var.var:24 of
+msgid ""
+"\"Delta Degrees of Freedom\": the divisor used in the calculation is ``N "
+"- ddof``, where ``N`` represents the number of elements. By default "
+"`ddof` is zero."
+msgstr ""
+"“自由度差值”：计算中使用的除数是 ``N - ddof``，其中 ``N`` 表示元素的"
+"数量。默认情况下 `ddof` 为零。"
+
+#: maxframe.tensor.reduction.var.var:28 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the input tensor.  If the default value is passed, "
+"then `keepdims` will not be passed through to the `var` method of sub-"
+"classes of `Tensor`, however any non-default value will be.  If the sub-"
+"classes `sum` method does not implement `keepdims` any exceptions will be"
+" raised."
+msgstr ""
+"如果设置为 True，则被规约的轴会以大小为一的维度保留在结果中。使用此选项，"
+"结果可以正确地与输入张量进行广播。如果传递默认值，`keepdims` 不会被传递给"
+" `Tensor` 子类的 `var` 方法，但任何非默认值会被传递。如果子类的 `sum` "
+"方法没有实现 `keepdims`，则会引发异常。"
+
+#: maxframe.tensor.reduction.var.var:28 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the input tensor."
+msgstr ""
+
+#: maxframe.tensor.reduction.var.var:32 of
+#, fuzzy
+msgid ""
+"If the default value is passed, then `keepdims` will not be passed "
+"through to the `var` method of sub-classes of `Tensor`, however any non-"
+"default value will be.  If the sub-classes `sum` method does not "
+"implement `keepdims` any exceptions will be raised."
+msgstr ""
+"如果设置为 True，则被规约的轴会以大小为一的维度保留在结果中。使用此选项，"
+"结果可以正确地与输入张量进行广播。如果传递默认值，`keepdims` 不会被传递给"
+" `Tensor` 子类的 `var` 方法，但任何非默认值会被传递。如果子类的 `sum` "
+"方法没有实现 `keepdims`，则会引发异常。"
+
+#: maxframe.tensor.reduction.var.var of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.reduction.var.var:39 of
+msgid ""
+"**variance** -- If ``out=None``, returns a new tensor containing the "
+"variance; otherwise, a reference to the output tensor is returned."
+msgstr ""
+"**variance** -- 如果 ``out=None``，则返回一个包含方差的新张量；否则，返回"
+"对输出张量的引用。"
+
+#: maxframe.tensor.reduction.var.var of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.reduction.var.var:43 of
+msgid ""
+":py:obj:`std`, :py:obj:`mean`, :py:obj:`nanmean`, :py:obj:`nanstd`, "
+":py:obj:`nanvar`"
+msgstr ""
+
+#: maxframe.tensor.reduction.var.var:46 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.reduction.var.var:47 of
+msgid ""
+"The variance is the average of the squared deviations from the mean, "
+"i.e.,  ``var = mean(abs(x - x.mean())**2)``."
+msgstr "方差是与均值偏差平方的平均值，即 ``var = mean(abs(x - x.mean())**2)``。"
+
+#: maxframe.tensor.reduction.var.var:50 of
+msgid ""
+"The mean is normally calculated as ``x.sum() / N``, where ``N = len(x)``."
+" If, however, `ddof` is specified, the divisor ``N - ddof`` is used "
+"instead.  In standard statistical practice, ``ddof=1`` provides an "
+"unbiased estimator of the variance of a hypothetical infinite population."
+" ``ddof=0`` provides a maximum likelihood estimate of the variance for "
+"normally distributed variables."
+msgstr ""
+"均值通常计算为 ``x.sum() / N``，其中 ``N = len(x)``。但如果指定了 `ddof`"
+"，则使用除数 ``N - ddof``。在标准统计实践中，``ddof=1`` 提供了一个假设"
+"无限总体方差的无偏估计量。``ddof=0`` 为正态分布变量的方差提供了最大似然"
+"估计。"
+
+#: maxframe.tensor.reduction.var.var:57 of
+msgid ""
+"Note that for complex numbers, the absolute value is taken before "
+"squaring, so that the result is always real and nonnegative."
+msgstr "注意对于复数，先取绝对值再平方，因此结果始终为实数且非负。"
+
+#: maxframe.tensor.reduction.var.var:60 of
+msgid ""
+"For floating-point input, the variance is computed using the same "
+"precision the input has.  Depending on the input data, this can cause the"
+" results to be inaccurate, especially for `float32` (see example below)."
+"  Specifying a higher-accuracy accumulator using the ``dtype`` keyword "
+"can alleviate this issue."
+msgstr ""
+"对于浮点数输入，方差是使用与输入相同的精度计算的。根据输入数据的不同，这"
+"可能导致结果不准确，尤其是对于 `float32`（见下面的示例）。使用 ``dtype`` "
+"关键字指定更高精度的累加器可以缓解这个问题。"
+
+#: maxframe.tensor.reduction.var.var:67 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.reduction.var.var:78 of
+msgid "In single precision, var() can be inaccurate:"
+msgstr "在单精度下，var() 可能不准确："
+
+#: maxframe.tensor.reduction.var.var:86 of
+msgid "Computing the variance in float64 is more accurate:"
+msgstr "使用 float64 计算方差更加准确："
+

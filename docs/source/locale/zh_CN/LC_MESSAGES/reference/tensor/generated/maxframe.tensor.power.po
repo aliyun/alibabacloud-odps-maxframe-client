@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.power.rst:2
+msgid "maxframe.tensor.power"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.power.power:1 of
+msgid "First tensor elements raised to powers from second tensor, element-wise."
+msgstr "第一个张量的元素按元素方式提升到第二个张量的幂次。"
+
+#: maxframe.tensor.arithmetic.power.power:3 of
+msgid ""
+"Raise each base in `x1` to the positionally-corresponding power in `x2`."
+"  `x1` and `x2` must be broadcastable to the same shape. Note that an "
+"integer type raised to a negative integer power will raise a ValueError."
+msgstr ""
+"将 `x1` 中的每个底数提升到 `x2` 中对应位置的幂次。`x1` 和 `x2` 必须可以"
+"广播为相同形状。注意，整数类型提升到负整数幂次将会引发 ValueError。"
+
+#: maxframe.tensor.arithmetic.power.power of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.power.power:7 of
+msgid "The bases."
+msgstr "底数。"
+
+#: maxframe.tensor.arithmetic.power.power:9 of
+msgid "The exponents."
+msgstr "指数。"
+
+#: maxframe.tensor.arithmetic.power.power:11 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供了该参数，其形状必须与输入可广播一致。如果未"
+"提供或为 `None`，则返回一个新分配的张量。元组（只能作为关键字参数）的长度"
+"必须等于输出数量。"
+
+#: maxframe.tensor.arithmetic.power.power:16 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.power.power of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.power.power:21 of
+msgid "**y** -- The bases in `x1` raised to the exponents in `x2`."
+msgstr "**y** -- `x1` 中的底数提升到 `x2` 中的指数。"
+
+#: maxframe.tensor.arithmetic.power.power of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.power.power:26 of
+msgid ":py:obj:`float_power`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.power.power:27 of
+msgid "power function that promotes integers to float"
+msgstr "将整数提升为浮点数的幂函数"
+
+#: maxframe.tensor.arithmetic.power.power:30 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.power.power:31 of
+msgid "Cube each element in a list."
+msgstr "对列表中的每个元素求立方。"
+
+#: maxframe.tensor.arithmetic.power.power:41 of
+msgid "Raise the bases to different exponents."
+msgstr "将底数提升到不同的指数。"
+
+#: maxframe.tensor.arithmetic.power.power:47 of
+msgid "The effect of broadcasting."
+msgstr "广播的效果。"
+

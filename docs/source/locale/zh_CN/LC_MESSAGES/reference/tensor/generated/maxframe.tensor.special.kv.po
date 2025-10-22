@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.kv.rst:2
+msgid "maxframe.tensor.special.kv"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kv:1 of
+msgid "Modified Bessel function of the second kind of real order `v`"
+msgstr "实数阶 `v` 的第二类修正贝塞尔函数"
+
+#: maxframe.tensor.special.bessel.kv:3 of
+msgid ""
+"Returns the modified Bessel function of the second kind for real order "
+"`v` at complex `z`."
+msgstr "返回在复数 `z` 处实数阶 `v` 的第二类修正贝塞尔函数值。"
+
+#: maxframe.tensor.special.bessel.kv:6 of
+msgid ""
+"These are also sometimes called functions of the third kind, Basset "
+"functions, or Macdonald functions.  They are defined as those solutions "
+"of the modified Bessel equation for which,"
+msgstr ""
+"这些函数有时也被称为第三类函数、巴塞函数或麦克唐纳函数。它们被定义为修正"
+"贝塞尔方程的解，满足："
+
+#: maxframe.tensor.special.bessel.kv:10 of
+#, python-brace-format
+msgid ""
+"K_v(x) \\sim \\sqrt{\\pi/(2x)} \\exp(-x)\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kv:13 of
+msgid "as :math:`x \\to \\infty` [3]_."
+msgstr "当 :math:`x \\to \\infty` 时 [3]_。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.kv.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kv:15 of
+msgid "Order of Bessel functions"
+msgstr "贝塞尔函数的阶数"
+
+#: maxframe.tensor.special.bessel.kv:17 of
+msgid "Argument at which to evaluate the Bessel functions"
+msgstr "用于计算贝塞尔函数的参数"
+
+#: maxframe.tensor.special.bessel.kv:19 of
+msgid "Optional output array for the function results"
+msgstr "用于函数结果的可选输出数组"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.kv.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kv:22 of
+msgid ""
+"The results. Note that input must be of complex type to get complex "
+"output, e.g. ``kv(3, -2+0j)`` instead of ``kv(3, -2)``."
+msgstr ""
+"结果。注意输入必须是复数类型才能得到复数输出，例如应使用 ``kv(3, -2+0j)``"
+" 而不是 ``kv(3, -2)``。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.kv.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kv:28 of
+msgid ":py:obj:`kve`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kv:29 of
+msgid "This function with leading exponential behavior stripped off."
+msgstr "去除主导指数行为后的该函数。"
+
+#: maxframe.tensor.special.bessel.kv:31 of
+msgid ":py:obj:`kvp`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kv:32 of
+msgid "Derivative of this function"
+msgstr "该函数的导数"
+
+#: maxframe.tensor.special.bessel.kv:35 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kv:36 of
+msgid ""
+"Wrapper for AMOS [1]_ routine `zbesk`.  For a discussion of the algorithm"
+" used, see [2]_ and the references therein."
+msgstr ""
+"AMOS [1]_ 例程 `zbesk` 的封装。有关所用算法的讨论，请参见 [2]_ 及其中的"
+"参考文献。"
+
+#: maxframe.tensor.special.bessel.kv:40 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kv:41 of
+msgid ""
+"Donald E. Amos, \"AMOS, A Portable Package for Bessel Functions of a "
+"Complex Argument and Nonnegative Order\", http://netlib.org/amos/"
+msgstr ""
+"Donald E. Amos, \"AMOS, 用于计算复数参数和非负阶数贝塞尔函数的可移植"
+"软件包\", http://netlib.org/amos/"
+
+#: maxframe.tensor.special.bessel.kv:44 of
+msgid ""
+"Donald E. Amos, \"Algorithm 644: A portable package for Bessel functions "
+"of a complex argument and nonnegative order\", ACM TOMS Vol. 12 Issue 3, "
+"Sept. 1986, p. 265"
+msgstr ""
+"Donald E. Amos, \"Algorithm 644: 用于计算复数参数和非负阶数贝塞尔函数的"
+"可移植软件包\", ACM TOMS Vol. 12 Issue 3, Sept. 1986, p. 265"
+
+#: maxframe.tensor.special.bessel.kv:47 of
+msgid ""
+"NIST Digital Library of Mathematical Functions, Eq. 10.25.E3. "
+"https://dlmf.nist.gov/10.25.E3"
+msgstr "NIST 数学函数数字图书馆, 公式 10.25.E3. https://dlmf.nist.gov/10.25.E3"
+

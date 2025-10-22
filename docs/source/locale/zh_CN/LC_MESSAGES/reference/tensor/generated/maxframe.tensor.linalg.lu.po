@@ -1,0 +1,84 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.linalg.lu.rst:2
+msgid "maxframe.tensor.linalg.lu"
+msgstr ""
+
+#: maxframe.tensor.linalg.lu.lu:1 of
+msgid "LU decomposition"
+msgstr "LU 分解"
+
+#: maxframe.tensor.linalg.lu.lu:3 of
+msgid "The decomposition is::"
+msgstr "分解为："
+
+#: maxframe.tensor.linalg.lu.lu:4 of
+msgid "A = P L U"
+msgstr ""
+
+#: maxframe.tensor.linalg.lu.lu:5 of
+msgid ""
+"where P is a permutation matrix, L lower triangular with unit diagonal "
+"elements, and U upper triangular."
+msgstr "其中 P 是置换矩阵，L 是单位对角线下三角矩阵，U 是上三角矩阵。"
+
+#: maxframe.tensor.linalg.lu.lu of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.linalg.lu.lu:8 of
+msgid "Array to decompose"
+msgstr "要分解的数组"
+
+#: maxframe.tensor.linalg.lu.lu of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.linalg.lu.lu:11 of
+msgid ""
+"* **p** (*(M, M) ndarray*) -- Permutation matrix * **l** (*(M, K) "
+"ndarray*) -- Lower triangular or trapezoidal matrix with unit diagonal."
+"   K = min(M, N) * **u** (*(K, N) ndarray*) -- Upper triangular or "
+"trapezoidal matrix"
+msgstr ""
+"* **p** (*(M, M) ndarray*) -- 置换矩阵 * **l** (*(M, K) ndarray*) -- 单位"
+"对角线的下三角或梯形矩阵。K = min(M, N) * **u** (*(K, N) ndarray*) -- 上"
+"三角或梯形矩阵"
+
+#: maxframe.tensor.linalg.lu.lu:11 of
+msgid "**p** (*(M, M) ndarray*) -- Permutation matrix"
+msgstr "**p** (*(M, M) ndarray*) -- 置换矩阵"
+
+#: maxframe.tensor.linalg.lu.lu:12 of
+msgid ""
+"**l** (*(M, K) ndarray*) -- Lower triangular or trapezoidal matrix with "
+"unit diagonal. K = min(M, N)"
+msgstr "**l** (*(M, K) ndarray*) -- 单位对角线的下三角或梯形矩阵。K = min(M, N)"
+
+#: maxframe.tensor.linalg.lu.lu:14 of
+msgid "**u** (*(K, N) ndarray*) -- Upper triangular or trapezoidal matrix"
+msgstr "**u** (*(K, N) ndarray*) -- 上三角或梯形矩阵"
+
+#: maxframe.tensor.linalg.lu.lu:17 of
+msgid "示例"
+msgstr ""
+

@@ -1,0 +1,285 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:2
+msgid "maxframe.learn.preprocessing.LabelBinarizer"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:1 of
+msgid "Binarize labels in a one-vs-all fashion."
+msgstr "以一对多的方式二值化标签。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:3 of
+msgid ""
+"Several regression and binary classification algorithms are available in "
+"scikit-learn. A simple way to extend these algorithms to the multi-class "
+"classification case is to use the so-called one-vs-all scheme."
+msgstr ""
+"scikit-learn 中提供了多种回归和二分类算法。将这些算法扩展到多类分类问题的"
+"一个简单方法是使用所谓的一对多方案。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:8 of
+msgid ""
+"At learning time, this simply consists in learning one regressor or "
+"binary classifier per class. In doing so, one needs to convert multi-"
+"class labels to binary labels (belong or does not belong to the class). "
+"LabelBinarizer makes this process easy with the transform method."
+msgstr ""
+"在学习阶段，这只需要为每个类别训练一个回归器或二分类器。为此，需要将多类"
+"标签转换为二值标签（属于或不属于该类别）。LabelBinarizer 通过 transform "
+"方法使这一过程变得简单。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:14 of
+msgid ""
+"At prediction time, one assigns the class for which the corresponding "
+"model gave the greatest confidence. LabelBinarizer makes this easy with "
+"the inverse_transform method."
+msgstr ""
+"在预测阶段，将分配置信度最高的模型对应的类别。LabelBinarizer 通过 inverse"
+"_transform 方法使这一过程变得简单。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:18 of
+msgid "Read more in the :ref:`User Guide <preprocessing_targets>`."
+msgstr "更多内容请参阅 :ref:`用户指南 <preprocessing_targets>`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:20 of
+msgid "Value with which negative labels must be encoded."
+msgstr "负标签必须被编码的值。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:22 of
+msgid "Value with which positive labels must be encoded."
+msgstr "正标签必须被编码的值。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:24 of
+msgid ""
+"True if the returned array from transform is desired to be in sparse CSR "
+"format."
+msgstr "如果希望 transform 返回的数组为稀疏 CSR 格式，则为 True。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:30 of
+msgid "Holds the label for each class."
+msgstr "保存每个类别的标签。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer of
+msgid "type"
+msgstr "类型"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:32 of
+msgid "ndarray of shape (n_classes,)"
+msgstr "形状为 (n_classes,) 的 ndarray"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:36 of
+msgid ""
+"Represents the type of the target data as evaluated by "
+"utils.multiclass.type_of_target. Possible type are 'continuous', "
+"'continuous-multioutput', 'binary', 'multiclass', 'multiclass-"
+"multioutput', 'multilabel-indicator', and 'unknown'."
+msgstr ""
+"表示目标数据的类型，由 utils.multiclass.type_of_target 确定。可能的类型"
+"包括 'continuous'、'continuous-multioutput'、'binary'、'multiclass'、'"
+"multiclass-multioutput'、'multilabel-indicator' 和 'unknown'。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:41 of
+msgid "str"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:45 of
+msgid ""
+"True if the input data to transform is given as a sparse matrix, False "
+"otherwise."
+msgstr "如果输入到 transform 的数据为稀疏矩阵，则为 True，否则为 False。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:48 of
+msgid "bool"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:51 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:62 of
+msgid "Binary targets transform to a column vector"
+msgstr "二分类目标转换为列向量"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:71 of
+msgid "Passing a 2D matrix for multilabel classification"
+msgstr "传递一个二维矩阵用于多标签分类"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:86 of
+msgid ":py:obj:`label_binarize`"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:87 of
+msgid ""
+"Function to perform the transform operation of LabelBinarizer with fixed "
+"classes."
+msgstr "用于执行 LabelBinarizer 的 transform 操作并固定类别的函数。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:89 of
+msgid ":py:obj:`OneHotEncoder`"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_binarizer.LabelBinarizer:90 of
+msgid "Encode categorical features using a one-hot aka one-of-K scheme."
+msgstr "使用 one-hot（也称为 one-of-K）方案对分类特征进行编码。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`__init__ "
+"<maxframe.learn.preprocessing.LabelBinarizer.__init__>`\\ \\(\\*\\[\\, "
+"neg\\_label\\, pos\\_label\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`execute <maxframe.learn.preprocessing.LabelBinarizer.execute>`\\"
+" \\(\\[session\\, run\\_kwargs\\, extra\\_tileables\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`fetch <maxframe.learn.preprocessing.LabelBinarizer.fetch>`\\ "
+"\\(\\[session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`fit <maxframe.learn.preprocessing.LabelBinarizer.fit>`\\ "
+"\\(y\\[\\, check\\, execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid "Fit label binarizer."
+msgstr "拟合标签二值化器。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`fit_transform "
+"<maxframe.learn.preprocessing.LabelBinarizer.fit_transform>`\\ \\(y\\[\\,"
+" check\\, execute\\, session\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid "Fit label binarizer and transform multi-class labels to binary labels."
+msgstr "拟合标签二值化器并将多类标签转换为二进制标签。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`get_metadata_routing "
+"<maxframe.learn.preprocessing.LabelBinarizer.get_metadata_routing>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid "Get metadata routing of this object."
+msgstr "获取此对象的元数据路由。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`get_params "
+"<maxframe.learn.preprocessing.LabelBinarizer.get_params>`\\ "
+"\\(\\[deep\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid "Get parameters for this estimator."
+msgstr "获取此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`inverse_transform "
+"<maxframe.learn.preprocessing.LabelBinarizer.inverse_transform>`\\ "
+"\\(Y\\[\\, threshold\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid "Transform binary labels back to multi-class labels."
+msgstr "将二进制标签转换回多类标签。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`set_fit_request "
+"<maxframe.learn.preprocessing.LabelBinarizer.set_fit_request>`\\ "
+"\\(\\*\\[\\, check\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``fit`` method."
+msgstr "配置是否应请求将元数据传递给 ``fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`set_inverse_transform_request "
+"<maxframe.learn.preprocessing.LabelBinarizer.set_inverse_transform_request>`\\"
+" \\(\\*\\[\\, threshold\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``inverse_transform`` method."
+msgstr "配置是否应请求将元数据传递给 ``inverse_transform`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`set_params "
+"<maxframe.learn.preprocessing.LabelBinarizer.set_params>`\\ "
+"\\(\\*\\*params\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid "Set the parameters of this estimator."
+msgstr "设置此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`set_transform_request "
+"<maxframe.learn.preprocessing.LabelBinarizer.set_transform_request>`\\ "
+"\\(\\*\\[\\, check\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``transform`` method."
+msgstr "配置是否应请求将元数据传递给 ``transform`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid ""
+":py:obj:`transform "
+"<maxframe.learn.preprocessing.LabelBinarizer.transform>`\\ \\(y\\[\\, "
+"check\\, execute\\, session\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.LabelBinarizer.rst:28:<autosummary>:1
+msgid "Transform multi-class labels to binary labels."
+msgstr "将多类标签转换为二进制标签。"
+

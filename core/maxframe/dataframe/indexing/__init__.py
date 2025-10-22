@@ -29,7 +29,7 @@ def _install():
     from .getitem import dataframe_getitem, series_getitem
     from .iat import iat
     from .iloc import head, iloc, index_getitem, index_setitem, tail
-    from .insert import df_insert
+    from .insert import df_insert, index_insert
     from .loc import loc
     from .reindex import reindex, reindex_like
     from .rename import df_rename, index_rename, index_set_names, series_rename
@@ -94,6 +94,7 @@ def _install():
         setattr(cls, "droplevel", index_droplevel)
         setattr(cls, "get_level_values", get_level_values)
         setattr(cls, "__getitem__", index_getitem)
+        setattr(cls, "insert", index_insert)
         setattr(cls, "rename", index_rename)
         setattr(cls, "__setitem__", index_setitem)
         setattr(cls, "set_names", index_set_names)

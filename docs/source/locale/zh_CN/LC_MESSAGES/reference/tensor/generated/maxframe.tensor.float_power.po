@@ -1,0 +1,108 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.float_power.rst:2
+msgid "maxframe.tensor.float\\_power"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.float_power.float_power:1 of
+msgid "First tensor elements raised to powers from second array, element-wise."
+msgstr "第一个张量的元素逐元素地提升为第二个数组中对应的幂。"
+
+#: maxframe.tensor.arithmetic.float_power.float_power:3 of
+msgid ""
+"Raise each base in `x1` to the positionally-corresponding power in `x2`. "
+"`x1` and `x2` must be broadcastable to the same shape. This differs from "
+"the power function in that integers, float16, and float32  are promoted "
+"to floats with a minimum precision of float64 so that the result is "
+"always inexact.  The intent is that the function will return a usable "
+"result for negative powers and seldom overflow for positive powers."
+msgstr ""
+"将 `x1` 中的每个底数提升为 `x2` 中位置对应的幂。`x1` 和 `x2` 必须可以广播"
+"到相同的形状。这与幂函数不同的是，整数、float16 和 float32 会被提升为至少"
+" float64 精度的浮点数，因此结果总是不精确的。此函数的目的是对负幂返回可用"
+"的结果，并且很少在正幂时发生溢出。"
+
+#: maxframe.tensor.arithmetic.float_power.float_power of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.float_power.float_power:10 of
+msgid "The bases."
+msgstr "底数。"
+
+#: maxframe.tensor.arithmetic.float_power.float_power:12 of
+msgid "The exponents."
+msgstr "指数。"
+
+#: maxframe.tensor.arithmetic.float_power.float_power:14 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，其形状必须可以广播到输入的形状。如果未提供"
+"或为 `None`，则返回一个新分配的张量。元组（只能作为关键字参数）的长度必须"
+"等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.float_power.float_power:19 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.float_power.float_power of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.float_power.float_power:24 of
+msgid "**y** -- The bases in `x1` raised to the exponents in `x2`."
+msgstr "**y** -- `x1` 中的底数被提升为 `x2` 中的指数。"
+
+#: maxframe.tensor.arithmetic.float_power.float_power of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.float_power.float_power:29 of
+msgid ":py:obj:`power`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.float_power.float_power:30 of
+msgid "power function that preserves type"
+msgstr "保留类型的幂函数"
+
+#: maxframe.tensor.arithmetic.float_power.float_power:33 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.float_power.float_power:34 of
+msgid "Cube each element in a list."
+msgstr "对列表中的每个元素求立方。"
+
+#: maxframe.tensor.arithmetic.float_power.float_power:44 of
+msgid "Raise the bases to different exponents."
+msgstr "将底数提升为不同的指数。"
+
+#: maxframe.tensor.arithmetic.float_power.float_power:50 of
+msgid "The effect of broadcasting."
+msgstr "广播的效果。"
+

@@ -1,0 +1,517 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.einsum.rst:2
+msgid "maxframe.tensor.einsum"
+msgstr ""
+
+#: maxframe.tensor.linalg.einsum.einsum:1 of
+msgid "Evaluates the Einstein summation convention on the operands."
+msgstr "在操作数上计算爱因斯坦求和约定。"
+
+#: maxframe.tensor.linalg.einsum.einsum:3 of
+msgid ""
+"Using the Einstein summation convention, many common multi-dimensional, "
+"linear algebraic array operations can be represented in a simple fashion."
+" In *implicit* mode `einsum` computes these values."
+msgstr ""
+"使用爱因斯坦求和约定，许多常见的多维线性代数数组运算可以用简单的方式表示"
+"。在 *隐式* 模式下 `einsum` 计算这些值。"
+
+#: maxframe.tensor.linalg.einsum.einsum:7 of
+msgid ""
+"In *explicit* mode, `einsum` provides further flexibility to compute "
+"other array operations that might not be considered classical Einstein "
+"summation operations, by disabling, or forcing summation over specified "
+"subscript labels."
+msgstr ""
+"在 *显式* 模式下，`einsum` 提供了更大的灵活性来计算其他可能不被视为经典"
+"爱因斯坦求和运算的数组操作，通过禁用或强制对指定下标标签进行求和。"
+
+#: maxframe.tensor.linalg.einsum.einsum:12 of
+msgid "See the notes and examples for clarification."
+msgstr "请参阅注释和示例以获取说明。"
+
+#: maxframe.tensor.linalg.einsum.einsum of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.linalg.einsum.einsum:14 of
+msgid ""
+"Specifies the subscripts for summation as comma separated list of "
+"subscript labels. An implicit (classical Einstein summation) calculation "
+"is performed unless the explicit indicator '->' is included as well as "
+"subscript labels of the precise output form."
+msgstr ""
+"指定求和的下标为逗号分隔的下标标签列表。除非包含显式指示符 '->' 以及精确"
+"输出形式的下标标签，否则将执行隐式（经典爱因斯坦求和）计算。"
+
+#: maxframe.tensor.linalg.einsum.einsum:19 of
+msgid "These are the arrays for the operation."
+msgstr "这些是用于操作的数组。"
+
+#: maxframe.tensor.linalg.einsum.einsum:21 of
+msgid ""
+"If provided, forces the calculation to use the data type specified. Note "
+"that you may have to also give a more liberal `casting` parameter to "
+"allow the conversions. Default is None."
+msgstr ""
+"如果提供，则强制计算使用指定的数据类型。请注意，您可能还需要给出更宽松的 "
+"`casting` 参数以允许转换。默认值为 None。"
+
+#: maxframe.tensor.linalg.einsum.einsum:25 of
+msgid ""
+"Controls the memory layout of the output. 'C' means it should be C "
+"contiguous. 'F' means it should be Fortran contiguous, 'A' means it "
+"should be 'F' if the inputs are all 'F', 'C' otherwise. 'K' means it "
+"should be as close to the layout as the inputs as is possible, including "
+"arbitrarily permuted axes. Default is 'K'."
+msgstr ""
+"控制输出的内存布局。'C' 表示应为 C 连续。'F' 表示应为 Fortran 连续，'A' "
+"表示如果输入都是 'F' 则为 'F'，否则为 'C'。'K' 表示应尽可能接近输入的布局"
+"，包括任意排列的轴。默认值为 'K'。"
+
+#: maxframe.tensor.linalg.einsum.einsum:32 of
+msgid ""
+"Controls what kind of data casting may occur.  Setting this to 'unsafe' "
+"is not recommended, as it can adversely affect accumulations.    * 'no' "
+"means the data types should not be cast at all.   * 'equiv' means only "
+"byte-order changes are allowed.   * 'safe' means only casts which can "
+"preserve values are allowed.   * 'same_kind' means only safe casts or "
+"casts within a kind,     like float64 to float32, are allowed.   * "
+"'unsafe' means any data conversions may be done.  Default is 'safe'."
+msgstr ""
+"控制可能发生的数据类型转换。不建议将此设置为 'unsafe'，因为它可能对累积"
+"产生不利影响。    * 'no' 表示不应进行任何数据类型转换。   * 'equiv' 表示"
+"仅允许字节顺序更改。   * 'safe' 表示仅允许能够保留值的转换。   * 'same_"
+"kind' 表示仅允许安全转换或同类转换，     例如 float64 到 float32。   * '"
+"unsafe' 表示可以进行任何数据转换。  默认值为 'safe'。"
+
+#: maxframe.tensor.linalg.einsum.einsum:32 of
+msgid ""
+"Controls what kind of data casting may occur.  Setting this to 'unsafe' "
+"is not recommended, as it can adversely affect accumulations."
+msgstr ""
+
+#: maxframe.tensor.linalg.einsum.einsum:35 of
+msgid "'no' means the data types should not be cast at all."
+msgstr ""
+
+#: maxframe.tensor.linalg.einsum.einsum:36 of
+msgid "'equiv' means only byte-order changes are allowed."
+msgstr ""
+
+#: maxframe.tensor.linalg.einsum.einsum:37 of
+msgid "'safe' means only casts which can preserve values are allowed."
+msgstr ""
+
+#: maxframe.tensor.linalg.einsum.einsum:38 of
+msgid ""
+"'same_kind' means only safe casts or casts within a kind, like float64 to"
+" float32, are allowed."
+msgstr ""
+
+#: maxframe.tensor.linalg.einsum.einsum:40 of
+msgid "'unsafe' means any data conversions may be done."
+msgstr ""
+
+#: maxframe.tensor.linalg.einsum.einsum:42 of
+msgid "Default is 'safe'."
+msgstr ""
+
+#: maxframe.tensor.linalg.einsum.einsum:44 of
+msgid ""
+"Controls if intermediate optimization should occur. No optimization will "
+"occur if False and True will default to the 'greedy' algorithm. Also "
+"accepts an explicit contraction list from the ``np.einsum_path`` "
+"function. See ``np.einsum_path`` for more details. Defaults to False."
+msgstr ""
+"控制是否应进行中间优化。如果为 False 则不进行优化，如果为 True 则默认使用"
+" 'greedy' 算法。还接受来自 ``np.einsum_path`` 函数的显式收缩列表。有关更"
+"多详细信息，请参见 ``np.einsum_path``。默认值为 False。"
+
+#: maxframe.tensor.linalg.einsum.einsum of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.linalg.einsum.einsum:50 of
+msgid ""
+"* **output** (*maxframe.tensor.Tensor*) -- The calculation based on the "
+"Einstein summation convention. * *The Einstein summation convention can "
+"be used to compute* * many multi-dimensional, linear algebraic array "
+"operations. `einsum` * *provides a succinct way of representing these.* *"
+" *A non-exhaustive list of these operations,* * which can be computed by "
+"`einsum`, is shown below along with examples * \\* Trace of an array, "
+":py:func:`numpy.trace`. * \\* Return a diagonal, :py:func:`numpy.diag`. *"
+" \\* Array axis summations, :py:func:`numpy.sum`. * \\* Transpositions "
+"and permutations, :py:func:`numpy.transpose`. * \\* Matrix multiplication"
+" and dot product, :py:func:`numpy.matmul` :py:func:`numpy.dot`. * \\* "
+"Vector inner and outer products, :py:func:`numpy.inner` "
+":py:func:`numpy.outer`. * \\* Broadcasting, element-wise and scalar "
+"multiplication, :py:func:`numpy.multiply`. * \\* Tensor contractions, "
+":py:func:`numpy.tensordot`. * \\* Chained array operations, in efficient "
+"calculation order, :py:func:`numpy.einsum_path`. * *The subscripts string"
+" is a comma-separated list of subscript labels,* * *where each label "
+"refers to a dimension of the corresponding operand.* * Whenever a label "
+"is repeated it is summed, so ``mt.einsum('i,i', a, b)`` * is equivalent "
+"to :py:func:`mt.inner(a,b) <maxframe.tensor.inner>`. If a label * appears"
+" only once, it is not summed, so ``mt.einsum('i', a)`` produces a * view "
+"of ``a`` with no changes. A further example ``mt.einsum('ij,jk', a, b)`` "
+"* *describes traditional matrix multiplication and is equivalent to* * "
+":py:func:`mt.matmul(a,b) <maxframe.tensor.matmul>`. * *In *implicit "
+"mode*, the chosen subscripts are important* * *since the axes of the "
+"output are reordered alphabetically.  This* * means that "
+"``mt.einsum('ij', a)`` doesn't affect a 2D array, while * "
+"``mt.einsum('ji', a)`` takes its transpose. Additionally, * "
+"``mt.einsum('ij,jk', a, b)`` returns a matrix multiplication, while, * "
+"``mt.einsum('ij,jh', a, b)`` returns the transpose of the * "
+"*multiplication since subscript 'h' precedes subscript 'i'.* * *In "
+"*explicit mode* the output can be directly controlled by* * *specifying "
+"output subscript labels.  This requires the* * *identifier '->' as well "
+"as the list of output subscript labels.* * *This feature increases the "
+"flexibility of the function since* * *summing can be disabled or forced "
+"when required. The call* * ``mt.einsum('i->', a)`` is like "
+":py:func:`mt.sum(a, axis=-1) <maxframe.tensor.sum>`, * and "
+"``mt.einsum('ii->i', a)`` is like :py:func:`mt.diag(a) "
+"<maxframe.tensor.diag>`. * The difference is that `einsum` does not allow"
+" broadcasting by default. * Additionally ``mt.einsum('ij,jh->ih', a, b)``"
+" directly specifies the * *order of the output subscript labels and "
+"therefore returns matrix* * *multiplication, unlike the example above in "
+"implicit mode.* * *To enable and control broadcasting, use an ellipsis.  "
+"Default* * *NumPy-style broadcasting is done by adding an ellipsis* * to "
+"the left of each term, like ``mt.einsum('...ii->...i', a)``. * *To take "
+"the trace along the first and last axes,* * you can do "
+"``mt.einsum('i...i', a)``, or to do a matrix-matrix * *product with the "
+"left-most indices instead of rightmost, one can do* * "
+"``mt.einsum('ij...,jk...->ik...', a, b)``. * *When there is only one "
+"operand, no axes are summed, and no output* * *parameter is provided, a "
+"view into the operand is returned instead* * of a new array.  Thus, "
+"taking the diagonal as ``mt.einsum('ii->i', a)`` * *produces a view "
+"(changed in version 1.10.0).* * `einsum` also provides an alternative way"
+" to provide the subscripts * and operands as ``einsum(op0, sublist0, op1,"
+" sublist1, ..., [sublistout])``. * If the output shape is not provided in"
+" this format `einsum` will be * *calculated in implicit mode, otherwise "
+"it will be performed explicitly.* * The examples below have corresponding"
+" `einsum` calls with the two * *parameter methods.*"
+msgstr ""
+"* **output** (*maxframe.tensor.Tensor*) -- 基于爱因斯坦求和约定的计算结果"
+"。 * *爱因斯坦求和约定可以用于计算* * 许多多维线性代数数组操作。`einsum` "
+"* *提供了一种简洁的方式来表示这些操作。* * *以下是一个非详尽的这些操作"
+"列表，* * 这些操作可以通过 `einsum` 计算，并附有示例 * \\* 数组的迹，:py:"
+"func:`numpy.trace`。 * \\* 返回对角线，:py:func:`numpy.diag`。 * \\* 数组"
+"轴求和，:py:func:`numpy.sum`。 * \\* 转置和排列，:py:func:`numpy."
+"transpose`。 * \\* 矩阵乘法和点积，:py:func:`numpy.matmul` :py:func:`"
+"numpy.dot`。 * \\* 向量内积和外积，:py:func:`numpy.inner` :py:func:`numpy"
+".outer`。 * \\* 广播、逐元素和标量乘法，:py:func:`numpy.multiply`。 * \\*"
+" 张量收缩，:py:func:`numpy.tensordot`。 * \\* 链式数组操作，按高效计算"
+"顺序，:py:func:`numpy.einsum_path`。 * *下标字符串是逗号分隔的下标标签"
+"列表，* * *其中每个标签对应于相应操作数的一个维度。* * 每当一个标签重复时"
+"，就会进行求和，因此 ``mt.einsum('i,i', a, b)`` * 等价于 :py:func:`mt."
+"inner(a,b) <maxframe.tensor.inner>`。如果一个标签 * 只出现一次，则不进行"
+"求和，因此 ``mt.einsum('i', a)`` 生成 * ``a`` 的一个视图，不作任何更改。"
+"另一个例子 ``mt.einsum('ij,jk', a, b)`` * *描述了传统的矩阵乘法，并等价于"
+"* * :py:func:`mt.matmul(a,b) <maxframe.tensor.matmul>`。 * *在 *隐式* "
+"模式下，所选的下标很重要* * *因为输出的轴会按字母顺序重新排列。这意味着* "
+"* ``mt.einsum('ij', a)`` 不会影响二维数组，而 * ``mt.einsum('ji', a)`` "
+"会取其转置。此外，* * ``mt.einsum('ij,jk', a, b)`` 返回矩阵乘法，而 * ``"
+"mt.einsum('ij,jh', a, b)`` 返回转置的 * *乘法，因为下标 'h' 在 'i' 之前。"
+"* * *在 *显式* 模式下，可以通过* * *指定输出下标标签来直接控制输出。这"
+"需要* * *标识符 '->' 以及输出下标标签列表。* * *此功能增加了函数的灵活性"
+"，因为* * *可以在需要时禁用或强制求和。调用* * ``mt.einsum('i->', a)`` "
+"类似于 :py:func:`mt.sum(a, axis=-1) <maxframe.tensor.sum>`，* 而 ``mt."
+"einsum('ii->i', a)`` 类似于 :py:func:`mt.diag(a) <maxframe.tensor.diag>`"
+"。 * 区别在于 `einsum` 默认不允许广播。 * 此外 ``mt.einsum('ij,jh->ih', a"
+", b)`` 直接指定了 * *输出下标标签的顺序，因此返回矩阵* * *乘法，不同于"
+"上面隐式模式中的示例。* * *要启用和控制广播，请使用省略号。默认* * *NumPy"
+" 风格的广播通过在每项左侧添加省略号* * 来完成，例如 ``mt.einsum('...ii->"
+"...i', a)``。 * *要沿第一个和最后一个轴取迹，* * 可以执行 ``mt.einsum('i"
+"...i', a)``，或者要进行矩阵-矩阵 * *乘法但使用最左侧索引而不是最右侧，"
+"可以执行* * ``mt.einsum('ij...,jk...->ik...', a, b)``。 * *当只有一个"
+"操作数、没有轴被求和且未提供输出* * *参数时，将返回操作数的视图* * 而不是"
+"新数组。因此，将对角线取为 ``mt.einsum('ii->i', a)`` * *会生成一个视图（"
+"在版本 1.10.0 中更改）。* * `einsum` 还提供了一种替代方式来提供下标 * 和"
+"操作数，格式为 ``einsum(op0, sublist0, op1, sublist1, ..., [sublistout])`"
+"`。 * 如果未以这种格式提供输出形状，则 `einsum` 将* *在隐式模式下计算，"
+"否则将显式执行。* * 下面的示例具有与两种* *参数方法对应的 `einsum` 调用。"
+"*"
+
+#: maxframe.tensor.linalg.einsum.einsum:50 of
+msgid ""
+"**output** (*maxframe.tensor.Tensor*) -- The calculation based on the "
+"Einstein summation convention."
+msgstr "**output** (*maxframe.tensor.Tensor*) -- 基于爱因斯坦求和约定的计算结果。"
+
+#: maxframe.tensor.linalg.einsum.einsum:51 of
+msgid "*The Einstein summation convention can be used to compute*"
+msgstr "*爱因斯坦求和约定可以用于计算*"
+
+#: maxframe.tensor.linalg.einsum.einsum:52 of
+msgid "many multi-dimensional, linear algebraic array operations. `einsum`"
+msgstr "许多多维线性代数数组操作。`einsum`"
+
+#: maxframe.tensor.linalg.einsum.einsum:53 of
+msgid "*provides a succinct way of representing these.*"
+msgstr "*提供了一种简洁的方式来表示这些操作。*"
+
+#: maxframe.tensor.linalg.einsum.einsum:54 of
+msgid "*A non-exhaustive list of these operations,*"
+msgstr "*以下是一个非详尽的这些操作列表，*"
+
+#: maxframe.tensor.linalg.einsum.einsum:55 of
+msgid "which can be computed by `einsum`, is shown below along with examples"
+msgstr "这些操作可以通过 `einsum` 计算，并附有示例"
+
+#: maxframe.tensor.linalg.einsum.einsum:56 of
+msgid "\\* Trace of an array, :py:func:`numpy.trace`."
+msgstr "\\* 数组的迹，:py:func:`numpy.trace`。"
+
+#: maxframe.tensor.linalg.einsum.einsum:57 of
+msgid "\\* Return a diagonal, :py:func:`numpy.diag`."
+msgstr "\\* 返回对角线，:py:func:`numpy.diag`。"
+
+#: maxframe.tensor.linalg.einsum.einsum:58 of
+msgid "\\* Array axis summations, :py:func:`numpy.sum`."
+msgstr "\\* 数组轴求和，:py:func:`numpy.sum`。"
+
+#: maxframe.tensor.linalg.einsum.einsum:59 of
+msgid "\\* Transpositions and permutations, :py:func:`numpy.transpose`."
+msgstr "\\* 转置和排列，:py:func:`numpy.transpose`。"
+
+#: maxframe.tensor.linalg.einsum.einsum:60 of
+msgid ""
+"\\* Matrix multiplication and dot product, :py:func:`numpy.matmul` "
+":py:func:`numpy.dot`."
+msgstr "\\* 矩阵乘法和点积，:py:func:`numpy.matmul` :py:func:`numpy.dot`。"
+
+#: maxframe.tensor.linalg.einsum.einsum:61 of
+msgid ""
+"\\* Vector inner and outer products, :py:func:`numpy.inner` "
+":py:func:`numpy.outer`."
+msgstr "\\* 向量内积和外积，:py:func:`numpy.inner` :py:func:`numpy.outer`。"
+
+#: maxframe.tensor.linalg.einsum.einsum:62 of
+msgid ""
+"\\* Broadcasting, element-wise and scalar multiplication, "
+":py:func:`numpy.multiply`."
+msgstr "\\* 广播、逐元素和标量乘法，:py:func:`numpy.multiply`。"
+
+#: maxframe.tensor.linalg.einsum.einsum:63 of
+msgid "\\* Tensor contractions, :py:func:`numpy.tensordot`."
+msgstr "\\* 张量收缩，:py:func:`numpy.tensordot`。"
+
+#: maxframe.tensor.linalg.einsum.einsum:64 of
+msgid ""
+"\\* Chained array operations, in efficient calculation order, "
+":py:func:`numpy.einsum_path`."
+msgstr "\\* 链式数组操作，按高效计算顺序，:py:func:`numpy.einsum_path`。"
+
+#: maxframe.tensor.linalg.einsum.einsum:65 of
+msgid "*The subscripts string is a comma-separated list of subscript labels,*"
+msgstr "*下标字符串是逗号分隔的下标标签列表，*"
+
+#: maxframe.tensor.linalg.einsum.einsum:66 of
+msgid "*where each label refers to a dimension of the corresponding operand.*"
+msgstr "*其中每个标签对应于相应操作数的一个维度。*"
+
+#: maxframe.tensor.linalg.einsum.einsum:67 of
+msgid "Whenever a label is repeated it is summed, so ``mt.einsum('i,i', a, b)``"
+msgstr "当标签重复时会进行求和，因此 ``mt.einsum('i,i', a, b)``"
+
+#: maxframe.tensor.linalg.einsum.einsum:68 of
+msgid ""
+"is equivalent to :py:func:`mt.inner(a,b) <maxframe.tensor.inner>`. If a "
+"label"
+msgstr "等价于 :py:func:`mt.inner(a,b) <maxframe.tensor.inner>`。如果一个标签"
+
+#: maxframe.tensor.linalg.einsum.einsum:69 of
+msgid "appears only once, it is not summed, so ``mt.einsum('i', a)`` produces a"
+msgstr "只出现一次，则不会求和，因此 ``mt.einsum('i', a)`` 生成一个"
+
+#: maxframe.tensor.linalg.einsum.einsum:70 of
+msgid ""
+"view of ``a`` with no changes. A further example ``mt.einsum('ij,jk', a, "
+"b)``"
+msgstr "``a`` 的视图且不作任何更改。另一个例子 ``mt.einsum('ij,jk', a, b)``"
+
+#: maxframe.tensor.linalg.einsum.einsum:71 of
+msgid "*describes traditional matrix multiplication and is equivalent to*"
+msgstr "*描述传统的矩阵乘法，等价于*"
+
+#: maxframe.tensor.linalg.einsum.einsum:72 of
+msgid ":py:func:`mt.matmul(a,b) <maxframe.tensor.matmul>`."
+msgstr ":py:func:`mt.matmul(a,b) <maxframe.tensor.matmul>`。"
+
+#: maxframe.tensor.linalg.einsum.einsum:73 of
+msgid "*In *implicit mode*, the chosen subscripts are important*"
+msgstr "*在 *隐式模式* 中，所选的下标很重要*"
+
+#: maxframe.tensor.linalg.einsum.einsum:74 of
+msgid "*since the axes of the output are reordered alphabetically.  This*"
+msgstr "*因为输出的轴会按字母顺序重新排序。这*"
+
+#: maxframe.tensor.linalg.einsum.einsum:75 of
+msgid "means that ``mt.einsum('ij', a)`` doesn't affect a 2D array, while"
+msgstr "意味着 ``mt.einsum('ij', a)`` 不会影响二维数组，而"
+
+#: maxframe.tensor.linalg.einsum.einsum:76 of
+msgid "``mt.einsum('ji', a)`` takes its transpose. Additionally,"
+msgstr "``mt.einsum('ji', a)`` 会对其转置。此外，"
+
+#: maxframe.tensor.linalg.einsum.einsum:77 of
+msgid "``mt.einsum('ij,jk', a, b)`` returns a matrix multiplication, while,"
+msgstr "``mt.einsum('ij,jk', a, b)`` 返回矩阵乘法的结果，而，"
+
+#: maxframe.tensor.linalg.einsum.einsum:78 of
+msgid "``mt.einsum('ij,jh', a, b)`` returns the transpose of the"
+msgstr "``mt.einsum('ij,jh', a, b)`` 返回的是"
+
+#: maxframe.tensor.linalg.einsum.einsum:79 of
+msgid "*multiplication since subscript 'h' precedes subscript 'i'.*"
+msgstr "*乘法结果的转置，因为下标 'h' 在 'i' 之前。*"
+
+#: maxframe.tensor.linalg.einsum.einsum:80 of
+msgid "*In *explicit mode* the output can be directly controlled by*"
+msgstr "*在 *显式模式* 中，可以通过指定输出下标标签来直接控制输出*"
+
+#: maxframe.tensor.linalg.einsum.einsum:81 of
+msgid "*specifying output subscript labels.  This requires the*"
+msgstr "*这需要使用标识符 '->' 以及输出下标标签列表。*"
+
+#: maxframe.tensor.linalg.einsum.einsum:82 of
+msgid "*identifier '->' as well as the list of output subscript labels.*"
+msgstr "*此功能增强了函数的灵活性，因为可以在需要时禁用或强制求和。调用*"
+
+#: maxframe.tensor.linalg.einsum.einsum:83 of
+msgid "*This feature increases the flexibility of the function since*"
+msgstr "*此功能增强了函数的灵活性，因为可以在需要时禁用或强制求和。调用*"
+
+#: maxframe.tensor.linalg.einsum.einsum:84 of
+msgid "*summing can be disabled or forced when required. The call*"
+msgstr "*在必要时可以禁用或强制执行求和操作。例如*"
+
+#: maxframe.tensor.linalg.einsum.einsum:85 of
+msgid ""
+"``mt.einsum('i->', a)`` is like :py:func:`mt.sum(a, axis=-1) "
+"<maxframe.tensor.sum>`,"
+msgstr ""
+"``mt.einsum('i->', a)`` 类似于 :py:func:`mt.sum(a, axis=-1) <maxframe."
+"tensor.sum>`，"
+
+#: maxframe.tensor.linalg.einsum.einsum:86 of
+msgid ""
+"and ``mt.einsum('ii->i', a)`` is like :py:func:`mt.diag(a) "
+"<maxframe.tensor.diag>`."
+msgstr ""
+"而 ``mt.einsum('ii->i', a)`` 类似于 :py:func:`mt.diag(a) <maxframe.tensor"
+".diag>`。"
+
+#: maxframe.tensor.linalg.einsum.einsum:87 of
+msgid "The difference is that `einsum` does not allow broadcasting by default."
+msgstr "区别在于 `einsum` 默认不允许广播。"
+
+#: maxframe.tensor.linalg.einsum.einsum:88 of
+msgid "Additionally ``mt.einsum('ij,jh->ih', a, b)`` directly specifies the"
+msgstr "此外，``mt.einsum('ij,jh->ih', a, b)`` 直接指定了"
+
+#: maxframe.tensor.linalg.einsum.einsum:89 of
+msgid "*order of the output subscript labels and therefore returns matrix*"
+msgstr "输出下标标签的顺序，因此返回矩阵"
+
+#: maxframe.tensor.linalg.einsum.einsum:90 of
+msgid "*multiplication, unlike the example above in implicit mode.*"
+msgstr "乘法，与上面隐式模式的示例不同。"
+
+#: maxframe.tensor.linalg.einsum.einsum:91 of
+msgid "*To enable and control broadcasting, use an ellipsis.  Default*"
+msgstr "要启用和控制广播，请使用省略号。默认"
+
+#: maxframe.tensor.linalg.einsum.einsum:92 of
+msgid "*NumPy-style broadcasting is done by adding an ellipsis*"
+msgstr "NumPy 风格的广播是通过添加省略号"
+
+#: maxframe.tensor.linalg.einsum.einsum:93 of
+msgid "to the left of each term, like ``mt.einsum('...ii->...i', a)``."
+msgstr "在每个项的左侧完成的，例如 ``mt.einsum('...ii->...i', a)``。"
+
+#: maxframe.tensor.linalg.einsum.einsum:94 of
+msgid "*To take the trace along the first and last axes,*"
+msgstr "要沿第一个和最后一个轴取迹，"
+
+#: maxframe.tensor.linalg.einsum.einsum:95 of
+msgid "you can do ``mt.einsum('i...i', a)``, or to do a matrix-matrix"
+msgstr "可以使用 ``mt.einsum('i...i', a)``，或者要做矩阵-矩阵"
+
+#: maxframe.tensor.linalg.einsum.einsum:96 of
+msgid "*product with the left-most indices instead of rightmost, one can do*"
+msgstr "乘积但使用最左侧索引而不是最右侧索引，可以"
+
+#: maxframe.tensor.linalg.einsum.einsum:97 of
+msgid "``mt.einsum('ij...,jk...->ik...', a, b)``."
+msgstr "使用 ``mt.einsum('ij...,jk...->ik...', a, b)``。"
+
+#: maxframe.tensor.linalg.einsum.einsum:98 of
+msgid "*When there is only one operand, no axes are summed, and no output*"
+msgstr "当只有一个操作数、没有轴被求和且未提供输出"
+
+#: maxframe.tensor.linalg.einsum.einsum:99 of
+msgid "*parameter is provided, a view into the operand is returned instead*"
+msgstr "参数时，将返回操作数的一个视图"
+
+#: maxframe.tensor.linalg.einsum.einsum:100 of
+msgid "of a new array.  Thus, taking the diagonal as ``mt.einsum('ii->i', a)``"
+msgstr "而不是新数组。因此，将对角线提取为 ``mt.einsum('ii->i', a)``"
+
+#: maxframe.tensor.linalg.einsum.einsum:101 of
+msgid "*produces a view (changed in version 1.10.0).*"
+msgstr "会产生一个视图（在 1.10.0 版本中更改）。"
+
+#: maxframe.tensor.linalg.einsum.einsum:102 of
+msgid "`einsum` also provides an alternative way to provide the subscripts"
+msgstr "`einsum` 还提供了另一种提供下标的方式"
+
+#: maxframe.tensor.linalg.einsum.einsum:103 of
+msgid ""
+"and operands as ``einsum(op0, sublist0, op1, sublist1, ..., "
+"[sublistout])``."
+msgstr ""
+"和操作数，形式为 ``einsum(op0, sublist0, op1, sublist1, ..., [sublistout]"
+")``。"
+
+#: maxframe.tensor.linalg.einsum.einsum:104 of
+msgid "If the output shape is not provided in this format `einsum` will be"
+msgstr "如果未以这种格式提供输出形状，`einsum` 将"
+
+#: maxframe.tensor.linalg.einsum.einsum:105 of
+msgid "*calculated in implicit mode, otherwise it will be performed explicitly.*"
+msgstr "在隐式模式下计算，否则它将显式执行。"
+
+#: maxframe.tensor.linalg.einsum.einsum:106 of
+msgid "The examples below have corresponding `einsum` calls with the two"
+msgstr "下面的示例都对应两种"
+
+#: maxframe.tensor.linalg.einsum.einsum:107 of
+msgid "*parameter methods.*"
+msgstr "参数方法的 `einsum` 调用。"
+
+#: maxframe.tensor.linalg.einsum.einsum:110 of
+msgid "示例"
+msgstr ""
+

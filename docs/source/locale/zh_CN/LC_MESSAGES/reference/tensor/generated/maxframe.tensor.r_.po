@@ -1,0 +1,145 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.r_.rst:2
+msgid "maxframe.tensor.r\\_"
+msgstr ""
+
+#: ../../docstring maxframe.tensor.r_:1 of
+msgid "Translates slice objects to concatenation along the first axis."
+msgstr "将切片对象转换为沿第一个轴的拼接。"
+
+#: ../../docstring maxframe.tensor.r_:3 of
+msgid "This is a simple way to build up tensor quickly. There are two use cases."
+msgstr "这是一种快速构建张量的简单方法。有两种使用情况。"
+
+#: ../../docstring maxframe.tensor.r_:5 of
+msgid ""
+"If the index expression contains comma separated tensors, then stack them"
+" along their first axis."
+msgstr "如果索引表达式包含逗号分隔的张量，则沿它们的第一个轴堆叠。"
+
+#: ../../docstring maxframe.tensor.r_:7 of
+msgid ""
+"If the index expression contains slice notation or scalars then create a "
+"1-D tensor with a range indicated by the slice notation."
+msgstr ""
+"如果索引表达式包含切片符号或标量，则创建一个1维张量，其范围由切片符号指定"
+"。"
+
+#: ../../docstring maxframe.tensor.r_:10 of
+msgid ""
+"If slice notation is used, the syntax ``start:stop:step`` is equivalent "
+"to ``mt.arange(start, stop, step)`` inside of the brackets. However, if "
+"``step`` is an imaginary number (i.e. 100j) then its integer portion is "
+"interpreted as a number-of-points desired and the start and stop are "
+"inclusive. In other words ``start:stop:stepj`` is interpreted as "
+"``mt.linspace(start, stop, step, endpoint=1)`` inside of the brackets. "
+"After expansion of slice notation, all comma separated sequences are "
+"concatenated together."
+msgstr ""
+"如果使用切片符号，语法 ``start:stop:step`` 等价于括号内的 ``mt.arange("
+"start, stop, step)``。但如果 ``step`` 是虚数（例如 100j），则其整数部分被"
+"解释为所需的点数，起始和结束值包含在内。换句话说，``start:stop:stepj`` 被"
+"解释为括号内的 ``mt.linspace(start, stop, step, endpoint=1)``。在展开切片"
+"符号后，所有逗号分隔的序列都会被拼接在一起。"
+
+#: ../../docstring maxframe.tensor.r_:19 of
+msgid ""
+"Optional character strings placed as the first element of the index "
+"expression can be used to change the output. The strings 'r' or 'c' "
+"result in matrix output. If the result is 1-D and 'r' is specified a 1 x "
+"N (row) matrix is produced. If the result is 1-D and 'c' is specified, "
+"then a N x 1 (column) matrix is produced. If the result is 2-D then both "
+"provide the same matrix result."
+msgstr ""
+"可选字符字符串放置在索引表达式的第一个元素，可以用于更改输出。字符串 'r' "
+"或 'c' 会生成矩阵输出。如果结果是1维且指定了 'r'，则生成 1 x N（行）矩阵"
+"。如果结果是1维且指定了 'c'，则生成 N x 1（列）矩阵。如果结果是2维，则"
+"两者都提供相同的矩阵结果。"
+
+#: ../../docstring maxframe.tensor.r_:26 of
+msgid ""
+"A string integer specifies which axis to stack multiple comma separated "
+"tensors along. A string of two comma-separated integers allows indication"
+" of the minimum number of dimensions to force each entry into as the "
+"second integer (the axis to concatenate along is still the first "
+"integer)."
+msgstr ""
+"字符串整数指定沿哪个轴堆叠多个逗号分隔的张量。两个逗号分隔的整数字符串"
+"允许指定每个条目应强制具有的最小维数作为第二个整数（拼接轴仍然是第一个"
+"整数）。"
+
+#: ../../docstring maxframe.tensor.r_:31 of
+msgid ""
+"A string with three comma-separated integers allows specification of the "
+"axis to concatenate along, the minimum number of dimensions to force the "
+"entries to, and which axis should contain the start of the tensors which "
+"are less than the specified number of dimensions. In other words the "
+"third integer allows you to specify where the 1's should be placed in the"
+" shape of the tensors that have their shapes upgraded. By default, they "
+"are placed in the front of the shape tuple. The third argument allows you"
+" to specify where the start of the tensor should be instead. Thus, a "
+"third argument of '0' would place the 1's at the end of the tensor shape."
+" Negative integers specify where in the new shape tuple the last "
+"dimension of upgraded tensors should be placed, so the default is '-1'."
+msgstr ""
+"三个逗号分隔的整数字符串允许指定拼接轴、强制条目具有的最小维数，以及哪个"
+"轴应包含维数小于指定数量的张量的起始位置。换句话说，第三个整数允许你指定"
+"在形状升级的张量形状中应将1放在哪里。默认情况下，它们被放在形状元组的前面"
+"。第三个参数允许你指定张量起始位置应改为放在哪里。因此，第三个参数为'0'会"
+"将1放在张量形状的末尾。负整数指定在新的形状元组中升级张量的最后一个维度应"
+"放在哪里，默认值为'-1'。"
+
+#: ../../docstring maxframe.tensor.r_ of
+msgid "参数"
+msgstr ""
+
+#: ../../docstring maxframe.tensor.r_ of
+msgid "返回类型"
+msgstr ""
+
+#: ../../docstring maxframe.tensor.r_:50 of
+msgid ":py:obj:`concatenate`"
+msgstr ""
+
+#: ../../docstring maxframe.tensor.r_:51 of
+msgid "Join a sequence of tensors along an existing axis."
+msgstr "沿现有轴连接一系列张量。"
+
+#: ../../docstring maxframe.tensor.r_:53 of
+msgid ":py:obj:`c_`"
+msgstr ""
+
+#: ../../docstring maxframe.tensor.r_:54 of
+msgid "Translates slice objects to concatenation along the second axis."
+msgstr "将切片对象转换为沿第二个轴的拼接。"
+
+#: ../../docstring maxframe.tensor.r_:57 of
+msgid "示例"
+msgstr ""
+
+#: ../../docstring maxframe.tensor.r_:64 of
+msgid ""
+"String integers specify the axis to concatenate along or the minimum "
+"number of dimensions to force entries into."
+msgstr "字符串整数指定拼接轴或强制条目进入的最小维数。"
+

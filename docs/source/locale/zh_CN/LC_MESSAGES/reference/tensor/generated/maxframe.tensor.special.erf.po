@@ -1,0 +1,96 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.erf.rst:2
+msgid "maxframe.tensor.special.erf"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erf:1 of
+msgid "Returns the error function of complex argument."
+msgstr "返回复数参数的误差函数。"
+
+#: maxframe.tensor.special.err_fresnel.erf:3 of
+msgid "It is defined as ``2/sqrt(pi)*integral(exp(-t**2), t=0..z)``."
+msgstr "其定义为 ``2/sqrt(pi)*integral(exp(-t**2), t=0..z)``。"
+
+#: maxframe.tensor.special.err_fresnel.erf of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erf:5 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.special.err_fresnel.erf of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erf:8 of
+msgid "**res** -- The values of the error function at the given points `x`."
+msgstr "**res** -- 给定点 `x` 处的误差函数值。"
+
+#: maxframe.tensor.special.err_fresnel.erf of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erf:11 of
+msgid ""
+":py:obj:`erfc`, :py:obj:`erfinv`, :py:obj:`erfcinv`, :py:obj:`wofz`, "
+":py:obj:`erfcx`, :py:obj:`erfi`"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erf:14 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erf:15 of
+msgid ""
+"The cumulative of the unit normal distribution is given by ``Phi(z) = "
+"1/2[1 + erf(z/sqrt(2))]``."
+msgstr "标准正态分布的累积分布函数由 ``Phi(z) = 1/2[1 + erf(z/sqrt(2))]`` 给出。"
+
+#: maxframe.tensor.special.err_fresnel.erf:19 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erf:20 of
+msgid "https://en.wikipedia.org/wiki/Error_function"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erf:21 of
+msgid ""
+"Milton Abramowitz and Irene A. Stegun, eds. Handbook of Mathematical "
+"Functions with Formulas, Graphs, and Mathematical Tables. New York: "
+"Dover, 1972. http://www.math.sfu.ca/~cbm/aands/page_297.htm"
+msgstr ""
+"Milton Abramowitz 和 Irene A. Stegun 编。数学函数手册：公式、图表和数学表"
+"。纽约：Dover，1972 年。http://www.math.sfu.ca/~cbm/aands/page_297.htm"
+
+#: maxframe.tensor.special.err_fresnel.erf:25 of
+msgid ""
+"Steven G. Johnson, Faddeeva W function implementation. http://ab-"
+"initio.mit.edu/Faddeeva"
+msgstr "Steven G. Johnson，Faddeeva W 函数实现。http://ab-initio.mit.edu/Faddeeva"
+
+#: maxframe.tensor.special.err_fresnel.erf:29 of
+msgid "示例"
+msgstr ""
+

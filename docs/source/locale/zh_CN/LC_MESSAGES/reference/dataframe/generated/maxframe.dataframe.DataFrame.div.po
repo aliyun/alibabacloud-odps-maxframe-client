@@ -1,0 +1,202 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.div.rst:2
+msgid "maxframe.dataframe.DataFrame.div"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:1
+#: of
+msgid ""
+"Get Floating division of dataframe and other, element-wise (binary "
+"operator `truediv`). Equivalent to ``/``, but with support to substitute "
+"a fill_value for missing data in one of the inputs. With reverse version,"
+" `rtruediv`. Among flexible wrappers (`add`, `sub`, `mul`, `div`, `mod`, "
+"`pow`) to arithmetic operators: `+`, `-`, `*`, `/`, `//`, `%`, `**`."
+msgstr ""
+"获取 DataFrame 和 other 的浮点除法，逐元素（二元运算符 `truediv`）。等价"
+"于 ``/``，但支持在其中一个输入中用 fill_value 替换缺失数据。带有反向版本 "
+"`rtruediv`。是算术运算符 `+`、`-`、`*`、`/`、`//`、`%`、`**` 的灵活封装"
+"之一：(`add`, `sub`, `mul`, `div`, `mod`, `pow`)。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill
+#: of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:7
+#: of
+msgid "Any single or multiple element data structure, or list-like object."
+msgstr "任何单个或多个元素的数据结构，或类列表对象。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:9
+#: of
+msgid ""
+"Whether to compare by the index (0 or 'index') or columns (1 or "
+"'columns'). For Series input, axis to match Series index on."
+msgstr ""
+"是按索引（0 或 'index'）比较还是按列（1 或 'columns'）比较。对于 Series "
+"输入，axis 表示与 Series 索引对齐的轴。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:12
+#: of
+msgid ""
+"Broadcast across a level, matching Index values on the passed MultiIndex "
+"level."
+msgstr "在传递的 MultiIndex 层级上广播，匹配 Index 值。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:15
+#: of
+msgid ""
+"Fill existing missing (NaN) values, and any new element needed for "
+"successful DataFrame alignment, with this value before computation. If "
+"data in both corresponding DataFrame locations is missing the result will"
+" be missing."
+msgstr ""
+"在计算前，用此值填充现有的缺失（NaN）值，以及 DataFrame 对齐所需的新元素"
+"。如果两个对应 DataFrame 位置的数据都缺失，则结果也将缺失。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill
+#: of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:21
+#: of
+msgid "Result of the arithmetic operation."
+msgstr "算术运算的结果。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill
+#: of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:26
+#: of
+msgid ":py:obj:`DataFrame.add`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:27
+#: of
+msgid "Add DataFrames."
+msgstr "将 DataFrames 相加。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:29
+#: of
+msgid ":py:obj:`DataFrame.sub`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:30
+#: of
+msgid "Subtract DataFrames."
+msgstr "将 DataFrames 相减。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:32
+#: of
+msgid ":py:obj:`DataFrame.mul`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:33
+#: of
+msgid "Multiply DataFrames."
+msgstr "将 DataFrames 相乘。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:35
+#: of
+msgid ":py:obj:`DataFrame.div`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:36
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:39
+#: of
+msgid "Divide DataFrames (float division)."
+msgstr "将 DataFrames 相除（浮点除法）。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:38
+#: of
+msgid ":py:obj:`DataFrame.truediv`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:41
+#: of
+msgid ":py:obj:`DataFrame.floordiv`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:42
+#: of
+msgid "Divide DataFrames (integer division)."
+msgstr "将 DataFrames 相除（整数除法）。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:44
+#: of
+msgid ":py:obj:`DataFrame.mod`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:45
+#: of
+msgid "Calculate modulo (remainder after division)."
+msgstr "计算模（除法后的余数）。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:47
+#: of
+msgid ":py:obj:`DataFrame.pow`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:48
+#: of
+msgid "Calculate exponential power."
+msgstr "计算指数幂。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:51
+#: of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:52
+#: of
+msgid "Mismatched indices will be unioned together."
+msgstr "不匹配的索引将被合并在一起。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:55
+#: of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:66
+#: of
+msgid "Add a scalar with operator version which return the same results."
+msgstr "使用运算符版本添加一个标量，返回相同的结果。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:81
+#: of
+msgid "Divide by constant with reverse version."
+msgstr "除以常数的反向版本。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:95
+#: of
+msgid "Subtract a list and Series by axis with operator version."
+msgstr "按轴减去列表和 Series 的运算符版本。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:116
+#: of
+msgid "Multiply a DataFrame of different shape with operator version."
+msgstr "不同形状 DataFrame 相乘的运算符版本。"
+

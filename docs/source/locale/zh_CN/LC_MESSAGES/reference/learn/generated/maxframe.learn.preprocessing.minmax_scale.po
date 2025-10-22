@@ -1,0 +1,162 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.minmax_scale.rst:2
+msgid "maxframe.learn.preprocessing.minmax\\_scale"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:1 of
+msgid "Transform features by scaling each feature to a given range."
+msgstr "通过将每个特征缩放到给定范围来变换特征。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:3 of
+msgid ""
+"This estimator scales and translates each feature individually such that "
+"it is in the given range on the training set, i.e. between zero and one."
+msgstr ""
+"此估计器独立地缩放和平移每个特征，使其在训练集上的取值范围为给定区间，即"
+"在零和一之间。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:7 of
+msgid "The transformation is given by (when ``axis=0``)::"
+msgstr "变换公式如下（当 ``axis=0`` 时）："
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:12 of
+msgid "where min, max = feature_range."
+msgstr "其中 min, max = feature_range。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:14 of
+msgid "The transformation is calculated as (when ``axis=0``)::"
+msgstr "变换计算方式如下（当 ``axis=0`` 时）："
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:19 of
+msgid ""
+"This transformation is often used as an alternative to zero mean, unit "
+"variance scaling."
+msgstr "这种变换通常用作零均值、单位方差缩放的替代方法。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:22 of
+msgid "Read more in the :ref:`User Guide <preprocessing_scaler>`."
+msgstr "更多内容请参见 :ref:`用户指南 <preprocessing_scaler>`。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:24 of
+msgid ""
+"*minmax_scale* function interface to "
+":class:`~sklearn.preprocessing.MinMaxScaler`."
+msgstr ""
+"*minmax_scale* 函数接口对应于 :class:`~sklearn.preprocessing.MinMaxScaler"
+"`。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:28 of
+msgid "The data."
+msgstr "数据。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:30 of
+msgid "Desired range of transformed data."
+msgstr "变换后数据的期望范围。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:32 of
+msgid ""
+"Axis used to scale along. If 0, independently scale each feature, "
+"otherwise (if 1) scale each sample."
+msgstr ""
+"用于缩放的轴。如果为 0，则独立缩放每个特征；否则（如果为 1）则缩放每个"
+"样本。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:35 of
+msgid ""
+"Set to False to perform inplace scaling and avoid a copy (if the input is"
+" already a numpy array)."
+msgstr "设置为 False 可执行就地缩放并避免复制（如果输入已经是 numpy 数组）。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:39 of
+msgid ""
+"* **X_tr** (*ndarray of shape (n_samples, n_features)*) -- The "
+"transformed data. * *.. warning:: Risk of data leak* -- Do not use "
+":func:`~sklearn.preprocessing.minmax_scale` unless you know   what you "
+"are doing. A common mistake is to apply it to the entire data   *before* "
+"splitting into training and test sets. This will bias the   model "
+"evaluation because information would have leaked from the test   set to "
+"the training set.   In general, we recommend using   "
+":class:`~sklearn.preprocessing.MinMaxScaler` within a   :ref:`Pipeline "
+"<pipeline>` in order to prevent most risks of data   leaking: `pipe = "
+"make_pipeline(MinMaxScaler(), LogisticRegression())`."
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:39 of
+msgid ""
+"**X_tr** (*ndarray of shape (n_samples, n_features)*) -- The transformed "
+"data."
+msgstr "**X_tr** (*ndarray of shape (n_samples, n_features)*) -- 变换后的数据。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:40 of
+msgid ""
+"*.. warning:: Risk of data leak* -- Do not use "
+":func:`~sklearn.preprocessing.minmax_scale` unless you know what you are "
+"doing. A common mistake is to apply it to the entire data *before* "
+"splitting into training and test sets. This will bias the model "
+"evaluation because information would have leaked from the test set to the"
+" training set. In general, we recommend using "
+":class:`~sklearn.preprocessing.MinMaxScaler` within a :ref:`Pipeline "
+"<pipeline>` in order to prevent most risks of data leaking: `pipe = "
+"make_pipeline(MinMaxScaler(), LogisticRegression())`."
+msgstr ""
+"*.. 警告:: 数据泄露风险* -- 除非你知道自己在做什么，否则不要使用 :func:`~"
+"sklearn.preprocessing.minmax_scale`。一个常见的错误是在将数据拆分为训练集"
+"和测试集 *之前* 应用它。这会导致模型评估产生偏差，因为信息会从测试集泄露"
+"到训练集中。通常，我们建议在 :ref:`Pipeline <pipeline>` 中使用 :class:`~"
+"sklearn.preprocessing.MinMaxScaler` 来防止大多数数据泄露风险：`pipe = "
+"make_pipeline(MinMaxScaler(), LogisticRegression())`。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:52 of
+msgid ":py:obj:`MinMaxScaler`"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:53 of
+msgid ""
+"Performs scaling to a given range using the Transformer API (e.g. as part"
+" of a preprocessing :class:`~sklearn.pipeline.Pipeline`)."
+msgstr ""
+"使用 Transformer API 执行给定范围的缩放（例如作为预处理 :class:`~sklearn."
+"pipeline.Pipeline` 的一部分）。"
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:56 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.min_max_scaler.minmax_scale:57 of
+msgid ""
+"For a comparison of the different scalers, transformers, and normalizers,"
+" see :ref:`examples/preprocessing/plot_all_scaling.py "
+"<sphx_glr_auto_examples_preprocessing_plot_all_scaling.py>`."
+msgstr ""
+"有关不同缩放器、变换器和归一化器的比较，请参见 :ref:`examples/"
+"preprocessing/plot_all_scaling.py <sphx_glr_auto_examples_preprocessing_"
+"plot_all_scaling.py>`。"
+

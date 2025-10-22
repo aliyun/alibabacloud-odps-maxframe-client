@@ -1,0 +1,185 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.compare.rst:2
+msgid "maxframe.dataframe.DataFrame.compare"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:1 of
+msgid "Compare to another DataFrame and show the differences."
+msgstr "与另一个 DataFrame 比较并显示差异。"
+
+#: maxframe.dataframe.merge.compare.df_compare of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:3 of
+msgid "Object to compare with."
+msgstr "要比较的对象。"
+
+#: maxframe.dataframe.merge.compare.df_compare:5 of
+msgid ""
+"Determine which axis to align the comparison on.  * 0, or 'index' : "
+"Resulting differences are stacked vertically     with rows drawn "
+"alternately from self and other. * 1, or 'columns' : Resulting "
+"differences are aligned horizontally     with columns drawn alternately "
+"from self and other."
+msgstr ""
+"确定比较对齐的轴。  * 0 或 'index'：结果差异垂直堆叠，行交替从 self 和 "
+"other 中提取。* 1 或 'columns'：结果差异水平对齐，列交替从 self 和 other "
+"中提取。"
+
+#: maxframe.dataframe.merge.compare.df_compare:5 of
+msgid "Determine which axis to align the comparison on."
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:7 of
+msgid "0, or 'index'"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:-1 of
+msgid "Resulting differences are stacked vertically"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:8 of
+msgid "with rows drawn alternately from self and other."
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:9 of
+msgid "1, or 'columns'"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:-1 of
+msgid "Resulting differences are aligned horizontally"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:10 of
+msgid "with columns drawn alternately from self and other."
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:12 of
+msgid ""
+"If true, all rows and columns are kept. Otherwise, only the ones with "
+"different values are kept."
+msgstr "如果为 true，则保留所有行和列。否则，仅保留值不同的行和列。"
+
+#: maxframe.dataframe.merge.compare.df_compare:15 of
+msgid ""
+"If true, the result keeps values that are equal. Otherwise, equal values "
+"are shown as NaNs."
+msgstr "如果为 true，则保留相等的值。否则，相等的值显示为 NaN。"
+
+#: maxframe.dataframe.merge.compare.df_compare:18 of
+msgid "Set the dataframes names in the comparison."
+msgstr "在比较中设置 DataFrame 的名称。"
+
+#: maxframe.dataframe.merge.compare.df_compare of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:21 of
+msgid ""
+"DataFrame that shows the differences stacked side by side.  The resulting"
+" index will be a MultiIndex with 'self' and 'other' stacked alternately "
+"at the inner level."
+msgstr ""
+"显示差异并排堆叠的 DataFrame。结果索引将是一个 MultiIndex，其中 'self' 和"
+" 'other' 在内层交替堆叠。"
+
+#: maxframe.dataframe.merge.compare.df_compare:21 of
+msgid "DataFrame that shows the differences stacked side by side."
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:23 of
+#, fuzzy
+msgid ""
+"The resulting index will be a MultiIndex with 'self' and 'other' stacked "
+"alternately at the inner level."
+msgstr ""
+"显示差异并排堆叠的 DataFrame。结果索引将是一个 MultiIndex，其中 'self' 和"
+" 'other' 在内层交替堆叠。"
+
+#: maxframe.dataframe.merge.compare.df_compare of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:27 of
+msgid "When the two DataFrames don't have identical labels or shape."
+msgstr "当两个 DataFrame 没有相同的标签或形状时引发。"
+
+#: maxframe.dataframe.merge.compare.df_compare:31 of
+msgid ":py:obj:`Series.compare`"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:32 of
+msgid "Compare with another Series and show differences."
+msgstr "与另一个 Series 比较并显示差异。"
+
+#: maxframe.dataframe.merge.compare.df_compare:34 of
+msgid ":py:obj:`DataFrame.equals`"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:35 of
+msgid "Test whether two objects contain the same elements."
+msgstr "测试两个对象是否包含相同的元素。"
+
+#: maxframe.dataframe.merge.compare.df_compare:38 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:39 of
+msgid "Matching NaNs will not appear as a difference."
+msgstr "匹配的 NaN 不会显示为差异。"
+
+#: maxframe.dataframe.merge.compare.df_compare:41 of
+msgid ""
+"Can only compare identically-labeled (i.e. same shape, identical row and "
+"column labels) DataFrames"
+msgstr "只能比较具有相同标签（即相同形状、相同的行列标签）的 DataFrame"
+
+#: maxframe.dataframe.merge.compare.df_compare:45 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.merge.compare.df_compare:75 of
+msgid "Align the differences on columns"
+msgstr "按列对齐差异"
+
+#: maxframe.dataframe.merge.compare.df_compare:83 of
+msgid "Stack the differences on rows"
+msgstr "按行堆叠差异"
+
+#: maxframe.dataframe.merge.compare.df_compare:92 of
+msgid "Keep the equal values"
+msgstr "保留相等的值"
+
+#: maxframe.dataframe.merge.compare.df_compare:100 of
+msgid "Keep all original rows and columns"
+msgstr "保留所有原始行和列"
+
+#: maxframe.dataframe.merge.compare.df_compare:111 of
+msgid "Keep all original rows and columns and also all original values"
+msgstr "保留所有原始行和列以及所有原始值"
+

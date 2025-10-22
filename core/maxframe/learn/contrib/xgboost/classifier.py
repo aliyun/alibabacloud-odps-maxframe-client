@@ -18,6 +18,7 @@ import numpy as np
 
 from .... import tensor as mt
 from ....tensor.merge.vstack import _vstack
+from ...utils.odpsio import register_odps_model
 from ..utils import make_import_error_func
 from .core import XGBScikitLearnBase, xgboost
 
@@ -28,6 +29,7 @@ else:
 
     from .predict import predict
 
+    @register_odps_model
     class XGBClassifier(XGBScikitLearnBase, XGBClassifierBase):
         """
         Implementation of the scikit-learn API for XGBoost classification.

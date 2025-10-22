@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.rgamma.rst:2
+msgid "maxframe.tensor.special.rgamma"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.rgamma:1 of
+msgid "Reciprocal of the gamma function."
+msgstr "伽马函数的倒数。"
+
+#: maxframe.tensor.special.gamma_funcs.rgamma:3 of
+msgid ""
+"Defined as :math:`1 / \\Gamma(z)`, where :math:`\\Gamma` is the gamma "
+"function. For more on the gamma function see `gamma`."
+msgstr ""
+"定义为 :math:`1 / \\Gamma(z)`，其中 :math:`\\Gamma` 是伽马函数。有关伽马"
+"函数的更多信息，请参见 `gamma`。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.rgamma.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.rgamma:6 of
+msgid "Real or complex valued input"
+msgstr "实数或复数输入"
+
+#: maxframe.tensor.special.gamma_funcs.rgamma:8 of
+msgid "Optional output array for the function results"
+msgstr "可选的函数结果输出数组"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.rgamma.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.rgamma:11 of
+msgid "Function results"
+msgstr "函数结果"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.rgamma.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.rgamma:14 of
+msgid ":py:obj:`gamma`, :py:obj:`gammaln`, :py:obj:`loggamma`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.rgamma:17 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.rgamma:18 of
+msgid ""
+"The gamma function has no zeros and has simple poles at nonpositive "
+"integers, so `rgamma` is an entire function with zeros at the nonpositive"
+" integers. See the discussion in [dlmf]_ for more details."
+msgstr ""
+"伽马函数没有零点，在非正整数处有简单极点，因此 `rgamma` 是一个在非正整数"
+"处为零的整函数。详见 [dlmf]_ 中的讨论。"
+
+#: maxframe.tensor.special.gamma_funcs.rgamma:24 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.rgamma:25 of
+msgid ""
+"Nist, Digital Library of Mathematical functions, "
+"https://dlmf.nist.gov/5.2#i"
+msgstr "Nist, 数学函数数字图书馆, https://dlmf.nist.gov/5.2#i"
+

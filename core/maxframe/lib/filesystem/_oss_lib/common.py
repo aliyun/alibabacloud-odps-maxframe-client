@@ -40,6 +40,8 @@ class OSSFileEntry:
         self._storage_options = storage_options
 
     def is_dir(self):
+        if self._path.endswith("/"):
+            self._is_dir = True
         if self._is_dir is None:
             self._is_dir = oss_isdir(self._path)
         return self._is_dir

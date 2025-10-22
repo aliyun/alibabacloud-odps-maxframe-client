@@ -1,0 +1,131 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.truncate.rst:2
+msgid "maxframe.dataframe.DataFrame.truncate"
+msgstr ""
+
+#: maxframe.dataframe.indexing.truncate.truncate:1 of
+msgid "Truncate a Series or DataFrame before and after some index value."
+msgstr "在某些索引值之前和之后截断 Series 或 DataFrame。"
+
+#: maxframe.dataframe.indexing.truncate.truncate:3 of
+msgid ""
+"This is a useful shorthand for boolean indexing based on index values "
+"above or below certain thresholds."
+msgstr "这对于基于索引值高于或低于某些阈值的布尔索引来说是一个有用的简写。"
+
+#: maxframe.dataframe.indexing.truncate.truncate of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.truncate.truncate:6 of
+msgid "Truncate all rows before this index value."
+msgstr "在此索引值之前截断所有行。"
+
+#: maxframe.dataframe.indexing.truncate.truncate:8 of
+msgid "Truncate all rows after this index value."
+msgstr "在此索引值之后截断所有行。"
+
+#: maxframe.dataframe.indexing.truncate.truncate:10 of
+msgid ""
+"Axis to truncate. Truncates the index (rows) by default. For `Series` "
+"this parameter is unused and defaults to 0."
+msgstr "要截断的轴。默认截断索引（行）。对于 `Series` 此参数未使用，默认为 0。"
+
+#: maxframe.dataframe.indexing.truncate.truncate:13 of
+msgid "This parameter is only kept for compatibility with pandas."
+msgstr "此参数仅为了与 pandas 兼容而保留。"
+
+#: maxframe.dataframe.indexing.truncate.truncate of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.indexing.truncate.truncate:16 of
+msgid "The truncated Series or DataFrame."
+msgstr "被截断的 Series 或 DataFrame。"
+
+#: maxframe.dataframe.indexing.truncate.truncate of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.truncate.truncate:21 of
+msgid ":py:obj:`DataFrame.loc`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.truncate.truncate:22 of
+msgid "Select a subset of a DataFrame by label."
+msgstr "通过标签选择 DataFrame 的子集。"
+
+#: maxframe.dataframe.indexing.truncate.truncate:24 of
+msgid ":py:obj:`DataFrame.iloc`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.truncate.truncate:25 of
+msgid "Select a subset of a DataFrame by position."
+msgstr "通过位置选择 DataFrame 的子集。"
+
+#: maxframe.dataframe.indexing.truncate.truncate:28 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.indexing.truncate.truncate:29 of
+msgid ""
+"If the index being truncated contains only datetime values, `before` and "
+"`after` may be specified as strings instead of Timestamps."
+msgstr ""
+"如果被截断的索引仅包含日期时间值，则 `before` 和 `after` 可以指定为字符串"
+"而非时间戳。"
+
+#: maxframe.dataframe.indexing.truncate.truncate:34 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.indexing.truncate.truncate:54 of
+msgid "The columns of a DataFrame can be truncated."
+msgstr "可以截断 DataFrame 的列。"
+
+#: maxframe.dataframe.indexing.truncate.truncate:64 of
+msgid "For Series, only rows can be truncated."
+msgstr "对于 Series，只能截断行。"
+
+#: maxframe.dataframe.indexing.truncate.truncate:72 of
+msgid "The index values in ``truncate`` can be datetimes or string dates."
+msgstr "``truncate`` 中的索引值可以是日期时间或字符串日期。"
+
+#: maxframe.dataframe.indexing.truncate.truncate:94 of
+msgid ""
+"Because the index is a DatetimeIndex containing only dates, we can "
+"specify `before` and `after` as strings. They will be coerced to "
+"Timestamps before truncation."
+msgstr ""
+"因为索引是仅包含日期的 DatetimeIndex，我们可以将 `before` 和 `after` 指定"
+"为字符串。它们会在截断前被强制转换为时间戳。"
+
+#: maxframe.dataframe.indexing.truncate.truncate:106 of
+msgid ""
+"Note that ``truncate`` assumes a 0 value for any unspecified time "
+"component (midnight). This differs from partial string slicing, which "
+"returns any partially matching dates."
+msgstr ""
+"注意 ``truncate`` 会为任何未指定的时间组件假定一个 0 值（午夜）。这与部分"
+"字符串切片不同，后者会返回任何部分匹配的日期。"
+

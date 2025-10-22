@@ -21,8 +21,8 @@ import pandas as pd
 from ... import opcodes
 from ...core import EntityData, OutputType
 from ...serialization.serializables import AnyField, KeyField, StringField
-from ...udf import BuiltinFunction, MarkedFunction
-from ...utils import quiet_stdio
+from ...udf import BuiltinFunction, MarkedFunction, ODPSFunction
+from ...utils import make_dtype, quiet_stdio
 from ..core import SERIES_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_series, copy_func_scheduling_hints
@@ -40,6 +40,7 @@ class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
         if not self.output_types:
             self.output_types = [OutputType.series]
         if hasattr(self, "arg"):
+            self.arg = ODPSFunction.wrap(self.arg)
             copy_func_scheduling_hints(self.arg, self)
 
     @classmethod
@@ -55,25 +56,34 @@ class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
         ) and not isinstance(self.arg, BuiltinFunction)
 
     def __call__(self, series, dtype, skip_infer=False):
-        if dtype is None and not skip_infer:
-            inferred_dtype = None
-            if callable(self.arg):
+        if dtype is not None:
+            dtype = make_dtype(dtype)
+        else:
+            # obtain dtype from existing hints
+            if isinstance(self.arg, ODPSFunction):
+                if self.arg.result_dtype is not None:
+                    dtype = self.arg.result_dtype
+            elif callable(self.arg):
                 # arg is a function, try to inspect the signature
                 sig = inspect.signature(self.arg)
                 return_type = sig.return_annotation
                 if return_type is not inspect._empty:
-                    inferred_dtype = np.dtype(return_type)
-                else:
-                    try:
-                        with quiet_stdio():
-                            # try to infer dtype by calling the function
-                            inferred_dtype = (
-                                build_series(series)
-                                .map(self.arg, na_action=self.na_action)
-                                .dtype
-                            )
-                    except:  # noqa: E722  # nosec
-                        pass
+                    dtype = np.dtype(return_type)
+
+        err_prefix = None
+        if dtype is None and not skip_infer:
+            inferred_dtype = None
+            if callable(self.arg):
+                try:
+                    with quiet_stdio():
+                        # try to infer dtype by calling the function
+                        inferred_dtype = (
+                            build_series(series)
+                            .map(self.arg, na_action=self.na_action)
+                            .dtype
+                        )
+                except:  # noqa: E722  # nosec
+                    pass
             else:
                 if isinstance(self.arg, MutableMapping):
                     inferred_dtype = pd.Series(self.arg).dtype
@@ -86,13 +96,16 @@ class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
                     # but for int, due to the nan which may occur,
                     # we cannot infer the dtype
                     dtype = inferred_dtype
+                else:
+                    err_prefix = "int type may not be exact"
             else:
                 dtype = inferred_dtype
 
         if dtype is None:
             if not skip_infer:
+                err_prefix = err_prefix or "cannot infer dtype"
                 raise ValueError(
-                    "cannot infer dtype, it needs to be specified manually for `map`"
+                    f"{err_prefix}, it needs to be specified manually for `map`"
                 )
         else:
             dtype = np.int64 if dtype is int else dtype

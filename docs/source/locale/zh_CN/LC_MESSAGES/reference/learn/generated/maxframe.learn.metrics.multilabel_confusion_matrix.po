@@ -1,0 +1,148 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.multilabel_confusion_matrix.rst:2
+msgid "maxframe.learn.metrics.multilabel\\_confusion\\_matrix"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:1 of
+msgid "Compute a confusion matrix for each class or sample."
+msgstr "为每个类别或样本计算混淆矩阵。"
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:3 of
+msgid ""
+"Compute class-wise (default) or sample-wise (samplewise=True) multilabel "
+"confusion matrix to evaluate the accuracy of a classification, and output"
+" confusion matrices for each class or sample."
+msgstr ""
+"按类别（默认）或按样本（samplewise=True）计算多标签混淆矩阵，以评估分类的"
+"准确性，并输出每个类别或样本的混淆矩阵。"
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:7 of
+#, python-brace-format
+msgid ""
+"In multilabel confusion matrix :math:`MCM`, the count of true negatives "
+"is :math:`MCM_{:,0,0}`, false negatives is :math:`MCM_{:,1,0}`, true "
+"positives is :math:`MCM_{:,1,1}` and false positives is "
+":math:`MCM_{:,0,1}`."
+msgstr ""
+"在多标签混淆矩阵 :math:`MCM` 中，真负例数为 :math:`MCM_{:,0,0}`，假负例数"
+"为 :math:`MCM_{:,1,0}`，真正例数为 :math:`MCM_{:,1,1}`，假正例数为 :math:"
+"`MCM_{:,0,1}`。"
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:12 of
+msgid ""
+"Multiclass data will be treated as if binarized under a one-vs-rest "
+"transformation. Returned confusion matrices will be in the order of "
+"sorted unique labels in the union of (y_true, y_pred)."
+msgstr ""
+"多类数据将被视为通过一对一转换进行二值化处理。返回的混淆矩阵将按照 (y_"
+"true, y_pred) 并集中排序后的唯一标签顺序排列。"
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:16 of
+msgid "Read more in the :ref:`User Guide <multilabel_confusion_matrix>`."
+msgstr "更多内容请参见 :ref:`用户指南 <multilabel_confusion_matrix>`。"
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:18 of
+msgid "Ground truth (correct) target values."
+msgstr "真实（正确）的目标值。"
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:20 of
+msgid "Estimated targets as returned by a classifier."
+msgstr "由分类器返回的预测目标值。"
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:22 of
+msgid "Sample weights."
+msgstr "样本权重。"
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:24 of
+msgid ""
+"A list of classes or column indices to select some (or to force inclusion"
+" of classes absent from the data)."
+msgstr "一个类别或列索引列表，用于选择某些类别（或强制包含数据中缺失的类别）。"
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:27 of
+msgid "In the multilabel case, this calculates a confusion matrix per sample."
+msgstr "在多标签情况下，这将为每个样本计算一个混淆矩阵。"
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:30 of
+msgid ""
+"**multi_confusion** -- A 2x2 confusion matrix corresponding to each "
+"output in the input. When calculating class-wise multi_confusion "
+"(default), then n_outputs = n_labels; when calculating sample-wise "
+"multi_confusion (samplewise=True), n_outputs = n_samples. If ``labels`` "
+"is defined, the results will be returned in the order specified in "
+"``labels``, otherwise the results will be returned in sorted order by "
+"default."
+msgstr ""
+"**multi_confusion** -- 与输入中每个输出对应的 2x2 混淆矩阵。当按类别计算 "
+"multi_confusion（默认）时，n_outputs = n_labels；当按样本计算 multi_"
+"confusion（samplewise=True）时，n_outputs = n_samples。如果定义了 ``"
+"labels``，结果将按 ``labels`` 中指定的顺序返回，否则默认按排序顺序返回。"
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:40 of
+msgid ":py:obj:`confusion_matrix`"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:41 of
+msgid "Compute confusion matrix to evaluate the accuracy of a classifier."
+msgstr "计算混淆矩阵以评估分类器的准确性。"
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:44 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:45 of
+msgid ""
+"The `multilabel_confusion_matrix` calculates class-wise or sample-wise "
+"multilabel confusion matrices, and in multiclass tasks, labels are "
+"binarized under a one-vs-rest way; while "
+":func:`~sklearn.metrics.confusion_matrix` calculates one confusion matrix"
+" for confusion between every two classes."
+msgstr ""
+"`multilabel_confusion_matrix` 按类别或按样本计算多标签混淆矩阵，在多类"
+"任务中，标签采用一对一方式进行二值化；而 :func:`~sklearn.metrics."
+"confusion_matrix` 则计算每两个类别之间的单一混淆矩阵。"
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:52 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:53 of
+msgid "Multiclass case:"
+msgstr "多类情况："
+
+#: maxframe.learn.metrics._classification.multilabel_confusion_matrix:70 of
+msgid "Multilabel-indicator case not implemented yet."
+msgstr "多标签指示符情况尚未实现。"
+

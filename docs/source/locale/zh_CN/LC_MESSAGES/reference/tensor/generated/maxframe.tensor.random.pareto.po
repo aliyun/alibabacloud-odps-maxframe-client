@@ -1,0 +1,194 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.pareto.rst:2
+msgid "maxframe.tensor.random.pareto"
+msgstr ""
+
+#: maxframe.tensor.random.pareto.pareto:1 of
+msgid "Draw samples from a Pareto II or Lomax distribution with specified shape."
+msgstr "从具有指定形状的帕累托 II 或 Lomax 分布中抽取样本。"
+
+#: maxframe.tensor.random.pareto.pareto:4 of
+msgid ""
+"The Lomax or Pareto II distribution is a shifted Pareto distribution. The"
+" classical Pareto distribution can be obtained from the Lomax "
+"distribution by adding 1 and multiplying by the scale parameter ``m`` "
+"(see Notes).  The smallest value of the Lomax distribution is zero while "
+"for the classical Pareto distribution it is ``mu``, where the standard "
+"Pareto distribution has location ``mu = 1``.  Lomax can also be "
+"considered as a simplified version of the Generalized Pareto distribution"
+" (available in SciPy), with the scale set to one and the location set to "
+"zero."
+msgstr ""
+"Lomax 或帕累托 II 分布是帕累托分布的平移版本。通过将 Lomax 分布加 1 并"
+"乘以尺度参数 ``m`` (见注释) 可以得到经典的帕累托分布。Lomax 分布的最小值"
+"为零，而经典帕累托分布的最小值为 ``mu``，其中标准帕累托分布的位置参数为 `"
+"`mu = 1``。Lomax 也可以看作是广义帕累托分布 (在 SciPy 中可用) 的简化版本"
+"，其尺度设为 1，位置设为 0。"
+
+#: maxframe.tensor.random.pareto.pareto:15 of
+msgid ""
+"The Pareto distribution must be greater than zero, and is unbounded "
+"above.  It is also known as the \"80-20 rule\".  In this distribution, 80"
+" percent of the weights are in the lowest 20 percent of the range, while "
+"the other 20 percent fill the remaining 80 percent of the range."
+msgstr ""
+"帕累托分布必须大于零，并且无上界。它也被称为“80-20法则”。在此分布中，"
+"80% 的权重分布在最低 20% 的范围内，而其余 20% 则填满了剩余的 80% 范围。"
+
+#: maxframe.tensor.random.pareto.pareto of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.pareto.pareto:21 of
+msgid "Shape of the distribution. Should be greater than zero."
+msgstr "分布的形状参数。应大于零。"
+
+#: maxframe.tensor.random.pareto.pareto:23 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``a`` is a scalar.  Otherwise, ``mt.array(a).size`` samples "
+"are drawn."
+msgstr ""
+"输出形状。如果给定的形状是，例如 ``(m, n, k)``，那么会抽取 ``m * n * k`` "
+"个样本。如果 size 是 ``None`` (默认)，当 ``a`` 是标量时返回单个值。否则，"
+"抽取 ``mt.array(a).size`` 个样本。"
+
+#: maxframe.tensor.random.pareto.pareto:28 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.random.pareto.pareto:30 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则将张量分配在 GPU 上，默认为 False"
+
+#: maxframe.tensor.random.pareto.pareto:32 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.pareto.pareto of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.pareto.pareto:35 of
+msgid "**out** -- Drawn samples from the parameterized Pareto distribution."
+msgstr "**out** -- 从参数化的帕累托分布中抽取的样本。"
+
+#: maxframe.tensor.random.pareto.pareto of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.pareto.pareto:40 of
+msgid ":py:obj:`scipy.stats.lomax`"
+msgstr ""
+
+#: maxframe.tensor.random.pareto.pareto:41
+#: maxframe.tensor.random.pareto.pareto:44 of
+msgid ""
+"probability density function, distribution or cumulative density "
+"function, etc."
+msgstr "概率密度函数、分布或累积密度函数等。"
+
+#: maxframe.tensor.random.pareto.pareto:43 of
+msgid ":py:obj:`scipy.stats.genpareto`"
+msgstr ""
+
+#: maxframe.tensor.random.pareto.pareto:47 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.pareto.pareto:48 of
+msgid "The probability density for the Pareto distribution is"
+msgstr "帕累托分布的概率密度为"
+
+#: maxframe.tensor.random.pareto.pareto:50 of
+msgid ""
+"p(x) = \\frac{am^a}{x^{a+1}}\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.pareto.pareto:52 of
+msgid "where :math:`a` is the shape and :math:`m` the scale."
+msgstr "其中 :math:`a` 是形状参数，:math:`m` 是尺度参数。"
+
+#: maxframe.tensor.random.pareto.pareto:54 of
+msgid ""
+"The Pareto distribution, named after the Italian economist Vilfredo "
+"Pareto, is a power law probability distribution useful in many real world"
+" problems.  Outside the field of economics it is generally referred to as"
+" the Bradford distribution. Pareto developed the distribution to describe"
+" the distribution of wealth in an economy.  It has also found use in "
+"insurance, web page access statistics, oil field sizes, and many other "
+"problems, including the download frequency for projects in Sourceforge "
+"[1]_.  It is one of the so-called \"fat-tailed\" distributions."
+msgstr ""
+"帕累托分布以意大利经济学家维尔弗雷多·帕累托命名，是一种幂律概率分布在许多"
+"现实世界问题中都有用。经济学领域之外，它通常被称为布拉德福分布。帕累托"
+"提出该分布是为了描述经济中的财富分布。它还被应用于保险、网页访问统计、"
+"油田规模以及许多其他问题中，包括 Sourceforge 项目下载频率 [1]_。它是所谓"
+"的“厚尾”分布之一。"
+
+#: maxframe.tensor.random.pareto.pareto:66 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.pareto.pareto:67 of
+msgid ""
+"Francis Hunt and Paul Johnson, On the Pareto Distribution of Sourceforge "
+"projects."
+msgstr "Francis Hunt 和 Paul Johnson，关于 Sourceforge 项目的帕累托分布。"
+
+#: maxframe.tensor.random.pareto.pareto:69 of
+msgid "Pareto, V. (1896). Course of Political Economy. Lausanne."
+msgstr "Pareto, V. (1896). 政治经济学教程. 洛桑."
+
+#: maxframe.tensor.random.pareto.pareto:70 of
+msgid ""
+"Reiss, R.D., Thomas, M.(2001), Statistical Analysis of Extreme Values, "
+"Birkhauser Verlag, Basel, pp 23-30."
+msgstr ""
+"Reiss, R.D., Thomas, M. (2001), 极值的统计分析, Birkhauser Verlag, 巴塞尔"
+", 第 23-30 页."
+
+#: maxframe.tensor.random.pareto.pareto:72 of
+msgid ""
+"Wikipedia, \"Pareto distribution\", "
+"http://en.wikipedia.org/wiki/Pareto_distribution"
+msgstr ""
+"Wikipedia, “帕累托分布”, http://en.wikipedia.org/wiki/Pareto_"
+"distribution"
+
+#: maxframe.tensor.random.pareto.pareto:76 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.pareto.pareto:77 of
+msgid "Draw samples from the distribution:"
+msgstr "从分布中抽取样本："
+
+#: maxframe.tensor.random.pareto.pareto:84 of
+msgid ""
+"Display the histogram of the samples, along with the probability density "
+"function:"
+msgstr "显示样本的直方图以及概率密度函数："
+

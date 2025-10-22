@@ -1,0 +1,65 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.permutation.rst:2
+msgid "maxframe.tensor.random.permutation"
+msgstr ""
+
+#: maxframe.tensor.random.permutation.permutation:1 of
+msgid "Randomly permute a sequence, or return a permuted range."
+msgstr "随机排列一个序列，或返回一个排列后的范围。"
+
+#: maxframe.tensor.random.permutation.permutation of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.permutation.permutation:3 of
+msgid ""
+"If `x` is an integer, randomly permute ``mt.arange(x)``. If `x` is an "
+"array, make a copy and shuffle the elements randomly."
+msgstr ""
+"如果 `x` 是一个整数，则随机排列 ``mt.arange(x)``。如果 `x` 是一个数组，则"
+"复制并随机打乱元素。"
+
+#: maxframe.tensor.random.permutation.permutation:7 of
+msgid "The axis which `x` is shuffled along. Default is 0."
+msgstr "`x` 被打乱的轴。默认是 0。"
+
+#: maxframe.tensor.random.permutation.permutation:9 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.random.permutation.permutation of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.permutation.permutation:12 of
+msgid "**out** -- Permuted sequence or tensor range."
+msgstr "**out** -- 排列后的序列或张量范围。"
+
+#: maxframe.tensor.random.permutation.permutation of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.permutation.permutation:16 of
+msgid "示例"
+msgstr ""
+

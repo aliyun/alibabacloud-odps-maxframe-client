@@ -1,0 +1,115 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.betaincinv.rst:2
+msgid "maxframe.tensor.special.betaincinv"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:1 of
+msgid "Inverse of the regularized incomplete beta function."
+msgstr "正则化不完全贝塔函数的反函数。"
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:3 of
+msgid "Computes :math:`x` such that:"
+msgstr "计算满足以下条件的 :math:`x`："
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:5 of
+#, python-brace-format
+msgid ""
+"y = I_x(a, b) = \\frac{\\Gamma(a+b)}{\\Gamma(a)\\Gamma(b)}\n"
+"\\int_0^x t^{a-1}(1-t)^{b-1}dt,"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:10 of
+msgid ""
+"where :math:`I_x` is the normalized incomplete beta function `betainc` "
+"and :math:`\\Gamma` is the `gamma` function [1]_."
+msgstr ""
+"其中 :math:`I_x` 是归一化的不完全贝塔函数 `betainc`，:math:`\\Gamma` 是 `"
+"gamma` 函数 [1]_。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.betaincinv.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:13
+#: maxframe.tensor.special.gamma_funcs.betaincinv:15 of
+msgid "Positive, real-valued parameters"
+msgstr "正实数参数"
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:17 of
+msgid "Real-valued input"
+msgstr "实数输入"
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:19 of
+msgid "Optional output array for function values"
+msgstr "可选的函数值输出数组"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.betaincinv.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:22 of
+msgid "Value of the inverse of the regularized incomplete beta function"
+msgstr "正则化不完全贝塔函数的反函数值"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.betaincinv.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:27 of
+msgid ":py:obj:`betainc`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:28 of
+msgid "regularized incomplete beta function"
+msgstr "正则化不完全贝塔函数"
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:30 of
+msgid ":py:obj:`gamma`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:31 of
+msgid "gamma function"
+msgstr "伽玛函数"
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:34 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:35 of
+msgid ""
+"This function wraps the ``ibeta_inv`` routine from the Boost Math C++ "
+"library [2]_."
+msgstr "该函数封装了 Boost Math C++ 库中的 ``ibeta_inv`` 例程 [2]_。"
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:39 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:40 of
+msgid "NIST Digital Library of Mathematical Functions https://dlmf.nist.gov/8.17"
+msgstr "NIST 数学函数数字图书馆 https://dlmf.nist.gov/8.17"
+
+#: maxframe.tensor.special.gamma_funcs.betaincinv:42 of
+msgid "The Boost Developers. \"Boost C++ Libraries\". https://www.boost.org/."
+msgstr "Boost 开发者。“Boost C++ 库”。https://www.boost.org/."
+

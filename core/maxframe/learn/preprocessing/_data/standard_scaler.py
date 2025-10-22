@@ -156,10 +156,11 @@ class StandardScaler(TransformerMixin, BaseEstimator):
     [[3. 3.]]
     """
 
-    def __init__(self, *, copy=True, with_mean=True, with_std=True):
+    def __init__(self, *, copy=True, with_mean=True, with_std=True, validate=True):
         self.with_mean = with_mean
         self.with_std = with_std
         self.copy = copy
+        self.validate = validate
 
     def _reset(self):
         """Reset internal data-dependent state of the scaler, if necessary.
@@ -246,14 +247,15 @@ class StandardScaler(TransformerMixin, BaseEstimator):
             Fitted scaler.
         """
         first_call = not hasattr(self, "n_samples_seen_")
-        X = self._validate_data(
-            X,
-            accept_sparse=("csr", "csc"),
-            dtype=FLOAT_DTYPES,
-            force_all_finite="allow-nan",
-            reset=first_call,
-        )
-        n_features = X.shape[1]
+        if self.validate:
+            X = self._validate_data(
+                X,
+                accept_sparse=("csr", "csc"),
+                dtype=FLOAT_DTYPES,
+                force_all_finite="allow-nan",
+                reset=first_call,
+            )
+        n_features = X.shape[1] if X.ndim == 2 else 1
 
         if sample_weight is not None:
             sample_weight = _check_sample_weight(sample_weight, X, dtype=X.dtype)
@@ -267,7 +269,9 @@ class StandardScaler(TransformerMixin, BaseEstimator):
         # incr_mean_variance_axis and _incremental_variance_axis
         dtype = np.int64 if sample_weight is None else X.dtype
         if not hasattr(self, "n_samples_seen_"):
-            self.n_samples_seen_ = mt.zeros(n_features, dtype=dtype)
+            self.n_samples_seen_ = (
+                mt.zeros(n_features, dtype=dtype) if X.ndim == 2 else 0
+            )
         # elif np.size(self.n_samples_seen_) == 1:
         #     self.n_samples_seen_ = np.repeat(self.n_samples_seen_, X.shape[1])
         #     self.n_samples_seen_ = self.n_samples_seen_.astype(dtype, copy=False)
@@ -309,9 +313,11 @@ class StandardScaler(TransformerMixin, BaseEstimator):
             constant_mask = _is_constant_feature(
                 self.var_, self.mean_, self.n_samples_seen_
             )
-            self.scale_ = _handle_zeros_in_scale(
-                mt.sqrt(self.var_), copy=False, constant_mask=constant_mask
-            )
+            self.scale_ = mt.sqrt(self.var_)
+            if self.validate:
+                self.scale_ = _handle_zeros_in_scale(
+                    self.scale_, copy=False, constant_mask=constant_mask
+                )
         else:
             self.scale_ = None
 
@@ -337,14 +343,15 @@ class StandardScaler(TransformerMixin, BaseEstimator):
         check_is_fitted(self)
 
         copy = copy if copy is not None else self.copy
-        X = self._validate_data(
-            X,
-            reset=False,
-            accept_sparse="csr",
-            copy=copy,
-            dtype=FLOAT_DTYPES,
-            force_all_finite="allow-nan",
-        )
+        if self.validate:
+            X = self._validate_data(
+                X,
+                reset=False,
+                accept_sparse="csr",
+                copy=copy,
+                dtype=FLOAT_DTYPES,
+                force_all_finite="allow-nan",
+            )
 
         if sparse.issparse(X):
             raise NotImplementedError("Scaling on sparse tensors is not supported")
@@ -397,7 +404,7 @@ class StandardScaler(TransformerMixin, BaseEstimator):
         return X
 
 
-def scale(X, *, axis=0, with_mean=True, with_std=True, copy=True):
+def scale(X, *, axis=0, with_mean=True, with_std=True, copy=True, validate=True):
     """Standardize a dataset along any axis.
 
     Center to the mean and component wise scale to unit variance.
@@ -488,16 +495,18 @@ def scale(X, *, axis=0, with_mean=True, with_std=True, copy=True):
         X = mt.tensor(X)
 
     ndim = X.ndim
-    if ndim == 1:
+    if validate and ndim == 1:
         X = X.reshape((X.shape[0], 1))
     if axis == 1:
         X = X.T
 
-    scaler = StandardScaler(with_mean=with_mean, with_std=with_std, copy=copy)
+    scaler = StandardScaler(
+        with_mean=with_mean, with_std=with_std, copy=copy, validate=validate
+    )
     transformed = scaler.fit_transform(X)
 
     if axis == 1:
         transformed = transformed.T
-    if ndim == 1:
+    if validate and ndim == 1:
         transformed = transformed.reshape(transformed.shape[0])
     return transformed

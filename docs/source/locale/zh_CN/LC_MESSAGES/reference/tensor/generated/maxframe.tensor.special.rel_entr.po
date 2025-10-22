@@ -1,0 +1,115 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.rel_entr.rst:2
+msgid "maxframe.tensor.special.rel\\_entr"
+msgstr ""
+
+#: maxframe.tensor.special.info_theory.rel_entr:1 of
+msgid "Elementwise function for computing relative entropy."
+msgstr "逐元素计算相对熵的函数。"
+
+#: maxframe.tensor.special.info_theory.rel_entr:3 of
+#, python-brace-format
+msgid ""
+"\\mathrm{rel\\_entr}(x, y) =\n"
+"    \\begin{cases}\n"
+"        x \\log(x / y) & x > 0, y > 0 \\\\\n"
+"        0 & x = 0, y \\ge 0 \\\\\n"
+"        \\infty & \\text{otherwise}\n"
+"    \\end{cases}"
+msgstr ""
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.rel_entr.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.info_theory.rel_entr:12
+#: maxframe.tensor.special.info_theory.rel_entr:14 of
+msgid "Input arrays"
+msgstr "输入数组"
+
+#: maxframe.tensor.special.info_theory.rel_entr:16 of
+msgid "Optional output array for the function results"
+msgstr "可选的输出数组，用于存储函数结果"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.rel_entr.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.info_theory.rel_entr:19 of
+msgid "Relative entropy of the inputs"
+msgstr "输入的相对熵"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.rel_entr.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.info_theory.rel_entr:22 of
+msgid ":py:obj:`entr`, :py:obj:`kl_div`"
+msgstr ""
+
+#: maxframe.tensor.special.info_theory.rel_entr:25 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.info_theory.rel_entr:26 of
+msgid "This function is jointly convex in x and y."
+msgstr "此函数在 x 和 y 上是联合凸函数。"
+
+#: maxframe.tensor.special.info_theory.rel_entr:28 of
+msgid ""
+"The origin of this function is in convex programming; see [1]_. Given two"
+" discrete probability distributions :math:`p_1, \\ldots, p_n` and "
+":math:`q_1, \\ldots, q_n`, to get the relative entropy of statistics "
+"compute the sum"
+msgstr ""
+"此函数起源于凸优化；参见 [1]_。给定两个离散概率分布 :math:`p_1, \\ldots, "
+"p_n` 和 :math:`q_1, \\ldots, q_n`，统计的相对熵可通过求和计算"
+
+#: maxframe.tensor.special.info_theory.rel_entr:33 of
+#, python-brace-format
+msgid "\\sum_{i = 1}^n \\mathrm{rel\\_entr}(p_i, q_i)."
+msgstr ""
+
+#: maxframe.tensor.special.info_theory.rel_entr:37 of
+msgid "See [2]_ for details."
+msgstr "详见 [2]_。"
+
+#: maxframe.tensor.special.info_theory.rel_entr:40 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.info_theory.rel_entr:41 of
+msgid ""
+"Grant, Boyd, and Ye, \"CVX: Matlab Software for Disciplined Convex "
+"Programming\", http://cvxr.com/cvx/"
+msgstr ""
+
+#: maxframe.tensor.special.info_theory.rel_entr:43 of
+#, python-format
+msgid ""
+"Kullback-Leibler divergence, "
+"https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence"
+msgstr ""
+"Kullback-Leibler 散度, https://en.wikipedia.org/wiki/Kullback%E2%80%"
+"93Leibler_divergence"
+

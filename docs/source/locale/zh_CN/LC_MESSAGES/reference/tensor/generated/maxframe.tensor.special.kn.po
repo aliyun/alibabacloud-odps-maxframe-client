@@ -1,0 +1,114 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.kn.rst:2
+msgid "maxframe.tensor.special.kn"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kn:1 of
+msgid "Modified Bessel function of the second kind of integer order `n`"
+msgstr "整数阶第二类修正贝塞尔函数 `n`"
+
+#: maxframe.tensor.special.bessel.kn:3 of
+msgid ""
+"Returns the modified Bessel function of the second kind for integer order"
+" `n` at real `z`."
+msgstr "返回在实数 `z` 处的整数阶第二类修正贝塞尔函数 `n`。"
+
+#: maxframe.tensor.special.bessel.kn:6 of
+msgid ""
+"These are also sometimes called functions of the third kind, Basset "
+"functions, or Macdonald functions."
+msgstr "这些有时也被称为第三类函数、巴塞函数或麦克唐纳函数。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.kn.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kn:9 of
+msgid "Order of Bessel functions (floats will truncate with a warning)"
+msgstr "贝塞尔函数的阶数（浮点数会截断并发出警告）"
+
+#: maxframe.tensor.special.bessel.kn:11 of
+msgid "Argument at which to evaluate the Bessel functions"
+msgstr "用于计算贝塞尔函数的参数"
+
+#: maxframe.tensor.special.bessel.kn:13 of
+msgid "Optional output array for the function results."
+msgstr "可选的函数结果输出数组。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.kn.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kn:16 of
+msgid "Value of the Modified Bessel function of the second kind, :math:`K_n(x)`."
+msgstr "第二类修正贝塞尔函数的值，:math:`K_n(x)`。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.kn.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kn:22 of
+msgid ":py:obj:`kv`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kn:23 of
+msgid "Same function, but accepts real order and complex argument"
+msgstr "相同函数，但接受实数阶和复数参数"
+
+#: maxframe.tensor.special.bessel.kn:25 of
+msgid ":py:obj:`kvp`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kn:26 of
+msgid "Derivative of this function"
+msgstr "该函数的导数"
+
+#: maxframe.tensor.special.bessel.kn:29 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kn:30 of
+msgid ""
+"Wrapper for AMOS [1]_ routine `zbesk`.  For a discussion of the algorithm"
+" used, see [2]_ and the references therein."
+msgstr ""
+"AMOS [1]_ 例程 `zbesk` 的封装。有关所用算法的讨论，参见 [2]_ 及其中的"
+"参考文献。"
+
+#: maxframe.tensor.special.bessel.kn:34 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kn:35 of
+msgid ""
+"Donald E. Amos, \"AMOS, A Portable Package for Bessel Functions of a "
+"Complex Argument and Nonnegative Order\", http://netlib.org/amos/"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kn:38 of
+msgid ""
+"Donald E. Amos, \"Algorithm 644: A portable package for Bessel functions "
+"of a complex argument and nonnegative order\", ACM TOMS Vol. 12 Issue 3, "
+"Sept. 1986, p. 265"
+msgstr ""
+

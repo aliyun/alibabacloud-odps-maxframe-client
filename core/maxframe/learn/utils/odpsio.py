@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict, List, NamedTuple, Optional
+from typing import Any, Dict, List, NamedTuple, Optional, Set
+
+from odps import ODPS
 
 from ... import opcodes
 from ...core import ENTITY_TYPE, EntityData, OutputType
@@ -26,6 +28,36 @@ from ...serialization.serializables import (
 )
 from ...utils import find_objects, replace_objects
 from ..core import LearnOperatorMixin
+
+_odps_model_classes: Set["ODPSModelMixin"] = set()
+
+
+def register_odps_model(model_cls: "ODPSModelMixin"):
+    _odps_model_classes.add(model_cls)
+    return model_cls
+
+
+class ReadODPSModel(ObjectOperator, LearnOperatorMixin):
+    _op_type_ = opcodes.READ_ODPS_MODEL
+
+    model_name = StringField("model_name", default=None)
+    model_version = StringField("model_version", default=None)
+    format = StringField("format", default=None)
+    location = StringField("location", default=None)
+    storage_options = DictField("storage_options", default=None)
+
+    def has_custom_code(self) -> bool:
+        return True
+
+    def __call__(self):
+        if not self.format.startswith("BOOSTED_TREE_"):
+            # todo support more model formats
+            raise ValueError("Only support boosted tree format")
+        for model_cls in _odps_model_classes:
+            ret = model_cls._build_odps_source_model(self)
+            if ret is not None:
+                return ret
+        raise ValueError(f"Model {self.model_name} not supported")
 
 
 class ToODPSModel(ObjectOperator, LearnOperatorMixin):
@@ -74,17 +106,21 @@ class ToODPSModel(ObjectOperator, LearnOperatorMixin):
         return self.new_tileable(inputs, shape=())
 
 
-class ToODPSModelMixin:
+class ODPSModelMixin:
     class ODPSModelInfo(NamedTuple):
         model_format: str
         model_params: Any
+
+    @classmethod
+    def _build_odps_source_model(cls, op: ReadODPSModel) -> Any:
+        return None
 
     def _get_odps_model_info(self) -> ODPSModelInfo:
         raise NotImplementedError
 
     def to_odps_model(
         self,
-        model_name: str = None,
+        model_name: str,
         model_version: str = None,
         schema: str = None,
         project: str = None,
@@ -167,14 +203,7 @@ class ToODPSModelMixin:
         ...                       "role_arn": "acs:ram::<user_id>:role/aliyunodpsdefaultrole"
         ...                   }).execute()
         """
-        if "." not in model_name:
-            if project and not schema:
-                schema = "default"
-            if schema:
-                model_name = f"{schema}.{model_name}"
-            if project:
-                model_name = f"{project}.{model_name}"
-
+        model_name = _build_odps_model_name(model_name, schema, project)
         model_info = self._get_odps_model_info()
 
         op = ToODPSModel(
@@ -191,3 +220,43 @@ class ToODPSModelMixin:
             storage_options=storage_options,
         )
         return op(getattr(self, "training_info_"), model_info.model_params)
+
+
+def _build_odps_model_name(model_name: str, schema: str, project: str = None):
+    if "." not in model_name:
+        if project and not schema:
+            schema = "default"
+        if schema:
+            model_name = f"{schema}.{model_name}"
+        if project:
+            model_name = f"{project}.{model_name}"
+    return model_name
+
+
+def read_odps_model(
+    model_name: str,
+    schema: str = None,
+    project: str = None,
+    model_version: str = None,
+    odps_entry: ODPS = None,
+):
+    odps_entry = odps_entry or ODPS.from_global() or ODPS.from_environments()
+    if not hasattr(odps_entry, "get_model"):
+        raise RuntimeError("Need to install pyodps>=0.11.5 to use read_odps_model")
+
+    model_obj = odps_entry.get_model(model_name, project, schema)
+    if model_version:
+        model_obj = model_obj.versions[model_version]
+    # check if model exists
+    model_obj.reload()
+
+    full_model_name = _build_odps_model_name(model_name, schema, project)
+    location = model_obj.path
+    format = model_obj.type.value
+    op = ReadODPSModel(
+        model_name=full_model_name,
+        model_version=model_version,
+        location=location,
+        format=format,
+    )
+    return op()

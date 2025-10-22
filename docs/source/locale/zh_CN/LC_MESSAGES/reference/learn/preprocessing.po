@@ -1,0 +1,112 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-23 09:57+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/preprocessing.rst:4
+msgid "Preprocessing"
+msgstr "预处理"
+
+#: ../../source/reference/learn/preprocessing.rst:7
+msgid "Transform Classes"
+msgstr "转换类"
+
+#: ../../source/reference/learn/preprocessing.rst:18:<autosummary>:1
+msgid ""
+":py:obj:`preprocessing.LabelBinarizer "
+"<maxframe.learn.preprocessing.LabelBinarizer>`\\ \\(\\*\\[\\, "
+"neg\\_label\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/preprocessing.rst:18:<autosummary>:1
+#: ../../source/reference/learn/preprocessing.rst:30:<autosummary>:1
+msgid "Binarize labels in a one-vs-all fashion."
+msgstr "以一对一的方式二值化标签。"
+
+#: ../../source/reference/learn/preprocessing.rst:18:<autosummary>:1
+msgid ""
+":py:obj:`preprocessing.LabelEncoder "
+"<maxframe.learn.preprocessing.LabelEncoder>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/preprocessing.rst:18:<autosummary>:1
+msgid "Encode target labels with value between 0 and n_classes-1."
+msgstr "使用0到n_classes-1之间的值对目标标签进行编码。"
+
+#: ../../source/reference/learn/preprocessing.rst:18:<autosummary>:1
+msgid ""
+":py:obj:`preprocessing.MinMaxScaler "
+"<maxframe.learn.preprocessing.MinMaxScaler>`\\ \\(\\[feature\\_range\\, "
+"...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/preprocessing.rst:18:<autosummary>:1
+#: ../../source/reference/learn/preprocessing.rst:30:<autosummary>:1
+msgid "Transform features by scaling each feature to a given range."
+msgstr "通过将每个特征缩放到给定范围来转换特征。"
+
+#: ../../source/reference/learn/preprocessing.rst:18:<autosummary>:1
+msgid ""
+":py:obj:`preprocessing.StandardScaler "
+"<maxframe.learn.preprocessing.StandardScaler>`\\ \\(\\*\\[\\, copy\\, "
+"...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/preprocessing.rst:18:<autosummary>:1
+msgid "Standardize features by removing the mean and scaling to unit variance."
+msgstr "通过去除均值并缩放至单位方差来标准化特征。"
+
+#: ../../source/reference/learn/preprocessing.rst:20
+msgid "Transform Functions"
+msgstr "转换函数"
+
+#: ../../source/reference/learn/preprocessing.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`preprocessing.label_binarize "
+"<maxframe.learn.preprocessing.label_binarize>`\\ \\(y\\, \\*\\, "
+"classes\\)"
+msgstr ""
+
+#: ../../source/reference/learn/preprocessing.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`preprocessing.minmax_scale "
+"<maxframe.learn.preprocessing.minmax_scale>`\\ \\(X\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/preprocessing.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`preprocessing.normalize "
+"<maxframe.learn.preprocessing.normalize>`\\ \\(X\\[\\, norm\\, axis\\, "
+"...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/preprocessing.rst:30:<autosummary>:1
+msgid "Scale input vectors individually to unit norm (vector length)."
+msgstr "将输入向量单独缩放到单位范数（向量长度）。"
+
+#: ../../source/reference/learn/preprocessing.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`preprocessing.scale <maxframe.learn.preprocessing.scale>`\\ "
+"\\(X\\, \\*\\[\\, axis\\, with\\_mean\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/preprocessing.rst:30:<autosummary>:1
+msgid "Standardize a dataset along any axis."
+msgstr "沿任意轴标准化数据集。"
+

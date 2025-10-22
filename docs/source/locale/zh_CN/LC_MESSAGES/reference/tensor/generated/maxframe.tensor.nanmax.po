@@ -1,0 +1,193 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.nanmax.rst:2
+msgid "maxframe.tensor.nanmax"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanmax.nanmax:1 of
+msgid ""
+"Return the maximum of an array or maximum along an axis, ignoring any "
+"NaNs.  When all-NaN slices are encountered a ``RuntimeWarning`` is raised"
+" and NaN is returned for that slice."
+msgstr ""
+"返回数组的最大值或沿轴的最大值，忽略任何 NaN。当遇到全为 NaN 的切片时，会"
+"引发 ``RuntimeWarning`` 并返回 NaN。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanmax.nanmax:5 of
+msgid ""
+"Tensor containing numbers whose maximum is desired. If `a` is not a "
+"tensor, a conversion is attempted."
+msgstr "包含所需最大值的 Tensor。如果 `a` 不是 Tensor，则尝试进行转换。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax:8 of
+msgid ""
+"Axis along which the maximum is computed. The default is to compute the "
+"maximum of the flattened tensor."
+msgstr "计算最大值的轴。默认计算展平后 Tensor 的最大值。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax:11 of
+msgid ""
+"Alternate output array in which to place the result.  The default is "
+"``None``; if provided, it must have the same shape as the expected "
+"output, but the type will be cast if necessary.  See `doc.ufuncs` for "
+"details."
+msgstr ""
+"用于放置结果的替代输出数组。默认为 ``None``；如果提供，其形状必须与预期"
+"输出相同，但必要时会进行类型转换。详见 `doc.ufuncs`。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax:16 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the original `a`.  If the value is anything but the "
+"default, then `keepdims` will be passed through to the `max` method of "
+"sub-classes of `Tensor`.  If the sub-classes methods does not implement "
+"`keepdims` any exceptions will be raised."
+msgstr ""
+"如果设置为 True，则在结果中保留被规约的轴，其大小为 1。使用此选项时，结果"
+"可以正确地与原始 `a` 广播。如果该值不是默认值，则 `keepdims` 会被传递给 `"
+"Tensor` 子类的 `max` 方法。如果子类方法未实现 `keepdims`，则会引发异常。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax:16 of
+#, fuzzy
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the original `a`."
+msgstr ""
+"如果设置为 True，则在结果中保留被规约的轴，其大小为 1。使用此选项时，结果"
+"可以正确地与原始 `a` 广播。如果该值不是默认值，则 `keepdims` 会被传递给 `"
+"Tensor` 子类的 `max` 方法。如果子类方法未实现 `keepdims`，则会引发异常。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax:20 of
+#, fuzzy
+msgid ""
+"If the value is anything but the default, then `keepdims` will be passed "
+"through to the `max` method of sub-classes of `Tensor`.  If the sub-"
+"classes methods does not implement `keepdims` any exceptions will be "
+"raised."
+msgstr ""
+"如果设置为 True，则在结果中保留被规约的轴，其大小为 1。使用此选项时，结果"
+"可以正确地与原始 `a` 广播。如果该值不是默认值，则 `keepdims` 会被传递给 `"
+"Tensor` 子类的 `max` 方法。如果子类方法未实现 `keepdims`，则会引发异常。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanmax.nanmax:26 of
+msgid ""
+"**nanmax** -- A tensor with the same shape as `a`, with the specified "
+"axis removed. If `a` is a 0-d tensor, or if axis is None, a Tensor scalar"
+" is returned.  The same dtype as `a` is returned."
+msgstr ""
+"**nanmax** -- 一个与 `a` 形状相同的 Tensor，指定轴被移除。如果 `a` 是 0 "
+"维 Tensor，或 axis 为 None，则返回一个 Tensor 标量。返回的数据类型与 `a` "
+"相同。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanmax.nanmax:33 of
+msgid ":py:obj:`nanmin`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanmax.nanmax:34 of
+msgid "The minimum value of a tensor along a given axis, ignoring any NaNs."
+msgstr "沿给定轴的 Tensor 最小值，忽略任何 NaN。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax:36 of
+msgid ":py:obj:`amax`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanmax.nanmax:37 of
+msgid "The maximum value of a tensor along a given axis, propagating any NaNs."
+msgstr "沿给定轴的 Tensor 最大值，传播任何 NaN。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax:39 of
+msgid ":py:obj:`fmax`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanmax.nanmax:40 of
+msgid "Element-wise maximum of two tensors, ignoring any NaNs."
+msgstr "两个 Tensor 的逐元素最大值，忽略任何 NaN。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax:42 of
+msgid ":py:obj:`maximum`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanmax.nanmax:43 of
+msgid "Element-wise maximum of two tensors, propagating any NaNs."
+msgstr "两个 Tensor 的逐元素最大值，传播任何 NaN。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax:45 of
+msgid ":py:obj:`isnan`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanmax.nanmax:46 of
+msgid "Shows which elements are Not a Number (NaN)."
+msgstr "显示哪些元素是 Not a Number (NaN)。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax:48 of
+msgid ":py:obj:`isfinite`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanmax.nanmax:49 of
+msgid "Shows which elements are neither NaN nor infinity."
+msgstr "显示哪些元素既不是 NaN 也不是无穷大。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax:51 of
+msgid ":py:obj:`amin`, :py:obj:`fmin`, :py:obj:`minimum`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanmax.nanmax:54 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanmax.nanmax:55 of
+msgid ""
+"MaxFrame uses the IEEE Standard for Binary Floating-Point for Arithmetic "
+"(IEEE 754). This means that Not a Number is not equivalent to infinity. "
+"Positive infinity is treated as a very large number and negative infinity"
+" is treated as a very small (i.e. negative) number."
+msgstr ""
+"MaxFrame 使用 IEEE 二进制浮点数算术标准 (IEEE 754)。这意味着 Not a Number"
+" 不等同于无穷大。正无穷被视为一个非常大的数，负无穷被视为一个非常小（即"
+"负数）的数。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax:60 of
+msgid "If the input has a integer type the function is equivalent to np.max."
+msgstr "如果输入是整数类型，则此函数等效于 np.max。"
+
+#: maxframe.tensor.reduction.nanmax.nanmax:63 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanmax.nanmax:74 of
+msgid "When positive infinity and negative infinity are present:"
+msgstr "当存在正无穷和负无穷时："
+

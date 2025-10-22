@@ -1,0 +1,91 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.list.__getitem__.rst:2
+msgid "maxframe.dataframe.Series.list.__getitem__"
+msgstr ""
+
+#: maxframe.dataframe.accessors.list_.getitem.series_list_getitem_with_index_error:1
+#: of
+msgid ""
+"Get the value by the index of each list in the Series. If the index is "
+"not in the list, raise IndexError."
+msgstr ""
+"通过 Series 中每个列表的索引获取值。如果索引不在列表中，则抛出 IndexError"
+"。"
+
+#: maxframe.dataframe.accessors.list_.getitem.series_list_getitem_with_index_error
+#: of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.accessors.list_.getitem.series_list_getitem_with_index_error:4
+#: of
+msgid "The index to check, must be integer."
+msgstr "要检查的索引，必须是整数。"
+
+#: maxframe.dataframe.accessors.list_.getitem.series_list_getitem_with_index_error
+#: of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.accessors.list_.getitem.series_list_getitem_with_index_error:7
+#: of
+msgid ""
+"A Series with the list value's data type. Return ``None`` if the list is "
+"None."
+msgstr "一个包含列表值数据类型的 Series。如果列表为 None，则返回 ``None``。"
+
+#: maxframe.dataframe.accessors.list_.getitem.series_list_getitem_with_index_error
+#: of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.accessors.list_.getitem.series_list_getitem_with_index_error
+#: of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.dataframe.accessors.list_.getitem.series_list_getitem_with_index_error:10
+#: of
+msgid "If the index is not in one list."
+msgstr "如果索引不在某个列表中。"
+
+#: maxframe.dataframe.accessors.list_.getitem.series_list_getitem_with_index_error:14
+#: of
+msgid ":py:obj:`Series.list.get`"
+msgstr ""
+
+#: maxframe.dataframe.accessors.list_.getitem.series_list_getitem_with_index_error:15
+#: of
+msgid "Get the value by the index of each list in the Series."
+msgstr "通过 Series 中每个列表的索引获取值。"
+
+#: maxframe.dataframe.accessors.list_.getitem.series_list_getitem_with_index_error:18
+#: of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.accessors.list_.getitem.series_list_getitem_with_index_error:19
+#: of
+msgid "Create a series with list type data."
+msgstr "创建一个包含列表类型数据的 Series。"
+

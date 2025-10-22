@@ -1,0 +1,184 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.eval.rst:2
+msgid "maxframe.dataframe.eval"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:1 of
+msgid "Evaluate a Python expression as a string using various backends."
+msgstr "使用各种后端将 Python 表达式作为字符串进行求值。"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:3 of
+msgid ""
+"The following arithmetic operations are supported: ``+``, ``-``, ``*``, "
+"``/``, ``**``, ``%``, ``//`` (python engine only) along with the "
+"following boolean operations: ``|`` (or), ``&`` (and), and ``~`` (not). "
+"Additionally, the ``'pandas'`` parser allows the use of :keyword:`and`, "
+":keyword:`or`, and :keyword:`not` with the same semantics as the "
+"corresponding bitwise operators.  :class:`~pandas.Series` and "
+":class:`~pandas.DataFrame` objects are supported and behave as they would"
+" with plain ol' Python evaluation."
+msgstr ""
+"支持以下算术运算：``+``、``-``、``*``、``/``、``**``、``%``、``//``（仅限"
+" Python 引擎），以及以下布尔运算：``|``（或）、``&``（与）和 ``~``（非）"
+"。此外，``'pandas'`` 解析器允许使用 :keyword:`and`、:keyword:`or` 和 :"
+"keyword:`not`，其语义与相应的位运算符相同。支持 :class:`~pandas.Series` "
+"和 :class:`~pandas.DataFrame` 对象，并且它们的行为与普通的 Python 求值"
+"方式一致。"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:12 of
+msgid ""
+"The expression to evaluate. This string cannot contain any Python "
+"`statements <https://docs.python.org/3/reference/simple_stmts.html"
+"#simple-statements>`__, only Python `expressions "
+"<https://docs.python.org/3/reference/simple_stmts.html#expression-"
+"statements>`__."
+msgstr ""
+"要计算的表达式。该字符串不能包含任何 Python `语句 <https://docs.python."
+"org/3/reference/simple_stmts.html#simple-statements>`__，只能是 Python `"
+"表达式 <https://docs.python.org/3/reference/simple_stmts.html#expression-"
+"statements>`__。"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:18 of
+msgid "A dictionary of local variables, taken from locals() by default."
+msgstr "本地变量的字典，默认从 locals() 获取。"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:20 of
+msgid "A dictionary of global variables, taken from globals() by default."
+msgstr "全局变量的字典，默认从 globals() 获取。"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:22 of
+msgid ""
+"A list of objects implementing the ``__getitem__`` special method that "
+"you can use to inject an additional collection of namespaces to use for "
+"variable lookup. For example, this is used in the "
+":meth:`~DataFrame.query` method to inject the ``DataFrame.index`` and "
+"``DataFrame.columns`` variables that refer to their respective "
+":class:`~pandas.DataFrame` instance attributes."
+msgstr ""
+"一个实现 ``__getitem__`` 特殊方法的对象列表，您可以使用它注入额外的命名"
+"空间集合以用于变量查找。例如，在 :meth:`~DataFrame.query` 方法中，会注入 "
+"``DataFrame.index`` 和 ``DataFrame.columns`` 变量，它们分别引用其对应的 :"
+"class:`~pandas.DataFrame` 实例属性。"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:30 of
+msgid ""
+"The number of prior stack frames to traverse and add to the current "
+"scope. Most users will **not** need to change this parameter."
+msgstr ""
+"要遍历并添加到当前作用域的先前堆栈帧数量。大多数用户 **不需要** 更改"
+"此参数。"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:33 of
+msgid ""
+"This is the target object for assignment. It is used when there is "
+"variable assignment in the expression. If so, then `target` must support "
+"item assignment with string keys, and if a copy is being returned, it "
+"must also support `.copy()`."
+msgstr ""
+"这是赋值的目标对象。当表达式中存在变量赋值时使用。如果这样，那么 `target`"
+" 必须支持使用字符串键进行项赋值，如果返回的是副本，则还必须支持 `.copy()`"
+"。"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:38 of
+msgid ""
+"If `target` is provided, and the expression mutates `target`, whether to "
+"modify `target` inplace. Otherwise, return a copy of `target` with the "
+"mutation."
+msgstr ""
+"如果提供了 `target`，并且表达式修改了 `target`，是否就地修改 `target`。"
+"否则，返回一个带有修改的 `target` 副本。"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.maxframe_eval of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:45 of
+msgid ""
+"There are many instances where such an error can be raised:          - "
+"`target=None`, but the expression is multiline.     - The expression is "
+"multiline, but not all them have item assignment.       An example of "
+"such an arrangement is this:            a = b + 1       a + 2            "
+"Here, there are expressions on different lines, making it multiline,"
+"       but the last line has no variable assigned to the output of `a + "
+"2`.     - `inplace=True`, but the expression is missing item assignment."
+"     - Item assignment is provided, but the `target` does not support"
+"       string item assignment.     - Item assignment is provided and "
+"`inplace=False`, but the `target`       does not support the `.copy()` "
+"method"
+msgstr ""
+"在许多情况下可能会引发此错误：          - `target=None`，但表达式是多行的"
+"。     - 表达式是多行的，但并非所有行都有项赋值。       例如这种情况：   "
+"         a = b + 1       a + 2            这里，不同行上有表达式，使其"
+"成为多行，       但最后一行没有变量分配给 `a + 2` 的输出。     - `inplace"
+"=True`，但表达式缺少项赋值。     - 提供了项赋值，但 `target` 不支持      "
+" 字符串项赋值。     - 提供了项赋值且 `inplace=False`，但 `target`       "
+"不支持 `.copy()` 方法"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:49 of
+msgid ":py:obj:`DataFrame.query`"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:50 of
+msgid "Evaluates a boolean expression to query the columns of a frame."
+msgstr "计算布尔表达式以查询帧的列。"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:52 of
+msgid ":py:obj:`DataFrame.eval`"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:53 of
+msgid "Evaluate a string describing operations on DataFrame columns."
+msgstr "计算描述 DataFrame 列操作的字符串。"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:56 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:57 of
+msgid ""
+"The ``dtype`` of any objects involved in an arithmetic ``%`` operation "
+"are recursively cast to ``float64``."
+msgstr "涉及算术 ``%`` 运算的任何对象的 ``dtype`` 都会递归地转换为 ``float64``。"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:60 of
+msgid ""
+"See the :ref:`enhancing performance <enhancingperf.eval>` documentation "
+"for more details."
+msgstr "有关更多详细信息，请参阅 :ref:`提升性能 <enhancingperf.eval>` 文档。"
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:64 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.maxframe_eval:72 of
+msgid "We can add a new column using ``pd.eval``:"
+msgstr "我们可以使用 ``pd.eval`` 添加新列："
+

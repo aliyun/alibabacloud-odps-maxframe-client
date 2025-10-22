@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.duplicated.rst:2
+msgid "maxframe.dataframe.DataFrame.duplicated"
+msgstr ""
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:1 of
+msgid "Return boolean Series denoting duplicate rows."
+msgstr "返回表示重复行的布尔 Series。"
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:3 of
+msgid "Considering certain columns is optional."
+msgstr "可以有选择地考虑某些列。"
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:5 of
+msgid ""
+"Only consider certain columns for identifying duplicates, by default use "
+"all of the columns."
+msgstr "仅考虑某些列来识别重复项，默认使用所有列。"
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:8 of
+msgid ""
+"Determines which duplicates (if any) to mark.  - ``first`` : Mark "
+"duplicates as ``True`` except for the first occurrence. - ``last`` : Mark"
+" duplicates as ``True`` except for the last occurrence. - False : Mark "
+"all duplicates as ``True``."
+msgstr ""
+"确定标记哪些重复项（如果有）。  - ``first`` : 将重复项标记为 ``True``，"
+"除了第一次出现。 - ``last`` : 将重复项标记为 ``True``，除了最后一次出现。"
+" - False : 将所有重复项标记为 ``True``。"
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:8 of
+msgid "Determines which duplicates (if any) to mark."
+msgstr ""
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:10 of
+msgid "``first`` : Mark duplicates as ``True`` except for the first occurrence."
+msgstr ""
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:11 of
+msgid "``last`` : Mark duplicates as ``True`` except for the last occurrence."
+msgstr ""
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:12 of
+msgid "False : Mark all duplicates as ``True``."
+msgstr ""
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:15 of
+msgid "Boolean series for each duplicated rows."
+msgstr "每个重复行的布尔 Series。"
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:20 of
+msgid ":py:obj:`Index.duplicated`"
+msgstr ""
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:21 of
+msgid "Equivalent method on index."
+msgstr "索引上的等效方法。"
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:23 of
+msgid ":py:obj:`Series.duplicated`"
+msgstr ""
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:24 of
+msgid "Equivalent method on Series."
+msgstr "Series 上的等效方法。"
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:26 of
+msgid ":py:obj:`Series.drop_duplicates`"
+msgstr ""
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:27 of
+msgid "Remove duplicate values from Series."
+msgstr "从 Series 中删除重复值。"
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:29 of
+msgid ":py:obj:`DataFrame.drop_duplicates`"
+msgstr ""
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:30 of
+msgid "Remove duplicate values from DataFrame."
+msgstr "从 DataFrame 中删除重复值。"
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:33 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:34 of
+msgid "Consider dataset containing ramen rating."
+msgstr "考虑包含拉面评分的数据集。"
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:51 of
+msgid ""
+"By default, for each set of duplicated values, the first occurrence is "
+"set on False and all others on True."
+msgstr "默认情况下，对于每组重复值，第一次出现设为 False，其余设为 True。"
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:62 of
+msgid ""
+"By using 'last', the last occurrence of each set of duplicated values is "
+"set on False and all others on True."
+msgstr "通过使用 'last'，每组重复值的最后一次出现设为 False，其余设为 True。"
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:73 of
+msgid "By setting ``keep`` on False, all duplicates are True."
+msgstr "将 ``keep`` 设为 False 时，所有重复项都为 True。"
+
+#: maxframe.dataframe.misc.duplicated.df_duplicated:83 of
+msgid "To find duplicates on specific column(s), use ``subset``."
+msgstr "要在特定列上查找重复项，请使用 ``subset``。"
+

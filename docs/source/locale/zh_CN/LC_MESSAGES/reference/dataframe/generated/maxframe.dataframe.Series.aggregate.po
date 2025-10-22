@@ -1,0 +1,105 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.aggregate.rst:2
+msgid "maxframe.dataframe.Series.aggregate"
+msgstr ""
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:1 of
+msgid "Aggregate using one or more operations over the specified axis."
+msgstr "在指定轴上使用一个或多个操作进行聚合。"
+
+#: maxframe.dataframe.reduction.aggregation.aggregate of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:3 of
+msgid "Object to aggregate."
+msgstr "要聚合的对象。"
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:5 of
+msgid "Function to use for aggregating the data."
+msgstr "用于聚合数据的函数。"
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:7 of
+msgid ""
+"If 0 or ‘index’: apply function to each column. If 1 or ‘columns’: "
+"apply function to each row."
+msgstr ""
+"如果为 0 或 ‘index’：对每一列应用函数。如果为 1 或 ‘columns’：对每"
+"一行应用函数。"
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:9 of
+msgid "Keyword arguments to pass to func."
+msgstr "传递给 func 的关键字参数。"
+
+#: maxframe.dataframe.reduction.aggregation.aggregate of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:11 of
+msgid ""
+"The return can be:  * scalar : when Series.agg is called with single "
+"function * Series : when DataFrame.agg is called with a single function *"
+" DataFrame : when DataFrame.agg is called with several functions"
+msgstr ""
+"返回值可以是：  * 标量：当 Series.agg 使用单个函数调用时 * Series：当 "
+"DataFrame.agg 使用单个函数调用时 * DataFrame：当 DataFrame.agg 使用多个"
+"函数调用时"
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:11 of
+msgid "The return can be:"
+msgstr ""
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:13 of
+msgid "scalar : when Series.agg is called with single function"
+msgstr ""
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:14 of
+msgid "Series : when DataFrame.agg is called with a single function"
+msgstr ""
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:15 of
+msgid "DataFrame : when DataFrame.agg is called with several functions"
+msgstr ""
+
+#: maxframe.dataframe.reduction.aggregation.aggregate of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:19 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:27 of
+msgid "Aggregate these functions over the rows."
+msgstr "对这些函数按行进行聚合。"
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:34 of
+msgid "Different aggregations per column."
+msgstr "每列使用不同的聚合方式。"
+
+#: maxframe.dataframe.reduction.aggregation.aggregate:42 of
+msgid ""
+"Aggregate different functions over the columns and rename the index of "
+"the resulting DataFrame."
+msgstr "对各列使用不同的函数进行聚合，并重命名结果 DataFrame 的索引。"
+

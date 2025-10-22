@@ -1,0 +1,140 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.nansum.rst:2
+msgid "maxframe.tensor.nansum"
+msgstr ""
+
+#: maxframe.tensor.reduction.nansum.nansum:1 of
+msgid ""
+"Return the sum of array elements over a given axis treating Not a Numbers"
+" (NaNs) as zero."
+msgstr "返回给定轴上数组元素的总和，并将非数字（NaN）视为零。"
+
+#: maxframe.tensor.reduction.nansum.nansum:4 of
+msgid "Zero is returned for slices that are all-NaN or empty."
+msgstr "对于全为 NaN 或空的切片，返回零。"
+
+#: maxframe.tensor.reduction.nansum.nansum of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.reduction.nansum.nansum:7 of
+msgid ""
+"Tensor containing numbers whose sum is desired. If `a` is not an tensor, "
+"a conversion is attempted."
+msgstr "包含所需总和数字的张量。如果 `a` 不是张量，则会尝试转换。"
+
+#: maxframe.tensor.reduction.nansum.nansum:10 of
+msgid ""
+"Axis along which the sum is computed. The default is to compute the sum "
+"of the flattened array."
+msgstr "计算总和的轴。默认计算展平数组的总和。"
+
+#: maxframe.tensor.reduction.nansum.nansum:13 of
+msgid ""
+"The type of the returned tensor and of the accumulator in which the "
+"elements are summed.  By default, the dtype of `a` is used.  An exception"
+" is when `a` has an integer type with less precision than the platform "
+"(u)intp. In that case, the default will be either (u)int32 or (u)int64 "
+"depending on whether the platform is 32 or 64 bits. For inexact inputs, "
+"dtype must be inexact."
+msgstr ""
+"返回张量的类型以及元素相加时累加器的类型。默认使用 `a` 的 dtype。一个例外"
+"是当 `a` 具有比平台 (u)intp 更低精度的整数类型时。在这种情况下，默认值将"
+"是 (u)int32 或 (u)int64，具体取决于平台是 32 位还是 64 位。对于非精确输入"
+"，dtype 必须是非精确的。"
+
+#: maxframe.tensor.reduction.nansum.nansum:20 of
+msgid ""
+"Alternate output tensor in which to place the result.  The default is "
+"``None``. If provided, it must have the same shape as the expected "
+"output, but the type will be cast if necessary.  See `doc.ufuncs` for "
+"details. The casting of NaN to integer can yield unexpected results."
+msgstr ""
+"用于放置结果的替代输出张量。默认为 ``None``。如果提供，它必须与预期输出"
+"具有相同形状，但如有必要，类型将被转换。有关详细信息，请参见 `doc.ufuncs`"
+"。将 NaN 转换为整数可能会产生意外结果。"
+
+#: maxframe.tensor.reduction.nansum.nansum:26 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the original `a`."
+msgstr ""
+"如果设置为 True，则被规约的轴在结果中保留为大小为一的维度。使用此选项，"
+"结果将能正确地与原始 `a` 进行广播。"
+
+#: maxframe.tensor.reduction.nansum.nansum of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.reduction.nansum.nansum:36 of
+msgid ""
+"**nansum** -- A new tensor holding the result is returned unless `out` is"
+" specified, in which it is returned. The result has the same size as `a`,"
+" and the same shape as `a` if `axis` is not None or `a` is a 1-d array."
+msgstr ""
+"**nansum** -- 除非指定了 `out`，否则将返回一个包含结果的新张量。结果的"
+"大小与 `a` 相同，如果 `axis` 不为 None 或 `a` 是一维数组，则形状也相同。"
+
+#: maxframe.tensor.reduction.nansum.nansum of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.reduction.nansum.nansum:44 of
+msgid ":py:obj:`mt.sum`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nansum.nansum:45 of
+msgid "Sum across tensor propagating NaNs."
+msgstr "对张量进行求和并传播 NaN。"
+
+#: maxframe.tensor.reduction.nansum.nansum:47 of
+msgid ":py:obj:`isnan`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nansum.nansum:48 of
+msgid "Show which elements are NaN."
+msgstr "显示哪些元素是 NaN。"
+
+#: maxframe.tensor.reduction.nansum.nansum:50 of
+msgid ":py:obj:`isfinite`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nansum.nansum:51 of
+msgid "Show which elements are not NaN or +/-inf."
+msgstr "显示哪些元素不是 NaN 或 +/-inf。"
+
+#: maxframe.tensor.reduction.nansum.nansum:54 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.reduction.nansum.nansum:55 of
+msgid ""
+"If both positive and negative infinity are present, the sum will be Not A"
+" Number (NaN)."
+msgstr "如果同时存在正无穷和负无穷，总和将是非数字（NaN）。"
+
+#: maxframe.tensor.reduction.nansum.nansum:59 of
+msgid "示例"
+msgstr ""
+

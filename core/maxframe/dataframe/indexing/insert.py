@@ -17,10 +17,10 @@ from typing import List
 import pandas as pd
 
 from ... import opcodes
-from ...core import EntityData
+from ...core import EntityData, get_output_types
 from ...serialization.serializables import AnyField, BoolField, Int64Field
 from ...tensor.core import TENSOR_TYPE
-from ..core import SERIES_TYPE
+from ..core import INDEX_TYPE, SERIES_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_empty_df, parse_index
 
@@ -29,9 +29,9 @@ class DataFrameInsert(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.INSERT
 
     loc = Int64Field("loc")
-    column = AnyField("column")
-    value = AnyField("value")
-    allow_duplicates = BoolField("allow_duplicates")
+    column = AnyField("column", default=None)
+    value = AnyField("value", default=None)
+    allow_duplicates = BoolField("allow_duplicates", default=False)
 
     @classmethod
     def _set_inputs(cls, op: "DataFrameInsert", inputs: List[EntityData]):
@@ -40,6 +40,7 @@ class DataFrameInsert(DataFrameOperator, DataFrameOperatorMixin):
             op.value = op._inputs[-1]
 
     def __call__(self, df):
+        self._output_types = get_output_types(df)
         inputs = [df]
         if isinstance(self.value, (SERIES_TYPE, TENSOR_TYPE)):
             value_dtype = self.value.dtype
@@ -47,19 +48,27 @@ class DataFrameInsert(DataFrameOperator, DataFrameOperatorMixin):
         else:
             value_dtype = pd.Series(self.value).dtype
 
-        empty_df = build_empty_df(df.dtypes)
-        empty_df.insert(
-            loc=self.loc,
-            column=self.column,
-            allow_duplicates=self.allow_duplicates,
-            value=pd.Series([], dtype=value_dtype),
-        )
-
         params = df.params
-        params["columns_value"] = parse_index(empty_df.columns, store_data=True)
-        params["dtypes"] = empty_df.dtypes
-        params["shape"] = (df.shape[0], df.shape[1] + 1)
-        return self.new_dataframe(inputs, **params)
+
+        if df.ndim == 2:
+            empty_obj = build_empty_df(df.dtypes)
+            empty_obj.insert(
+                loc=self.loc,
+                column=self.column,
+                allow_duplicates=self.allow_duplicates,
+                value=pd.Series([], dtype=value_dtype),
+            )
+
+            params["columns_value"] = parse_index(empty_obj.columns, store_data=True)
+            params["dtypes"] = empty_obj.dtypes
+            params["shape"] = (df.shape[0], df.shape[1] + 1)
+        else:
+            assert isinstance(df, INDEX_TYPE)
+            params["index_value"] = parse_index(
+                df.index_value, type(self), df, self.loc, self.value
+            )
+            params["shape"] = (df.shape[0] + 1,)
+        return self.new_tileable(inputs, **params)
 
 
 def df_insert(df, loc, column, value, allow_duplicates=False):
@@ -88,3 +97,22 @@ def df_insert(df, loc, column, value, allow_duplicates=False):
     )
     out_df = op(df)
     df.data = out_df.data
+
+
+def index_insert(idx, loc, value):
+    """
+    Make new Index inserting new item at location.
+
+    Follows Python list.append semantics for negative values.
+
+    Parameters
+    ----------
+    loc : int
+    item : object
+
+    Returns
+    -------
+    new_index : Index
+    """
+    op = DataFrameInsert(loc=loc, value=value)
+    return op(idx)

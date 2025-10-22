@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.floor_divide.rst:2
+msgid "maxframe.tensor.floor\\_divide"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:1 of
+msgid ""
+"Return the largest integer smaller or equal to the division of the "
+"inputs. It is equivalent to the Python ``//`` operator and pairs with the"
+" Python ``%`` (`remainder`), function so that ``b = a % b + b * (a // "
+"b)`` up to roundoff."
+msgstr ""
+"返回小于或等于输入除法结果的最大整数。它等价于 Python 的 ``//`` 运算符，"
+"并与 Python 的 ``%``（`remainder`）函数配对使用，满足 ``b = a % b + b * ("
+"a // b)`` （忽略舍入误差）。"
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:6 of
+msgid "Numerator."
+msgstr "分子。"
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:8 of
+msgid "Denominator."
+msgstr "分母。"
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:10 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated array is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，它必须具有可广播至输入形状的形状。如果未"
+"提供或为 `None`，则返回一个新分配的数组。元组（仅可作为关键字参数）的长度"
+"必须等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:15 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "为 True 的值表示在该位置计算 ufunc，为 False 的值表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:20 of
+msgid "**y** -- y = floor(`x1`/`x2`)"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:25 of
+msgid ":py:obj:`remainder`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:26 of
+msgid "Remainder complementary to floor_divide."
+msgstr "与 floor_divide 互补的余数。"
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:28 of
+msgid ":py:obj:`divmod`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:29 of
+msgid "Simultaneous floor division and remainder."
+msgstr "同时进行向下取整除法和求余。"
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:31 of
+msgid ":py:obj:`divide`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:32 of
+msgid "Standard division."
+msgstr "标准除法。"
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:34 of
+msgid ":py:obj:`floor`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:35 of
+msgid "Round a number to the nearest integer toward minus infinity."
+msgstr "将一个数向负无穷方向舍入到最近的整数。"
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:37 of
+msgid ":py:obj:`ceil`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:38 of
+msgid "Round a number to the nearest integer toward infinity."
+msgstr "将一个数向正无穷方向舍入到最近的整数。"
+
+#: maxframe.tensor.arithmetic.floordiv.floordiv:41 of
+msgid "示例"
+msgstr ""
+

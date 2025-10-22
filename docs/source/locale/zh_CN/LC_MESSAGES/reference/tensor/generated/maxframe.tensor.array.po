@@ -1,0 +1,205 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.array.rst:2
+msgid "maxframe.tensor.array"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:1 of
+msgid "Create a tensor."
+msgstr "创建一个张量。"
+
+#: maxframe.tensor.datasource.array.array of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:3 of
+msgid ""
+"An array, any object exposing the array interface, an object whose "
+"__array__ method returns an array, or any (nested) sequence."
+msgstr ""
+"一个数组，任何暴露数组接口的对象，其 __array__ 方法返回数组的对象，或任何"
+"（嵌套）序列。"
+
+#: maxframe.tensor.datasource.array.array:6 of
+msgid ""
+"The desired data-type for the array.  If not given, then the type will be"
+" determined as the minimum type required to hold the objects in the "
+"sequence.  This argument can only be used to 'upcast' the array.  For "
+"downcasting, use the .astype(t) method."
+msgstr ""
+"数组的期望数据类型。如果未给出，则将类型确定为保存序列中对象所需的最小"
+"类型。此参数只能用于“向上转换”数组。如需向下转换，请使用 .astype(t) "
+"方法。"
+
+#: maxframe.tensor.datasource.array.array:11 of
+msgid ""
+"If true (default), then the object is copied.  Otherwise, a copy will "
+"only be made if __array__ returns a copy, if obj is a nested sequence, or"
+" if a copy is needed to satisfy any of the other requirements (`dtype`, "
+"`order`, etc.)."
+msgstr ""
+"如果为真（默认），则复制对象。否则，仅在 __array__ 返回副本、obj 为嵌套"
+"序列或需要副本以满足其他要求（`dtype`、`order` 等）时才会进行复制。"
+
+#: maxframe.tensor.datasource.array.array:16 of
+msgid ""
+"Specify the memory layout of the array. If object is not an array, the "
+"newly created array will be in C order (row major) unless 'F' is "
+"specified, in which case it will be in Fortran order (column major). If "
+"object is an array the following holds.  ===== ========= "
+"=================================================== order  no copy"
+"                     copy=True ===== ========= "
+"=================================================== 'K'   unchanged F & C"
+" order preserved, otherwise most similar order 'A'   unchanged F order if"
+" input is F and not C, otherwise C order 'C'   C order   C order 'F'   F "
+"order   F order ===== ========= "
+"===================================================  When ``copy=False`` "
+"and a copy is made for other reasons, the result is the same as if "
+"``copy=True``, with some exceptions for `A`, see the Notes section. The "
+"default order is 'K'."
+msgstr ""
+"指定数组的内存布局。如果对象不是数组，则新创建的数组将采用 C 顺序（行优先"
+"），除非指定了 'F'，在这种情况下它将采用 Fortran 顺序（列优先）。如果对象"
+"是数组，则遵循以下规则。===== ========= ================================="
+"================== order  no copy                     copy=True ===== ==="
+"====== =================================================== 'K'   "
+"unchanged F & C order preserved, otherwise most similar order 'A'   "
+"unchanged F order if input is F and not C, otherwise C order 'C'   C "
+"order   C order 'F'   F order   F order ===== ========= ================="
+"================================== 当 ``copy=False`` 并且因其他原因进行"
+"复制时，结果与 ``copy=True`` 相同，但对于 `A` 有一些例外，请参见备注部分"
+"。默认顺序是 'K'。"
+
+#: maxframe.tensor.datasource.array.array:16 of
+msgid ""
+"Specify the memory layout of the array. If object is not an array, the "
+"newly created array will be in C order (row major) unless 'F' is "
+"specified, in which case it will be in Fortran order (column major). If "
+"object is an array the following holds."
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:22 of
+msgid "order"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:22 of
+msgid "no copy"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:22 of
+msgid "copy=True"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:24 of
+msgid "'K'"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:24
+#: maxframe.tensor.datasource.array.array:25 of
+msgid "unchanged"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:24 of
+msgid "F & C order preserved, otherwise most similar order"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:25 of
+msgid "'A'"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:25 of
+msgid "F order if input is F and not C, otherwise C order"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:26 of
+msgid "'C'"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:26 of
+msgid "C order"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:27 of
+msgid "'F'"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:27 of
+msgid "F order"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:30 of
+msgid ""
+"When ``copy=False`` and a copy is made for other reasons, the result is "
+"the same as if ``copy=True``, with some exceptions for `A`, see the Notes"
+" section. The default order is 'K'."
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:34 of
+msgid ""
+"Specifies the minimum number of dimensions that the resulting array "
+"should have.  Ones will be prepended to the shape as needed to meet this "
+"requirement."
+msgstr "指定结果数组应具有的最小维度数。将根据需要在形状前添加 1 以满足此要求。"
+
+#: maxframe.tensor.datasource.array.array:38 of
+msgid "Specifies chunk size for each dimension."
+msgstr "指定每个维度的块大小。"
+
+#: maxframe.tensor.datasource.array.array of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:41 of
+msgid "**out** -- An tensor object satisfying the specified requirements."
+msgstr "**out** -- 满足指定要求的张量对象。"
+
+#: maxframe.tensor.datasource.array.array of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:44 of
+msgid ""
+":py:obj:`empty`, :py:obj:`empty_like`, :py:obj:`zeros`, "
+":py:obj:`zeros_like`, :py:obj:`ones`, :py:obj:`ones_like`, "
+":py:obj:`full`, :py:obj:`full_like`"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:47 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.datasource.array.array:53 of
+msgid "Upcasting:"
+msgstr "向上转换："
+
+#: maxframe.tensor.datasource.array.array:58 of
+msgid "More than one dimension:"
+msgstr "多于一个维度："
+
+#: maxframe.tensor.datasource.array.array:64 of
+msgid "Minimum dimensions 2:"
+msgstr "最小维度 2："
+
+#: maxframe.tensor.datasource.array.array:69 of
+msgid "Type provided:"
+msgstr "提供了类型："
+

@@ -19,6 +19,7 @@ using jieba text segment library instead of regex
 
 import datetime
 import os
+import sys
 
 from babel.messages import pofile
 from babel.messages.pofile import escape
@@ -129,11 +130,20 @@ def main():
 
             # only modify recent-changed files
             modify_time = datetime.datetime.fromtimestamp(os.path.getmtime(path))
-            if (datetime.datetime.now() - modify_time).total_seconds() > 120:
+            if (
+                "--force" not in sys.argv
+                and (datetime.datetime.now() - modify_time).total_seconds() > 120
+            ):
                 continue
 
             with open(path, "rb") as inpf:
                 catalog = pofile.read_po(inpf)
+            for message in catalog:
+                if (
+                    message.id == message.string
+                    or message.id.replace("\\", "") == message.string
+                ):
+                    message.string = ""
             with open(path, "wb") as outf:
                 pofile.write_po(outf, catalog)
 

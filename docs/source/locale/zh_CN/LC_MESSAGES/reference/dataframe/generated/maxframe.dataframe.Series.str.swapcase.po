@@ -1,0 +1,91 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.str.swapcase.rst:2
+msgid "maxframe.dataframe.Series.str.swapcase"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:1
+msgid "Convert strings in the Series/Index to be swapcased."
+msgstr "将 Series/Index 中的字符串进行大小写互换。"
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:3
+msgid "Equivalent to :meth:`str.swapcase`."
+msgstr "等效于 :meth:`str.swapcase`。"
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:9
+msgid ":py:obj:`Series.str.lower`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:10
+msgid "Converts all characters to lowercase."
+msgstr "将所有字符转换为小写。"
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:12
+msgid ":py:obj:`Series.str.upper`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:13
+msgid "Converts all characters to uppercase."
+msgstr "将所有字符转换为大写。"
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:15
+msgid ":py:obj:`Series.str.title`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:16
+msgid ""
+"Converts first character of each word to uppercase and remaining to "
+"lowercase."
+msgstr "将每个单词的第一个字符转换为大写，其余字符转换为小写。"
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:18
+msgid ":py:obj:`Series.str.capitalize`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:19
+msgid "Converts first character to uppercase and remaining to lowercase."
+msgstr "将第一个字符转换为大写，其余字符转换为小写。"
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:21
+msgid ":py:obj:`Series.str.swapcase`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:22
+msgid "Converts uppercase to lowercase and lowercase to uppercase."
+msgstr "将大写转换为小写，小写转换为大写。"
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:24
+msgid ":py:obj:`Series.str.casefold`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:25
+msgid "Removes all case distinctions in the string."
+msgstr "移除字符串中的所有大小写区分。"
+
+#: of pandas.core.strings.accessor.StringMethods.swapcase:28
+msgid "示例"
+msgstr ""
+

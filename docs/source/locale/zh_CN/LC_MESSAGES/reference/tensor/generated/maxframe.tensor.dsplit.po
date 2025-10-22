@@ -1,0 +1,50 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.dsplit.rst:2
+msgid "maxframe.tensor.dsplit"
+msgstr ""
+
+#: maxframe.tensor.misc.dsplit.dsplit:1 of
+msgid "Split tensor into multiple sub-tensors along the 3rd axis (depth)."
+msgstr "沿第3轴（深度）将张量分割为多个子张量。"
+
+#: maxframe.tensor.misc.dsplit.dsplit:3 of
+msgid ""
+"Please refer to the `split` documentation.  `dsplit` is equivalent to "
+"`split` with ``axis=2``, the array is always split along the third axis "
+"provided the tensor dimension is greater than or equal to 3."
+msgstr ""
+"请参考 `split` 文档。`dsplit` 等价于 ``axis=2`` 的 `split`，只要张量维度"
+"大于或等于3，数组总是沿第三个轴进行分割。"
+
+#: maxframe.tensor.misc.dsplit.dsplit:9 of
+msgid ":py:obj:`split`"
+msgstr ""
+
+#: maxframe.tensor.misc.dsplit.dsplit:10 of
+msgid "Split a tensor into multiple sub-arrays of equal size."
+msgstr "将张量分割为多个大小相等的子数组。"
+
+#: maxframe.tensor.misc.dsplit.dsplit:13 of
+msgid "示例"
+msgstr ""
+

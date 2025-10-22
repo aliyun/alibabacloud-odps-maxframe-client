@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.bitwise_or.rst:2
+msgid "maxframe.tensor.bitwise\\_or"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.bitor.bitor:1 of
+msgid "Compute the bit-wise OR of two tensors element-wise."
+msgstr "逐元素计算两个张量的按位或。"
+
+#: maxframe.tensor.arithmetic.bitor.bitor:3 of
+msgid ""
+"Computes the bit-wise OR of the underlying binary representation of the "
+"integers in the input arrays. This ufunc implements the C/Python operator"
+" ``|``."
+msgstr ""
+"计算输入数组中整数的二进制表示的按位或。此 ufunc 实现了 C/Python 运算符 `"
+"`|``。"
+
+#: maxframe.tensor.arithmetic.bitor.bitor of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.bitor.bitor:7
+#: maxframe.tensor.arithmetic.bitor.bitor:9 of
+msgid "Only integer and boolean types are handled."
+msgstr "仅处理整数和布尔类型。"
+
+#: maxframe.tensor.arithmetic.bitor.bitor:11 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，则其形状必须可以广播到输入形状。如果未提供"
+"或为 `None`，则返回一个新分配的张量。元组（只能作为关键字参数）的长度必须"
+"等于输出数量。"
+
+#: maxframe.tensor.arithmetic.bitor.bitor:16 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.bitor.bitor of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.bitor.bitor:21 of
+msgid "**out** -- Result."
+msgstr "**out** -- 结果。"
+
+#: maxframe.tensor.arithmetic.bitor.bitor of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.bitor.bitor:26 of
+msgid ":py:obj:`logical_or`, :py:obj:`bitwise_and`, :py:obj:`bitwise_xor`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.bitor.bitor:28 of
+msgid ":py:obj:`binary_repr`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.bitor.bitor:29 of
+msgid "Return the binary representation of the input number as a string."
+msgstr "以字符串形式返回输入数字的二进制表示。"
+
+#: maxframe.tensor.arithmetic.bitor.bitor:32 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.bitor.bitor:33 of
+msgid ""
+"The number 13 has the binaray representation ``00001101``. Likewise, 16 "
+"is represented by ``00010000``.  The bit-wise OR of 13 and 16 is then "
+"``000111011``, or 29:"
+msgstr ""
+"数字 13 的二进制表示为 ``00001101``。同样，16 的表示为 ``00010000``。13 "
+"和 16 的按位或为 ``00011101``，即 29："
+

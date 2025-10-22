@@ -1,0 +1,132 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.isfinite.rst:2
+msgid "maxframe.tensor.isfinite"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite:1 of
+msgid "Test element-wise for finiteness (not infinity or not Not a Number)."
+msgstr "逐元素测试有限性（非无穷大或非非数字）。"
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite:3 of
+msgid "The result is returned as a boolean tensor."
+msgstr "结果以布尔张量形式返回。"
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite:5 of
+msgid "Input values."
+msgstr "输入值。"
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite:7 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，则其形状必须可广播至输入的形状。如果未提供"
+"或为 `None`，则返回一个新分配的张量。元组（仅可作为关键字参数）的长度必须"
+"等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite:12 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite:17 of
+msgid ""
+"**y** -- For scalar input, the result is a new boolean with value True if"
+" the input is finite; otherwise the value is False (input is either "
+"positive infinity, negative infinity or Not a Number).  For array input, "
+"the result is a boolean array with the same dimensions as the input and "
+"the values are True if the corresponding element of the input is finite; "
+"otherwise the values are False (element is either positive infinity, "
+"negative infinity or Not a Number)."
+msgstr ""
+"**y** -- 对于标量输入，如果输入是有限的，则结果是一个值为 True 的新布尔值"
+"；否则值为 False（输入为正无穷大、负无穷大或非数字）。对于数组输入，结果"
+"是一个与输入维度相同的布尔数组，如果输入的对应元素是有限的，则值为 True；"
+"否则值为 False（元素为正无穷大、负无穷大或非数字）。"
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite:17 of
+msgid ""
+"**y** -- For scalar input, the result is a new boolean with value True if"
+" the input is finite; otherwise the value is False (input is either "
+"positive infinity, negative infinity or Not a Number)."
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite:21 of
+#, fuzzy
+msgid ""
+"For array input, the result is a boolean array with the same dimensions "
+"as the input and the values are True if the corresponding element of the "
+"input is finite; otherwise the values are False (element is either "
+"positive infinity, negative infinity or Not a Number)."
+msgstr ""
+"**y** -- 对于标量输入，如果输入是有限的，则结果是一个值为 True 的新布尔值"
+"；否则值为 False（输入为正无穷大、负无穷大或非数字）。对于数组输入，结果"
+"是一个与输入维度相同的布尔数组，如果输入的对应元素是有限的，则值为 True；"
+"否则值为 False（元素为正无穷大、负无穷大或非数字）。"
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite:28 of
+msgid ":py:obj:`isinf`, :py:obj:`isneginf`, :py:obj:`isposinf`, :py:obj:`isnan`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite:31 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite:32 of
+msgid ""
+"Not a Number, positive infinity and negative infinity are considered to "
+"be non-finite."
+msgstr "非数字、正无穷大和负无穷大被视为非有限。"
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite:35 of
+msgid ""
+"MaxFrame uses the IEEE Standard for Binary Floating-Point for Arithmetic "
+"(IEEE 754). This means that Not a Number is not equivalent to infinity. "
+"Also that positive infinity is not equivalent to negative infinity. But "
+"infinity is equivalent to positive infinity.  Errors result if the second"
+" argument is also supplied when `x` is a scalar input, or if first and "
+"second arguments have different shapes."
+msgstr ""
+"MaxFrame 使用 IEEE 二进制浮点数算术标准（IEEE 754）。这意味着非数字不等于"
+"无穷大。正无穷大也不等于负无穷大。但无穷大等同于正无穷大。如果在 `x` 为"
+"标量输入时提供了第二个参数，或者第一和第二参数形状不同，则会导致错误。"
+
+#: maxframe.tensor.arithmetic.isfinite.isfinite:43 of
+msgid "示例"
+msgstr ""
+

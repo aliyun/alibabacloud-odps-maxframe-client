@@ -1,0 +1,223 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.std.rst:2
+msgid "maxframe.tensor.std"
+msgstr ""
+
+#: maxframe.tensor.reduction.std.std:1 of
+msgid "Compute the standard deviation along the specified axis."
+msgstr "沿指定轴计算标准差。"
+
+#: maxframe.tensor.reduction.std.std:3 of
+msgid ""
+"Returns the standard deviation, a measure of the spread of a "
+"distribution, of the tensor elements. The standard deviation is computed "
+"for the flattened tensor by default, otherwise over the specified axis."
+msgstr ""
+"返回标准差，即张量元素分布的离散程度的度量。默认情况下，标准差是针对展平"
+"后的张量计算的，否则在指定轴上计算。"
+
+#: maxframe.tensor.reduction.std.std of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.reduction.std.std:7 of
+msgid "Calculate the standard deviation of these values."
+msgstr "计算这些值的标准差。"
+
+#: maxframe.tensor.reduction.std.std:9 of
+msgid ""
+"Axis or axes along which the standard deviation is computed. The default "
+"is to compute the standard deviation of the flattened tensor.  If this is"
+" a tuple of ints, a standard deviation is performed over multiple axes, "
+"instead of a single axis or all the axes as before."
+msgstr ""
+"计算标准差所沿的轴或轴集。默认是对展平后的张量计算标准差。如果这是一个"
+"整数元组，则在多个轴上执行标准差计算，而不是像以前一样在单个轴或所有轴上"
+"进行。"
+
+#: maxframe.tensor.reduction.std.std:9 of
+#, fuzzy
+msgid ""
+"Axis or axes along which the standard deviation is computed. The default "
+"is to compute the standard deviation of the flattened tensor."
+msgstr ""
+"计算标准差所沿的轴或轴集。默认是对展平后的张量计算标准差。如果这是一个"
+"整数元组，则在多个轴上执行标准差计算，而不是像以前一样在单个轴或所有轴上"
+"进行。"
+
+#: maxframe.tensor.reduction.std.std:12 of
+#, fuzzy
+msgid ""
+"If this is a tuple of ints, a standard deviation is performed over "
+"multiple axes, instead of a single axis or all the axes as before."
+msgstr ""
+"计算标准差所沿的轴或轴集。默认是对展平后的张量计算标准差。如果这是一个"
+"整数元组，则在多个轴上执行标准差计算，而不是像以前一样在单个轴或所有轴上"
+"进行。"
+
+#: maxframe.tensor.reduction.std.std:15 of
+msgid ""
+"Type to use in computing the standard deviation. For tensors of integer "
+"type the default is float64, for tensors of float types it is the same as"
+" the array type."
+msgstr ""
+"用于计算标准差的数据类型。对于整数类型的张量，默认为 float64，对于浮点"
+"类型的张量，它与数组类型相同。"
+
+#: maxframe.tensor.reduction.std.std:19 of
+msgid ""
+"Alternative output tensor in which to place the result. It must have the "
+"same shape as the expected output but the type (of the calculated values)"
+" will be cast if necessary."
+msgstr ""
+"用于放置结果的替代输出张量。它必须与期望输出具有相同的形状，但如果需要，"
+"计算值的类型将被强制转换。"
+
+#: maxframe.tensor.reduction.std.std:23 of
+msgid ""
+"Means Delta Degrees of Freedom.  The divisor used in calculations is ``N "
+"- ddof``, where ``N`` represents the number of elements. By default "
+"`ddof` is zero."
+msgstr ""
+"表示自由度偏差。计算中使用的除数是 ``N - ddof``，其中 ``N`` 表示元素的"
+"数量。默认情况下 `ddof` 为零。"
+
+#: maxframe.tensor.reduction.std.std:27 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the input tensor.  If the default value is passed, "
+"then `keepdims` will not be passed through to the `std` method of sub-"
+"classes of `Tensor`, however any non-default value will be.  If the sub-"
+"classes `sum` method does not implement `keepdims` any exceptions will be"
+" raised."
+msgstr ""
+"如果设置为 True，则在结果中保留被规约的轴，其大小为一。使用此选项时，结果"
+"将能够与输入张量正确广播。如果传递的是默认值，则 `keepdims` 不会传递给 `"
+"Tensor` 子类的 `std` 方法，但任何非默认值都会传递。如果子类的 `sum` 方法"
+"未实现 `keepdims`，则会引发异常。"
+
+#: maxframe.tensor.reduction.std.std:27 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the input tensor."
+msgstr ""
+
+#: maxframe.tensor.reduction.std.std:31 of
+#, fuzzy
+msgid ""
+"If the default value is passed, then `keepdims` will not be passed "
+"through to the `std` method of sub-classes of `Tensor`, however any non-"
+"default value will be.  If the sub-classes `sum` method does not "
+"implement `keepdims` any exceptions will be raised."
+msgstr ""
+"如果设置为 True，则在结果中保留被规约的轴，其大小为一。使用此选项时，结果"
+"将能够与输入张量正确广播。如果传递的是默认值，则 `keepdims` 不会传递给 `"
+"Tensor` 子类的 `std` 方法，但任何非默认值都会传递。如果子类的 `sum` 方法"
+"未实现 `keepdims`，则会引发异常。"
+
+#: maxframe.tensor.reduction.std.std of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.reduction.std.std:38 of
+msgid ""
+"**standard_deviation** -- If `out` is None, return a new tensor "
+"containing the standard deviation, otherwise return a reference to the "
+"output array."
+msgstr ""
+"**standard_deviation** -- 如果 `out` 为 None，则返回一个包含标准差的新"
+"张量，否则返回对输出数组的引用。"
+
+#: maxframe.tensor.reduction.std.std of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.reduction.std.std:42 of
+msgid ""
+":py:obj:`var`, :py:obj:`mean`, :py:obj:`nanmean`, :py:obj:`nanstd`, "
+":py:obj:`nanvar`"
+msgstr ""
+
+#: maxframe.tensor.reduction.std.std:45 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.reduction.std.std:46 of
+msgid ""
+"The standard deviation is the square root of the average of the squared "
+"deviations from the mean, i.e., ``std = sqrt(mean(abs(x - "
+"x.mean())**2))``."
+msgstr ""
+"标准差是均值平方偏差的平方根，即 ``std = sqrt(mean(abs(x - x.mean())**2))"
+"``。"
+
+#: maxframe.tensor.reduction.std.std:49 of
+msgid ""
+"The average squared deviation is normally calculated as ``x.sum() / N``, "
+"where ``N = len(x)``.  If, however, `ddof` is specified, the divisor ``N "
+"- ddof`` is used instead. In standard statistical practice, ``ddof=1`` "
+"provides an unbiased estimator of the variance of the infinite "
+"population. ``ddof=0`` provides a maximum likelihood estimate of the "
+"variance for normally distributed variables. The standard deviation "
+"computed in this function is the square root of the estimated variance, "
+"so even with ``ddof=1``, it will not be an unbiased estimate of the "
+"standard deviation per se."
+msgstr ""
+"平均平方偏差通常计算为 ``x.sum() / N``，其中 ``N = len(x)``。但如果指定了"
+" `ddof`，则使用除数 ``N - ddof``。在标准统计实践中，``ddof=1`` 提供了无限"
+"总体方差的无偏估计。``ddof=0`` 提供了正态分布变量方差的最大似然估计。此"
+"函数中计算的标准差是估计方差的平方根，因此即使使用 ``ddof=1``，它本身也"
+"不是标准差的无偏估计。"
+
+#: maxframe.tensor.reduction.std.std:59 of
+msgid ""
+"Note that, for complex numbers, `std` takes the absolute value before "
+"squaring, so that the result is always real and nonnegative."
+msgstr "注意，对于复数，`std` 在平方之前取绝对值，因此结果始终为实数且非负。"
+
+#: maxframe.tensor.reduction.std.std:62 of
+msgid ""
+"For floating-point input, the *std* is computed using the same precision "
+"the input has. Depending on the input data, this can cause the results to"
+" be inaccurate, especially for float32 (see example below). Specifying a "
+"higher-accuracy accumulator using the `dtype` keyword can alleviate this "
+"issue."
+msgstr ""
+"对于浮点数输入，*std* 使用与输入相同的精度进行计算。根据输入数据的不同，"
+"这可能导致结果不准确，特别是对于 float32（见下面的示例）。通过使用 `dtype"
+"` 关键字指定更高精度的累加器可以缓解此问题。"
+
+#: maxframe.tensor.reduction.std.std:69 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.reduction.std.std:80 of
+msgid "In single precision, std() can be inaccurate:"
+msgstr "在单精度下，std() 可能不准确："
+
+#: maxframe.tensor.reduction.std.std:88 of
+msgid "Computing the standard deviation in float64 is more accurate:"
+msgstr "在 float64 中计算标准差更准确："
+

@@ -28,6 +28,7 @@ from ....dataframe.reduction import (
     DataFrameMean,
     DataFrameMedian,
     DataFrameMin,
+    DataFrameMode,
     DataFrameNunique,
     DataFrameProd,
     DataFrameSem,
@@ -163,3 +164,20 @@ class DataFrameUniqueAdapter(SPEOperatorAdapter):
         input_var_name = context.get_input_tileable_variable(op.inputs[0])
         res_var_name = context.get_output_tileable_variable(op.outputs[0])
         return [f"{res_var_name} = pd.unique({input_var_name})"]
+
+
+@register_op_adapter(DataFrameMode)
+class DataFrameModeAdapter(SPEOperatorAdapter):
+    def generate_code(self, op: DataFrameMode, context: SPECodeContext) -> List[str]:
+        input_var_name = context.get_input_tileable_variable(op.inputs[0])
+        args = []
+        if op.inputs[0].ndim == 2:
+            if op.axis is not None:
+                args.append(f"axis={op.axis!r}")
+            if op.numeric_only is not None:
+                args.append(f"numeric_only={op.numeric_only!r}")
+        if op.dropna is not None:
+            args.append(f"dropna={op.dropna!r}")
+        args_str = ", ".join(args)
+        res_var_name = context.get_output_tileable_variable(op.outputs[0])
+        return [f"{res_var_name} = {input_var_name}.mode({args_str})"]

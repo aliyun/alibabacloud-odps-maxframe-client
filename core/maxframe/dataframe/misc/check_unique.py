@@ -18,13 +18,27 @@ from ...udf import builtin_function
 
 
 @builtin_function
-def _tailor_unique(series):
-    if not series.is_unique:
-        return pd.Series([], name=series.name, dtype=series.dtype)
-    return series
+def _tailor_unique(series_or_idx):
+    if not series_or_idx.is_unique:
+        if isinstance(series_or_idx, pd.Series):
+            return series_or_idx.iloc[:0]
+        else:
+            return series_or_idx[:0]
+    return series_or_idx
 
 
-def is_unique(series):
+def _is_unique(series_or_index):
+    from ... import tensor as mt
+
+    return mt.equal(
+        series_or_index.mf.apply_chunk(
+            _tailor_unique, dtype=series_or_index.dtype
+        ).nunique(),
+        mt.shape(series_or_index)[0],
+    )
+
+
+def series_is_unique(series):
     """
     Return boolean if values in the object are unique.
 
@@ -43,9 +57,26 @@ def is_unique(series):
     >>> s.is_unique.execute()
     False
     """
-    from ... import tensor as mt
+    return _is_unique(series)
 
-    return mt.equal(
-        series.mf.apply_chunk(_tailor_unique, dtype=series.dtype).nunique(),
-        mt.shape(series)[0],
-    )
+
+def index_is_unique(index):
+    """
+    Return boolean if values in the index are unique.
+
+    Returns
+    -------
+    bool
+
+    Examples
+    --------
+    >>> import maxframe.dataframe as md
+    >>> index = md.Index([1, 2, 3])
+    >>> index.is_unique.execute()
+    True
+
+    >>> index = md.Index([1, 2, 3, 1])
+    >>> index.is_unique.execute()
+    False
+    """
+    return index.to_series().is_unique

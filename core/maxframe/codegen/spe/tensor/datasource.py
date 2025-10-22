@@ -142,6 +142,7 @@ class TensorOnesZerosLikeAdapter(SPEOperatorAdapter):
         ]
 
 
+@register_op_adapter(Scalar)
 class TensorScalarAdapter(SPEOperatorAdapter):
     def accepts(self, op: Scalar) -> EngineAcceptance:
         return EngineAcceptance.SUCCESSOR

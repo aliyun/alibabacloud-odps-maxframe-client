@@ -1,0 +1,206 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.dt.floor.rst:2
+msgid "maxframe.dataframe.Series.dt.floor"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:1
+msgid "Perform floor operation on the data to the specified `freq`."
+msgstr "对数据执行向下取整操作，取整到指定的 `freq`。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f
+msgid "参数"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:3
+msgid ""
+"The frequency level to floor the index to. Must be a fixed frequency like"
+" 'S' (second) not 'ME' (month end). See :ref:`frequency aliases "
+"<timeseries.offset_aliases>` for a list of possible `freq` values."
+msgstr ""
+"将索引向下取整到的频率级别。必须是固定的频率，如 'S'（秒），而不是 'ME'（"
+"月末）。请参见 :ref:`frequency aliases <timeseries.offset_aliases>` 获取"
+"可能的 `freq` 值列表。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:8
+msgid ""
+"Only relevant for DatetimeIndex:  - 'infer' will attempt to infer fall "
+"dst-transition hours based on   order - bool-ndarray where True signifies"
+" a DST time, False designates   a non-DST time (note that this flag is "
+"only applicable for   ambiguous times) - 'NaT' will return NaT where "
+"there are ambiguous times - 'raise' will raise an AmbiguousTimeError if "
+"there are ambiguous   times."
+msgstr ""
+"仅对 DatetimeIndex 有效：  - 'infer' 将尝试根据顺序推断秋季夏令时转换时间"
+" - bool-ndarray，其中 True 表示夏令时，False 表示非夏令时（注意此标志仅"
+"适用于模糊时间） - 'NaT' 在有模糊时间时返回 NaT - 'raise' 在有模糊时间时"
+"引发 AmbiguousTimeError。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:8
+msgid "Only relevant for DatetimeIndex:"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:10
+msgid "'infer' will attempt to infer fall dst-transition hours based on order"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:12
+msgid ""
+"bool-ndarray where True signifies a DST time, False designates a non-DST "
+"time (note that this flag is only applicable for ambiguous times)"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:15
+msgid "'NaT' will return NaT where there are ambiguous times"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:16
+msgid "'raise' will raise an AmbiguousTimeError if there are ambiguous times."
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:19
+msgid ""
+"A nonexistent time does not exist in a particular timezone where clocks "
+"moved forward due to DST.  - 'shift_forward' will shift the nonexistent "
+"time forward to the   closest existing time - 'shift_backward' will shift"
+" the nonexistent time backward to the   closest existing time - 'NaT' "
+"will return NaT where there are nonexistent times - timedelta objects "
+"will shift nonexistent times by the timedelta - 'raise' will raise an "
+"NonExistentTimeError if there are   nonexistent times."
+msgstr ""
+"在某个时区中由于夏令时导致时钟向前调整而不存在的时间。  - 'shift_forward'"
+" 将不存在的时间向前移动到最近的存在的时刻 - 'shift_backward' 将不存在的"
+"时间向后移动到最近的存在的时刻 - 'NaT' 在有不存在的时间时返回 NaT - "
+"timedelta 对象将根据 timedelta 移动不存在的时间 - 'raise' 在有不存在的"
+"时间时引发 NonExistentTimeError。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:19
+msgid ""
+"A nonexistent time does not exist in a particular timezone where clocks "
+"moved forward due to DST."
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:22
+msgid ""
+"'shift_forward' will shift the nonexistent time forward to the closest "
+"existing time"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:24
+msgid ""
+"'shift_backward' will shift the nonexistent time backward to the closest "
+"existing time"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:26
+msgid "'NaT' will return NaT where there are nonexistent times"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:27
+msgid "timedelta objects will shift nonexistent times by the timedelta"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:28
+msgid "'raise' will raise an NonExistentTimeError if there are nonexistent times."
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f
+msgid "返回"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:32
+msgid ""
+"Index of the same type for a DatetimeIndex or TimedeltaIndex, or a Series"
+" with the same index for a Series."
+msgstr ""
+"DatetimeIndex 或 TimedeltaIndex 返回相同类型的索引，Series 返回具有相同"
+"索引的 Series。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f
+msgid "返回类型"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f
+msgid "抛出"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:39
+msgid "备注"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:40
+msgid ""
+"If the timestamps have a timezone, flooring will take place relative to "
+"the local (\"wall\") time and re-localized to the same timezone. When "
+"flooring near daylight savings time, use ``nonexistent`` and "
+"``ambiguous`` to control the re-localization behavior."
+msgstr ""
+"如果时间戳具有时区信息，向下取整将相对于本地（“墙上”）时间进行，并重新"
+"本地化到同时区。在夏令时期间进行向下取整时，使用 ``nonexistent`` 和 ``"
+"ambiguous`` 来控制重新本地化的行为。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:46
+msgid "示例"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:47
+msgid "**DatetimeIndex**"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:60
+msgid "**Series**"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:68
+msgid ""
+"When rounding near a daylight savings time transition, use ``ambiguous`` "
+"or ``nonexistent`` to control how the timestamp should be re-localized."
+msgstr ""
+"在夏令时转换时间附近进行取整时，使用 ``ambiguous`` 或 ``nonexistent`` 来"
+"控制时间戳的重新本地化方式。"
+

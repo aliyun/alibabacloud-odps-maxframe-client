@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.kve.rst:2
+msgid "maxframe.tensor.special.kve"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kve:1 of
+msgid "Exponentially scaled modified Bessel function of the second kind."
+msgstr "指数缩放的第二类变形贝塞尔函数。"
+
+#: maxframe.tensor.special.bessel.kve:3 of
+msgid ""
+"Returns the exponentially scaled, modified Bessel function of the second "
+"kind (sometimes called the third kind) for real order `v` at complex "
+"`z`::"
+msgstr ""
+"返回在复数 `z` 处实数阶 `v` 的指数缩放的第二类变形贝塞尔函数（有时称为"
+"第三类）::"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.kve.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kve:9 of
+msgid "Order of Bessel functions"
+msgstr "贝塞尔函数的阶"
+
+#: maxframe.tensor.special.bessel.kve:11 of
+msgid "Argument at which to evaluate the Bessel functions"
+msgstr "用于计算贝塞尔函数的自变量"
+
+#: maxframe.tensor.special.bessel.kve:13 of
+msgid "Optional output array for the function results"
+msgstr "可选的函数结果输出数组"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.kve.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kve:16 of
+msgid "The exponentially scaled modified Bessel function of the second kind."
+msgstr "指数缩放的第二类变形贝塞尔函数。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.kve.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kve:21 of
+msgid ":py:obj:`kv`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kve:22 of
+msgid "This function without exponential scaling."
+msgstr "不带指数缩放的此函数。"
+
+#: maxframe.tensor.special.bessel.kve:24 of
+msgid ":py:obj:`k0e`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kve:25 of
+msgid "Faster version of this function for order 0."
+msgstr "阶数为 0 时此函数的快速版本。"
+
+#: maxframe.tensor.special.bessel.kve:27 of
+msgid ":py:obj:`k1e`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kve:28 of
+msgid "Faster version of this function for order 1."
+msgstr "阶数为 1 时此函数的快速版本。"
+
+#: maxframe.tensor.special.bessel.kve:31 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kve:32 of
+msgid ""
+"Wrapper for AMOS [1]_ routine `zbesk`.  For a discussion of the algorithm"
+" used, see [2]_ and the references therein."
+msgstr ""
+"AMOS [1]_ 例程 `zbesk` 的封装。有关所用算法的讨论，请参见 [2]_ 及其中的"
+"参考文献。"
+
+#: maxframe.tensor.special.bessel.kve:36 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.kve:37 of
+msgid ""
+"Donald E. Amos, \"AMOS, A Portable Package for Bessel Functions of a "
+"Complex Argument and Nonnegative Order\", http://netlib.org/amos/"
+msgstr ""
+"Donald E. Amos, \"AMOS, 一个用于复数自变量和非负整数阶贝塞尔函数的可移植"
+"程序包\", http://netlib.org/amos/"
+
+#: maxframe.tensor.special.bessel.kve:40 of
+msgid ""
+"Donald E. Amos, \"Algorithm 644: A portable package for Bessel functions "
+"of a complex argument and nonnegative order\", ACM TOMS Vol. 12 Issue 3, "
+"Sept. 1986, p. 265"
+msgstr ""
+"Donald E. Amos, \"算法 644: 一个用于复数自变量和非负整数阶贝塞尔函数的"
+"可移植程序包\", ACM TOMS 第 12 卷第 3 期, 1986 年 9 月, 第 265 页"
+

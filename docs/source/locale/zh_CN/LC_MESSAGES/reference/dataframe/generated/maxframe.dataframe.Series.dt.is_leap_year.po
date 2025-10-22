@@ -1,0 +1,63 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.dt.is_leap_year.rst:2
+msgid "maxframe.dataframe.Series.dt.is_leap_year"
+msgstr ""
+
+#: ../../docstring maxframe.dataframe.Series.dt.is_leap_year:1 of
+msgid "Boolean indicator if the date belongs to a leap year."
+msgstr "日期是否属于闰年的布尔指示器。"
+
+#: ../../docstring maxframe.dataframe.Series.dt.is_leap_year:3 of
+msgid ""
+"A leap year is a year, which has 366 days (instead of 365) including 29th"
+" of February as an intercalary day. Leap years are years which are "
+"multiples of four with the exception of years divisible by 100 but not by"
+" 400."
+msgstr ""
+"闰年是包含 366 天（而非 365 天）的年份，其中包括 2 月 29 日作为闰日。闰年"
+"是指能被 4 整除的年份，但能被 100 整除而不能被 400 整除的年份除外。"
+
+#: ../../docstring maxframe.dataframe.Series.dt.is_leap_year of
+msgid "返回"
+msgstr ""
+
+#: ../../docstring maxframe.dataframe.Series.dt.is_leap_year:8 of
+msgid "Booleans indicating if dates belong to a leap year."
+msgstr "表示日期是否属于闰年的布尔值。"
+
+#: ../../docstring maxframe.dataframe.Series.dt.is_leap_year of
+msgid "返回类型"
+msgstr ""
+
+#: ../../docstring maxframe.dataframe.Series.dt.is_leap_year:12 of
+msgid "示例"
+msgstr ""
+
+#: ../../docstring maxframe.dataframe.Series.dt.is_leap_year:13 of
+msgid ""
+"This method is available on Series with datetime values under the ``.dt``"
+" accessor, and directly on DatetimeIndex."
+msgstr ""
+"此方法适用于具有 datetime 值的 Series（通过 ``.dt`` 访问器）以及直接用于 "
+"DatetimeIndex。"
+

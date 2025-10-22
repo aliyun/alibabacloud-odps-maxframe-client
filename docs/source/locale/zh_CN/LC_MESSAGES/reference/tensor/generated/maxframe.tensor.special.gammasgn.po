@@ -1,0 +1,120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.gammasgn.rst:2
+msgid "maxframe.tensor.special.gammasgn"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:1 of
+msgid "Sign of the gamma function."
+msgstr "伽马函数的符号。"
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:3 of
+msgid "It is defined as"
+msgstr "其定义为"
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:5 of
+#, python-brace-format
+msgid ""
+"\\text{gammasgn}(x) =\n"
+"\\begin{cases}\n"
+"  +1 & \\Gamma(x) > 0 \\\\\n"
+"  -1 & \\Gamma(x) < 0\n"
+"\\end{cases}"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:13 of
+msgid ""
+"where :math:`\\Gamma` is the gamma function; see `gamma`. This definition"
+" is complete since the gamma function is never zero; see the discussion "
+"after [dlmf]_."
+msgstr ""
+"其中 :math:`\\Gamma` 是伽马函数；参见 `gamma`。此定义是完整的，因为伽马"
+"函数永不为零；详见 [dlmf]_ 之后的讨论。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.gammasgn.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:17 of
+msgid "Real argument"
+msgstr "实数参数"
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:19 of
+msgid "Optional output array for the function values"
+msgstr "可选的输出数组，用于存储函数值"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.gammasgn.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:22 of
+msgid "Sign of the gamma function"
+msgstr "伽马函数的符号"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.gammasgn.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:27 of
+msgid ":py:obj:`gamma`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:28 of
+msgid "the gamma function"
+msgstr "伽马函数"
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:30 of
+msgid ":py:obj:`gammaln`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:31 of
+msgid "log of the absolute value of the gamma function"
+msgstr "伽马函数绝对值的对数"
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:33 of
+msgid ":py:obj:`loggamma`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:34 of
+msgid "analytic continuation of the log of the gamma function"
+msgstr "伽马函数对数的解析延拓"
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:37 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:38 of
+msgid ""
+"The gamma function can be computed as ``gammasgn(x) * "
+"np.exp(gammaln(x))``."
+msgstr "伽马函数可以计算为 ``gammasgn(x) * np.exp(gammaln(x))``。"
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:42 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammasgn:43 of
+msgid ""
+"NIST Digital Library of Mathematical Functions "
+"https://dlmf.nist.gov/5.2#E1"
+msgstr "NIST 数学函数数字图书馆 https://dlmf.nist.gov/5.2#E1"
+

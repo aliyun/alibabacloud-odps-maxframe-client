@@ -1,0 +1,455 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/random.rst:6
+msgid "Random Sampling"
+msgstr "随机采样"
+
+#: ../../source/reference/tensor/random.rst:9
+msgid "Sample random data"
+msgstr "采样随机数据"
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.bytes <maxframe.tensor.random.bytes>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid "Return random bytes."
+msgstr "返回随机字节。"
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.choice <maxframe.tensor.random.choice>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid "Generates a random sample from a given 1-D array"
+msgstr "从给定的1-D数组生成随机样本"
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.permutation "
+"<maxframe.tensor.random.permutation>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid "Randomly permute a sequence, or return a permuted range."
+msgstr "随机排列一个序列，或返回一个排列后的范围。"
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.rand <maxframe.tensor.random.rand>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid "Random values in a given shape."
+msgstr "给定形状的随机值。"
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.randint <maxframe.tensor.random.randint>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid "Return random integers from `low` (inclusive) to `high` (exclusive)."
+msgstr "返回从 `low`（包含）到 `high`（不包含）的随机整数。"
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.randn <maxframe.tensor.random.randn>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid "Return a sample (or samples) from the \"standard normal\" distribution."
+msgstr "从“标准正态”分布返回样本（或样本集）。"
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.random_integers "
+"<maxframe.tensor.random.random_integers>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid "Random integers of type mt.int between `low` and `high`, inclusive."
+msgstr "在 `low` 和 `high` 之间（包含）的 mt.int 类型的随机整数。"
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.random_sample "
+"<maxframe.tensor.random.random_sample>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid "Return random floats in the half-open interval [0.0, 1.0)."
+msgstr "返回半开区间 [0.0, 1.0) 中的随机浮点数。"
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.random <maxframe.tensor.random.random>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.ranf <maxframe.tensor.random.ranf>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:27:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.sample <maxframe.tensor.random.sample>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:29
+msgid "Distributions"
+msgstr "分布"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.beta <maxframe.tensor.random.beta>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a Beta distribution."
+msgstr "从 Beta 分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.binomial "
+"<maxframe.tensor.random.binomial>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a binomial distribution."
+msgstr "从二项分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.chisquare "
+"<maxframe.tensor.random.chisquare>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a chi-square distribution."
+msgstr "从卡方分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.dirichlet "
+"<maxframe.tensor.random.dirichlet>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from the Dirichlet distribution."
+msgstr "从 Dirichlet 分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.exponential "
+"<maxframe.tensor.random.exponential>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from an exponential distribution."
+msgstr "从指数分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.f <maxframe.tensor.random.f>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from an F distribution."
+msgstr "从 F 分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.gamma <maxframe.tensor.random.gamma>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a Gamma distribution."
+msgstr "从 Gamma 分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.geometric "
+"<maxframe.tensor.random.geometric>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from the geometric distribution."
+msgstr "从几何分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.gumbel <maxframe.tensor.random.gumbel>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a Gumbel distribution."
+msgstr "从 Gumbel 分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.hypergeometric "
+"<maxframe.tensor.random.hypergeometric>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a Hypergeometric distribution."
+msgstr "从超几何分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.laplace <maxframe.tensor.random.laplace>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+"Draw samples from the Laplace or double exponential distribution with "
+"specified location (or mean) and scale (decay)."
+msgstr "从具有指定位置（或均值）和尺度（衰减）的 Laplace 或双指数分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.lognormal "
+"<maxframe.tensor.random.lognormal>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a log-normal distribution."
+msgstr "从对数正态分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.logseries "
+"<maxframe.tensor.random.logseries>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a logarithmic series distribution."
+msgstr "从对数级数分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.multinomial "
+"<maxframe.tensor.random.multinomial>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a multinomial distribution."
+msgstr "从多项分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.multivariate_normal "
+"<maxframe.tensor.random.multivariate_normal>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw random samples from a multivariate normal distribution."
+msgstr "从多变量正态分布中抽取随机样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.negative_binomial "
+"<maxframe.tensor.random.negative_binomial>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a negative binomial distribution."
+msgstr "从负二项分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.noncentral_chisquare "
+"<maxframe.tensor.random.noncentral_chisquare>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a noncentral chi-square distribution."
+msgstr "从非中心卡方分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.noncentral_f "
+"<maxframe.tensor.random.noncentral_f>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from the noncentral F distribution."
+msgstr "从非中心 F 分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.normal <maxframe.tensor.random.normal>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw random samples from a normal (Gaussian) distribution."
+msgstr "从正态（高斯）分布中抽取随机样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.pareto <maxframe.tensor.random.pareto>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a Pareto II or Lomax distribution with specified shape."
+msgstr "从具有指定形状的帕累托 II 或洛马克斯分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.poisson <maxframe.tensor.random.poisson>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a Poisson distribution."
+msgstr "从泊松分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.power <maxframe.tensor.random.power>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+"Draws samples in [0, 1] from a power distribution with positive exponent "
+"a - 1."
+msgstr "从指数为正的 a - 1 的幂律分布在 [0, 1] 区间内抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.rayleigh "
+"<maxframe.tensor.random.rayleigh>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a Rayleigh distribution."
+msgstr "从瑞利分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.standard_cauchy "
+"<maxframe.tensor.random.standard_cauchy>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a standard Cauchy distribution with mode = 0."
+msgstr "从模式为 0 的标准柯西分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.standard_exponential "
+"<maxframe.tensor.random.standard_exponential>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from the standard exponential distribution."
+msgstr "从标准指数分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.standard_gamma "
+"<maxframe.tensor.random.standard_gamma>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a standard Gamma distribution."
+msgstr "从标准伽马分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.standard_normal "
+"<maxframe.tensor.random.standard_normal>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a standard Normal distribution (mean=0, stdev=1)."
+msgstr "从标准正态分布（均值为 0，标准差为 1）中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.standard_t "
+"<maxframe.tensor.random.standard_t>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+"Draw samples from a standard Student's t distribution with `df` degrees "
+"of freedom."
+msgstr "从具有 `df` 自由度的标准学生 t 分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.triangular "
+"<maxframe.tensor.random.triangular>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+"Draw samples from the triangular distribution over the interval ``[left, "
+"right]``."
+msgstr "从区间 ``[left, right]`` 上的三角分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.uniform <maxframe.tensor.random.uniform>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a uniform distribution."
+msgstr "从均匀分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.vonmises "
+"<maxframe.tensor.random.vonmises>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a von Mises distribution."
+msgstr "从冯·米塞斯分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.wald <maxframe.tensor.random.wald>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a Wald, or inverse Gaussian, distribution."
+msgstr "从瓦尔德分布或逆高斯分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.weibull <maxframe.tensor.random.weibull>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a Weibull distribution."
+msgstr "从韦布尔分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.zipf <maxframe.tensor.random.zipf>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:70:<autosummary>:1
+msgid "Draw samples from a Zipf distribution."
+msgstr "从 Zipf 分布中抽取样本。"
+
+#: ../../source/reference/tensor/random.rst:72
+msgid "Random number generator"
+msgstr "随机数生成器"
+
+#: ../../source/reference/tensor/random.rst:79:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.random.seed <maxframe.tensor.random.seed>`"
+msgstr ""
+
+#: ../../source/reference/tensor/random.rst:79:<autosummary>:1
+msgid "Seed the generator."
+msgstr "设置生成器的种子。"
+
+#: ../../source/reference/tensor/random.rst:79:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.random.RandomState "
+"<maxframe.tensor.random.RandomState>`"
+msgstr ""
+

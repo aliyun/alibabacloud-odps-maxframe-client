@@ -1,0 +1,117 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.value_counts.rst:2
+msgid "maxframe.dataframe.Series.value\\_counts"
+msgstr ""
+
+#: maxframe.dataframe.misc.value_counts.value_counts:1 of
+msgid "Return a Series containing counts of unique values."
+msgstr "返回一个包含唯一值计数的 Series。"
+
+#: maxframe.dataframe.misc.value_counts.value_counts:3 of
+msgid ""
+"The resulting object will be in descending order so that the first "
+"element is the most frequently-occurring element. Excludes NA values by "
+"default."
+msgstr ""
+"结果对象将按降序排列，因此第一个元素是出现频率最高的元素。默认情况下排除 "
+"NA 值。"
+
+#: maxframe.dataframe.misc.value_counts.value_counts of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.value_counts.value_counts:7 of
+msgid ""
+"If True then the object returned will contain the relative frequencies of"
+" the unique values."
+msgstr "如果为 True，则返回的对象将包含唯一值的相对频率。"
+
+#: maxframe.dataframe.misc.value_counts.value_counts:10 of
+msgid "Sort by frequencies."
+msgstr "按频率排序。"
+
+#: maxframe.dataframe.misc.value_counts.value_counts:12 of
+msgid "Sort in ascending order."
+msgstr "按升序排序。"
+
+#: maxframe.dataframe.misc.value_counts.value_counts:14 of
+msgid ""
+"Rather than count values, group them into half-open bins, a convenience "
+"for ``pd.cut``, only works with numeric data."
+msgstr ""
+"不是计算值的计数，而是将它们分组到半开区间中，这是 ``pd.cut`` 的便捷方式"
+"，仅适用于数值数据。"
+
+#: maxframe.dataframe.misc.value_counts.value_counts:17 of
+msgid "Don't include counts of NaN."
+msgstr "不包括 NaN 的计数。"
+
+#: maxframe.dataframe.misc.value_counts.value_counts:19 of
+msgid ""
+"'auto', 'shuffle', or 'tree', 'tree' method provide a better performance,"
+" while 'shuffle' is recommended if aggregated result is very large, "
+"'auto' will use 'shuffle' method in distributed mode and use 'tree' in "
+"local mode."
+msgstr ""
+"'auto'、'shuffle' 或 'tree'，'tree' 方法提供更好的性能，而如果聚合结果"
+"非常大，推荐使用 'shuffle'，'auto' 将在分布式模式下使用 'shuffle' 方法，"
+"在本地模式下使用 'tree'。"
+
+#: maxframe.dataframe.misc.value_counts.value_counts of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.value_counts.value_counts:30 of
+msgid ":py:obj:`Series.count`"
+msgstr ""
+
+#: maxframe.dataframe.misc.value_counts.value_counts:31 of
+msgid "Number of non-NA elements in a Series."
+msgstr "Series 中非 NA 元素的数量。"
+
+#: maxframe.dataframe.misc.value_counts.value_counts:33 of
+msgid ":py:obj:`DataFrame.count`"
+msgstr ""
+
+#: maxframe.dataframe.misc.value_counts.value_counts:34 of
+msgid "Number of non-NA elements in a DataFrame."
+msgstr "DataFrame 中非 NA 元素的数量。"
+
+#: maxframe.dataframe.misc.value_counts.value_counts:37 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.value_counts.value_counts:48 of
+msgid ""
+"With `normalize` set to `True`, returns the relative frequency by "
+"dividing all values by the sum of values."
+msgstr "当 `normalize` 设置为 `True` 时，通过将所有值除以值的总和来返回相对频率。"
+
+#: maxframe.dataframe.misc.value_counts.value_counts:59 of
+msgid "**dropna**"
+msgstr ""
+
+#: maxframe.dataframe.misc.value_counts.value_counts:61 of
+msgid "With `dropna` set to `False` we can also see NaN index values."
+msgstr "当 `dropna` 设置为 `False` 时，我们也可以看到 NaN 索引值。"
+

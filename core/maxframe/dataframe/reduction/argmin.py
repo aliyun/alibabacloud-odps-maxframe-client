@@ -40,7 +40,7 @@ class DataFrameArgMin(DataFrameReduction, DataFrameReductionMixin):
         return ReductionCallable(func_name=func_name, kwargs=kw)
 
 
-def argmin_series(series, axis=0, skipna=True):
+def argmin_series_index(series_or_index, axis=0, skipna=True, *args, **kwargs):
     """
     Return int position of the smallest value in the Series.
 
@@ -65,7 +65,7 @@ def argmin_series(series, axis=0, skipna=True):
     --------
     Series.argmin : Return position of the minimum value.
     Series.argmax : Return position of the maximum value.
-    numpy.ndarray.argmin : Equivalent method for numpy arrays.
+    maxframe.tensor.argmin : Equivalent method for tensors.
     Series.idxmax : Return index label of the maximum values.
     Series.idxmin : Return index label of the minimum values.
 
@@ -92,9 +92,12 @@ def argmin_series(series, axis=0, skipna=True):
     the minimum cereal calories is the first element,
     since series is zero-indexed.
     """
-    validate_axis(axis, series)
+    # args not implemented, just ignore
+    _ = args, kwargs
+
+    validate_axis(axis, series_or_index)
     op = DataFrameArgMin(
         dropna=skipna,
         output_types=[OutputType.scalar],
     )
-    return op(series)
+    return op(series_or_index)

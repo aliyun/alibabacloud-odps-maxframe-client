@@ -1,0 +1,215 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.multivariate_normal.rst:2
+msgid "maxframe.tensor.random.multivariate\\_normal"
+msgstr ""
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:1 of
+msgid "Draw random samples from a multivariate normal distribution."
+msgstr "从多变量正态分布中抽取随机样本。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:3 of
+msgid ""
+"The multivariate normal, multinormal or Gaussian distribution is a "
+"generalization of the one-dimensional normal distribution to higher "
+"dimensions.  Such a distribution is specified by its mean and covariance "
+"matrix.  These parameters are analogous to the mean (average or "
+"\"center\") and variance (standard deviation, or \"width,\" squared) of "
+"the one-dimensional normal distribution."
+msgstr ""
+"多变量正态分布（也称为多元正态分布或高斯分布）是一维正态分布向高维的推广"
+"。这种分布由其均值和协方差矩阵指定。这些参数类似于一维正态分布的均值（"
+"平均值或“中心”）和方差（标准差，或“宽度”的平方）。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:10 of
+msgid "Mean of the N-dimensional distribution."
+msgstr "N维分布的均值。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:12 of
+msgid ""
+"Covariance matrix of the distribution. It must be symmetric and positive-"
+"semidefinite for proper sampling."
+msgstr "分布的协方差矩阵。为了正确采样，它必须是对称且半正定的。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:15 of
+msgid ""
+"Given a shape of, for example, ``(m,n,k)``, ``m*n*k`` samples are "
+"generated, and packed in an `m`-by-`n`-by-`k` arrangement.  Because each "
+"sample is `N`-dimensional, the output shape is ``(m,n,k,N)``. If no shape"
+" is specified, a single (`N`-D) sample is returned."
+msgstr ""
+"例如，给定形状 ``(m,n,k)``，将生成 ``m*n*k`` 个样本，并排列成 `m` 行 `n` "
+"列 `k` 层的形式。由于每个样本是 `N` 维的，输出形状为 ``(m,n,k,N)``。如果"
+"未指定形状，则返回一个 (`N` 维) 样本。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:20 of
+msgid "Behavior when the covariance matrix is not positive semidefinite."
+msgstr "当协方差矩阵不是半正定时的行为。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:22 of
+msgid "Tolerance when checking the singular values in covariance matrix."
+msgstr "检查协方差矩阵中的奇异值时的容差。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:24 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的分块大小"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:26 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:28 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:31 of
+msgid ""
+"**out** -- The drawn samples, of shape *size*, if that was provided.  If "
+"not, the shape is ``(N,)``.  In other words, each entry "
+"``out[i,j,...,:]`` is an N-dimensional value drawn from the distribution."
+msgstr ""
+"**out** -- 抽取的样本，形状为 *size*（如果提供了该参数）。否则形状为 ``(N"
+",)``。换句话说，每个条目 ``out[i,j,...,:]`` 是一个从该分布中抽取的 N 维值"
+"。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:31 of
+#, fuzzy
+msgid ""
+"**out** -- The drawn samples, of shape *size*, if that was provided.  If "
+"not, the shape is ``(N,)``."
+msgstr ""
+"**out** -- 抽取的样本，形状为 *size*（如果提供了该参数）。否则形状为 ``(N"
+",)``。换句话说，每个条目 ``out[i,j,...,:]`` 是一个从该分布中抽取的 N 维值"
+"。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:34 of
+#, fuzzy
+msgid ""
+"In other words, each entry ``out[i,j,...,:]`` is an N-dimensional value "
+"drawn from the distribution."
+msgstr ""
+"**out** -- 抽取的样本，形状为 *size*（如果提供了该参数）。否则形状为 ``(N"
+",)``。换句话说，每个条目 ``out[i,j,...,:]`` 是一个从该分布中抽取的 N 维值"
+"。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:39 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:40 of
+msgid ""
+"The mean is a coordinate in N-dimensional space, which represents the "
+"location where samples are most likely to be generated.  This is "
+"analogous to the peak of the bell curve for the one-dimensional or "
+"univariate normal distribution."
+msgstr ""
+"均值是 N 维空间中的一个坐标，表示样本最可能被生成的位置。这类似于一维或单"
+"变量正态分布的钟形曲线的峰值。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:45 of
+#, python-brace-format
+msgid ""
+"Covariance indicates the level to which two variables vary together. From"
+" the multivariate normal distribution, we draw N-dimensional samples, "
+":math:`X = [x_1, x_2, ... x_N]`.  The covariance matrix element "
+":math:`C_{ij}` is the covariance of :math:`x_i` and :math:`x_j`. The "
+"element :math:`C_{ii}` is the variance of :math:`x_i` (i.e. its "
+"\"spread\")."
+msgstr ""
+"协方差表示两个变量共同变化的程度。从多变量正态分布中，我们抽取 N 维样本 :"
+"math:`X = [x_1, x_2, ... x_N]`。协方差矩阵元素 :math:`C_{ij}` 是 :math:`x"
+"_i` 和 :math:`x_j` 的协方差。元素 :math:`C_{ii}` 是 :math:`x_i` 的方差（"
+"即其“散布”程度）。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:52 of
+msgid ""
+"Instead of specifying the full covariance matrix, popular approximations "
+"include:"
+msgstr "除了指定完整的协方差矩阵，常用的近似包括："
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:55 of
+msgid "Spherical covariance (`cov` is a multiple of the identity matrix)"
+msgstr "球面协方差（`cov` 是单位矩阵的倍数）"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:56 of
+msgid ""
+"Diagonal covariance (`cov` has non-negative elements, and only on the "
+"diagonal)"
+msgstr "对角协方差（`cov` 只在对角线上有非负元素）"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:59 of
+msgid ""
+"This geometrical property can be seen in two dimensions by plotting "
+"generated data-points:"
+msgstr "这个几何特性可以通过绘制生成的数据点在二维空间中观察到："
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:65 of
+msgid "Diagonal covariance means that points are oriented along x or y-axis:"
+msgstr "对角协方差意味着点沿着 x 轴或 y 轴方向排列："
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:74 of
+msgid ""
+"Note that the covariance matrix must be positive semidefinite (a.k.a. "
+"nonnegative-definite). Otherwise, the behavior of this method is "
+"undefined and backwards compatibility is not guaranteed."
+msgstr ""
+"请注意，协方差矩阵必须是半正定的（也称为非负定）。否则，此方法的行为是"
+"未定义的，并且不保证向后兼容性。"
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:79 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:80 of
+msgid ""
+"Papoulis, A., \"Probability, Random Variables, and Stochastic "
+"Processes,\" 3rd ed., New York: McGraw-Hill, 1991."
+msgstr ""
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:82 of
+msgid ""
+"Duda, R. O., Hart, P. E., and Stork, D. G., \"Pattern Classification,\" "
+"2nd ed., New York: Wiley, 2001."
+msgstr ""
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:86 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.multivariate_normal.multivariate_normal:93 of
+msgid ""
+"The following is probably true, given that 0.6 is roughly twice the "
+"standard deviation:"
+msgstr "以下内容可能是正确的，因为 0.6 大约是标准差的两倍："
+

@@ -1,0 +1,207 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/logic.rst:2
+msgid "Logic Functions"
+msgstr "逻辑函数"
+
+#: ../../source/reference/tensor/logic.rst:5
+msgid "Truth value testing"
+msgstr "真值测试"
+
+#: ../../source/reference/tensor/logic.rst:14:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.all <maxframe.tensor.all>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:14:<autosummary>:1
+msgid "Test whether all array elements along a given axis evaluate to True."
+msgstr "测试沿给定轴的所有数组元素是否都为 True。"
+
+#: ../../source/reference/tensor/logic.rst:14:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.any <maxframe.tensor.any>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:14:<autosummary>:1
+msgid "Test whether any tensor element along a given axis evaluates to True."
+msgstr "测试沿给定轴的张量元素是否有任一为 True。"
+
+#: ../../source/reference/tensor/logic.rst:16
+msgid "Array contents"
+msgstr "数组内容"
+
+#: ../../source/reference/tensor/logic.rst:26:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.isfinite <maxframe.tensor.isfinite>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:26:<autosummary>:1
+msgid "Test element-wise for finiteness (not infinity or not Not a Number)."
+msgstr "逐元素测试有限性（不是无穷大或不是 NaN）。"
+
+#: ../../source/reference/tensor/logic.rst:26:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.isinf <maxframe.tensor.isinf>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:26:<autosummary>:1
+msgid "Test element-wise for positive or negative infinity."
+msgstr "逐元素测试正无穷或负无穷。"
+
+#: ../../source/reference/tensor/logic.rst:26:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.isnan <maxframe.tensor.isnan>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:26:<autosummary>:1
+msgid "Test element-wise for NaN and return result as a boolean tensor."
+msgstr "逐元素测试 NaN，并将结果作为布尔张量返回。"
+
+#: ../../source/reference/tensor/logic.rst:28
+msgid "Array type testing"
+msgstr "数组类型测试"
+
+#: ../../source/reference/tensor/logic.rst:37:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.iscomplex <maxframe.tensor.iscomplex>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:37:<autosummary>:1
+msgid "Returns a bool tensor, where True if input element is complex."
+msgstr "返回一个布尔张量，如果输入元素是复数则为 True。"
+
+#: ../../source/reference/tensor/logic.rst:37:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.isreal <maxframe.tensor.isreal>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:37:<autosummary>:1
+msgid "Returns a bool tensor, where True if input element is real."
+msgstr "返回一个布尔张量，如果输入元素是实数则为 True。"
+
+#: ../../source/reference/tensor/logic.rst:39
+msgid "Logic operations"
+msgstr "逻辑运算"
+
+#: ../../source/reference/tensor/logic.rst:50:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.logical_and <maxframe.tensor.logical_and>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:50:<autosummary>:1
+msgid "Compute the truth value of x1 AND x2 element-wise."
+msgstr "逐元素计算 x1 与 x2 的真值。"
+
+#: ../../source/reference/tensor/logic.rst:50:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.logical_or <maxframe.tensor.logical_or>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:50:<autosummary>:1
+msgid "Compute the truth value of x1 OR x2 element-wise."
+msgstr "逐元素计算 x1 或 x2 的真值。"
+
+#: ../../source/reference/tensor/logic.rst:50:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.logical_not <maxframe.tensor.logical_not>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:50:<autosummary>:1
+msgid "Compute the truth value of NOT x element-wise."
+msgstr "逐元素计算非 x 的真值。"
+
+#: ../../source/reference/tensor/logic.rst:50:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.logical_xor <maxframe.tensor.logical_xor>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:50:<autosummary>:1
+msgid "Compute the truth value of x1 XOR x2, element-wise."
+msgstr "逐元素计算 x1 异或 x2 的真值。"
+
+#: ../../source/reference/tensor/logic.rst:52
+msgid "Comparison"
+msgstr "比较"
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.allclose <maxframe.tensor.allclose>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid "Returns True if two tensors are element-wise equal within a tolerance."
+msgstr "如果两个张量在容差范围内逐元素相等，则返回 True。"
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.isclose <maxframe.tensor.isclose>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid ""
+"Returns a boolean tensor where two tensors are element-wise equal within "
+"a tolerance."
+msgstr "返回一个布尔张量，表示两个张量在容差范围内逐元素是否相等。"
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.array_equal <maxframe.tensor.array_equal>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid "True if two tensors have the same shape and elements, False otherwise."
+msgstr "如果两个张量具有相同的形状和元素，则为 True，否则为 False。"
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.greater <maxframe.tensor.greater>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid "Return the truth value of (x1 > x2) element-wise."
+msgstr "逐元素返回 (x1 > x2) 的真值。"
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.greater_equal <maxframe.tensor.greater_equal>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid "Return the truth value of (x1 >= x2) element-wise."
+msgstr "逐元素返回 (x1 >= x2) 的真值。"
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.less <maxframe.tensor.less>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid "Return the truth value of (x1 < x2) element-wise."
+msgstr "逐元素返回 (x1 < x2) 的真值。"
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.less_equal <maxframe.tensor.less_equal>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid "Return the truth value of (x1 =< x2) element-wise."
+msgstr "逐元素返回 (x1 <= x2) 的真值。"
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.equal <maxframe.tensor.equal>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid "Return (x1 == x2) element-wise."
+msgstr "逐元素返回 (x1 == x2)。"
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.not_equal <maxframe.tensor.not_equal>`"
+msgstr ""
+
+#: ../../source/reference/tensor/logic.rst:66:<autosummary>:1
+msgid "Return (x1 != x2) element-wise."
+msgstr "逐元素返回 (x1 != x2)。"
+

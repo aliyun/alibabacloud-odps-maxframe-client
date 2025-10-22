@@ -1,0 +1,110 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.erfinv.rst:2
+msgid "maxframe.tensor.special.erfinv"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erfinv:1 of
+msgid "Inverse of the error function."
+msgstr "误差函数的反函数。"
+
+#: maxframe.tensor.special.err_fresnel.erfinv:3 of
+msgid "Computes the inverse of the error function."
+msgstr "计算误差函数的反函数。"
+
+#: maxframe.tensor.special.err_fresnel.erfinv:5 of
+msgid ""
+"In the complex domain, there is no unique complex number w satisfying "
+"erf(w)=z. This indicates a true inverse function would be multivalued. "
+"When the domain restricts to the real, -1 < x < 1, there is a unique real"
+" number satisfying erf(erfinv(x)) = x."
+msgstr ""
+"在复数域中，不存在唯一的复数 w 满足 erf(w)=z。这表明真正的反函数将是多值"
+"的。当定义域限制在实数范围 -1 < x < 1 时，存在唯一的实数满足 erf(erfinv(x"
+")) = x。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.erfinv.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erfinv:10 of
+msgid "Argument at which to evaluate. Domain: [-1, 1]"
+msgstr "用于计算的参数。定义域：[-1, 1]"
+
+#: maxframe.tensor.special.err_fresnel.erfinv:12 of
+msgid "Optional output array for the function values"
+msgstr "可选的输出数组，用于存储函数值"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.erfinv.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erfinv:15 of
+msgid "**erfinv** -- The inverse of erf of y, element-wise"
+msgstr "**erfinv** -- y 的误差函数的反函数，逐元素计算"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.erfinv.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erfinv:20 of
+msgid ":py:obj:`erf`"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erfinv:21 of
+msgid "Error function of a complex argument"
+msgstr "复数参数的误差函数"
+
+#: maxframe.tensor.special.err_fresnel.erfinv:23 of
+msgid ":py:obj:`erfc`"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erfinv:24 of
+msgid "Complementary error function, ``1 - erf(x)``"
+msgstr "互补误差函数，``1 - erf(x)``"
+
+#: maxframe.tensor.special.err_fresnel.erfinv:26 of
+msgid ":py:obj:`erfcinv`"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erfinv:27 of
+msgid "Inverse of the complementary error function"
+msgstr "互补误差函数的反函数"
+
+#: maxframe.tensor.special.err_fresnel.erfinv:30 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erfinv:31 of
+msgid ""
+"This function wraps the ``erf_inv`` routine from the Boost Math C++ "
+"library [1]_."
+msgstr "此函数封装了来自 Boost Math C++ 库的 ``erf_inv`` 例程 [1]_。"
+
+#: maxframe.tensor.special.err_fresnel.erfinv:35 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.err_fresnel.erfinv:36 of
+msgid "The Boost Developers. \"Boost C++ Libraries\". https://www.boost.org/."
+msgstr ""
+

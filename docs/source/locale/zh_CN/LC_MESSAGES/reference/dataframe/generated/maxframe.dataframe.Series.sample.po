@@ -1,0 +1,176 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.sample.rst:2
+msgid "maxframe.dataframe.Series.sample"
+msgstr ""
+
+#: maxframe.dataframe.indexing.sample.sample:1 of
+msgid "Return a random sample of items from an axis of object."
+msgstr "从对象的轴中返回随机样本。"
+
+#: maxframe.dataframe.indexing.sample.sample:3 of
+msgid "You can use `random_state` for reproducibility."
+msgstr "你可以使用 `random_state` 来保证结果可重现。"
+
+#: maxframe.dataframe.indexing.sample.sample of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.sample.sample:5 of
+msgid ""
+"Number of items from axis to return. Cannot be used with `frac`. Default "
+"= 1 if `frac` = None."
+msgstr ""
+"从轴中返回的项数。不能与 `frac` 同时使用。如果 `frac` 为 None，则默认值为"
+" 1。"
+
+#: maxframe.dataframe.indexing.sample.sample:8 of
+msgid "Fraction of axis items to return. Cannot be used with `n`."
+msgstr "要返回的轴项的比例。不能与 `n` 同时使用。"
+
+#: maxframe.dataframe.indexing.sample.sample:10 of
+msgid "Allow or disallow sampling of the same row more than once."
+msgstr "允许或禁止对同一行进行多次采样。"
+
+#: maxframe.dataframe.indexing.sample.sample:12 of
+msgid ""
+"Default 'None' results in equal probability weighting. If passed a "
+"Series, will align with target object on index. Index values in weights "
+"not found in sampled object will be ignored and index values in sampled "
+"object not in weights will be assigned weights of zero. If called on a "
+"DataFrame, will accept the name of a column when axis = 0. Unless weights"
+" are a Series, weights must be same length as axis being sampled. If "
+"weights do not sum to 1, they will be normalized to sum to 1. Missing "
+"values in the weights column will be treated as zero. Infinite values not"
+" allowed."
+msgstr ""
+"默认值 'None' 表示等概率加权。如果传入一个 Series，则会根据索引与目标对象"
+"对齐。权重中在采样对象中找不到的索引值将被忽略，采样对象中不在权重中的"
+"索引值将被赋予零权重。如果在 DataFrame 上调用，并且 axis = 0，则接受列名"
+"。除非权重是 Series，否则权重必须与被采样的轴长度相同。如果权重总和不为 1"
+"，将被归一化为总和为 1。权重列中的缺失值将被视为零。不允许无穷值。"
+
+#: maxframe.dataframe.indexing.sample.sample:25 of
+msgid ""
+"If int, array-like, or BitGenerator (NumPy>=1.17), seed for random number"
+" generator If np.random.RandomState, use as numpy RandomState object."
+msgstr ""
+"如果为 int、array-like 或 BitGenerator（NumPy>=1.17），则为随机数生成器的"
+"种子。如果为 np.random.RandomState，则作为 numpy RandomState 对象使用。"
+
+#: maxframe.dataframe.indexing.sample.sample:29 of
+msgid ""
+"Axis to sample. Accepts axis number or name. Default is stat axis for "
+"given data type (0 for Series and DataFrames)."
+msgstr ""
+"要采样的轴。接受轴编号或名称。默认为给定数据类型的统计轴（对于 Series 和 "
+"DataFrames 为 0）。"
+
+#: maxframe.dataframe.indexing.sample.sample:32 of
+msgid ""
+"If True, always treat distribution of sample counts between data chunks "
+"as multinomial distribution. This will accelerate sampling when data is "
+"huge, but may affect randomness of samples when number of instances is "
+"not very large."
+msgstr ""
+"如果为 True，则始终将数据块之间的样本计数分布视为多项分布。当数据量很大时"
+"，这将加速采样过程，但在实例数量不是很大时可能会影响样本的随机性。"
+
+#: maxframe.dataframe.indexing.sample.sample of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.indexing.sample.sample:38 of
+msgid ""
+"A new object of same type as caller containing `n` items randomly sampled"
+" from the caller object."
+msgstr "一个与调用者类型相同的新对象，其中包含从调用者对象中随机采样的 `n` 个项。"
+
+#: maxframe.dataframe.indexing.sample.sample of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.sample.sample:44 of
+msgid ":py:obj:`DataFrameGroupBy.sample`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.sample.sample:45 of
+msgid "Generates random samples from each group of a DataFrame object."
+msgstr "从 DataFrame 对象的每个组中生成随机样本。"
+
+#: maxframe.dataframe.indexing.sample.sample:47 of
+msgid ":py:obj:`SeriesGroupBy.sample`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.sample.sample:48 of
+msgid "Generates random samples from each group of a Series object."
+msgstr "从 Series 对象的每个组中生成随机样本。"
+
+#: maxframe.dataframe.indexing.sample.sample:50 of
+msgid ":py:obj:`numpy.random.choice`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.sample.sample:51 of
+msgid "Generates a random sample from a given 1-D numpy array."
+msgstr "从给定的一维 numpy 数组中生成随机样本。"
+
+#: maxframe.dataframe.indexing.sample.sample:54 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.indexing.sample.sample:55 of
+msgid "If `frac` > 1, `replacement` should be set to `True`."
+msgstr "如果 `frac` > 1，则应将 `replacement` 设置为 `True`。"
+
+#: maxframe.dataframe.indexing.sample.sample:58 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.indexing.sample.sample:71 of
+msgid ""
+"Extract 3 random elements from the ``Series`` ``df['num_legs']``: Note "
+"that we use `random_state` to ensure the reproducibility of the examples."
+msgstr ""
+"从 ``Series`` ``df['num_legs']`` 中提取 3 个随机元素：注意我们使用 `"
+"random_state` 来确保示例的可重现性。"
+
+#: maxframe.dataframe.indexing.sample.sample:81 of
+#, python-format
+msgid "A random 50% sample of the ``DataFrame`` with replacement:"
+msgstr "带有放回的 ``DataFrame`` 的随机 50% 样本："
+
+#: maxframe.dataframe.indexing.sample.sample:88 of
+msgid ""
+"An upsample sample of the ``DataFrame`` with replacement: Note that "
+"`replace` parameter has to be `True` for `frac` parameter > 1."
+msgstr ""
+"带有放回的 ``DataFrame`` 的上采样样本：请注意，当 `frac` 参数大于 1 时，`"
+"replace` 参数必须为 `True`。"
+
+#: maxframe.dataframe.indexing.sample.sample:102 of
+msgid ""
+"Using a DataFrame column as weights. Rows with larger value in the "
+"`num_specimen_seen` column are more likely to be sampled."
+msgstr ""
+"使用 DataFrame 列作为权重。在 `num_specimen_seen` 列中值较大的行更有可能"
+"被采样。"
+

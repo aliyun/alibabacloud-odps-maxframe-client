@@ -1,0 +1,713 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/math.rst:2
+msgid "Mathematical Functions"
+msgstr "数学函数"
+
+#: ../../source/reference/tensor/math.rst:5
+msgid "Trigonometric functions"
+msgstr "三角函数"
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.sin <maxframe.tensor.sin>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid "Trigonometric sine, element-wise."
+msgstr "三角正弦，逐元素计算。"
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.cos <maxframe.tensor.cos>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid "Cosine element-wise."
+msgstr "余弦，逐元素计算。"
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.tan <maxframe.tensor.tan>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid "Compute tangent element-wise."
+msgstr "计算正切，逐元素计算。"
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.arcsin <maxframe.tensor.arcsin>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid "Inverse sine, element-wise."
+msgstr "反正弦，逐元素计算。"
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.arccos <maxframe.tensor.arccos>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid "Trigonometric inverse cosine, element-wise."
+msgstr "反余弦，逐元素计算。"
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.arctan <maxframe.tensor.arctan>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid "Trigonometric inverse tangent, element-wise."
+msgstr "反正切，逐元素计算。"
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.hypot <maxframe.tensor.hypot>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid "Given the \"legs\" of a right triangle, return its hypotenuse."
+msgstr "给定直角三角形的两条直角边，返回其斜边。"
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.arctan2 <maxframe.tensor.arctan2>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid "Element-wise arc tangent of ``x1/x2`` choosing the quadrant correctly."
+msgstr "逐元素计算 ``x1/x2`` 的反正切值，并正确选择象限。"
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.degrees <maxframe.tensor.degrees>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid "Convert angles from radians to degrees."
+msgstr "将角度从弧度转换为度数。"
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.radians <maxframe.tensor.radians>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid "Convert angles from degrees to radians."
+msgstr "将角度从度数转换为弧度。"
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.deg2rad <maxframe.tensor.deg2rad>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:24:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.rad2deg <maxframe.tensor.rad2deg>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:26
+msgid "Hyperbolic functions"
+msgstr "双曲函数"
+
+#: ../../source/reference/tensor/math.rst:39:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.sinh <maxframe.tensor.sinh>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:39:<autosummary>:1
+msgid "Hyperbolic sine, element-wise."
+msgstr "双曲正弦，逐元素计算。"
+
+#: ../../source/reference/tensor/math.rst:39:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.cosh <maxframe.tensor.cosh>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:39:<autosummary>:1
+msgid "Hyperbolic cosine, element-wise."
+msgstr "双曲余弦，逐元素计算。"
+
+#: ../../source/reference/tensor/math.rst:39:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.tanh <maxframe.tensor.tanh>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:39:<autosummary>:1
+msgid "Compute hyperbolic tangent element-wise."
+msgstr "逐元素计算双曲正切值。"
+
+#: ../../source/reference/tensor/math.rst:39:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.arcsinh <maxframe.tensor.arcsinh>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:39:<autosummary>:1
+msgid "Inverse hyperbolic sine element-wise."
+msgstr "逐元素计算反双曲正弦值。"
+
+#: ../../source/reference/tensor/math.rst:39:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.arccosh <maxframe.tensor.arccosh>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:39:<autosummary>:1
+msgid "Inverse hyperbolic cosine, element-wise."
+msgstr "逐元素计算反双曲余弦值。"
+
+#: ../../source/reference/tensor/math.rst:39:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.arctanh <maxframe.tensor.arctanh>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:39:<autosummary>:1
+msgid "Inverse hyperbolic tangent element-wise."
+msgstr "逐元素计算反双曲正切值。"
+
+#: ../../source/reference/tensor/math.rst:41
+msgid "Rounding"
+msgstr "舍入"
+
+#: ../../source/reference/tensor/math.rst:55:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.around <maxframe.tensor.around>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:55:<autosummary>:1
+msgid "Evenly round to the given number of decimals."
+msgstr "将数字均匀地四舍五入到指定的小数位数。"
+
+#: ../../source/reference/tensor/math.rst:55:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.round_ <maxframe.tensor.round_>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:55:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.rint <maxframe.tensor.rint>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:55:<autosummary>:1
+msgid "Round elements of the tensor to the nearest integer."
+msgstr "将张量中的元素四舍五入到最接近的整数。"
+
+#: ../../source/reference/tensor/math.rst:55:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.fix <maxframe.tensor.fix>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:55:<autosummary>:1
+msgid "Round to nearest integer towards zero."
+msgstr "向零方向四舍五入到最近的整数。"
+
+#: ../../source/reference/tensor/math.rst:55:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.floor <maxframe.tensor.floor>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:55:<autosummary>:1
+msgid "Return the floor of the input, element-wise."
+msgstr "逐元素返回输入的下界。"
+
+#: ../../source/reference/tensor/math.rst:55:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.ceil <maxframe.tensor.ceil>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:55:<autosummary>:1
+msgid "Return the ceiling of the input, element-wise."
+msgstr "逐元素返回输入的上界。"
+
+#: ../../source/reference/tensor/math.rst:55:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.trunc <maxframe.tensor.trunc>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:55:<autosummary>:1
+msgid "Return the truncated value of the input, element-wise."
+msgstr "逐元素返回输入的截断值。"
+
+#: ../../source/reference/tensor/math.rst:57
+msgid "Sums, products, differences"
+msgstr "求和、乘积、差值"
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.prod <maxframe.tensor.prod>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid "Return the product of tensor elements over a given axis."
+msgstr "返回沿给定轴的张量元素的乘积。"
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.sum <maxframe.tensor.sum>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid "Sum of tensor elements over a given axis."
+msgstr "返回沿给定轴的张量元素的和。"
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.nanprod <maxframe.tensor.nanprod>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ""
+"Return the product of array elements over a given axis treating Not a "
+"Numbers (NaNs) as ones."
+msgstr "返回沿给定轴的数组元素的乘积，将非数字（NaN）视为1。"
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.nansum <maxframe.tensor.nansum>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ""
+"Return the sum of array elements over a given axis treating Not a Numbers"
+" (NaNs) as zero."
+msgstr "返回给定轴上数组元素的总和，并将非数字（NaN）视为零。"
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.cumprod <maxframe.tensor.cumprod>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid "Return the cumulative product of elements along a given axis."
+msgstr "返回给定轴上元素的累积乘积。"
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.cumsum <maxframe.tensor.cumsum>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid "Return the cumulative sum of the elements along a given axis."
+msgstr "返回给定轴上元素的累积和。"
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.nancumprod <maxframe.tensor.nancumprod>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ""
+"Return the cumulative product of tensor elements over a given axis "
+"treating Not a Numbers (NaNs) as one."
+msgstr "返回给定轴上张量元素的累积乘积，并将非数字（NaN）视为一。"
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.nancumsum <maxframe.tensor.nancumsum>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ""
+"Return the cumulative sum of tensor elements over a given axis treating "
+"Not a Numbers (NaNs) as zero."
+msgstr "返回给定轴上张量元素的累积和，并将非数字（NaN）视为零。"
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.diff <maxframe.tensor.diff>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid "Calculate the n-th discrete difference along the given axis."
+msgstr "计算给定轴上的第n个离散差分。"
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.ediff1d <maxframe.tensor.ediff1d>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid "The differences between consecutive elements of a tensor."
+msgstr "张量中连续元素之间的差值。"
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.trapezoid <maxframe.tensor.trapezoid>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:75:<autosummary>:1
+msgid "Integrate along the given axis using the composite trapezoidal rule."
+msgstr "使用复合梯形法则沿给定轴进行积分。"
+
+#: ../../source/reference/tensor/math.rst:77
+msgid "Exponential and logarithms"
+msgstr "指数和对数"
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.exp <maxframe.tensor.exp>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid "Calculate the exponential of all elements in the input tensor."
+msgstr "计算输入张量中所有元素的指数。"
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.expm1 <maxframe.tensor.expm1>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid "Calculate ``exp(x) - 1`` for all elements in the tensor."
+msgstr "计算张量中所有元素的 ``exp(x) - 1``。"
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.exp2 <maxframe.tensor.exp2>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid "Calculate `2**p` for all `p` in the input tensor."
+msgstr "计算输入张量中所有 `p` 的 `2**p`。"
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.log <maxframe.tensor.log>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid "Natural logarithm, element-wise."
+msgstr "自然对数，逐元素计算。"
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.log10 <maxframe.tensor.log10>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid "Return the base 10 logarithm of the input tensor, element-wise."
+msgstr "返回输入张量的以10为底的对数，逐元素计算。"
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.log2 <maxframe.tensor.log2>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid "Base-2 logarithm of `x`."
+msgstr "`x` 的以2为底的对数。"
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.log1p <maxframe.tensor.log1p>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid "Return the natural logarithm of one plus the input tensor, element-wise."
+msgstr "返回输入张量加一后的自然对数，逐元素计算。"
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.logaddexp <maxframe.tensor.logaddexp>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid "Logarithm of the sum of exponentiations of the inputs."
+msgstr "计算输入的指数和的对数。"
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.logaddexp2 <maxframe.tensor.logaddexp2>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:93:<autosummary>:1
+msgid "Logarithm of the sum of exponentiations of the inputs in base-2."
+msgstr "计算输入的以2为底的指数和的对数。"
+
+#: ../../source/reference/tensor/math.rst:95
+msgid "Other special functions"
+msgstr "其他特殊函数"
+
+#: ../../source/reference/tensor/math.rst:104:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.i0 <maxframe.tensor.i0>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:104:<autosummary>:1
+msgid "Modified Bessel function of the first kind, order 0."
+msgstr "第一类修正贝塞尔函数，阶数为0。"
+
+#: ../../source/reference/tensor/math.rst:104:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.sinc <maxframe.tensor.sinc>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:104:<autosummary>:1
+msgid "Return the sinc function."
+msgstr "返回sinc函数。"
+
+#: ../../source/reference/tensor/math.rst:106
+msgid "Floating point routines"
+msgstr "浮点数例程"
+
+#: ../../source/reference/tensor/math.rst:119:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.signbit <maxframe.tensor.signbit>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:119:<autosummary>:1
+msgid "Returns element-wise True where signbit is set (less than zero)."
+msgstr "逐元素返回符号位是否设置（小于零）。"
+
+#: ../../source/reference/tensor/math.rst:119:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.copysign <maxframe.tensor.copysign>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:119:<autosummary>:1
+msgid "Change the sign of x1 to that of x2, element-wise."
+msgstr "将x1的符号改为x2的符号，逐元素操作。"
+
+#: ../../source/reference/tensor/math.rst:119:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.frexp <maxframe.tensor.frexp>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:119:<autosummary>:1
+msgid "Decompose the elements of x into mantissa and twos exponent."
+msgstr "将x的元素分解为尾数和以2为底的指数。"
+
+#: ../../source/reference/tensor/math.rst:119:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.ldexp <maxframe.tensor.ldexp>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:119:<autosummary>:1
+msgid "Returns x1 * 2**x2, element-wise."
+msgstr "返回x1 * 2**x2，逐元素操作。"
+
+#: ../../source/reference/tensor/math.rst:119:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.nextafter <maxframe.tensor.nextafter>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:119:<autosummary>:1
+msgid "Return the next floating-point value after x1 towards x2, element-wise."
+msgstr "返回x1朝x2方向的下一个浮点值，逐元素操作。"
+
+#: ../../source/reference/tensor/math.rst:119:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.spacing <maxframe.tensor.spacing>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:119:<autosummary>:1
+msgid "Return the distance between x and the nearest adjacent number."
+msgstr "返回x与其最近相邻数之间的距离。"
+
+#: ../../source/reference/tensor/math.rst:121
+msgid "Arithmetic operations"
+msgstr "算术运算"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.add <maxframe.tensor.add>`"
+msgstr "逐元素相加参数。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "Add arguments element-wise."
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.reciprocal <maxframe.tensor.reciprocal>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "Return the reciprocal of the argument, element-wise."
+msgstr "逐元素返回参数的倒数。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.positive <maxframe.tensor.positive>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "Numerical positive, element-wise."
+msgstr "逐元素数值取正。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.negative <maxframe.tensor.negative>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "Numerical negative, element-wise."
+msgstr "逐元素数值取负。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.multiply <maxframe.tensor.multiply>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "Multiply arguments element-wise."
+msgstr "逐元素相乘参数。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.divide <maxframe.tensor.divide>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "Divide arguments element-wise."
+msgstr "逐元素除法参数。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.power <maxframe.tensor.power>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "First tensor elements raised to powers from second tensor, element-wise."
+msgstr "第一个张量的元素逐元素提升到第二个张量的幂次。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.subtract <maxframe.tensor.subtract>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "Subtract arguments, element-wise."
+msgstr "逐元素减法参数。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.true_divide <maxframe.tensor.true_divide>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "Returns a true division of the inputs, element-wise."
+msgstr "返回输入的真正除法，逐元素。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.floor_divide <maxframe.tensor.floor_divide>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "Return the largest integer smaller or equal to the division of the inputs."
+msgstr "返回小于或等于输入除法结果的最大整数。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.float_power <maxframe.tensor.float_power>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "First tensor elements raised to powers from second array, element-wise."
+msgstr "第一个张量的元素逐元素提升到第二个数组的幂次。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.fmod <maxframe.tensor.fmod>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "Return the element-wise remainder of division."
+msgstr "返回除法的逐元素余数。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.mod <maxframe.tensor.mod>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "Return element-wise remainder of division."
+msgstr "返回除法的逐元素余数。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.modf <maxframe.tensor.modf>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid "Return the fractional and integral parts of a tensor, element-wise."
+msgstr "返回张量的分数部分和整数部分，逐元素。"
+
+#: ../../source/reference/tensor/math.rst:143:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.remainder <maxframe.tensor.remainder>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:145
+msgid "Handling complex numbers"
+msgstr "处理复数"
+
+#: ../../source/reference/tensor/math.rst:156:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.angle <maxframe.tensor.angle>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:156:<autosummary>:1
+msgid "Return the angle of the complex argument."
+msgstr "返回复数参数的角度。"
+
+#: ../../source/reference/tensor/math.rst:156:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.real <maxframe.tensor.real>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:156:<autosummary>:1
+msgid "Return the real part of the complex argument."
+msgstr "返回复数参数的实部。"
+
+#: ../../source/reference/tensor/math.rst:156:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.imag <maxframe.tensor.imag>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:156:<autosummary>:1
+msgid "Return the imaginary part of the complex argument."
+msgstr "返回复数参数的虚部。"
+
+#: ../../source/reference/tensor/math.rst:156:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.conj <maxframe.tensor.conj>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:156:<autosummary>:1
+msgid "Return the complex conjugate, element-wise."
+msgstr "逐元素返回复共轭。"
+
+#: ../../source/reference/tensor/math.rst:158
+msgid "Miscellaneous"
+msgstr "杂项"
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.sqrt <maxframe.tensor.sqrt>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid "Return the positive square-root of an tensor, element-wise."
+msgstr "逐元素返回张量的正平方根。"
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.cbrt <maxframe.tensor.cbrt>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid "Return the cube-root of an tensor, element-wise."
+msgstr "逐元素返回张量的立方根。"
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.square <maxframe.tensor.square>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid "Return the element-wise square of the input."
+msgstr "逐元素返回输入的平方。"
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.absolute <maxframe.tensor.absolute>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid "Calculate the absolute value element-wise."
+msgstr "逐元素计算绝对值。"
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.sign <maxframe.tensor.sign>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid "Returns an element-wise indication of the sign of a number."
+msgstr "逐元素返回数字的符号指示。"
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.maximum <maxframe.tensor.maximum>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid "Element-wise maximum of tensor elements."
+msgstr "逐元素返回张量元素的最大值。"
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.minimum <maxframe.tensor.minimum>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid "Element-wise minimum of tensor elements."
+msgstr "逐元素返回张量元素的最小值。"
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.fmax <maxframe.tensor.fmax>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid "Element-wise maximum of array elements."
+msgstr "逐元素返回数组元素的最大值。"
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.fmin <maxframe.tensor.fmin>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid "Element-wise minimum of array elements."
+msgstr "逐元素返回数组元素的最小值。"
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.nan_to_num <maxframe.tensor.nan_to_num>`"
+msgstr ""
+
+#: ../../source/reference/tensor/math.rst:173:<autosummary>:1
+msgid "Replace nan with zero and inf with large finite numbers."
+msgstr "将 NaN 替换为零，将无穷大替换为较大的有限数。"
+

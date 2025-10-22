@@ -1,0 +1,84 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_odps_table.rst:2
+msgid "maxframe.dataframe.read\\_odps\\_table"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:1 of
+msgid "Read data from a MaxCompute (ODPS) table into DataFrame."
+msgstr "从 MaxCompute (ODPS) 表中读取数据到 DataFrame。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:3 of
+msgid ""
+"Supports specifying some columns as indexes. If not specified, RangeIndex"
+" will be generated."
+msgstr "支持将某些列指定为索引。如果未指定，将生成 RangeIndex。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_odps_table.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:6 of
+msgid "Name of the table to read from."
+msgstr "要读取的表名。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:8 of
+msgid "Table partition or list of partitions to read from."
+msgstr "要读取的表分区或分区列表。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:10 of
+msgid ""
+"Table columns to read from. You may also specify partition columns here. "
+"If not specified, all table columns (or include partition columns if "
+"`append_partitions` is True) will be included."
+msgstr ""
+"要读取的表列。您也可以在此处指定分区列。如果未指定，将包含所有表列（或者"
+"如果 `append_partitions` 为 True，则包含分区列）。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:14 of
+msgid "Columns to be specified as indexes."
+msgstr "指定为索引的列。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:16 of
+msgid ""
+"If True, will add all partition columns as selected columns when "
+"`columns` is not specified,"
+msgstr "如果为 True，当未指定 `columns` 时，将添加所有分区列作为选定列，"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:19 of
+msgid ""
+"Back-end data type applied to the resultant DataFrame (still "
+"experimental)."
+msgstr "应用于结果 DataFrame 的后端数据类型（仍处于实验阶段）。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_odps_table.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:22 of
+msgid "**result** -- DataFrame read from MaxCompute (ODPS) table"
+msgstr "**result** -- 从 MaxCompute (ODPS) 表中读取的 DataFrame"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_odps_table.rst
+msgid "返回类型"
+msgstr ""
+

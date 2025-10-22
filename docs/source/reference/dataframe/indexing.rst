@@ -9,16 +9,23 @@ Constructor
 
    Index
 
+
 Properties
 ----------
 .. autosummary::
    :toctree: generated/
 
    Index.dtype
+   Index.has_duplicates
+   Index.hasnans
+   Index.is_monotonic_decreasing
+   Index.is_monotonic_increasing
+   Index.is_unique
    Index.name
    Index.names
    Index.ndim
    Index.size
+
 
 Modifying and computations
 --------------------------
@@ -27,24 +34,23 @@ Modifying and computations
 
    Index.all
    Index.any
+   Index.argmax
+   Index.argmin
    Index.drop
    Index.drop_duplicates
+   Index.insert
    Index.max
    Index.min
    Index.rename
+   Index.repeat
 
-Selecting
----------
-.. autosummary::
-   :toctree: generated/
-
-   Index.get_level_values
 
 Compatibility with MultiIndex
 -----------------------------
 .. autosummary::
    :toctree: generated/
 
+   Index.droplevel
    Index.set_names
 
 
@@ -65,4 +71,21 @@ Conversion
    :toctree: generated/
 
    Index.astype
+   Index.to_frame
    Index.to_series
+
+
+Sorting
+-------
+.. autosummary::
+   :toctree: generated/
+
+   Index.argsort
+
+
+Selecting
+---------
+.. autosummary::
+   :toctree: generated/
+
+   Index.get_level_values

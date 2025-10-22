@@ -57,9 +57,15 @@ class DataFrameToODPSTable(DataFrameDataStore):
     lifecycle = Int64Field("lifecycle", default=None)
     table_properties = DictField("table_properties", default=None)
     primary_key = ListField("primary_key", FieldTypes.string, default=None)
+    use_generated_table_meta = BoolField("use_generated_table_meta", default=False)
 
     def __init__(self, **kw):
         super().__init__(_output_types=[OutputType.dataframe], **kw)
+
+    def check_inputs(self, inputs: List[TileableType]):
+        if self.use_generated_table_meta:
+            return None
+        return super().check_inputs(inputs)
 
     def __call__(self, x):
         shape = (0,) * len(x.shape)

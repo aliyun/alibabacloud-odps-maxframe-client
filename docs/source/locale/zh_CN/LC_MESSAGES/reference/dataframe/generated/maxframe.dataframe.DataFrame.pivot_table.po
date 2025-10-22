@@ -1,0 +1,157 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.pivot_table.rst:2
+msgid "maxframe.dataframe.DataFrame.pivot\\_table"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:1 of
+msgid "Create a spreadsheet-style pivot table as a DataFrame."
+msgstr "创建一个电子表格风格的透视表作为 DataFrame。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:3 of
+msgid ""
+"The levels in the pivot table will be stored in MultiIndex objects "
+"(hierarchical indexes) on the index and columns of the result DataFrame."
+msgstr ""
+"透视表中的层级将存储在结果 DataFrame 的索引和列上的 MultiIndex 对象（分层"
+"索引）中。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:8 of
+msgid ""
+"If an array is passed, it must be the same length as the data. The list "
+"can contain any of the other types (except list). Keys to group by on the"
+" pivot table index.  If an array is passed, it is being used as the same "
+"manner as column values."
+msgstr ""
+"如果传递一个数组，它必须与数据长度相同。列表可以包含任何其他类型（除了"
+"列表）。用于在透视表索引上分组的键。如果传递一个数组，它将以与列值相同的"
+"方式使用。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:13 of
+msgid ""
+"If an array is passed, it must be the same length as the data. The list "
+"can contain any of the other types (except list). Keys to group by on the"
+" pivot table column.  If an array is passed, it is being used as the same"
+" manner as column values."
+msgstr ""
+"如果传递一个数组，它必须与数据长度相同。列表可以包含任何其他类型（除了"
+"列表）。用于在透视表列上分组的键。如果传递一个数组，它将以与列值相同的"
+"方式使用。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:18 of
+msgid ""
+"If list of functions passed, the resulting pivot table will have "
+"hierarchical columns whose top level are the function names (inferred "
+"from the function objects themselves) If dict is passed, the key is "
+"column to aggregate and value is function or list of functions."
+msgstr ""
+"如果传递函数列表，生成的透视表将具有分层列，其顶层是函数名称（从函数对象"
+"本身推断）。如果传递字典，则键是聚合列，值是函数或函数列表。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:24 of
+msgid ""
+"Value to replace missing values with (in the resulting pivot table, after"
+" aggregation)."
+msgstr "用于替换缺失值的值（在聚合后的结果透视表中）。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:27 of
+msgid "Add all row / columns (e.g. for subtotal / grand totals)."
+msgstr "添加所有行/列（例如用于小计/总计）。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:29 of
+msgid "Do not include columns whose entries are all NaN."
+msgstr "不包括所有条目均为 NaN 的列。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:31 of
+msgid ""
+"Name of the row / column that will contain the totals when margins is "
+"True."
+msgstr "当 margins 为 True 时，包含总计的行/列的名称。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:34 of
+msgid "Specifies if the result should be sorted."
+msgstr "指定结果是否应排序。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:37 of
+msgid "An Excel style pivot table."
+msgstr "一个 Excel 风格的透视表。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:42 of
+msgid ":py:obj:`DataFrame.pivot`"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:43 of
+msgid "Pivot without aggregation that can handle non-numeric data."
+msgstr "无需聚合即可处理非数值数据的透视操作。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:45 of
+msgid ":py:obj:`DataFrame.melt`"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:46 of
+msgid ""
+"Unpivot a DataFrame from wide to long format, optionally leaving "
+"identifiers set."
+msgstr "将 DataFrame 从宽格式转换为长格式，可选择保留标识符集合。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:48 of
+msgid ":py:obj:`wide_to_long`"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:49 of
+msgid "Wide panel to long format. Less flexible but more user-friendly than melt."
+msgstr "宽面板转为长格式。比 melt 更不灵活但更用户友好。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:52 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:76 of
+msgid "This first example aggregates values by taking the sum."
+msgstr "第一个示例通过求和来聚合值。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:88 of
+msgid "We can also fill missing values using the `fill_value` parameter."
+msgstr "我们也可以使用 `fill_value` 参数来填充缺失值。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:100 of
+msgid "The next example aggregates by taking the mean across multiple columns."
+msgstr "下一个示例通过对多个列取平均值来进行聚合。"
+
+#: maxframe.dataframe.reshape.pivot_table.pivot_table:113 of
+msgid ""
+"We can also calculate multiple types of aggregations for any given value "
+"column."
+msgstr "我们还可以为任何给定值列计算多种类型的聚合。"
+

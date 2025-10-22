@@ -29,7 +29,7 @@ from ...serialization.serializables import (
     TupleField,
 )
 from ...udf import BuiltinFunction, MarkedFunction
-from ...utils import copy_if_possible
+from ...utils import copy_if_possible, make_dtype, make_dtypes
 from ..core import (
     DATAFRAME_GROUPBY_TYPE,
     GROUPBY_TYPE,
@@ -45,8 +45,6 @@ from ..utils import (
     copy_func_scheduling_hints,
     infer_dataframe_return_value,
     make_column_list,
-    make_dtype,
-    make_dtypes,
     parse_index,
     validate_output_types,
 )

@@ -19,6 +19,7 @@ from ...core import SPECodeContext
 from ..reduction import (
     DataFrameAggregateAdapter,
     DataFrameKurtosisAdapter,
+    DataFrameModeAdapter,
     DataFrameNuniqueAdapter,
     DataFrameReductionAdapter,
     DataFrameUniqueAdapter,
@@ -93,6 +94,18 @@ def test_median(df1):
     df = df1.median(axis=1, numeric_only=True)
     results = DataFrameReductionAdapter().generate_code(df.op, SPECodeContext())
     expected_results = ["var_1 = var_0.median(axis=1, skipna=True, numeric_only=True)"]
+    assert results == expected_results
+
+
+def test_mode(df1, s1):
+    df = df1.mode(dropna=False, numeric_only=True)
+    results = DataFrameModeAdapter().generate_code(df.op, SPECodeContext())
+    expected_results = ["var_1 = var_0.mode(axis=0, numeric_only=True, dropna=False)"]
+    assert results == expected_results
+
+    s = s1.mode()
+    results = DataFrameModeAdapter().generate_code(s.op, SPECodeContext())
+    expected_results = ["var_1 = var_0.mode(dropna=True)"]
     assert results == expected_results
 
 

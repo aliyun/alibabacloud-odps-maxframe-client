@@ -1,0 +1,788 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:2
+msgid "Comparison with PyODPS DataFrame"
+msgstr "与 PyODPS DataFrame 的比较"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:4
+msgid ""
+"`PyODPS DataFrame <https://pyodps.readthedocs.io/en/stable/df.html>`_ is "
+"a DataFrame-like package provided by MaxCompute as a part of PyODPS "
+"package. It provides capability for Python data analyzers to query "
+"MaxCompute data with a set of operators similar to pandas. Despite the "
+"similarity in operators, the usage between two sets of APIs are quite "
+"different. It might not be easy for a developer to dive deep into PyODPS "
+"DataFrame with knowledge about pandas only."
+msgstr ""
+"`PyODPS DataFrame <https://pyodps.readthedocs.io/en/stable/df.html>`_ 是 "
+"MaxCompute 提供的类似 DataFrame 的包，是 PyODPS 包的一部分。它可以让 "
+"Python 数据分析人员使用类似于 pandas 的一组操作符来查询 MaxCompute 数据。"
+"尽管操作符相似，但两套 API 的用法差异很大。仅凭 pandas 的知识，开发者可能"
+"难以深入使用 PyODPS DataFrame。"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:12
+msgid ""
+"Though PyODPS DataFrame is still part of PyODPS, it is recommended to "
+"create new applications with MaxFrame to enjoy its compatibility with "
+"pandas."
+msgstr ""
+"虽然 PyODPS DataFrame 仍然是 PyODPS 的一部分，但建议使用 MaxFrame 创建新"
+"应用，以享受其与 pandas 的兼容性。"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:16
+msgid "Object abstraction"
+msgstr "对象抽象"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:17
+msgid ""
+"PyODPS DataFrame does not have indexes. This means that a majority of "
+"pandas APIs with indexes cannot be used or not fully supported."
+msgstr ""
+"PyODPS DataFrame 没有索引。这意味着大多数依赖索引的 pandas API 无法使用或"
+"不完全支持。"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:20
+msgid ""
+"For instance, arithmetic operations in pandas relies on index alignment. "
+"That is, two DataFrames are aligned first, and then arithmetic operation "
+"is performed."
+msgstr ""
+"例如，pandas 中的算术运算依赖于索引对齐。也就是说，先对两个 DataFrame "
+"进行对齐，然后执行算术运算。"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:34
+msgid "However, when indexes are absent, this kind of operation is not supported."
+msgstr "然而，当索引缺失时，这种操作不被支持。"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:36
+msgid ""
+"To support this kind of operation, in MaxFrame, it is required to add an "
+"index column to DataFrame or Series. If the index is absent, a default "
+"RangeIndex is added. Therefore the statement above can be supported."
+msgstr ""
+"为了支持这种操作，在 MaxFrame 中需要为 DataFrame 或 Series 添加索引列。"
+"如果索引缺失，则会添加一个默认的 RangeIndex。因此上述语句可以被支持。"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:40
+msgid ""
+"Another huge difference between PyODPS DataFrame and MaxFrame is that in "
+"PyODPS DataFrame, representation of data objects and operators are mixed,"
+" and this may confuse newcomers. For instance,"
+msgstr ""
+"PyODPS DataFrame 和 MaxFrame 之间的另一个巨大差异在于，在 PyODPS "
+"DataFrame 中，数据对象和操作符的表示是混合的，这可能会让初学者感到困惑。"
+"例如，"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:49
+msgid ""
+"In the second line, ``df2`` is an instance of ``CollectionExpr`` which "
+"means it is an expression and different from a ``DataFrame`` instance. "
+"However, all DataFrame functions can be applied directly onto ``df2`` and"
+" there is nothing different from ``DataFrame`` instance."
+msgstr ""
+"在第二行中，``df2`` 是 ``CollectionExpr`` 的一个实例，意味着它是一个"
+"表达式，与 ``DataFrame`` 实例不同。然而，所有 DataFrame 函数都可以直接"
+"应用于 ``df2``，与 ``DataFrame`` 实例没有什么不同。"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:54
+msgid ""
+"In MaxFrame, however, data objects and operators are defined separately. "
+"Data objects users interact with are all instances of a few data classes,"
+" namely ``DataFrame``, ``Series`` or ``Index``. For the example above, "
+"now all instances are DataFrame now."
+msgstr ""
+"而在 MaxFrame 中，数据对象和操作符是分别定义的。用户交互的数据对象都是"
+"少数几个数据类的实例，即 ``DataFrame``、``Series`` 或 ``Index``。对于上面"
+"的例子，现在所有实例都是 DataFrame。"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:65
+msgid "Functions"
+msgstr "函数"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:66
+msgid ""
+"Functions in PyODPS DataFrame are not fully compatible with pandas. "
+"Therefore to write code with PyODPS DataFrame, users need to read the "
+"documents first before start coding. However, the target of MaxFrame is "
+"to create a pandas-compatible API. Hence there are API differences "
+"between PyODPS DataFrame and MaxFrame. These differences are listed "
+"below. Methods starts with ``mf.`` mean that these non-pandas methods are"
+" added in MaxFrame to facilitate migrating from PyODPS DataFrame to "
+"MaxFrame. Note that you need to read API documents of these functions "
+"before rewriting your code."
+msgstr ""
+"PyODPS DataFrame 中的函数与 pandas 并不完全兼容。因此，要使用 PyODPS "
+"DataFrame 编写代码，用户需要先阅读文档。而 MaxFrame 的目标是创建与 pandas"
+" 兼容的 API。因此，PyODPS DataFrame 和 MaxFrame 之间存在 API 差异。这些"
+"差异列在下面。以 ``mf.`` 开头的方法表示这些非 pandas 方法是在 MaxFrame 中"
+"添加的，以便从 PyODPS DataFrame 迁移到 MaxFrame。请注意，在重写代码之前"
+"需要阅读这些函数的 API 文档。"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "PyODPS DataFrame API"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "MaxFrame API"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.append_id"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Not needed. DataFrame index is added by default"
+msgstr "不需要。默认情况下会添加 DataFrame 索引"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.bloom_filter"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Not implemented yet"
+msgstr "尚未实现"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.boxplot"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.plot.boxplot"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.concat"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "maxframe.dataframe.concat"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.describe"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.distinct"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.drop_duplicates"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.except\\_"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.merge with filter"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.exclude"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.drop"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.extract_kv"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.hist"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.plot.hist"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.inner_join"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.merge"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.intersect"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.left_join"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.limit"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.head"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.map_reduce"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.mf.map_reduce"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.minmax_scale"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.outer_join"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.persist"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.to_odps_table"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.reshuffle"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.mf.reshuffle"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.right_join"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.setdiff"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.split"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.std_scale"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.sort"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.sort_values"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.switch"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "maxframe.dataframe.case_when"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.to_kv"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DataFrame.union"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.date"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.date"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.day"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.day"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.dayofweek"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.dayofweek"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.dayofyear"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.dayofyear"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.hour"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.hour"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.is_month_end"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.is_month_end"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.is_month_start"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.is_month_start"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.is_year_end"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.is_year_end"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.is_year_start"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.is_year_start"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.microsecond"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.microsecond"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.min"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.min"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.minute"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.minute"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.month"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.month"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.second"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.second"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.strftime"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.strftime"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.unix_timestamp"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.week"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.week"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.weekday"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.weekday"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.weekofyear"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.weekofyear"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "DatetimeSequenceExpr.year"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.dt.year"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "SequenceExpr.degrees"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "np.degrees(Series)"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "SequenceExpr.radians"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "np.radians(Series)"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "SequenceExpr.tolist"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.to_numpy"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "SequenceExpr.to_datetime"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "maxframe.dataframe.to_datetime"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "SequenceExpr.topk"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "SequenceExpr.trunc"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "np.trunc(Series)"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "SequenceExpr.hll_count"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.capitalize"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.capitalize"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.contains"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.contains"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.count"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.count"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.endswith"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.endswith"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.find"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.find"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.len"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.len"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.ljust"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.ljust"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.lower"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.lower"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.lstrip"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.lstrip"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.pad"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.pad"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.repeat"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.repeat"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.replace"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.replace"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.rfind"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.rfind"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.rjust"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.rjust"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.rstrip"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.rstrip"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.slice"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.slice"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.startswith"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.startswith"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.strip"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.strip"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.swapcase"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.swapcase"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.title"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.title"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.translate"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.translate"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.upper"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.upper"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.zfill"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.zfill"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.isalnum"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.isalnum"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.isalpha"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.isalpha"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.isdigit"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.isdigit"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.isspace"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.isspace"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.islower"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.islower"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.isupper"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.isupper"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.istitle"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.istitle"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.isnumeric"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.isnumeric"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "StringSequenceExpr.isdecimal"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:1
+msgid "Series.str.isdecimal"
+msgstr ""
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:165
+msgid "Execution"
+msgstr "执行"
+
+#: ../../source/getting_started/comparison/pyodps_df.rst:166
+msgid ""
+"PyODPS DataFrame and MaxFrame both use lazy execution to leverage "
+"efficiency of code optimization. However, the way to invoke these jobs is"
+" changed."
+msgstr ""
+"PyODPS DataFrame 和 MaxFrame 都使用惰性执行来提升代码优化的效率。然而，"
+"调用这些作业的方式发生了变化。"
+

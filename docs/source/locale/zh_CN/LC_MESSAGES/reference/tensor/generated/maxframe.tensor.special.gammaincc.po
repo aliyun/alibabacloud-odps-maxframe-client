@@ -1,0 +1,192 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.gammaincc.rst:2
+msgid "maxframe.tensor.special.gammaincc"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:1 of
+msgid "Regularized lower incomplete gamma function."
+msgstr "正则化下不完全伽马函数。"
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:3 of
+msgid "It is defined as"
+msgstr "其定义为"
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:5 of
+#, python-brace-format
+msgid "P(a, x) = \\frac{1}{\\Gamma(a)} \\int_0^x t^{a - 1}e^{-t} dt"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:9 of
+msgid "for :math:`a > 0` and :math:`x \\geq 0`. See [dlmf]_ for details."
+msgstr "其中 :math:`a > 0` 且 :math:`x \\geq 0`。详见 [dlmf]_。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.gammaincc.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:11 of
+msgid "Positive parameter"
+msgstr "正参数"
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:13 of
+msgid "Nonnegative argument"
+msgstr "非负参数"
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:15 of
+msgid "Optional output array for the function values"
+msgstr "可选的函数值输出数组"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.gammaincc.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:18 of
+msgid "Values of the lower incomplete gamma function"
+msgstr "下不完全伽马函数的值"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.gammaincc.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:23 of
+msgid ":func:`gammaincc`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:24 of
+msgid "regularized upper incomplete gamma function"
+msgstr "正则化上不完全伽马函数"
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:26 of
+msgid ":func:`gammaincinv`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:27 of
+msgid "inverse of the regularized lower incomplete gamma function"
+msgstr "正则化下不完全伽马函数的反函数"
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:29 of
+msgid ":func:`gammainccinv`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:30 of
+msgid "inverse of the regularized upper incomplete gamma function"
+msgstr "正则化上不完全伽马函数的反函数"
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:33 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:34 of
+msgid ""
+"The function satisfies the relation ``gammainc(a, x) + gammaincc(a, x) = "
+"1`` where `gammaincc` is the regularized upper incomplete gamma function."
+msgstr ""
+"该函数满足关系式 ``gammainc(a, x) + gammaincc(a, x) = 1``，其中 `"
+"gammaincc` 是正则化上不完全伽马函数。"
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:38 of
+msgid "The implementation largely follows that of [boost]_."
+msgstr "其实现主要遵循 [boost]_ 的方法。"
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:40 of
+msgid ""
+"`gammainc` has experimental support for Python Array API Standard "
+"compatible backends in addition to NumPy. Please consider testing these "
+"features by setting an environment variable ``SCIPY_ARRAY_API=1`` and "
+"providing CuPy, PyTorch, JAX, or Dask arrays as array arguments. The "
+"following combinations of backend and device (or other capability) are "
+"supported."
+msgstr ""
+"`gammainc` 除了 NumPy 外，还对兼容 Python Array API 标准的后端提供实验性"
+"支持。请通过设置环境变量 ``SCIPY_ARRAY_API=1`` 并提供 CuPy、PyTorch、JAX "
+"或 Dask 数组作为参数来测试这些功能。支持以下后端与设备（或其他能力）的"
+"组合。"
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:47 of
+msgid "Library"
+msgstr "库"
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:47 of
+msgid "CPU"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:47 of
+msgid "GPU"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:49 of
+msgid "NumPy"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:49
+#: maxframe.tensor.special.gamma_funcs.gammaincc:50
+#: maxframe.tensor.special.gamma_funcs.gammaincc:51
+#: maxframe.tensor.special.gamma_funcs.gammaincc:52
+#: maxframe.tensor.special.gamma_funcs.gammaincc:53 of
+msgid "✅"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:49
+#: maxframe.tensor.special.gamma_funcs.gammaincc:50
+#: maxframe.tensor.special.gamma_funcs.gammaincc:53 of
+msgid "n/a"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:50 of
+msgid "CuPy"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:51 of
+msgid "PyTorch"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:52 of
+msgid "JAX"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:53 of
+msgid "Dask"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:56 of
+msgid "See :ref:`dev-arrayapi` for more information."
+msgstr "更多信息请参见 :ref:`dev-arrayapi`。"
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:59 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:60 of
+msgid ""
+"NIST Digital Library of Mathematical functions "
+"https://dlmf.nist.gov/8.2#E4"
+msgstr "NIST 数学函数数字图书馆 https://dlmf.nist.gov/8.2#E4"
+
+#: maxframe.tensor.special.gamma_funcs.gammaincc:62 of
+msgid ""
+"Maddock et. al., \"Incomplete Gamma Functions\", "
+"https://www.boost.org/doc/libs/1_61_0/libs/math/doc/html/math_toolkit/sf_gamma/igamma.html"
+msgstr ""
+"Maddock 等人，\"不完全伽马函数\", https://www.boost.org/doc/libs/1_61_0/"
+"libs/math/doc/html/math_toolkit/sf_gamma/igamma.html"
+

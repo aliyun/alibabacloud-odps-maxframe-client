@@ -34,7 +34,7 @@ Transpose-like operations
 
    maxframe.tensor.moveaxis
    maxframe.tensor.rollaxis
-   maxframe.tensor.swapaxis
+   maxframe.tensor.swapaxes
    maxframe.tensor.core.Tensor.T
    maxframe.tensor.transpose
 

@@ -14,6 +14,7 @@
 
 import asyncio.events
 import concurrent.futures
+import contextlib
 import contextvars
 import copy
 import dataclasses
@@ -80,6 +81,7 @@ from ._utils import (  # noqa: F401 # pylint: disable=unused-import
     tokenize,
     tokenize_int,
 )
+from .lib.dtypes_extension import ArrowDtype
 from .lib.version import parse as parse_version
 from .typing_ import TileableType, TimeoutType
 
@@ -204,13 +206,28 @@ def on_serialize_nsplits(value: Tuple[Tuple[int]]):
     return tuple(new_nsplits)
 
 
-def has_unknown_shape(*tiled_tileables: TileableType) -> bool:
+def has_unknown_shape(
+    *tiled_tileables: TileableType, axis: Union[None, int, List[int]] = None
+) -> bool:
+    if isinstance(axis, int):
+        axis = [axis]
+
     for tileable in tiled_tileables:
         if getattr(tileable, "shape", None) is None:
             continue
-        if any(pd.isnull(s) for s in tileable.shape):
+
+        shape_iter = (
+            tileable.shape if axis is None else (tileable.shape[idx] for idx in axis)
+        )
+        if any(pd.isnull(s) for s in shape_iter):
             return True
-        if any(pd.isnull(s) for s in itertools.chain(*tileable.nsplits)):
+
+        nsplits_iter = (
+            tileable.nsplits
+            if axis is None
+            else (tileable.nsplits[idx] for idx in axis)
+        )
+        if any(pd.isnull(s) for s in itertools.chain(*nsplits_iter)):
             return True
     return False
 
@@ -281,7 +298,10 @@ def make_dtype(dtype: Union[np.dtype, pd.api.extensions.ExtensionDtype]):
     elif dtype is pd.Timedelta or dtype is datetime.timedelta:
         return np.dtype("timedelta64[ns]")
     else:
-        return np.dtype(dtype)
+        try:
+            return pd.api.types.pandas_dtype(dtype)
+        except TypeError:
+            return np.dtype("O")
 
 
 def make_dtypes(
@@ -448,7 +468,10 @@ def create_sync_primitive(
         return cls(loop=loop)
 
     # From Python3.10 the loop parameter has been removed. We should work around here.
-    old_loop = asyncio.get_event_loop()
+    try:
+        old_loop = asyncio.get_event_loop()
+    except RuntimeError:
+        old_loop = None
     try:
         asyncio.set_event_loop(loop)
         primitive = cls()
@@ -598,8 +621,6 @@ def estimate_pandas_size(
     if isinstance(pd_obj, pd.MultiIndex):
         # MultiIndex's sample size can't be used to estimate
         return sys.getsizeof(pd_obj)
-
-    from .dataframe.arrays import ArrowDtype
 
     def _is_fast_dtype(dtype):
         if isinstance(dtype, np.dtype):
@@ -1182,13 +1203,16 @@ if pa:
         "float": pa.float32,
         "double": pa.float64,
         "decimal": pa.decimal128,
+        # repr() of date32 and date64 has `day` or `ms`
+        #  which is not needed in constructors
+        "date32": lambda *_: pa.date32(),
+        "date64": lambda *_: pa.date64(),
     }
     _plain_arrow_types = """
     null
     int8 int16 int32 int64
     uint8 uint16 uint32 uint64
     float16 float32 float64
-    date32 date64
     decimal128 decimal256
     string utf8 binary
     time32 time64 duration timestamp
@@ -1719,3 +1743,32 @@ def validate_and_adjust_resource_ratio(
             )
 
     return expect_resources, False
+
+
+def get_pd_option(option_name, default=no_default):
+    """Get pandas option. If not exist return `default`."""
+    try:
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=FutureWarning)
+            return pd.get_option(option_name)
+    except (KeyError, AttributeError):
+        if default is no_default:
+            raise
+        return default
+
+
+@contextlib.contextmanager
+def pd_option_context(*args):
+    arg_kv = dict(zip(args[0::2], args[1::2]))
+    new_args = []
+    for k, v in arg_kv.items():
+        try:
+            get_pd_option(k)
+        except (KeyError, AttributeError):  # pragma: no cover
+            continue
+        new_args.extend([k, v])
+    if not new_args:  # pragma: no cover
+        yield
+    else:
+        with pd.option_context(*new_args):
+            yield

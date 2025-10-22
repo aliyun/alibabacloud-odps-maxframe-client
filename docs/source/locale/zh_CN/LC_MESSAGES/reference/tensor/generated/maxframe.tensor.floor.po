@@ -1,0 +1,95 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.floor.rst:2
+msgid "maxframe.tensor.floor"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floor.floor:1 of
+msgid "Return the floor of the input, element-wise."
+msgstr "按元素返回输入的下限。"
+
+#: maxframe.tensor.arithmetic.floor.floor:3 of
+msgid ""
+"The floor of the scalar `x` is the largest integer `i`, such that `i <= "
+"x`.  It is often denoted as :math:`\\lfloor x \\rfloor`."
+msgstr ""
+"标量 `x` 的下限是最大的整数 `i`，使得 `i <= x`。通常表示为 :math:`\\"
+"lfloor x \\rfloor`。"
+
+#: maxframe.tensor.arithmetic.floor.floor of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floor.floor:6 of
+msgid "Input data."
+msgstr "输入数据。"
+
+#: maxframe.tensor.arithmetic.floor.floor:8 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，它必须具有与输入广播兼容的形状。如果未提供"
+"或为 `None`，则返回一个新分配的 tensor。元组（只能作为关键字参数）的长度"
+"必须等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.floor.floor:13 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.floor.floor of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floor.floor:18 of
+msgid "**y** -- The floor of each element in `x`."
+msgstr "**y** -- `x` 中每个元素的下限。"
+
+#: maxframe.tensor.arithmetic.floor.floor of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floor.floor:21 of
+msgid ":py:obj:`ceil`, :py:obj:`trunc`, :py:obj:`rint`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floor.floor:24 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.floor.floor:25 of
+msgid ""
+"Some spreadsheet programs calculate the \"floor-towards-zero\", in other "
+"words ``floor(-2.5) == -2``.  NumPy instead uses the definition of "
+"`floor` where `floor(-2.5) == -3`."
+msgstr ""
+"一些电子表格程序计算的是“向零取整”的下限，换句话说 ``floor(-2.5) == -2`"
+"`。而 NumPy 使用的是 `floor` 的定义，即 `floor(-2.5) == -3`。"
+
+#: maxframe.tensor.arithmetic.floor.floor:30 of
+msgid "示例"
+msgstr ""
+

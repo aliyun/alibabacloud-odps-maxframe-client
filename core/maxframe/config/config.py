@@ -436,6 +436,9 @@ default_options.register_option(
     "session.quota_name", None, validator=is_null | is_string, remote=True
 )
 default_options.register_option(
+    "session.gu_quota_name", None, validator=is_null | is_string, remote=True
+)
+default_options.register_option(
     "session.region_id", None, validator=is_null | is_string, remote=True
 )
 default_options.register_option(

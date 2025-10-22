@@ -83,7 +83,7 @@ class TensorCopyTo(TensorOperator, TensorOperatorMixin):
                 "could not broadcast input array "
                 f"from shape {src.shape!r} into shape {dst.shape!r}"
             )
-        if where:
+        if where is not None:
             try:
                 broadcast_to(where, dst.shape)
             except ValueError:

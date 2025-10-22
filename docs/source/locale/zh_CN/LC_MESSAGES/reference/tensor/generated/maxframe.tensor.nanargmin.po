@@ -1,0 +1,66 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.nanargmin.rst:2
+msgid "maxframe.tensor.nanargmin"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanargmin.nanargmin:1 of
+msgid ""
+"Return the indices of the minimum values in the specified axis ignoring "
+"NaNs. For all-NaN slices ``ValueError`` is raised. Warning: the results "
+"cannot be trusted if a slice contains only NaNs and Infs."
+msgstr ""
+"返回指定轴上忽略 NaN 的最小值的索引。对于全为 NaN 的切片，会引发 ``"
+"ValueError``。警告：如果切片只包含 NaN 和无穷大值，则结果不可信。"
+
+#: maxframe.tensor.reduction.nanargmin.nanargmin of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanargmin.nanargmin:5 of
+msgid "Input data."
+msgstr "输入数据。"
+
+#: maxframe.tensor.reduction.nanargmin.nanargmin:7 of
+msgid "Axis along which to operate. By default flattened input is used."
+msgstr "操作的轴。默认使用展平后的输入。"
+
+#: maxframe.tensor.reduction.nanargmin.nanargmin of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanargmin.nanargmin:10 of
+msgid "**index_array** -- A tensor of indices or a single index value."
+msgstr "**index_array** -- 索引的张量或单个索引值。"
+
+#: maxframe.tensor.reduction.nanargmin.nanargmin of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanargmin.nanargmin:13 of
+msgid ":py:obj:`argmin`, :py:obj:`nanargmax`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanargmin.nanargmin:16 of
+msgid "示例"
+msgstr ""
+

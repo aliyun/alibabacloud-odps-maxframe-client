@@ -1,0 +1,160 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.drop.rst:2
+msgid "maxframe.dataframe.Series.drop"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.series_drop:1 of
+msgid "Return Series with specified index labels removed."
+msgstr "返回移除指定索引标签后的 Series。"
+
+#: maxframe.dataframe.misc.drop.series_drop:3 of
+msgid ""
+"Remove elements of a Series based on specifying the index labels. When "
+"using a multi-index, labels on different levels can be removed by "
+"specifying the level."
+msgstr ""
+"根据指定的索引标签移除 Series 中的元素。当使用多级索引时，可以通过指定"
+"级别来移除不同级别的标签。"
+
+#: maxframe.dataframe.misc.drop.series_drop of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.series_drop:7 of
+msgid "Index labels to drop."
+msgstr "要删除的索引标签。"
+
+#: maxframe.dataframe.misc.drop.series_drop:9 of
+msgid "Redundant for application on Series."
+msgstr "对 Series 应用是多余的。"
+
+#: maxframe.dataframe.misc.drop.series_drop:11 of
+msgid ""
+"Redundant for application on Series, but 'index' can be used instead of "
+"'labels'.  .. versionadded:: 0.21.0"
+msgstr ""
+"对 Series 应用是多余的，但可以使用 'index' 替代 'labels'。  .. "
+"versionadded:: 0.21.0"
+
+#: maxframe.dataframe.misc.drop.series_drop:11 of
+#, fuzzy
+msgid ""
+"Redundant for application on Series, but 'index' can be used instead of "
+"'labels'."
+msgstr ""
+"对 Series 应用是多余的，但可以使用 'index' 替代 'labels'。  .. "
+"versionadded:: 0.21.0"
+
+#: maxframe.dataframe.misc.drop.series_drop:16 of
+msgid ""
+"No change is made to the Series; use 'index' or 'labels' instead.  .. "
+"versionadded:: 0.21.0"
+msgstr ""
+"不会对 Series 造成更改；请改用 'index' 或 'labels'。  .. versionadded:: "
+"0.21.0"
+
+#: maxframe.dataframe.misc.drop.series_drop:16 of
+#, fuzzy
+msgid "No change is made to the Series; use 'index' or 'labels' instead."
+msgstr ""
+"不会对 Series 造成更改；请改用 'index' 或 'labels'。  .. versionadded:: "
+"0.21.0"
+
+#: maxframe.dataframe.misc.drop.series_drop:20 of
+msgid "For MultiIndex, level for which the labels will be removed."
+msgstr "对于 MultiIndex，指定要移除标签的级别。"
+
+#: maxframe.dataframe.misc.drop.series_drop:22 of
+msgid "If True, do operation inplace and return None."
+msgstr "如果为 True，则就地操作并返回 None。"
+
+#: maxframe.dataframe.misc.drop.series_drop:24 of
+msgid ""
+"Note that this argument is kept only for compatibility, and errors will "
+"not raise even if ``errors=='raise'``."
+msgstr "请注意该参数仅为了兼容性而保留，即使 ``errors=='raise'`` 也不会引发错误。"
+
+#: maxframe.dataframe.misc.drop.series_drop of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.series_drop:28 of
+msgid "Series with specified index labels removed."
+msgstr "移除指定索引标签后的 Series。"
+
+#: maxframe.dataframe.misc.drop.series_drop of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.series_drop of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.series_drop:31 of
+msgid "If none of the labels are found in the index."
+msgstr "如果索引中找不到任何指定的标签。"
+
+#: maxframe.dataframe.misc.drop.series_drop:35 of
+msgid ":py:obj:`Series.reindex`"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.series_drop:36 of
+msgid "Return only specified index labels of Series."
+msgstr "仅返回 Series 中指定的索引标签。"
+
+#: maxframe.dataframe.misc.drop.series_drop:38 of
+msgid ":py:obj:`Series.dropna`"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.series_drop:39 of
+msgid "Return series without null values."
+msgstr "返回不包含空值的 Series。"
+
+#: maxframe.dataframe.misc.drop.series_drop:41 of
+msgid ":py:obj:`Series.drop_duplicates`"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.series_drop:42 of
+msgid "Return Series with duplicate values removed."
+msgstr "返回移除重复值后的 Series。"
+
+#: maxframe.dataframe.misc.drop.series_drop:44 of
+msgid ":py:obj:`DataFrame.drop`"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.series_drop:45 of
+msgid "Drop specified labels from rows or columns."
+msgstr "从行或列中删除指定的标签。"
+
+#: maxframe.dataframe.misc.drop.series_drop:48 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop.series_drop:59 of
+msgid "Drop labels B en C"
+msgstr "删除标签 B 和 C"
+
+#: maxframe.dataframe.misc.drop.series_drop:65 of
+msgid "Drop 2nd level label in MultiIndex Series"
+msgstr "删除 MultiIndex Series 中第二级的标签"
+

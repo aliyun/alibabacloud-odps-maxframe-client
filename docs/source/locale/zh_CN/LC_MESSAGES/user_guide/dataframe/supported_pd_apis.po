@@ -1,0 +1,1099 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:2
+msgid "Supported pandas APIs"
+msgstr "支持的 pandas API"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:3
+msgid ""
+"The table below shows implementation of pandas APIs on MaxFrame on "
+"certain engines. If the API is not fully supported, unsupported item will"
+" be shown in the detail column."
+msgstr ""
+"下表展示了 MaxFrame 在某些引擎上对 pandas API 的实现情况。如果 API 未完全"
+"支持，不支持的项目将在详情列中显示。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:8
+msgid "Series API"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:14
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1147
+msgid "API"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:15
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1148
+msgid "SQL Engine"
+msgstr "SQL 引擎"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:16
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1149
+msgid "DPE"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:17
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1150
+msgid "SPE"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:18
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1151
+msgid "Details"
+msgstr "详情"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:19
+msgid ":func:`add`, :func:`radd`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:20
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:35
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:45
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:50
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:55
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:60
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:80
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:86
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:111
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:115
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:146
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:155
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:170
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:195
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:205
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:220
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:225
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:265
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:280
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:310
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:320
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:330
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:335
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:345
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:350
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:355
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:360
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:375
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:380
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:390
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:395
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:400
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:415
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:420
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:430
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:435
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:445
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:455
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:465
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:470
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:475
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:480
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:485
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:510
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:515
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:525
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:540
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1168
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1183
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1208
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1223
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1243
+msgid "P"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:21
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:22
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:25
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:26
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:27
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:30
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:31
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:32
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:36
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:37
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:41
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:42
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:46
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:47
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:51
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:52
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:56
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:57
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:61
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:62
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:66
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:71
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:76
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:81
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:82
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:87
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:90
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:91
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:92
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:95
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:97
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:101
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:102
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:106
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:107
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:112
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:116
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:117
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:121
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:122
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:126
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:127
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:131
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:132
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:136
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:137
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:141
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:142
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:145
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:147
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:151
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:152
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:156
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:157
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:161
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:162
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:165
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:166
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:167
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:171
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:172
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:176
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:177
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:180
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:181
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:182
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:186
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:187
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:190
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:191
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:192
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:196
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:197
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:200
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:201
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:202
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:206
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:207
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:211
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:212
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:216
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:217
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:221
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:222
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:226
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:227
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:231
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:232
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:236
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:237
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:240
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:241
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:242
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:245
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:246
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:247
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:251
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:252
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:256
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:257
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:261
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:262
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:266
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:267
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:271
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:272
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:276
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:277
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:281
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:282
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:285
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:286
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:287
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:290
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:291
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:292
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:295
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:296
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:297
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:301
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:302
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:306
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:307
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:311
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:312
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:316
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:317
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:321
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:322
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:326
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:327
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:331
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:332
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:336
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:337
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:341
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:342
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:346
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:347
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:351
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:352
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:356
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:357
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:361
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:362
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:366
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:367
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:370
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:371
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:372
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:376
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:377
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:381
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:382
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:385
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:386
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:387
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:391
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:392
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:396
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:397
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:401
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:402
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:405
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:406
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:407
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:411
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:412
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:416
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:417
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:421
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:422
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:425
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:426
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:427
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:431
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:432
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:436
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:437
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:441
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:442
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:446
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:447
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:451
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:452
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:456
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:457
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:461
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:462
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:466
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:467
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:471
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:472
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:476
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:477
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:481
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:482
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:486
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:487
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:491
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:492
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:496
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:497
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:501
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:502
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:505
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:506
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:507
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:511
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:512
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:516
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:517
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:521
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:522
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:526
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:527
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:531
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:532
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:535
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:536
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:537
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:541
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:542
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:546
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:547
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:551
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:552
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1154
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1155
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1159
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1160
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1163
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1164
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1165
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1169
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1170
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1174
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1175
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1178
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1179
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1180
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1184
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1185
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1189
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1190
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1193
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1194
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1195
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1199
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1200
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1203
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1204
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1205
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1209
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1210
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1214
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1215
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1219
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1220
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1224
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1225
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1229
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1230
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1233
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1234
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1235
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1238
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1239
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1240
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1244
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1245
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1249
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1250
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1254
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1255
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1259
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1260
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1264
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1265
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1269
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1270
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1274
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1275
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1278
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1279
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1280
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1283
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1284
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1285
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1289
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1290
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1294
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1295
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1298
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1299
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1300
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1303
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1304
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1305
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1309
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1310
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1314
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1315
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1319
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1320
+msgid "Y"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:23
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:158
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:198
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:223
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:228
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:313
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:353
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:358
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:378
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:478
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:483
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:518
+msgid "SQL engine: argument ``level`` and ``fill_value`` not supported."
+msgstr "SQL 引擎：不支持参数 ``level`` 和 ``fill_value``。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:24
+msgid ":func:`add_prefix`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:29
+msgid ":func:`add_suffix`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:34
+msgid ":func:`agg`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:38
+msgid "SQL engine: customized aggregation not supported."
+msgstr "SQL 引擎：不支持自定义聚合。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:39
+msgid ":func:`align`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:40
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:65
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:67
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:70
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:72
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:75
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:77
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:85
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:96
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:100
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:105
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:110
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:120
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:125
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:130
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:135
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:140
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:150
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:160
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:175
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:185
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:210
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:215
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:230
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:235
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:250
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:255
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:260
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:270
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:275
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:300
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:305
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:315
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:325
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:340
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:365
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:410
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:440
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:450
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:460
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:490
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:495
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:500
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:520
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:530
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:545
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:550
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1153
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1158
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1173
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1188
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1198
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1213
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1218
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1228
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1248
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1253
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1258
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1263
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1268
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1273
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1288
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1293
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1308
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1313
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1318
+msgid "N"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:44
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1152
+msgid ":func:`all`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:48
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:53
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:118
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:333
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:338
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:348
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:383
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:438
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:488
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:543
+msgid ""
+"SQL engine: argument ``skipna``, ``level`` and ``min_count`` not "
+"supported."
+msgstr "SQL 引擎：不支持参数 ``skipna``、``level`` 和 ``min_count``。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:49
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1157
+msgid ":func:`any`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:54
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1162
+msgid ":func:`append`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:59
+msgid ":func:`apply`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:64
+msgid ":func:`argmax`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:69
+msgid ":func:`argmin`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:74
+msgid ":func:`argsort`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:79
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1167
+msgid ":func:`astype`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:83
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1171
+msgid "SQL engine: converting to categorical types not supported."
+msgstr "SQL 引擎：不支持转换为分类类型。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:84
+msgid ":func:`autocorr`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:88
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:113
+msgid "DPE engine: only pearson correlation coefficient is supported."
+msgstr "DPE引擎：目前仅支持皮尔逊相关系数。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:89
+msgid ":func:`between`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:94
+msgid ":func:`case_when`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:99
+msgid ":func:`clip`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:104
+msgid ":func:`compare`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:109
+msgid ":func:`corr`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:114
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1172
+msgid ":func:`count`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:119
+msgid ":func:`cov`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:124
+msgid ":func:`cummax`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:129
+msgid ":func:`cummin`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:134
+msgid ":func:`cumprod`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:139
+msgid ":func:`cumsum`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:144
+msgid ":func:`describe`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:148
+msgid "DPE engine: medians and percentiles not supported by now."
+msgstr "DPE引擎：目前不支持中位数和百分位数。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:149
+msgid ":func:`diff`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:154
+msgid ":func:`div`, :func:`rdiv`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:159
+msgid ":func:`dot`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:164
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1177
+msgid ":func:`drop`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:169
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1182
+msgid ":func:`drop_duplicates`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:173
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1186
+msgid "SQL engine: maintaining original order of data not supported."
+msgstr "SQL引擎：不支持保持数据的原始顺序。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:174
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1187
+msgid ":func:`droplevel`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:179
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1192
+msgid ":func:`dropna`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:184
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1197
+msgid ":func:`duplicated`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:189
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1202
+msgid ":func:`empty`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:194
+msgid ":func:`eq`, :func:`ne`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:199
+msgid ":func:`explode`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:204
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1207
+msgid ":func:`fillna`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:208
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1211
+msgid "SQL engine: argument ``downcast``, ``limit`` and ``method`` not supported."
+msgstr "SQL引擎：不支持参数 ``downcast``、``limit`` 和 ``method``。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:209
+msgid ":func:`filter`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:214
+msgid ":func:`first_valid_index`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:219
+msgid ":func:`floordiv`, :func:`rfloordiv`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:224
+msgid ":func:`ge`, :func:`gt`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:229
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1212
+msgid "``series[item]`` (or ```__getitem__``)"
+msgstr "``series[item]`` (或 ```__getitem__``)"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:234
+msgid ":func:`hasnans`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:239
+msgid ":func:`head`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:244
+msgid ":func:`hist`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:249
+msgid ":func:`iat`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:254
+msgid ":func:`idxmax`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:259
+msgid ":func:`idxmin`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:264
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1222
+msgid ":func:`iloc`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:268
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1226
+msgid ""
+"SQL engine: Non-continuous indexes or negative indexes (for instance, "
+"``df.iloc[[1, 3]]``, ``df.iloc[1:10:2]`` or ``df.iloc[-3:]``) not "
+"supported."
+msgstr ""
+"SQL 引擎：不支持非连续索引或负索引（例如，``df.iloc[[1, 3]]``、``df.iloc["
+"1:10:2]`` 或 ``df.iloc[-3:]``）。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:269
+msgid ""
+":func:`is_monotonic`, :func:`is_monotonic_decreasing`, "
+":func:`is_monotonic_increasing`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:274
+msgid ":func:`is_unique`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:279
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1227
+msgid ":func:`isin`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:283
+msgid "SQL engine: index input not supported."
+msgstr "SQL 引擎：不支持索引输入。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:284
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1232
+msgid ":func:`isna`, :func:`notna`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:289
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1237
+msgid ":func:`isnull`, :func:`notnull`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:294
+msgid ":func:`items`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:299
+msgid ":func:`kurtosis`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:304
+msgid ":func:`last_valid_index`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:309
+msgid ":func:`le`, :func:`lt`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:314
+msgid ":func:`loc`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:319
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1242
+msgid ":func:`map`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:323
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1246
+msgid ""
+"SQL engine: argument ``arg`` only supports functions and non-derivative "
+"dicts with simple scalars."
+msgstr "SQL 引擎：参数 ``arg`` 仅支持函数和包含简单标量的非派生字典。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:324
+msgid ":func:`mask`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:329
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1247
+msgid ":func:`max`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:334
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1257
+msgid ":func:`mean`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:339
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1252
+msgid ":func:`memory_usage`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:344
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1262
+msgid ":func:`min`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:349
+msgid ":func:`mod`, :func:`rmod`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:354
+msgid ":func:`mul`, :func:`rmul`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:359
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1267
+msgid ":func:`nunique`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:363
+msgid ""
+"SQL engine: argument ``skipna``, ``level`` and ``min_count`` not "
+"supported. ``dropna==False`` not supported."
+msgstr ""
+"SQL引擎：不支持参数``skipna``，``level``和``min_count``。不支持``dropna=="
+"False``。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:364
+msgid ":func:`pct_change`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:369
+msgid ":func:`plot`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:374
+msgid ":func:`pow`, :func:`rpow`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:379
+msgid ":func:`prod`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:384
+msgid ":func:`quantile`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:389
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1272
+msgid ":func:`reindex`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:394
+msgid ":func:`reindex_like`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:399
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1277
+msgid ":func:`rename`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:403
+msgid "MCSQL engine: renaming indexes not supported."
+msgstr "MCSQL引擎：不支持重命名索引。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:404
+msgid ":func:`rename_axis`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:409
+msgid ":func:`reorder_levels`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:414
+msgid ":func:`replace`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:418
+msgid ""
+"SQL engine: when the argument ``regex`` is True, ``list`` or ``dict`` "
+"typed ``to_replace`` not supported. ``list`` or ``dict`` typed ``regex`` "
+"argument not supported."
+msgstr ""
+"SQL引擎：当参数``regex``为True时，不支持``list``或``dict``类型的``to_"
+"replace``。不支持``list``或``dict``类型的``regex``参数。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:419
+msgid ":func:`reset_index`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:424
+msgid ":func:`round`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:429
+msgid ":func:`sample`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:433
+msgid ""
+"SQL engine: argument ``replace`` and ``weights`` not supported. "
+"``frac>1`` not supported."
+msgstr "SQL引擎：不支持参数``replace``和``weights``。不支持``frac>1``。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:434
+msgid ":func:`sem`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:439
+msgid ":func:`set_axis`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:444
+msgid "``series[item] = value`` (or ```__setitem__``)"
+msgstr "``series[item] = value``（或``__setitem__``）"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:448
+msgid ""
+"SQL engine: not supported when ``item`` is callable or DataFrame / Series"
+" or index of ``series`` and ``item`` are different."
+msgstr ""
+"SQL引擎：当``item``是可调用对象或DataFrame / Series或``series``和``item``"
+"的索引不同时，不支持。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:449
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1287
+msgid ":func:`shift`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:454
+msgid ":func:`size`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:459
+msgid ":func:`skew`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:464
+msgid ":func:`sort_index`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:468
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:473
+msgid "SQL engine: ``na_position=='last'`` not supported."
+msgstr "SQL引擎：不支持``na_position=='last'``。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:469
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1292
+msgid ":func:`sort_values`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:474
+msgid ":func:`std`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:479
+msgid ":func:`sub`, :func:`rsub`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:484
+msgid ":func:`sum`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:489
+msgid ":func:`swaplevel`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:494
+msgid ":func:`tail`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:499
+msgid ":func:`take`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:504
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1297
+msgid ":func:`to_frame`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:509
+msgid ":func:`transform`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:513
+msgid "SQL engine: not supported when ``func`` is dict-like or list-like."
+msgstr "SQL 引擎：当 ``func`` 是字典或列表类型时不支持。"
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:514
+msgid ":func:`truediv`, :func:`rtruediv`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:519
+msgid ":func:`tshift`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:524
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1307
+msgid ":func:`unique`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:529
+msgid ":func:`unstack`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:534
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1312
+msgid ":func:`value_counts`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:539
+msgid ":func:`var`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:544
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1317
+msgid ":func:`where`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:549
+msgid ":func:`xs`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:556
+msgid "DataFrame API"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1141
+msgid "Index API"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1217
+msgid ":func:`get_level_values`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1282
+msgid ":func:`set_names`"
+msgstr ""
+
+#: ../../source/user_guide/dataframe/supported_pd_apis.rst:1302
+msgid ":func:`to_series`"
+msgstr ""
+

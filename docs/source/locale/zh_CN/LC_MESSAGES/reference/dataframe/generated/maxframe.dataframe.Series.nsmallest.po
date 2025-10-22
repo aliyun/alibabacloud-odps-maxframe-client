@@ -1,0 +1,174 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.nsmallest.rst:2
+msgid "maxframe.dataframe.Series.nsmallest"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:1 of
+msgid "Return the smallest `n` elements."
+msgstr "返回最小的 `n` 个元素。"
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:3 of
+msgid "Return this many ascending sorted values."
+msgstr "返回此数量的升序排列值。"
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:5 of
+msgid ""
+"When there are duplicate values that cannot all fit in a Series of `n` "
+"elements:  - ``first`` : return the first `n` occurrences in order     of"
+" appearance. - ``last`` : return the last `n` occurrences in reverse     "
+"order of appearance. - ``all`` : keep all occurrences. This can result in"
+" a Series of     size larger than `n`."
+msgstr ""
+"当存在重复值且无法全部放入 `n` 个元素的 Series 中时：  - ``first`` : 按"
+"出现顺序返回前 `n` 个实例。 - ``last`` : 按出现顺序的逆序返回后 `n` 个"
+"实例。 - ``all`` : 保留所有实例。这可能导致 Series 的大小超过 `n`。"
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:5 of
+msgid ""
+"When there are duplicate values that cannot all fit in a Series of `n` "
+"elements:"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:8 of
+msgid "``first`` : return the first `n` occurrences in order"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:-1 of
+#, fuzzy
+msgid "return the first"
+msgstr "返回前 `n` 行。"
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:9 of
+msgid "of appearance."
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:10 of
+msgid "``last`` : return the last `n` occurrences in reverse"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:-1 of
+#, fuzzy
+msgid "return the last"
+msgstr "返回前 `n` 行。"
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:11 of
+msgid "order of appearance."
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:12 of
+msgid "``all``"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:-1 of
+msgid "keep all occurrences. This can result in a Series of"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:13 of
+msgid "size larger than `n`."
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:16 of
+msgid "The `n` smallest values in the Series, sorted in increasing order."
+msgstr "Series 中最小的 `n` 个值，按升序排列。"
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:21 of
+msgid ":py:obj:`Series.nlargest`"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:22 of
+msgid "Get the `n` largest elements."
+msgstr "获取最大的 `n` 个元素。"
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:24 of
+msgid ":py:obj:`Series.sort_values`"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:25 of
+msgid "Sort Series by values."
+msgstr "按值对 Series 进行排序。"
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:27 of
+msgid ":py:obj:`Series.head`"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:28 of
+msgid "Return the first `n` rows."
+msgstr "返回前 `n` 行。"
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:31 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:32 of
+msgid ""
+"Faster than ``.sort_values().head(n)`` for small `n` relative to the size"
+" of the ``Series`` object."
+msgstr ""
+"对于相对于 ``Series`` 对象大小较小的 `n`，速度比 ``.sort_values().head(n)"
+"`` 更快。"
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:36 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:57 of
+msgid "The `n` smallest elements where ``n=5`` by default."
+msgstr "默认情况下 ``n=5`` 时的最小的 `n` 个元素。"
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:67 of
+msgid ""
+"The `n` smallest elements where ``n=3``. Default `keep` value is 'first' "
+"so Nauru and Tuvalu will be kept."
+msgstr ""
+"``n=3`` 时的最小的 `n` 个元素。默认的 `keep` 值为 'first'，因此 Nauru 和 "
+"Tuvalu 会被保留。"
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:76 of
+msgid ""
+"The `n` smallest elements where ``n=3`` and keeping the last duplicates. "
+"Anguilla and Tuvalu will be kept since they are the last with value 11300"
+" based on the index order."
+msgstr ""
+"`n` 个最小元素，其中 ``n=3`` 并保留最后的重复项。安圭拉和图瓦卢将被保留，"
+"因为它们在索引顺序中是值为 11300 的最后两个。"
+
+#: maxframe.dataframe.sort.nsmallest.series_nsmallest:86 of
+msgid ""
+"The `n` smallest elements where ``n=3`` with all duplicates kept. Note "
+"that the returned Series has four elements due to the three duplicates."
+msgstr ""
+"`n` 个最小元素，其中 ``n=3`` 并保留所有重复项。注意返回的 Series 有四个"
+"元素，因为有三个重复项。"
+

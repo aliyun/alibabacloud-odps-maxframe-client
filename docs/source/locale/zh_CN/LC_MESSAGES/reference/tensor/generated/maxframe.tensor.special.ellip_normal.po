@@ -1,0 +1,76 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellip_normal.rst:2
+msgid "maxframe.tensor.special.ellip\\_normal"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_harm.ellip_normal:1 of
+msgid "Ellipsoidal harmonic normalization constants gamma^p_n"
+msgstr "椭球谐函数归一化常数 gamma^p_n"
+
+#: maxframe.tensor.special.ellip_harm.ellip_normal:3 of
+msgid "The normalization constant is defined as"
+msgstr "归一化常数定义为"
+
+#: maxframe.tensor.special.ellip_harm.ellip_normal:5 of
+#, python-brace-format
+msgid ""
+"\\gamma^p_n=8\\int_{0}^{h}dx\\int_{h}^{k}dy\n"
+"\\frac{(y^2-x^2)(E^p_n(y)E^p_n(x))^2}{\\sqrt((k^2-y^2)(y^2-h^2)(h^2-x^2)(k^2-x^2)}"
+msgstr ""
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellip_normal.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_harm.ellip_normal:10 of
+msgid "``h**2``"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_harm.ellip_normal:12 of
+msgid "``k**2``; should be larger than ``h**2``"
+msgstr "``k**2``；应大于 ``h**2``"
+
+#: maxframe.tensor.special.ellip_harm.ellip_normal:14 of
+msgid "Degree."
+msgstr "度。"
+
+#: maxframe.tensor.special.ellip_harm.ellip_normal:16 of
+msgid "Order, can range between [1,2n+1]."
+msgstr "阶，取值范围为 [1,2n+1]。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellip_normal.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_harm.ellip_normal:19 of
+msgid "**gamma** -- The normalization constant :math:`\\gamma^p_n`"
+msgstr "**gamma** -- 归一化常数 :math:`\\gamma^p_n`"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellip_normal.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_harm.ellip_normal:22 of
+msgid ":py:obj:`ellip_harm`, :py:obj:`ellip_harm_2`"
+msgstr ""
+

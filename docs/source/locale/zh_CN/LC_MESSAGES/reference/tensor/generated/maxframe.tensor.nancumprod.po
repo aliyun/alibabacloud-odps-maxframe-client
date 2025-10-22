@@ -1,0 +1,109 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.nancumprod.rst:2
+msgid "maxframe.tensor.nancumprod"
+msgstr ""
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod:1 of
+msgid ""
+"Return the cumulative product of tensor elements over a given axis "
+"treating Not a Numbers (NaNs) as one.  The cumulative product does not "
+"change when NaNs are encountered and leading NaNs are replaced by ones."
+msgstr ""
+"返回给定轴上张量元素的累积乘积，将非数字（NaN）视为1。遇到 NaN 时累积乘积"
+"不会改变，前导的 NaN 会被替换为1。"
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod:5 of
+msgid "Ones are returned for slices that are all-NaN or empty."
+msgstr "对于全部为 NaN 或空的切片，返回1。"
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod:7 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod:9 of
+msgid ""
+"Axis along which the cumulative product is computed.  By default the "
+"input is flattened."
+msgstr "计算累积乘积的轴。默认情况下，输入会被展平。"
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod:12 of
+msgid ""
+"Type of the returned tensor, as well as of the accumulator in which the "
+"elements are multiplied.  If *dtype* is not specified, it defaults to the"
+" dtype of `a`, unless `a` has an integer dtype with a precision less than"
+" that of the default platform integer.  In that case, the default "
+"platform integer is used instead."
+msgstr ""
+"返回张量的类型，以及元素相乘时使用的累加器类型。如果未指定 *dtype*，则"
+"默认为 `a` 的 dtype，除非 `a` 是精度低于默认平台整数的整数类型。在这种"
+"情况下，将使用默认平台整数。"
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod:18 of
+msgid ""
+"Alternative output tensor in which to place the result. It must have the "
+"same shape and buffer length as the expected output but the type of the "
+"resulting values will be cast if necessary."
+msgstr ""
+"用于放置结果的替代输出张量。它必须具有与预期输出相同的形状和缓冲区长度，"
+"但必要时结果值的类型将被转换。"
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod:23 of
+msgid ""
+"**nancumprod** -- A new array holding the result is returned unless `out`"
+" is specified, in which case it is returned."
+msgstr ""
+"**nancumprod** -- 返回一个包含结果的新数组，除非指定了 `out`，此时返回 `"
+"out`。"
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod:29 of
+msgid ":py:obj:`mt.cumprod`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod:30 of
+msgid "Cumulative product across array propagating NaNs."
+msgstr "对数组进行累积乘积运算，并传播 NaN。"
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod:32 of
+msgid ":py:obj:`isnan`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod:33 of
+msgid "Show which elements are NaN."
+msgstr "显示哪些元素是 NaN。"
+
+#: maxframe.tensor.reduction.nancumprod.nancumprod:36 of
+msgid "示例"
+msgstr ""
+

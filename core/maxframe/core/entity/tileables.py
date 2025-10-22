@@ -318,6 +318,8 @@ class HasShapeTileableData(TileableData):
         try:
             return int(self.shape[0])
         except (IndexError, ValueError):  # pragma: no cover
+            if len(self.shape) == 0:
+                raise TypeError("len() of unsized object") from None
             return 0
 
     @property

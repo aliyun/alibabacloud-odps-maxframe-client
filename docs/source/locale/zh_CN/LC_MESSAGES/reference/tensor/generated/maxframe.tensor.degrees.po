@@ -1,0 +1,84 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.degrees.rst:2
+msgid "maxframe.tensor.degrees"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.degrees.degrees:1 of
+msgid "Convert angles from radians to degrees."
+msgstr "将角度从弧度转换为度。"
+
+#: maxframe.tensor.arithmetic.degrees.degrees of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.degrees.degrees:3 of
+msgid "Input tensor in radians."
+msgstr "以弧度为单位的输入张量。"
+
+#: maxframe.tensor.arithmetic.degrees.degrees:5 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，其形状必须与输入广播一致。如果未提供或为 `"
+"None`，则返回一个新分配的张量。元组（只能作为关键字参数）的长度必须等于"
+"输出的数量。"
+
+#: maxframe.tensor.arithmetic.degrees.degrees:10 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.degrees.degrees of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.degrees.degrees:15 of
+msgid ""
+"**y** -- The corresponding degree values; if `out` was supplied this is a"
+" reference to it."
+msgstr "**y** -- 对应的度数值；如果提供了 `out`，则这是对它的引用。"
+
+#: maxframe.tensor.arithmetic.degrees.degrees of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.degrees.degrees:21 of
+msgid ":py:obj:`rad2deg`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.degrees.degrees:22 of
+msgid "equivalent function"
+msgstr "等效函数"
+
+#: maxframe.tensor.arithmetic.degrees.degrees:25 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.degrees.degrees:26 of
+msgid "Convert a radian array to degrees"
+msgstr "将弧度数组转换为度"
+

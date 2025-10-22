@@ -1,0 +1,230 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.precision_score.rst:2
+msgid "maxframe.learn.metrics.precision\\_score"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:1 of
+msgid "Compute the precision"
+msgstr "计算精确率"
+
+#: maxframe.learn.metrics._classification.precision_score:3 of
+msgid ""
+"The precision is the ratio ``tp / (tp + fp)`` where ``tp`` is the number "
+"of true positives and ``fp`` the number of false positives. The precision"
+" is intuitively the ability of the classifier not to label as positive a "
+"sample that is negative."
+msgstr ""
+"精确率是 ``tp / (tp + fp)`` 的比率，其中 ``tp`` 是真正例的数量，``fp`` 是"
+"假正例的数量。直观地讲，精确率是分类器不将负样本标记为正样本的能力。"
+
+#: maxframe.learn.metrics._classification.precision_score:8 of
+msgid "The best value is 1 and the worst value is 0."
+msgstr "最佳值是 1，最差值是 0。"
+
+#: maxframe.learn.metrics._classification.precision_score:10 of
+msgid "Read more in the :ref:`User Guide <precision_recall_f_measure_metrics>`."
+msgstr "更多内容请参见 :ref:`用户指南 <precision_recall_f_measure_metrics>`。"
+
+#: maxframe.learn.metrics._classification.precision_score of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:12 of
+msgid "Ground truth (correct) target values."
+msgstr "真实（正确）的目标值。"
+
+#: maxframe.learn.metrics._classification.precision_score:14 of
+msgid "Estimated targets as returned by a classifier."
+msgstr "由分类器返回的预测目标值。"
+
+#: maxframe.learn.metrics._classification.precision_score:16 of
+msgid ""
+"The set of labels to include when ``average != 'binary'``, and their "
+"order if ``average is None``. Labels present in the data can be excluded,"
+" for example to calculate a multiclass average ignoring a majority "
+"negative class, while labels not present in the data will result in 0 "
+"components in a macro average. For multilabel targets, labels are column "
+"indices. By default, all labels in ``y_true`` and ``y_pred`` are used in "
+"sorted order."
+msgstr ""
+"当 ``average != 'binary'`` 时要包含的标签集合，以及当 ``average is None``"
+" 时这些标签的顺序。数据中存在的标签可以被排除，例如计算多类平均值时忽略"
+"多数负类；而数据中不存在的标签在宏平均中会导致 0 分量。对于多标签目标，"
+"标签是列索引。默认情况下，``y_true`` 和 ``y_pred`` 中的所有标签都按排序"
+"顺序使用。"
+
+#: maxframe.learn.metrics._classification.precision_score:24 of
+msgid ""
+"The class to report if ``average='binary'`` and the data is binary. If "
+"the data are multiclass or multilabel, this will be ignored; setting "
+"``labels=[pos_label]`` and ``average != 'binary'`` will report scores for"
+" that label only."
+msgstr ""
+"如果 ``average='binary'`` 且数据是二分类的，则报告此类别。如果数据是多类"
+"或多标签的，则此参数将被忽略；设置 ``labels=[pos_label]`` 且 ``average !="
+" 'binary'`` 将仅报告该标签的得分。"
+
+#: maxframe.learn.metrics._classification.precision_score:29 of
+#, python-brace-format
+msgid ""
+"This parameter is required for multiclass/multilabel targets. If "
+"``None``, the scores for each class are returned. Otherwise, this "
+"determines the type of averaging performed on the data:  ``'binary'``:"
+"     Only report results for the class specified by ``pos_label``.     "
+"This is applicable only if targets (``y_{true,pred}``) are binary. "
+"``'micro'``:     Calculate metrics globally by counting the total true "
+"positives,     false negatives and false positives. ``'macro'``:     "
+"Calculate metrics for each label, and find their unweighted     mean.  "
+"This does not take label imbalance into account. ``'weighted'``:     "
+"Calculate metrics for each label, and find their average weighted     by "
+"support (the number of true instances for each label). This     alters "
+"'macro' to account for label imbalance; it can result in an     F-score "
+"that is not between precision and recall. ``'samples'``:     Calculate "
+"metrics for each instance, and find their average (only     meaningful "
+"for multilabel classification where this differs from     "
+":func:`accuracy_score`)."
+msgstr ""
+"对于多类/多标签目标，此参数是必需的。如果为 ``None``，则返回每个类别的"
+"得分。否则，此参数决定对数据执行的平均类型：``'binary'``：仅报告由 ``pos_"
+"label`` 指定的类别的结果。这仅适用于目标（``y_{true,pred}``）为二分类的"
+"情况。``'micro'``：通过计算总的真正例、假负例和假正例来全局计算指标。``'"
+"macro'``：为每个标签计算指标，并计算它们的未加权平均值。这不考虑标签不"
+"平衡。``'weighted'``：为每个标签计算指标，并根据支持度（每个标签的真实"
+"实例数）计算它们的加权平均值。这会调整 'macro' 以考虑标签不平衡；可能导致"
+" F-score 不在精确率和召回率之间。``'samples'``：为每个实例计算指标，并"
+"计算它们的平均值（仅对与 :func:`accuracy_score` 不同的多标签分类有意义）"
+"。"
+
+#: maxframe.learn.metrics._classification.precision_score:29 of
+msgid ""
+"This parameter is required for multiclass/multilabel targets. If "
+"``None``, the scores for each class are returned. Otherwise, this "
+"determines the type of averaging performed on the data:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:33 of
+msgid "``'binary'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:34 of
+#, python-brace-format
+msgid ""
+"Only report results for the class specified by ``pos_label``. This is "
+"applicable only if targets (``y_{true,pred}``) are binary."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:36 of
+msgid "``'micro'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:37 of
+msgid ""
+"Calculate metrics globally by counting the total true positives, false "
+"negatives and false positives."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:39 of
+msgid "``'macro'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:40 of
+msgid ""
+"Calculate metrics for each label, and find their unweighted mean.  This "
+"does not take label imbalance into account."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:42 of
+msgid "``'weighted'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:43 of
+msgid ""
+"Calculate metrics for each label, and find their average weighted by "
+"support (the number of true instances for each label). This alters "
+"'macro' to account for label imbalance; it can result in an F-score that "
+"is not between precision and recall."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:47 of
+msgid "``'samples'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:48 of
+msgid ""
+"Calculate metrics for each instance, and find their average (only "
+"meaningful for multilabel classification where this differs from "
+":func:`accuracy_score`)."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:52 of
+msgid "Sample weights."
+msgstr "样本权重。"
+
+#: maxframe.learn.metrics._classification.precision_score:54 of
+msgid ""
+"Sets the value to return when there is a zero division. If set to "
+"\"warn\", this acts as 0, but warnings are also raised."
+msgstr ""
+"设置当出现零除时返回的值。如果设置为 \"warn\"，则其作用为 0，但也会引发"
+"警告。"
+
+#: maxframe.learn.metrics._classification.precision_score of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:58 of
+msgid ""
+"**precision** -- Precision of the positive class in binary classification"
+" or weighted average of the precision of each class for the multiclass "
+"task."
+msgstr ""
+"**precision** -- 二分类中正类的精确率，或多类任务中各类别精确率的加权"
+"平均值。"
+
+#: maxframe.learn.metrics._classification.precision_score of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:62 of
+msgid ""
+":py:obj:`precision_recall_fscore_support`, "
+":py:obj:`multilabel_confusion_matrix`"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:65 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:84 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_score:85 of
+msgid ""
+"When ``true positive + false positive == 0``, precision returns 0 and "
+"raises ``UndefinedMetricWarning``. This behavior can be modified with "
+"``zero_division``."
+msgstr ""
+"当 ``true positive + false positive == 0`` 时，precision 返回 0 并引发 ``"
+"UndefinedMetricWarning``。此行为可以通过 ``zero_division`` 进行修改。"
+

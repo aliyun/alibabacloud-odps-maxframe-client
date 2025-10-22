@@ -1,0 +1,89 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-10 10:10+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_clipboard.rst:2
+msgid "maxframe.dataframe.read\\_clipboard"
+msgstr ""
+
+#: maxframe.dataframe.datasource.direct.read_clipboard:1 of
+msgid "Read text from clipboard and pass to :func:`~pandas.read_csv`."
+msgstr "从剪贴板读取文本并传递给 :func:`~pandas.read_csv`。"
+
+#: maxframe.dataframe.datasource.direct.read_clipboard:3 of
+msgid ""
+"Parses clipboard contents similar to how CSV files are parsed using "
+":func:`~pandas.read_csv`."
+msgstr "解析剪贴板内容的方式类似于使用 :func:`~pandas.read_csv` 解析 CSV 文件。"
+
+#: maxframe.dataframe.datasource.direct.read_clipboard of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.datasource.direct.read_clipboard:6 of
+msgid ""
+"A string or regex delimiter. The default of ``'\\s+'`` denotes one or "
+"more whitespace characters."
+msgstr "字符串或正则表达式分隔符。默认值 ``'\\s+'`` 表示一个或多个空白字符。"
+
+#: maxframe.dataframe.datasource.direct.read_clipboard:9 of
+msgid "See :func:`~pandas.read_csv` for the full argument list."
+msgstr "完整参数列表请参见 :func:`~pandas.read_csv`。"
+
+#: maxframe.dataframe.datasource.direct.read_clipboard of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.datasource.direct.read_clipboard:11 of
+msgid "A parsed :class:`DataFrame` object."
+msgstr "解析后的 :class:`DataFrame` 对象。"
+
+#: maxframe.dataframe.datasource.direct.read_clipboard of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.datasource.direct.read_clipboard:16 of
+msgid ":py:obj:`DataFrame.to_clipboard`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.direct.read_clipboard:17 of
+msgid "Copy object to the system clipboard."
+msgstr "将对象复制到系统剪贴板。"
+
+#: maxframe.dataframe.datasource.direct.read_clipboard:19 of
+msgid ":py:obj:`read_csv`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.direct.read_clipboard:20 of
+msgid "Read a comma-separated values (csv) file into DataFrame."
+msgstr "将逗号分隔值 (csv) 文件读入 DataFrame。"
+
+#: maxframe.dataframe.datasource.direct.read_clipboard:22 of
+msgid ":py:obj:`read_fwf`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.direct.read_clipboard:23 of
+msgid "Read a table of fixed-width formatted lines into DataFrame."
+msgstr "将固定宽度格式的行表格读入 DataFrame。"
+
+#: maxframe.dataframe.datasource.direct.read_clipboard:26 of
+msgid "示例"
+msgstr ""
+

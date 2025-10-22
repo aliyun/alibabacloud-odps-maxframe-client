@@ -415,8 +415,8 @@ class TensorOutBinOp(TensorOperator, TensorElementWiseWithInputs):
         dtype = [r.dtype for r in self._fun(np.empty(1, dtype=x.dtype))]
 
         out = out or (None, None)
-        out1 = out1 or out[0]
-        out2 = out2 or out[1]
+        out1 = out1 if out1 is not None else out[0]
+        out2 = out2 if out2 is not None else out[1]
         x, out1, out2, where = self._process_inputs(x, out1, out2, where)
         shape = x.shape
         order1 = self._calc_order(x, out1)

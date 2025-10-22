@@ -1,0 +1,258 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.loc.rst:2
+msgid "maxframe.dataframe.Series.loc"
+msgstr ""
+
+#: maxframe.dataframe.Series.loc:1 of
+msgid "Access a group of rows and columns by label(s) or a boolean array."
+msgstr "通过标签或布尔数组访问一组行和列。"
+
+#: maxframe.dataframe.Series.loc:3 of
+msgid ""
+"``.loc[]`` is primarily label based, but may also be used with a boolean "
+"array."
+msgstr "``.loc[]`` 主要基于标签，但也可以与布尔数组一起使用。"
+
+#: maxframe.dataframe.Series.loc:6 of
+msgid "Allowed inputs are:"
+msgstr "允许的输入包括："
+
+#: maxframe.dataframe.Series.loc:8 of
+msgid ""
+"A single label, e.g. ``5`` or ``'a'``, (note that ``5`` is interpreted as"
+" a *label* of the index, and **never** as an integer position along the "
+"index)."
+msgstr ""
+"单个标签，例如 ``5`` 或 ``'a'``，（注意 ``5`` 被解释为索引的 *标签*，而**"
+"永远不会**是索引上的整数位置）。"
+
+#: maxframe.dataframe.Series.loc:11 of
+msgid "A list or array of labels, e.g. ``['a', 'b', 'c']``."
+msgstr "标签的列表或数组，例如 ``['a', 'b', 'c']``。"
+
+#: maxframe.dataframe.Series.loc:12 of
+msgid "A slice object with labels, e.g. ``'a':'f'``."
+msgstr "带有标签的切片对象，例如 ``'a':'f'``。"
+
+#: maxframe.dataframe.Series.loc:14 of
+msgid ""
+"Note that contrary to usual python slices, **both** the start and the "
+"stop are included"
+msgstr "注意，与通常的 Python 切片不同，起始和结束**都**包含在内"
+
+#: maxframe.dataframe.Series.loc:17 of
+msgid ""
+"A boolean array of the same length as the axis being sliced, e.g. "
+"``[True, False, True]``."
+msgstr "与被切片轴长度相同的布尔数组，例如 ``[True, False, True]``。"
+
+#: maxframe.dataframe.Series.loc:19 of
+msgid ""
+"An alignable boolean Series. The index of the key will be aligned before "
+"masking."
+msgstr "可对齐的布尔 Series。在进行掩码操作之前，将对键的索引进行对齐。"
+
+#: maxframe.dataframe.Series.loc:21 of
+msgid "An alignable Index. The Index of the returned selection will be the input."
+msgstr "可对齐的 Index。返回的选择结果的 Index 将是输入的 Index。"
+
+#: maxframe.dataframe.Series.loc:22 of
+msgid ""
+"A ``callable`` function with one argument (the calling Series or "
+"DataFrame) and that returns valid output for indexing (one of the above)"
+msgstr ""
+"一个带有一个参数（调用的 Series 或 DataFrame）的 ``callable`` 函数，返回"
+"有效的索引输出（以上之一）"
+
+#: maxframe.dataframe.Series.loc:25 of
+msgid "See more at :ref:`Selection by Label <indexing.label>`."
+msgstr "更多内容请参见 :ref:`按标签选择 <indexing.label>`。"
+
+#: maxframe.dataframe.Series.loc of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.dataframe.Series.loc:27 of
+msgid "If any items are not found."
+msgstr "如果找不到任何项目。"
+
+#: maxframe.dataframe.Series.loc:28 of
+msgid ""
+"If an indexed key is passed and its index is unalignable to the frame "
+"index."
+msgstr "如果传递了一个索引键，并且其索引无法与框架索引对齐。"
+
+#: maxframe.dataframe.Series.loc:32 of
+msgid ":py:obj:`DataFrame.at`"
+msgstr ""
+
+#: maxframe.dataframe.Series.loc:33 of
+msgid "Access a single value for a row/column label pair."
+msgstr "访问行/列标签对的单个值。"
+
+#: maxframe.dataframe.Series.loc:35 of
+msgid ":py:obj:`DataFrame.iloc`"
+msgstr ""
+
+#: maxframe.dataframe.Series.loc:36 of
+msgid "Access group of rows and columns by integer position(s)."
+msgstr "通过整数位置访问一组行和列。"
+
+#: maxframe.dataframe.Series.loc:38 of
+msgid ":py:obj:`DataFrame.xs`"
+msgstr ""
+
+#: maxframe.dataframe.Series.loc:39 of
+msgid "Returns a cross-section (row(s) or column(s)) from the Series/DataFrame."
+msgstr "从 Series/DataFrame 返回一个横截面（行或列）。"
+
+#: maxframe.dataframe.Series.loc:41 of
+msgid ":py:obj:`Series.loc`"
+msgstr ""
+
+#: maxframe.dataframe.Series.loc:42 of
+msgid "Access group of values using labels."
+msgstr "使用标签访问一组值。"
+
+#: maxframe.dataframe.Series.loc:45 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.Series.loc:46 of
+msgid "**Getting values**"
+msgstr "**获取值**"
+
+#: maxframe.dataframe.Series.loc:58 of
+msgid "Single label. Note this returns the row as a Series."
+msgstr "单个标签。注意这会将行作为 Series 返回。"
+
+#: maxframe.dataframe.Series.loc:65 of
+msgid "List of labels. Note using ``[[]]`` returns a DataFrame."
+msgstr "标签列表。注意使用 ``[[]]`` 会返回一个 DataFrame。"
+
+#: maxframe.dataframe.Series.loc:72 of
+msgid "Single label for row and column"
+msgstr "行和列的单个标签"
+
+#: maxframe.dataframe.Series.loc:77 of
+msgid ""
+"Slice with labels for row and single label for column. As mentioned "
+"above, note that both the start and stop of the slice are included."
+msgstr "使用标签切片行和单个标签列。如上所述，请注意切片的起始和结束都被包含。"
+
+#: maxframe.dataframe.Series.loc:85 of
+msgid "Boolean list with the same length as the row axis"
+msgstr "与行轴长度相同的布尔列表"
+
+#: maxframe.dataframe.Series.loc:91 of
+msgid "Alignable boolean Series:"
+msgstr "可对齐的布尔 Series："
+
+#: maxframe.dataframe.Series.loc:98 of
+msgid "Index (same behavior as ``df.reindex``)"
+msgstr "索引（与 ``df.reindex`` 行为相同）"
+
+#: maxframe.dataframe.Series.loc:106 of
+msgid "Conditional that returns a boolean Series"
+msgstr "返回布尔 Series 的条件表达式"
+
+#: maxframe.dataframe.Series.loc:112 of
+msgid "Conditional that returns a boolean Series with column labels specified"
+msgstr "返回指定列标签布尔 Series 的条件表达式"
+
+#: maxframe.dataframe.Series.loc:118 of
+msgid "Callable that returns a boolean Series"
+msgstr "返回布尔 Series 的可调用对象"
+
+#: maxframe.dataframe.Series.loc:124 of
+msgid "**Setting values**"
+msgstr "**设置值**"
+
+#: maxframe.dataframe.Series.loc:126 of
+msgid "Set value for all items matching the list of labels"
+msgstr "为匹配标签列表的所有项设置值"
+
+#: maxframe.dataframe.Series.loc:135 of
+msgid "Set value for an entire row"
+msgstr "为整行设置值"
+
+#: maxframe.dataframe.Series.loc:144 of
+msgid "Set value for an entire column"
+msgstr "为整列设置值"
+
+#: maxframe.dataframe.Series.loc:153 of
+msgid "Set value for rows matching callable condition"
+msgstr "为满足可调用条件的行设置值"
+
+#: maxframe.dataframe.Series.loc:162 of
+msgid "**Getting values on a DataFrame with an index that has integer labels**"
+msgstr "**在具有整数标签索引的 DataFrame 上获取值**"
+
+#: maxframe.dataframe.Series.loc:164 of
+msgid "Another example using integers for the index"
+msgstr "另一个使用整数作为索引的示例"
+
+#: maxframe.dataframe.Series.loc:174 of
+msgid ""
+"Slice with integer labels for rows. As mentioned above, note that both "
+"the start and stop of the slice are included."
+msgstr "使用整数标签对行进行切片。如上所述，请注意切片的起始和结束都被包含。"
+
+#: maxframe.dataframe.Series.loc:183 of
+msgid "**Getting values with a MultiIndex**"
+msgstr "**使用 MultiIndex 获取值**"
+
+#: maxframe.dataframe.Series.loc:185 of
+msgid "A number of examples using a DataFrame with a MultiIndex"
+msgstr "一些使用具有 MultiIndex 的 DataFrame 的示例"
+
+#: maxframe.dataframe.Series.loc:205 of
+msgid "Single label. Note this returns a DataFrame with a single index."
+msgstr "单个标签。注意这会返回一个具有单个索引的 DataFrame。"
+
+#: maxframe.dataframe.Series.loc:212 of
+msgid "Single index tuple. Note this returns a Series."
+msgstr "单个索引元组。注意这会返回一个 Series。"
+
+#: maxframe.dataframe.Series.loc:219 of
+msgid ""
+"Single label for row and column. Similar to passing in a tuple, this "
+"returns a Series."
+msgstr "行和列的单个标签。类似于传入元组，这会返回一个 Series。"
+
+#: maxframe.dataframe.Series.loc:227 of
+msgid "Single tuple. Note using ``[[]]`` returns a DataFrame."
+msgstr "单个元组。注意使用 ``[[]]`` 会返回一个 DataFrame。"
+
+#: maxframe.dataframe.Series.loc:233 of
+msgid "Single tuple for the index with a single label for the column"
+msgstr "索引的单个元组和列的单个标签"
+
+#: maxframe.dataframe.Series.loc:238 of
+msgid "Slice from index tuple to single label"
+msgstr "从索引元组切片到单个标签"
+
+#: maxframe.dataframe.Series.loc:249 of
+msgid "Slice from index tuple to index tuple"
+msgstr "从索引元组切片到索引元组"
+

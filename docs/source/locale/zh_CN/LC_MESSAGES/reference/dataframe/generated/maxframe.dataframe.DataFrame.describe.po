@@ -1,0 +1,292 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.describe.rst:2
+msgid "maxframe.dataframe.DataFrame.describe"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:1 of
+msgid "Generate descriptive statistics."
+msgstr "生成描述性统计信息。"
+
+#: maxframe.dataframe.misc.describe.describe:3 of
+msgid ""
+"Descriptive statistics include those that summarize the central tendency,"
+" dispersion and shape of a dataset's distribution, excluding ``NaN`` "
+"values."
+msgstr ""
+"描述性统计包括总结数据集分布的中心趋势、离散程度和形状的统计量，不包括 ``"
+"NaN`` 值。"
+
+#: maxframe.dataframe.misc.describe.describe:7 of
+msgid ""
+"Analyzes both numeric and object series, as well as ``DataFrame`` column "
+"sets of mixed data types. The output will vary depending on what is "
+"provided. Refer to the notes below for more detail."
+msgstr ""
+"分析数值型和对象型序列，以及混合数据类型的 ``DataFrame`` 列集合。输出将"
+"根据提供的内容而变化。有关更多详细信息，请参阅下面的说明。"
+
+#: maxframe.dataframe.misc.describe.describe of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:12 of
+msgid ""
+"The percentiles to include in the output. All should fall between 0 and "
+"1. The default is ``[.25, .5, .75]``, which returns the 25th, 50th, and "
+"75th percentiles."
+msgstr ""
+"要包含在输出中的百分位数。所有值都应在 0 和 1 之间。默认值为 ``[.25, .5, "
+".75]``，返回第 25、50 和 75 百分位数。"
+
+#: maxframe.dataframe.misc.describe.describe:17 of
+msgid ""
+"A white list of data types to include in the result. Ignored for "
+"``Series``. Here are the options:  - 'all' : All columns of the input "
+"will be included in the output. - A list-like of dtypes : Limits the "
+"results to the   provided data types.   To limit the result to numeric "
+"types submit   ``numpy.number``. To limit it instead to object columns "
+"submit   the ``numpy.object`` data type. Strings   can also be used in "
+"the style of   ``select_dtypes`` (e.g. ``df.describe(include=['O'])``). -"
+" None (default) : The result will include all numeric columns."
+msgstr ""
+"要包含在结果中的数据类型白名单。对 ``Series`` 会忽略。选项如下：  - 'all'"
+" : 输入的所有列都将包含在输出中。 - 类列表的 dtypes : 将结果限制为提供的"
+"数据类型。   要将结果限制为数值类型，请提交 ``numpy.number``。   要将其"
+"限制为对象列，请提交 ``numpy.object`` 数据类型。   字符串也可以使用 ``"
+"select_dtypes`` 的风格（例如 ``df.describe(include=['O'])``）。 - None（"
+"默认） : 结果将包含所有数值列。"
+
+#: maxframe.dataframe.misc.describe.describe:17 of
+msgid ""
+"A white list of data types to include in the result. Ignored for "
+"``Series``. Here are the options:"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:20 of
+msgid "'all' : All columns of the input will be included in the output."
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:21 of
+#, fuzzy
+msgid ""
+"A list-like of dtypes : Limits the results to the provided data types. To"
+" limit the result to numeric types submit ``numpy.number``. To limit it "
+"instead to object columns submit the ``numpy.object`` data type. Strings "
+"can also be used in the style of ``select_dtypes`` (e.g. "
+"``df.describe(include=['O'])``)."
+msgstr ""
+"要包含在结果中的数据类型白名单。对 ``Series`` 会忽略。选项如下：  - 'all'"
+" : 输入的所有列都将包含在输出中。 - 类列表的 dtypes : 将结果限制为提供的"
+"数据类型。   要将结果限制为数值类型，请提交 ``numpy.number``。   要将其"
+"限制为对象列，请提交 ``numpy.object`` 数据类型。   字符串也可以使用 ``"
+"select_dtypes`` 的风格（例如 ``df.describe(include=['O'])``）。 - None（"
+"默认） : 结果将包含所有数值列。"
+
+#: maxframe.dataframe.misc.describe.describe:28 of
+msgid "None (default) : The result will include all numeric columns."
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:30 of
+msgid ""
+"A black list of data types to omit from the result. Ignored for "
+"``Series``. Here are the options:  - A list-like of dtypes : Excludes the"
+" provided data types   from the result. To exclude numeric types submit"
+"   ``numpy.number``. To exclude object columns submit the data   type "
+"``numpy.object``. Strings can also be used in the style of   "
+"``select_dtypes`` (e.g. ``df.describe(exclude=['O'])``). - None (default)"
+" : The result will exclude nothing."
+msgstr ""
+"要从结果中排除的数据类型黑名单。对 ``Series`` 会忽略。选项如下：  - 类"
+"列表的 dtypes : 从结果中排除提供的数据类型。   要排除数值类型，请提交 ``"
+"numpy.number``。   要排除对象列，请提交 ``numpy.object`` 数据类型。   "
+"字符串也可以使用 ``select_dtypes`` 的风格（例如 ``df.describe(exclude=['O"
+"'])``）。 - None（默认） : 结果将不排出任何内容。"
+
+#: maxframe.dataframe.misc.describe.describe:30 of
+msgid ""
+"A black list of data types to omit from the result. Ignored for "
+"``Series``. Here are the options:"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:33 of
+#, fuzzy
+msgid ""
+"A list-like of dtypes : Excludes the provided data types from the result."
+" To exclude numeric types submit ``numpy.number``. To exclude object "
+"columns submit the data type ``numpy.object``. Strings can also be used "
+"in the style of ``select_dtypes`` (e.g. ``df.describe(exclude=['O'])``)."
+msgstr ""
+"要从结果中排除的数据类型黑名单。对 ``Series`` 会忽略。选项如下：  - 类"
+"列表的 dtypes : 从结果中排除提供的数据类型。   要排除数值类型，请提交 ``"
+"numpy.number``。   要排除对象列，请提交 ``numpy.object`` 数据类型。   "
+"字符串也可以使用 ``select_dtypes`` 的风格（例如 ``df.describe(exclude=['O"
+"'])``）。 - None（默认） : 结果将不排出任何内容。"
+
+#: maxframe.dataframe.misc.describe.describe:38 of
+msgid "None (default) : The result will exclude nothing."
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:41 of
+msgid "Summary statistics of the Series or Dataframe provided."
+msgstr "提供的 Series 或 Dataframe 的摘要统计信息。"
+
+#: maxframe.dataframe.misc.describe.describe of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:46 of
+msgid ":py:obj:`DataFrame.count`"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:47 of
+msgid "Count number of non-NA/null observations."
+msgstr "计算非 NA/空值的观测数量。"
+
+#: maxframe.dataframe.misc.describe.describe:49 of
+msgid ":py:obj:`DataFrame.max`"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:50 of
+msgid "Maximum of the values in the object."
+msgstr "对象中值的最大值。"
+
+#: maxframe.dataframe.misc.describe.describe:52 of
+msgid ":py:obj:`DataFrame.min`"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:53 of
+msgid "Minimum of the values in the object."
+msgstr "对象中值的最小值。"
+
+#: maxframe.dataframe.misc.describe.describe:55 of
+msgid ":py:obj:`DataFrame.mean`"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:56 of
+msgid "Mean of the values."
+msgstr "值的平均值。"
+
+#: maxframe.dataframe.misc.describe.describe:58 of
+msgid ":py:obj:`DataFrame.std`"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:59 of
+msgid "Standard deviation of the observations."
+msgstr "观测值的标准差。"
+
+#: maxframe.dataframe.misc.describe.describe:61 of
+msgid ":py:obj:`DataFrame.select_dtypes`"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:62 of
+msgid "Subset of a DataFrame including/excluding columns based on their dtype."
+msgstr "基于 dtype 包含/排除列的 DataFrame 子集。"
+
+#: maxframe.dataframe.misc.describe.describe:65 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:66 of
+msgid ""
+"For numeric data, the result's index will include ``count``, ``mean``, "
+"``std``, ``min``, ``max`` as well as lower, ``50`` and upper percentiles."
+" By default the lower percentile is ``25`` and the upper percentile is "
+"``75``. The ``50`` percentile is the same as the median."
+msgstr ""
+"对于数值型数据，结果的索引将包括 ``count``、``mean``、``std``、``min``、`"
+"`max`` 以及下分位数、``50`` 分位数和上分位数。默认情况下，下分位数是 ``25"
+"``，上分位数是 ``75``。``50`` 分位数即中位数。"
+
+#: maxframe.dataframe.misc.describe.describe:72 of
+msgid ""
+"For object data (e.g. strings or timestamps), the result's index will "
+"include ``count``, ``unique``, ``top``, and ``freq``. The ``top`` is the "
+"most common value. The ``freq`` is the most common value's frequency. "
+"Timestamps also include the ``first`` and ``last`` items."
+msgstr ""
+"对于对象型数据（例如字符串或时间戳），结果的索引将包括 ``count``、``"
+"unique``、``top`` 和 ``freq``。``top`` 是最常见的值。``freq`` 是最常见值"
+"的频率。时间戳还包括 ``first`` 和 ``last`` 项。"
+
+#: maxframe.dataframe.misc.describe.describe:77 of
+msgid ""
+"If multiple object values have the highest count, then the ``count`` and "
+"``top`` results will be arbitrarily chosen from among those with the "
+"highest count."
+msgstr ""
+"如果有多个对象值具有相同的最高计数，则 ``count`` 和 ``top`` 结果将从这些"
+"值中任意选择。"
+
+#: maxframe.dataframe.misc.describe.describe:81 of
+msgid ""
+"For mixed data types provided via a ``DataFrame``, the default is to "
+"return only an analysis of numeric columns. If the dataframe consists "
+"only of object data without any numeric columns, the default is to return"
+" an analysis of object columns. If ``include='all'`` is provided as an "
+"option, the result will include a union of attributes of each type."
+msgstr ""
+"对于通过 ``DataFrame`` 提供的混合数据类型，默认只返回数值列的分析结果。"
+"如果 DataFrame 仅包含对象型数据而没有数值列，则默认返回对象列的分析结果。"
+"如果提供了 ``include='all'`` 选项，则结果将包括每种数据类型的属性并集。"
+
+#: maxframe.dataframe.misc.describe.describe:87 of
+msgid ""
+"The `include` and `exclude` parameters can be used to limit which columns"
+" in a ``DataFrame`` are analyzed for the output. The parameters are "
+"ignored when analyzing a ``Series``."
+msgstr ""
+"`include` 和 `exclude` 参数可用于限制 ``DataFrame`` 中哪些列被分析以生成"
+"输出。在分析 ``Series`` 时，这些参数将被忽略。"
+
+#: maxframe.dataframe.misc.describe.describe:92 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.describe.describe:93 of
+msgid "Describing a numeric ``Series``."
+msgstr "描述一个数值型 ``Series``。"
+
+#: maxframe.dataframe.misc.describe.describe:109 of
+msgid "Describing a ``DataFrame``. By default only numeric fields are returned."
+msgstr "描述一个 ``DataFrame``。默认情况下仅返回数值字段。"
+
+#: maxframe.dataframe.misc.describe.describe:126 of
+msgid "Describing all columns of a ``DataFrame`` regardless of data type."
+msgstr "描述一个 ``DataFrame`` 的所有列，不考虑数据类型。"
+
+#: maxframe.dataframe.misc.describe.describe:142 of
+msgid "Describing a column from a ``DataFrame`` by accessing it as an attribute."
+msgstr "通过属性访问方式描述 ``DataFrame`` 中的一列。"
+
+#: maxframe.dataframe.misc.describe.describe:156 of
+msgid "Including only numeric columns in a ``DataFrame`` description."
+msgstr "在 ``DataFrame`` 描述中仅包含数值列。"
+
+#: maxframe.dataframe.misc.describe.describe:169 of
+msgid "Including only string columns in a ``DataFrame`` description."
+msgstr "在 ``DataFrame`` 描述中仅包含字符串列。"
+

@@ -126,12 +126,13 @@ class Base(Serializable):
 
     def to_kv(
         self,
-        exclude_fields: Tuple[str],
+        exclude_fields: Tuple[str] = None,
         accept_value_types: Optional[Tuple[Type]] = None,
     ):
         fields = self._FIELDS
         kv = {}
         no_value = object()
+        exclude_fields = exclude_fields or ()
         for name, field in fields.items():
             if name not in exclude_fields:
                 value = getattr(self, name, no_value)

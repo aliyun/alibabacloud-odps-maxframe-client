@@ -1,0 +1,184 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rolling.rst:2
+msgid "maxframe.dataframe.DataFrame.rolling"
+msgstr ""
+
+#: maxframe.dataframe.window.rolling.rolling:1 of
+msgid "Provide rolling window calculations."
+msgstr "提供滚动窗口计算。"
+
+#: maxframe.dataframe.window.rolling.rolling of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.window.rolling.rolling:3 of
+msgid ""
+"Size of the moving window. This is the number of observations used for "
+"calculating the statistic. Each window will be a fixed size. If its an "
+"offset then this will be the time period of each window. Each window will"
+" be a variable sized based on the observations included in the time-"
+"period. This is only valid for datetimelike indexes. This is new in "
+"0.19.0"
+msgstr ""
+"移动窗口的大小。这是用于计算统计量的观测值数量。每个窗口将是一个固定大小"
+"。如果它是一个偏移量，那么这将是每个窗口的时间段。每个窗口将根据时间段内"
+"包含的观测值进行可变大小调整。这仅对类似日期时间的索引有效。这是在0.19.0"
+"中新增的功能。"
+
+#: maxframe.dataframe.window.rolling.rolling:10 of
+msgid ""
+"Minimum number of observations in window required to have a value "
+"(otherwise result is NA). For a window that is specified by an offset, "
+"`min_periods` will default to 1. Otherwise, `min_periods` will default to"
+" the size of the window."
+msgstr ""
+"窗口中需要具有值的最小观测值数量（否则结果为NA）。对于由偏移量指定的窗口"
+"，`min_periods` 默认为1。否则，`min_periods` 默认为窗口的大小。"
+
+#: maxframe.dataframe.window.rolling.rolling:15 of
+msgid "Set the labels at the center of the window."
+msgstr "将标签设置在窗口的中心。"
+
+#: maxframe.dataframe.window.rolling.rolling:17 of
+msgid ""
+"Provide a window type. If ``None``, all points are evenly weighted. See "
+"the notes below for further information."
+msgstr ""
+"提供窗口类型。如果为 ``None``，则所有点的权重相等。有关更多信息，请参见"
+"下面的说明。"
+
+#: maxframe.dataframe.window.rolling.rolling:20 of
+msgid ""
+"For a DataFrame, a datetime-like column on which to calculate the rolling"
+" window, rather than the DataFrame's index. Provided integer column is "
+"ignored and excluded from result since an integer index is not used to "
+"calculate the rolling window."
+msgstr ""
+"对于一个 DataFrame，指定一个类似日期时间的列来计算滚动窗口，而不是使用 "
+"DataFrame 的索引。提供的整数列将被忽略并从结果中排除，因为整数索引不用于"
+"计算滚动窗口。"
+
+#: maxframe.dataframe.window.rolling.rolling:27 of
+msgid ""
+"Make the interval closed on the 'right', 'left', 'both' or 'neither' "
+"endpoints. For offset-based windows, it defaults to 'right'. For fixed "
+"windows, defaults to 'both'. Remaining cases not implemented for fixed "
+"windows."
+msgstr ""
+"使区间在 'right'、'left'、'both' 或 'neither' 端点闭合。对于基于偏移量的"
+"窗口，默认为 'right'。对于固定窗口，默认为 'both'。其余情况未在固定窗口中"
+"实现。"
+
+#: maxframe.dataframe.window.rolling.rolling of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.window.rolling.rolling:38 of
+msgid ":py:obj:`expanding`"
+msgstr ""
+
+#: maxframe.dataframe.window.rolling.rolling:39 of
+msgid "Provides expanding transformations."
+msgstr "提供扩展变换。"
+
+#: maxframe.dataframe.window.rolling.rolling:41 of
+msgid ":py:obj:`ewm`"
+msgstr ""
+
+#: maxframe.dataframe.window.rolling.rolling:42 of
+msgid "Provides exponential weighted functions."
+msgstr "提供指数加权函数。"
+
+#: maxframe.dataframe.window.rolling.rolling:45 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.window.rolling.rolling:46 of
+msgid ""
+"By default, the result is set to the right edge of the window. This can "
+"be changed to the center of the window by setting ``center=True``. To "
+"learn more about the offsets & frequency strings, please see `this link "
+"<http://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html"
+"#offset-aliases>`__."
+msgstr ""
+"默认情况下，结果设置为窗口的右边缘。可以通过设置 ``center=True`` 将其更"
+"改为窗口的中心。要了解更多关于偏移量和频率字符串的信息，请参见 `此链接 <"
+"http://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#"
+"offset-aliases>`__。"
+
+#: maxframe.dataframe.window.rolling.rolling:51 of
+msgid ""
+"The recognized win_types are: * ``boxcar`` * ``triang`` * ``blackman`` * "
+"``hamming`` * ``bartlett`` * ``parzen`` * ``bohman`` * ``blackmanharris``"
+" * ``nuttall`` * ``barthann`` * ``kaiser`` (needs beta) * ``gaussian`` "
+"(needs std) * ``general_gaussian`` (needs power, width) * ``slepian`` "
+"(needs width) * ``exponential`` (needs tau), center is set to None."
+msgstr ""
+"认可的 win_types 有：* ``boxcar`` * ``triang`` * ``blackman`` * ``hamming"
+"`` * ``bartlett`` * ``parzen`` * ``bohman`` * ``blackmanharris`` * ``"
+"nuttall`` * ``barthann`` * ``kaiser`` (需要 beta) * ``gaussian`` (需要 "
+"std) * ``general_gaussian`` (需要 power, width) * ``slepian`` (需要 width"
+") * ``exponential`` (需要 tau)，center 被设置为 None。"
+
+#: maxframe.dataframe.window.rolling.rolling:68 of
+msgid ""
+"If ``win_type=None`` all points are evenly weighted. To learn more about "
+"different window types see `scipy.signal window functions "
+"<https://docs.scipy.org/doc/scipy/reference/signal.html#window-"
+"functions>`__."
+msgstr ""
+"如果 ``win_type=None`` 则所有点的权重相等。要了解更多关于不同窗口类型的"
+"信息，请参见 `scipy.signal 窗口函数 <https://docs.scipy.org/doc/scipy/"
+"reference/signal.html#window-functions>`__。"
+
+#: maxframe.dataframe.window.rolling.rolling:73 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.window.rolling.rolling:85 of
+msgid "Rolling sum with a window length of 2, using the 'triang' window type."
+msgstr "使用 'triang' 窗口类型，窗口长度为2的滚动求和。"
+
+#: maxframe.dataframe.window.rolling.rolling:96 of
+msgid ""
+"Rolling sum with a window length of 2, min_periods defaults to the window"
+" length."
+msgstr "窗口长度为2的滚动求和，min_periods 默认为窗口长度。"
+
+#: maxframe.dataframe.window.rolling.rolling:107 of
+msgid "Same as above, but explicitly set the min_periods"
+msgstr "与上述相同，但显式设置了 min_periods"
+
+#: maxframe.dataframe.window.rolling.rolling:117 of
+msgid "A ragged (meaning not-a-regular frequency), time-indexed DataFrame"
+msgstr "一个不规则的（即非固定频率）、时间索引的 DataFrame"
+
+#: maxframe.dataframe.window.rolling.rolling:133 of
+msgid ""
+"Contrasting to an integer rolling window, this will roll a variable "
+"length window corresponding to the time period. The default for "
+"min_periods is 1."
+msgstr ""
+"与整数滚动窗口相比，这将滚动一个与时间段对应的可变长度窗口。min_periods "
+"的默认值为 1。"
+

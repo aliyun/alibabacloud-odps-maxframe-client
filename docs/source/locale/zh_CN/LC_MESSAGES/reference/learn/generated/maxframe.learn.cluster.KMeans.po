@@ -1,0 +1,418 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:2
+msgid "maxframe.learn.cluster.KMeans"
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.KMeans:1 of
+msgid "K-Means clustering."
+msgstr "K-均值聚类。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:3 of
+msgid "Read more in the :ref:`User Guide <k_means>`."
+msgstr "更多信息请参阅 :ref:`用户指南 <k_means>`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.KMeans:5 of
+msgid ""
+"The number of clusters to form as well as the number of centroids to "
+"generate."
+msgstr "要形成的聚类数量以及要生成的质心数量。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:8 of
+msgid ""
+"Method for initialization, defaults to 'k-means||':  'k-means++' : "
+"selects initial cluster centers for k-mean clustering in a smart way to "
+"speed up convergence. See section Notes in k_init for more details.  "
+"'k-means||': scalable k-means++.  'random': choose k observations (rows) "
+"at random from data for the initial centroids.  If a tensor is passed, it"
+" should be of shape (n_clusters, n_features) and gives the initial "
+"centers."
+msgstr ""
+"初始化方法，默认为 'k-means||'：  'k-means++' : 以一种智能的方式选择初始"
+"聚类中心，以加速收敛。详见 k_init 中的说明。  'k-means||': 可扩展的 k-"
+"means++。  'random': 从数据中随机选择 k 个观测（行）作为初始质心。  如果"
+"传递的是张量，则其形状应为 (n_clusters, n_features)，并给出初始中心。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:8 of
+msgid "Method for initialization, defaults to 'k-means||':"
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.KMeans:10 of
+msgid ""
+"'k-means++' : selects initial cluster centers for k-mean clustering in a "
+"smart way to speed up convergence. See section Notes in k_init for more "
+"details."
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.KMeans:14 of
+msgid "'k-means||': scalable k-means++."
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.KMeans:16 of
+msgid ""
+"'random': choose k observations (rows) at random from data for the "
+"initial centroids."
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.KMeans:19 of
+msgid ""
+"If a tensor is passed, it should be of shape (n_clusters, n_features) and"
+" gives the initial centers."
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.KMeans:22 of
+msgid ""
+"Number of time the k-means algorithm will be run with different centroid "
+"seeds. The final results will be the best output of n_init consecutive "
+"runs in terms of inertia."
+msgstr ""
+"k-means 算法将使用不同的质心种子运行的次数。最终结果将是 n_init 次连续"
+"运行中惯性最小的最佳输出。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:26 of
+msgid "Maximum number of iterations of the k-means algorithm for a single run."
+msgstr "单次运行中 k-means 算法的最大迭代次数。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:29 of
+msgid "Relative tolerance with regards to inertia to declare convergence."
+msgstr "相对于惯性的收敛判断相对容差。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:31 of
+msgid "Verbosity mode."
+msgstr "详细模式。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:33 of
+msgid ""
+"Determines random number generation for centroid initialization. Use an "
+"int to make the randomness deterministic. See :term:`Glossary "
+"<random_state>`."
+msgstr ""
+"确定质心初始化的随机数生成方式。使用整数可使随机性变为确定性的。详见 :"
+"term:`术语表 <random_state>`。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:37 of
+msgid ""
+"When pre-computing distances it is more numerically accurate to center "
+"the data first.  If copy_x is True (default), then the original data is "
+"not modified, ensuring X is C-contiguous.  If False, the original data is"
+" modified, and put back before the function returns, but small numerical "
+"differences may be introduced by subtracting and then adding the data "
+"mean, in this case it will also not ensure that data is C-contiguous "
+"which may cause a significant slowdown."
+msgstr ""
+"在预先计算距离时，首先将数据居中会更精确。如果 copy_x 为 True（默认），则"
+"原始数据不会被修改，以确保 X 是 C 连续的。如果为 False，则原始数据会被"
+"修改，并在函数返回前恢复，但减去并加上数据均值可能会引入微小的数值差异，"
+"在这种情况下也无法确保数据是 C 连续的，这可能导致显著的性能下降。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:45 of
+msgid ""
+"K-means algorithm to use. The classical EM-style algorithm is \"full\". "
+"The \"elkan\" variation is more efficient by using the triangle "
+"inequality, but currently doesn't support sparse data. \"auto\" chooses "
+"\"elkan\" for dense data and \"full\" for sparse data."
+msgstr ""
+"使用的 K-means 算法。经典 EM 风格的算法是 \"full\"。\"elkan\" 变体通过"
+"使用三角不等式更高效，但目前不支持稀疏数据。\"auto\" 会为密集数据选择 \""
+"elkan\"，为稀疏数据选择 \"full\"。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:50 of
+msgid "Only work for kmeans||, used in each iteration in kmeans||."
+msgstr "仅适用于 kmeans||，在每次 kmeans|| 迭代中使用。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:52 of
+msgid "Only work for kmeans||, indicates how may iterations required."
+msgstr "仅适用于 kmeans||，表示需要多少次迭代。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:57 of
+msgid ""
+"Coordinates of cluster centers. If the algorithm stops before fully "
+"converging (see ``tol`` and ``max_iter``), these will not be consistent "
+"with ``labels_``."
+msgstr ""
+"聚类中心的坐标。如果算法在完全收敛之前停止（见 ``tol`` 和 ``max_iter``）"
+"，这些将与 ``labels_`` 不一致。"
+
+#: maxframe.learn.cluster._kmeans.KMeans of
+msgid "type"
+msgstr "类型"
+
+#: maxframe.learn.cluster._kmeans.KMeans:61 of
+msgid "tensor of shape (n_clusters, n_features)"
+msgstr "形状为 (n_clusters, n_features) 的张量"
+
+#: maxframe.learn.cluster._kmeans.KMeans:65 of
+msgid "Labels of each point"
+msgstr "每个点的标签"
+
+#: maxframe.learn.cluster._kmeans.KMeans:67 of
+msgid "tensor of shape (n_samples,)"
+msgstr "形状为 (n_samples,) 的张量"
+
+#: maxframe.learn.cluster._kmeans.KMeans:71 of
+msgid "Sum of squared distances of samples to their closest cluster center."
+msgstr "样本到其最近聚类中心的平方距离之和。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:73 of
+msgid "float"
+msgstr "浮点数"
+
+#: maxframe.learn.cluster._kmeans.KMeans:77 of
+msgid "Number of iterations run."
+msgstr "运行的迭代次数。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:79 of
+msgid "int"
+msgstr "整数"
+
+#: maxframe.learn.cluster._kmeans.KMeans:83 of
+msgid ":py:obj:`MiniBatchKMeans`"
+msgstr "MiniBatchKMeans"
+
+#: maxframe.learn.cluster._kmeans.KMeans:84 of
+msgid ""
+"Alternative online implementation that does incremental updates of the "
+"centers positions using mini-batches. For large scale learning (say "
+"n_samples > 10k) MiniBatchKMeans is probably much faster than the default"
+" batch implementation."
+msgstr ""
+"使用小批量进行中心位置增量更新的替代在线实现。对于大规模学习（例如 n_"
+"samples > 10k），MiniBatchKMeans 可能比默认的批量实现快得多。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:87 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.KMeans:88 of
+msgid "The k-means problem is solved using either Lloyd's or Elkan's algorithm."
+msgstr "k-means 问题通过 Lloyd 或 Elkan 算法解决。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:90 of
+msgid ""
+"The average complexity is given by O(k n T), were n is the number of "
+"samples and T is the number of iteration."
+msgstr "平均复杂度为 O(k n T)，其中 n 是样本数量，T 是迭代次数。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:93 of
+msgid ""
+"The worst case complexity is given by O(n^(k+2/p)) with n = n_samples, p "
+"= n_features. (D. Arthur and S. Vassilvitskii, 'How slow is the k-means "
+"method?' SoCG2006)"
+msgstr ""
+"最坏情况下的复杂度为 O(n^(k+2/p))，其中 n = n_samples，p = n_features。（"
+"D. Arthur 和 S. Vassilvitskii，《k-means 方法有多慢？》，SoCG2006）"
+
+#: maxframe.learn.cluster._kmeans.KMeans:97 of
+msgid ""
+"In practice, the k-means algorithm is very fast (one of the fastest "
+"clustering algorithms available), but it falls in local minima. That's "
+"why it can be useful to restart it several times."
+msgstr ""
+"在实际应用中，k-means 算法非常快（是可用的最快聚类算法之一），但它会陷入"
+"局部最小值。这就是为什么多次重启它可能会有帮助。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:101 of
+msgid ""
+"If the algorithm stops before fully converging (because of ``tol`` or "
+"``max_iter``), ``labels_`` and ``cluster_centers_`` will not be "
+"consistent, i.e. the ``cluster_centers_`` will not be the means of the "
+"points in each cluster. Also, the estimator will reassign ``labels_`` "
+"after the last iteration to make ``labels_`` consistent with ``predict`` "
+"on the training set."
+msgstr ""
+"如果算法在完全收敛之前停止（由于 ``tol`` 或 ``max_iter``），``labels_`` "
+"和 ``cluster_centers_`` 将不一致，即 ``cluster_centers_`` 不会是每个聚类"
+"中点的均值。此外，估计器将在最后一次迭代后重新分配 ``labels_``，以使 ``"
+"labels_`` 与训练集上的 ``predict`` 保持一致。"
+
+#: maxframe.learn.cluster._kmeans.KMeans:109 of
+msgid "示例"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`__init__ <maxframe.learn.cluster.KMeans.__init__>`\\ "
+"\\(\\[n\\_clusters\\, init\\, n\\_init\\, ...\\]\\)"
+msgstr "__init__"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`execute <maxframe.learn.cluster.KMeans.execute>`\\ "
+"\\(\\[session\\, run\\_kwargs\\, extra\\_tileables\\]\\)"
+msgstr "execute"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`fetch <maxframe.learn.cluster.KMeans.fetch>`\\ \\(\\[session\\, "
+"run\\_kwargs\\]\\)"
+msgstr "fetch"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`fit <maxframe.learn.cluster.KMeans.fit>`\\ \\(X\\[\\, y\\, "
+"sample\\_weight\\, execute\\, session\\, ...\\]\\)"
+msgstr "fit"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid "Compute k-means clustering."
+msgstr "计算 k-means 聚类。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`fit_predict <maxframe.learn.cluster.KMeans.fit_predict>`\\ "
+"\\(X\\[\\, y\\, execute\\, sample\\_weight\\, ...\\]\\)"
+msgstr "fit_predict"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid "Compute cluster centers and predict cluster index for each sample."
+msgstr "计算聚类中心并预测每个样本的聚类索引。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`fit_transform <maxframe.learn.cluster.KMeans.fit_transform>`\\ "
+"\\(X\\[\\, y\\, sample\\_weight\\, ...\\]\\)"
+msgstr "fit_transform"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid "Compute clustering and transform X to cluster-distance space."
+msgstr "计算聚类并将 X 转换到聚类距离空间。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`get_metadata_routing "
+"<maxframe.learn.cluster.KMeans.get_metadata_routing>`\\ \\(\\)"
+msgstr "get_metadata_routing"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid "Get metadata routing of this object."
+msgstr "获取此对象的元数据路由。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`get_params <maxframe.learn.cluster.KMeans.get_params>`\\ "
+"\\(\\[deep\\]\\)"
+msgstr "get_params"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid "Get parameters for this estimator."
+msgstr "获取此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`predict <maxframe.learn.cluster.KMeans.predict>`\\ \\(X\\[\\, "
+"sample\\_weight\\, execute\\, ...\\]\\)"
+msgstr "predict"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid "Predict the closest cluster each sample in X belongs to."
+msgstr "预测 X 中每个样本所属的最近聚类。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`score <maxframe.learn.cluster.KMeans.score>`\\ \\(X\\[\\, y\\, "
+"execute\\, sample\\_weight\\, ...\\]\\)"
+msgstr "score"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid "Opposite of the value of X on the K-means objective."
+msgstr "X 在 K-means 目标函数上的相反值。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`set_fit_request "
+"<maxframe.learn.cluster.KMeans.set_fit_request>`\\ \\(\\*\\[\\, "
+"execute\\, run\\_kwargs\\, ...\\]\\)"
+msgstr "set_fit_request"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``fit`` method."
+msgstr "配置是否应请求将元数据传递给 ``fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`set_params <maxframe.learn.cluster.KMeans.set_params>`\\ "
+"\\(\\*\\*params\\)"
+msgstr "set_params"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid "Set the parameters of this estimator."
+msgstr "设置此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`set_predict_request "
+"<maxframe.learn.cluster.KMeans.set_predict_request>`\\ \\(\\*\\[\\, "
+"execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``predict`` method."
+msgstr "配置是否应请求将元数据传递给 ``predict`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`set_score_request "
+"<maxframe.learn.cluster.KMeans.set_score_request>`\\ \\(\\*\\[\\, "
+"execute\\, run\\_kwargs\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``score`` method."
+msgstr "配置是否应请求将元数据传递给 ``score`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`set_transform_request "
+"<maxframe.learn.cluster.KMeans.set_transform_request>`\\ \\(\\*\\[\\, "
+"run\\_kwargs\\, session\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``transform`` method."
+msgstr "配置是否应请求将元数据传递给 ``transform`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`transform <maxframe.learn.cluster.KMeans.transform>`\\ "
+"\\(X\\[\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.KMeans.rst:31:<autosummary>:1
+msgid "Transform X to a cluster-distance space."
+msgstr "将 X 转换为聚类距离空间。"
+

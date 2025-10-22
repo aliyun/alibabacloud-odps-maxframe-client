@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.linalg.lstsq.rst:2
+msgid "maxframe.tensor.linalg.lstsq"
+msgstr ""
+
+#: maxframe.tensor.linalg.lstsq.lstsq:1 of
+msgid "Return the least-squares solution to a linear matrix equation."
+msgstr "返回线性矩阵方程的最小二乘解。"
+
+#: maxframe.tensor.linalg.lstsq.lstsq:3 of
+msgid ""
+"Computes the vector `x` that approximately solves the equation ``a @ x = "
+"b``. The equation may be under-, well-, or over-determined (i.e., the "
+"number of linearly independent rows of `a` can be less than, equal to, or"
+" greater than its number of linearly independent columns). If `a` is "
+"square and of full rank, then `x` (but for round-off error) is the "
+"\"exact\" solution of the equation. Else, `x` minimizes the Euclidean "
+"2-norm :math:`||b - ax||`. If there are multiple minimizing solutions, "
+"the one with the smallest 2-norm :math:`||x||` is returned."
+msgstr ""
+"计算近似求解方程 ``a @ x = b`` 的向量 `x`。该方程可能是欠定、适定或超定的"
+"（即矩阵 `a` 的线性无关行数可以小于、等于或大于其线性无关列数）。如果 `a`"
+" 是方阵且满秩，则 `x`（忽略舍入误差）是该方程的“精确”解。否则，`x` 会"
+"最小化欧几里得 2-范数 :math:`||b - ax||`。如果有多个最小化解，则返回具有"
+"最小 2-范数 :math:`||x||` 的解。"
+
+#: maxframe.tensor.linalg.lstsq.lstsq of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.linalg.lstsq.lstsq:12 of
+msgid "\"Coefficient\" matrix."
+msgstr "“系数”矩阵。"
+
+#: maxframe.tensor.linalg.lstsq.lstsq:14 of
+msgid ""
+"Ordinate or \"dependent variable\" values. If `b` is two-dimensional, the"
+" least-squares solution is calculated for each of the `K` columns of `b`."
+msgstr ""
+"纵坐标或“因变量”值。如果 `b` 是二维的，则对 `b` 的每个 `K` 列计算最小"
+"二乘解。"
+
+#: maxframe.tensor.linalg.lstsq.lstsq:18 of
+msgid ""
+"Cut-off ratio for small singular values of `a`. For the purposes of rank "
+"determination, singular values are treated as zero if they are smaller "
+"than `rcond` times the largest singular value of `a`. The default uses "
+"the machine precision times ``max(M, N)``.  Passing ``-1`` will use "
+"machine precision."
+msgstr ""
+"用于判断 `a` 的小奇异值的截断比。在确定秩时，如果奇异值小于 `a` 的最大"
+"奇异值乘以 `rcond`，则将其视为零。默认值为机器精度乘以 ``max(M, N)``。"
+"传递 ``-1`` 将使用机器精度。"
+
+#: maxframe.tensor.linalg.lstsq.lstsq of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.linalg.lstsq.lstsq:26 of
+#, python-brace-format
+msgid ""
+"* **x** (*{(N,), (N, K)} ndarray*) -- Least-squares solution. If `b` is "
+"two-dimensional,   the solutions are in the `K` columns of `x`. * "
+"**residuals** (*{(1,), (K,), (0,)} ndarray*) -- Sums of squared "
+"residuals: Squared Euclidean 2-norm for each column in   ``b - a @ x``."
+"   If the rank of `a` is < N or M <= N, this is an empty array.   If `b` "
+"is 1-dimensional, this is a (1,) shape array.   Otherwise the shape is "
+"(K,). * **rank** (*int*) -- Rank of matrix `a`. * **s** (*(min(M, N),) "
+"ndarray*) -- Singular values of `a`."
+msgstr ""
+"* **x** (*{(N,), (N, K)} ndarray*) -- 最小二乘解。如果 `b` 是二维的，则解"
+"在 `x` 的 `K` 列中。 * **residuals** (*{(1,), (K,), (0,)} ndarray*) -- "
+"残差平方和：对于 ``b - a @ x`` 中的每一列，计算其平方欧几里得 2-范数。"
+"如果 `a` 的秩 < N 或 M <= N，则此为一个空数组。如果 `b` 是一维的，则形状"
+"为 (1,)。否则形状为 (K,)。 * **rank** (*int*) -- 矩阵 `a` 的秩。 * **s** "
+"(*(min(M, N),) ndarray*) -- 矩阵 `a` 的奇异值。"
+
+#: maxframe.tensor.linalg.lstsq.lstsq:26 of
+#, python-brace-format
+msgid ""
+"**x** (*{(N,), (N, K)} ndarray*) -- Least-squares solution. If `b` is "
+"two-dimensional, the solutions are in the `K` columns of `x`."
+msgstr ""
+"**x** (*{(N,), (N, K)} ndarray*) -- 最小二乘解。如果 `b` 是二维的，则解在"
+" `x` 的 `K` 列中。"
+
+#: maxframe.tensor.linalg.lstsq.lstsq:28 of
+#, python-brace-format
+msgid ""
+"**residuals** (*{(1,), (K,), (0,)} ndarray*) -- Sums of squared "
+"residuals: Squared Euclidean 2-norm for each column in ``b - a @ x``. If "
+"the rank of `a` is < N or M <= N, this is an empty array. If `b` is "
+"1-dimensional, this is a (1,) shape array. Otherwise the shape is (K,)."
+msgstr ""
+"**residuals** (*{(1,), (K,), (0,)} ndarray*) -- 残差平方和：对于 ``b - a "
+"@ x`` 中的每一列，计算其平方欧几里得 2-范数。如果 `a` 的秩 < N 或 M <= N"
+"，则此为一个空数组。如果 `b` 是一维的，则形状为 (1,)。否则形状为 (K,)。"
+
+#: maxframe.tensor.linalg.lstsq.lstsq:33 of
+msgid "**rank** (*int*) -- Rank of matrix `a`."
+msgstr "**rank** (*int*) -- 矩阵 `a` 的秩。"
+
+#: maxframe.tensor.linalg.lstsq.lstsq:34 of
+msgid "**s** (*(min(M, N),) ndarray*) -- Singular values of `a`."
+msgstr "**s** (*(min(M, N),) ndarray*) -- 矩阵 `a` 的奇异值。"
+
+#: maxframe.tensor.linalg.lstsq.lstsq of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.tensor.linalg.lstsq.lstsq:36 of
+msgid "If computation does not converge."
+msgstr "如果计算不收敛。"
+
+#: maxframe.tensor.linalg.lstsq.lstsq:39 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.linalg.lstsq.lstsq:40 of
+msgid "If `b` is a matrix, then all array results are returned as matrices."
+msgstr "如果 `b` 是矩阵，则所有数组结果都以矩阵形式返回。"
+

@@ -1,0 +1,197 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.matmul.rst:2
+msgid "maxframe.tensor.matmul"
+msgstr ""
+
+#: maxframe.tensor.linalg.matmul.matmul:1 of
+msgid "Matrix product of two tensors."
+msgstr "两个张量的矩阵乘积。"
+
+#: maxframe.tensor.linalg.matmul.matmul:3 of
+msgid "The behavior depends on the arguments in the following way."
+msgstr "其行为取决于参数，具体如下。"
+
+#: maxframe.tensor.linalg.matmul.matmul:5 of
+msgid "If both arguments are 2-D they are multiplied like conventional matrices."
+msgstr "如果两个参数都是二维的，则按照常规矩阵方式相乘。"
+
+#: maxframe.tensor.linalg.matmul.matmul:7 of
+msgid ""
+"If either argument is N-D, N > 2, it is treated as a stack of matrices "
+"residing in the last two indexes and broadcast accordingly."
+msgstr ""
+"如果任一参数是 N 维（N > 2），则将其视为驻留在最后两个索引中的矩阵堆栈，"
+"并据此进行广播。"
+
+#: maxframe.tensor.linalg.matmul.matmul:9 of
+msgid ""
+"If the first argument is 1-D, it is promoted to a matrix by prepending a "
+"1 to its dimensions. After matrix multiplication the prepended 1 is "
+"removed."
+msgstr ""
+"如果第一个参数是一维的，则通过在其维度前添加一个 1 将其提升为矩阵。矩阵"
+"乘法后，添加的 1 会被移除。"
+
+#: maxframe.tensor.linalg.matmul.matmul:12 of
+msgid ""
+"If the second argument is 1-D, it is promoted to a matrix by appending a "
+"1 to its dimensions. After matrix multiplication the appended 1 is "
+"removed."
+msgstr ""
+"如果第二个参数是一维的，则通过在其维度后添加一个 1 将其提升为矩阵。矩阵"
+"乘法后，添加的 1 会被移除。"
+
+#: maxframe.tensor.linalg.matmul.matmul:16 of
+msgid ""
+"Multiplication by a scalar is not allowed, use ``*`` instead. Note that "
+"multiplying a stack of matrices with a vector will result in a stack of "
+"vectors, but matmul will not recognize it as such."
+msgstr ""
+"不允许与标量相乘，请改用 ``*``。注意，将矩阵堆栈与向量相乘会得到向量堆栈"
+"，但 matmul 不会将其识别为向量堆栈。"
+
+#: maxframe.tensor.linalg.matmul.matmul:20 of
+msgid "``matmul`` differs from ``dot`` in two important ways."
+msgstr "``matmul`` 与 ``dot`` 在两个重要方面有所不同。"
+
+#: maxframe.tensor.linalg.matmul.matmul:22 of
+msgid "Multiplication by scalars is not allowed."
+msgstr "不允许与标量相乘。"
+
+#: maxframe.tensor.linalg.matmul.matmul:23 of
+msgid ""
+"Stacks of matrices are broadcast together as if the matrices were "
+"elements."
+msgstr "矩阵堆栈将像元素一样进行广播。"
+
+#: maxframe.tensor.linalg.matmul.matmul of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.linalg.matmul.matmul:26 of
+msgid "First argument."
+msgstr "第一个参数。"
+
+#: maxframe.tensor.linalg.matmul.matmul:28 of
+msgid "Second argument."
+msgstr "第二个参数。"
+
+#: maxframe.tensor.linalg.matmul.matmul:30 of
+msgid ""
+"Output argument. This must have the exact kind that would be returned if "
+"it was not used. In particular, it must have the right type, and its "
+"dtype must be the dtype that would be returned for `dot(a,b)`. This is a "
+"performance feature. Therefore, if these conditions are not met, an "
+"exception is raised, instead of attempting to be flexible."
+msgstr ""
+"输出参数。它必须具有未使用时将返回的确切类型。特别是，它必须具有正确的"
+"类型，且其 dtype 必须是 `dot(a,b)` 将返回的 dtype。这是一个性能特性。因此"
+"，如果这些条件未满足，将引发异常，而不是尝试灵活处理。"
+
+#: maxframe.tensor.linalg.matmul.matmul of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.linalg.matmul.matmul:38 of
+msgid ""
+"**output** -- Returns the dot product of `a` and `b`.  If `a` and `b` are"
+" both 1-D arrays then a scalar is returned; otherwise an array is "
+"returned.  If `out` is given, then it is returned."
+msgstr ""
+"**output** -- 返回 `a` 和 `b` 的点积。如果 `a` 和 `b` 都是一维数组，则"
+"返回一个标量；否则返回一个数组。如果提供了 `out`，则返回 `out`。"
+
+#: maxframe.tensor.linalg.matmul.matmul of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.linalg.matmul.matmul of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.tensor.linalg.matmul.matmul:43 of
+msgid ""
+"If the last dimension of `a` is not the same size as     the second-to-"
+"last dimension of `b`.          If scalar value is passed."
+msgstr "如果 `a` 的最后一维与 `b` 的倒数第二维大小不同。如果传入了标量值。"
+
+#: maxframe.tensor.linalg.matmul.matmul:47 of
+msgid ":py:obj:`vdot`"
+msgstr ""
+
+#: maxframe.tensor.linalg.matmul.matmul:48 of
+msgid "Complex-conjugating dot product."
+msgstr "复共轭点积。"
+
+#: maxframe.tensor.linalg.matmul.matmul:50 of
+msgid ":py:obj:`tensordot`"
+msgstr ""
+
+#: maxframe.tensor.linalg.matmul.matmul:51 of
+msgid "Sum products over arbitrary axes."
+msgstr "在任意轴上求和。"
+
+#: maxframe.tensor.linalg.matmul.matmul:53 of
+msgid ":py:obj:`dot`"
+msgstr ""
+
+#: maxframe.tensor.linalg.matmul.matmul:54 of
+msgid "alternative matrix product with different broadcasting rules."
+msgstr "具有不同广播规则的替代矩阵乘积。"
+
+#: maxframe.tensor.linalg.matmul.matmul:57 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.linalg.matmul.matmul:58 of
+msgid ""
+"The matmul function implements the semantics of the `@` operator "
+"introduced in Python 3.5 following PEP465."
+msgstr "matmul 函数实现了在 Python 3.5 中根据 PEP465 引入的 `@` 运算符的语义。"
+
+#: maxframe.tensor.linalg.matmul.matmul:62 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.linalg.matmul.matmul:63 of
+msgid "For 2-D arrays it is the matrix product:"
+msgstr "对于二维数组，它是矩阵乘积："
+
+#: maxframe.tensor.linalg.matmul.matmul:73 of
+msgid "For 2-D mixed with 1-D, the result is the usual."
+msgstr "对于二维与一维混合，结果是常规的。"
+
+#: maxframe.tensor.linalg.matmul.matmul:82 of
+msgid "Broadcasting is conventional for stacks of arrays"
+msgstr "广播对于数组堆栈是常规的"
+
+#: maxframe.tensor.linalg.matmul.matmul:93 of
+msgid ""
+"Vector, vector returns the scalar inner product, but neither argument is "
+"complex-conjugated:"
+msgstr "向量，向量返回标量内积，但两个参数都不进行复共轭："
+
+#: maxframe.tensor.linalg.matmul.matmul:99 of
+msgid "Scalar multiplication raises an error."
+msgstr "标量乘法会引发错误。"
+

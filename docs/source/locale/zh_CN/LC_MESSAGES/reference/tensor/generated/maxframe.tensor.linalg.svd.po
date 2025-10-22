@@ -1,0 +1,196 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.linalg.svd.rst:2
+msgid "maxframe.tensor.linalg.svd"
+msgstr ""
+
+#: maxframe.tensor.linalg.svd.svd:1 of
+msgid "Singular Value Decomposition."
+msgstr "奇异值分解。"
+
+#: maxframe.tensor.linalg.svd.svd:3 of
+msgid ""
+"When `a` is a 2D tensor, it is factorized as ``u @ np.diag(s) @ vh = (u *"
+" s) @ vh``, where `u` and `vh` are 2D unitary tensors and `s` is a 1D "
+"tensor of `a`'s singular values. When `a` is higher-dimensional, SVD is "
+"applied in stacked mode as explained below."
+msgstr ""
+"当 `a` 是一个 2D tensor 时，它被分解为 ``u @ np.diag(s) @ vh = (u * s) @ "
+"vh``，其中 `u` 和 `vh` 是 2D 酉矩阵，而 `s` 是 `a` 的奇异值组成的 1D "
+"tensor。当 `a` 是高维时，SVD 会按堆叠模式应用，如下所述。"
+
+#: maxframe.tensor.linalg.svd.svd of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.linalg.svd.svd:8 of
+msgid "A real or complex tensor with ``a.ndim >= 2``."
+msgstr "一个实数或复数 tensor，其维度 ``a.ndim >= 2``。"
+
+#: maxframe.tensor.linalg.svd.svd:10 of
+msgid ""
+"method to calculate qr factorization, tsqr as default  TSQR is presented "
+"in:      A. Benson, D. Gleich, and J. Demmel.     Direct QR "
+"factorizations for tall-and-skinny matrices in     MapReduce "
+"architectures.     IEEE International Conference on Big Data, 2013.     "
+"http://arxiv.org/abs/1301.1071"
+msgstr ""
+"计算 QR 分解的方法，默认使用 tsqr。TSQR 的描述见于：A. Benson, D. Gleich,"
+" 和 J. Demmel，直接 QR 分解用于 MapReduce 架构中的高瘦矩阵，IEEE 大数据"
+"国际会议，2013 年，http://arxiv.org/abs/1301.1071"
+
+#: maxframe.tensor.linalg.svd.svd:10 of
+msgid "method to calculate qr factorization, tsqr as default"
+msgstr ""
+
+#: maxframe.tensor.linalg.svd.svd:12 of
+msgid "TSQR is presented in:"
+msgstr ""
+
+#: maxframe.tensor.linalg.svd.svd:14 of
+#, fuzzy
+msgid ""
+"A. Benson, D. Gleich, and J. Demmel. Direct QR factorizations for tall-"
+"and-skinny matrices in MapReduce architectures. IEEE International "
+"Conference on Big Data, 2013. http://arxiv.org/abs/1301.1071"
+msgstr ""
+"计算 QR 分解的方法，默认使用 tsqr。TSQR 的描述见于：A. Benson, D. Gleich,"
+" 和 J. Demmel，直接 QR 分解用于 MapReduce 架构中的高瘦矩阵，IEEE 大数据"
+"国际会议，2013 年，http://arxiv.org/abs/1301.1071"
+
+#: maxframe.tensor.linalg.svd.svd of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.linalg.svd.svd:21 of
+#, python-brace-format
+msgid ""
+"* **u** (*{ (..., M, M), (..., M, K) } tensor*) -- Unitary tensor(s). The"
+" first ``a.ndim - 2`` dimensions have the same   size as those of the "
+"input `a`. The size of the last two dimensions   depends on the value of "
+"`full_matrices`. Only returned when   `compute_uv` is True. * **s** "
+"(*(..., K) tensor*) -- Vector(s) with the singular values, within each "
+"vector sorted in   descending order. The first ``a.ndim - 2`` dimensions "
+"have the same   size as those of the input `a`. * **vh** (*{ (..., N, N),"
+" (..., K, N) } tensor*) -- Unitary tensor(s). The first ``a.ndim - 2`` "
+"dimensions have the same   size as those of the input `a`. The size of "
+"the last two dimensions   depends on the value of `full_matrices`. Only "
+"returned when   `compute_uv` is True."
+msgstr ""
+"* **u** (*{ (..., M, M), (..., M, K) } tensor*) -- 酉矩阵。前 ``a.ndim - "
+"2`` 维度与输入 `a` 相同。最后两个维度的大小取决于 `full_matrices` 的值。"
+"仅在 `compute_uv` 为 True 时返回。* **s** (*(..., K) tensor*) -- 包含奇异"
+"值的向量，每个向量按降序排列。前 ``a.ndim - 2`` 维度与输入 `a` 相同。* **"
+"vh** (*{ (..., N, N), (..., K, N) } tensor*) -- 酉矩阵。前 ``a.ndim - 2``"
+" 维度与输入 `a` 相同。最后两个维度的大小取决于 `full_matrices` 的值。仅在"
+" `compute_uv` 为 True 时返回。"
+
+#: maxframe.tensor.linalg.svd.svd:21 of
+#, python-brace-format
+msgid ""
+"**u** (*{ (..., M, M), (..., M, K) } tensor*) -- Unitary tensor(s). The "
+"first ``a.ndim - 2`` dimensions have the same size as those of the input "
+"`a`. The size of the last two dimensions depends on the value of "
+"`full_matrices`. Only returned when `compute_uv` is True."
+msgstr ""
+"**u** (*{ (..., M, M), (..., M, K) } tensor*) -- 酉矩阵。前 ``a.ndim - 2`"
+"` 维度与输入 `a` 相同。最后两个维度的大小取决于 `full_matrices` 的值。仅"
+"在 `compute_uv` 为 True 时返回。"
+
+#: maxframe.tensor.linalg.svd.svd:25 of
+msgid ""
+"**s** (*(..., K) tensor*) -- Vector(s) with the singular values, within "
+"each vector sorted in descending order. The first ``a.ndim - 2`` "
+"dimensions have the same size as those of the input `a`."
+msgstr ""
+"**s** (*(..., K) tensor*) -- 包含奇异值的向量，每个向量按降序排列。前 ``a"
+".ndim - 2`` 维度与输入 `a` 相同。"
+
+#: maxframe.tensor.linalg.svd.svd:28 of
+#, python-brace-format
+msgid ""
+"**vh** (*{ (..., N, N), (..., K, N) } tensor*) -- Unitary tensor(s). The "
+"first ``a.ndim - 2`` dimensions have the same size as those of the input "
+"`a`. The size of the last two dimensions depends on the value of "
+"`full_matrices`. Only returned when `compute_uv` is True."
+msgstr ""
+"**vh** (*{ (..., N, N), (..., K, N) } tensor*) -- 酉矩阵。前 ``a.ndim - 2"
+"`` 维度与输入 `a` 相同。最后两个维度的大小取决于 `full_matrices` 的值。仅"
+"在 `compute_uv` 为 True 时返回。"
+
+#: maxframe.tensor.linalg.svd.svd of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.tensor.linalg.svd.svd:33 of
+msgid "If SVD computation does not converge."
+msgstr "如果 SVD 计算不收敛。"
+
+#: maxframe.tensor.linalg.svd.svd:36 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.linalg.svd.svd:37 of
+#, python-brace-format
+msgid ""
+"SVD is usually described for the factorization of a 2D matrix :math:`A`. "
+"The higher-dimensional case will be discussed below. In the 2D case, SVD "
+"is written as :math:`A = U S V^H`, where :math:`A = a`, :math:`U= u`, "
+":math:`S= \\mathtt{np.diag}(s)` and :math:`V^H = vh`. The 1D tensor `s` "
+"contains the singular values of `a` and `u` and `vh` are unitary. The "
+"rows of `vh` are the eigenvectors of :math:`A^H A` and the columns of `u`"
+" are the eigenvectors of :math:`A A^H`. In both cases the corresponding "
+"(possibly non-zero) eigenvalues are given by ``s**2``."
+msgstr ""
+"SVD 通常用于描述 2D 矩阵 :math:`A` 的分解。高维情况将在下文讨论。在 2D "
+"情况下，SVD 可写作 :math:`A = U S V^H`，其中 :math:`A = a`，:math:`U = u`"
+"，:math:`S = \\mathtt{np.diag}(s)` 且 :math:`V^H = vh`。1D tensor `s` "
+"包含 `a` 的奇异值，`u` 和 `vh` 是酉矩阵。`vh` 的行是 :math:`A^H A` 的"
+"特征向量，`u` 的列是 :math:`A A^H` 的特征向量。这两种情况下对应的（可能"
+"非零）特征值由 ``s**2`` 给出。"
+
+#: maxframe.tensor.linalg.svd.svd:46 of
+msgid ""
+"If `a` has more than two dimensions, then broadcasting rules apply, as "
+"explained in :ref:`routines.linalg-broadcasting`. This means that SVD is "
+"working in \"stacked\" mode: it iterates over all indices of the first "
+"``a.ndim - 2`` dimensions and for each combination SVD is applied to the "
+"last two indices. The matrix `a` can be reconstructed from the "
+"decomposition with either ``(u * s[..., None, :]) @ vh`` or ``u @ (s[...,"
+" None] * vh)``. (The ``@`` operator can be replaced by the function "
+"``mt.matmul`` for python versions below 3.5.)"
+msgstr ""
+"如果 `a` 的维度超过二维，则遵循广播规则，如 :ref:`routines.linalg-"
+"broadcasting` 所述。这意味着 SVD 在“堆叠”模式下工作：它会遍历前 ``a."
+"ndim - 2`` 个维度的所有索引，并对每个组合将 SVD 应用于最后两个维度。可以"
+"通过 ``(u * s[..., None, :]) @ vh`` 或 ``u @ (s[..., None] * vh)`` 从分解"
+"中重构矩阵 `a`。（对于低于 3.5 的 Python 版本，``@`` 运算符可以替换为函数"
+" ``mt.matmul``。）"
+
+#: maxframe.tensor.linalg.svd.svd:56 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.linalg.svd.svd:61 of
+msgid "Reconstruction based on reduced SVD, 2D case:"
+msgstr "基于简化 SVD 的重构，二维情况："
+

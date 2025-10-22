@@ -22,6 +22,7 @@ from ... import tensor as mt
 from ...core import ENTITY_TYPE, OutputType
 from ...serialization.serializables import BoolField
 from ...tensor.core import TENSOR_TYPE
+from ...utils import get_pd_option
 from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE, MultiIndex
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 
@@ -138,7 +139,7 @@ def isna(obj):
     2     True
     dtype: bool
     """
-    use_inf_as_na = pd.get_option("mode.use_inf_as_na")
+    use_inf_as_na = get_pd_option("mode.use_inf_as_na", False)
     if isinstance(obj, MultiIndex):
         raise NotImplementedError("isna is not defined for MultiIndex")
     elif isinstance(obj, ENTITY_TYPE):
@@ -213,7 +214,7 @@ def notna(obj):
     2    False
     dtype: bool
     """
-    use_inf_as_na = pd.get_option("mode.use_inf_as_na")
+    use_inf_as_na = get_pd_option("mode.use_inf_as_na", False)
     if isinstance(obj, MultiIndex):
         raise NotImplementedError("isna is not defined for MultiIndex")
     elif isinstance(obj, ENTITY_TYPE):

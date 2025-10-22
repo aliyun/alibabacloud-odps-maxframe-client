@@ -12,21 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .rank import DataFrameRank
 from .sort_index import DataFrameSortIndex
 from .sort_values import DataFrameSortValues
 
 
 def _install():
-    from ..core import DATAFRAME_TYPE, SERIES_TYPE
-    from .argsort import series_argsort
+    from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
+    from .argsort import index_argsort, series_argsort
     from .nlargest import df_nlargest, series_nlargest
     from .nsmallest import df_nsmallest, series_nsmallest
+    from .rank import rank
     from .sort_index import sort_index
     from .sort_values import dataframe_sort_values, series_sort_values
 
     for cls in DATAFRAME_TYPE:
         setattr(cls, "nlargest", df_nlargest)
         setattr(cls, "nsmallest", df_nsmallest)
+        setattr(cls, "rank", rank)
         setattr(cls, "sort_values", dataframe_sort_values)
         setattr(cls, "sort_index", sort_index)
 
@@ -34,8 +37,12 @@ def _install():
         setattr(cls, "argsort", series_argsort)
         setattr(cls, "nlargest", series_nlargest)
         setattr(cls, "nsmallest", series_nsmallest)
+        setattr(cls, "rank", rank)
         setattr(cls, "sort_values", series_sort_values)
         setattr(cls, "sort_index", sort_index)
+
+    for cls in INDEX_TYPE:
+        setattr(cls, "argsort", index_argsort)
 
 
 _install()

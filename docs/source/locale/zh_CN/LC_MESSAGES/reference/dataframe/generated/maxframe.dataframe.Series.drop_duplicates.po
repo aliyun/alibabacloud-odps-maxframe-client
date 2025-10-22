@@ -1,0 +1,139 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.drop_duplicates.rst:2
+msgid "maxframe.dataframe.Series.drop\\_duplicates"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:1 of
+msgid "Return Series with duplicate values removed."
+msgstr "返回去除重复值后的 Series。"
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:3 of
+msgid ""
+"Method to handle dropping duplicates:  - 'first' : Drop duplicates except"
+" for the first occurrence. - 'last' : Drop duplicates except for the last"
+" occurrence. - 'any' : Drop duplicates except for a random occurrence. - "
+"``False`` : Drop all duplicates."
+msgstr ""
+"处理去除重复值的方法：  - 'first' : 保留第一次出现的值，去除其余重复项。 "
+"- 'last' : 保留最后一次出现的值，去除其余重复项。 - 'any' : 随机保留一个"
+"出现的值，去除其余重复项。 - ``False`` : 去除所有重复项。"
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:3 of
+msgid "Method to handle dropping duplicates:"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:5 of
+msgid "'first' : Drop duplicates except for the first occurrence."
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:6 of
+msgid "'last' : Drop duplicates except for the last occurrence."
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:7 of
+msgid "'any' : Drop duplicates except for a random occurrence."
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:8 of
+msgid "``False`` : Drop all duplicates."
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:10 of
+msgid "If ``True``, performs operation inplace and returns None."
+msgstr "如果为 ``True``，则就地执行操作并返回 None。"
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:13 of
+msgid "Series with duplicates dropped."
+msgstr "去除重复值后的 Series。"
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:18 of
+msgid ":py:obj:`Index.drop_duplicates`"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:19 of
+msgid "Equivalent method on Index."
+msgstr "Index 上的等效方法。"
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:21 of
+msgid ":py:obj:`DataFrame.drop_duplicates`"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:22 of
+msgid "Equivalent method on DataFrame."
+msgstr "DataFrame 上的等效方法。"
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:24 of
+msgid ":py:obj:`Series.duplicated`"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:25 of
+msgid "Related method on Series, indicating duplicate Series values."
+msgstr "Series 上的相关方法，用于指示 Series 中的重复值。"
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:28 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:29 of
+msgid "Generate a Series with duplicated entries."
+msgstr "生成一个包含重复条目的 Series。"
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:43 of
+msgid ""
+"With the 'keep' parameter, the selection behaviour of duplicated values "
+"can be changed. The value 'first' keeps the first occurrence for each set"
+" of duplicated entries. The default value of keep is 'first'. >>> "
+"s.drop_duplicates().execute() 0      lame 1       cow 3    beetle 5     "
+"hippo Name: animal, dtype: object The value 'last' for parameter 'keep' "
+"keeps the last occurrence for each set of duplicated entries. >>> "
+"s.drop_duplicates(keep='last').execute() 1       cow 3    beetle 4      "
+"lame 5     hippo Name: animal, dtype: object"
+msgstr ""
+"通过 'keep' 参数可以更改重复值的选择行为。'first' 值保留每组重复条目的"
+"第一次出现，默认的 keep 值是 'first'。>>> s.drop_duplicates().execute() 0"
+"      lame 1       cow 3    beetle 5     hippo Name: animal, dtype: "
+"object 参数 'keep' 的值 'last' 保留每组重复条目的最后一次出现。>>> s.drop"
+"_duplicates(keep='last').execute() 1       cow 3    beetle 4      lame 5 "
+"    hippo Name: animal, dtype: object"
+
+#: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:61 of
+msgid ""
+"The value ``False`` for parameter 'keep' discards all sets of duplicated "
+"entries. Setting the value of 'inplace' to ``True`` performs the "
+"operation inplace and returns ``None``."
+msgstr ""
+"参数 'keep' 的值 ``False`` 会丢弃所有重复条目。将 'inplace' 的值设置为 ``"
+"True`` 会就地执行操作并返回 ``None``。"
+

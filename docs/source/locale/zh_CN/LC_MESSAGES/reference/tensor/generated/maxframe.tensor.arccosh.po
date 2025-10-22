@@ -1,0 +1,126 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.arccosh.rst:2
+msgid "maxframe.tensor.arccosh"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:1 of
+msgid "Inverse hyperbolic cosine, element-wise."
+msgstr "逐元素计算反双曲余弦值。"
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:3 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:5 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供了该参数，其形状必须可以广播至输入形状。如果"
+"未提供或为 `None`，则返回一个新分配的张量。元组（仅能作为关键字参数）的"
+"长度必须等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:10 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的原始值。"
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:15 of
+msgid "**arccosh** -- Array of the same shape as `x`."
+msgstr "**arccosh** -- 与 `x` 形状相同的数组。"
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:18 of
+msgid ""
+":py:obj:`cosh`, :py:obj:`arcsinh`, :py:obj:`sinh`, :py:obj:`arctanh`, "
+":py:obj:`tanh`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:21 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:22 of
+msgid ""
+"`arccosh` is a multivalued function: for each `x` there are infinitely "
+"many numbers `z` such that `cosh(z) = x`. The convention is to return the"
+" `z` whose imaginary part lies in `[-pi, pi]` and the real part in ``[0, "
+"inf]``."
+msgstr ""
+"`arccosh` 是一个多值函数：对于每个 `x`，存在无穷多个数 `z` 满足 `cosh(z) "
+"= x`。约定返回虚部在 `[-pi, pi]` 范围内且实部在 ``[0, inf]`` 范围内的 `z`"
+"。"
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:27 of
+msgid ""
+"For real-valued input data types, `arccosh` always returns real output. "
+"For each value that cannot be expressed as a real number or infinity, it "
+"yields ``nan`` and sets the `invalid` floating point error flag."
+msgstr ""
+"对于实数类型的输入数据，`arccosh` 总是返回实数输出。对于无法表示为实数或"
+"无穷大的值，它会返回 ``nan`` 并设置 `invalid` 浮点错误标志。"
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:31 of
+msgid ""
+"For complex-valued input, `arccosh` is a complex analytical function that"
+" has a branch cut `[-inf, 1]` and is continuous from above on it."
+msgstr ""
+"对于复数类型的输入，`arccosh` 是一个具有分支切割 `[-inf, 1]` 的复解析函数"
+"，且在其上从上方连续。"
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:35 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:36 of
+msgid ""
+"M. Abramowitz and I.A. Stegun, \"Handbook of Mathematical Functions\", "
+"10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/"
+msgstr ""
+"M. Abramowitz 和 I.A. Stegun，《数学函数手册》，第10版，1964年，第86页。"
+"http://www.math.sfu.ca/~cbm/aands/"
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:38 of
+msgid ""
+"Wikipedia, \"Inverse hyperbolic function\", "
+"http://en.wikipedia.org/wiki/Arccosh"
+msgstr "维基百科，“反双曲函数”，http://en.wikipedia.org/wiki/Arccosh"
+
+#: maxframe.tensor.arithmetic.arccosh.arccosh:42 of
+msgid "示例"
+msgstr ""
+

@@ -22,7 +22,7 @@ from odps.models import Table
 from odps.utils import to_timestamp
 
 from ... import opcodes
-from ...config import options
+from ...config import option_context, options
 from ...core import OutputType
 from ...io.odpsio import odps_schema_to_pandas_dtypes
 from ...serialization.serializables import (
@@ -36,8 +36,12 @@ from ...serialization.serializables import (
 )
 from ...utils import estimate_table_size, is_empty
 from ..core import DataFrame  # noqa: F401
-from ..utils import parse_index
-from .core import ColumnPruneSupportedDataSourceMixin, IncrementalIndexDatasource
+from ..utils import parse_index, validate_dtype_backend
+from .core import (
+    ColumnPruneSupportedDataSourceMixin,
+    DtypeBackendCompatibleMixin,
+    IncrementalIndexDatasource,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +49,7 @@ logger = logging.getLogger(__name__)
 class DataFrameReadODPSTable(
     IncrementalIndexDatasource,
     ColumnPruneSupportedDataSourceMixin,
+    DtypeBackendCompatibleMixin,
 ):
     __slots__ = ("_odps_entry",)
     _op_type_ = opcodes.READ_ODPS_TABLE
@@ -54,18 +59,22 @@ class DataFrameReadODPSTable(
     dtypes = SeriesField("dtypes", default=None)
     columns = AnyField("columns", default=None)
     nrows = Int64Field("nrows", default=None)
-    use_arrow_dtype = BoolField("use_arrow_dtype", default=None)
+    dtype_backend = StringField("dtype_backend", default=None)
     string_as_binary = BoolField("string_as_binary", default=None)
     append_partitions = BoolField("append_partitions", default=None)
     last_modified_time = Int64Field("last_modified_time", default=None)
     index_columns = ListField("index_columns", FieldTypes.string, default=None)
     index_dtypes = SeriesField("index_dtypes", default=None)
 
-    def __init__(self, memory_scale=None, **kw):
+    def __init__(self, memory_scale=None, dtype_backend=None, **kw):
         output_type = kw.pop("output_type", OutputType.dataframe)
         self._odps_entry = kw.pop("odps_entry", None)
+        dtype_backend = validate_dtype_backend(dtype_backend)
         super(DataFrameReadODPSTable, self).__init__(
-            memory_scale=memory_scale, _output_types=[output_type], **kw
+            memory_scale=memory_scale,
+            dtype_backend=dtype_backend,
+            _output_types=[output_type],
+            **kw,
         )
 
     @property
@@ -153,6 +162,7 @@ def read_odps_table(
     odps_entry: ODPS = None,
     string_as_binary: bool = None,
     append_partitions: bool = False,
+    dtype_backend: str = None,
     **kw,
 ):
     """
@@ -176,6 +186,8 @@ def read_odps_table(
     append_partitions: bool
         If True, will add all partition columns as selected columns when
         `columns` is not specified,
+    dtype_backend: {'numpy', 'pyarrow'}, default 'numpy'
+        Back-end data type applied to the resultant DataFrame (still experimental).
 
     Returns
     -------
@@ -202,9 +214,20 @@ def read_odps_table(
         else table.table_schema.simple_columns
     )
     table_columns = [c.name.lower() for c in cols]
-    table_dtypes = odps_schema_to_pandas_dtypes(
-        table.table_schema, with_partitions=True
+
+    if "use_arrow_dtype" in kw:
+        dtype_backend = dtype_backend or validate_dtype_backend(
+            kw.pop("use_arrow_dtype")
+        )
+    dtype_backend = validate_dtype_backend(
+        dtype_backend or options.dataframe.dtype_backend
     )
+
+    with option_context():
+        options.dataframe.dtype_backend = dtype_backend
+        table_dtypes = odps_schema_to_pandas_dtypes(
+            table.table_schema, with_partitions=True
+        )
     df_types = [table_dtypes[c] for c in table_columns]
 
     if isinstance(index_col, str):
@@ -246,7 +269,6 @@ def read_odps_table(
     dtypes = pd.Series(df_types, index=table_columns)
     chunk_bytes = kw.pop("chunk_bytes", None)
     chunk_size = kw.pop("chunk_size", None)
-    use_arrow_dtype = kw.pop("use_arrow_dtype", True)
 
     partitions = partitions or kw.get("partition")
     if isinstance(partitions, str):
@@ -261,7 +283,7 @@ def read_odps_table(
         partitions=partitions,
         dtypes=dtypes,
         columns=columns,
-        use_arrow_dtype=use_arrow_dtype,
+        dtype_backend=dtype_backend,
         string_as_binary=string_as_binary,
         append_partitions=append_partitions,
         last_modified_time=to_timestamp(table.last_data_modified_time),

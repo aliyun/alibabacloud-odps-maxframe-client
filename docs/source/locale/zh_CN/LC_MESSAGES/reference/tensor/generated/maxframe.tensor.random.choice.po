@@ -1,0 +1,131 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.choice.rst:2
+msgid "maxframe.tensor.random.choice"
+msgstr ""
+
+#: maxframe.tensor.random.choice.choice:1 of
+msgid "Generates a random sample from a given 1-D array"
+msgstr "从给定的 1 维数组中生成随机样本"
+
+#: maxframe.tensor.random.choice.choice of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.choice.choice:3 of
+msgid ""
+"If a tensor, a random sample is generated from its elements. If an int, "
+"the random sample is generated as if a were mt.arange(a)"
+msgstr ""
+"如果是一个张量，则从其元素中生成随机样本。如果是一个整数，则生成的"
+"随机样本如同 a 是 mt.arange(a) 一样"
+
+#: maxframe.tensor.random.choice.choice:6 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  Default is None, in which case a single value is"
+" returned."
+msgstr ""
+"输出形状。如果给定的形状例如为 ``(m, n, k)``，则抽取 ``m * n * k`` 个样本"
+"。默认为 None，此时返回单个值。"
+
+#: maxframe.tensor.random.choice.choice:10 of
+msgid "Whether the sample is with or without replacement"
+msgstr "样本是否有放回"
+
+#: maxframe.tensor.random.choice.choice:12 of
+msgid ""
+"The probabilities associated with each entry in a. If not given the "
+"sample assumes a uniform distribution over all entries in a."
+msgstr ""
+"与 a 中每个条目关联的概率。如果未提供，则样本在 a 的所有条目上服从"
+"均匀分布。"
+
+#: maxframe.tensor.random.choice.choice:16 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.random.choice.choice:18 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.choice.choice of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.choice.choice:21 of
+msgid "**samples** -- The generated random samples"
+msgstr "**samples** -- 生成的随机样本"
+
+#: maxframe.tensor.random.choice.choice of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.choice.choice of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.tensor.random.choice.choice:24 of
+msgid ""
+"If a is an int and less than zero, if a or p are not 1-dimensional,     "
+"if a is an array-like of size 0, if p is not a vector of     "
+"probabilities, if a and p have different lengths, or if     replace=False"
+" and the sample size is greater than the population     size"
+msgstr ""
+"如果 a 是一个负整数，或者 a 或 p 不是一维的，或者 a 是长度为 0 的类数组"
+"对象，或者 p 不是概率向量，或者 a 和 p 长度不同，或者 replace=False 但"
+"样本数量大于总体数量"
+
+#: maxframe.tensor.random.choice.choice:26 of
+msgid ":py:obj:`randint`, :py:obj:`shuffle`, :py:obj:`permutation`"
+msgstr ""
+
+#: maxframe.tensor.random.choice.choice:29 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.choice.choice:30 of
+msgid "Generate a uniform random sample from mt.arange(5) of size 3:"
+msgstr "从 mt.arange(5) 中生成大小为 3 的均匀随机样本："
+
+#: maxframe.tensor.random.choice.choice:38 of
+msgid "Generate a non-uniform random sample from np.arange(5) of size 3:"
+msgstr "从 np.arange(5) 中生成大小为 3 的非均匀随机样本："
+
+#: maxframe.tensor.random.choice.choice:43 of
+msgid ""
+"Generate a uniform random sample from mt.arange(5) of size 3 without "
+"replacement:"
+msgstr "从 mt.arange(5) 中生成大小为 3 的无放回均匀随机样本："
+
+#: maxframe.tensor.random.choice.choice:50 of
+msgid ""
+"Generate a non-uniform random sample from mt.arange(5) of size 3 without "
+"replacement:"
+msgstr "从 mt.arange(5) 中生成大小为 3 的无放回非均匀随机样本："
+
+#: maxframe.tensor.random.choice.choice:56 of
+msgid ""
+"Any of the above can be repeated with an arbitrary array-like instead of "
+"just integers. For instance:"
+msgstr "上面的任何操作都可以使用任意类数组对象代替整数进行重复。例如："
+

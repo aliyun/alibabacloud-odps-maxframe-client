@@ -1,0 +1,160 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.mf.map_reduce.rst:2
+msgid "maxframe.dataframe.DataFrame.mf.map_reduce"
+msgstr ""
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:1 of
+msgid ""
+"Map-reduce API over certain DataFrames. This function is roughly a "
+"shortcut for"
+msgstr ""
+"在某些 DataFrame 上进行 Map-reduce 操作的 API。此函数大致是以下操作的"
+"快捷方式："
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.mf.map_reduce.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:8 of
+msgid "Mapper function or class."
+msgstr "映射器函数或类。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:10 of
+msgid "Reducer function or class."
+msgstr "归约器函数或类。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:12 of
+msgid ""
+"The keys to group after mapper. If absent, all columns in the mapped "
+"DataFrame will be used."
+msgstr "映射后用于分组的键。如果未指定，则使用映射后的 DataFrame 中的所有列。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:15 of
+msgid "The columns to sort after groupby."
+msgstr "按 groupby 分组后要排序的列。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:17 of
+msgid ""
+"Whether columns should be in ascending order or not, only effective when "
+"`order_cols` are specified. If a list of booleans are passed, orders of "
+"every column in `order_cols` are specified."
+msgstr ""
+"列是否应按升序排列，仅在指定了 `order_cols` 时有效。如果传入布尔值列表，"
+"则指定了 `order_cols` 中每个列的排序方式。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:21 of
+msgid ""
+"Combiner function or class. Should accept and returns the same schema of "
+"mapper outputs."
+msgstr "组合器函数或类。应接受并返回与映射器输出相同结构的数据。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:24 of
+msgid ""
+"Rows in batches for mappers and reducers. Ignored if `mapper_batch_rows` "
+"specified for mappers or `reducer_batch_rows` specified for reducers. "
+"1024 by default."
+msgstr ""
+"映射器和归约器的批处理行数。如果为映射器指定了 `mapper_batch_rows` 或为"
+"归约器指定了 `reducer_batch_rows`，则忽略此参数。默认值为 1024。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:28 of
+msgid "Output dtypes of mapper stage."
+msgstr "映射阶段的输出数据类型。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:30 of
+msgid "Index of DataFrame returned by mappers."
+msgstr "映射器返回的 DataFrame 的索引。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:32 of
+msgid ""
+"Rows in batches for mappers. If specified, `batch_rows` will be ignored "
+"for mappers."
+msgstr "映射器的批处理行数。如果指定此参数，则忽略 `batch_rows` 对于映射器的设置。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:35 of
+msgid "Output dtypes of reducer stage."
+msgstr "归约阶段的输出数据类型。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:37 of
+msgid "Index of DataFrame returned by reducers."
+msgstr "归约器返回的 DataFrame 的索引。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:39 of
+msgid ""
+"Rows in batches for mappers. If specified, `batch_rows` will be ignored "
+"for reducers."
+msgstr "归约器的批处理行数。如果指定此参数，则忽略 `batch_rows` 对于归约器的设置。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:42 of
+msgid "If true, indexes generated at mapper or reducer functions will be ignored."
+msgstr "如果为真，则忽略映射器或归约器函数生成的索引。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.mf.map_reduce.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:45 of
+msgid "**output** -- Result DataFrame after map and reduce."
+msgstr "**output** -- 映射和归约操作后的结果 DataFrame。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.mf.map_reduce.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:49 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:50 of
+msgid "We first define a DataFrame with a column of several words."
+msgstr "我们首先定义一个包含若干单词列的 DataFrame。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:63 of
+msgid ""
+"Then we write a mapper function which accepts batches in the DataFrame "
+"and returns counts of words in every row."
+msgstr ""
+"然后我们编写一个映射器函数，该函数接受 DataFrame 中的批次数据，并返回每行"
+"中单词的计数。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:75 of
+msgid ""
+"After that we write a reducer function which aggregates records with the "
+"same word. Running options such as CPU specifications can be supplied as "
+"well."
+msgstr ""
+"之后我们编写一个归约器函数，用于聚合具有相同单词的记录。还可以提供运行"
+"选项，例如 CPU 规格。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:98 of
+msgid ""
+"Finally we can call `map_reduce` with mappers and reducers specified "
+"above."
+msgstr "最后，我们可以使用上面指定的映射器和归约器调用 `map_reduce`。"
+
+#: maxframe.dataframe.extensions.map_reduce.map_reduce:115 of
+msgid ""
+":py:obj:`DataFrame.mf.apply_chunk`, "
+":py:obj:`DataFrame.groupby.mf.apply_chunk`"
+msgstr ""
+

@@ -32,6 +32,6 @@ class DataFrameSortOperator(DataFrameOperator):
     na_position = StringField("na_position")
     ignore_index = BoolField("ignore_index")
     parallel_kind = StringField("parallel_kind")
-    psrs_kinds = ListField("psrs_kinds", FieldTypes.string)
+    psrs_kinds = ListField("psrs_kinds", FieldTypes.string, default=None)
     nrows = Int64Field("nrows", default=None)
     keep_kind = StringField("keep_kind", default="head")

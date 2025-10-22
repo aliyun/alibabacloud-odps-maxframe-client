@@ -1,0 +1,106 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.fill_diagonal.rst:2
+msgid "maxframe.tensor.fill\\_diagonal"
+msgstr ""
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:1 of
+msgid "Fill the main diagonal of the given tensor of any dimensionality."
+msgstr "填充任意维度张量的主对角线。"
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:3 of
+msgid ""
+"For a tensor `a` with ``a.ndim >= 2``, the diagonal is the list of "
+"locations with indices ``a[i, ..., i]`` all identical. This function "
+"modifies the input tensor in-place, it does not return a value."
+msgstr ""
+"对于一个 ``a.ndim >= 2`` 的张量 `a`，对角线是索引为 ``a[i, ..., i]`` 的"
+"位置列表。此函数会就地修改输入张量，不返回值。"
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:7 of
+msgid "Tensor whose diagonal is to be filled, it gets modified in-place."
+msgstr "要填充其对角线的张量，它将被就地修改。"
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:9 of
+msgid ""
+"Value to be written on the diagonal, its type must be compatible with "
+"that of the tensor a."
+msgstr "要写入对角线的值，其类型必须与张量 a 的类型兼容。"
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:12 of
+msgid ""
+"For tall matrices in NumPy version up to 1.6.2, the diagonal \"wrapped\" "
+"after N columns. You can have this behavior with this option. This "
+"affects only tall matrices."
+msgstr ""
+"对于 NumPy 1.6.2 及更早版本中的高矩阵，对角线在 N 列后会“换行”。你可以"
+"通过此选项获得这种行为。这仅影响高矩阵。"
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:17 of
+msgid ":py:obj:`diag_indices`, :py:obj:`diag_indices_from`"
+msgstr ""
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:20 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:21 of
+msgid ""
+"This functionality can be obtained via `diag_indices`, but internally "
+"this version uses a much faster implementation that never constructs the "
+"indices and uses simple slicing."
+msgstr ""
+"此功能可以通过 `diag_indices` 实现，但内部版本使用了一种更快速的实现方式"
+"，它从不构造索引，而是使用简单的切片。"
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:26 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:35 of
+msgid "The same function can operate on a 4-D tensor:"
+msgstr "同一函数可以作用于 4 维张量："
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:40 of
+msgid "We only show a few blocks for clarity:"
+msgstr "为了清晰起见，我们只显示几个块："
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:55 of
+msgid "The wrap option affects only tall matrices:"
+msgstr "wrap 选项仅影响高矩阵："
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:85 of
+msgid ""
+"The anti-diagonal can be filled by reversing the order of elements using "
+"either `numpy.flipud` or `numpy.fliplr`."
+msgstr "可以通过使用 `numpy.flipud` 或 `numpy.fliplr` 反转元素顺序来填充反对角线。"
+
+#: maxframe.tensor.indexing.fill_diagonal.fill_diagonal:100 of
+msgid ""
+"Note that the order in which the diagonal is filled varies depending on "
+"the flip function."
+msgstr "请注意，对角线填充的顺序取决于所使用的翻转函数。"
+

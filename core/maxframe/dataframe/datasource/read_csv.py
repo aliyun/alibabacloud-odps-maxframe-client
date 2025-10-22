@@ -38,8 +38,12 @@ from ...serialization.serializables import (
     StringField,
 )
 from ...utils import lazy_import, parse_readable_size
-from ..utils import parse_index, to_arrow_dtypes
-from .core import ColumnPruneSupportedDataSourceMixin, IncrementalIndexDatasource
+from ..utils import parse_index, to_arrow_dtypes, validate_dtype_backend
+from .core import (
+    ColumnPruneSupportedDataSourceMixin,
+    DtypeBackendCompatibleMixin,
+    IncrementalIndexDatasource,
+)
 
 cudf = lazy_import("cudf")
 
@@ -88,6 +92,7 @@ def _find_chunk_start_end(f, offset, size):
 class DataFrameReadCSV(
     IncrementalIndexDatasource,
     ColumnPruneSupportedDataSourceMixin,
+    DtypeBackendCompatibleMixin,
 ):
     _op_type_ = opcodes.READ_CSV
 
@@ -101,7 +106,7 @@ class DataFrameReadCSV(
     offset = Int64Field("offset")
     size = Int64Field("size")
     incremental_index = BoolField("incremental_index")
-    use_arrow_dtype = BoolField("use_arrow_dtype")
+    dtype_backend = StringField("dtype_backend", default=None)
     keep_usecols_order = BoolField("keep_usecols_order", default=None)
     storage_options = DictField("storage_options")
     merge_small_files = BoolField("merge_small_files")
@@ -151,7 +156,7 @@ def read_csv(
     head_bytes="100k",
     head_lines=None,
     incremental_index: bool = True,
-    use_arrow_dtype: bool = None,
+    dtype_backend: str = None,
     storage_options: dict = None,
     memory_scale: int = None,
     merge_small_files: bool = True,
@@ -419,8 +424,8 @@ def read_csv(
     incremental_index: bool, default True
         If index_col not specified, ensure range index incremental,
         gain a slightly better performance if setting False.
-    use_arrow_dtype: bool, default None
-        If True, use arrow dtype to store columns.
+    dtype_backend: {'numpy', 'pyarrow'}, default 'numpy'
+        Back-end data type applied to the resultant DataFrame (still experimental).
     storage_options: dict, optional
         Options for storage connection.
     merge_small_files: bool, default True
@@ -509,7 +514,7 @@ def read_csv(
         compression=compression,
         gpu=gpu,
         incremental_index=incremental_index,
-        use_arrow_dtype=use_arrow_dtype,
+        dtype_backend=dtype_backend,
         storage_options=storage_options,
         memory_scale=memory_scale,
         merge_small_files=merge_small_files,
@@ -518,10 +523,13 @@ def read_csv(
     )
     chunk_bytes = chunk_bytes or options.chunk_store_limit
     dtypes = mini_df.dtypes
-    if use_arrow_dtype is None:
-        use_arrow_dtype = options.dataframe.use_arrow_dtype
-    if not gpu and use_arrow_dtype:
-        dtypes = to_arrow_dtypes(dtypes, test_df=mini_df)
+
+    dtype_backend = validate_dtype_backend(
+        dtype_backend or options.dataframe.dtype_backend
+    )
+
+    if not gpu and dtype_backend == "pyarrow":
+        dtypes = to_arrow_dtypes(dtypes)
     ret = op(
         index_value=index_value,
         columns_value=columns_value,

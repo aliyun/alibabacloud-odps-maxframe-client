@@ -61,6 +61,10 @@ def _get_account_env(test_config: ConfigParser, section_name: str) -> ODPS:
         tunnel_endpoint = test_config.get("odps", "tunnel_endpoint")
     except NoOptionError:
         tunnel_endpoint = None
+    try:
+        namespace = test_config.get("odps", "namespace")
+    except NoOptionError:
+        namespace = None
     return ODPS(
         access_id,
         secret_access_key,
@@ -68,6 +72,7 @@ def _get_account_env(test_config: ConfigParser, section_name: str) -> ODPS:
         endpoint,
         tunnel_endpoint=tunnel_endpoint,
         overwrite_global=False,
+        namespace=namespace,
     )
 
 
@@ -85,6 +90,7 @@ def _get_bearer_token_env(test_config: ConfigParser, section_name: str) -> ODPS:
         project=entry.project,
         endpoint=entry.endpoint,
         tunnel_endpoint=entry.tunnel_endpoint,
+        namespace=entry.namespace,
     )
 
 
@@ -97,6 +103,7 @@ def _enter_odps_envs(entry, drop_temp_tables=True):
         "ODPS_ENDPOINT",
         "RAY_ISOLATION_UT_ENV",
         "ODPS_TUNNEL_ENDPOINT",
+        "ODPS_NAMESPACE",
     ):
         if env_name in os.environ:
             stored_envs[env_name] = os.environ[env_name]
@@ -105,6 +112,8 @@ def _enter_odps_envs(entry, drop_temp_tables=True):
     os.environ["ODPS_BEARER_TOKEN"] = entry.account.token
     os.environ["ODPS_PROJECT_NAME"] = entry.project
     os.environ["ODPS_ENDPOINT"] = entry.endpoint
+    if entry.namespace:
+        os.environ["ODPS_NAMESPACE"] = entry.namespace
     os.environ["RAY_ISOLATION_UT_ENV"] = "UT"
     if entry.tunnel_endpoint:
         os.environ["ODPS_TUNNEL_ENDPOINT"] = entry.tunnel_endpoint
@@ -115,6 +124,7 @@ def _enter_odps_envs(entry, drop_temp_tables=True):
         os.environ.pop("ODPS_BEARER_TOKEN", None)
         os.environ.pop("ODPS_PROJECT_NAME", None)
         os.environ.pop("ODPS_ENDPOINT", None)
+        os.environ.pop("ODPS_NAMESPACE", None)
         os.environ.pop("ODPS_TUNNEL_ENDPOINT", None)
         os.environ.pop("RAY_ISOLATION_UT_ENV", None)
 

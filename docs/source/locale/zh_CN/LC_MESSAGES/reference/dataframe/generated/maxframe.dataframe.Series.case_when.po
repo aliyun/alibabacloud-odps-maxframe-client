@@ -1,0 +1,69 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.case_when.rst:2
+msgid "maxframe.dataframe.Series.case\\_when"
+msgstr ""
+
+#: maxframe.dataframe.misc.case_when.case_when:1 of
+msgid "Replace values where the conditions are True."
+msgstr "替换条件为 True 的值。"
+
+#: maxframe.dataframe.misc.case_when.case_when of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.case_when.case_when:3 of
+msgid ""
+"Takes the form:  ``(condition0, replacement0)``, ``(condition1, "
+"replacement1)``, ... . ``condition`` should be a 1-D boolean array-like "
+"object or a callable. If ``condition`` is a callable, it is computed on "
+"the Series and should return a boolean Series or array. The callable must"
+" not change the input Series (though pandas doesn`t check it). "
+"``replacement`` should be a 1-D array-like object, a scalar or a "
+"callable. If ``replacement`` is a callable, it is computed on the Series "
+"and should return a scalar or Series. The callable must not change the "
+"input Series."
+msgstr ""
+"形式为： ``(condition0, replacement0)``， ``(condition1, replacement1)``"
+"，...。 ``condition`` 应该是一个一维布尔数组类对象或可调用对象。如果 ``"
+"condition`` 是可调用对象，则会在 Series 上计算，并应返回一个布尔 Series "
+"或数组。该可调用对象不得更改输入 Series （尽管 pandas 不会检查）。 ``"
+"replacement`` 应该是一个一维数组类对象、标量或可调用对象。如果 ``"
+"replacement`` 是可调用对象，则会在 Series 上计算，并应返回一个标量或 "
+"Series。该可调用对象不得更改输入 Series。"
+
+#: maxframe.dataframe.misc.case_when.case_when of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.case_when.case_when:21 of
+msgid ":py:obj:`Series.mask`"
+msgstr ""
+
+#: maxframe.dataframe.misc.case_when.case_when:22 of
+msgid "Replace values where the condition is True."
+msgstr "替换条件为 True 的值。"
+
+#: maxframe.dataframe.misc.case_when.case_when:25 of
+msgid "示例"
+msgstr ""
+

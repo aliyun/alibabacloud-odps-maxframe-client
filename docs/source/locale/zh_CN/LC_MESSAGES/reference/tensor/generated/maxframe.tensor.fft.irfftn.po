@@ -1,0 +1,178 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.fft.irfftn.rst:2
+msgid "maxframe.tensor.fft.irfftn"
+msgstr ""
+
+#: maxframe.tensor.fft.irfftn.irfftn:1 of
+msgid "Compute the inverse of the N-dimensional FFT of real input."
+msgstr "计算实数输入的 N 维 FFT 的逆变换。"
+
+#: maxframe.tensor.fft.irfftn.irfftn:3 of
+msgid ""
+"This function computes the inverse of the N-dimensional discrete Fourier "
+"Transform for real input over any number of axes in an M-dimensional "
+"tensor by means of the Fast Fourier Transform (FFT).  In other words, "
+"``irfftn(rfftn(a), a.shape) == a`` to within numerical accuracy. (The "
+"``a.shape`` is necessary like ``len(a)`` is for `irfft`, and for the same"
+" reason.)"
+msgstr ""
+"该函数通过快速傅里叶变换（FFT）计算 M 维张量中任意数量轴上的实数输入的 N "
+"维离散傅里叶变换的逆变换。换句话说，``irfftn(rfftn(a), a.shape) == a`` 在"
+"数值精度范围内成立。（``a.shape`` 是必需的，就像 `irfft` 中的 ``len(a)`` "
+"一样，原因相同。）"
+
+#: maxframe.tensor.fft.irfftn.irfftn:10 of
+msgid ""
+"The input should be ordered in the same way as is returned by `rfftn`, "
+"i.e. as for `irfft` for the final transformation axis, and as for `ifftn`"
+" along all the other axes."
+msgstr ""
+"输入应按照 `rfftn` 返回的顺序排列，即最后一个变换轴按照 `irfft` 的方式"
+"排列，其他所有轴按照 `ifftn` 的方式排列。"
+
+#: maxframe.tensor.fft.irfftn.irfftn of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.fft.irfftn.irfftn:14 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.fft.irfftn.irfftn:16 of
+msgid ""
+"Shape (length of each transformed axis) of the output (``s[0]`` refers to"
+" axis 0, ``s[1]`` to axis 1, etc.). `s` is also the number of input "
+"points used along this axis, except for the last axis, where "
+"``s[-1]//2+1`` points of the input are used. Along any axis, if the shape"
+" indicated by `s` is smaller than that of the input, the input is "
+"cropped.  If it is larger, the input is padded with zeros. If `s` is not "
+"given, the shape of the input along the axes specified by `axes` is used."
+msgstr ""
+"输出的形状（每个变换轴的长度）（``s[0]`` 指轴 0，``s[1]`` 指轴 1，"
+"以此类推）。`s` 也是沿该轴使用的输入点数，除了最后一个轴，其中使用 ``s[-1"
+"]//2+1`` 个输入点。在任何轴上，如果 `s` 指定的形状小于输入的形状，则对"
+"输入进行裁剪。如果大于输入的形状，则用零填充输入。如果未提供 `s`，则使用"
+"沿 `axes` 指定的轴的输入形状。"
+
+#: maxframe.tensor.fft.irfftn.irfftn:25 of
+msgid ""
+"Axes over which to compute the inverse FFT. If not given, the last "
+"`len(s)` axes are used, or all axes if `s` is also not specified. "
+"Repeated indices in `axes` means that the inverse transform over that "
+"axis is performed multiple times."
+msgstr ""
+"用于计算逆 FFT 的轴。如果未提供，则使用最后 `len(s)` 个轴，如果也未指定 `"
+"s`，则使用所有轴。`axes` 中的重复索引表示对该轴进行多次逆变换。"
+
+#: maxframe.tensor.fft.irfftn.irfftn:30 of
+msgid "Normalization mode (see `mt.fft`). Default is None."
+msgstr "归一化模式（参见 `mt.fft`）。默认为 None。"
+
+#: maxframe.tensor.fft.irfftn.irfftn of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.fft.irfftn.irfftn:33 of
+msgid ""
+"**out** -- The truncated or zero-padded input, transformed along the axes"
+" indicated by `axes`, or by a combination of `s` or `a`, as explained in "
+"the parameters section above. The length of each transformed axis is as "
+"given by the corresponding element of `s`, or the length of the input in "
+"every axis except for the last one if `s` is not given.  In the final "
+"transformed axis the length of the output when `s` is not given is "
+"``2*(m-1)`` where ``m`` is the length of the final transformed axis of "
+"the input.  To get an odd number of output points in the final axis, `s` "
+"must be specified."
+msgstr ""
+"**out** -- 被截断或零填充的输入，沿 `axes` 指定的轴变换，或根据上述参数"
+"部分中解释的 `s` 或 `a` 的组合变换。每个变换轴的长度由 `s` 的相应元素给出"
+"，或者在未提供 `s` 时为输入的每个轴的长度，除了最后一个轴。在未提供 `s` "
+"的情况下，最终变换轴的输出长度为 ``2*(m-1)``，其中 ``m`` 是输入的最终变换"
+"轴的长度。要在最终轴上获得奇数个输出点，必须指定 `s`。"
+
+#: maxframe.tensor.fft.irfftn.irfftn of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.fft.irfftn.irfftn of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.tensor.fft.irfftn.irfftn:44 of
+msgid "If `s` and `axes` have different length."
+msgstr "如果 `s` 和 `axes` 长度不同。"
+
+#: maxframe.tensor.fft.irfftn.irfftn:45 of
+msgid "If an element of `axes` is larger than than the number of axes of `a`."
+msgstr "如果 `axes` 的某个元素大于 `a` 的轴数。"
+
+#: maxframe.tensor.fft.irfftn.irfftn:49 of
+msgid ":py:obj:`rfftn`"
+msgstr ""
+
+#: maxframe.tensor.fft.irfftn.irfftn:50 of
+msgid ""
+"The forward n-dimensional FFT of real input, of which `ifftn` is the "
+"inverse."
+msgstr "实数输入的前向 N 维 FFT，其逆变换为 `ifftn`。"
+
+#: maxframe.tensor.fft.irfftn.irfftn:52 of
+msgid ":py:obj:`fft`"
+msgstr ""
+
+#: maxframe.tensor.fft.irfftn.irfftn:53 of
+msgid "The one-dimensional FFT, with definitions and conventions used."
+msgstr "一维 FFT，包含使用的定义和约定。"
+
+#: maxframe.tensor.fft.irfftn.irfftn:55 of
+msgid ":py:obj:`irfft`"
+msgstr ""
+
+#: maxframe.tensor.fft.irfftn.irfftn:56 of
+msgid "The inverse of the one-dimensional FFT of real input."
+msgstr "实数输入的一维 FFT 的逆变换。"
+
+#: maxframe.tensor.fft.irfftn.irfftn:58 of
+msgid ":py:obj:`irfft2`"
+msgstr ""
+
+#: maxframe.tensor.fft.irfftn.irfftn:59 of
+msgid "The inverse of the two-dimensional FFT of real input."
+msgstr "实数输入的二维 FFT 的逆变换。"
+
+#: maxframe.tensor.fft.irfftn.irfftn:62 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.fft.irfftn.irfftn:63 of
+msgid "See `fft` for definitions and conventions used."
+msgstr "有关使用的定义和约定，请参见 `fft`。"
+
+#: maxframe.tensor.fft.irfftn.irfftn:65 of
+msgid "See `rfft` for definitions and conventions used for real input."
+msgstr "有关实数输入使用的定义和约定，请参见 `rfft`。"
+
+#: maxframe.tensor.fft.irfftn.irfftn:68 of
+msgid "示例"
+msgstr ""
+

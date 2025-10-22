@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.text.generate.rst:2
+msgid "maxframe.learn.contrib.llm.text.generate"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.generate:1 of
+msgid ""
+"Generate text using a text language model based on given data and prompt "
+"template."
+msgstr "使用指定的文本语言模型，基于给定的数据和提示模板生成文本。"
+
+#: maxframe.learn.contrib.llm.text.generate of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.generate:3 of
+msgid ""
+"Input data used for generation. Can be maxframe DataFrame, Series that "
+"contain text to be processed."
+msgstr "用于生成的输入数据。可以是包含待处理文本的 maxframe DataFrame、Series。"
+
+#: maxframe.learn.contrib.llm.text.generate:5 of
+msgid "Language model instance used for text generation."
+msgstr "用于文本生成的语言模型实例。"
+
+#: maxframe.learn.contrib.llm.text.generate:7 of
+#, python-brace-format
+msgid ""
+"Dictionary containing the conversation messages template. Use "
+"``{col_name}`` as a placeholder to reference column data from input data."
+"  Usually in format of [{\"role\": \"user\", \"content\": \"{query}\"}], "
+"same with openai api schema."
+msgstr ""
+"包含对话消息模板的字典。使用 ``{col_name}`` 作为占位符来引用输入数据中的"
+"列数据。通常格式为 [{\"role\": \"user\", \"content\": \"{query}\"}]，与 "
+"openai api 模式一致。"
+
+#: maxframe.learn.contrib.llm.text.generate:7 of
+#, python-brace-format
+msgid ""
+"Dictionary containing the conversation messages template. Use "
+"``{col_name}`` as a placeholder to reference column data from input data."
+msgstr ""
+"包含对话消息模板的字典。使用 ``{col_name}`` 作为占位符来引用输入数据中的"
+"列数据。"
+
+#: maxframe.learn.contrib.llm.text.generate:10 of
+#, python-brace-format
+msgid ""
+"Usually in format of [{\"role\": \"user\", \"content\": \"{query}\"}], "
+"same with openai api schema."
+msgstr ""
+"通常格式为 [{\"role\": \"user\", \"content\": \"{query}\"}]，与 openai "
+"api 模式一致。"
+
+#: maxframe.learn.contrib.llm.text.generate:12 of
+msgid ""
+"Additional parameters for generation configuration, by default None. Can "
+"include settings like temperature, max_tokens, etc."
+msgstr ""
+"用于生成配置的附加参数，默认为 None。可以包括 temperature、max_tokens 等"
+"设置。"
+
+#: maxframe.learn.contrib.llm.text.generate of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.generate:16 of
+msgid ""
+"Generated text raw response and success status. If the success is False, "
+"the generated text will return the error message."
+msgstr ""
+"生成文本的原始响应和成功状态。如果成功状态为 False，则生成的文本将返回"
+"错误信息。"
+
+#: maxframe.learn.contrib.llm.text.generate of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.generate:21 of
+msgid "示例"
+msgstr ""
+

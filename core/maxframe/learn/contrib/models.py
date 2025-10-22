@@ -40,7 +40,10 @@ class ModelWithEvalData(ModelData):
     def execute(self, session=None, **kw):
         # The evals_result should be fetched when BoosterData.execute() is called.
         result = super().execute(session=session, **kw)
-        if self.op.has_evals_result and self.key == self.op.outputs[0].key:
+        if (
+            getattr(self.op, "has_evals_result", None)
+            and self.key == self.op.outputs[0].key
+        ):
             self._evals_result.update(self.op.outputs[1].fetch(session=session))
         return result
 

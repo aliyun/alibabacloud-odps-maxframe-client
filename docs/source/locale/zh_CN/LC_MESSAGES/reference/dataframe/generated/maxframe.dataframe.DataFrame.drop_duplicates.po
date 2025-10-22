@@ -1,0 +1,76 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.drop_duplicates.rst:2
+msgid "maxframe.dataframe.DataFrame.drop\\_duplicates"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.df_drop_duplicates:1 of
+msgid "Return DataFrame with duplicate rows removed."
+msgstr "返回移除重复行后的 DataFrame。"
+
+#: maxframe.dataframe.misc.drop_duplicates.df_drop_duplicates:3 of
+msgid ""
+"Considering certain columns is optional. Indexes, including time indexes "
+"are ignored."
+msgstr "可以选择是否考虑某些列。索引（包括时间索引）将被忽略。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.drop_duplicates.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.df_drop_duplicates:6 of
+msgid ""
+"Only consider certain columns for identifying duplicates, by default use "
+"all of the columns."
+msgstr "仅考虑某些列来识别重复项，默认使用所有列。"
+
+#: maxframe.dataframe.misc.drop_duplicates.df_drop_duplicates:9 of
+msgid ""
+"Determines which duplicates (if any) to keep. - ``first`` : Drop "
+"duplicates except for the first occurrence. - ``last`` : Drop duplicates "
+"except for the last occurrence. - ``any`` : Drop duplicates except for a "
+"random occurrence. - False : Drop all duplicates."
+msgstr ""
+"确定保留哪些重复项（如果有的话）。- ``first``：保留第一次出现的，删除其余"
+"重复项。- ``last``：保留最后一次出现的，删除其余重复项。- ``any``：随机"
+"保留一个，删除其余重复项。- False：删除所有重复项。"
+
+#: maxframe.dataframe.misc.drop_duplicates.df_drop_duplicates:15 of
+msgid "Whether to drop duplicates in place or to return a copy."
+msgstr "是否就地删除重复项，或返回一个副本。"
+
+#: maxframe.dataframe.misc.drop_duplicates.df_drop_duplicates:17 of
+msgid "If True, the resulting axis will be labeled 0, 1, …, n - 1."
+msgstr "如果为 True，结果轴将被标记为 0, 1, …, n - 1。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.drop_duplicates.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.drop_duplicates.df_drop_duplicates:20 of
+msgid "DataFrame with duplicates removed or None if ``inplace=True``."
+msgstr "移除重复项后的 DataFrame，如果 ``inplace=True`` 则返回 None。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.drop_duplicates.rst
+msgid "返回类型"
+msgstr ""
+

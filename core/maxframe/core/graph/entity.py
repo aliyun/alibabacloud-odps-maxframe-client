@@ -117,10 +117,11 @@ class SerializableGraph(Serializable):
     _successors = DictField("successors")
     _results = ListField("results")
     _graph_cls = StringField("graph_cls")
+    _extra_params = DictField("extra_params", default=None)
 
     @classmethod
     def from_graph(cls, graph: EntityGraph) -> "SerializableGraph":
-        return SerializableGraph(
+        kw = dict(
             _is_chunk=False,
             _fetch_nodes=[chunk for chunk in graph if chunk.is_fetch()],
             _nodes=graph._nodes,
@@ -129,6 +130,9 @@ class SerializableGraph(Serializable):
             _results=graph.results,
             _graph_cls=extract_class_name(type(graph)),
         )
+        if hasattr(graph, "extra_params"):
+            kw["_extra_params"] = graph.extra_params
+        return SerializableGraph(**kw)
 
     def to_graph(self) -> EntityGraph:
         graph_cls = (
@@ -140,6 +144,8 @@ class SerializableGraph(Serializable):
         graph._nodes.update(self._nodes)
         graph._predecessors.update(self._predecessors)
         graph._successors.update(self._successors)
+        if self._extra_params:
+            graph.extra_params = self._extra_params
         return graph
 
 

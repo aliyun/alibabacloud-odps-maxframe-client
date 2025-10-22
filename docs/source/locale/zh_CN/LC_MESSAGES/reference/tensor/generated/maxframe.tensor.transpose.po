@@ -1,0 +1,95 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.transpose.rst:2
+msgid "maxframe.tensor.transpose"
+msgstr ""
+
+#: maxframe.tensor.misc.transpose.transpose:1 of
+msgid "Returns an array with axes transposed."
+msgstr "返回一个轴被转置的数组。"
+
+#: maxframe.tensor.misc.transpose.transpose:3 of
+msgid ""
+"For a 1-D array, this returns an unchanged view of the original array, as"
+" a transposed vector is simply the same vector. To convert a 1-D array "
+"into a 2-D column vector, an additional dimension must be added, e.g., "
+"``mt.atleast_2d(a).T`` achieves this, as does ``a[:, mt.newaxis]``. For a"
+" 2-D array, this is the standard matrix transpose. For an n-D array, if "
+"axes are given, their order indicates how the axes are permuted (see "
+"Examples). If axes are not provided, then ``transpose(a).shape == "
+"a.shape[::-1]``."
+msgstr ""
+"对于一维数组，这将返回原始数组的一个未更改视图，因为转置向量就是相同的"
+"向量。要将一维数组转换为二维列向量，必须添加一个额外的维度，例如 ``mt."
+"atleast_2d(a).T`` 可以实现这一点，``a[:, mt.newaxis]`` 也可以。对于二维"
+"数组，这是标准的矩阵转置。对于 n 维数组，如果指定了轴，则它们的顺序表示轴"
+"如何进行置换（参见示例）。如果没有提供轴，则 ``transpose(a).shape == a."
+"shape[::-1]``。"
+
+#: maxframe.tensor.misc.transpose.transpose of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.transpose.transpose:13 of
+msgid "Input array."
+msgstr "输入数组。"
+
+#: maxframe.tensor.misc.transpose.transpose:15 of
+msgid ""
+"If specified, it must be a tuple or list which contains a permutation of "
+"[0,1,...,N-1] where N is the number of axes of `a`. The `i`'th axis of "
+"the returned array will correspond to the axis numbered ``axes[i]`` of "
+"the input. If not specified, defaults to ``range(a.ndim)[::-1]``, which "
+"reverses the order of the axes."
+msgstr ""
+"如果指定，则它必须是一个包含 [0,1,...,N-1] 排列的元组或列表，其中 N 是 `a"
+"` 的轴数。返回数组的第 `i` 个轴对应于输入中编号为 ``axes[i]`` 的轴。如果"
+"未指定，默认为 ``range(a.ndim)[::-1]``，即轴顺序反转。"
+
+#: maxframe.tensor.misc.transpose.transpose of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.transpose.transpose:22 of
+msgid "**p** -- `a` with its axes permuted. A view is returned whenever possible."
+msgstr "**p** -- 轴被置换后的 `a`。只要可能，返回的是视图。"
+
+#: maxframe.tensor.misc.transpose.transpose of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.transpose.transpose:26 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.misc.transpose.transpose:27 of
+msgid ""
+"Use ``transpose(a, argsort(axes))`` to invert the transposition of "
+"tensors when using the `axes` keyword argument."
+msgstr ""
+"在使用 `axes` 关键字参数时，可以使用 ``transpose(a, argsort(axes))`` 来"
+"逆转张量的转置。"
+
+#: maxframe.tensor.misc.transpose.transpose:31 of
+msgid "示例"
+msgstr ""
+

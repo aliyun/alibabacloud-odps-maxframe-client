@@ -14,9 +14,18 @@
 
 from typing import List
 
+from ....dataframe.tseries.between_time import DataFrameBetweenTime
 from ....dataframe.tseries.to_datetime import DataFrameToDatetime
 from ....utils import no_default
 from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
+from ..utils import build_method_call_adapter
+
+DataFrameBetweenTimeAdapter = build_method_call_adapter(
+    DataFrameBetweenTime,
+    "between_time",
+    kw_keys=["start_time", "end_time", "inclusive", "axis"],
+    skip_none=True,
+)
 
 
 @register_op_adapter(DataFrameToDatetime)

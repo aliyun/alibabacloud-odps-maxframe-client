@@ -1,0 +1,155 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.wald.rst:2
+msgid "maxframe.tensor.random.wald"
+msgstr ""
+
+#: maxframe.tensor.random.wald.wald:1 of
+msgid "Draw samples from a Wald, or inverse Gaussian, distribution."
+msgstr "从 Wald 分布（或逆高斯分布）中抽取样本。"
+
+#: maxframe.tensor.random.wald.wald:3 of
+msgid ""
+"As the scale approaches infinity, the distribution becomes more like a "
+"Gaussian. Some references claim that the Wald is an inverse Gaussian with"
+" mean equal to 1, but this is by no means universal."
+msgstr ""
+"当 scale 趋近于无穷大时，该分布越来越接近高斯分布。一些文献认为 Wald 分布"
+"是均值为 1 的逆高斯分布，但这并不具有普遍性。"
+
+#: maxframe.tensor.random.wald.wald:7 of
+msgid ""
+"The inverse Gaussian distribution was first studied in relationship to "
+"Brownian motion. In 1956 M.C.K. Tweedie used the name inverse Gaussian "
+"because there is an inverse relationship between the time to cover a unit"
+" distance and distance covered in unit time."
+msgstr ""
+"逆高斯分布最初是在研究布朗运动时被引入的。1956 年，M.C.K. Tweedie 使用“"
+"逆高斯”这一名称，因为单位距离所需时间和单位时间内所走距离之间存在反比"
+"关系。"
+
+#: maxframe.tensor.random.wald.wald of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.wald.wald:12 of
+msgid "Distribution mean, should be > 0."
+msgstr "分布的均值，应大于 0。"
+
+#: maxframe.tensor.random.wald.wald:14 of
+msgid "Scale parameter, should be >= 0."
+msgstr "尺度参数，应大于等于 0。"
+
+#: maxframe.tensor.random.wald.wald:16 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``mean`` and ``scale`` are both scalars. Otherwise, "
+"``np.broadcast(mean, scale).size`` samples are drawn."
+msgstr ""
+"输出形状。如果给定形状为 ``(m, n, k)``，则抽取 ``m * n * k`` 个样本。如果"
+" size 为 ``None``（默认），且 ``mean`` 和 ``scale`` 均为标量，则返回单个"
+"值。否则，抽取 ``np.broadcast(mean, scale).size`` 个样本。"
+
+#: maxframe.tensor.random.wald.wald:21 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的分块大小"
+
+#: maxframe.tensor.random.wald.wald:23 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则将张量分配在 GPU 上，默认为 False"
+
+#: maxframe.tensor.random.wald.wald:25 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.wald.wald of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.wald.wald:28 of
+msgid "**out** -- Drawn samples from the parameterized Wald distribution."
+msgstr "**out** -- 从参数化的 Wald 分布中抽取的样本。"
+
+#: maxframe.tensor.random.wald.wald of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.wald.wald:32 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.wald.wald:33 of
+msgid "The probability density function for the Wald distribution is"
+msgstr "Wald 分布的概率密度函数为"
+
+#: maxframe.tensor.random.wald.wald:35 of
+msgid ""
+"P(x;mean,scale) = \\sqrt{\\frac{scale}{2\\pi x^3}}e^\n"
+"\\frac{-scale(x-mean)^2}{2\\cdotp mean^2x}\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.wald.wald:38 of
+msgid ""
+"As noted above the inverse Gaussian distribution first arise from "
+"attempts to model Brownian motion. It is also a competitor to the Weibull"
+" for use in reliability modeling and modeling stock returns and interest "
+"rate processes."
+msgstr ""
+"如上所述，逆高斯分布最初源于对布朗运动的建模尝试。它也是 Weibull 分布在"
+"可靠性建模以及股票收益和利率过程建模中的竞争模型。"
+
+#: maxframe.tensor.random.wald.wald:44 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.wald.wald:45 of
+msgid ""
+"Brighton Webs Ltd., Wald Distribution, http://www.brighton-"
+"webs.co.uk/distributions/wald.asp"
+msgstr ""
+"Brighton Webs Ltd., Wald 分布, http://www.brighton-webs.co.uk/"
+"distributions/wald.asp"
+
+#: maxframe.tensor.random.wald.wald:47 of
+msgid ""
+"Chhikara, Raj S., and Folks, J. Leroy, \"The Inverse Gaussian "
+"Distribution: Theory : Methodology, and Applications\", CRC Press, 1988."
+msgstr ""
+"Chhikara, Raj S., 和 Folks, J. Leroy, 《逆高斯分布：理论、方法与应用》, "
+"CRC Press, 1988."
+
+#: maxframe.tensor.random.wald.wald:50 of
+msgid ""
+"Wikipedia, \"Wald distribution\" "
+"http://en.wikipedia.org/wiki/Wald_distribution"
+msgstr "Wikipedia, \"Wald 分布\" http://en.wikipedia.org/wiki/Wald_distribution"
+
+#: maxframe.tensor.random.wald.wald:54 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.wald.wald:55 of
+msgid "Draw values from the distribution and plot the histogram:"
+msgstr "从分布中抽取值并绘制直方图："
+

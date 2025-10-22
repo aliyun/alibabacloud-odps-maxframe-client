@@ -18,6 +18,7 @@ from typing import List, MutableMapping, Optional, Union
 from ...serialization.serializables import Int64Field, StringField
 from ...utils import estimate_pandas_size
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
+from ..utils import validate_dtype_backend
 
 
 class HeadOptimizedDataSource(DataFrameOperator, DataFrameOperatorMixin):
@@ -86,3 +87,8 @@ class PandasDataSourceOperator(DataFrameOperator):
         cls, ctx: MutableMapping[str, Union[int, float]], op: "PandasDataSourceOperator"
     ):
         ctx[op.outputs[0].key] = estimate_pandas_size(op.get_data())
+
+
+class DtypeBackendCompatibleMixin:
+    def __on_deserialize__(self):
+        self.dtype_backend = validate_dtype_backend(self.dtype_backend)

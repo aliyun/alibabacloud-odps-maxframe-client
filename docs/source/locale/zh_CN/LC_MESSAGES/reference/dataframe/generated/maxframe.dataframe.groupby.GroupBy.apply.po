@@ -1,0 +1,176 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.GroupBy.apply.rst:2
+msgid "maxframe.dataframe.groupby.GroupBy.apply"
+msgstr ""
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:1 of
+msgid "Apply function `func` group-wise and combine the results together."
+msgstr "按组应用函数 `func` 并将结果组合在一起。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:3 of
+msgid ""
+"The function passed to `apply` must take a dataframe as its first "
+"argument and return a DataFrame, Series or scalar. `apply` will then take"
+" care of combining the results back together into a single dataframe or "
+"series. `apply` is therefore a highly flexible grouping method."
+msgstr ""
+"传递给 `apply` 的函数必须以一个 DataFrame 作为第一个参数，并返回一个 "
+"DataFrame、Series 或标量。`apply` 会负责将结果重新组合成一个单独的 "
+"DataFrame 或 Series。因此，`apply` 是一种非常灵活的分组方法。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:9 of
+msgid ""
+"While `apply` is a very flexible method, its downside is that using it "
+"can be quite a bit slower than using more specific methods like `agg` or "
+"`transform`. Pandas offers a wide range of method that will be much "
+"faster than using `apply` for their specific purposes, so try to use them"
+" before reaching for `apply`."
+msgstr ""
+"虽然 `apply` 是一种非常灵活的方法，但它的缺点是使用起来可能比使用更具体的"
+"方法（如 `agg` 或 `transform`）慢很多。Pandas 提供了许多针对特定用途比 `"
+"apply` 更快的方法，因此在使用 `apply` 之前应优先尝试这些方法。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.GroupBy.apply.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:15 of
+msgid ""
+"A callable that takes a dataframe as its first argument, and returns a "
+"dataframe, a series or a scalar. In addition the callable may take "
+"positional and keyword arguments."
+msgstr ""
+"一个可调用对象，其第一个参数为一个 DataFrame，并返回一个 DataFrame、"
+"Series 或标量。此外，该可调用对象还可以接受位置和关键字参数。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:19 of
+msgid "Specify type of returned object. See `Notes` for more details."
+msgstr "指定返回对象的类型。详见 `Notes`。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:21 of
+msgid "Specify dtypes of returned DataFrames. See `Notes` for more details."
+msgstr "指定返回 DataFrame 的数据类型。详见 `Notes`。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:23 of
+msgid "Specify dtype of returned Series. See `Notes` for more details."
+msgstr "指定返回 Series 的数据类型。详见 `Notes`。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:25 of
+msgid "Specify name of returned Series. See `Notes` for more details."
+msgstr "指定返回 Series 的名称。详见 `Notes`。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:27 of
+msgid "Specify index of returned object. See `Notes` for more details."
+msgstr "指定返回对象的索引。详见 `Notes`。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:29 of
+msgid "Whether infer dtypes when dtypes or output_type is not specified."
+msgstr "当未指定 dtypes 或 output_type 时是否推断数据类型。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:31
+#: maxframe.dataframe.groupby.apply.groupby_apply:33 of
+msgid "Optional positional and keyword arguments to pass to `func`."
+msgstr "传递给 `func` 的可选位置和关键字参数。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.GroupBy.apply.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:36 of
+msgid "**applied**"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.GroupBy.apply.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:41 of
+msgid ":py:obj:`pipe`"
+msgstr ""
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:42 of
+msgid "Apply function to the full GroupBy object instead of to each group."
+msgstr "将函数应用于整个 GroupBy 对象，而不是每个组。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:44 of
+msgid ":py:obj:`aggregate`"
+msgstr ""
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:45 of
+msgid "Apply aggregate function to the GroupBy object."
+msgstr "将聚合函数应用于 GroupBy 对象。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:47 of
+msgid ":py:obj:`transform`"
+msgstr ""
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:48 of
+msgid "Apply function column-by-column to the GroupBy object."
+msgstr "将函数逐列应用于 GroupBy 对象。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:50 of
+msgid ":py:obj:`Series.apply`"
+msgstr ""
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:51 of
+msgid "Apply a function to a Series."
+msgstr "将函数应用于 Series。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:53 of
+msgid ":py:obj:`DataFrame.apply`"
+msgstr ""
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:54 of
+msgid "Apply a function to each row or column of a DataFrame."
+msgstr "将函数应用于 DataFrame 的每一行或每一列。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:57 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:58 of
+msgid ""
+"When deciding output dtypes and shape of the return value, MaxFrame will "
+"try applying ``func`` onto a mock grouped object, and the apply call may "
+"fail. When this happens, you need to specify the type of apply call "
+"(DataFrame or Series) in output_type."
+msgstr ""
+"在确定输出数据类型和返回值形状时，MaxFrame 会尝试将 ``func`` 应用于一个"
+"模拟的分组对象，此时 apply 调用可能会失败。如果发生这种情况，你需要在 "
+"output_type 中指定 apply 调用的类型（DataFrame 或 Series）。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:63 of
+msgid ""
+"For DataFrame output, you need to specify a list or a pandas Series as "
+"``dtypes`` of output DataFrame. ``index`` of output can also be "
+"specified."
+msgstr ""
+"对于 DataFrame 输出，需要指定一个列表或 pandas Series 作为输出 DataFrame "
+"的 ``dtypes``。输出的 ``index`` 也可以指定。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:66 of
+msgid ""
+"For Series output, you need to specify ``dtype`` and ``name`` of output "
+"Series."
+msgstr "对于 Series 输出，您需要指定输出 Series 的 ``dtype`` 和 ``name``。"
+

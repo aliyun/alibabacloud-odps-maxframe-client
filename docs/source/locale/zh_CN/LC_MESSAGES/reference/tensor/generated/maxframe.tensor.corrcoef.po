@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.corrcoef.rst:2
+msgid "maxframe.tensor.corrcoef"
+msgstr ""
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef:1 of
+msgid "Return Pearson product-moment correlation coefficients."
+msgstr "返回皮尔逊积矩相关系数。"
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef:3 of
+msgid ""
+"Please refer to the documentation for `cov` for more detail.  The "
+"relationship between the correlation coefficient matrix, `R`, and the "
+"covariance matrix, `C`, is"
+msgstr ""
+"请参阅 `cov` 的文档以获取更多详细信息。相关系数矩阵 `R` 和协方差矩阵 `C` "
+"之间的关系为"
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef:7 of
+msgid ""
+"R_{ij} = \\frac{ C_{ij} } { \\sqrt{ C_{ii} * C_{jj} } }\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef:9 of
+msgid "The values of `R` are between -1 and 1, inclusive."
+msgstr "`R` 的值在 -1 和 1 之间（包含边界）。"
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef:11 of
+msgid ""
+"A 1-D or 2-D array containing multiple variables and observations. Each "
+"row of `x` represents a variable, and each column a single observation of"
+" all those variables. Also see `rowvar` below."
+msgstr ""
+"一个包含多个变量和观测值的 1-D 或 2-D 数组。`x` 的每一行代表一个变量，每"
+"一列代表所有变量的一个观测值。另请参阅下面的 `rowvar`。"
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef:15 of
+msgid ""
+"An additional set of variables and observations. `y` has the same shape "
+"as `x`."
+msgstr "一组额外的变量和观测值。`y` 与 `x` 具有相同的形状。"
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef:18 of
+msgid ""
+"If `rowvar` is True (default), then each row represents a variable, with "
+"observations in the columns. Otherwise, the relationship is transposed: "
+"each column represents a variable, while the rows contain observations."
+msgstr ""
+"如果 `rowvar` 为 True（默认值），则每行代表一个变量，列为观测值。否则，"
+"关系将转置：每列表示一个变量，而行包含观测值。"
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef:24 of
+msgid "**R** -- The correlation coefficient matrix of the variables."
+msgstr "**R** —— 变量的相关系数矩阵。"
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef:29 of
+msgid ":py:obj:`cov`"
+msgstr ""
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef:30 of
+msgid "Covariance matrix"
+msgstr "协方差矩阵"
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef:33 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef:34 of
+msgid ""
+"Due to floating point rounding the resulting tensor may not be Hermitian,"
+" the diagonal elements may not be 1, and the elements may not satisfy the"
+" inequality abs(a) <= 1. The real and imaginary parts are clipped to the "
+"interval [-1,  1] in an attempt to improve on that situation but is not "
+"much help in the complex case."
+msgstr ""
+"由于浮点数舍入，结果张量可能不是厄米特矩阵，对角线元素可能不为 1，元素"
+"可能不满足不等式 abs(a) <= 1。实部和虚部被裁剪到区间 [-1, 1] 以尝试改善"
+"这种情况，但在复数情况下帮助不大。"
+
+#: maxframe.tensor.statistics.corrcoef.corrcoef:40 of
+msgid ""
+"This function accepts but discards arguments `bias` and `ddof`.  This is "
+"for backwards compatibility with previous versions of this function.  "
+"These arguments had no effect on the return values of the function and "
+"can be safely ignored in this and previous versions of numpy."
+msgstr ""
+"此函数接受但忽略参数 `bias` 和 `ddof`。这是为了与该函数的早期版本向后兼容"
+"。这些参数对函数的返回值没有影响，在此版本及以前版本的 numpy 中可以安全"
+"忽略。"
+

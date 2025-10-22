@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.pairwise.euclidean_distances.rst:2
+msgid "maxframe.learn.metrics.pairwise.euclidean\\_distances"
+msgstr ""
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:1 of
+msgid ""
+"Considering the rows of X (and Y=X) as vectors, compute the distance "
+"matrix between each pair of vectors."
+msgstr "将 X 的行（以及 Y=X）视为向量，计算每对向量之间的距离矩阵。"
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:4 of
+msgid ""
+"For efficiency reasons, the euclidean distance between a pair of row "
+"vector x and y is computed as::"
+msgstr "出于效率考虑，行向量 x 和 y 之间的欧几里得距离计算如下："
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:9 of
+msgid ""
+"This formulation has two advantages over other ways of computing "
+"distances. First, it is computationally efficient when dealing with "
+"sparse data. Second, if one argument varies but the other remains "
+"unchanged, then `dot(x, x)` and/or `dot(y, y)` can be pre-computed."
+msgstr ""
+"这种公式与其他计算距离的方法相比有两个优势。首先，在处理稀疏数据时计算"
+"效率更高。其次，如果一个参数变化而另一个保持不变，则可以预先计算 `dot(x, "
+"x)` 和/或 `dot(y, y)`。"
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:14 of
+msgid ""
+"However, this is not the most precise way of doing this computation, and "
+"the distance matrix returned by this function may not be exactly "
+"symmetric as required by, e.g., ``scipy.spatial.distance`` functions."
+msgstr ""
+"然而，这不是最精确的计算方法，该函数返回的距离矩阵可能不完全对称，而这在"
+"例如 ``scipy.spatial.distance`` 函数中是必需的。"
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:18 of
+msgid "Read more in the :ref:`User Guide <metrics>`."
+msgstr "更多信息请参阅 :ref:`用户指南 <metrics>`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.pairwise.euclidean_distances.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:24 of
+msgid ""
+"Pre-computed dot-products of vectors in Y (e.g., ``(Y**2).sum(axis=1)``) "
+"May be ignored in some cases, see the note below."
+msgstr ""
+"Y 中向量的预先计算点积（例如 ``(Y**2).sum(axis=1)``），在某些情况下可能会"
+"被忽略，详见下方说明。"
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:28 of
+msgid "Return squared Euclidean distances."
+msgstr "返回平方欧几里得距离。"
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:30 of
+msgid ""
+"Pre-computed dot-products of vectors in X (e.g., ``(X**2).sum(axis=1)``) "
+"May be ignored in some cases, see the note below."
+msgstr ""
+"X 中向量的预先计算点积（例如 ``(X**2).sum(axis=1)``），在某些情况下可能会"
+"被忽略，详见下方说明。"
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:36 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:37 of
+msgid ""
+"To achieve better accuracy, `X_norm_squared` and `Y_norm_squared` may be "
+"unused if they are passed as ``float32``."
+msgstr ""
+"为获得更高的精度，如果 `X_norm_squared` 和 `Y_norm_squared` 以 ``float32`"
+"` 传递，则可能不会使用它们。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.pairwise.euclidean_distances.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:40 of
+msgid "**distances**"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.pairwise.euclidean_distances.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:44 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:58 of
+msgid ":py:obj:`paired_distances`"
+msgstr ""
+
+#: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:59 of
+msgid "distances betweens pairs of elements of X and Y."
+msgstr "X 和 Y 元素对之间的距离。"
+

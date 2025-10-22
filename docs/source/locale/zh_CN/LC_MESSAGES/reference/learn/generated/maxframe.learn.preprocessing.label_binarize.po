@@ -1,0 +1,102 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.label_binarize.rst:2
+msgid "maxframe.learn.preprocessing.label\\_binarize"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:1 of
+msgid "Binarize labels in a one-vs-all fashion."
+msgstr "以一对多的方式二值化标签。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:3 of
+msgid ""
+"Several regression and binary classification algorithms are available in "
+"scikit-learn. A simple way to extend these algorithms to the multi-class "
+"classification case is to use the so-called one-vs-all scheme."
+msgstr ""
+"scikit-learn 中提供了多种回归和二分类算法。将这些算法扩展到多类分类问题的"
+"一个简单方法是使用所谓的一对多方案。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:8 of
+msgid ""
+"This function makes it possible to compute this transformation for a "
+"fixed set of class labels known ahead of time."
+msgstr "该函数可以对预先已知的固定类别标签集进行此转换。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.label_binarize.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:11 of
+msgid "Sequence of integer labels or multilabel data to encode."
+msgstr "要编码的整数标签序列或多标签数据。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:13 of
+msgid "Uniquely holds the label for each class."
+msgstr "为每个类别唯一保存标签。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:15 of
+msgid "Value with which negative labels must be encoded."
+msgstr "负标签必须被编码为此值。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:17 of
+msgid "Value with which positive labels must be encoded."
+msgstr "正标签必须被编码为此值。"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:19 of
+msgid "Set to true if output binary array is desired in CSR sparse format."
+msgstr "如果希望输出的二值数组为 CSR 稀疏格式，则设为 true。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.label_binarize.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:22 of
+msgid "**Y** -- Shape will be (n_samples, 1) for binary problems."
+msgstr "**Y** -- 对于二分类问题，形状为 (n_samples, 1)。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.label_binarize.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:26 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:32 of
+msgid "The class ordering is preserved:"
+msgstr "类别顺序将被保留："
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:38 of
+msgid "Binary targets transform to a column vector"
+msgstr "二分类目标将转换为列向量"
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:48 of
+msgid ":py:obj:`LabelBinarizer`"
+msgstr ""
+
+#: maxframe.learn.preprocessing._label._label_binarizer.label_binarize:49 of
+msgid ""
+"Class used to wrap the functionality of label_binarize and allow for "
+"fitting to classes independently of the transform operation."
+msgstr "用于封装 label_binarize 功能的类，允许独立于转换操作来拟合类别。"
+

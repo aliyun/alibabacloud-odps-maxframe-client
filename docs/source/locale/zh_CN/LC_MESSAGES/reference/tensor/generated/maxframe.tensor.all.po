@@ -1,0 +1,162 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.all.rst:2
+msgid "maxframe.tensor.all"
+msgstr ""
+
+#: maxframe.tensor.reduction.all.all:1 of
+msgid "Test whether all array elements along a given axis evaluate to True."
+msgstr "测试给定轴上的所有数组元素是否都为 True。"
+
+#: maxframe.tensor.reduction.all.all of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.reduction.all.all:3 of
+msgid "Input tensor or object that can be converted to a tensor."
+msgstr "输入张量或可转换为张量的对象。"
+
+#: maxframe.tensor.reduction.all.all:5 of
+msgid ""
+"Axis or axes along which a logical AND reduction is performed. The "
+"default (`axis` = `None`) is to perform a logical AND over all the "
+"dimensions of the input array. `axis` may be negative, in which case it "
+"counts from the last to the first axis.  If this is a tuple of ints, a "
+"reduction is performed on multiple axes, instead of a single axis or all "
+"the axes as before."
+msgstr ""
+"执行逻辑与归约操作的轴或轴的元组。默认值（`axis` = `None`）是对输入数组的"
+"所有维度执行逻辑与操作。`axis` 可以为负数，在这种情况下它从最后一个轴开始"
+"向前计数。如果这是一个整数元组，则在多个轴上执行归约，而不是像以前那样在"
+"单个轴或所有轴上执行。"
+
+#: maxframe.tensor.reduction.all.all:5 of
+#, fuzzy
+msgid ""
+"Axis or axes along which a logical AND reduction is performed. The "
+"default (`axis` = `None`) is to perform a logical AND over all the "
+"dimensions of the input array. `axis` may be negative, in which case it "
+"counts from the last to the first axis."
+msgstr ""
+"执行逻辑与归约操作的轴或轴的元组。默认值（`axis` = `None`）是对输入数组的"
+"所有维度执行逻辑与操作。`axis` 可以为负数，在这种情况下它从最后一个轴开始"
+"向前计数。如果这是一个整数元组，则在多个轴上执行归约，而不是像以前那样在"
+"单个轴或所有轴上执行。"
+
+#: maxframe.tensor.reduction.all.all:10 of
+msgid ""
+"If this is a tuple of ints, a reduction is performed on multiple axes, "
+"instead of a single axis or all the axes as before."
+msgstr ""
+
+#: maxframe.tensor.reduction.all.all:13 of
+msgid ""
+"Alternate output tensor in which to place the result. It must have the "
+"same shape as the expected output and its type is preserved (e.g., if "
+"``dtype(out)`` is float, the result will consist of 0.0's and 1.0's).  "
+"See `doc.ufuncs` (Section \"Output arguments\") for more details."
+msgstr ""
+"用于放置结果的替代输出张量。它的形状必须与预期输出相同，并且其类型会被"
+"保留（例如，如果 ``dtype(out)`` 是 float，则结果将由 0.0 和 1.0 组成）。"
+"更多详情请参见 `doc.ufuncs`（“输出参数”部分）。"
+
+#: maxframe.tensor.reduction.all.all:19 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the input tensor.  If the default value is passed, "
+"then `keepdims` will not be passed through to the `all` method of sub-"
+"classes of `ndarray`, however any non-default value will be.  If the sub-"
+"classes `sum` method does not implement `keepdims` any exceptions will be"
+" raised."
+msgstr ""
+"如果设置为 True，则被归约的轴将保留在结果中，其大小为 1。使用此选项时，"
+"结果将能正确地与输入张量进行广播。如果传入默认值，则 `keepdims` 不会被"
+"传递给 `ndarray` 子类的 `all` 方法，但任何非默认值会被传递。如果子类的 `"
+"sum` 方法没有实现 `keepdims`，则会引发异常。"
+
+#: maxframe.tensor.reduction.all.all:19 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the input tensor."
+msgstr ""
+
+#: maxframe.tensor.reduction.all.all:23 of
+#, fuzzy
+msgid ""
+"If the default value is passed, then `keepdims` will not be passed "
+"through to the `all` method of sub-classes of `ndarray`, however any non-"
+"default value will be.  If the sub-classes `sum` method does not "
+"implement `keepdims` any exceptions will be raised."
+msgstr ""
+"如果设置为 True，则被归约的轴将保留在结果中，其大小为 1。使用此选项时，"
+"结果将能正确地与输入张量进行广播。如果传入默认值，则 `keepdims` 不会被"
+"传递给 `ndarray` 子类的 `all` 方法，但任何非默认值会被传递。如果子类的 `"
+"sum` 方法没有实现 `keepdims`，则会引发异常。"
+
+#: maxframe.tensor.reduction.all.all of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.reduction.all.all:30 of
+msgid ""
+"**all** -- A new boolean or tensor is returned unless `out` is specified,"
+" in which case a reference to `out` is returned."
+msgstr ""
+"**all** -- 除非指定了 `out`，否则将返回一个新的布尔值或张量；如果指定了 `"
+"out`，则返回对 `out` 的引用。"
+
+#: maxframe.tensor.reduction.all.all of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.reduction.all.all:36 of
+msgid ":py:obj:`Tensor.all`"
+msgstr ""
+
+#: maxframe.tensor.reduction.all.all:37 of
+msgid "equivalent method"
+msgstr "等效方法"
+
+#: maxframe.tensor.reduction.all.all:39 of
+msgid ":py:obj:`any`"
+msgstr ""
+
+#: maxframe.tensor.reduction.all.all:40 of
+msgid "Test whether any element along a given axis evaluates to True."
+msgstr "测试给定轴上的任何元素是否为 True。"
+
+#: maxframe.tensor.reduction.all.all:43 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.reduction.all.all:44 of
+msgid ""
+"Not a Number (NaN), positive infinity and negative infinity evaluate to "
+"`True` because these are not equal to zero."
+msgstr "非数字（NaN）、正无穷和负无穷都会被评估为 `True`，因为它们不等于零。"
+
+#: maxframe.tensor.reduction.all.all:48 of
+msgid "示例"
+msgstr ""
+

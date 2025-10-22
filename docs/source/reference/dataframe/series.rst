@@ -35,7 +35,9 @@ Conversion
    :toctree: generated/
 
    Series.astype
+   Series.convert_dtypes
    Series.copy
+   Series.infer_objects
    Series.to_frame
 
 Index, iteration
@@ -48,6 +50,7 @@ Index, iteration
    Series.iloc
    Series.loc
    Series.mask
+   Series.pop
    Series.xs
    Series.where
 
@@ -78,6 +81,7 @@ Binary operator functions
    Series.ge
    Series.ne
    Series.eq
+   Series.combine
    Series.combine_first
 
 Function application, groupby & window
@@ -116,14 +120,16 @@ Computations / descriptive stats
    Series.is_unique
    Series.max
    Series.mean
-   Series.min
    Series.median
+   Series.min
+   Series.mode
    Series.nlargest
    Series.nsmallest
    Series.nunique
    Series.prod
    Series.product
    Series.quantile
+   Series.rank
    Series.round
    Series.sem
    Series.std
@@ -140,6 +146,8 @@ Reindexing / selection / label manipulation
    Series.add_prefix
    Series.add_suffix
    Series.align
+   Series.at_time
+   Series.between_time
    Series.case_when
    Series.drop
    Series.drop_duplicates
@@ -180,6 +188,7 @@ Reshaping, sorting
    Series.argsort
    Series.explode
    Series.reorder_levels
+   Series.repeat
    Series.sort_values
    Series.sort_index
    Series.swaplevel
@@ -424,6 +433,15 @@ specific plotting methods of the form ``Series.plot.<kind>``.
    Series.plot.kde
    Series.plot.line
    Series.plot.pie
+
+Serialization / IO / conversion
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. autosummary::
+   :toctree: generated/
+
+   Series.to_csv
+   Series.to_dict
+   Series.to_list
 
 .. _generated.series.mf:
 

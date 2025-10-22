@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.map.rst:2
+msgid "maxframe.dataframe.Series.map"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.series_map:1 of
+msgid "Map values of Series according to input correspondence."
+msgstr "根据输入的对应关系映射 Series 的值。"
+
+#: maxframe.dataframe.misc.map.series_map:3 of
+msgid ""
+"Used for substituting each value in a Series with another value, that may"
+" be derived from a function, a ``dict`` or a :class:`Series`."
+msgstr ""
+"用于将 Series 中的每个值替换为另一个值，该值可能来源于函数、``dict`` 或 :"
+"class:`Series`。"
+
+#: maxframe.dataframe.misc.map.series_map of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.series_map:7 of
+msgid "Mapping correspondence."
+msgstr "映射对应关系。"
+
+#: maxframe.dataframe.misc.map.series_map:9 of
+msgid ""
+"If 'ignore', propagate NaN values, without passing them to the mapping "
+"correspondence."
+msgstr "如果为 'ignore'，则传播 NaN 值，而不将其传递给映射对应关系。"
+
+#: maxframe.dataframe.misc.map.series_map:12 of
+msgid ""
+"Specify return type of the function. Must be specified when we cannot "
+"decide the return type of the function."
+msgstr "指定函数的返回类型。当无法确定函数的返回类型时必须指定。"
+
+#: maxframe.dataframe.misc.map.series_map:15 of
+msgid "Specify the scale of memory uses in the function versus input size."
+msgstr "指定函数中内存使用量相对于输入大小的规模。"
+
+#: maxframe.dataframe.misc.map.series_map:18 of
+msgid "Whether infer dtypes when dtypes or output_type is not specified"
+msgstr "当未指定 dtypes 或 output_type 时是否推断数据类型"
+
+#: maxframe.dataframe.misc.map.series_map of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.series_map:21 of
+msgid "Same index as caller."
+msgstr "与调用者相同的索引。"
+
+#: maxframe.dataframe.misc.map.series_map of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.series_map:26 of
+msgid ":py:obj:`Series.apply`"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.series_map:27 of
+msgid "For applying more complex functions on a Series."
+msgstr "用于在 Series 上应用更复杂的函数。"
+
+#: maxframe.dataframe.misc.map.series_map:29 of
+msgid ":py:obj:`DataFrame.apply`"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.series_map:30 of
+msgid "Apply a function row-/column-wise."
+msgstr "按行或列应用函数。"
+
+#: maxframe.dataframe.misc.map.series_map:32 of
+msgid ":py:obj:`DataFrame.applymap`"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.series_map:33 of
+msgid "Apply a function elementwise on a whole DataFrame."
+msgstr "在整个 DataFrame 上逐元素应用函数。"
+
+#: maxframe.dataframe.misc.map.series_map:36 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.series_map:37 of
+msgid ""
+"When ``arg`` is a dictionary, values in Series that are not in the "
+"dictionary (as keys) are converted to ``NaN``. However, if the dictionary"
+" is a ``dict`` subclass that defines ``__missing__`` (i.e. provides a "
+"method for default values), then this default is used rather than "
+"``NaN``."
+msgstr ""
+"当 ``arg`` 是字典时，Series 中不在字典中的值（作为键）将被转换为 ``NaN``"
+"。但如果该字典是定义了 ``__missing__`` 的 ``dict`` 子类（即提供了默认值的"
+"方法），则使用该默认值而不是 ``NaN``。"
+
+#: maxframe.dataframe.misc.map.series_map:44 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.series_map:55 of
+msgid ""
+"``map`` accepts a ``dict`` or a ``Series``. Values that are not found in "
+"the ``dict`` are converted to ``NaN``, unless the dict has a default "
+"value (e.g. ``defaultdict``):"
+msgstr ""
+"``map`` 接受 ``dict`` 或 ``Series``。在 ``dict`` 中找不到的值将被转换为 `"
+"`NaN``，除非该字典具有默认值（例如 ``defaultdict``）："
+
+#: maxframe.dataframe.misc.map.series_map:66 of
+msgid "It also accepts a function:"
+msgstr "它也接受一个函数："
+
+#: maxframe.dataframe.misc.map.series_map:75 of
+msgid ""
+"To avoid applying the function to missing values (and keep them as "
+"``NaN``) ``na_action='ignore'`` can be used:"
+msgstr ""
+"为了避免将函数应用于缺失值（并保持它们为 ``NaN``），可以使用 ``na_action="
+"'ignore'``："
+

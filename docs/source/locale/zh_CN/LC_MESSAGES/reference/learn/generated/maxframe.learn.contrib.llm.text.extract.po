@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev817+g0d9b3d99d.d20251019\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-19 21:19+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.text.extract.rst:2
+msgid "maxframe.learn.contrib.llm.text.extract"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.extract:1 of
+msgid ""
+"Extract structured information from text content in a series using a "
+"language model."
+msgstr "使用语言模型从系列中的文本内容提取结构化信息。"
+
+#: maxframe.learn.contrib.llm.text.extract of
+msgid "Parameters"
+msgstr "参数"
+
+#: maxframe.learn.contrib.llm.text.extract:3 of
+msgid ""
+"A maxframe Series containing text data to extract information from. Each "
+"element should be a text string."
+msgstr "一个包含待提取信息文本数据的 maxframe Series。每个元素应为一个文本字符串。"
+
+#: maxframe.learn.contrib.llm.text.extract:6 of
+msgid "Language model instance used for information extraction."
+msgstr "用于信息提取的语言模型实例。"
+
+#: maxframe.learn.contrib.llm.text.extract:8 of
+msgid ""
+"Schema definition for the extraction. Can be a dictionary defining the "
+"structure or a Pydantic BaseModel class that will be converted to JSON "
+"schema."
+msgstr ""
+"提取的模式定义。可以是定义结构的字典，或会被转换为 JSON 模式的 Pydantic "
+"BaseModel 类。"
+
+#: maxframe.learn.contrib.llm.text.extract:11 of
+msgid ""
+"Description of the extraction task to help the model understand what to "
+"extract."
+msgstr "提取任务的描述，以帮助模型理解需要提取的内容。"
+
+#: maxframe.learn.contrib.llm.text.extract:13 of
+msgid ""
+"Examples of the extraction task in format [(input_text, expected_output),"
+" ...], to help LLM better understand the extraction requirements."
+msgstr ""
+"提取任务的示例，格式为 [(input_text, expected_output), ...]，以帮助大语言"
+"模型更好地理解提取需求。"
+
+#: maxframe.learn.contrib.llm.text.extract:16 of
+msgid "Index for the output series, by default None, will generate new index."
+msgstr "输出序列的索引，默认为 None，将生成新索引。"
+
+#: maxframe.learn.contrib.llm.text.extract of
+msgid "Returns"
+msgstr "返回"
+
+#: maxframe.learn.contrib.llm.text.extract:19 of
+msgid ""
+"A DataFrame containing the extracted information and success status. "
+"Columns include 'output' (extracted structured data) and 'success' "
+"(boolean status). If 'success' is False, the 'output' column will contain"
+" error information instead of the expected output."
+msgstr ""
+"一个包含提取信息和成功状态的 DataFrame。列包括 'output'（提取的结构化数据"
+"）和 'success'（布尔状态）。如果 'success' 为 False，则 'output' 列将包含"
+"错误信息而非预期输出。"
+
+#: maxframe.learn.contrib.llm.text.extract:25 of
+msgid "Examples"
+msgstr "示例"
+
+#: maxframe.learn.contrib.llm.text.extract:55 of
+msgid "Notes"
+msgstr "备注"
+
+#: maxframe.learn.contrib.llm.text.extract:56 of
+msgid ""
+"**Preview:** This API is in preview state and may be unstable. The "
+"interface may change in future releases."
+msgstr ""
+"**预览：** 此 API 处于预览状态，可能不稳定。接口可能在未来的版本中"
+"发生变化。"
+

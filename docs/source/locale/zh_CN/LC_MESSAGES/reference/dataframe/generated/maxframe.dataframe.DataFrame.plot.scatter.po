@@ -1,0 +1,214 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.scatter.rst:2
+msgid "maxframe.dataframe.DataFrame.plot.scatter"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:1
+#: of
+msgid "Create a scatter plot with varying marker point size and color."
+msgstr "创建一个具有不同标记点大小和颜色的散点图。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:3
+#: of
+msgid ""
+"The coordinates of each point are defined by two dataframe columns and "
+"filled circles are used to represent each point. This kind of plot is "
+"useful to see complex correlations between two variables. Points could be"
+" for instance natural 2D coordinates like longitude and latitude in a map"
+" or, in general, any pair of metrics that can be plotted against each "
+"other."
+msgstr ""
+"每个点的坐标由两个 DataFrame 列定义，并使用填充圆圈表示每个点。这种图"
+"有助于查看两个变量之间的复杂相关性。点可以是例如地图中的经度和纬度等自然"
+"二维坐标，或者通常是可以相互绘制的任何一对度量。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:10
+#: of
+msgid ""
+"The column name or column position to be used as horizontal coordinates "
+"for each point."
+msgstr "用作每个点的水平坐标的列名或列位置。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:13
+#: of
+msgid ""
+"The column name or column position to be used as vertical coordinates for"
+" each point."
+msgstr "用作每个点的垂直坐标的列名或列位置。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:16
+#: of
+msgid ""
+"The size of each point. Possible values are:  - A string with the name of"
+" the column to be used for marker's size.  - A single scalar so all "
+"points have the same size.  - A sequence of scalars, which will be used "
+"for each point's size   recursively. For instance, when passing [2,14] "
+"all points size   will be either 2 or 14, alternatively."
+msgstr ""
+"每个点的大小。可能的值包括：- 一个字符串，表示用于标记大小的列名。- 一个"
+"单一标量，使所有点具有相同的大小。- 一个标量序列，将递归地用于每个点的"
+"大小。例如，当传入 [2,14] 时，所有点的大小将交替为 2 或 14。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:16
+#: of
+msgid "The size of each point. Possible values are:"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:18
+#: of
+msgid "A string with the name of the column to be used for marker's size."
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:20
+#: of
+msgid "A single scalar so all points have the same size."
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:22
+#: of
+#, fuzzy
+msgid ""
+"A sequence of scalars, which will be used for each point's size "
+"recursively. For instance, when passing [2,14] all points size will be "
+"either 2 or 14, alternatively."
+msgstr ""
+"每个点的大小。可能的值包括：- 一个字符串，表示用于标记大小的列名。- 一个"
+"单一标量，使所有点具有相同的大小。- 一个标量序列，将递归地用于每个点的"
+"大小。例如，当传入 [2,14] 时，所有点的大小将交替为 2 或 14。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:26
+#: of
+msgid ""
+"The color of each point. Possible values are:  - A single color string "
+"referred to by name, RGB or RGBA code,   for instance 'red' or '#a98d19'."
+"  - A sequence of color strings referred to by name, RGB or RGBA   code, "
+"which will be used for each point's color recursively. For   instance "
+"['green','yellow'] all points will be filled in green or   yellow, "
+"alternatively.  - A column name or position whose values will be used to "
+"color the   marker points according to a colormap."
+msgstr ""
+"每个点的颜色。可能的值包括：- 一个通过名称、RGB 或 RGBA 代码指定的单一"
+"颜色字符串，例如 'red' 或 '#a98d19'。- 一个通过名称、RGB 或 RGBA 代码指定"
+"的颜色字符串序列，将递归地用于每个点的颜色。例如 ['green','yellow']，所有"
+"点将交替填充为绿色或黄色。- 一个列名或位置，其值将根据色彩映射为标记点着"
+"色。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:26
+#: of
+msgid "The color of each point. Possible values are:"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:28
+#: of
+msgid ""
+"A single color string referred to by name, RGB or RGBA code, for instance"
+" 'red' or '#a98d19'."
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:31
+#: of
+#, fuzzy
+msgid ""
+"A sequence of color strings referred to by name, RGB or RGBA code, which "
+"will be used for each point's color recursively. For instance "
+"['green','yellow'] all points will be filled in green or yellow, "
+"alternatively."
+msgstr ""
+"每个点的颜色。可能的值包括：- 一个通过名称、RGB 或 RGBA 代码指定的单一"
+"颜色字符串，例如 'red' 或 '#a98d19'。- 一个通过名称、RGB 或 RGBA 代码指定"
+"的颜色字符串序列，将递归地用于每个点的颜色。例如 ['green','yellow']，所有"
+"点将交替填充为绿色或黄色。- 一个列名或位置，其值将根据色彩映射为标记点着"
+"色。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:36
+#: of
+msgid ""
+"A column name or position whose values will be used to color the marker "
+"points according to a colormap."
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:39
+#: of
+msgid "Keyword arguments to pass on to :meth:`DataFrame.plot`."
+msgstr "传递给 :meth:`DataFrame.plot` 的关键字参数。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:41
+#: of
+msgid ":class:`matplotlib.axes.Axes` or numpy.ndarray of them"
+msgstr ":class:`matplotlib.axes.Axes` 或它们的 numpy.ndarray"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:45
+#: of
+msgid ":py:obj:`matplotlib.pyplot.scatter`"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:46
+#: of
+msgid "Scatter plot using multiple input data formats."
+msgstr "使用多种输入数据格式的散点图。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:49
+#: of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:50
+#: of
+msgid ""
+"Let's see how to draw a scatter plot using coordinates from the values in"
+" a DataFrame's columns."
+msgstr "让我们看看如何使用 DataFrame 列中的值作为坐标来绘制散点图。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.scatter.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-scatter-1.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-DataFrame-plot-scatter-1.py>`)"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:64
+#: of
+msgid "And now with the color determined by a column as well."
+msgstr "现在颜色也由某一列确定。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.scatter.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-scatter-2.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-DataFrame-plot-scatter-2.py>`)"
+

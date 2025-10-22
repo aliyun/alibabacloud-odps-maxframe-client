@@ -1,0 +1,158 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.gamma.rst:2
+msgid "maxframe.tensor.random.gamma"
+msgstr ""
+
+#: maxframe.tensor.random.gamma.gamma:1 of
+msgid "Draw samples from a Gamma distribution."
+msgstr "从 Gamma 分布中抽取样本。"
+
+#: maxframe.tensor.random.gamma.gamma:3 of
+msgid ""
+"Samples are drawn from a Gamma distribution with specified parameters, "
+"`shape` (sometimes designated \"k\") and `scale` (sometimes designated "
+"\"theta\"), where both parameters are > 0."
+msgstr ""
+"样本从具有指定参数的 Gamma 分布中抽取，`shape`（有时记为 \"k\"）和 `scale"
+"`（有时记为 \"theta\"），这两个参数都大于 0。"
+
+#: maxframe.tensor.random.gamma.gamma of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.gamma.gamma:7 of
+msgid "The shape of the gamma distribution. Should be greater than zero."
+msgstr "Gamma 分布的形状参数。应大于零。"
+
+#: maxframe.tensor.random.gamma.gamma:9 of
+msgid ""
+"The scale of the gamma distribution. Should be greater than zero. Default"
+" is equal to 1."
+msgstr "Gamma 分布的尺度参数。应大于零。默认值为 1。"
+
+#: maxframe.tensor.random.gamma.gamma:12 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``shape`` and ``scale`` are both scalars. Otherwise, "
+"``np.broadcast(shape, scale).size`` samples are drawn."
+msgstr ""
+"输出形状。如果给定形状为，例如 ``(m, n, k)``，则抽取 ``m * n * k`` 个样本"
+"。如果 size 为 ``None``（默认），当 ``shape`` 和 ``scale`` 都为标量时返回"
+"单个值。否则，抽取 ``np.broadcast(shape, scale).size`` 个样本。"
+
+#: maxframe.tensor.random.gamma.gamma:17 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的 chunk 大小"
+
+#: maxframe.tensor.random.gamma.gamma:19 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.gamma.gamma:21 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.gamma.gamma of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.gamma.gamma:24 of
+msgid "**out** -- Drawn samples from the parameterized gamma distribution."
+msgstr "**out** -- 从参数化的 Gamma 分布中抽取的样本。"
+
+#: maxframe.tensor.random.gamma.gamma of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.gamma.gamma:29 of
+msgid ":py:obj:`scipy.stats.gamma`"
+msgstr ""
+
+#: maxframe.tensor.random.gamma.gamma:30 of
+msgid ""
+"probability density function, distribution or cumulative density "
+"function, etc."
+msgstr "概率密度函数、分布函数或累积密度函数等。"
+
+#: maxframe.tensor.random.gamma.gamma:33 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.gamma.gamma:34 of
+msgid "The probability density for the Gamma distribution is"
+msgstr "Gamma 分布的概率密度为"
+
+#: maxframe.tensor.random.gamma.gamma:36 of
+msgid ""
+"p(x) = x^{k-1}\\frac{e^{-x/\\theta}}{\\theta^k\\Gamma(k)},\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.gamma.gamma:38 of
+msgid ""
+"where :math:`k` is the shape and :math:`\\theta` the scale, and "
+":math:`\\Gamma` is the Gamma function."
+msgstr ""
+"其中 :math:`k` 是形状参数，:math:`\\theta` 是尺度参数，:math:`\\Gamma` 是"
+" Gamma 函数。"
+
+#: maxframe.tensor.random.gamma.gamma:41 of
+msgid ""
+"The Gamma distribution is often used to model the times to failure of "
+"electronic components, and arises naturally in processes for which the "
+"waiting times between Poisson distributed events are relevant."
+msgstr ""
+"Gamma 分布通常用于建模电子元件的失效时间，并在泊松分布事件之间的等待时间"
+"相关的自然过程中出现。"
+
+#: maxframe.tensor.random.gamma.gamma:46 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.gamma.gamma:47 of
+msgid ""
+"Weisstein, Eric W. \"Gamma Distribution.\" From MathWorld--A Wolfram Web "
+"Resource. http://mathworld.wolfram.com/GammaDistribution.html"
+msgstr ""
+
+#: maxframe.tensor.random.gamma.gamma:50 of
+msgid ""
+"Wikipedia, \"Gamma distribution\", "
+"http://en.wikipedia.org/wiki/Gamma_distribution"
+msgstr ""
+
+#: maxframe.tensor.random.gamma.gamma:54 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.gamma.gamma:55 of
+msgid "Draw samples from the distribution:"
+msgstr "从分布中抽取样本："
+
+#: maxframe.tensor.random.gamma.gamma:62 of
+msgid ""
+"Display the histogram of the samples, along with the probability density "
+"function:"
+msgstr "显示样本的直方图以及概率密度函数："
+

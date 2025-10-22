@@ -1,0 +1,179 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.f.rst:2
+msgid "maxframe.tensor.random.f"
+msgstr ""
+
+#: maxframe.tensor.random.f.f:1 of
+msgid "Draw samples from an F distribution."
+msgstr "从 F 分布中抽取样本。"
+
+#: maxframe.tensor.random.f.f:3 of
+msgid ""
+"Samples are drawn from an F distribution with specified parameters, "
+"`dfnum` (degrees of freedom in numerator) and `dfden` (degrees of freedom"
+" in denominator), where both parameters should be greater than zero."
+msgstr ""
+"样本从具有指定参数的 F 分布中抽取，`dfnum`（分子自由度）和 `dfden`（分母"
+"自由度）均应大于零。"
+
+#: maxframe.tensor.random.f.f:8 of
+msgid ""
+"The random variate of the F distribution (also known as the Fisher "
+"distribution) is a continuous probability distribution that arises in "
+"ANOVA tests, and is the ratio of two chi-square variates."
+msgstr ""
+"F 分布的随机变量（也称为 Fisher 分布）是一种在方差分析（ANOVA）中出现的"
+"连续概率分布，它是两个卡方变量的比值。"
+
+#: maxframe.tensor.random.f.f of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.f.f:13 of
+msgid "Degrees of freedom in numerator, should be > 0."
+msgstr "分子自由度，应大于 0。"
+
+#: maxframe.tensor.random.f.f:15 of
+msgid "Degrees of freedom in denominator, should be > 0."
+msgstr "分母自由度，应大于 0。"
+
+#: maxframe.tensor.random.f.f:17 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``dfnum`` and ``dfden`` are both scalars. Otherwise, "
+"``np.broadcast(dfnum, dfden).size`` samples are drawn."
+msgstr ""
+"输出形状。如果给定形状如 ``(m, n, k)``，则抽取 ``m * n * k`` 个样本。如果"
+" size 为 ``None``（默认），且 ``dfnum`` 和 ``dfden`` 均为标量，则返回单个"
+"值。否则，抽取 ``np.broadcast(dfnum, dfden).size`` 个样本。"
+
+#: maxframe.tensor.random.f.f:22 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.random.f.f:24 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.f.f:26 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.f.f of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.f.f:29 of
+msgid "**out** -- Drawn samples from the parameterized Fisher distribution."
+msgstr "**out** -- 从参数化的 Fisher 分布中抽取的样本。"
+
+#: maxframe.tensor.random.f.f of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.f.f:34 of
+msgid ":py:obj:`scipy.stats.f`"
+msgstr ""
+
+#: maxframe.tensor.random.f.f:35 of
+msgid ""
+"probability density function, distribution or cumulative density "
+"function, etc."
+msgstr "概率密度函数、分布函数或累积密度函数等。"
+
+#: maxframe.tensor.random.f.f:38 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.f.f:39 of
+msgid ""
+"The F statistic is used to compare in-group variances to between-group "
+"variances. Calculating the distribution depends on the sampling, and so "
+"it is a function of the respective degrees of freedom in the problem.  "
+"The variable `dfnum` is the number of samples minus one, the between-"
+"groups degrees of freedom, while `dfden` is the within-groups degrees of "
+"freedom, the sum of the number of samples in each group minus the number "
+"of groups."
+msgstr ""
+"F 统计量用于比较组内方差与组间方差。分布的计算依赖于抽样，因此是问题中各"
+"自由度的函数。变量 `dfnum` 是样本数减一，即组间自由度，而 `dfden` 是组内"
+"自由度，即每组样本数之和减去组数。"
+
+#: maxframe.tensor.random.f.f:48 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.f.f:49 of
+msgid ""
+"Glantz, Stanton A. \"Primer of Biostatistics.\", McGraw-Hill, Fifth "
+"Edition, 2002."
+msgstr ""
+"Glantz, Stanton A. \"Primer of Biostatistics.\", McGraw-Hill, 第五版, "
+"2002。"
+
+#: maxframe.tensor.random.f.f:51 of
+msgid "Wikipedia, \"F-distribution\", http://en.wikipedia.org/wiki/F-distribution"
+msgstr "维基百科, \"F-分布\", http://en.wikipedia.org/wiki/F-distribution"
+
+#: maxframe.tensor.random.f.f:55 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.f.f:56 of
+msgid "An example from Glantz[1], pp 47-40:"
+msgstr "来自 Glantz[1] 的示例，第 47-40 页："
+
+#: maxframe.tensor.random.f.f:58 of
+msgid ""
+"Two groups, children of diabetics (25 people) and children from people "
+"without diabetes (25 controls). Fasting blood glucose was measured, case "
+"group had a mean value of 86.1, controls had a mean value of 82.2. "
+"Standard deviations were 2.09 and 2.49 respectively. Are these data "
+"consistent with the null hypothesis that the parents diabetic status does"
+" not affect their children's blood glucose levels? Calculating the F "
+"statistic from the data gives a value of 36.01."
+msgstr ""
+"两组，糖尿病患者的子女（25人）和非糖尿病患者子女（25个对照）。测量空腹"
+"血糖，病例组均值为86.1，对照组为82.2。标准差分别为2.09和2.49。这些数据"
+"是否符合零假设，即父母糖尿病状态不影响子女的血糖水平？从数据计算出的 F "
+"统计量为36.01。"
+
+#: maxframe.tensor.random.f.f:66 of
+msgid "Draw samples from the distribution:"
+msgstr "从分布中抽取样本："
+
+#: maxframe.tensor.random.f.f:74 of
+#, python-format
+msgid "The lower bound for the top 1% of the samples is :"
+msgstr "样本中前1%的下界为："
+
+#: maxframe.tensor.random.f.f:79 of
+#, python-format
+msgid ""
+"So there is about a 1% chance that the F statistic will exceed 7.62, the "
+"measured value is 36, so the null hypothesis is rejected at the 1% level."
+msgstr ""
+"因此，F 统计量超过7.62的概率约为1%，而测量值为36，因此在1%的显著性水平下"
+"拒绝零假设。"
+

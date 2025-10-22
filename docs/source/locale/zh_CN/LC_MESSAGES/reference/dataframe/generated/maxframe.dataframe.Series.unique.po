@@ -1,0 +1,41 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.unique.rst:2
+msgid "maxframe.dataframe.Series.unique"
+msgstr ""
+
+#: maxframe.dataframe.reduction.unique.unique:1 of
+msgid "Uniques are returned in order of appearance. This does NOT sort."
+msgstr "唯一值按出现顺序返回。这不会进行排序。"
+
+#: maxframe.dataframe.reduction.unique.unique of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.reduction.unique.unique:9 of
+msgid ":py:obj:`Index.unique`, :py:obj:`Series.unique`"
+msgstr ""
+
+#: maxframe.dataframe.reduction.unique.unique:12 of
+msgid "示例"
+msgstr ""
+

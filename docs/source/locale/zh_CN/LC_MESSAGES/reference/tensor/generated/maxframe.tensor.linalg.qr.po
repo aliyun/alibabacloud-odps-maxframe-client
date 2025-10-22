@@ -1,0 +1,144 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.linalg.qr.rst:2
+msgid "maxframe.tensor.linalg.qr"
+msgstr ""
+
+#: maxframe.tensor.linalg.qr.qr:1 of
+msgid "Compute the qr factorization of a matrix."
+msgstr "计算矩阵的 QR 分解。"
+
+#: maxframe.tensor.linalg.qr.qr:3 of
+msgid ""
+"Factor the matrix `a` as *qr*, where `q` is orthonormal and `r` is upper-"
+"triangular."
+msgstr "将矩阵 `a` 分解为 *qr*，其中 `q` 是正交矩阵，`r` 是上三角矩阵。"
+
+#: maxframe.tensor.linalg.qr.qr of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.linalg.qr.qr:6 of
+msgid "Matrix to be factored."
+msgstr "待分解的矩阵。"
+
+#: maxframe.tensor.linalg.qr.qr:8 of
+msgid ""
+"method to calculate qr factorization, tsqr as default  TSQR is presented "
+"in:      A. Benson, D. Gleich, and J. Demmel.     Direct QR "
+"factorizations for tall-and-skinny matrices in     MapReduce "
+"architectures.     IEEE International Conference on Big Data, 2013.     "
+"http://arxiv.org/abs/1301.1071  FSQR is a QR decomposition for fat and "
+"short matrix:     A = [A1, A2, A3, ...], A1 may be decomposed as A1 = Q1 "
+"* R1,     for A = Q * R, Q = Q1, R = [R1, R2, R3, ...] where A2 = Q1 * "
+"R2, A3 = Q1 * R3, ..."
+msgstr ""
+"计算 QR 分解的方法，默认为 tsqr。TSQR 参见：A. Benson, D. Gleich, 和 J. "
+"Demmel. Direct QR factorizations for tall-and-skinny matrices in "
+"MapReduce architectures. IEEE International Conference on Big Data, 2013."
+" http://arxiv.org/abs/1301.1071。FSQR 是适用于宽而矮矩阵的 QR 分解：A = ["
+"A1, A2, A3, ...]，A1 可分解为 A1 = Q1 * R1，对于 A = Q * R，Q = Q1，R = ["
+"R1, R2, R3, ...]，其中 A2 = Q1 * R2，A3 = Q1 * R3，..."
+
+#: maxframe.tensor.linalg.qr.qr:8 of
+msgid "method to calculate qr factorization, tsqr as default"
+msgstr ""
+
+#: maxframe.tensor.linalg.qr.qr:10 of
+msgid "TSQR is presented in:"
+msgstr ""
+
+#: maxframe.tensor.linalg.qr.qr:12 of
+msgid ""
+"A. Benson, D. Gleich, and J. Demmel. Direct QR factorizations for tall-"
+"and-skinny matrices in MapReduce architectures. IEEE International "
+"Conference on Big Data, 2013. http://arxiv.org/abs/1301.1071"
+msgstr ""
+
+#: maxframe.tensor.linalg.qr.qr:18 of
+msgid "FSQR is a QR decomposition for fat and short matrix:"
+msgstr ""
+
+#: maxframe.tensor.linalg.qr.qr:19 of
+msgid ""
+"A = [A1, A2, A3, ...], A1 may be decomposed as A1 = Q1 * R1, for A = Q * "
+"R, Q = Q1, R = [R1, R2, R3, ...] where A2 = Q1 * R2, A3 = Q1 * R3, ..."
+msgstr ""
+
+#: maxframe.tensor.linalg.qr.qr of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.linalg.qr.qr:23 of
+msgid ""
+"* **q** (*Tensor of float or complex, optional*) -- A matrix with "
+"orthonormal columns. When mode = 'complete' the   result is an "
+"orthogonal/unitary matrix depending on whether or not   a is "
+"real/complex. The determinant may be either +/- 1 in that   case. * **r**"
+" (*Tensor of float or complex, optional*) -- The upper-triangular matrix."
+msgstr ""
+"* **q** (*Tensor of float or complex, optional*) -- 列向量正交的矩阵。当 "
+"mode = 'complete' 时，结果是根据 a 是否为实数/复数决定的正交/酉矩阵。此时"
+"行列式可能是 +/- 1。* **r** (*Tensor of float or complex, optional*) -- "
+"上三角矩阵。"
+
+#: maxframe.tensor.linalg.qr.qr:23 of
+msgid ""
+"**q** (*Tensor of float or complex, optional*) -- A matrix with "
+"orthonormal columns. When mode = 'complete' the result is an "
+"orthogonal/unitary matrix depending on whether or not a is real/complex. "
+"The determinant may be either +/- 1 in that case."
+msgstr ""
+"**q** (*Tensor of float or complex, optional*) -- 列向量正交的矩阵。当 "
+"mode = 'complete' 时，结果是根据 a 是否为实数/复数决定的正交/酉矩阵。此时"
+"行列式可能是 +/- 1。"
+
+#: maxframe.tensor.linalg.qr.qr:27 of
+msgid ""
+"**r** (*Tensor of float or complex, optional*) -- The upper-triangular "
+"matrix."
+msgstr "**r** (*Tensor of float or complex, optional*) -- 上三角矩阵。"
+
+#: maxframe.tensor.linalg.qr.qr of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.tensor.linalg.qr.qr:29 of
+msgid "If factoring fails."
+msgstr "如果分解失败。"
+
+#: maxframe.tensor.linalg.qr.qr:32 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.linalg.qr.qr:33 of
+msgid ""
+"For more information on the qr factorization, see for example: "
+"http://en.wikipedia.org/wiki/QR_factorization"
+msgstr ""
+"有关 QR 分解的更多信息，请参见：http://en.wikipedia.org/wiki/QR_"
+"factorization"
+
+#: maxframe.tensor.linalg.qr.qr:37 of
+msgid "示例"
+msgstr ""
+

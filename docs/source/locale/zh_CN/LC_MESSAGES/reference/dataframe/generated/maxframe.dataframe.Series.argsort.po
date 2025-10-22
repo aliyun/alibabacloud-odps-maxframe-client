@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.argsort.rst:2
+msgid "maxframe.dataframe.Series.argsort"
+msgstr ""
+
+#: maxframe.dataframe.sort.argsort.series_argsort:1 of
+msgid "Return the integer indices that would sort the Series values."
+msgstr "返回能够对 Series 值进行排序的整数索引。"
+
+#: maxframe.dataframe.sort.argsort.series_argsort:3 of
+msgid ""
+"Override ndarray.argsort. Argsorts the value, omitting NA/null values, "
+"and places the result in the same locations as the non-NA values."
+msgstr ""
+"覆盖 ndarray.argsort。对值进行 argsort，忽略 NA/null 值，并将结果放置在"
+"与非 NA 值相同的位置。"
+
+#: maxframe.dataframe.sort.argsort.series_argsort of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.sort.argsort.series_argsort:6 of
+msgid "Unused. Parameter needed for compatibility with DataFrame."
+msgstr "未使用。该参数是为了与 DataFrame 兼容而需要的。"
+
+#: maxframe.dataframe.sort.argsort.series_argsort:8 of
+msgid ""
+"Choice of sorting algorithm. See :func:`numpy.sort` for more information."
+" 'mergesort' and 'stable' are the only stable algorithms."
+msgstr ""
+"排序算法的选择。更多信息请参见 :func:`numpy.sort`。'mergesort' 和 'stable"
+"' 是唯一的稳定算法。"
+
+#: maxframe.dataframe.sort.argsort.series_argsort:11
+#: maxframe.dataframe.sort.argsort.series_argsort:13 of
+msgid "Has no effect but is accepted for compatibility with numpy."
+msgstr "无效果，但为了与 numpy 兼容而被接受。"
+
+#: maxframe.dataframe.sort.argsort.series_argsort of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.sort.argsort.series_argsort:16 of
+msgid "Positions of values within the sort order with -1 indicating nan values."
+msgstr "排序顺序中值的位置，-1 表示 nan 值。"
+
+#: maxframe.dataframe.sort.argsort.series_argsort of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.sort.argsort.series_argsort:22 of
+msgid ":py:obj:`maxframe.tensor.argsort`"
+msgstr ""
+
+#: maxframe.dataframe.sort.argsort.series_argsort:23 of
+msgid "Returns the indices that would sort this array."
+msgstr "返回能够对此数组进行排序的索引。"
+
+#: maxframe.dataframe.sort.argsort.series_argsort:26 of
+msgid "示例"
+msgstr ""
+

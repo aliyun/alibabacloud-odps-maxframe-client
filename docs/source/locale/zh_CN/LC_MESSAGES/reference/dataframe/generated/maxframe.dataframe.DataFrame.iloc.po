@@ -1,0 +1,164 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.iloc.rst:2
+msgid "maxframe.dataframe.DataFrame.iloc"
+msgstr ""
+
+#: maxframe.dataframe.DataFrame.iloc:1 maxframe.dataframe.DataFrame.iloc:33 of
+msgid "Purely integer-location based indexing for selection by position."
+msgstr "基于纯整数位置的索引，用于按位置选择。"
+
+#: maxframe.dataframe.DataFrame.iloc:3 of
+msgid ""
+"``.iloc[]`` is primarily integer position based (from ``0`` to "
+"``length-1`` of the axis), but may also be used with a boolean array."
+msgstr ""
+"``.iloc[]`` 主要基于整数位置（从轴的 ``0`` 到 ``length-1``），但也可以与"
+"布尔数组一起使用。"
+
+#: maxframe.dataframe.DataFrame.iloc:7 of
+msgid "Allowed inputs are:"
+msgstr "允许的输入包括："
+
+#: maxframe.dataframe.DataFrame.iloc:9 of
+msgid "An integer, e.g. ``5``."
+msgstr "一个整数，例如 ``5``。"
+
+#: maxframe.dataframe.DataFrame.iloc:10 of
+msgid "A list or array of integers, e.g. ``[4, 3, 0]``."
+msgstr "一个整数列表或数组，例如 ``[4, 3, 0]``。"
+
+#: maxframe.dataframe.DataFrame.iloc:11 of
+msgid "A slice object with ints, e.g. ``1:7``."
+msgstr "一个包含整数的切片对象，例如 ``1:7``。"
+
+#: maxframe.dataframe.DataFrame.iloc:12 of
+msgid "A boolean array."
+msgstr "一个布尔数组。"
+
+#: maxframe.dataframe.DataFrame.iloc:13 of
+msgid ""
+"A ``callable`` function with one argument (the calling Series or "
+"DataFrame) and that returns valid output for indexing (one of the above)."
+" This is useful in method chains, when you don't have a reference to the "
+"calling object, but would like to base your selection on some value."
+msgstr ""
+"一个带有一个参数（调用的 Series 或 DataFrame）的 ``callable`` 函数，并"
+"返回有效的索引输出（上述之一）。这在方法链中非常有用，当你没有对调用对象"
+"的引用时，但仍希望根据某些值进行选择。"
+
+#: maxframe.dataframe.DataFrame.iloc:18 of
+msgid ""
+"``.iloc`` will raise ``IndexError`` if a requested indexer is out-of-"
+"bounds, except *slice* indexers which allow out-of-bounds indexing (this "
+"conforms with python/numpy *slice* semantics)."
+msgstr ""
+"如果请求的索引器超出范围，``.iloc`` 将引发 ``IndexError``，但 *slice* "
+"索引器允许越界索引（这符合 python/numpy *slice* 语义）。"
+
+#: maxframe.dataframe.DataFrame.iloc:22 of
+msgid "See more at :ref:`Selection by Position <indexing.integer>`."
+msgstr "更多内容请参见 :ref:`按位置选择 <indexing.integer>`。"
+
+#: maxframe.dataframe.DataFrame.iloc:26 of
+msgid ":py:obj:`DataFrame.iat`"
+msgstr ""
+
+#: maxframe.dataframe.DataFrame.iloc:27 of
+msgid "Fast integer location scalar accessor."
+msgstr "快速整数位置标量访问器。"
+
+#: maxframe.dataframe.DataFrame.iloc:29 of
+msgid ":py:obj:`DataFrame.loc`"
+msgstr ""
+
+#: maxframe.dataframe.DataFrame.iloc:30 of
+msgid "Purely label-location based indexer for selection by label."
+msgstr "基于纯标签位置的索引器，用于按标签选择。"
+
+#: maxframe.dataframe.DataFrame.iloc:32 of
+msgid ":py:obj:`Series.iloc`"
+msgstr ""
+
+#: maxframe.dataframe.DataFrame.iloc:36 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.DataFrame.iloc:48 of
+msgid "**Indexing just the rows**"
+msgstr "**仅索引行**"
+
+#: maxframe.dataframe.DataFrame.iloc:50 of
+msgid "With a scalar integer."
+msgstr "使用标量整数。"
+
+#: maxframe.dataframe.DataFrame.iloc:61 of
+msgid "With a list of integers."
+msgstr "使用整数列表。"
+
+#: maxframe.dataframe.DataFrame.iloc:74 of
+msgid "With a `slice` object."
+msgstr "使用 `slice` 对象。"
+
+#: maxframe.dataframe.DataFrame.iloc:82 of
+msgid "With a boolean mask the same length as the index."
+msgstr "使用与索引长度相同的布尔掩码。"
+
+#: maxframe.dataframe.DataFrame.iloc:89 of
+msgid ""
+"With a callable, useful in method chains. The `x` passed to the "
+"``lambda`` is the DataFrame being sliced. This selects the rows whose "
+"index label even."
+msgstr ""
+"使用可调用对象，在方法链中非常有用。传递给 ``lambda`` 的 `x` 是正在切片的"
+" DataFrame。这将选择索引标签为偶数的行。"
+
+#: maxframe.dataframe.DataFrame.iloc:98 of
+msgid "**Indexing both axes**"
+msgstr "**索引两个轴**"
+
+#: maxframe.dataframe.DataFrame.iloc:100 of
+msgid ""
+"You can mix the indexer types for the index and columns. Use ``:`` to "
+"select the entire axis."
+msgstr "你可以混合使用索引器类型来索引行和列。使用 ``:`` 来选择整个轴。"
+
+#: maxframe.dataframe.DataFrame.iloc:103 of
+msgid "With scalar integers."
+msgstr "使用标量整数。"
+
+#: maxframe.dataframe.DataFrame.iloc:108 of
+msgid "With lists of integers."
+msgstr "使用整数列表。"
+
+#: maxframe.dataframe.DataFrame.iloc:115 of
+msgid "With `slice` objects."
+msgstr "使用 `slice` 对象。"
+
+#: maxframe.dataframe.DataFrame.iloc:122 of
+msgid "With a boolean array whose length matches the columns."
+msgstr "使用长度与列数匹配的布尔数组。"
+
+#: maxframe.dataframe.DataFrame.iloc:130 of
+msgid "With a callable function that expects the Series or DataFrame."
+msgstr "使用一个可调用函数，该函数接受 Series 或 DataFrame。"
+

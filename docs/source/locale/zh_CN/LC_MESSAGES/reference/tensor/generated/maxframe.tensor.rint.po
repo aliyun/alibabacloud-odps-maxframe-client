@@ -1,0 +1,74 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.rint.rst:2
+msgid "maxframe.tensor.rint"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.rint.rint:1 of
+msgid "Round elements of the tensor to the nearest integer."
+msgstr "将张量中的元素四舍五入到最接近的整数。"
+
+#: maxframe.tensor.arithmetic.rint.rint of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.rint.rint:3 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.arithmetic.rint.rint:5 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供了该参数，则其形状必须可以广播到输入张量的"
+"形状。如果未提供或为 `None`，则返回一个新分配的张量。元组（只能作为关键字"
+"参数）的长度必须等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.rint.rint:10 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的原始值。"
+
+#: maxframe.tensor.arithmetic.rint.rint of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.rint.rint:15 of
+msgid "**out** -- Output array is same shape and type as `x`."
+msgstr "**out** -- 输出数组的形状和类型与 `x` 相同。"
+
+#: maxframe.tensor.arithmetic.rint.rint of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.rint.rint:18 of
+msgid ":py:obj:`ceil`, :py:obj:`floor`, :py:obj:`trunc`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.rint.rint:21 of
+msgid "示例"
+msgstr ""
+

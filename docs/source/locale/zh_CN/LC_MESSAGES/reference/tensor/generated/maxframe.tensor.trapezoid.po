@@ -1,0 +1,110 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.trapezoid.rst:2
+msgid "maxframe.tensor.trapezoid"
+msgstr ""
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:1 of
+msgid "Integrate along the given axis using the composite trapezoidal rule."
+msgstr "使用复合梯形法则沿给定轴进行积分。"
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:3 of
+msgid "Integrate `y` (`x`) along given axis."
+msgstr "沿给定轴对 `y` (`x`) 进行积分。"
+
+#: maxframe.tensor.misc.trapezoid.trapezoid of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:5 of
+msgid "Input tensor to integrate."
+msgstr "用于积分的输入张量。"
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:7 of
+msgid ""
+"The sample points corresponding to the `y` values. If `x` is None, the "
+"sample points are assumed to be evenly spaced `dx` apart. The default is "
+"None."
+msgstr ""
+"与 `y` 值对应的采样点。如果 `x` 为 None，则假定采样点之间的间距为 `dx`。"
+"默认值为 None。"
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:11 of
+msgid "The spacing between sample points when `x` is None. The default is 1."
+msgstr "当 `x` 为 None 时采样点之间的间距。默认值为 1。"
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:13 of
+msgid "The axis along which to integrate."
+msgstr "进行积分的轴。"
+
+#: maxframe.tensor.misc.trapezoid.trapezoid of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:16 of
+msgid "**trapezoid** -- Definite integral as approximated by trapezoidal rule."
+msgstr "**trapezoid** -- 由梯形法则近似得到的定积分。"
+
+#: maxframe.tensor.misc.trapezoid.trapezoid of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:19 of
+msgid ":py:obj:`sum`, :py:obj:`cumsum`"
+msgstr ""
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:22 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:23 of
+msgid ""
+"Image [2]_ illustrates trapezoidal rule -- y-axis locations of points "
+"will be taken from `y` tensor, by default x-axis distances between points"
+" will be 1.0, alternatively they can be provided with `x` tensor or with "
+"`dx` scalar.  Return value will be equal to combined area under the red "
+"lines."
+msgstr ""
+"图像 [2]_ 展示了梯形法则——点的 y 轴位置将从 `y` 张量中获取，默认情况下点"
+"之间的 x 轴距离为 1.0，也可以通过 `x` 张量或 `dx` 标量提供。返回值将等于"
+"红色线条下方的总面积。"
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:30 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:31 of
+msgid "Wikipedia page: https://en.wikipedia.org/wiki/Trapezoidal_rule"
+msgstr "维基百科页面：https://en.wikipedia.org/wiki/Trapezoidal_rule"
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:33 of
+msgid ""
+"Illustration image: "
+"https://en.wikipedia.org/wiki/File:Composite_trapezoidal_rule_illustration.png"
+msgstr ""
+"插图：https://en.wikipedia.org/wiki/File:Composite_trapezoidal_rule_"
+"illustration.png"
+
+#: maxframe.tensor.misc.trapezoid.trapezoid:37 of
+msgid "示例"
+msgstr ""
+

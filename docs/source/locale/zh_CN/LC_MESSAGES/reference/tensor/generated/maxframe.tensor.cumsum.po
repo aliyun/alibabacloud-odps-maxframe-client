@@ -1,0 +1,122 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.cumsum.rst:2
+msgid "maxframe.tensor.cumsum"
+msgstr ""
+
+#: maxframe.tensor.reduction.cumsum.cumsum:1 of
+msgid "Return the cumulative sum of the elements along a given axis."
+msgstr "沿给定轴返回元素的累积和。"
+
+#: maxframe.tensor.reduction.cumsum.cumsum of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.reduction.cumsum.cumsum:3 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.reduction.cumsum.cumsum:5 of
+msgid ""
+"Axis along which the cumulative sum is computed. The default (None) is to"
+" compute the cumsum over the flattened tensor."
+msgstr "计算累积和的轴。默认值（None）是对展平后的张量进行计算。"
+
+#: maxframe.tensor.reduction.cumsum.cumsum:8 of
+msgid ""
+"Type of the returned tensor and of the accumulator in which the elements "
+"are summed.  If `dtype` is not specified, it defaults to the dtype of "
+"`a`, unless `a` has an integer dtype with a precision less than that of "
+"the default platform integer.  In that case, the default platform integer"
+" is used."
+msgstr ""
+"返回张量和累加器的类型，其中元素被求和。如果未指定 `dtype`，则默认为 `a` "
+"的数据类型，除非 `a` 具有精度低于默认平台整数的整数类型。在这种情况下，"
+"使用默认平台整数。"
+
+#: maxframe.tensor.reduction.cumsum.cumsum:14 of
+msgid ""
+"Alternative output tensor in which to place the result. It must have the "
+"same shape and buffer length as the expected output but the type will be "
+"cast if necessary. See `doc.ufuncs` (Section \"Output arguments\") for "
+"more details."
+msgstr ""
+"用于放置结果的替代输出张量。它必须具有与预期输出相同的形状和缓冲区长度，"
+"但必要时类型会被转换。详见 `doc.ufuncs`（“输出参数”部分）获取更多细节。"
+
+#: maxframe.tensor.reduction.cumsum.cumsum of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.reduction.cumsum.cumsum:20 of
+msgid ""
+"**cumsum_along_axis** -- A new tensor holding the result is returned "
+"unless `out` is specified, in which case a reference to `out` is "
+"returned. The result has the same size as `a`, and the same shape as `a` "
+"if `axis` is not None or `a` is a 1-d tensor."
+msgstr ""
+"**cumsum_along_axis** —— 除非指定了 `out`，否则返回一个保存结果的新张量；"
+"若指定了 `out`，则返回对 `out` 的引用。结果与 `a` 大小相同，且当 `axis` "
+"不为 None 或 `a` 为一维张量时，形状也相同。"
+
+#: maxframe.tensor.reduction.cumsum.cumsum of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.reduction.cumsum.cumsum:28 of
+msgid ":py:obj:`sum`"
+msgstr ""
+
+#: maxframe.tensor.reduction.cumsum.cumsum:29 of
+msgid "Sum tensor elements."
+msgstr "对张量元素求和。"
+
+#: maxframe.tensor.reduction.cumsum.cumsum:31 of
+msgid ":py:obj:`trapz`"
+msgstr ""
+
+#: maxframe.tensor.reduction.cumsum.cumsum:32 of
+msgid "Integration of tensor values using the composite trapezoidal rule."
+msgstr "使用复合梯形法则对张量值进行积分。"
+
+#: maxframe.tensor.reduction.cumsum.cumsum:34 of
+msgid ":py:obj:`diff`"
+msgstr ""
+
+#: maxframe.tensor.reduction.cumsum.cumsum:35 of
+msgid "Calculate the n-th discrete difference along given axis."
+msgstr "沿给定轴计算第 n 个离散差分。"
+
+#: maxframe.tensor.reduction.cumsum.cumsum:38 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.reduction.cumsum.cumsum:39 of
+msgid ""
+"Arithmetic is modular when using integer types, and no error is raised on"
+" overflow."
+msgstr "使用整数类型时，运算是模运算，溢出时不会引发错误。"
+
+#: maxframe.tensor.reduction.cumsum.cumsum:43 of
+msgid "示例"
+msgstr ""
+

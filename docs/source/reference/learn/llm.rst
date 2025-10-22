@@ -17,6 +17,27 @@ LLM Models
     dashscope.DashScopeTextLLM
     managed.ManagedTextLLM
 
+Custom Model Configuration
+---------------------------
+
+.. automodule:: maxframe.learn.contrib.llm.deploy
+    :no-members:
+    :no-inherited-members:
+
+.. autosummary::
+    :toctree: generated/
+
+    config.ModelDeploymentConfig
+
+.. automodule:: maxframe.learn.contrib.llm.deploy
+    :no-members:
+    :no-inherited-members:
+
+.. autosummary::
+    :toctree: generated/
+
+    framework.InferenceFrameworkEnum
+
 Text Generate Functions
 ---------------------------
 
@@ -28,7 +49,6 @@ Text Generate Functions
     :toctree: generated/
 
     multi_modal.generate
-    text.classify
+    text.extract
     text.generate
-    text.summary
     text.translate

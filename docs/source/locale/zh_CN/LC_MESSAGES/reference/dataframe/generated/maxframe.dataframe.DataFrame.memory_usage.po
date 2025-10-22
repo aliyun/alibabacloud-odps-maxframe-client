@@ -1,0 +1,124 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.memory_usage.rst:2
+msgid "maxframe.dataframe.DataFrame.memory\\_usage"
+msgstr ""
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:1 of
+msgid "Return the memory usage of each column in bytes."
+msgstr "返回每个列的内存使用量（以字节为单位）。"
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:3 of
+msgid ""
+"The memory usage can optionally include the contribution of the index and"
+" elements of `object` dtype."
+msgstr "内存使用量可以选择性地包括索引和 `object` 类型元素的贡献。"
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:6 of
+msgid ""
+"This value is displayed in `DataFrame.info` by default. This can be "
+"suppressed by setting ``pandas.options.display.memory_usage`` to False."
+msgstr ""
+"此值默认显示在 `DataFrame.info` 中。可以通过将 ``pandas.options.display."
+"memory_usage`` 设置为 False 来抑制显示。"
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:9 of
+msgid ""
+"Specifies whether to include the memory usage of the DataFrame's index in"
+" returned Series. If ``index=True``, the memory usage of the index is the"
+" first item in the output."
+msgstr ""
+"指定是否在返回的 Series 中包含 DataFrame 索引的内存使用量。如果 ``index="
+"True``，则索引的内存使用量是输出中的第一项。"
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:13 of
+msgid ""
+"If True, introspect the data deeply by interrogating `object` dtypes for "
+"system-level memory consumption, and include it in the returned values."
+msgstr ""
+"如果为 True，则通过深入检查 `object` 类型来获取系统级内存消耗，并将其包含"
+"在返回值中。"
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:18 of
+msgid ""
+"A Series whose index is the original column names and whose values is the"
+" memory usage of each column in bytes."
+msgstr "一个 Series，其索引为原始列名，值为每列的内存使用量（以字节为单位）。"
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:24 of
+msgid ":py:obj:`numpy.ndarray.nbytes`"
+msgstr ""
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:25 of
+msgid "Total bytes consumed by the elements of an ndarray."
+msgstr "ndarray 元素消耗的总字节数。"
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:27 of
+msgid ":py:obj:`Series.memory_usage`"
+msgstr ""
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:28 of
+msgid "Bytes consumed by a Series."
+msgstr "Series 消耗的字节数。"
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:30 of
+msgid ":py:obj:`Categorical`"
+msgstr ""
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:31 of
+msgid "Memory-efficient array for string values with many repeated values."
+msgstr "用于具有许多重复值的字符串的内存高效数组。"
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:33 of
+msgid ":py:obj:`DataFrame.info`"
+msgstr ""
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:34 of
+msgid "Concise summary of a DataFrame."
+msgstr "DataFrame 的简明摘要。"
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:37 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:69 of
+msgid "The memory footprint of `object` dtype columns is ignored by default:"
+msgstr "默认情况下，`object` 类型列的内存占用会被忽略："
+
+#: maxframe.dataframe.misc.memory_usage.df_memory_usage:80 of
+msgid ""
+"Use a Categorical for efficient storage of an object-dtype column with "
+"many repeated values."
+msgstr "使用 Categorical 来高效存储具有许多重复值的 object 类型列。"
+

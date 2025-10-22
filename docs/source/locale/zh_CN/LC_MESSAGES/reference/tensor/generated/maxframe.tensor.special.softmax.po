@@ -1,0 +1,120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.softmax.rst:2
+msgid "maxframe.tensor.special.softmax"
+msgstr ""
+
+#: maxframe.tensor.special.misc.softmax:1 of
+msgid ""
+"Compute the softmax function. The softmax function transforms each "
+"element of a collection by computing the exponential of each element "
+"divided by the sum of the exponentials of all the elements. That is, if "
+"`x` is a one-dimensional numpy array::"
+msgstr ""
+"计算 softmax 函数。softmax 函数通过计算每个元素的指数除以所有元素指数之和"
+"来变换集合中的每个元素。也就是说，如果 `x` 是一个一维 numpy 数组::"
+
+#: maxframe.tensor.special.misc.softmax of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.misc.softmax:9 of
+msgid "Input array."
+msgstr "输入数组。"
+
+#: maxframe.tensor.special.misc.softmax:11 of
+msgid ""
+"Axis to compute values along. Default is None and softmax will be "
+"computed over the entire array `x`."
+msgstr "计算值所沿的轴。默认为 None，此时将在整个数组 `x` 上计算 softmax。"
+
+#: maxframe.tensor.special.misc.softmax of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.misc.softmax:15 of
+msgid ""
+"**s** -- An array the same shape as `x`. The result will sum to 1 along "
+"the specified axis."
+msgstr "**s** -- 与 `x` 形状相同的数组。结果在指定轴上的总和为 1。"
+
+#: maxframe.tensor.special.misc.softmax of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.misc.softmax:20 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.misc.softmax:21 of
+msgid ""
+"The formula for the softmax function :math:`\\sigma(x)` for a vector "
+":math:`x = \\{x_0, x_1, ..., x_{n-1}\\}` is"
+msgstr ""
+"向量 :math:`x = \\{x_0, x_1, ..., x_{n-1}\\}` 的 softmax 函数 :math:`\\"
+"sigma(x)` 的公式为"
+
+#: maxframe.tensor.special.misc.softmax:24 of
+msgid ""
+"\\sigma(x)_j = \\frac{e^{x_j}}{\\sum_k e^{x_k}}\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.misc.softmax:26 of
+msgid "The `softmax` function is the gradient of `logsumexp`."
+msgstr "`softmax` 函数是 `logsumexp` 的梯度。"
+
+#: maxframe.tensor.special.misc.softmax:28 of
+msgid ""
+"The implementation uses shifting to avoid overflow. See [1]_ for more "
+"details."
+msgstr "该实现使用偏移来避免溢出。详见 [1]_。"
+
+#: maxframe.tensor.special.misc.softmax:32 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.misc.softmax:33 of
+msgid ""
+"P. Blanchard, D.J. Higham, N.J. Higham, \"Accurately computing the log-"
+"sum-exp and softmax functions\", IMA Journal of Numerical Analysis, "
+"Vol.41(4), :doi:`10.1093/imanum/draa038`."
+msgstr ""
+
+#: maxframe.tensor.special.misc.softmax:38 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.special.misc.softmax:47 of
+msgid "Compute the softmax transformation over the entire array."
+msgstr "在整个数组上计算 softmax 变换。"
+
+#: maxframe.tensor.special.misc.softmax:58 of
+msgid ""
+"Compute the softmax transformation along the first axis (i.e., the "
+"columns)."
+msgstr "沿第一个轴（即列）计算 softmax 变换。"
+
+#: maxframe.tensor.special.misc.softmax:69 of
+msgid "Compute the softmax transformation along the second axis (i.e., the rows)."
+msgstr "沿第二个轴（即行）计算 softmax 变换。"
+

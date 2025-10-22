@@ -1,0 +1,92 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-19 21:19+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.text.translate.rst:2
+msgid "maxframe.learn.contrib.llm.text.translate"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.translate:1 of
+msgid ""
+"Translate text content in a series using a language model from source "
+"language to target language."
+msgstr "使用语言模型将 Series 中的文本内容从源语言翻译为目标语言。"
+
+#: maxframe.learn.contrib.llm.text.translate of
+msgid "Parameters"
+msgstr "参数"
+
+#: maxframe.learn.contrib.llm.text.translate:3 of
+msgid ""
+"A maxframe Series containing text data to translate. Each element should "
+"be a text string."
+msgstr "包含待翻译文本数据的 maxframe Series。每个元素应为文本字符串。"
+
+#: maxframe.learn.contrib.llm.text.translate:6 of
+msgid "Language model instance used for text translation."
+msgstr "用于文本翻译的语言模型实例。"
+
+#: maxframe.learn.contrib.llm.text.translate:8 of
+msgid "Source language of the text (e.g., 'en', 'zh', 'ja')."
+msgstr "文本的源语言（例如，'en'、'zh'、'ja'）。"
+
+#: maxframe.learn.contrib.llm.text.translate:10 of
+msgid "Target language for translation (e.g., 'en', 'zh', 'ja')."
+msgstr "翻译的目标语言（例如，'en'、'zh'、'ja'）。"
+
+#: maxframe.learn.contrib.llm.text.translate:12 of
+msgid "Index for the output series, by default None, will generate new index."
+msgstr "输出 Series 的索引，默认为 None，将生成新索引。"
+
+#: maxframe.learn.contrib.llm.text.translate of
+msgid "Returns"
+msgstr "返回"
+
+#: maxframe.learn.contrib.llm.text.translate:15 of
+msgid ""
+"A DataFrame containing the generated translations and success status. "
+"Columns include 'output' (translated text) and 'success' (boolean "
+"status). If 'success' is False, the 'output' column will contain error "
+"information instead of the expected output."
+msgstr ""
+"一个包含生成的翻译结果和成功状态的DataFrame。列包括'output'（翻译文本）和"
+"'success'（布尔状态）。如果'success'为False，则'output'列将包含错误信息而"
+"不是预期的输出。"
+
+#: maxframe.learn.contrib.llm.text.translate of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.translate:21 of
+msgid "Examples"
+msgstr "示例"
+
+#: maxframe.learn.contrib.llm.text.translate:39 of
+msgid "Notes"
+msgstr "备注"
+
+#: maxframe.learn.contrib.llm.text.translate:40 of
+msgid ""
+"**Preview:** This API is in preview state and may be unstable. The "
+"interface may change in future releases."
+msgstr ""
+"**预览：** 此 API 处于预览状态，可能不稳定。接口在未来版本中可能会"
+"发生变化。"
+

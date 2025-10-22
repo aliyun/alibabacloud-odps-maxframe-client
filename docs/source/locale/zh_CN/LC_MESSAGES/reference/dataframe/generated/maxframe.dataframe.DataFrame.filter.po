@@ -1,0 +1,92 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.filter.rst:2
+msgid "maxframe.dataframe.DataFrame.filter"
+msgstr ""
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe:1 of
+msgid ""
+"Subset the dataframe rows or columns according to the specified index "
+"labels."
+msgstr "根据指定的索引标签对 DataFrame 的行或列进行子集筛选。"
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe:3 of
+msgid ""
+"Note that this routine does not filter a dataframe on its contents. The "
+"filter is applied to the labels of the index."
+msgstr "请注意，此例程不会根据 DataFrame 的内容进行筛选。筛选是应用于索引标签的。"
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe:6 of
+msgid "Keep labels from axis which are in items."
+msgstr "保留轴上在 items 中的标签。"
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe:8 of
+msgid "Keep labels from axis for which \"like in label == True\"."
+msgstr "保留轴上满足 \"like in label == True\" 的标签。"
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe:10 of
+msgid "Keep labels from axis for which re.search(regex, label) == True."
+msgstr "保留轴上满足 re.search(regex, label) == True 的标签。"
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe:12 of
+msgid ""
+"The axis to filter on, expressed either as an index (int) or axis name "
+"(str). By default this is the info axis, 'columns' for DataFrame. For "
+"`Series` this parameter is unused and defaults to `None`."
+msgstr ""
+"要筛选的轴，可以表示为索引（int）或轴名称（str）。默认为信息轴，对于 "
+"DataFrame 是 'columns'。对于 `Series` 此参数未使用，默认为 `None`。"
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe:21 of
+msgid ":py:obj:`DataFrame.loc`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe:22 of
+msgid "Access a group of rows and columns by label(s) or a boolean array."
+msgstr "通过标签或布尔数组访问一组行和列。"
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe:25 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe:26 of
+msgid ""
+"The ``items``, ``like``, and ``regex`` parameters are enforced to be "
+"mutually exclusive."
+msgstr "``items``、``like`` 和 ``regex`` 参数被强制互斥。"
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe:29 of
+msgid "``axis`` defaults to the info axis that is used when indexing with ``[]``."
+msgstr "``axis`` 默认为使用 ``[]`` 索引时的信息轴。"
+
+#: maxframe.dataframe.indexing.filter.filter_dataframe:33 of
+msgid "示例"
+msgstr ""
+

@@ -1,0 +1,203 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/statistics.rst:2
+msgid "Statistics"
+msgstr "统计"
+
+#: ../../source/reference/tensor/statistics.rst:5
+msgid "Order statistics"
+msgstr "顺序统计量"
+
+#: ../../source/reference/tensor/statistics.rst:17:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.ptp <maxframe.tensor.ptp>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:17:<autosummary>:1
+msgid "Range of values (maximum - minimum) along an axis."
+msgstr "沿轴的数值范围（最大值 - 最小值）。"
+
+#: ../../source/reference/tensor/statistics.rst:17:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.percentile <maxframe.tensor.percentile>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:17:<autosummary>:1
+msgid "Compute the q-th percentile of the data along the specified axis."
+msgstr "沿指定轴计算数据的第 q 百分位数。"
+
+#: ../../source/reference/tensor/statistics.rst:17:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.quantile <maxframe.tensor.quantile>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:17:<autosummary>:1
+msgid "Compute the q-th quantile of the data along the specified axis."
+msgstr "沿指定轴计算数据的第 q 分位数。"
+
+#: ../../source/reference/tensor/statistics.rst:17:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.nanmin <maxframe.tensor.nanmin>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:17:<autosummary>:1
+msgid "Return minimum of a tensor or minimum along an axis, ignoring any NaNs."
+msgstr "返回张量的最小值或沿轴的最小值，忽略 NaN。"
+
+#: ../../source/reference/tensor/statistics.rst:17:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.nanmax <maxframe.tensor.nanmax>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:17:<autosummary>:1
+msgid ""
+"Return the maximum of an array or maximum along an axis, ignoring any "
+"NaNs."
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:19
+msgid "Average and variances"
+msgstr "平均值和方差"
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.median <maxframe.tensor.median>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid "Compute the median along the specified axis."
+msgstr "沿指定轴计算中位数。"
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.average <maxframe.tensor.average>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid "Compute the weighted average along the specified axis."
+msgstr "沿指定轴计算加权平均值。"
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.mean <maxframe.tensor.mean>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid "Compute the arithmetic mean along the specified axis."
+msgstr "沿指定轴计算算术平均值。"
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.std <maxframe.tensor.std>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid "Compute the standard deviation along the specified axis."
+msgstr "沿指定轴计算标准差。"
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.var <maxframe.tensor.var>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid "Compute the variance along the specified axis."
+msgstr "沿指定轴计算方差。"
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.nanmean <maxframe.tensor.nanmean>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid "Compute the arithmetic mean along the specified axis, ignoring NaNs."
+msgstr "沿指定轴计算算术平均值，忽略 NaN。"
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.nanstd <maxframe.tensor.nanstd>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid ""
+"Compute the standard deviation along the specified axis, while ignoring "
+"NaNs."
+msgstr "沿指定轴计算标准差，忽略 NaN。"
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.nanvar <maxframe.tensor.nanvar>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:34:<autosummary>:1
+msgid "Compute the variance along the specified axis, while ignoring NaNs."
+msgstr "沿指定轴计算方差，忽略 NaN。"
+
+#: ../../source/reference/tensor/statistics.rst:36
+msgid "Correlating"
+msgstr "相关性"
+
+#: ../../source/reference/tensor/statistics.rst:45:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.corrcoef <maxframe.tensor.corrcoef>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:45:<autosummary>:1
+msgid "Return Pearson product-moment correlation coefficients."
+msgstr "返回皮尔逊积矩相关系数。"
+
+#: ../../source/reference/tensor/statistics.rst:45:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.cov <maxframe.tensor.cov>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:45:<autosummary>:1
+msgid "Estimate a covariance matrix, given data and weights."
+msgstr "给定数据和权重，估计协方差矩阵。"
+
+#: ../../source/reference/tensor/statistics.rst:47
+msgid "Histograms"
+msgstr "直方图"
+
+#: ../../source/reference/tensor/statistics.rst:56:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.histogram <maxframe.tensor.histogram>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:56:<autosummary>:1
+msgid "Compute the histogram of a set of data."
+msgstr "计算一组数据的直方图。"
+
+#: ../../source/reference/tensor/statistics.rst:56:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.bincount <maxframe.tensor.bincount>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:56:<autosummary>:1
+msgid "Count number of occurrences of each value in array of non-negative ints."
+msgstr "统计非负整数数组中每个值的出现次数。"
+
+#: ../../source/reference/tensor/statistics.rst:56:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.histogram_bin_edges "
+"<maxframe.tensor.histogram_bin_edges>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:56:<autosummary>:1
+msgid ""
+"Function to calculate only the edges of the bins used by the `histogram` "
+"function."
+msgstr "仅计算 `histogram` 函数所使用的 bins 的边缘。"
+
+#: ../../source/reference/tensor/statistics.rst:56:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.digitize <maxframe.tensor.digitize>`"
+msgstr ""
+
+#: ../../source/reference/tensor/statistics.rst:56:<autosummary>:1
+msgid ""
+"Return the indices of the bins to which each value in input tensor "
+"belongs."
+msgstr "返回输入张量中每个值所属的 bins 的索引。"
+

@@ -25,6 +25,7 @@ from ....serialization.serializables import (
     DictField,
     FieldTypes,
     FunctionField,
+    Int16Field,
     Int64Field,
     KeyField,
     ListField,
@@ -65,6 +66,7 @@ class XGBTrain(ObjectOperator, ObjectOperatorMixin):
     num_boost_round = Int64Field("num_boost_round", default=10)
     num_class = Int64Field("num_class", default=None)
     _has_evals_result = BoolField("has_evals_result", default=False)
+    output_ndim = Int16Field("output_ndim", default=None)
 
     def __init__(self, gpu=None, **kw):
         if kw.get("evals_result") is not None:
