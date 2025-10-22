@@ -1,0 +1,55 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.shape.rst:2
+msgid "maxframe.tensor.shape"
+msgstr ""
+
+#: maxframe.tensor.misc.shape.shape:1 of
+msgid "Return the shape of a tensor."
+msgstr "返回一个张量的形状。"
+
+#: maxframe.tensor.misc.shape.shape of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.shape.shape:3 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.misc.shape.shape of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.shape.shape:6 of
+msgid ""
+"**shape** -- The elements of the shape tuple give the lengths of the "
+"corresponding array dimensions."
+msgstr "**shape** -- 形状元组中的元素给出了相应数组维度的长度。"
+
+#: maxframe.tensor.misc.shape.shape of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.shape.shape:11 of
+msgid "示例"
+msgstr ""
+

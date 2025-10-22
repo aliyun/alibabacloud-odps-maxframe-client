@@ -1,0 +1,223 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.query.rst:2
+msgid "maxframe.dataframe.DataFrame.query"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_query:1 of
+msgid "Query the columns of a DataFrame with a boolean expression."
+msgstr "使用布尔表达式查询DataFrame的列。"
+
+#: maxframe.dataframe.misc.eval.df_query of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_query:3 of
+msgid ""
+"The query string to evaluate.  You can refer to variables in the "
+"environment by prefixing them with an '@' character like ``@a + b``.  You"
+" can refer to column names that contain spaces or operators by "
+"surrounding them in backticks. This way you can also escape names that "
+"start with a digit, or those that  are a Python keyword. Basically when "
+"it is not valid Python identifier. See notes down for more details.  For "
+"example, if one of your columns is called ``a a`` and you want to sum it "
+"with ``b``, your query should be ```a a` + b``."
+msgstr ""
+"要计算的查询字符串。您可以通过在环境变量前加上'@'字符来引用它们，如``@a +"
+" b``。您可以通过用反引号包围包含空格或运算符的列名来引用它们。这样您也"
+"可以转义以数字开头或Python关键字的名称。基本上当它不是有效的Python标识符"
+"时。有关更多详细信息，请参见下面的备注。例如，如果您的某一列名为``a a``，"
+"并且您想将其与``b``相加，则查询应为```a a` + b``。"
+
+#: maxframe.dataframe.misc.eval.df_query:18 of
+msgid ""
+"Whether the query should modify the data in place or return a modified "
+"copy."
+msgstr "查询是应该就地修改数据还是返回修改后的副本。"
+
+#: maxframe.dataframe.misc.eval.df_query:21 of
+msgid ""
+"See the documentation for :func:`eval` for complete details on the "
+"keyword arguments accepted by :meth:`DataFrame.query`."
+msgstr ""
+"有关:meth:`DataFrame.query`接受的关键字参数的完整详细信息，请参阅:func:`"
+"eval`的文档。"
+
+#: maxframe.dataframe.misc.eval.df_query of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_query:24 of
+msgid "DataFrame resulting from the provided query expression."
+msgstr "由提供的查询表达式产生的DataFrame。"
+
+#: maxframe.dataframe.misc.eval.df_query of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_query:29 of
+msgid ":py:obj:`eval`"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_query:30
+#: maxframe.dataframe.misc.eval.df_query:33 of
+msgid "Evaluate a string describing operations on DataFrame columns."
+msgstr "计算描述DataFrame列操作的字符串。"
+
+#: maxframe.dataframe.misc.eval.df_query:32 of
+msgid ":py:obj:`DataFrame.eval`"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_query:36 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_query:37 of
+msgid ""
+"The result of the evaluation of this expression is first passed to "
+":attr:`DataFrame.loc` and if that fails because of a multidimensional key"
+" (e.g., a DataFrame) then the result will be passed to "
+":meth:`DataFrame.__getitem__`."
+msgstr ""
+"此表达式的计算结果首先传递给:attr:`DataFrame.loc`，如果由于多维键（例如，"
+"DataFrame）而失败，则结果将传递给:meth:`DataFrame.__getitem__`。"
+
+#: maxframe.dataframe.misc.eval.df_query:42 of
+msgid ""
+"This method uses the top-level :func:`eval` function to evaluate the "
+"passed query."
+msgstr "此方法使用顶级:func:`eval`函数来计算传递的查询。"
+
+#: maxframe.dataframe.misc.eval.df_query:45 of
+msgid ""
+"The :meth:`~pandas.DataFrame.query` method uses a slightly modified "
+"Python syntax by default. For example, the ``&`` and ``|`` (bitwise) "
+"operators have the precedence of their boolean cousins, :keyword:`and` "
+"and :keyword:`or`. This *is* syntactically valid Python, however the "
+"semantics are different."
+msgstr ""
+":meth:`~pandas.DataFrame.query`方法默认使用稍作修改的Python语法。例如，``"
+"&``和``|``（按位）运算符具有其布尔对应物:keyword:`and`和:keyword:`or`的"
+"优先级。这在语法上是有效的Python，但语义不同。"
+
+#: maxframe.dataframe.misc.eval.df_query:51 of
+msgid ""
+"You can change the semantics of the expression by passing the keyword "
+"argument ``parser='python'``. This enforces the same semantics as "
+"evaluation in Python space. Likewise, you can pass ``engine='python'`` to"
+" evaluate an expression using Python itself as a backend. This is not "
+"recommended as it is inefficient compared to using ``numexpr`` as the "
+"engine."
+msgstr ""
+"您可以通过传递关键字参数``parser='python'``来更改表达式的语义。这会"
+"强制执行与在Python空间中计算相同的语义。同样，您可以传递``engine='python'"
+"``以使用Python本身作为后端来计算表达式。不建议这样做，因为与使用``numexpr"
+"``作为引擎相比效率较低。"
+
+#: maxframe.dataframe.misc.eval.df_query:58 of
+msgid ""
+"The :attr:`DataFrame.index` and :attr:`DataFrame.columns` attributes of "
+"the :class:`~pandas.DataFrame` instance are placed in the query namespace"
+" by default, which allows you to treat both the index and columns of the "
+"frame as a column in the frame. The identifier ``index`` is used for the "
+"frame index; you can also use the name of the index to identify it in a "
+"query. Please note that Python keywords may not be used as identifiers."
+msgstr ""
+":class:`~pandas.DataFrame`实例的:attr:`DataFrame.index`和:attr:`DataFrame"
+".columns`属性默认放置在查询命名空间中，这允许您将框架的索引和列都视为框架"
+"中的列。标识符``index``用于框架索引；您也可以使用索引的名称在查询中标识它"
+"。请注意，Python关键字不能用作标识符。"
+
+#: maxframe.dataframe.misc.eval.df_query:67 of
+msgid ""
+"For further details and examples see the ``query`` documentation in "
+":ref:`indexing <indexing.query>`."
+msgstr ""
+"有关更多详细信息和示例，请参阅:ref:`indexing <indexing.query>`中的``query"
+"``文档。"
+
+#: maxframe.dataframe.misc.eval.df_query:70 of
+msgid "*Backtick quoted variables*"
+msgstr "*反引号引用的变量*"
+
+#: maxframe.dataframe.misc.eval.df_query:72 of
+msgid ""
+"Backtick quoted variables are parsed as literal Python code and are "
+"converted internally to a Python valid identifier. This can lead to the "
+"following problems."
+msgstr ""
+"反引号引用的变量被解析为文字Python代码，并在内部转换为有效的Python标识符"
+"。这可能导致以下问题。"
+
+#: maxframe.dataframe.misc.eval.df_query:76 of
+msgid ""
+"During parsing a number of disallowed characters inside the backtick "
+"quoted string are replaced by strings that are allowed as a Python "
+"identifier. These characters include all operators in Python, the space "
+"character, the question mark, the exclamation mark, the dollar sign, and "
+"the euro sign. For other characters that fall outside the ASCII range "
+"(U+0001..U+007F) and those that are not further specified in PEP 3131, "
+"the query parser will raise an error. This excludes whitespace different "
+"than the space character, but also the hashtag (as it is used for "
+"comments) and the backtick itself (backtick can also not be escaped)."
+msgstr ""
+"在解析过程中，反引号引用字符串内的一些不允许的字符被替换为允许作为Python"
+"标识符的字符串。这些字符包括Python中的所有运算符、空格字符、问号、感叹号"
+"、美元符号和欧元符号。对于超出ASCII范围（U+0001..U+007F）的其他字符以及"
+"PEP 3131中未进一步指定的字符，查询解析器将引发错误。这排除了与空格字符"
+"不同的空白字符，但也包括井号（因为它用于注释）和反引号本身（反引号也不能"
+"被转义）。"
+
+#: maxframe.dataframe.misc.eval.df_query:87 of
+msgid ""
+"In a special case, quotes that make a pair around a backtick can confuse "
+"the parser. For example, ```it's` > `that's``` will raise an error, as it"
+" forms a quoted string (``'s > `that'``) with a backtick inside."
+msgstr ""
+"在特殊情况下，围绕反引号的一对引号可能会使解析器混淆。例如，```it's` > `"
+"that's```将引发错误，因为它形成了一个带反引号的引用字符串（``'s > `that'`"
+"`）。"
+
+#: maxframe.dataframe.misc.eval.df_query:92 of
+msgid ""
+"See also the Python documentation about lexical analysis "
+"(https://docs.python.org/3/reference/lexical_analysis.html) in "
+"combination with the source code in "
+":mod:`pandas.core.computation.parsing`."
+msgstr ""
+"另请参阅Python关于词法分析的文档（https://docs.python.org/3/reference/"
+"lexical_analysis.html）以及:mod:`pandas.core.computation.parsing`中的"
+"源代码。"
+
+#: maxframe.dataframe.misc.eval.df_query:97 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.eval.df_query:113
+#: maxframe.dataframe.misc.eval.df_query:125 of
+msgid "The previous expression is equivalent to"
+msgstr "前一个表达式等价于"
+
+#: maxframe.dataframe.misc.eval.df_query:119 of
+msgid "For columns with spaces in their name, you can use backtick quoting."
+msgstr "对于名称中包含空格的列，您可以使用反引号引用。"
+

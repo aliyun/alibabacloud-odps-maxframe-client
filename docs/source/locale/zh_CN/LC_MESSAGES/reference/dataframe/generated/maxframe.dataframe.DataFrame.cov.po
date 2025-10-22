@@ -1,0 +1,178 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.cov.rst:2
+msgid "maxframe.dataframe.DataFrame.cov"
+msgstr ""
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:1 of
+msgid "Compute pairwise covariance of columns, excluding NA/null values."
+msgstr "计算各列之间的协方差，排除 NA/null 值。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:3 of
+msgid ""
+"Compute the pairwise covariance among the series of a DataFrame. The "
+"returned data frame is the `covariance matrix "
+"<https://en.wikipedia.org/wiki/Covariance_matrix>`__ of the columns of "
+"the DataFrame."
+msgstr ""
+"计算 DataFrame 中各 Series 之间的两两协方差。返回的数据帧是 DataFrame "
+"各列的 `协方差矩阵 <https://en.wikipedia.org/wiki/Covariance_matrix>`__。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:8 of
+msgid ""
+"Both NA and null values are automatically excluded from the calculation. "
+"(See the note below about bias from missing values.) A threshold can be "
+"set for the minimum number of observations for each value created. "
+"Comparisons with observations below this threshold will be returned as "
+"``NaN``."
+msgstr ""
+"计算中会自动排除 NA 和 null 值。（参见下文关于缺失值带来的偏差说明。）"
+"可以设置一个阈值，用于指定每对列之间有效结果所需的最小观测数量。低于此"
+"阈值的比较将返回 ``NaN``。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:14 of
+msgid ""
+"This method is generally used for the analysis of time series data to "
+"understand the relationship between different measures across time."
+msgstr "此方法通常用于时间序列数据分析，以了解不同度量之间随时间变化的关系。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:18 of
+msgid ""
+"Minimum number of observations required per pair of columns to have a "
+"valid result."
+msgstr "每对列之间需要的最小观测数量，以获得有效结果。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:21 of
+msgid ""
+"Delta degrees of freedom.  The divisor used in calculations is ``N - "
+"ddof``, where ``N`` represents the number of elements. This argument is "
+"applicable only when no ``nan`` is in the dataframe."
+msgstr ""
+"自由度调整量。计算中使用的除数是 ``N - ddof``，其中 ``N`` 表示元素数量。"
+"此参数仅在 DataFrame 中没有 ``nan`` 时适用。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:25 of
+msgid "Include only `float`, `int` or `boolean` data."
+msgstr "仅包含 `float`、`int` 或 `boolean` 类型的数据。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:28 of
+msgid "The covariance matrix of the series of the DataFrame."
+msgstr "DataFrame 中各 Series 的协方差矩阵。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:33 of
+msgid ":py:obj:`Series.cov`"
+msgstr ""
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:34 of
+msgid "Compute covariance with another Series."
+msgstr "计算与另一个 Series 的协方差。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:36 of
+msgid ":py:obj:`core.window.ewm.ExponentialMovingWindow.cov`"
+msgstr ""
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:37 of
+msgid "Exponential weighted sample covariance."
+msgstr "指数加权样本协方差。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:39 of
+msgid ":py:obj:`core.window.expanding.Expanding.cov`"
+msgstr ""
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:40 of
+msgid "Expanding sample covariance."
+msgstr "扩展样本协方差。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:42 of
+msgid ":py:obj:`core.window.rolling.Rolling.cov`"
+msgstr ""
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:43 of
+msgid "Rolling sample covariance."
+msgstr "滚动样本协方差。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:46 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:47 of
+msgid ""
+"Returns the covariance matrix of the DataFrame's time series. The "
+"covariance is normalized by N-ddof."
+msgstr "返回 DataFrame 时间序列的协方差矩阵。协方差通过 N-ddof 进行标准化。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:50 of
+msgid ""
+"For DataFrames that have Series that are missing data (assuming that data"
+" is `missing at random "
+"<https://en.wikipedia.org/wiki/Missing_data#Missing_at_random>`__) the "
+"returned covariance matrix will be an unbiased estimate of the variance "
+"and covariance between the member Series."
+msgstr ""
+"对于包含缺失数据的 Series 的 DataFrame（假设数据是 `随机缺失 <https://en."
+"wikipedia.org/wiki/Missing_data#Missing_at_random>`__），返回的协方差矩阵"
+"是对成员 Series 之间方差和协方差的无偏估计。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:56 of
+msgid ""
+"However, for many applications this estimate may not be acceptable "
+"because the estimate covariance matrix is not guaranteed to be positive "
+"semi-definite. This could lead to estimate correlations having absolute "
+"values which are greater than one, and/or a non-invertible covariance "
+"matrix. See `Estimation of covariance matrices "
+"<https://en.wikipedia.org/w/index.php?title=Estimation_of_covariance_ "
+"matrices>`__ for more details."
+msgstr ""
+"然而，对于许多应用场景，这种估计可能不可接受，因为估计的协方差矩阵不一定"
+"为正半定矩阵。这可能导致估计的相关系数绝对值大于 1，和/或协方差矩阵不可逆"
+"。更多信息请参见 `协方差矩阵估计 <https://en.wikipedia.org/w/index.php?"
+"title=Estimation_of_covariance_matrices>`__。"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:65 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:86 of
+msgid "**Minimum number of periods**"
+msgstr "**最小周期数**"
+
+#: maxframe.dataframe.reduction.cov.cov_dataframe:88 of
+msgid ""
+"This method also supports an optional ``min_periods`` keyword that "
+"specifies the required minimum number of non-NA observations for each "
+"column pair in order to have a valid result:"
+msgstr ""
+"此方法还支持一个可选的 ``min_periods`` 参数，用于指定每对列之间需要的最小"
+"非 NA 观测数量，以便获得有效结果："
+

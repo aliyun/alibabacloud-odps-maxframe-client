@@ -1,0 +1,91 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.set_axis.rst:2
+msgid "maxframe.dataframe.DataFrame.set\\_axis"
+msgstr ""
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis:1 of
+msgid "Assign desired index to given axis."
+msgstr "为给定轴分配所需的索引。"
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis:3 of
+msgid ""
+"Indexes for column or row labels can be changed by assigning a list-like "
+"or Index."
+msgstr "通过分配一个类列表或 Index 对象，可以更改列或行标签的索引。"
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis:6 of
+msgid "The values for the new index."
+msgstr "新索引的值。"
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis:8 of
+msgid ""
+"The axis to update. The value 0 identifies the rows, and 1 identifies the"
+" columns."
+msgstr "要更新的轴。值 0 表示行，值 1 表示列。"
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis:10 of
+msgid "Whether to return a new DataFrame instance."
+msgstr "是否返回一个新的 DataFrame 实例。"
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis:13 of
+msgid "**renamed** -- An object of type DataFrame or None if ``inplace=True``."
+msgstr ""
+"**renamed** -- 类型为 DataFrame 的对象，如果 ``inplace=True`` 则返回 None"
+"。"
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis:18 of
+msgid ":py:obj:`DataFrame.rename_axis`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis:19 of
+msgid "Alter the name of the index or columns."
+msgstr "更改索引或列的名称。"
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis:22 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis:26 of
+msgid "Change the row labels."
+msgstr "更改行标签。"
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis:34 of
+msgid "Change the column labels."
+msgstr "更改列标签。"
+
+#: maxframe.dataframe.indexing.set_axis.df_set_axis:42 of
+msgid "Now, update the labels inplace."
+msgstr "现在，就地更新标签。"
+

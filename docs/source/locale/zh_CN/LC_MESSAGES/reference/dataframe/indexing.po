@@ -1,0 +1,276 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/indexing.rst:2
+msgid "Index objects"
+msgstr "索引对象"
+
+#: ../../source/reference/dataframe/indexing.rst:6
+msgid "Constructor"
+msgstr "构造函数"
+
+#: ../../source/reference/dataframe/indexing.rst:12:<autosummary>:1
+msgid ":py:obj:`Index <maxframe.dataframe.Index>`\\ \\(data\\, \\*\\*\\_\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:14
+msgid "Properties"
+msgstr "属性"
+
+#: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
+msgid ":py:obj:`Index.has_duplicates <maxframe.dataframe.Index.has_duplicates>`\\"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`Index.is_monotonic_decreasing "
+"<maxframe.dataframe.Index.is_monotonic_decreasing>`\\"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
+msgid "Return boolean scalar if values in the object are monotonic_decreasing."
+msgstr "如果对象中的值是单调递减的，则返回布尔标量。"
+
+#: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`Index.is_monotonic_increasing "
+"<maxframe.dataframe.Index.is_monotonic_increasing>`\\"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
+msgid "Return boolean scalar if values in the object are monotonic_increasing."
+msgstr "如果对象中的值是单调递增的，则返回布尔标量。"
+
+#: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
+msgid ":py:obj:`Index.is_unique <maxframe.dataframe.Index.is_unique>`\\"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
+#, fuzzy
+msgid "Return boolean if values in the index are unique."
+msgstr "如果对象中的值是单调递增的，则返回布尔标量。"
+
+#: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
+msgid ":py:obj:`Index.name <maxframe.dataframe.Index.name>`\\"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
+msgid ":py:obj:`Index.names <maxframe.dataframe.Index.names>`\\"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
+msgid ":py:obj:`Index.ndim <maxframe.dataframe.Index.ndim>`\\"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
+msgid ":py:obj:`Index.size <maxframe.dataframe.Index.size>`\\"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:31
+msgid "Modifying and computations"
+msgstr "修改与计算"
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid ":py:obj:`Index.all <maxframe.dataframe.Index.all>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid ":py:obj:`Index.any <maxframe.dataframe.Index.any>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid ""
+":py:obj:`Index.argmax <maxframe.dataframe.Index.argmax>`\\ \\(\\[axis\\, "
+"skipna\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid "Return int position of the smallest value in the Series."
+msgstr "返回 Series 中最小值的整数位置。"
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid ""
+":py:obj:`Index.argmin <maxframe.dataframe.Index.argmin>`\\ \\(\\[axis\\, "
+"skipna\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid ""
+":py:obj:`Index.drop <maxframe.dataframe.Index.drop>`\\ \\(labels\\[\\, "
+"errors\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid "Make new Index with passed list of labels deleted."
+msgstr "删除传入的标签列表后生成新的 Index。"
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid ""
+":py:obj:`Index.drop_duplicates "
+"<maxframe.dataframe.Index.drop_duplicates>`\\ \\(\\[keep\\, method\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid "Return Index with duplicate values removed."
+msgstr "返回删除重复值后的 Index。"
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid ""
+":py:obj:`Index.insert <maxframe.dataframe.Index.insert>`\\ \\(loc\\, "
+"value\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid "Make new Index inserting new item at location."
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid ""
+":py:obj:`Index.max <maxframe.dataframe.Index.max>`\\ \\(\\[axis\\, "
+"skipna\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid ""
+":py:obj:`Index.min <maxframe.dataframe.Index.min>`\\ \\(\\[axis\\, "
+"skipna\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid ""
+":py:obj:`Index.rename <maxframe.dataframe.Index.rename>`\\ \\(name\\[\\, "
+"inplace\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid "Alter Index or MultiIndex name."
+msgstr "更改 Index 或 MultiIndex 的名称。"
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid ""
+":py:obj:`Index.repeat <maxframe.dataframe.Index.repeat>`\\ "
+"\\(repeats\\[\\, axis\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
+msgid "Repeat elements of an Index."
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:49
+msgid "Compatibility with MultiIndex"
+msgstr "与 MultiIndex 的兼容性"
+
+#: ../../source/reference/dataframe/indexing.rst:56:<autosummary>:1
+msgid ""
+":py:obj:`Index.droplevel <maxframe.dataframe.Index.droplevel>`\\ "
+"\\(level\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:56:<autosummary>:1
+msgid "Return index with requested level(s) removed."
+msgstr "返回删除了指定层级的索引。"
+
+#: ../../source/reference/dataframe/indexing.rst:56:<autosummary>:1
+msgid ""
+":py:obj:`Index.set_names <maxframe.dataframe.Index.set_names>`\\ "
+"\\(names\\[\\, level\\, inplace\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:56:<autosummary>:1
+msgid "Set Index or MultiIndex name."
+msgstr "设置 Index 或 MultiIndex 的名称。"
+
+#: ../../source/reference/dataframe/indexing.rst:58
+msgid "Missing values"
+msgstr "缺失值"
+
+#: ../../source/reference/dataframe/indexing.rst:67:<autosummary>:1
+msgid ":py:obj:`Index.dropna <maxframe.dataframe.Index.dropna>`\\ \\(\\[how\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:67:<autosummary>:1
+msgid "Return Index without NA/NaN values."
+msgstr "返回不包含 NA/NaN 值的 Index。"
+
+#: ../../source/reference/dataframe/indexing.rst:67:<autosummary>:1
+msgid ""
+":py:obj:`Index.fillna <maxframe.dataframe.Index.fillna>`\\ \\(\\[value\\,"
+" downcast\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:67:<autosummary>:1
+msgid "Fill NA/NaN values with the specified value."
+msgstr "用指定值填充 NA/NaN 值。"
+
+#: ../../source/reference/dataframe/indexing.rst:67:<autosummary>:1
+msgid ":py:obj:`Index.isna <maxframe.dataframe.Index.isna>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:67:<autosummary>:1
+msgid "Detect missing values."
+msgstr "检测缺失值。"
+
+#: ../../source/reference/dataframe/indexing.rst:67:<autosummary>:1
+msgid ":py:obj:`Index.notna <maxframe.dataframe.Index.notna>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:67:<autosummary>:1
+msgid "Detect existing (non-missing) values."
+msgstr "检测存在的（非缺失）值。"
+
+#: ../../source/reference/dataframe/indexing.rst:69
+msgid "Conversion"
+msgstr "转换"
+
+#: ../../source/reference/dataframe/indexing.rst:77:<autosummary>:1
+msgid ""
+":py:obj:`Index.astype <maxframe.dataframe.Index.astype>`\\ \\(dtype\\[\\,"
+" copy\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:77:<autosummary>:1
+msgid "Create an Index with values cast to dtypes."
+msgstr "创建一个将值转换为指定数据类型的 Index。"
+
+#: ../../source/reference/dataframe/indexing.rst:79
+msgid "Sorting"
+msgstr "排序"
+
+#: ../../source/reference/dataframe/indexing.rst:85:<autosummary>:1
+msgid ""
+":py:obj:`Index.argsort <maxframe.dataframe.Index.argsort>`\\ "
+"\\(\\*args\\, \\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:87
+msgid "Selecting"
+msgstr "选择"
+
+#: ../../source/reference/dataframe/indexing.rst:91:<autosummary>:1
+msgid ""
+":py:obj:`Index.get_level_values "
+"<maxframe.dataframe.Index.get_level_values>`\\ \\(level\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:91:<autosummary>:1
+msgid "Return vector of label values for requested level."
+msgstr "返回指定层级的标签值向量。"
+

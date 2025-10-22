@@ -1,0 +1,165 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.update.rst:2
+msgid "maxframe.dataframe.DataFrame.update"
+msgstr ""
+
+#: maxframe.dataframe.merge.update.df_update:1 of
+msgid "Modify in place using non-NA values from another DataFrame."
+msgstr "使用另一个 DataFrame 中的非 NA 值就地修改。"
+
+#: maxframe.dataframe.merge.update.df_update:3 of
+msgid "Aligns on indices. There is no return value."
+msgstr "按索引对齐。无返回值。"
+
+#: maxframe.dataframe.merge.update.df_update of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.merge.update.df_update:5 of
+msgid ""
+"Should have at least one matching index/column label with the original "
+"DataFrame. If a Series is passed, its name attribute must be set, and "
+"that will be used as the column name to align with the original "
+"DataFrame."
+msgstr ""
+"应至少有一个与原始 DataFrame 匹配的索引/列标签。如果传递的是 Series，必须"
+"设置其 name 属性，该属性将用作与原始 DataFrame 对齐的列名。"
+
+#: maxframe.dataframe.merge.update.df_update:10 of
+msgid ""
+"Only left join is implemented, keeping the index and columns of the "
+"original object."
+msgstr "仅实现左连接，保留原始对象的索引和列。"
+
+#: maxframe.dataframe.merge.update.df_update:13 of
+msgid ""
+"How to handle non-NA values for overlapping keys:  * True: overwrite "
+"original DataFrame's values   with values from `other`. * False: only "
+"update values that are NA in   the original DataFrame."
+msgstr ""
+"如何处理重叠键的非 NA 值：  * True：使用 `other` 中的值覆盖原始 DataFrame"
+" 的值。 * False：仅更新原始 DataFrame 中为 NA 的值。"
+
+#: maxframe.dataframe.merge.update.df_update:13 of
+msgid "How to handle non-NA values for overlapping keys:"
+msgstr ""
+
+#: maxframe.dataframe.merge.update.df_update:15 of
+msgid "True: overwrite original DataFrame's values with values from `other`."
+msgstr ""
+
+#: maxframe.dataframe.merge.update.df_update:17 of
+#, fuzzy
+msgid "False: only update values that are NA in the original DataFrame."
+msgstr "如果 `other` 包含 NaN，则原始 DataFrame 中对应的值不会被更新。"
+
+#: maxframe.dataframe.merge.update.df_update:20 of
+msgid ""
+"Can choose to replace values other than NA. Return True for values that "
+"should be updated."
+msgstr "可以选择替换除 NA 以外的值。对于应该更新的值返回 True。"
+
+#: maxframe.dataframe.merge.update.df_update:23 of
+msgid ""
+"If 'raise', will raise a ValueError if the DataFrame and `other` both "
+"contain non-NA data in the same place."
+msgstr ""
+"如果为 'raise'，当 DataFrame 和 `other` 在相同位置都包含非 NA 数据时将"
+"引发 ValueError。"
+
+#: maxframe.dataframe.merge.update.df_update of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.merge.update.df_update:27 of
+msgid "This method directly changes calling object."
+msgstr "此方法直接更改调用对象。"
+
+#: maxframe.dataframe.merge.update.df_update of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.merge.update.df_update of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.dataframe.merge.update.df_update:30 of
+msgid ""
+"* When `errors='raise'` and there's overlapping non-NA data.     * When "
+"`errors` is not either `'ignore'` or `'raise'`"
+msgstr ""
+"* 当 `errors='raise'` 且存在重叠的非 NA 数据时。     * 当 `errors` 不是 `"
+"'ignore'` 或 `'raise'` 时"
+
+#: maxframe.dataframe.merge.update.df_update:30 of
+msgid ""
+"When `errors='raise'` and there's overlapping non-NA data.     * When "
+"`errors` is not either `'ignore'` or `'raise'`"
+msgstr ""
+"当 `errors='raise'` 且存在重叠的非 NA 数据时。     * 当 `errors` 不是 `'"
+"ignore'` 或 `'raise'` 时"
+
+#: maxframe.dataframe.merge.update.df_update:31 of
+msgid "* If `join != 'left'`"
+msgstr "* 如果 `join != 'left'`"
+
+#: maxframe.dataframe.merge.update.df_update:31 of
+msgid "If `join != 'left'`"
+msgstr "如果 `join != 'left'`"
+
+#: maxframe.dataframe.merge.update.df_update:35 of
+msgid ":py:obj:`dict.update`"
+msgstr ""
+
+#: maxframe.dataframe.merge.update.df_update:36 of
+msgid "Similar method for dictionaries."
+msgstr "字典的类似方法。"
+
+#: maxframe.dataframe.merge.update.df_update:38 of
+msgid ":py:obj:`DataFrame.merge`"
+msgstr ""
+
+#: maxframe.dataframe.merge.update.df_update:39 of
+msgid "For column(s)-on-column(s) operations."
+msgstr "用于列对列的操作。"
+
+#: maxframe.dataframe.merge.update.df_update:42 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.merge.update.df_update:56 of
+msgid ""
+"The DataFrame's length does not increase as a result of the update, only "
+"values at matching index/column labels are updated."
+msgstr "由于更新，DataFrame 的长度不会增加，只有匹配索引/列标签的值会被更新。"
+
+#: maxframe.dataframe.merge.update.df_update:79 of
+msgid "For Series, its name attribute must be set."
+msgstr "对于 Series，必须设置其 name 属性。"
+
+#: maxframe.dataframe.merge.update.df_update:91 of
+msgid ""
+"If `other` contains NaNs the corresponding values are not updated in the "
+"original dataframe."
+msgstr "如果 `other` 包含 NaN，则原始 DataFrame 中对应的值不会被更新。"
+

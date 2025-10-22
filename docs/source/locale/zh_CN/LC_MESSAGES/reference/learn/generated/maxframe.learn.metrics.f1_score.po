@@ -1,0 +1,250 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.f1_score.rst:2
+msgid "maxframe.learn.metrics.f1\\_score"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:1 of
+msgid "Compute the F1 score, also known as balanced F-score or F-measure"
+msgstr "计算 F1 分数，也称为平衡 F 分数或 F 度量"
+
+#: maxframe.learn.metrics._classification.f1_score:3 of
+msgid ""
+"The F1 score can be interpreted as a weighted average of the precision "
+"and recall, where an F1 score reaches its best value at 1 and worst score"
+" at 0. The relative contribution of precision and recall to the F1 score "
+"are equal. The formula for the F1 score is::"
+msgstr ""
+"F1 分数可以解释为精确率和召回率的加权平均值，其中 F1 分数的最佳值为 1，最"
+"差值为 0。精确率和召回率对 F1 分数的相对贡献相等。F1 分数的公式为："
+
+#: maxframe.learn.metrics._classification.f1_score:10 of
+msgid ""
+"In the multi-class and multi-label case, this is the average of the F1 "
+"score of each class with weighting depending on the ``average`` "
+"parameter."
+msgstr ""
+"在多类和多标签情况下，这是每个类别的 F1 分数的平均值，其权重取决于 ``"
+"average`` 参数。"
+
+#: maxframe.learn.metrics._classification.f1_score:14 of
+msgid "Read more in the :ref:`User Guide <precision_recall_f_measure_metrics>`."
+msgstr "更多信息请参阅 :ref:`用户指南 <precision_recall_f_measure_metrics>`。"
+
+#: maxframe.learn.metrics._classification.f1_score of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:16 of
+msgid "Ground truth (correct) target values."
+msgstr "真实（正确）的目标值。"
+
+#: maxframe.learn.metrics._classification.f1_score:18 of
+msgid "Estimated targets as returned by a classifier."
+msgstr "由分类器返回的预测目标值。"
+
+#: maxframe.learn.metrics._classification.f1_score:20 of
+msgid ""
+"The set of labels to include when ``average != 'binary'``, and their "
+"order if ``average is None``. Labels present in the data can be excluded,"
+" for example to calculate a multiclass average ignoring a majority "
+"negative class, while labels not present in the data will result in 0 "
+"components in a macro average. For multilabel targets, labels are column "
+"indices. By default, all labels in ``y_true`` and ``y_pred`` are used in "
+"sorted order."
+msgstr ""
+"当 ``average != 'binary'`` 时要包含的标签集合，以及当 ``average is None``"
+" 时它们的顺序。数据中存在的标签可以被排除，例如在计算多类平均值时忽略多数"
+"负类，而数据中不存在的标签将在宏平均中导致 0 组件。对于多标签目标，标签是"
+"列索引。默认情况下，将使用 ``y_true`` 和 ``y_pred`` 中的所有标签并按排序"
+"顺序排列。"
+
+#: maxframe.learn.metrics._classification.f1_score:28 of
+msgid ""
+"The class to report if ``average='binary'`` and the data is binary. If "
+"the data are multiclass or multilabel, this will be ignored; setting "
+"``labels=[pos_label]`` and ``average != 'binary'`` will report scores for"
+" that label only."
+msgstr ""
+"如果 ``average='binary'`` 且数据是二分类的，则报告该类别。如果数据是多类"
+"或多标签的，则此参数将被忽略；设置 ``labels=[pos_label]`` 且 ``average !="
+" 'binary'`` 将仅报告该标签的分数。"
+
+#: maxframe.learn.metrics._classification.f1_score:33 of
+#, python-brace-format
+msgid ""
+"This parameter is required for multiclass/multilabel targets. If "
+"``None``, the scores for each class are returned. Otherwise, this "
+"determines the type of averaging performed on the data:  ``'binary'``:"
+"     Only report results for the class specified by ``pos_label``.     "
+"This is applicable only if targets (``y_{true,pred}``) are binary. "
+"``'micro'``:     Calculate metrics globally by counting the total true "
+"positives,     false negatives and false positives. ``'macro'``:     "
+"Calculate metrics for each label, and find their unweighted     mean.  "
+"This does not take label imbalance into account. ``'weighted'``:     "
+"Calculate metrics for each label, and find their average weighted     by "
+"support (the number of true instances for each label). This     alters "
+"'macro' to account for label imbalance; it can result in an     F-score "
+"that is not between precision and recall. ``'samples'``:     Calculate "
+"metrics for each instance, and find their average (only     meaningful "
+"for multilabel classification where this differs from     "
+":func:`accuracy_score`)."
+msgstr ""
+"此参数对于多类/多标签目标是必需的。如果为 ``None``，则返回每个类别的分数"
+"。否则，此参数决定对数据执行的平均类型：``'binary'``：     仅报告由 ``pos"
+"_label`` 指定的类别的结果。     此选项仅适用于目标（``y_{true,pred}``）是"
+"二分类的情况。 ``'micro'``：     通过计算总的真正例、假负例和假正例全局"
+"计算指标。 ``'macro'``：     计算每个标签的指标，并求其未加权平均值。这不"
+"考虑标签不平衡。 ``'weighted'``：     计算每个标签的指标，并按支持度（"
+"每个标签的真正例数）加权平均。这会调整 “macro” 以考虑标签不平衡；它可能"
+"导致 F 分数不在精确率和召回率之间。 ``'samples'``：     计算每个实例的"
+"指标，并求其平均值（仅在多标签分类中与 :func:`accuracy_score` 不同时有"
+"意义）。"
+
+#: maxframe.learn.metrics._classification.f1_score:33 of
+msgid ""
+"This parameter is required for multiclass/multilabel targets. If "
+"``None``, the scores for each class are returned. Otherwise, this "
+"determines the type of averaging performed on the data:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:37 of
+msgid "``'binary'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:38 of
+#, python-brace-format
+msgid ""
+"Only report results for the class specified by ``pos_label``. This is "
+"applicable only if targets (``y_{true,pred}``) are binary."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:40 of
+msgid "``'micro'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:41 of
+msgid ""
+"Calculate metrics globally by counting the total true positives, false "
+"negatives and false positives."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:43 of
+msgid "``'macro'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:44 of
+msgid ""
+"Calculate metrics for each label, and find their unweighted mean.  This "
+"does not take label imbalance into account."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:46 of
+msgid "``'weighted'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:47 of
+msgid ""
+"Calculate metrics for each label, and find their average weighted by "
+"support (the number of true instances for each label). This alters "
+"'macro' to account for label imbalance; it can result in an F-score that "
+"is not between precision and recall."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:51 of
+msgid "``'samples'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:52 of
+msgid ""
+"Calculate metrics for each instance, and find their average (only "
+"meaningful for multilabel classification where this differs from "
+":func:`accuracy_score`)."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:56 of
+msgid "Sample weights."
+msgstr "样本权重。"
+
+#: maxframe.learn.metrics._classification.f1_score:58 of
+msgid ""
+"Sets the value to return when there is a zero division, i.e. when all "
+"predictions and labels are negative. If set to \"warn\", this acts as 0, "
+"but warnings are also raised."
+msgstr ""
+"设置在零除法时返回的值，即所有预测和标签均为负时的情况。如果设置为 \"warn"
+"\"，则其作用为 0，但也会引发警告。"
+
+#: maxframe.learn.metrics._classification.f1_score of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:63 of
+msgid ""
+"**f1_score** -- F1 score of the positive class in binary classification "
+"or weighted average of the F1 scores of each class for the multiclass "
+"task."
+msgstr ""
+"**f1_score** -- 在二分类任务中为正类的 F1 分数，或多类任务中每个类别的 F1"
+" 分数的加权平均值。"
+
+#: maxframe.learn.metrics._classification.f1_score of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:67 of
+msgid ""
+":py:obj:`fbeta_score`, :py:obj:`precision_recall_fscore_support`, "
+":py:obj:`jaccard_score`, :py:obj:`multilabel_confusion_matrix`"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:70 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:71 of
+msgid ""
+"`Wikipedia entry for the F1-score "
+"<https://en.wikipedia.org/wiki/F1_score>`_"
+msgstr "`F1-score 的维基百科条目 <https://en.wikipedia.org/wiki/F1_score>`_"
+
+#: maxframe.learn.metrics._classification.f1_score:75 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:93 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.f1_score:94 of
+msgid ""
+"When ``true positive + false positive == 0``, precision is undefined; "
+"When ``true positive + false negative == 0``, recall is undefined. In "
+"such cases, by default the metric will be set to 0, as will f-score, and "
+"``UndefinedMetricWarning`` will be raised. This behavior can be modified "
+"with ``zero_division``."
+msgstr ""
+"当 ``true positive + false positive == 0`` 时，precision 未定义；当 ``"
+"true positive + false negative == 0`` 时，recall 未定义。在这种情况下，"
+"默认情况下指标将被设为 0，f-score 也是如此，并且将引发 ``"
+"UndefinedMetricWarning``。此行为可以通过 ``zero_division`` 进行修改。"
+

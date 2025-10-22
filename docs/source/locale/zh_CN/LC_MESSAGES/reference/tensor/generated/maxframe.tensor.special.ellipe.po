@@ -1,0 +1,201 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellipe.rst:2
+msgid "maxframe.tensor.special.ellipe"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:1 of
+msgid "Complete elliptic integral of the second kind"
+msgstr "第二类完全椭圆积分"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:3 of
+msgid "This function is defined as"
+msgstr "该函数定义为"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:5 of
+#, python-brace-format
+msgid ""
+"E(m) = \\int_0^{\\pi/2} [1 - m \\sin(t)^2]^{1/2} dt\n"
+"\n"
+msgstr ""
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellipe.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:7 of
+msgid "Defines the parameter of the elliptic integral."
+msgstr "定义椭圆积分的参数。"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:9 of
+msgid "Optional output array for the function values"
+msgstr "函数值的可选输出数组"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellipe.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:12 of
+msgid "**E** -- Value of the elliptic integral."
+msgstr "**E** -- 椭圆积分的值。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellipe.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:17 of
+msgid ":py:obj:`ellipkm1`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:18 of
+msgid "Complete elliptic integral of the first kind, near `m` = 1"
+msgstr "第一类完全椭圆积分，接近 `m` = 1"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:20 of
+msgid ":py:obj:`ellipk`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:21 of
+msgid "Complete elliptic integral of the first kind"
+msgstr "第一类完全椭圆积分"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:23 of
+msgid ":py:obj:`ellipkinc`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:24 of
+msgid "Incomplete elliptic integral of the first kind"
+msgstr "第一类不完全椭圆积分"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:26 of
+msgid ":py:obj:`ellipeinc`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:27 of
+msgid "Incomplete elliptic integral of the second kind"
+msgstr "第二类不完全椭圆积分"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:29 of
+msgid ":py:obj:`elliprd`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:30 of
+msgid "Symmetric elliptic integral of the second kind."
+msgstr "第二类对称椭圆积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:32 of
+msgid ":py:obj:`elliprg`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:33 of
+msgid "Completely-symmetric elliptic integral of the second kind."
+msgstr "第二类完全对称椭圆积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:36 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:37 of
+msgid "Wrapper for the Cephes [1]_ routine `ellpe`."
+msgstr "Cephes [1]_ 例程 `ellpe` 的封装。"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:39 of
+msgid "For ``m > 0`` the computation uses the approximation,"
+msgstr "对于 ``m > 0``，计算使用近似，"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:41 of
+msgid ""
+"E(m) \\approx P(1-m) - (1-m) \\log(1-m) Q(1-m),\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:43 of
+msgid ""
+"where :math:`P` and :math:`Q` are tenth-order polynomials.  For ``m < "
+"0``, the relation"
+msgstr "其中 :math:`P` 和 :math:`Q` 是十次多项式。对于 ``m < 0``，使用关系式"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:46 of
+msgid ""
+"E(m) = E(m/(m - 1)) \\sqrt(1-m)\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:48 of
+msgid "is used."
+msgstr "进行计算。"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:50 of
+msgid ""
+"The parameterization in terms of :math:`m` follows that of section 17.2 "
+"in [2]_. Other parameterizations in terms of the complementary parameter "
+":math:`1 - m`, modular angle :math:`\\sin^2(\\alpha) = m`, or modulus "
+":math:`k^2 = m` are also used, so be careful that you choose the correct "
+"parameter."
+msgstr ""
+"以 :math:`m` 为参数的参数化遵循 [2]_ 中第 17.2 节的形式。其他以余参数 :"
+"math:`1 - m`、模角 :math:`\\sin^2(\\alpha) = m` 或模数 :math:`k^2 = m` 为"
+"参数的参数化方式也常被使用，因此请确保选择正确的参数。"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:56 of
+msgid ""
+"The Legendre E integral is related to Carlson's symmetric R_D or R_G "
+"functions in multiple ways [3]_. For example,"
+msgstr ""
+"Legendre E 积分与 Carlson 对称 R_D 或 R_G 函数在多种方式下相关 [3]_。例如"
+"，"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:59 of
+#, fuzzy
+msgid ""
+"E(m) = 2 R_G(0, 1-k^2, 1) .\n"
+"\n"
+msgstr ""
+"E(m) = 2 R_G(0, 1-k^2, 1) 。\n"
+"\n"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:62 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:63 of
+msgid "Cephes Mathematical Functions Library, http://www.netlib.org/cephes/"
+msgstr "Cephes 数学函数库，http://www.netlib.org/cephes/"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:65 of
+msgid ""
+"Milton Abramowitz and Irene A. Stegun, eds. Handbook of Mathematical "
+"Functions with Formulas, Graphs, and Mathematical Tables. New York: "
+"Dover, 1972."
+msgstr ""
+"Milton Abramowitz 和 Irene A. Stegun 编。数学函数手册：公式、图表和数学"
+"表格。纽约：Dover，1972。"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipe:68 of
+msgid ""
+"NIST Digital Library of Mathematical Functions. http://dlmf.nist.gov/, "
+"Release 1.0.28 of 2020-09-15. See Sec. 19.25(i) "
+"https://dlmf.nist.gov/19.25#i"
+msgstr ""
+"NIST 数学函数数字图书馆。http://dlmf.nist.gov/，2020-09-15 发布版本 1.0."
+"28。参见第 19.25(i) 节 https://dlmf.nist.gov/19.25#i"
+

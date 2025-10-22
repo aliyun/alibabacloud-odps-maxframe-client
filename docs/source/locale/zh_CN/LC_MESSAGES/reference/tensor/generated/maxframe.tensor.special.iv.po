@@ -1,0 +1,154 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.iv.rst:2
+msgid "maxframe.tensor.special.iv"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.iv:1 of
+msgid "Modified Bessel function of the first kind of real order."
+msgstr "实数阶的第一类修正贝塞尔函数。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.iv.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.iv:3 of
+msgid "Order. If `z` is of real type and negative, `v` must be integer valued."
+msgstr "阶数。如果 `z` 是实数类型且为负数，则 `v` 必须是整数值。"
+
+#: maxframe.tensor.special.bessel.iv:6 of
+msgid "Argument."
+msgstr "自变量。"
+
+#: maxframe.tensor.special.bessel.iv:8 of
+msgid "Optional output array for the function values"
+msgstr "可选的输出数组，用于存储函数值"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.iv.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.iv:11 of
+msgid "Values of the modified Bessel function."
+msgstr "修正贝塞尔函数的值。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.iv.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.iv:16 of
+msgid ":py:obj:`ive`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.iv:17 of
+msgid "This function with leading exponential behavior stripped off."
+msgstr "去除主导指数行为后的该函数。"
+
+#: maxframe.tensor.special.bessel.iv:19 of
+msgid ":py:obj:`i0`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.iv:20 of
+msgid "Faster version of this function for order 0."
+msgstr "阶数为0时的快速版本。"
+
+#: maxframe.tensor.special.bessel.iv:22 of
+msgid ":py:obj:`i1`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.iv:23 of
+msgid "Faster version of this function for order 1."
+msgstr "阶数为1时的快速版本。"
+
+#: maxframe.tensor.special.bessel.iv:26 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.iv:27 of
+msgid ""
+"For real `z` and :math:`v \\in [-50, 50]`, the evaluation is carried out "
+"using Temme's method [1]_.  For larger orders, uniform asymptotic "
+"expansions are applied."
+msgstr ""
+"对于实数 `z` 和 :math:`v \\in [-50, 50]`，使用 Temme 方法 [1]_ 进行计算。"
+"对于更大的阶数，采用一致渐近展开式。"
+
+#: maxframe.tensor.special.bessel.iv:31 of
+msgid ""
+"For complex `z` and positive `v`, the AMOS [2]_ `zbesi` routine is "
+"called. It uses a power series for small `z`, the asymptotic expansion "
+"for large `abs(z)`, the Miller algorithm normalized by the Wronskian and "
+"a Neumann series for intermediate magnitudes, and the uniform asymptotic "
+"expansions for :math:`I_v(z)` and :math:`J_v(z)` for large orders. "
+"Backward recurrence is used to generate sequences or reduce orders when "
+"necessary."
+msgstr ""
+"对于复数 `z` 和正数 `v`，调用 AMOS [2]_ 的 `zbesi` 例程。它对小 `z` 使用"
+"幂级数，对大的 `abs(z)` 使用渐近展开式，对中等大小的值使用由 Wronskian "
+"归一化的 Miller 算法和 Neumann 级数，对大阶数使用 :math:`I_v(z)` 和 :math"
+":`J_v(z)` 的一致渐近展开式。在必要时使用向后递推生成序列或降低阶数。"
+
+#: maxframe.tensor.special.bessel.iv:39 of
+msgid ""
+"The calculations above are done in the right half plane and continued "
+"into the left half plane by the formula,"
+msgstr "上述计算在右半平面进行，并通过以下公式延拓到左半平面，"
+
+#: maxframe.tensor.special.bessel.iv:42 of
+msgid ""
+"I_v(z \\exp(\\pm\\imath\\pi)) = \\exp(\\pm\\pi v) I_v(z)\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.iv:44 of
+msgid ""
+"(valid when the real part of `z` is positive).  For negative `v`, the "
+"formula"
+msgstr "（当 `z` 的实部为正时有效）。对于负 `v`，使用以下公式"
+
+#: maxframe.tensor.special.bessel.iv:47 of
+#, python-brace-format
+msgid ""
+"I_{-v}(z) = I_v(z) + \\frac{2}{\\pi} \\sin(\\pi v) K_v(z)\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.iv:49 of
+msgid ""
+"is used, where :math:`K_v(z)` is the modified Bessel function of the "
+"second kind, evaluated using the AMOS routine `zbesk`."
+msgstr "其中 :math:`K_v(z)` 是第二类修正贝塞尔函数，使用 AMOS 例程 `zbesk` 计算。"
+
+#: maxframe.tensor.special.bessel.iv:53 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.iv:54 of
+msgid "Temme, Journal of Computational Physics, vol 21, 343 (1976)"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.iv:55 of
+msgid ""
+"Donald E. Amos, \"AMOS, A Portable Package for Bessel Functions of a "
+"Complex Argument and Nonnegative Order\", http://netlib.org/amos/"
+msgstr ""
+

@@ -106,10 +106,11 @@ class MinMaxScaler(TransformerMixin, BaseEstimator):
     <sphx_glr_auto_examples_preprocessing_plot_all_scaling.py>`.
     """
 
-    def __init__(self, feature_range=(0, 1), copy=True, clip=False):
+    def __init__(self, feature_range=(0, 1), copy=True, clip=False, validate=True):
         self.feature_range = feature_range
         self.copy = copy
         self.clip = clip
+        self.validate = validate
 
     def _reset(self):  # pragma: no cover
         """Reset internal data-dependent state of the scaler, if necessary.
@@ -186,13 +187,14 @@ class MinMaxScaler(TransformerMixin, BaseEstimator):
             )
 
         first_pass = not hasattr(self, "n_samples_seen_")
-        X = self._validate_data(
-            X,
-            reset=first_pass,
-            estimator=self,
-            dtype=FLOAT_DTYPES,
-            force_all_finite="allow-nan",
-        )
+        if self.validate:
+            X = self._validate_data(
+                X,
+                reset=first_pass,
+                estimator=self,
+                dtype=FLOAT_DTYPES,
+                force_all_finite="allow-nan",
+            )
 
         if isinstance(X, (DATAFRAME_TYPE, SERIES_TYPE, INDEX_TYPE)):
             data_min = X.min(axis=0)
@@ -239,13 +241,14 @@ class MinMaxScaler(TransformerMixin, BaseEstimator):
         """
         check_is_fitted(self)
 
-        X = self._validate_data(
-            X,
-            copy=self.copy,
-            dtype=FLOAT_DTYPES,
-            force_all_finite="allow-nan",
-            reset=False,
-        )
+        if self.validate:
+            X = self._validate_data(
+                X,
+                copy=self.copy,
+                dtype=FLOAT_DTYPES,
+                force_all_finite="allow-nan",
+                reset=False,
+            )
 
         X *= self.scale_
         X += self.min_
@@ -290,6 +293,7 @@ def minmax_scale(
     *,
     axis=0,
     copy=True,
+    validate=True,
     execute=False,
     session=None,
     run_kwargs=None
@@ -368,21 +372,28 @@ def minmax_scale(
     """  # noqa
     # Unlike the scaler object, this function allows 1d input.
     # If copy is required, it will be done inside the scaler object.
-    X = check_array(
-        X, copy=False, ensure_2d=False, dtype=FLOAT_DTYPES, force_all_finite="allow-nan"
-    )
-    original_ndim = X.ndim
+    if validate:
+        X = check_array(
+            X,
+            copy=False,
+            ensure_2d=False,
+            dtype=FLOAT_DTYPES,
+            force_all_finite="allow-nan",
+        )
+        original_ndim = X.ndim
 
-    if original_ndim == 1:
-        X = X.reshape(X.shape[0], 1)
+        if original_ndim == 1:
+            X = X.reshape(X.shape[0], 1)
+    else:
+        original_ndim = X.ndim
 
-    s = MinMaxScaler(feature_range=feature_range, copy=copy)
+    s = MinMaxScaler(feature_range=feature_range, copy=copy, validate=validate)
     if axis == 0:
         X = s.fit_transform(X)
     else:
         X = s.fit_transform(X.T).T
 
-    if original_ndim == 1:
+    if validate and original_ndim == 1:
         X = X.ravel()
 
     if not execute:

@@ -1,0 +1,120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.clip.rst:2
+msgid "maxframe.dataframe.DataFrame.clip"
+msgstr ""
+
+#: maxframe.dataframe.misc.clip.clip:1 of
+msgid "Trim values at input threshold(s)."
+msgstr "在输入阈值处修剪值。"
+
+#: maxframe.dataframe.misc.clip.clip:3 of
+msgid ""
+"Assigns values outside boundary to boundary values. Thresholds can be "
+"singular values or array like, and in the latter case the clipping is "
+"performed element-wise in the specified axis."
+msgstr ""
+"将超出边界的值赋为边界值。阈值可以是单个值或类似数组的形式，在后一种情况"
+"下，裁剪将在指定轴上逐元素执行。"
+
+#: maxframe.dataframe.misc.clip.clip of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.clip.clip:7 of
+msgid ""
+"Minimum threshold value. All values below this threshold will be set to "
+"it. If None, no lower clipping is performed."
+msgstr "最小阈值。所有低于此阈值的值将被设为此值。如果为 None，则不进行下限裁剪。"
+
+#: maxframe.dataframe.misc.clip.clip:10 of
+msgid ""
+"Maximum threshold value. All values above this threshold will be set to "
+"it. If None, no upper clipping is performed."
+msgstr "最大阈值。所有高于此阈值的值将被设为此值。如果为 None，则不进行上限裁剪。"
+
+#: maxframe.dataframe.misc.clip.clip:13 of
+msgid "Align object with lower and upper along the given axis."
+msgstr "沿给定轴对齐对象的下限和上限。"
+
+#: maxframe.dataframe.misc.clip.clip:15 of
+msgid "Whether to perform the operation in place on the data."
+msgstr "是否在数据上就地执行操作。"
+
+#: maxframe.dataframe.misc.clip.clip:17 maxframe.dataframe.misc.clip.clip:19 of
+msgid ""
+"Additional keywords have no effect but might be accepted for "
+"compatibility with numpy."
+msgstr "附加关键字没有效果，但可能会为了与 numpy 兼容而被接受。"
+
+#: maxframe.dataframe.misc.clip.clip of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.clip.clip:22 of
+msgid ""
+"Same type as calling object with the values outside the clip boundaries "
+"replaced or None if ``inplace=True``."
+msgstr ""
+"与调用对象类型相同，并将超出裁剪边界的值替换，如果 ``inplace=True`` 则"
+"返回 None。"
+
+#: maxframe.dataframe.misc.clip.clip of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.clip.clip:28 of
+msgid ":py:obj:`Series.clip`"
+msgstr ""
+
+#: maxframe.dataframe.misc.clip.clip:29 of
+msgid "Trim values at input threshold in series."
+msgstr "在 Series 中按输入阈值修剪值。"
+
+#: maxframe.dataframe.misc.clip.clip:31 of
+msgid ":py:obj:`DataFrame.clip`"
+msgstr ""
+
+#: maxframe.dataframe.misc.clip.clip:32 of
+msgid "Trim values at input threshold in dataframe."
+msgstr "在 DataFrame 中按输入阈值修剪值。"
+
+#: maxframe.dataframe.misc.clip.clip:34 of
+msgid ":py:obj:`numpy.clip`"
+msgstr ""
+
+#: maxframe.dataframe.misc.clip.clip:35 of
+msgid "Clip (limit) the values in an array."
+msgstr "裁剪（限制）数组中的值。"
+
+#: maxframe.dataframe.misc.clip.clip:38 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.clip.clip:50 of
+msgid "Clips per column using lower and upper thresholds:"
+msgstr "使用下限和上限阈值按列进行裁剪："
+
+#: maxframe.dataframe.misc.clip.clip:60 of
+msgid "Clips using specific lower and upper thresholds per column element:"
+msgstr "使用每列元素特定的下限和上限阈值进行裁剪："
+

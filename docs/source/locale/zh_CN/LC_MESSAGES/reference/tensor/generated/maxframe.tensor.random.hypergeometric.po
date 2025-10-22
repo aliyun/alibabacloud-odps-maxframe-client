@@ -1,0 +1,191 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.hypergeometric.rst:2
+msgid "maxframe.tensor.random.hypergeometric"
+msgstr ""
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:1 of
+msgid "Draw samples from a Hypergeometric distribution."
+msgstr "从超几何分布中抽取样本。"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:3 of
+msgid ""
+"Samples are drawn from a hypergeometric distribution with specified "
+"parameters, ngood (ways to make a good selection), nbad (ways to make a "
+"bad selection), and nsample = number of items sampled, which is less than"
+" or equal to the sum ngood + nbad."
+msgstr ""
+"样本从具有指定参数的超几何分布中抽取，参数包括 ngood（做出好选择的方式数"
+"）、nbad（做出坏选择的方式数）和 nsample（抽取的项目数），其中 nsample "
+"小于或等于 ngood + nbad 的总和。"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:8 of
+msgid "Number of ways to make a good selection.  Must be nonnegative."
+msgstr "做出好选择的方式数。必须为非负数。"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:10 of
+msgid "Number of ways to make a bad selection.  Must be nonnegative."
+msgstr "做出坏选择的方式数。必须为非负数。"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:12 of
+msgid "Number of items sampled.  Must be at least 1 and at most ``ngood + nbad``."
+msgstr "抽取的项目数。必须至少为 1 且至多为 ``ngood + nbad``。"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:15 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``ngood``, ``nbad``, and ``nsample`` are all scalars.  "
+"Otherwise, ``np.broadcast(ngood, nbad, nsample).size`` samples are drawn."
+msgstr ""
+"输出形状。如果给定形状，例如 ``(m, n, k)``，则抽取 ``m * n * k`` 个样本。"
+"如果 size 为 ``None``（默认），且 ``ngood``、``nbad`` 和 ``nsample`` 均为"
+"标量，则返回单个值。否则抽取 ``np.broadcast(ngood, nbad, nsample).size`` "
+"个样本。"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:21 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上的期望块大小"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:23 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:25 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:28 of
+msgid ""
+"**out** -- Drawn samples from the parameterized hypergeometric "
+"distribution."
+msgstr "**out** -- 从参数化的超几何分布中抽取的样本。"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:33 of
+msgid ":py:obj:`scipy.stats.hypergeom`"
+msgstr ""
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:34 of
+msgid ""
+"probability density function, distribution or cumulative density "
+"function, etc."
+msgstr "概率密度函数、分布函数或累积密度函数等。"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:37 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:38 of
+msgid "The probability density for the Hypergeometric distribution is"
+msgstr "超几何分布的概率密度为"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:40 of
+msgid ""
+"P(x) = \\frac{\\binom{m}{n}\\binom{N-m}{n-x}}{\\binom{N}{n}},\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:42 of
+msgid "where :math:`0 \\le x \\le m` and :math:`n+m-N \\le x \\le n`"
+msgstr "其中 :math:`0 \\le x \\le m` 且 :math:`n+m-N \\le x \\le n`"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:44 of
+msgid ""
+"for P(x) the probability of x successes, n = ngood, m = nbad, and N = "
+"number of samples."
+msgstr "对于 P(x)，x 表示成功的次数，n = ngood，m = nbad，N = 样本数。"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:47 of
+msgid ""
+"Consider an urn with black and white marbles in it, ngood of them black "
+"and nbad are white. If you draw nsample balls without replacement, then "
+"the hypergeometric distribution describes the distribution of black balls"
+" in the drawn sample."
+msgstr ""
+"考虑一个装有黑色和白色弹珠的罐子，其中 ngood 个为黑色，nbad 个为白色。"
+"如果在不放回的情况下抽取 nsample 个球，则超几何分布描述了抽样样本中黑球的"
+"分布情况。"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:52 of
+msgid ""
+"Note that this distribution is very similar to the binomial distribution,"
+" except that in this case, samples are drawn without replacement, whereas"
+" in the Binomial case samples are drawn with replacement (or the sample "
+"space is infinite). As the sample space becomes large, this distribution "
+"approaches the binomial."
+msgstr ""
+"注意，该分布与二项分布非常相似，不同之处在于此时样本是不放回抽取的，而在"
+"二项分布中样本是放回抽取的（或者样本空间是无限的）。当样本空间变大时，该"
+"分布趋近于二项分布。"
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:59 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:60 of
+msgid ""
+"Lentner, Marvin, \"Elementary Applied Statistics\", Bogden and Quigley, "
+"1972."
+msgstr ""
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:62 of
+msgid ""
+"Weisstein, Eric W. \"Hypergeometric Distribution.\" From MathWorld--A "
+"Wolfram Web Resource. "
+"http://mathworld.wolfram.com/HypergeometricDistribution.html"
+msgstr ""
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:65 of
+msgid ""
+"Wikipedia, \"Hypergeometric distribution\", "
+"http://en.wikipedia.org/wiki/Hypergeometric_distribution"
+msgstr ""
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:69 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:70 of
+msgid "Draw samples from the distribution:"
+msgstr "从分布中抽取样本："
+
+#: maxframe.tensor.random.hypergeometric.hypergeometric:80 of
+msgid ""
+"Suppose you have an urn with 15 white and 15 black marbles. If you pull "
+"15 marbles at random, how likely is it that 12 or more of them are one "
+"color?"
+msgstr ""
+"假设你有一个装有15个白色和15个黑色弹珠的瓮。如果你随机抽取15个弹珠，其中"
+"12个或更多弹珠是同一种颜色的概率是多少？"
+

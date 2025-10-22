@@ -1,0 +1,340 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.to_datetime.rst:2
+msgid "maxframe.dataframe.to\\_datetime"
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:1 of
+msgid "Convert argument to datetime."
+msgstr "将参数转换为 datetime。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:3 of
+msgid "The object to convert to a datetime."
+msgstr "要转换为 datetime 的对象。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:5 of
+msgid ""
+"- If 'raise', then invalid parsing will raise an exception. - If "
+"'coerce', then invalid parsing will be set as NaT. - If 'ignore', then "
+"invalid parsing will return the input."
+msgstr ""
+"- 如果为 'raise'，则无效解析将引发异常。 - 如果为 'coerce'，则无效解析将"
+"被设置为 NaT。 - 如果为 'ignore'，则无效解析将返回输入。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:6 of
+msgid "If 'raise', then invalid parsing will raise an exception."
+msgstr "如果为 'raise'，则无效解析将引发异常。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:7 of
+msgid "If 'coerce', then invalid parsing will be set as NaT."
+msgstr "如果为 'coerce'，则无效解析将被设置为 NaT。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:8 of
+msgid "If 'ignore', then invalid parsing will return the input."
+msgstr "如果为 'ignore'，则无效解析将返回输入。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:10 of
+msgid ""
+"Specify a date parse order if `arg` is str or its list-likes. If True, "
+"parses dates with the day first, eg 10/11/12 is parsed as 2012-11-10. "
+"Warning: dayfirst=True is not strict, but will prefer to parse with day "
+"first (this is a known bug, based on dateutil behavior)."
+msgstr ""
+"如果 `arg` 是字符串或其类似列表的形式，指定日期解析顺序。如果为 True，则"
+"优先以日优先解析日期，例如 10/11/12 将被解析为 2012-11-10。警告：dayfirst"
+"=True 并非严格模式，但会优先以日优先解析（这是基于 dateutil 行为的一个"
+"已知 bug）。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:16 of
+msgid ""
+"Specify a date parse order if `arg` is str or its list-likes.  - If True "
+"parses dates with the year first, eg 10/11/12 is parsed as   2010-11-12. "
+"- If both dayfirst and yearfirst are True, yearfirst is preceded (same   "
+"as dateutil).  Warning: yearfirst=True is not strict, but will prefer to "
+"parse with year first (this is a known bug, based on dateutil behavior)."
+msgstr ""
+"如果 `arg` 是字符串或其类似列表的形式，指定日期解析顺序。 - 如果为 True，"
+"则优先以年优先解析日期，例如 10/11/12 将被解析为 2010-11-12。 - 如果 "
+"dayfirst 和 yearfirst 都为 True，则优先使用 yearfirst（与 dateutil 行为"
+"一致）。警告：yearfirst=True 并非严格模式，但会优先以年优先解析（这是基于"
+" dateutil 行为的一个已知 bug）。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:16 of
+msgid "Specify a date parse order if `arg` is str or its list-likes."
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:18 of
+msgid ""
+"If True parses dates with the year first, eg 10/11/12 is parsed as "
+"2010-11-12."
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:20 of
+msgid ""
+"If both dayfirst and yearfirst are True, yearfirst is preceded (same as "
+"dateutil)."
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:23 of
+#, fuzzy
+msgid ""
+"Warning: yearfirst=True is not strict, but will prefer to parse with year"
+" first (this is a known bug, based on dateutil behavior)."
+msgstr ""
+"如果 `arg` 是字符串或其类似列表的形式，指定日期解析顺序。如果为 True，则"
+"优先以日优先解析日期，例如 10/11/12 将被解析为 2012-11-10。警告：dayfirst"
+"=True 并非严格模式，但会优先以日优先解析（这是基于 dateutil 行为的一个"
+"已知 bug）。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:26 of
+msgid ""
+"Return UTC DatetimeIndex if True (converting any tz-aware "
+"datetime.datetime objects as well)."
+msgstr ""
+"如果为 True，则返回 UTC DatetimeIndex（同时转换任何包含时区信息的 "
+"datetime.datetime 对象）。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:29 of
+#, python-format
+msgid ""
+"The strftime to parse time, eg \"%d/%m/%Y\", note that \"%f\" will parse "
+"all the way up to nanoseconds. See strftime documentation for more "
+"information on choices: https://docs.python.org/3/library/datetime.html"
+"#strftime-and-strptime-behavior."
+msgstr ""
+"用于解析时间的 strftime，例如 \"%d/%m/%Y\"，注意 \"%f\" 可以解析到纳秒。"
+"有关选项的更多信息，请参阅 strftime 文档：https://docs.python.org/3/"
+"library/datetime.html#strftime-and-strptime-behavior。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:34 of
+msgid ""
+"Behaves as: - If True, require an exact format match. - If False, allow "
+"the format to match anywhere in the target string."
+msgstr ""
+"行为如下： - 如果为 True，则要求格式完全匹配。 - 如果为 False，则允许格式"
+"匹配目标字符串中的任意位置。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:38 of
+msgid ""
+"The unit of the arg (D,s,ms,us,ns) denote the unit, which is an integer "
+"or float number. This will be based off the origin. Example, with "
+"unit='ms' and origin='unix' (the default), this would calculate the "
+"number of milliseconds to the unix epoch start."
+msgstr ""
+"参数的单位（D、s、ms、us、ns）表示单位，可以是整数或浮点数。这是基于 "
+"origin 的。例如，使用 unit='ms' 和 origin='unix'（默认值）时，将计算自 "
+"Unix 纪元开始的毫秒数。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:43 of
+msgid ""
+"If True and no `format` is given, attempt to infer the format of the "
+"datetime strings, and if it can be inferred, switch to a faster method of"
+" parsing them. In some cases this can increase the parsing speed by "
+"~5-10x."
+msgstr ""
+"如果为 True 且未指定 `format`，则尝试推断 datetime 字符串的格式，如果可以"
+"推断出来，则切换到更快的解析方法。在某些情况下，这可以将解析速度提高约 5-"
+"10 倍。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:48 of
+msgid ""
+"Define the reference date. The numeric values would be parsed as number "
+"of units (defined by `unit`) since this reference date.  - If 'unix' (or "
+"POSIX) time; origin is set to 1970-01-01. - If 'julian', unit must be "
+"'D', and origin is set to beginning of   Julian Calendar. Julian day "
+"number 0 is assigned to the day starting   at noon on January 1, 4713 BC."
+" - If Timestamp convertible, origin is set to Timestamp identified by   "
+"origin."
+msgstr ""
+"定义参考日期。数值将被解析为自该参考日期以来的单位数（由 `unit` 定义）。 "
+"- 如果是 'unix'（或 POSIX）时间，origin 设置为 1970-01-01。 - 如果是 '"
+"julian'，则 unit 必须为 'D'，origin 设置为儒略历的起始日。儒略日编号 0 "
+"对应公元前 4713 年 1 月 1 日中午开始的那一天。 - 如果是可转换为 Timestamp"
+" 的值，origin 设置为由 origin 指定的 Timestamp。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:48 of
+msgid ""
+"Define the reference date. The numeric values would be parsed as number "
+"of units (defined by `unit`) since this reference date."
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:51 of
+msgid "If 'unix' (or POSIX) time; origin is set to 1970-01-01."
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:52 of
+msgid ""
+"If 'julian', unit must be 'D', and origin is set to beginning of Julian "
+"Calendar. Julian day number 0 is assigned to the day starting at noon on "
+"January 1, 4713 BC."
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:55 of
+msgid "If Timestamp convertible, origin is set to Timestamp identified by origin."
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:58 of
+msgid ""
+"If True, use a cache of unique, converted dates to apply the datetime "
+"conversion. May produce significant speed-up when parsing duplicate date "
+"strings, especially ones with timezone offsets. The cache is only used "
+"when there are at least 50 values. The presence of out-of-bounds values "
+"will render the cache unusable and may slow down parsing."
+msgstr ""
+"如果为 True，则使用唯一转换日期的缓存来应用 datetime 转换。在解析重复日期"
+"字符串时，尤其是在有时区偏移的情况下，可能会显著提高速度。只有在至少有 50"
+" 个值时才会使用缓存。如果存在超出范围的值，则会使缓存失效并可能减慢解析"
+"速度。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:65 of
+msgid ""
+"If parsing succeeded. Return type depends on input:  - list-like: "
+"DatetimeIndex - Series: Series of datetime64 dtype - scalar: Timestamp  "
+"In case when it is not possible to return designated types (e.g. when any"
+" element of input is before Timestamp.min or after Timestamp.max) return "
+"will have datetime.datetime type (or corresponding array/Series)."
+msgstr ""
+"如果解析成功。返回类型取决于输入： - 类似列表：DatetimeIndex - Series："
+"datetime64 数据类型的 Series - 标量：Timestamp  在无法返回指定类型的情况"
+"下（例如输入中的任何元素在 Timestamp.min 之前或 Timestamp.max 之后），"
+"返回值将为 datetime.datetime 类型（或对应的数组/Series）。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:65 of
+msgid "If parsing succeeded. Return type depends on input:"
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:68 of
+msgid "list-like: DatetimeIndex"
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:69 of
+msgid "Series: Series of datetime64 dtype"
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:70 of
+msgid "scalar: Timestamp"
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:72 of
+#, fuzzy
+msgid ""
+"In case when it is not possible to return designated types (e.g. when any"
+" element of input is before Timestamp.min or after Timestamp.max) return "
+"will have datetime.datetime type (or corresponding array/Series)."
+msgstr ""
+"如果解析成功。返回类型取决于输入： - 类似列表：DatetimeIndex - Series："
+"datetime64 数据类型的 Series - 标量：Timestamp  在无法返回指定类型的情况"
+"下（例如输入中的任何元素在 Timestamp.min 之前或 Timestamp.max 之后），"
+"返回值将为 datetime.datetime 类型（或对应的数组/Series）。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:80 of
+msgid ":py:obj:`DataFrame.astype`"
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:81 of
+msgid "Cast argument to a specified dtype."
+msgstr "将参数转换为指定的数据类型。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:83 of
+msgid ":py:obj:`to_timedelta`"
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:84 of
+msgid "Convert argument to timedelta."
+msgstr "将参数转换为时间间隔。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:86 of
+msgid ":py:obj:`convert_dtypes`"
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:87 of
+msgid "Convert dtypes."
+msgstr "转换数据类型。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:90 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:91 of
+msgid ""
+"Assembling a datetime from multiple columns of a DataFrame. The keys can "
+"be common abbreviations like ['year', 'month', 'day', 'minute', 'second',"
+" 'ms', 'us', 'ns']) or plurals of the same"
+msgstr ""
+"从 DataFrame 的多个列中组合出一个日期时间。键可以是常见的缩写，如 ['year'"
+", 'month', 'day', 'minute', 'second', 'ms', 'us', 'ns'] 或其复数形式。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:105 of
+msgid ""
+"If a date does not meet the `timestamp limitations "
+"<https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html "
+"#timeseries-timestamp-limits>`_, passing errors='ignore' will return the "
+"original input instead of raising any exception."
+msgstr ""
+"如果某个日期不满足 `时间戳限制 <https://pandas.pydata.org/pandas-docs/"
+"stable/user_guide/timeseries.html#timeseries-timestamp-limits>`_，传入 "
+"errors='ignore' 会返回原始输入而不是抛出异常。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:110 of
+msgid ""
+"Passing errors='coerce' will force an out-of-bounds date to NaT, in "
+"addition to forcing non-dates (or non-parseable dates) to NaT."
+msgstr ""
+"传入 errors='coerce' 会强制将超出范围的日期设为 NaT，同时也会将非日期（或"
+"无法解析的日期）设为 NaT。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:118 of
+msgid ""
+"Passing infer_datetime_format=True can often-times speedup a parsing if "
+"its not an ISO8601 format exactly, but in a regular format."
+msgstr ""
+"如果传入 infer_datetime_format=True，在不是严格 ISO8601 格式但属于常规"
+"格式的情况下，通常可以加速解析过程。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:130 of
+msgid "Using a unix epoch time"
+msgstr "使用 Unix 纪元时间"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:137 of
+msgid ""
+"For float arg, precision rounding might happen. To prevent unexpected "
+"behavior use a fixed-width exact type."
+msgstr ""
+"对于浮点数参数，可能会发生精度舍入。为避免意外行为，请使用固定宽度的确切"
+"类型。"
+
+#: maxframe.dataframe.tseries.to_datetime.to_datetime:140 of
+msgid "Using a non-unix epoch origin"
+msgstr "使用非 Unix 纪元起点"
+

@@ -1,0 +1,144 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.arccos.rst:2
+msgid "maxframe.tensor.arccos"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccos.arccos:1 of
+msgid "Trigonometric inverse cosine, element-wise."
+msgstr "三角反余弦，逐元素计算。"
+
+#: maxframe.tensor.arithmetic.arccos.arccos:3 of
+msgid "The inverse of `cos` so that, if ``y = cos(x)``, then ``x = arccos(y)``."
+msgstr "`cos` 的反函数，即如果 ``y = cos(x)``，则 ``x = arccos(y)``。"
+
+#: maxframe.tensor.arithmetic.arccos.arccos of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccos.arccos:5 of
+msgid ""
+"`x`-coordinate on the unit circle. For real arguments, the domain is [-1,"
+" 1]."
+msgstr "单位圆上的 `x` 坐标。对于实数参数，定义域为 [-1, 1]。"
+
+#: maxframe.tensor.arithmetic.arccos.arccos:8 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，其形状必须与输入广播兼容。如果未提供或为 `"
+"None`，则返回一个新分配的 tensor。元组（只能作为关键字参数）的长度必须"
+"等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.arccos.arccos:13 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.arccos.arccos of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccos.arccos:18 of
+msgid ""
+"**angle** -- The angle of the ray intersecting the unit circle at the "
+"given `x`-coordinate in radians [0, pi]. If `x` is a scalar then a scalar"
+" is returned, otherwise an array of the same shape as `x` is returned."
+msgstr ""
+"**angle** -- 在给定 `x` 坐标处与单位圆相交的射线的角度，单位为弧度 [0, pi"
+"]。如果 `x` 是标量，则返回标量，否则返回与 `x` 形状相同的数组。"
+
+#: maxframe.tensor.arithmetic.arccos.arccos of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccos.arccos:24 of
+msgid ":py:obj:`cos`, :py:obj:`arctan`, :py:obj:`arcsin`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccos.arccos:27 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccos.arccos:28 of
+msgid ""
+"`arccos` is a multivalued function: for each `x` there are infinitely "
+"many numbers `z` such that `cos(z) = x`. The convention is to return the "
+"angle `z` whose real part lies in `[0, pi]`."
+msgstr ""
+"`arccos` 是多值函数：对于每个 `x`，存在无穷多个数 `z` 使得 `cos(z) = x`。"
+"约定返回实部在 `[0, pi]` 范围内的角度 `z`。"
+
+#: maxframe.tensor.arithmetic.arccos.arccos:32 of
+msgid ""
+"For real-valued input data types, `arccos` always returns real output. "
+"For each value that cannot be expressed as a real number or infinity, it "
+"yields ``nan`` and sets the `invalid` floating point error flag."
+msgstr ""
+"对于实数输入数据类型，`arccos` 总是返回实数输出。对于无法表示为实数或"
+"无穷大的值，它返回 ``nan`` 并设置 `invalid` 浮点错误标志。"
+
+#: maxframe.tensor.arithmetic.arccos.arccos:36 of
+msgid ""
+"For complex-valued input, `arccos` is a complex analytic function that "
+"has branch cuts `[-inf, -1]` and `[1, inf]` and is continuous from above "
+"on the former and from below on the latter."
+msgstr ""
+"对于复数输入，`arccos` 是一个复解析函数，其分支切割为 `[-inf, -1]` 和 `[1"
+", inf]`，在前者上从上方连续，在后者上从下方连续。"
+
+#: maxframe.tensor.arithmetic.arccos.arccos:40 of
+msgid "The inverse `cos` is also known as `acos` or cos^-1."
+msgstr "反余弦也称为 `acos` 或 cos^-1。"
+
+#: maxframe.tensor.arithmetic.arccos.arccos:43 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccos.arccos:44 of
+msgid ""
+"M. Abramowitz and I.A. Stegun, \"Handbook of Mathematical Functions\", "
+"10th printing, 1964, pp. 79. http://www.math.sfu.ca/~cbm/aands/"
+msgstr ""
+"M. Abramowitz 和 I.A. Stegun，《数学函数手册》，第10次印刷，1964年，第79"
+"页。http://www.math.sfu.ca/~cbm/aands/"
+
+#: maxframe.tensor.arithmetic.arccos.arccos:48 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arccos.arccos:49 of
+msgid ""
+"We expect the arccos of 1 to be 0, and of -1 to be pi: >>> import "
+"maxframe.tensor as mt"
+msgstr ""
+"我们期望 1 的反余弦为 0，-1 的反余弦为 pi：>>> import maxframe.tensor as "
+"mt"
+
+#: maxframe.tensor.arithmetic.arccos.arccos:55 of
+msgid "Plot arccos:"
+msgstr "绘制 arccos："
+

@@ -1,0 +1,105 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.sort_index.rst:2
+msgid "maxframe.dataframe.Series.sort\\_index"
+msgstr ""
+
+#: maxframe.dataframe.sort.sort_index.sort_index:1 of
+msgid "Sort object by labels (along an axis)."
+msgstr "按标签（沿轴）排序对象。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.sort_index.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.sort.sort_index.sort_index:5 of
+msgid ""
+"The axis along which to sort.  The value 0 identifies the rows, and 1 "
+"identifies the columns."
+msgstr "排序的轴。值 0 表示行，1 表示列。"
+
+#: maxframe.dataframe.sort.sort_index.sort_index:8 of
+msgid "If not None, sort on values in specified index level(s)."
+msgstr "如果不为 None，则在指定的索引级别上排序。"
+
+#: maxframe.dataframe.sort.sort_index.sort_index:10 of
+msgid "Sort ascending vs. descending."
+msgstr "升序或降序排序。"
+
+#: maxframe.dataframe.sort.sort_index.sort_index:12 of
+msgid "If True, perform operation in-place."
+msgstr "如果为 True，则就地执行操作。"
+
+#: maxframe.dataframe.sort.sort_index.sort_index:14 of
+msgid ""
+"Choice of sorting algorithm. See also ndarray.np.sort for more "
+"information.  `mergesort` is the only stable algorithm. For DataFrames, "
+"this option is only applied when sorting on a single column or label."
+msgstr ""
+"排序算法的选择。更多信息请参见 ndarray.np.sort。`mergesort` 是唯一的稳定"
+"算法。对于 DataFrame，此选项仅在按单个列或标签排序时应用。"
+
+#: maxframe.dataframe.sort.sort_index.sort_index:19 of
+msgid ""
+"Puts NaNs at the beginning if `first`; `last` puts NaNs at the end. Not "
+"implemented for MultiIndex."
+msgstr ""
+"如果为 `first`，则将 NaN 放在开头；`last` 将 NaN 放在末尾。对于 "
+"MultiIndex 未实现。"
+
+#: maxframe.dataframe.sort.sort_index.sort_index:22 of
+msgid ""
+"If True and sorting by level and index is multilevel, sort by other "
+"levels too (in order) after sorting by specified level."
+msgstr ""
+"如果为 True 且索引是多级的，在按指定级别排序后，也会按其他级别（顺序）"
+"排序。"
+
+#: maxframe.dataframe.sort.sort_index.sort_index:25 of
+msgid "If True, the resulting axis will be labeled 0, 1, …, n - 1."
+msgstr "如果为 True，结果轴将被标记为 0, 1, …, n - 1。"
+
+#: maxframe.dataframe.sort.sort_index.sort_index:27 of
+msgid ""
+"Parallel sorting algorithm, for the details, refer to: "
+"http://csweb.cs.wfu.edu/bigiron/LittleFE-"
+"PSRS/build/html/PSRSalgorithm.html"
+msgstr ""
+"并行排序算法，详情请参见：http://csweb.cs.wfu.edu/bigiron/LittleFE-PSRS/"
+"build/html/PSRSalgorithm.html"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.sort_index.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.sort.sort_index.sort_index:33 of
+msgid ""
+"**sorted_obj** -- DataFrame with sorted index if inplace=False, None "
+"otherwise."
+msgstr ""
+"**sorted_obj** -- 如果 inplace=False，返回索引已排序的 DataFrame，否则"
+"返回 None。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.sort_index.rst
+msgid "返回类型"
+msgstr ""
+

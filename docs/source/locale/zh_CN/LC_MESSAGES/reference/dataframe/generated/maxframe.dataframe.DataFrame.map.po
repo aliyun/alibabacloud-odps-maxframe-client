@@ -1,0 +1,127 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.map.rst:2
+msgid "maxframe.dataframe.DataFrame.map"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.df_map:1 of
+msgid "Apply a function to a Dataframe elementwise."
+msgstr "对 DataFrame 的每个元素应用一个函数。"
+
+#: maxframe.dataframe.misc.map.df_map:3 of
+msgid ""
+"This method applies a function that accepts and returns a scalar to every"
+" element of a DataFrame."
+msgstr "此方法将一个接受并返回标量的函数应用于 DataFrame 的每个元素。"
+
+#: maxframe.dataframe.misc.map.df_map of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.df_map:6 of
+msgid "Python function, returns a single value from a single value."
+msgstr "Python 函数，从单个值返回单个值。"
+
+#: maxframe.dataframe.misc.map.df_map:8 of
+msgid "If 'ignore', propagate NaN values, without passing them to func."
+msgstr "如果为 'ignore'，则传播 NaN 值，但不将其传递给 func。"
+
+#: maxframe.dataframe.misc.map.df_map:10 of
+msgid "Specify dtypes of returned DataFrames."
+msgstr "指定返回的 DataFrame 的数据类型。"
+
+#: maxframe.dataframe.misc.map.df_map:12 of
+msgid ""
+"Specify dtypes of all columns of returned DataFrames, only effective when"
+" dtypes is not specified."
+msgstr "指定返回的 DataFrame 所有列的数据类型，仅在未指定 dtypes 时有效。"
+
+#: maxframe.dataframe.misc.map.df_map:15 of
+msgid "Whether infer dtypes when dtypes or dtype is not specified."
+msgstr "当未指定 dtypes 或 dtype 时是否推断数据类型。"
+
+#: maxframe.dataframe.misc.map.df_map:17 of
+msgid "Additional keyword arguments to pass as keywords arguments to `func`."
+msgstr "传递给 `func` 的其他关键字参数。"
+
+#: maxframe.dataframe.misc.map.df_map of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.df_map:20 of
+msgid "Transformed DataFrame."
+msgstr "转换后的 DataFrame。"
+
+#: maxframe.dataframe.misc.map.df_map of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.df_map:25 of
+msgid ":py:obj:`DataFrame.apply`"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.df_map:26 of
+msgid "Apply a function along input axis of DataFrame."
+msgstr "沿 DataFrame 的输入轴应用函数。"
+
+#: maxframe.dataframe.misc.map.df_map:28 of
+msgid ":py:obj:`DataFrame.replace`"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.df_map:29 of
+msgid "Replace values given in `to_replace` with `value`."
+msgstr "将 `to_replace` 中的值替换为 `value`。"
+
+#: maxframe.dataframe.misc.map.df_map:31 of
+msgid ":py:obj:`Series.map`"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.df_map:32 of
+msgid "Apply a function elementwise on a Series."
+msgstr "对 Series 的每个元素应用函数。"
+
+#: maxframe.dataframe.misc.map.df_map:35 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.map.df_map:48 of
+msgid "Like Series.map, NA values can be ignored:"
+msgstr "与 Series.map 类似，可以忽略 NA 值："
+
+#: maxframe.dataframe.misc.map.df_map:57 of
+msgid ""
+"It is also possible to use `map` with functions that are not `lambda` "
+"functions:"
+msgstr "也可以将 `map` 与不是 `lambda` 的函数一起使用："
+
+#: maxframe.dataframe.misc.map.df_map:65 of
+msgid ""
+"Note that a vectorized version of `func` often exists, which will be much"
+" faster. You could square each number elementwise."
+msgstr ""
+"注意，`func` 的向量化版本通常存在，它会快得多。你可以逐元素地对每个数字"
+"进行平方。"
+
+#: maxframe.dataframe.misc.map.df_map:73 of
+msgid "But it's better to avoid map in that case."
+msgstr "但在这种情况下最好避免使用 map。"
+

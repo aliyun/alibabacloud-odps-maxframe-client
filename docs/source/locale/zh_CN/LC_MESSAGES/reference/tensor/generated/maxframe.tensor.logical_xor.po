@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.logical_xor.rst:2
+msgid "maxframe.tensor.logical\\_xor"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logical_xor.logical_xor:1 of
+msgid "Compute the truth value of x1 XOR x2, element-wise."
+msgstr "逐元素计算 x1 和 x2 的逻辑异或值。"
+
+#: maxframe.tensor.arithmetic.logical_xor.logical_xor of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logical_xor.logical_xor:3
+#: maxframe.tensor.arithmetic.logical_xor.logical_xor:6 of
+msgid ""
+"Logical XOR is applied to the elements of `x1` and `x2`.  They must be "
+"broadcastable to the same shape."
+msgstr "逻辑异或运算应用于 `x1` 和 `x2` 的元素。它们的形状必须可以广播为相同形状。"
+
+#: maxframe.tensor.arithmetic.logical_xor.logical_xor:9 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，其形状必须与输入广播后的形状一致。如果未"
+"提供或为 `None`，则返回一个新分配的张量。元组（只能作为关键字参数）的长度"
+"必须等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.logical_xor.logical_xor:14 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "为 True 的值表示在该位置计算 ufunc，为 False 的值表示保留输出中的原始值。"
+
+#: maxframe.tensor.arithmetic.logical_xor.logical_xor of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logical_xor.logical_xor:19 of
+msgid ""
+"**y** -- Boolean result of the logical XOR operation applied to the "
+"elements of `x1` and `x2`; the shape is determined by whether or not "
+"broadcasting of one or both arrays was required."
+msgstr ""
+"**y** -- 应用于 `x1` 和 `x2` 元素的逻辑异或运算的布尔结果；形状由是否需要"
+"对一个或两个数组进行广播决定。"
+
+#: maxframe.tensor.arithmetic.logical_xor.logical_xor of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logical_xor.logical_xor:24 of
+msgid ""
+":py:obj:`logical_and`, :py:obj:`logical_or`, :py:obj:`logical_not`, "
+":py:obj:`bitwise_xor`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logical_xor.logical_xor:27 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logical_xor.logical_xor:39 of
+msgid "Simple example showing support of broadcasting"
+msgstr "展示支持广播的简单示例"
+

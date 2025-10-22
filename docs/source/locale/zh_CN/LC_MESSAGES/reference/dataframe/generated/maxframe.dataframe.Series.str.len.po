@@ -1,0 +1,75 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.str.len.rst:2
+msgid "maxframe.dataframe.Series.str.len"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.len:1
+msgid "Compute the length of each element in the Series/Index."
+msgstr "计算 Series/Index 中每个元素的长度。"
+
+#: of pandas.core.strings.accessor.StringMethods.len:3
+msgid ""
+"The element may be a sequence (such as a string, tuple or list) or a "
+"collection (such as a dictionary)."
+msgstr "元素可以是一个序列（如字符串、元组或列表）或一个集合（如字典）。"
+
+#: of pandas.core.strings.accessor.StringMethods.len
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.len:6
+msgid ""
+"A Series or Index of integer values indicating the length of each element"
+" in the Series or Index."
+msgstr "一个包含整数值的 Series 或 Index，表示 Series 或 Index 中每个元素的长度。"
+
+#: of pandas.core.strings.accessor.StringMethods.len
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.len:12
+msgid ":py:obj:`str.len`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.len:13
+msgid "Python built-in function returning the length of an object."
+msgstr "Python 内置函数，返回对象的长度。"
+
+#: of pandas.core.strings.accessor.StringMethods.len:15
+msgid ":py:obj:`Series.size`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.len:16
+msgid "Returns the length of the Series."
+msgstr "返回 Series 的长度。"
+
+#: of pandas.core.strings.accessor.StringMethods.len:19
+msgid "示例"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.len:20
+msgid ""
+"Returns the length (number of characters) in a string. Returns the number"
+" of entries for dictionaries, lists or tuples."
+msgstr "返回字符串中的长度（字符数）。对于字典、列表或元组，返回其中条目的数量。"
+

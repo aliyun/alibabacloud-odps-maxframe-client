@@ -1,0 +1,141 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.nsmallest.rst:2
+msgid "maxframe.dataframe.DataFrame.nsmallest"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:1 of
+msgid "Return the first `n` rows ordered by `columns` in ascending order."
+msgstr "返回按 `columns` 升序排列的前 `n` 行。"
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:3 of
+msgid ""
+"Return the first `n` rows with the smallest values in `columns`, in "
+"ascending order. The columns that are not specified are returned as well,"
+" but not used for ordering."
+msgstr ""
+"返回 `columns` 中值最小的前 `n` 行，按升序排列。未指定的列也会返回，但不"
+"用于排序。"
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:7 of
+msgid ""
+"This method is equivalent to ``df.sort_values(columns, "
+"ascending=True).head(n)``, but more performant."
+msgstr ""
+"此方法等价于 ``df.sort_values(columns, ascending=True).head(n)``，但性能"
+"更优。"
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:11 of
+msgid "Number of items to retrieve."
+msgstr "要检索的项目数量。"
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:13 of
+msgid "Column name or names to order by."
+msgstr "用于排序的列名或列名列表。"
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:15 of
+msgid ""
+"Where there are duplicate values:  - ``first`` : take the first "
+"occurrence. - ``last`` : take the last occurrence. - ``all`` : do not "
+"drop any duplicates, even it means   selecting more than `n` items."
+msgstr ""
+"当存在重复值时：  - ``first`` : 取首次出现的。 - ``last`` : 取最后出现的"
+"。 - ``all`` : 不删除任何重复项，即使这意味着选择超过 `n` 项。"
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:15 of
+msgid "Where there are duplicate values:"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:17 of
+msgid "``first`` : take the first occurrence."
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:18 of
+msgid "``last`` : take the last occurrence."
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:19 of
+msgid ""
+"``all`` : do not drop any duplicates, even it means selecting more than "
+"`n` items."
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:27 of
+msgid ":py:obj:`DataFrame.nlargest`"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:28 of
+msgid "Return the first `n` rows ordered by `columns` in descending order."
+msgstr "返回按 `columns` 降序排列的前 `n` 行。"
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:30 of
+msgid ":py:obj:`DataFrame.sort_values`"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:31 of
+msgid "Sort DataFrame by the values."
+msgstr "按值对 DataFrame 进行排序。"
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:33 of
+msgid ":py:obj:`DataFrame.head`"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:34 of
+msgid "Return the first `n` rows without re-ordering."
+msgstr "返回前 `n` 行而不重新排序。"
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:37 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:61 of
+msgid ""
+"In the following example, we will use ``nsmallest`` to select the three "
+"rows having the smallest values in column \"population\"."
+msgstr ""
+"在下面的示例中，我们将使用 ``nsmallest`` 来选择 \"population\" 列中值最小"
+"的三行。"
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:70 of
+msgid "When using ``keep='last'``, ties are resolved in reverse order:"
+msgstr "当使用 ``keep='last'`` 时，重复项按相反顺序处理："
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:78 of
+msgid "When using ``keep='all'``, all duplicate items are maintained:"
+msgstr "当使用 ``keep='all'`` 时，所有重复项都会保留："
+
+#: maxframe.dataframe.sort.nsmallest.df_nsmallest:87 of
+msgid ""
+"To order by the smallest values in column \"population\" and then "
+"\"GDP\", we can specify multiple columns like in the next example."
+msgstr ""
+"要按 \"population\" 列中的最小值排序，然后按 \"GDP\" 排序，可以像下一个"
+"示例中那样指定多个列。"
+

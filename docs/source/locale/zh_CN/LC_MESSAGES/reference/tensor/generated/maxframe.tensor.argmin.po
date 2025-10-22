@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.argmin.rst:2
+msgid "maxframe.tensor.argmin"
+msgstr ""
+
+#: maxframe.tensor.reduction.argmin.argmin:1 of
+msgid "Returns the indices of the minimum values along an axis."
+msgstr "返回沿轴的最小值的索引。"
+
+#: maxframe.tensor.reduction.argmin.argmin of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.reduction.argmin.argmin:3 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.reduction.argmin.argmin:5 of
+msgid ""
+"By default, the index is into the flattened tensor, otherwise along the "
+"specified axis."
+msgstr "默认情况下，索引是展平张量中的索引，否则沿指定轴。"
+
+#: maxframe.tensor.reduction.argmin.argmin:8 of
+msgid ""
+"If provided, the result will be inserted into this tensor. It should be "
+"of the appropriate shape and dtype."
+msgstr "如果提供，则结果将插入到此张量中。它应该具有适当的形状和数据类型。"
+
+#: maxframe.tensor.reduction.argmin.argmin of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.reduction.argmin.argmin:12 of
+msgid ""
+"**index_array** -- Tensor of indices into the tensor. It has the same "
+"shape as `a.shape` with the dimension along `axis` removed."
+msgstr ""
+"**index_array** -- 张量中索引的张量。它的形状与 `a.shape` 相同，但沿 `"
+"axis` 的维度被移除。"
+
+#: maxframe.tensor.reduction.argmin.argmin of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.reduction.argmin.argmin:18 of
+msgid ":py:obj:`Tensor.argmin`, :py:obj:`argmax`"
+msgstr ""
+
+#: maxframe.tensor.reduction.argmin.argmin:20 of
+msgid ":py:obj:`amin`"
+msgstr ""
+
+#: maxframe.tensor.reduction.argmin.argmin:21 of
+msgid "The minimum value along a given axis."
+msgstr "沿给定轴的最小值。"
+
+#: maxframe.tensor.reduction.argmin.argmin:23 of
+msgid ":py:obj:`unravel_index`"
+msgstr ""
+
+#: maxframe.tensor.reduction.argmin.argmin:24 of
+msgid "Convert a flat index into an index tuple."
+msgstr "将平面索引转换为索引元组。"
+
+#: maxframe.tensor.reduction.argmin.argmin:27 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.reduction.argmin.argmin:28 of
+msgid ""
+"In case of multiple occurrences of the minimum values, the indices "
+"corresponding to the first occurrence are returned."
+msgstr "在最小值多次出现的情况下，返回对应于第一次出现的索引。"
+
+#: maxframe.tensor.reduction.argmin.argmin:32 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.reduction.argmin.argmin:46 of
+msgid "Indices of the minimum elements of a N-dimensional tensor:"
+msgstr "N维张量的最小元素的索引："
+

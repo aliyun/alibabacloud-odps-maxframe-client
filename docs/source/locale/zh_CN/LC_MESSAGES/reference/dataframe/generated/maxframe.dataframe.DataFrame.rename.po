@@ -1,0 +1,161 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rename.rst:2
+msgid "maxframe.dataframe.DataFrame.rename"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.df_rename:1 of
+msgid "Alter axes labels."
+msgstr "更改轴标签。"
+
+#: maxframe.dataframe.indexing.rename.df_rename:3 of
+msgid ""
+"Function / dict values must be unique (1-to-1). Labels not contained in a"
+" dict / Series will be left as-is. Extra labels listed don't throw an "
+"error."
+msgstr ""
+"函数/字典的值必须是唯一的（一对一）。不在字典/Series中的标签将保持原样。"
+"列出的额外标签不会引发错误。"
+
+#: maxframe.dataframe.indexing.rename.df_rename of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.df_rename:7 of
+msgid ""
+"Dict-like or functions transformations to apply to that axis' values. Use"
+" either ``mapper`` and ``axis`` to specify the axis to target with "
+"``mapper``, or ``index`` and ``columns``."
+msgstr ""
+"应用于该轴值的类字典或函数变换。使用 ``mapper`` 和 ``axis`` 指定目标轴，"
+"或使用 ``index`` 和 ``columns``。"
+
+#: maxframe.dataframe.indexing.rename.df_rename:12 of
+msgid ""
+"Alternative to specifying axis (``mapper, axis=0`` is equivalent to "
+"``index=mapper``)."
+msgstr "指定轴的替代方式（``mapper, axis=0`` 等同于 ``index=mapper``）。"
+
+#: maxframe.dataframe.indexing.rename.df_rename:15 of
+msgid ""
+"Alternative to specifying axis (``mapper, axis=1`` is equivalent to "
+"``columns=mapper``)."
+msgstr "指定轴的替代方式（``mapper, axis=1`` 等同于 ``columns=mapper``）。"
+
+#: maxframe.dataframe.indexing.rename.df_rename:18 of
+msgid ""
+"Axis to target with ``mapper``. Can be either the axis name ('index', "
+"'columns') or number (0, 1). The default is 'index'."
+msgstr ""
+"使用 ``mapper`` 指定的目标轴。可以是轴名称（'index', 'columns'）或数字（0"
+", 1）。默认为 'index'。"
+
+#: maxframe.dataframe.indexing.rename.df_rename:21 of
+msgid "Also copy underlying data."
+msgstr "同时复制底层数据。"
+
+#: maxframe.dataframe.indexing.rename.df_rename:23 of
+msgid "Whether to return a new DataFrame. If True then value of copy is ignored."
+msgstr "是否返回一个新的 DataFrame。如果为 True，则忽略 copy 的值。"
+
+#: maxframe.dataframe.indexing.rename.df_rename:26 of
+msgid "In case of a MultiIndex, only rename labels in the specified level."
+msgstr "对于 MultiIndex，仅重命名指定层级中的标签。"
+
+#: maxframe.dataframe.indexing.rename.df_rename:29 of
+msgid ""
+"If 'raise', raise a `KeyError` when a dict-like `mapper`, `index`, or "
+"`columns` contains labels that are not present in the Index being "
+"transformed. If 'ignore', existing keys will be renamed and extra keys "
+"will be ignored."
+msgstr ""
+"如果为 'raise'，当类字典的 `mapper`、`index` 或 `columns` 包含不在被转换"
+"索引中的标签时，将引发 `KeyError`。如果为 'ignore'，现有键将被重命名，"
+"多余键将被忽略。"
+
+#: maxframe.dataframe.indexing.rename.df_rename of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.df_rename:36 of
+msgid "DataFrame with the renamed axis labels."
+msgstr "具有重命名轴标签的 DataFrame。"
+
+#: maxframe.dataframe.indexing.rename.df_rename of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.df_rename of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.df_rename:39 of
+msgid ""
+"If any of the labels is not found in the selected axis and     "
+"\"errors='raise'\"."
+msgstr "如果在所选轴中找不到任何标签且 \"errors='raise'\"。"
+
+#: maxframe.dataframe.indexing.rename.df_rename:43 of
+msgid ":py:obj:`DataFrame.rename_axis`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.df_rename:44 of
+msgid "Set the name of the axis."
+msgstr "设置轴的名称。"
+
+#: maxframe.dataframe.indexing.rename.df_rename:47 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.df_rename:48 of
+msgid "``DataFrame.rename`` supports two calling conventions"
+msgstr "``DataFrame.rename`` 支持两种调用约定"
+
+#: maxframe.dataframe.indexing.rename.df_rename:50 of
+msgid "``(index=index_mapper, columns=columns_mapper, ...)``"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.df_rename:51 of
+#, python-brace-format
+msgid "``(mapper, axis={'index', 'columns'}, ...)``"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.df_rename:53 of
+msgid "We *highly* recommend using keyword arguments to clarify your intent."
+msgstr "我们 *强烈* 推荐使用关键字参数以明确意图。"
+
+#: maxframe.dataframe.indexing.rename.df_rename:56 of
+msgid "Rename columns using a mapping:"
+msgstr "使用映射重命名列："
+
+#: maxframe.dataframe.indexing.rename.df_rename:66 of
+msgid "Rename index using a mapping:"
+msgstr "使用映射重命名索引："
+
+#: maxframe.dataframe.indexing.rename.df_rename:74 of
+msgid "Cast index labels to a different type:"
+msgstr "将索引标签转换为不同类型："
+
+#: maxframe.dataframe.indexing.rename.df_rename:85 of
+msgid "Using axis-style parameters"
+msgstr "使用轴样式的参数"
+

@@ -1,0 +1,113 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.diff.rst:2
+msgid "maxframe.tensor.diff"
+msgstr ""
+
+#: maxframe.tensor.misc.diff.diff:1 of
+msgid "Calculate the n-th discrete difference along the given axis."
+msgstr "沿给定轴计算第 n 个离散差值。"
+
+#: maxframe.tensor.misc.diff.diff:3 of
+msgid ""
+"The first difference is given by ``out[n] = a[n+1] - a[n]`` along the "
+"given axis, higher differences are calculated by using `diff` "
+"recursively."
+msgstr ""
+"第一个差值由 ``out[n] = a[n+1] - a[n]`` 沿给定轴给出，更高的差值通过递归"
+"使用 `diff` 计算。"
+
+#: maxframe.tensor.misc.diff.diff of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.diff.diff:7 of
+msgid "Input tensor"
+msgstr "输入张量"
+
+#: maxframe.tensor.misc.diff.diff:9 of
+msgid ""
+"The number of times values are differenced. If zero, the input is "
+"returned as-is."
+msgstr "差分的次数。如果为零，则按原样返回输入。"
+
+#: maxframe.tensor.misc.diff.diff:12 of
+msgid "The axis along which the difference is taken, default is the last axis."
+msgstr "进行差分的轴，默认是最后一个轴。"
+
+#: maxframe.tensor.misc.diff.diff of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.diff.diff:16 of
+msgid ""
+"**diff** -- The n-th differences. The shape of the output is the same as "
+"`a` except along `axis` where the dimension is smaller by `n`. The type "
+"of the output is the same as the type of the difference between any two "
+"elements of `a`. This is the same as the type of `a` in most cases. A "
+"notable exception is `datetime64`, which results in a `timedelta64` "
+"output tensor."
+msgstr ""
+"**diff** -- 第 n 个差值。输出的形状与 `a` 相同，除了在 `axis` 轴上维度会"
+"减少 `n`。输出类型与 `a` 中任意两个元素之间差值的类型相同。在大多数情况下"
+"，这与 `a` 的类型一致。一个显著的例外是 `datetime64` 类型，其结果为 `"
+"timedelta64` 输出张量。"
+
+#: maxframe.tensor.misc.diff.diff of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.diff.diff:24 of
+msgid ":py:obj:`gradient`, :py:obj:`ediff1d`, :py:obj:`cumsum`"
+msgstr ""
+
+#: maxframe.tensor.misc.diff.diff:27 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.misc.diff.diff:28 of
+msgid ""
+"Type is preserved for boolean tensors, so the result will contain `False`"
+" when consecutive elements are the same and `True` when they differ."
+msgstr ""
+"布尔张量的类型会被保留，因此当连续元素相同时结果将包含 `False`，不同时则"
+"为 `True`。"
+
+#: maxframe.tensor.misc.diff.diff:32 of
+msgid ""
+"For unsigned integer tensors, the results will also be unsigned. This "
+"should not be surprising, as the result is consistent with calculating "
+"the difference directly:"
+msgstr ""
+"对于无符号整数张量，结果也将是无符号的。这并不令人意外，因为结果与直接"
+"计算差值是一致的："
+
+#: maxframe.tensor.misc.diff.diff:44 of
+msgid ""
+"If this is not desirable, then the array should be cast to a larger "
+"integer type first:"
+msgstr "如果这不可取，则应首先将数组转换为更大的整数类型："
+
+#: maxframe.tensor.misc.diff.diff:52 of
+msgid "示例"
+msgstr ""
+

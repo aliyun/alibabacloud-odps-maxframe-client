@@ -1,0 +1,281 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.reindex.rst:2
+msgid "maxframe.dataframe.DataFrame.reindex"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:1 of
+msgid "Conform Series/DataFrame to new index with optional filling logic."
+msgstr "使 Series/DataFrame 符合新的索引，并可选择填充逻辑。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:3 of
+msgid ""
+"Places NA/NaN in locations having no value in the previous index. A new "
+"object is produced unless the new index is equivalent to the current one "
+"and ``copy=False``."
+msgstr ""
+"在先前索引中没有值的位置放置 NA/NaN。除非新索引与当前索引等价且 ``copy="
+"False``，否则会生成一个新对象。"
+
+#: maxframe.dataframe.indexing.reindex.reindex of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:7 of
+msgid "New labels / index to conform the axis specified by 'axis' to."
+msgstr "要使由 'axis' 指定的轴符合的新标签/索引。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:9
+#: maxframe.dataframe.indexing.reindex.reindex:12 of
+msgid ""
+"New labels / index to conform to, should be specified using keywords. "
+"Preferably an Index object to avoid duplicating data."
+msgstr "要符合的新标签/索引，应使用关键字指定。最好使用 Index 对象以避免重复数据。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:15 of
+msgid ""
+"Axis to target. Can be either the axis name ('index', 'columns') or "
+"number (0, 1)."
+msgstr "目标轴。可以是轴名称（'index', 'columns'）或数字（0, 1）。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:18 of
+msgid ""
+"Method to use for filling holes in reindexed DataFrame. Please note: this"
+" is only applicable to DataFrames/Series with a monotonically "
+"increasing/decreasing index.  * None (default): don't fill gaps * pad / "
+"ffill: Propagate last valid observation forward to next   valid. * "
+"backfill / bfill: Use next valid observation to fill gap. * nearest: Use "
+"nearest valid observations to fill gap."
+msgstr ""
+"用于在重新索引的 DataFrame 中填充空洞的方法。请注意：这仅适用于具有单调"
+"递增/递减索引的 DataFrame/Series。  * None（默认）：不填充空隙 * pad / "
+"ffill：将最后一个有效观测值向前传播到下一个有效值。 * backfill / bfill："
+"使用下一个有效观测值填充空隙。 * nearest：使用最近的有效观测值填充空隙。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:18 of
+msgid ""
+"Method to use for filling holes in reindexed DataFrame. Please note: this"
+" is only applicable to DataFrames/Series with a monotonically "
+"increasing/decreasing index."
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:22 of
+msgid "None (default): don't fill gaps"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:23 of
+msgid "pad / ffill: Propagate last valid observation forward to next valid."
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:25 of
+msgid "backfill / bfill: Use next valid observation to fill gap."
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:26 of
+msgid "nearest: Use nearest valid observations to fill gap."
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:28 of
+msgid "Return a new object, even if the passed indexes are the same."
+msgstr "即使传入的索引相同，也返回一个新对象。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:30 of
+msgid ""
+"Broadcast across a level, matching Index values on the passed MultiIndex "
+"level."
+msgstr "在层级上进行广播，在传入的 MultiIndex 层级上匹配 Index 值。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:33 of
+msgid ""
+"Value to use for missing values. Defaults to NaN, but can be any "
+"\"compatible\" value."
+msgstr "用于缺失值的值。默认为 NaN，但可以是任何“兼容”的值。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:36 of
+msgid "Maximum number of consecutive elements to forward or backward fill."
+msgstr "向前或向后填充的最大连续元素数。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:38 of
+msgid ""
+"Maximum distance between original and new labels for inexact matches. The"
+" values of the index at the matching locations most satisfy the equation "
+"``abs(index[indexer] - target) <= tolerance``.  Tolerance may be a scalar"
+" value, which applies the same tolerance to all values, or list-like, "
+"which applies variable tolerance per element. List-like includes list, "
+"tuple, array, Series, and must be the same size as the index and its "
+"dtype must exactly match the index's type."
+msgstr ""
+"不精确匹配时原始和新标签之间的最大距离。在匹配位置的索引值必须满足方程 ``"
+"abs(index[indexer] - target) <= tolerance``。 容差可以是一个标量值，适用"
+"于所有值；也可以是类列表，对每个元素应用不同的容差。 类列表包括 list、"
+"tuple、array、Series，且必须与索引大小相同，其数据类型必须与索引类型完全"
+"匹配。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:38 of
+msgid ""
+"Maximum distance between original and new labels for inexact matches. The"
+" values of the index at the matching locations most satisfy the equation "
+"``abs(index[indexer] - target) <= tolerance``."
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:42 of
+#, fuzzy
+msgid ""
+"Tolerance may be a scalar value, which applies the same tolerance to all "
+"values, or list-like, which applies variable tolerance per element. List-"
+"like includes list, tuple, array, Series, and must be the same size as "
+"the index and its dtype must exactly match the index's type."
+msgstr ""
+"不精确匹配时原始和新标签之间的最大距离。在匹配位置的索引值必须满足方程 ``"
+"abs(index[indexer] - target) <= tolerance``。 容差可以是一个标量值，适用"
+"于所有值；也可以是类列表，对每个元素应用不同的容差。 类列表包括 list、"
+"tuple、array、Series，且必须与索引大小相同，其数据类型必须与索引类型完全"
+"匹配。"
+
+#: maxframe.dataframe.indexing.reindex.reindex of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:53 of
+msgid ":py:obj:`DataFrame.set_index`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:54 of
+msgid "Set row labels."
+msgstr "设置行标签。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:56 of
+msgid ":py:obj:`DataFrame.reset_index`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:57 of
+msgid "Remove row labels or move them to new columns."
+msgstr "移除行标签或将它们移动到新列。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:59 of
+msgid ":py:obj:`DataFrame.reindex_like`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:60 of
+msgid "Change to same indices as other DataFrame."
+msgstr "改变为与其他 DataFrame 相同的索引。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:63 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:64 of
+msgid "``DataFrame.reindex`` supports two calling conventions"
+msgstr "``DataFrame.reindex`` 支持两种调用方式"
+
+#: maxframe.dataframe.indexing.reindex.reindex:66 of
+msgid "``(index=index_labels, columns=column_labels, ...)``"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:67 of
+#, python-brace-format
+msgid "``(labels, axis={'index', 'columns'}, ...)``"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex:69 of
+msgid "We *highly* recommend using keyword arguments to clarify your intent."
+msgstr "我们*强烈*建议使用关键字参数来明确你的意图。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:72 of
+msgid "Create a dataframe with some fictional data."
+msgstr "创建一个包含一些虚构数据的 dataframe。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:87 of
+msgid ""
+"Create a new index and reindex the dataframe. By default values in the "
+"new index that do not have corresponding records in the dataframe are "
+"assigned ``NaN``."
+msgstr ""
+"创建一个新的索引并重新索引 dataframe。默认情况下，新索引中没有对应记录的"
+"值会被赋值为 ``NaN``。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:101 of
+msgid ""
+"We can fill in the missing values by passing a value to the keyword "
+"``fill_value``. Because the index is not monotonically increasing or "
+"decreasing, we cannot use arguments to the keyword ``method`` to fill the"
+" ``NaN`` values."
+msgstr ""
+"我们可以通过向关键字 ``fill_value`` 传递一个值来填充缺失值。由于索引不是"
+"单调递增或递减的，我们不能使用关键字 ``method`` 的参数来填充 ``NaN`` 值。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:122 of
+msgid "We can also reindex the columns."
+msgstr "我们也可以重新索引列。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:132 of
+msgid "Or we can use \"axis-style\" keyword arguments"
+msgstr "或者我们可以使用“axis-style”关键字参数"
+
+#: maxframe.dataframe.indexing.reindex.reindex:142 of
+msgid ""
+"To further illustrate the filling functionality in ``reindex``, we will "
+"create a dataframe with a monotonically increasing index (for example, a "
+"sequence of dates)."
+msgstr ""
+"为了进一步说明 ``reindex`` 中的填充功能，我们将创建一个具有单调递增索引的"
+" dataframe（例如，一系列日期）。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:159 of
+msgid "Suppose we decide to expand the dataframe to cover a wider date range."
+msgstr "假设我们决定扩展 dataframe 以覆盖更广泛的日期范围。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:176 of
+msgid ""
+"The index entries that did not have a value in the original data frame "
+"(for example, '2009-12-29') are by default filled with ``NaN``. If "
+"desired, we can fill in the missing values using one of several options."
+msgstr ""
+"在原始数据框中没有值的索引条目（例如，'2009-12-29'）默认会被填充为 ``NaN`"
+"`。如果需要，我们可以使用几种选项之一来填充缺失值。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:181 of
+msgid ""
+"For example, to back-propagate the last valid value to fill the ``NaN`` "
+"values, pass ``bfill`` as an argument to the ``method`` keyword."
+msgstr ""
+"例如，要将最后一个有效值向后传播以填充 ``NaN`` 值，请将 ``bfill`` 作为"
+"参数传递给 ``method`` 关键字。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:197 of
+msgid ""
+"Please note that the ``NaN`` value present in the original dataframe (at "
+"index value 2010-01-03) will not be filled by any of the value "
+"propagation schemes. This is because filling while reindexing does not "
+"look at dataframe values, but only compares the original and desired "
+"indexes. If you do want to fill in the ``NaN`` values present in the "
+"original dataframe, use the ``fillna()`` method."
+msgstr ""
+"请注意，原始 dataframe 中存在的 ``NaN`` 值（在索引值 2010-01-03 处）不会"
+"被任何值传播方案填充。这是因为重新索引时的填充并不查看 dataframe 的值，而"
+"只是比较原始索引和目标索引。如果你确实想要填充原始 dataframe 中的 ``NaN``"
+" 值，请使用 ``fillna()`` 方法。"
+
+#: maxframe.dataframe.indexing.reindex.reindex:204 of
+msgid "See the :ref:`user guide <basics.reindexing>` for more."
+msgstr "请参阅 :ref:`用户指南 <basics.reindexing>` 了解更多信息。"
+

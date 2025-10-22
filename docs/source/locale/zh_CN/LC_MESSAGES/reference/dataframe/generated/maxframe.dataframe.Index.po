@@ -1,0 +1,417 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-10 10:10+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:2
+msgid "maxframe.dataframe.Index"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`__init__ <maxframe.dataframe.Index.__init__>`\\ \\(\\[data\\, "
+"dtype\\, copy\\, name\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`agg <maxframe.dataframe.Index.agg>`\\ \\(\\[func\\, axis\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Aggregate using one or more operations over the specified axis."
+msgstr "在指定轴上使用一个或多个操作进行聚合。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`aggregate <maxframe.dataframe.Index.aggregate>`\\ \\(\\[func\\, "
+"axis\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`all <maxframe.dataframe.Index.all>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`any <maxframe.dataframe.Index.any>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`argmax <maxframe.dataframe.Index.argmax>`\\ \\(\\[axis\\, "
+"skipna\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Return int position of the smallest value in the Series."
+msgstr "返回 Series 中最小值的整数位置。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`argmin <maxframe.dataframe.Index.argmin>`\\ \\(\\[axis\\, "
+"skipna\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`argsort <maxframe.dataframe.Index.argsort>`\\ \\(\\*args\\, "
+"\\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`astype <maxframe.dataframe.Index.astype>`\\ \\(dtype\\[\\, "
+"copy\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Create an Index with values cast to dtypes."
+msgstr "创建一个将值转换为指定数据类型的 Index。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`check_monotonic <maxframe.dataframe.Index.check_monotonic>`\\ "
+"\\(\\[decreasing\\, strict\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Check if values in the object are monotonic increasing or decreasing."
+msgstr "检查对象中的值是否单调递增或递减。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`clip <maxframe.dataframe.Index.clip>`\\ \\(\\[lower\\, upper\\, "
+"axis\\, inplace\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Trim values at input threshold(s)."
+msgstr "在输入阈值处裁剪值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`copy <maxframe.dataframe.Index.copy>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`copy_from <maxframe.dataframe.Index.copy_from>`\\ \\(obj\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`copy_to <maxframe.dataframe.Index.copy_to>`\\ \\(target\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`drop <maxframe.dataframe.Index.drop>`\\ \\(labels\\[\\, "
+"errors\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Make new Index with passed list of labels deleted."
+msgstr "创建一个删除了指定标签列表的新 Index。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`drop_duplicates <maxframe.dataframe.Index.drop_duplicates>`\\ "
+"\\(\\[keep\\, method\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Return Index with duplicate values removed."
+msgstr "返回删除了重复值的 Index。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`droplevel <maxframe.dataframe.Index.droplevel>`\\ \\(level\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Return index with requested level(s) removed."
+msgstr "返回删除了指定层级的索引。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`dropna <maxframe.dataframe.Index.dropna>`\\ \\(\\[how\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Return Index without NA/NaN values."
+msgstr "返回不包含 NA/NaN 值的 Index。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`duplicated <maxframe.dataframe.Index.duplicated>`\\ "
+"\\(\\[keep\\]\\)"
+msgstr "指示重复的索引值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Indicate duplicate index values."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`execute <maxframe.dataframe.Index.execute>`\\ \\(\\[session\\]\\)"
+msgstr "执行该 Index 对象。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`fillna <maxframe.dataframe.Index.fillna>`\\ \\(\\[value\\, "
+"downcast\\]\\)"
+msgstr "用指定值填充 NA/NaN 值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Fill NA/NaN values with the specified value."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`get_level_values <maxframe.dataframe.Index.get_level_values>`\\ "
+"\\(level\\)"
+msgstr "返回请求层级的标签值向量。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Return vector of label values for requested level."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+#, fuzzy
+msgid ":py:obj:`insert <maxframe.dataframe.Index.insert>`\\ \\(loc\\, value\\)"
+msgstr "检测缺失值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Make new Index inserting new item at location."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`isna <maxframe.dataframe.Index.isna>`\\ \\(\\)"
+msgstr "检测缺失值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Detect missing values."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`isnull <maxframe.dataframe.Index.isnull>`\\ \\(\\)"
+msgstr "检测缺失值（同 isna）。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`map <maxframe.dataframe.Index.map>`\\ \\(mapper\\[\\, "
+"na\\_action\\, dtype\\, ...\\]\\)"
+msgstr "使用输入对应关系（字典、Series 或函数）映射值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Map values using input correspondence (a dict, Series, or function)."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`max <maxframe.dataframe.Index.max>`\\ \\(\\[axis\\, skipna\\]\\)"
+msgstr "返回最大值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`memory_usage <maxframe.dataframe.Index.memory_usage>`\\ "
+"\\(\\[deep\\]\\)"
+msgstr "返回值的内存使用情况。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Memory usage of the values."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`min <maxframe.dataframe.Index.min>`\\ \\(\\[axis\\, skipna\\]\\)"
+msgstr "返回最小值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`notna <maxframe.dataframe.Index.notna>`\\ \\(\\)"
+msgstr "检测存在的（非缺失）值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Detect existing (non-missing) values."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ":py:obj:`notnull <maxframe.dataframe.Index.notnull>`\\ \\(\\)"
+msgstr "检测存在的（非缺失）值（同 notna）。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`rechunk <maxframe.dataframe.Index.rechunk>`\\ "
+"\\(chunk\\_size\\[\\, reassign\\_worker\\]\\)"
+msgstr "重新分块 Index。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`rename <maxframe.dataframe.Index.rename>`\\ \\(name\\[\\, "
+"inplace\\]\\)"
+msgstr "更改 Index 或 MultiIndex 的名称。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Alter Index or MultiIndex name."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+#, fuzzy
+msgid ""
+":py:obj:`repeat <maxframe.dataframe.Index.repeat>`\\ \\(repeats\\[\\, "
+"axis\\]\\)"
+msgstr "更改 Index 或 MultiIndex 的名称。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Repeat elements of an Index."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`set_names <maxframe.dataframe.Index.set_names>`\\ \\(names\\[\\,"
+" level\\, inplace\\]\\)"
+msgstr "设置 Index 或 MultiIndex 的名称。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Set Index or MultiIndex name."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+#, fuzzy
+msgid ""
+":py:obj:`to_frame <maxframe.dataframe.Index.to_frame>`\\ \\(\\[index\\, "
+"name\\]\\)"
+msgstr "返回最小值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Create a DataFrame with a column containing the Index."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`to_pandas <maxframe.dataframe.Index.to_pandas>`\\ "
+"\\(\\[session\\]\\)"
+msgstr "将 Index 转换为 pandas 对象。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+#, fuzzy
+msgid ""
+":py:obj:`to_series <maxframe.dataframe.Index.to_series>`\\ \\(\\[index\\,"
+" name\\]\\)"
+msgstr "返回最小值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Create a Series with both index and values equal to the index keys."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid ""
+":py:obj:`value_counts <maxframe.dataframe.Index.value_counts>`\\ "
+"\\(\\[normalize\\, sort\\, ascending\\, ...\\]\\)"
+msgstr "返回包含唯一值计数的 Series。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:59:<autosummary>:1
+msgid "Return a Series containing counts of unique values."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:61
+msgid "Attributes"
+msgstr "属性"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid ":py:obj:`T <maxframe.dataframe.Index.T>`\\"
+msgstr "返回转置，即自身。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid "Return the transpose, which is by definition self."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid ":py:obj:`data <maxframe.dataframe.Index.data>`\\"
+msgstr "返回索引的数据。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+#, fuzzy
+msgid ":py:obj:`has_duplicates <maxframe.dataframe.Index.has_duplicates>`\\"
+msgstr "指示重复的索引值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+#, fuzzy
+msgid ":py:obj:`hasnans <maxframe.dataframe.Index.hasnans>`\\"
+msgstr "返回或设置索引的名称列表。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid "Return True if there are any NaNs."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid ":py:obj:`is_monotonic <maxframe.dataframe.Index.is_monotonic>`\\"
+msgstr "如果对象中的值是单调递增的，则返回布尔标量。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid "Return boolean scalar if values in the object are monotonic_increasing."
+msgstr "如果对象中的值是单调递增的，则返回布尔标量。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid ""
+":py:obj:`is_monotonic_decreasing "
+"<maxframe.dataframe.Index.is_monotonic_decreasing>`\\"
+msgstr "如果对象中的值是单调递减的，则返回布尔标量。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid "Return boolean scalar if values in the object are monotonic_decreasing."
+msgstr "如果对象中的值是单调递减的，则返回布尔标量。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid ""
+":py:obj:`is_monotonic_increasing "
+"<maxframe.dataframe.Index.is_monotonic_increasing>`\\"
+msgstr "如果对象中的值是单调递增的，则返回布尔标量。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid ":py:obj:`is_unique <maxframe.dataframe.Index.is_unique>`\\"
+msgstr "如果索引中的值是唯一的，则返回布尔值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid "Return boolean if values in the index are unique."
+msgstr "如果索引中的值是唯一的，则返回布尔值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid ":py:obj:`name <maxframe.dataframe.Index.name>`\\"
+msgstr "返回或设置索引的名称。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid ":py:obj:`names <maxframe.dataframe.Index.names>`\\"
+msgstr "返回或设置索引的名称列表。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid ":py:obj:`ndim <maxframe.dataframe.Index.ndim>`\\"
+msgstr "返回索引的维度数。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid ":py:obj:`shape <maxframe.dataframe.Index.shape>`\\"
+msgstr "返回索引的形状。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid ":py:obj:`size <maxframe.dataframe.Index.size>`\\"
+msgstr "返回索引的元素个数。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid ":py:obj:`type_name <maxframe.dataframe.Index.type_name>`\\"
+msgstr "返回索引的类型名称。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:78:<autosummary>:1
+msgid ":py:obj:`values <maxframe.dataframe.Index.values>`\\"
+msgstr "返回索引的值。"
+

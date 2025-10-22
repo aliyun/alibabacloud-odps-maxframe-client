@@ -1,0 +1,114 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.struct.field.rst:2
+msgid "maxframe.dataframe.Series.struct.field"
+msgstr ""
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:1 of
+msgid "Extract a child field of a struct as a Series."
+msgstr "将结构体的子字段提取为一个 Series。"
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:3 of
+msgid ""
+"Name or index of the child field to extract.  For list-like inputs, this "
+"will index into a nested struct."
+msgstr "要提取的子字段的名称或索引。对于类列表输入，这将索引到嵌套结构体中。"
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:3 of
+msgid "Name or index of the child field to extract."
+msgstr ""
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:5 of
+#, fuzzy
+msgid "For list-like inputs, this will index into a nested struct."
+msgstr "要提取的子字段的名称或索引。对于类列表输入，这将索引到嵌套结构体中。"
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:9 of
+msgid "The data corresponding to the selected child field."
+msgstr "与所选子字段对应的数据。"
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:14 of
+msgid ":py:obj:`Series.struct.explode`"
+msgstr ""
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:15 of
+msgid "Return all child fields as a DataFrame."
+msgstr "将所有子字段作为 DataFrame 返回。"
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:18 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:19 of
+msgid "The name of the resulting Series will be set using the following rules:"
+msgstr "生成的 Series 的名称将根据以下规则设置："
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:22 of
+msgid ""
+"For string, bytes, or integer `name_or_index` (or a list of these, for a "
+"nested selection), the Series name is set to the selected field's name."
+msgstr ""
+"对于字符串、字节或整数 `name_or_index`（或这些类型的列表，用于嵌套选择）"
+"，Series 的名称将设置为所选字段的名称。"
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:25 of
+msgid ""
+"For a :class:`pyarrow.compute.Expression`, this is set to the string form"
+" of the expression."
+msgstr "对于 :class:`pyarrow.compute.Expression`，将设置为表达式的字符串形式。"
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:27 of
+msgid ""
+"For list-like `name_or_index`, the name will be set to the name of the "
+"final field selected."
+msgstr "对于类列表的 `name_or_index`，名称将设置为最终所选字段的名称。"
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:31 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:46 of
+msgid "Extract by field name."
+msgstr "按字段名称提取。"
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:54 of
+msgid "Extract by field index."
+msgstr "按字段索引提取。"
+
+#: maxframe.dataframe.accessors.struct_.field.struct_field:62 of
+msgid ""
+"For nested struct types, you can pass a list of values to index multiple "
+"levels:"
+msgstr "对于嵌套结构体类型，可以传递一个值列表以索引多个层级："
+

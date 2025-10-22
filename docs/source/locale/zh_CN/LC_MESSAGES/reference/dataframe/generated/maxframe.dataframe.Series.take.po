@@ -1,0 +1,124 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.take.rst:2
+msgid "maxframe.dataframe.Series.take"
+msgstr ""
+
+#: maxframe.dataframe.indexing.take.take:1 of
+msgid "Return the elements in the given *positional* indices along an axis."
+msgstr "返回沿轴的给定*位置*索引处的元素。"
+
+#: maxframe.dataframe.indexing.take.take:3 of
+msgid ""
+"This means that we are not indexing according to actual values in the "
+"index attribute of the object. We are indexing according to the actual "
+"position of the element in the object."
+msgstr ""
+"这意味着我们不是根据对象索引属性中的实际值进行索引，而是根据元素在对象中"
+"的实际位置进行索引。"
+
+#: maxframe.dataframe.indexing.take.take of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.take.take:7 of
+msgid "An array of ints indicating which positions to take."
+msgstr "一个整数数组，指示要获取哪些位置的元素。"
+
+#: maxframe.dataframe.indexing.take.take:9 of
+msgid ""
+"The axis on which to select elements. ``0`` means that we are selecting "
+"rows, ``1`` means that we are selecting columns. For `Series` this "
+"parameter is unused and defaults to 0."
+msgstr ""
+"选择元素的轴。``0`` 表示选择行，``1`` 表示选择列。对于 `Series`，此参数未"
+"使用，默认为 0。"
+
+#: maxframe.dataframe.indexing.take.take:13 of
+msgid "For compatibility with :meth:`numpy.take`. Has no effect on the output."
+msgstr "为了与 :meth:`numpy.take` 兼容。对输出没有影响。"
+
+#: maxframe.dataframe.indexing.take.take of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.indexing.take.take:16 of
+msgid "An array-like containing the elements taken from the object."
+msgstr "一个类似数组的对象，包含从原对象中获取的元素。"
+
+#: maxframe.dataframe.indexing.take.take of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.take.take:21 of
+msgid ":py:obj:`DataFrame.loc`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.take.take:22 of
+msgid "Select a subset of a DataFrame by labels."
+msgstr "通过标签选择 DataFrame 的子集。"
+
+#: maxframe.dataframe.indexing.take.take:24 of
+msgid ":py:obj:`DataFrame.iloc`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.take.take:25 of
+msgid "Select a subset of a DataFrame by positions."
+msgstr "通过位置选择 DataFrame 的子集。"
+
+#: maxframe.dataframe.indexing.take.take:27 of
+msgid ":py:obj:`numpy.take`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.take.take:28 of
+msgid "Take elements from an array along an axis."
+msgstr "沿轴从数组中获取元素。"
+
+#: maxframe.dataframe.indexing.take.take:31 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.indexing.take.take:47 of
+msgid "Take elements at positions 0 and 3 along the axis 0 (default)."
+msgstr "沿轴 0（默认）获取位置 0 和 3 处的元素。"
+
+#: maxframe.dataframe.indexing.take.take:49 of
+msgid ""
+"Note how the actual indices selected (0 and 1) do not correspond to our "
+"selected indices 0 and 3. That's because we are selecting the 0th and 3rd"
+" rows, not rows whose indices equal 0 and 3."
+msgstr ""
+"注意所选的实际索引（0 和 1）与我们选择的索引 0 和 3 不对应。这是因为我们"
+"选择的是第 0 行和第 3 行，而不是索引等于 0 和 3 的行。"
+
+#: maxframe.dataframe.indexing.take.take:58 of
+msgid "Take elements at indices 1 and 2 along the axis 1 (column selection)."
+msgstr "沿轴 1（列选择）获取索引 1 和 2 处的元素。"
+
+#: maxframe.dataframe.indexing.take.take:67 of
+msgid ""
+"We may take elements using negative integers for positive indices, "
+"starting from the end of the object, just like with Python lists."
+msgstr ""
+"我们可以使用负整数作为正索引，从对象末尾开始获取元素，就像 Python 列表"
+"一样。"
+

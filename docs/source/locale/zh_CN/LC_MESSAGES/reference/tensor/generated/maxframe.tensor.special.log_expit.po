@@ -1,0 +1,87 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.log_expit.rst:2
+msgid "maxframe.tensor.special.log\\_expit"
+msgstr ""
+
+#: maxframe.tensor.special.statistical.log_expit:1 of
+msgid "Logarithm of the logistic sigmoid function."
+msgstr "逻辑 sigmoid 函数的对数。"
+
+#: maxframe.tensor.special.statistical.log_expit:3 of
+msgid ""
+"The SciPy implementation of the logistic sigmoid function is "
+"`scipy.special.expit`, so this function is called ``log_expit``."
+msgstr ""
+"逻辑 sigmoid 函数的 SciPy 实现是 `scipy.special.expit`，因此该函数称为 ``"
+"log_expit``。"
+
+#: maxframe.tensor.special.statistical.log_expit:6 of
+msgid ""
+"The function is mathematically equivalent to ``log(expit(x))``, but is "
+"formulated to avoid loss of precision for inputs with large (positive or "
+"negative) magnitude."
+msgstr ""
+"该函数在数学上等价于 ``log(expit(x))``，但其公式设计避免了输入值较大（正"
+"或负）时的精度损失。"
+
+#: maxframe.tensor.special.statistical.log_expit of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.statistical.log_expit:10 of
+msgid "The values to apply ``log_expit`` to element-wise."
+msgstr "要对其逐元素应用 ``log_expit`` 的值。"
+
+#: maxframe.tensor.special.statistical.log_expit:12 of
+msgid "Optional output array for the function results"
+msgstr "函数结果的可选输出数组"
+
+#: maxframe.tensor.special.statistical.log_expit of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.statistical.log_expit:15 of
+msgid "**out** -- The computed values, an ndarray of the same shape as ``x``."
+msgstr "**out** -- 计算结果，一个与 ``x`` 形状相同的 ndarray。"
+
+#: maxframe.tensor.special.statistical.log_expit of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.statistical.log_expit:18 of
+msgid ":py:obj:`expit`"
+msgstr ""
+
+#: maxframe.tensor.special.statistical.log_expit:21 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.statistical.log_expit:22 of
+msgid ""
+"As a ufunc, ``log_expit`` takes a number of optional keyword arguments. "
+"For more information see `ufuncs "
+"<https://docs.scipy.org/doc/numpy/reference/ufuncs.html>`_"
+msgstr ""
+"作为一个 ufunc，``log_expit`` 接受多个可选关键字参数。更多信息请参见 `"
+"ufuncs <https://docs.scipy.org/doc/numpy/reference/ufuncs.html>`_"
+

@@ -23,7 +23,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Type, Union
 from odps.types import OdpsSchema
 from odps.utils import camel_to_underline
 
-from ..core import OperatorType, Tileable, TileableGraph
+from ..core import OperatorType, Tileable, TileableGraph, enter_mode
 from ..core.operator import Fetch, Operator
 from ..extension import iter_extensions
 from ..io.odpsio import build_dataframe_table_meta
@@ -465,6 +465,7 @@ class DAGCodeGenerator(metaclass=abc.ABCMeta):
     def _generate_delete_code(self, var_name: str) -> List[str]:
         return []
 
+    @enter_mode(build=True)
     def generate_code(self, dag: TileableGraph) -> List[str]:
         """
         Generate the code of the input dag.
@@ -494,7 +495,7 @@ class DAGCodeGenerator(metaclass=abc.ABCMeta):
             code_lines.extend(adapter.generate_pre_op_code(op, self._context))
             if self._generate_comments_enabled:
                 code_lines.extend(adapter.generate_comment(op, self._context))
-            code_lines.extend(adapter.generate_code(op, self._context))
+            code_lines.extend(adapter.generate_code(op, self._context) or [])
             code_lines.extend(adapter.generate_post_op_code(op, self._context))
             code_lines.append("")  # Append an empty line to separate operators
 

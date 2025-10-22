@@ -14,7 +14,7 @@
 
 import functools
 import inspect
-from collections import OrderedDict
+from collections import OrderedDict, namedtuple
 from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 
 import msgpack
@@ -32,7 +32,7 @@ from ...serialization.serializables import (
     StringField,
 )
 from ...typing_ import TileableType
-from ...utils import get_item_if_scalar, pd_release_version, tokenize
+from ...utils import get_item_if_scalar, get_pd_option, pd_release_version, tokenize
 from ..operators import DATAFRAME_TYPE, DataFrameOperator, DataFrameOperatorMixin
 from ..utils import (
     build_df,
@@ -52,6 +52,8 @@ _reduce_bool_as_object = pd_release_version[:2] != (1, 2)
 
 _idx_reduction_without_numeric_only = pd_release_version[:2] < (1, 5)
 
+NamedAgg = namedtuple("NamedAgg", ["column", "aggfunc"])
+
 
 class DataFrameReduction(DataFrameOperator):
     _legacy_name = "DataFrameReductionOperator"  # since v2.2.0
@@ -70,7 +72,7 @@ class DataFrameReduction(DataFrameOperator):
 
     def __init__(self, gpu=None, sparse=None, output_types=None, **kw):
         kw["use_inf_as_na"] = kw.pop(
-            "use_inf_as_na", pd.get_option("mode.use_inf_as_na")
+            "use_inf_as_na", get_pd_option("mode.use_inf_as_na", False)
         )
         super().__init__(gpu=gpu, sparse=sparse, _output_types=output_types, **kw)
 
@@ -104,7 +106,7 @@ class DataFrameCumReduction(DataFrameOperator):
 
     def __init__(self, gpu=None, sparse=None, output_types=None, **kw):
         kw["use_inf_as_na"] = kw.pop(
-            "use_inf_as_na", pd.get_option("mode.use_inf_as_na")
+            "use_inf_as_na", get_pd_option("mode.use_inf_as_na", False)
         )
         super().__init__(gpu=gpu, sparse=sparse, _output_types=output_types, **kw)
 
@@ -300,10 +302,13 @@ class DataFrameReductionMixin(DataFrameOperatorMixin):
 
         if func_name == "custom_reduction":
             empty_series = build_series(series, ensure_string=True)
-            result_scalar = getattr(self, "custom_reduction").__call_agg__(empty_series)
-            if hasattr(result_scalar, "to_pandas"):  # pragma: no cover
-                result_scalar = result_scalar.to_pandas()
-            result_dtype = pd.Series(result_scalar).dtype
+            custom_reduction_obj = getattr(self, "custom_reduction")
+            result_dtype = getattr(custom_reduction_obj, "result_dtype", None)
+            if result_dtype is None:
+                result_scalar = custom_reduction_obj.__call_agg__(empty_series)
+                if hasattr(result_scalar, "to_pandas"):  # pragma: no cover
+                    result_scalar = result_scalar.to_pandas()
+                result_dtype = pd.Series(result_scalar).dtype
         else:
             result_dtype = _get_series_reduction_dtype(
                 series.dtype,
@@ -377,6 +382,10 @@ class CustomReduction:
     @property
     def __name__(self):
         return self.name
+
+    @property
+    def result_dtype(self):
+        return None
 
     def __call__(self, value):
         if isinstance(value, ENTITY_TYPE):
@@ -512,7 +521,7 @@ class ReductionCompiler:
     def _check_function_valid(cls, func):
         if isinstance(func, functools.partial):
             return cls._check_function_valid(func.func)
-        elif isinstance(func, (CustomReduction, ReductionCallable)):
+        elif not hasattr(func, "__code__"):
             return
 
         func_code = func.__code__

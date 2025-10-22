@@ -1,0 +1,120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.combine.rst:2
+msgid "maxframe.dataframe.DataFrame.combine"
+msgstr ""
+
+#: maxframe.dataframe.merge.combine.df_combine:1 of
+msgid "Perform column-wise combine with another DataFrame."
+msgstr "与另一个 DataFrame 进行列式合并。"
+
+#: maxframe.dataframe.merge.combine.df_combine:3 of
+msgid ""
+"Combines a DataFrame with `other` DataFrame using `func` to element-wise "
+"combine columns. The row and column indexes of the resulting DataFrame "
+"will be the union of the two."
+msgstr ""
+"使用 `func` 对两个 DataFrame 的列进行逐元素合并。结果 DataFrame 的行索引"
+"和列索引是两个 DataFrame 的并集。"
+
+#: maxframe.dataframe.merge.combine.df_combine of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.merge.combine.df_combine:7 of
+msgid "The DataFrame to merge column-wise."
+msgstr "要按列合并的 DataFrame。"
+
+#: maxframe.dataframe.merge.combine.df_combine:9 of
+msgid ""
+"Function that takes two series as inputs and return a Series or a scalar."
+" Used to merge the two dataframes column by columns."
+msgstr ""
+"接受两个 Series 作为输入并返回一个 Series 或标量的函数。用于逐列合并两个 "
+"DataFrame。"
+
+#: maxframe.dataframe.merge.combine.df_combine:12 of
+msgid "The value to fill NaNs with prior to passing any column to the merge func."
+msgstr "在将任何列传递给合并函数之前用于填充 NaN 的值。"
+
+#: maxframe.dataframe.merge.combine.df_combine:15 of
+msgid ""
+"If True, columns in `self` that do not exist in `other` will be "
+"overwritten with NaNs."
+msgstr "如果为 True，则 `self` 中不存在于 `other` 的列将被 NaN 覆盖。"
+
+#: maxframe.dataframe.merge.combine.df_combine of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.merge.combine.df_combine:19 of
+msgid "Combination of the provided DataFrames."
+msgstr "提供的 DataFrame 的合并结果。"
+
+#: maxframe.dataframe.merge.combine.df_combine of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.merge.combine.df_combine:24 of
+msgid ":py:obj:`DataFrame.combine_first`"
+msgstr ""
+
+#: maxframe.dataframe.merge.combine.df_combine:25 of
+msgid ""
+"Combine two DataFrame objects and default to non-null values in frame "
+"calling the method."
+msgstr "合并两个 DataFrame 对象，默认使用调用该方法的帧中的非空值。"
+
+#: maxframe.dataframe.merge.combine.df_combine:28 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.merge.combine.df_combine:29 of
+msgid "Combine using a simple function that chooses the smaller column."
+msgstr "使用选择较小列的简单函数进行合并。"
+
+#: maxframe.dataframe.merge.combine.df_combine:41 of
+msgid "Example using a true element-wise combine function."
+msgstr "使用真正的逐元素合并函数的示例。"
+
+#: maxframe.dataframe.merge.combine.df_combine:50 of
+msgid ""
+"Using `fill_value` fills Nones prior to passing the column to the merge "
+"function."
+msgstr "使用 `fill_value` 在将列传递给合并函数之前填充空值。"
+
+#: maxframe.dataframe.merge.combine.df_combine:60 of
+msgid ""
+"However, if the same element in both dataframes is None, that None is "
+"preserved"
+msgstr "但是，如果两个 DataFrame 中相同位置的元素都是 None，则该 None 会被保留"
+
+#: maxframe.dataframe.merge.combine.df_combine:70 of
+msgid ""
+"Example that demonstrates the use of `overwrite` and behavior when the "
+"axis differ between the dataframes."
+msgstr "演示 `overwrite` 使用方法以及当 DataFrame 之间轴不同时行为的示例。"
+
+#: maxframe.dataframe.merge.combine.df_combine:87 of
+msgid "Demonstrating the preference of the passed in dataframe."
+msgstr "演示传入的 DataFrame 的优先级。"
+

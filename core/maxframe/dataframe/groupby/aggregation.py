@@ -21,7 +21,7 @@ import pandas as pd
 
 from ... import opcodes
 from ...config import options
-from ...core import ENTITY_TYPE, EntityData, OutputType
+from ...core import ENTITY_TYPE, EntityData, OutputType, enter_mode
 from ...serialization import PickleContainer
 from ...serialization.serializables import (
     AnyField,
@@ -34,7 +34,7 @@ from ...serialization.serializables import (
     StringField,
 )
 from ...udf import BuiltinFunction
-from ...utils import find_objects, lazy_import, pd_release_version
+from ...utils import find_objects, get_pd_option, lazy_import, pd_release_version
 from ..core import GROUPBY_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..reduction.aggregation import (
@@ -116,7 +116,10 @@ def build_mock_agg_result(
     **raw_func_kw,
 ):
     try:
-        agg_result = groupby.op.build_mock_groupby().aggregate(raw_func, **raw_func_kw)
+        with enter_mode(mock=True):
+            agg_result = groupby.op.build_mock_groupby().aggregate(
+                raw_func, **raw_func_kw
+            )
     except ValueError:
         if (
             groupby_params.get("as_index") or _support_get_group_without_as_index
@@ -377,9 +380,10 @@ def agg(groupby, func=None, method="auto", *args, **kwargs):
     1   1   2  0.590715
     2   3   4  0.704907
 
-    To control the output names with different aggregations per column, pandas supports “named aggregation”
+    To control the output names with different aggregations per column,
+    MaxFrame supports “named aggregation”
 
-    >>> from maxframe.dataframe.groupby import NamedAgg
+    >>> from maxframe.dataframe import NamedAgg
     >>> df.groupby("A").agg(
     ...  b_min=NamedAgg(column="B", aggfunc="min"),
     ...  c_sum=NamedAgg(column="C", aggfunc="sum")).execute()
@@ -432,6 +436,6 @@ def agg(groupby, func=None, method="auto", *args, **kwargs):
         groupby_params=groupby.op.groupby_params,
         combine_size=combine_size,
         chunk_store_limit=options.chunk_store_limit,
-        use_inf_as_na=pd.get_option("mode.use_inf_as_na"),
+        use_inf_as_na=get_pd_option("mode.use_inf_as_na", False),
     )
     return agg_op(groupby)

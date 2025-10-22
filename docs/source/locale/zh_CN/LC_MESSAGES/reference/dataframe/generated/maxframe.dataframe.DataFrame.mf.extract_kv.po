@@ -1,0 +1,106 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.mf.extract_kv.rst:2
+msgid "maxframe.dataframe.DataFrame.mf.extract_kv"
+msgstr ""
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv:1 of
+msgid ""
+"Extract values in key-value represented columns into standalone columns. "
+"New column names will be the name of the key-value column followed by an "
+"underscore and the key."
+msgstr ""
+"将键值对表示的列中的值提取到独立的列中。新列名将是键值列的名称后跟一个"
+"下划线和键。"
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv:5 of
+msgid "The key-value columns to be extracted."
+msgstr "要提取的键值对列。"
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv:7 of
+msgid "Delimiter between key and value."
+msgstr "键和值之间的分隔符。"
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv:9 of
+msgid "Delimiter between key-value pairs."
+msgstr "键值对之间的分隔符。"
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv:11 of
+msgid "Type of value columns to generate."
+msgstr "要生成的值列的类型。"
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv:13 of
+msgid "Default value for missing key-value pairs."
+msgstr "缺失键值对的默认值。"
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv:15 of
+msgid ""
+"* If 'raise', then invalid parsing will raise an exception. * If "
+"'ignore', then invalid parsing will return the input."
+msgstr ""
+"* 如果为 'raise'，则无效解析将引发异常。* 如果为 'ignore'，则无效解析将"
+"返回输入。"
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv:16 of
+msgid "If 'raise', then invalid parsing will raise an exception."
+msgstr "如果为 'raise'，则无效解析将引发异常。"
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv:17 of
+msgid "If 'ignore', then invalid parsing will return the input."
+msgstr "如果为 'ignore'，则无效解析将返回输入。"
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv:20 of
+msgid "extracted data frame"
+msgstr "提取的数据框"
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv:23 of
+msgid ":py:obj:`DataFrame.mf.collect_kv`"
+msgstr ""
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv:26 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.extensions.extract_kv.extract_kv:44 of
+msgid ""
+"The field names to be expanded are specified by columns kv_delim is to "
+"delimit the key and value and '=' is default item_delim is to delimit the"
+" Key-Value pairs, ',' is default The output field name is the original "
+"field name connect with the key by \"_\" fill_value is used to fill "
+"missing values, None is default"
+msgstr ""
+"要展开的字段名由列指定 kv_delim 用于分隔键和值，默认为 '=' item_delim "
+"用于分隔键值对，默认为 ',' 输出字段名是原始字段名与键通过 \"_\" 连接 fill"
+"_value 用于填充缺失值，默认为 None"
+

@@ -1,0 +1,152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.astype.rst:2
+msgid "maxframe.dataframe.DataFrame.astype"
+msgstr ""
+
+#: maxframe.dataframe.misc.astype.astype:1 of
+msgid "Cast a pandas object to a specified dtype ``dtype``."
+msgstr "将 pandas 对象转换为指定的 dtype ``dtype``。"
+
+#: maxframe.dataframe.misc.astype.astype of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.astype.astype:3 of
+#, python-brace-format
+msgid ""
+"Use a numpy.dtype or Python type to cast entire pandas object to the same"
+" type. Alternatively, use {col: dtype, ...}, where col is a column label "
+"and dtype is a numpy.dtype or Python type to cast one or more of the "
+"DataFrame's columns to column-specific types."
+msgstr ""
+"使用 numpy.dtype 或 Python 类型将整个 pandas 对象转换为相同类型。或者使用"
+" {col: dtype, ...}，其中 col 是列标签，dtype 是 numpy.dtype 或 Python "
+"类型，用于将 DataFrame 的一列或多列转换为特定列类型。"
+
+#: maxframe.dataframe.misc.astype.astype:8 of
+msgid ""
+"Return a copy when ``copy=True`` (be very careful setting ``copy=False`` "
+"as changes to values then may propagate to other pandas objects)."
+msgstr ""
+"当 ``copy=True`` 时返回副本（设置 ``copy=False`` 时要非常小心，因为值的"
+"更改可能会传播到其他 pandas 对象）。"
+
+#: maxframe.dataframe.misc.astype.astype:12 of
+msgid ""
+"Control raising of exceptions on invalid data for provided dtype.  - "
+"``raise`` : allow exceptions to be raised - ``ignore`` : suppress "
+"exceptions. On error return original object."
+msgstr ""
+"控制在提供的 dtype 数据无效时是否引发异常。- ``raise``：允许引发异常 - ``"
+"ignore``：抑制异常。出错时返回原始对象。"
+
+#: maxframe.dataframe.misc.astype.astype:12 of
+msgid "Control raising of exceptions on invalid data for provided dtype."
+msgstr ""
+
+#: maxframe.dataframe.misc.astype.astype:14 of
+msgid "``raise`` : allow exceptions to be raised"
+msgstr ""
+
+#: maxframe.dataframe.misc.astype.astype:15 of
+msgid "``ignore`` : suppress exceptions. On error return original object."
+msgstr ""
+
+#: maxframe.dataframe.misc.astype.astype of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.astype.astype:18 of
+msgid "**casted**"
+msgstr ""
+
+#: maxframe.dataframe.misc.astype.astype of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.astype.astype:23 of
+msgid ":py:obj:`to_datetime`"
+msgstr ""
+
+#: maxframe.dataframe.misc.astype.astype:24 of
+msgid "Convert argument to datetime."
+msgstr "将参数转换为 datetime。"
+
+#: maxframe.dataframe.misc.astype.astype:26 of
+msgid ":py:obj:`to_timedelta`"
+msgstr ""
+
+#: maxframe.dataframe.misc.astype.astype:27 of
+msgid "Convert argument to timedelta."
+msgstr "将参数转换为 timedelta。"
+
+#: maxframe.dataframe.misc.astype.astype:29 of
+msgid ":py:obj:`to_numeric`"
+msgstr ""
+
+#: maxframe.dataframe.misc.astype.astype:30 of
+msgid "Convert argument to a numeric type."
+msgstr "将参数转换为数值类型。"
+
+#: maxframe.dataframe.misc.astype.astype:32 of
+msgid ":py:obj:`numpy.ndarray.astype`"
+msgstr ""
+
+#: maxframe.dataframe.misc.astype.astype:33 of
+msgid "Cast a numpy array to a specified type."
+msgstr "将 numpy 数组转换为指定类型。"
+
+#: maxframe.dataframe.misc.astype.astype:36 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.astype.astype:37 of
+msgid "Create a DataFrame:"
+msgstr "创建一个 DataFrame："
+
+#: maxframe.dataframe.misc.astype.astype:46 of
+msgid "Cast all columns to int32:"
+msgstr "将所有列转换为 int32："
+
+#: maxframe.dataframe.misc.astype.astype:53 of
+msgid "Cast col1 to int32 using a dictionary:"
+msgstr "使用字典将 col1 转换为 int32："
+
+#: maxframe.dataframe.misc.astype.astype:60 of
+msgid "Create a series:"
+msgstr "创建一个 Series："
+
+#: maxframe.dataframe.misc.astype.astype:72 of
+msgid "Convert to categorical type:"
+msgstr "转换为分类类型："
+
+#: maxframe.dataframe.misc.astype.astype:80 of
+msgid "Convert to ordered categorical type with custom ordering:"
+msgstr "转换为自定义排序的有序分类类型："
+
+#: maxframe.dataframe.misc.astype.astype:90 of
+msgid ""
+"Note that using ``copy=False`` and changing data on a new pandas object "
+"may propagate changes:"
+msgstr "请注意，使用 ``copy=False`` 并在新的 pandas 对象上更改数据可能会传播更改："
+

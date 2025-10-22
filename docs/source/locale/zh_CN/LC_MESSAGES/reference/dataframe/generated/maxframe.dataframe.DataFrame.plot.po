@@ -1,0 +1,453 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.rst:2
+msgid "maxframe.dataframe.DataFrame.plot"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:1 of
+msgid "Make plots of Series or DataFrame."
+msgstr "绘制 Series 或 DataFrame 的图表。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:3 of
+msgid ""
+"Uses the backend specified by the option ``plotting.backend``. By "
+"default, matplotlib is used."
+msgstr "使用由选项 ``plotting.backend`` 指定的后端。默认情况下，使用 matplotlib。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:6 of
+msgid "The object for which the method is called."
+msgstr "调用该方法的对象。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:8 of
+msgid "Only used if data is a DataFrame."
+msgstr "仅在数据是 DataFrame 时使用。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:10 of
+msgid ""
+"Allows plotting of one column versus another. Only used if data is a "
+"DataFrame."
+msgstr "允许绘制一列与另一列的对比图。仅在数据是 DataFrame 时使用。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:13 of
+msgid ""
+"The kind of plot to produce:  - 'line' : line plot (default) - 'bar' : "
+"vertical bar plot - 'barh' : horizontal bar plot - 'hist' : histogram - "
+"'box' : boxplot - 'kde' : Kernel Density Estimation plot - 'density' : "
+"same as 'kde' - 'area' : area plot - 'pie' : pie plot - 'scatter' : "
+"scatter plot (DataFrame only) - 'hexbin' : hexbin plot (DataFrame only)"
+msgstr ""
+"要生成的图表类型：  - 'line' : 折线图（默认） - 'bar' : 垂直条形图 - '"
+"barh' : 水平条形图 - 'hist' : 直方图 - 'box' : 箱线图 - 'kde' : 核"
+"密度估计图 - 'density' : 与 'kde' 相同 - 'area' : 面积图 - 'pie' : 饼图 -"
+" 'scatter' : 散点图（仅限 DataFrame） - 'hexbin' : 六边形箱图（仅限 "
+"DataFrame）"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:13 of
+msgid "The kind of plot to produce:"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:15 of
+msgid "'line' : line plot (default)"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:16 of
+msgid "'bar' : vertical bar plot"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:17 of
+msgid "'barh' : horizontal bar plot"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:18 of
+msgid "'hist' : histogram"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:19 of
+msgid "'box' : boxplot"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:20 of
+msgid "'kde' : Kernel Density Estimation plot"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:21 of
+msgid "'density' : same as 'kde'"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:22 of
+msgid "'area' : area plot"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:23 of
+msgid "'pie' : pie plot"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:24 of
+msgid "'scatter' : scatter plot (DataFrame only)"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:25 of
+msgid "'hexbin' : hexbin plot (DataFrame only)"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:27 of
+msgid "An axes of the current figure."
+msgstr "当前图形的坐标轴。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:29 of
+msgid ""
+"Whether to group columns into subplots:  - ``False`` : No subplots will "
+"be used - ``True`` : Make separate subplots for each column. - sequence "
+"of iterables of column labels: Create a subplot for each   group of "
+"columns. For example `[('a', 'c'), ('b', 'd')]` will   create 2 subplots:"
+" one with columns 'a' and 'c', and one   with columns 'b' and 'd'. "
+"Remaining columns that aren't specified   will be plotted in additional "
+"subplots (one per column).    .. versionadded:: 1.5.0"
+msgstr ""
+"是否将列分组到子图中：  - ``False`` : 不使用子图 - ``True`` : 为每列创建"
+"单独的子图 - 列标签的可迭代序列：为每组列创建一个子图。例如 `[('a', 'c'),"
+" ('b', 'd')]` 将创建 2 个子图：一个包含列 'a' 和 'c'，另一个包含列 'b' 和"
+" 'd'。未指定的其余列将在附加子图中绘制（每列一个子图）。    .. "
+"versionadded:: 1.5.0"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:29 of
+msgid "Whether to group columns into subplots:"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:31 of
+msgid "``False`` : No subplots will be used"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:32 of
+msgid "``True`` : Make separate subplots for each column."
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:33 of
+#, fuzzy
+msgid ""
+"sequence of iterables of column labels: Create a subplot for each group "
+"of columns. For example `[('a', 'c'), ('b', 'd')]` will create 2 "
+"subplots: one with columns 'a' and 'c', and one with columns 'b' and 'd'."
+" Remaining columns that aren't specified will be plotted in additional "
+"subplots (one per column)."
+msgstr ""
+"是否将列分组到子图中：  - ``False`` : 不使用子图 - ``True`` : 为每列创建"
+"单独的子图 - 列标签的可迭代序列：为每组列创建一个子图。例如 `[('a', 'c'),"
+" ('b', 'd')]` 将创建 2 个子图：一个包含列 'a' 和 'c'，另一个包含列 'b' 和"
+" 'd'。未指定的其余列将在附加子图中绘制（每列一个子图）。    .. "
+"versionadded:: 1.5.0"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:41 of
+msgid ""
+"In case ``subplots=True``, share x axis and set some x axis labels to "
+"invisible; defaults to True if ax is None otherwise False if an ax is "
+"passed in; Be aware, that passing in both an ax and ``sharex=True`` will "
+"alter all x axis labels for all axis in a figure."
+msgstr ""
+"当 ``subplots=True`` 时，共享 x 轴并将某些 x 轴标签设为不可见；如果 ax 为"
+" None，则默认为 True，否则如果传入 ax 则为 False；请注意，同时传入 ax 和 "
+"``sharex=True`` 将更改图形中所有轴的 x 轴标签。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:46 of
+msgid ""
+"In case ``subplots=True``, share y axis and set some y axis labels to "
+"invisible."
+msgstr "当 ``subplots=True`` 时，共享 y 轴并将某些 y 轴标签设为不可见。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:48 of
+msgid "(rows, columns) for the layout of subplots."
+msgstr "子图布局的（行数，列数）。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:50 of
+msgid "Size of a figure object."
+msgstr "图形对象的大小。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:52 of
+msgid "Use index as ticks for x axis."
+msgstr "使用索引作为 x 轴的刻度。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:54 of
+msgid ""
+"Title to use for the plot. If a string is passed, print the string at the"
+" top of the figure. If a list is passed and `subplots` is True, print "
+"each item in the list above the corresponding subplot."
+msgstr ""
+"用于绘图的标题。如果传入字符串，则将其打印在图形顶部。如果传入列表且 `"
+"subplots` 为 True，则将列表中每项打印在对应子图上方。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:58 of
+msgid "Axis grid lines."
+msgstr "坐标轴网格线。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:60 of
+msgid "Place legend on axis subplots."
+msgstr "在坐标轴子图上放置图例。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:62 of
+msgid "The matplotlib line style per column."
+msgstr "每列的 matplotlib 线型。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:64 of
+msgid "Use log scaling or symlog scaling on x axis."
+msgstr "在 x 轴上使用对数或对称对数缩放。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:66 of
+msgid "Use log scaling or symlog scaling on y axis."
+msgstr "在 y 轴上使用对数或对称对数缩放。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:68 of
+msgid "Use log scaling or symlog scaling on both x and y axes."
+msgstr "在 x 和 y 轴上都使用对数或对称对数缩放。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:70 of
+msgid "Values to use for the xticks."
+msgstr "用于 x 轴刻度的值。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:72 of
+msgid "Values to use for the yticks."
+msgstr "用于 y 轴刻度的值。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:74 of
+msgid "Set the x limits of the current axes."
+msgstr "设置当前坐标轴的 x 轴范围。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:76 of
+msgid "Set the y limits of the current axes."
+msgstr "设置当前坐标轴的 y 轴范围。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:78 of
+msgid ""
+"Name to use for the xlabel on x-axis. Default uses index name as xlabel, "
+"or the x-column name for planar plots.  .. versionchanged:: 2.0.0      "
+"Now applicable to histograms."
+msgstr ""
+"x 轴上 xlabel 使用的名称。默认使用索引名作为 xlabel，或对于平面图使用 x "
+"列名。 .. versionchanged:: 2.0.0      现在适用于直方图。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:78 of
+#, fuzzy
+msgid ""
+"Name to use for the xlabel on x-axis. Default uses index name as xlabel, "
+"or the x-column name for planar plots."
+msgstr ""
+"x 轴上 xlabel 使用的名称。默认使用索引名作为 xlabel，或对于平面图使用 x "
+"列名。 .. versionchanged:: 2.0.0      现在适用于直方图。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:83
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:90 of
+msgid "Now applicable to histograms."
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:85 of
+msgid ""
+"Name to use for the ylabel on y-axis. Default will show no ylabel, or the"
+" y-column name for planar plots.  .. versionchanged:: 2.0.0      Now "
+"applicable to histograms."
+msgstr ""
+"y 轴上 ylabel 使用的名称。默认不显示 ylabel，或对于平面图使用 y 列名。 .."
+" versionchanged:: 2.0.0      现在适用于直方图。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:85 of
+#, fuzzy
+msgid ""
+"Name to use for the ylabel on y-axis. Default will show no ylabel, or the"
+" y-column name for planar plots."
+msgstr ""
+"y 轴上 ylabel 使用的名称。默认不显示 ylabel，或对于平面图使用 y 列名。 .."
+" versionchanged:: 2.0.0      现在适用于直方图。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:92 of
+msgid "Rotation for ticks (xticks for vertical, yticks for horizontal plots)."
+msgstr "刻度旋转角度（垂直图为 xticks，水平图为 yticks）。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:95 of
+msgid "Font size for xticks and yticks."
+msgstr "xticks 和 yticks 的字体大小。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:97 of
+msgid ""
+"Colormap to select colors from. If string, load colormap with that name "
+"from matplotlib."
+msgstr ""
+"用于选择颜色的色彩映射。如果是字符串，则从 matplotlib 加载该名称的色彩"
+"映射。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:100 of
+msgid "If True, plot colorbar (only relevant for 'scatter' and 'hexbin' plots)."
+msgstr "如果为 True，绘制颜色条（仅适用于 'scatter' 和 'hexbin' 图）。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:103 of
+msgid ""
+"Specify relative alignments for bar plot layout. From 0 (left/bottom-end)"
+" to 1 (right/top-end). Default is 0.5 (center)."
+msgstr ""
+"指定条形图布局的相对对齐方式。从 0（左/底端）到 1（右/顶端）。默认为 0.5"
+"（居中）。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:107 of
+msgid ""
+"If True, draw a table using the data in the DataFrame and the data will "
+"be transposed to meet matplotlib's default layout. If a Series or "
+"DataFrame is passed, use passed data to draw a table."
+msgstr ""
+"如果为 True，使用 DataFrame 中的数据绘制表格，并将数据转置以符合 "
+"matplotlib 的默认布局。如果传入 Series 或 DataFrame，使用传入的数据绘制"
+"表格。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:112 of
+msgid "See :ref:`Plotting with Error Bars <visualization.errorbars>` for detail."
+msgstr "详情请参见 :ref:`带误差条的绘图 <visualization.errorbars>`。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:115 of
+msgid "Equivalent to yerr."
+msgstr "等同于 yerr。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:117 of
+msgid "If True, create stacked plot."
+msgstr "如果为 True，创建堆叠图。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:119 of
+msgid ""
+"Whether to plot on the secondary y-axis if a list/tuple, which columns to"
+" plot on secondary y-axis."
+msgstr "如果为列表/元组，是否在次 y 轴上绘图，以及哪些列在次 y 轴上绘图。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:122 of
+msgid ""
+"When using a secondary_y axis, automatically mark the column labels with "
+"\"(right)\" in the legend."
+msgstr "使用 secondary_y 轴时，在图例中自动为列标签添加 \"(right)\" 标记。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:125 of
+msgid "If True, boolean values can be plotted."
+msgstr "如果为 True，可以绘制布尔值。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:127 of
+msgid ""
+"Backend to use instead of the backend specified in the option "
+"``plotting.backend``. For instance, 'matplotlib'. Alternatively, to "
+"specify the ``plotting.backend`` for the whole session, set "
+"``pd.options.plotting.backend``."
+msgstr ""
+"要使用的后端，而不是在选项 ``plotting.backend`` 中指定的后端。例如，'"
+"matplotlib'。或者，要为整个会话指定 ``plotting.backend``，请设置 ``pd."
+"options.plotting.backend``。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:132 of
+msgid "Options to pass to matplotlib plotting method."
+msgstr "传递给 matplotlib 绘图方法的选项。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:134 of
+msgid ""
+"If the backend is not the default matplotlib one, the return value will "
+"be the object returned by the backend."
+msgstr "如果后端不是默认的 matplotlib 后端，则返回值将是后端返回的对象。"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:136 of
+msgid ":class:`matplotlib.axes.Axes` or numpy.ndarray of them"
+msgstr ":class:`matplotlib.axes.Axes` 或其 numpy.ndarray"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:139 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:140 of
+msgid "See matplotlib documentation online for more on this subject"
+msgstr "有关此主题的更多信息，请参阅在线 matplotlib 文档"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:141 of
+msgid ""
+"If `kind` = 'bar' or 'barh', you can specify relative alignments for bar "
+"plot layout by `position` keyword. From 0 (left/bottom-end) to 1 (right"
+"/top-end). Default is 0.5 (center)"
+msgstr ""
+"如果 `kind` = 'bar' 或 'barh'，您可以通过 `position` 关键字指定条形图布局"
+"的相对对齐方式。从 0（左/下端）到 1（右/上端）。默认值是 0.5（居中）"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:147 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:148 of
+msgid "For Series:"
+msgstr "对于 Series："
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-1.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-DataFrame-plot-1.py>`)"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:157 of
+msgid "For DataFrame:"
+msgstr "对于 DataFrame："
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-2.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-DataFrame-plot-2.py>`)"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:167 of
+msgid "For SeriesGroupBy:"
+msgstr "对于 SeriesGroupBy："
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-3.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-DataFrame-plot-3.py>`)"
+
+#: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:176 of
+msgid "For DataFrameGroupBy:"
+msgstr "对于 DataFrameGroupBy："
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-4.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-DataFrame-plot-4.py>`)"
+

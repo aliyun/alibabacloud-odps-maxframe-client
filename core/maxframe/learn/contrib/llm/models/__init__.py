@@ -13,3 +13,4 @@
 # limitations under the License.
 
 from .dashscope import DashScopeMultiModalLLM, DashScopeTextLLM
+from .openai import OpenAICompatibleTextLLM

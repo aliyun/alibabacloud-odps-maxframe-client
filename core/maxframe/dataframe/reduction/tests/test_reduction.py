@@ -26,6 +26,7 @@ from .... import dataframe as md
 from ....lib.dtypes_extension import ArrowDtype
 from ....tensor import Tensor
 from ....tests.utils import assert_mf_index_dtype
+from ....udf import ODPSFunction
 from ...core import DataFrame, IndexValue, OutputType, Series
 from ...datasource.dataframe import from_pandas as from_pandas_df
 from ...datasource.series import from_pandas as from_pandas_series
@@ -527,3 +528,14 @@ def test_custom_aggregation():
         assert result.agg_funcs[0].agg_func_name == "custom_reduction"
         assert isinstance(result.agg_funcs[0].custom_reduction, MockReduction2)
         assert result.agg_funcs[0].output_limit == 2
+
+
+def test_aggregation_with_odps_function():
+    odps_func = ODPSFunction("test_odps_udaf", dtype=np.float64)
+    for ndim in [1, 2]:
+        compiler = ReductionCompiler()
+        compiler.add_function(odps_func, ndim=ndim)
+        result = compiler.compile()
+        assert result.agg_funcs[0].map_func_name == "custom_reduction"
+        assert result.agg_funcs[0].agg_func_name == "custom_reduction"
+        assert isinstance(result.agg_funcs[0].custom_reduction, ODPSFunction)

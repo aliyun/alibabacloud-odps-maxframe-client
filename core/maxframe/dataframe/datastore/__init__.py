@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .direct import df_to_dict, series_to_dict, series_to_list, to_clipboard
 from .to_csv import to_csv
 from .to_odps import to_odps_table
 
@@ -20,10 +21,15 @@ def _install():
     from ..core import DATAFRAME_TYPE, SERIES_TYPE
 
     for t in DATAFRAME_TYPE:
+        t.to_clipboard = to_clipboard
         t.to_csv = to_csv
+        t.to_dict = df_to_dict
         t.to_odps_table = to_odps_table
     for t in SERIES_TYPE:
+        t.to_clipboard = to_clipboard
         t.to_csv = to_csv
+        t.to_dict = series_to_dict
+        t.to_list = series_to_list
 
 
 _install()

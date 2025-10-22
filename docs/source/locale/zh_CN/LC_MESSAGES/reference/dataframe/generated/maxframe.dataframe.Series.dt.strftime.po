@@ -1,0 +1,155 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.dt.strftime.rst:2
+msgid "maxframe.dataframe.Series.dt.strftime"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:1
+msgid "Convert to Index using specified date_format."
+msgstr "使用指定的 date_format 转换为 Index。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:3
+msgid ""
+"Return an Index of formatted strings specified by date_format, which "
+"supports the same string format as the python standard library. Details "
+"of the string format can be found in `python string format doc "
+"<https://docs.python.org/3/library/datetime.html#strftime-and-strptime-"
+"behavior>`__."
+msgstr ""
+"返回由 date_format 指定的格式化字符串组成的 Index，支持与 Python 标准库"
+"相同的字符串格式。字符串格式的详细信息可以在 `Python 字符串格式文档 <"
+"https://docs.python.org/3/library/datetime.html#strftime-and-strptime-"
+"behavior>`__ 中找到。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:8
+#, python-format
+msgid ""
+"Formats supported by the C `strftime` API but not by the python string "
+"format doc (such as `\"%R\"`, `\"%r\"`) are not officially supported and "
+"should be preferably replaced with their supported equivalents (such as "
+"`\"%H:%M\"`, `\"%I:%M:%S %p\"`)."
+msgstr ""
+"受 C `strftime` API 支持但不受 Python 字符串格式文档支持的格式（例如 `\"%"
+"R\"`, `\"%r\"`）并未被官方支持，建议使用受支持的等效格式（例如 `\"%H:%M\""
+"`, `\"%I:%M:%S %p\"`）。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:13
+msgid ""
+"Note that `PeriodIndex` support additional directives, detailed in "
+"`Period.strftime`."
+msgstr "请注意，`PeriodIndex` 支持额外的指令，详见 `Period.strftime`。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f
+msgid "参数"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:16
+#, python-format
+msgid "Date format string (e.g. \"%Y-%m-%d\")."
+msgstr "日期格式字符串 (例如 \"%Y-%m-%d\")。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f
+msgid "返回"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:19
+msgid "NumPy ndarray of formatted strings."
+msgstr "格式化字符串的 NumPy ndarray。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f
+msgid "返回类型"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:24
+msgid ":py:obj:`to_datetime`"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:25
+msgid "Convert the given argument to datetime."
+msgstr "将给定参数转换为 datetime。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:27
+msgid ":py:obj:`DatetimeIndex.normalize`"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:28
+msgid "Return DatetimeIndex with times to midnight."
+msgstr "返回时间调整为午夜的 DatetimeIndex。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:30
+msgid ":py:obj:`DatetimeIndex.round`"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:31
+msgid "Round the DatetimeIndex to the specified freq."
+msgstr "将 DatetimeIndex 四舍五入到指定的频率。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:33
+msgid ":py:obj:`DatetimeIndex.floor`"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:34
+msgid "Floor the DatetimeIndex to the specified freq."
+msgstr "将 DatetimeIndex 向下取整到指定的频率。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:36
+msgid ":py:obj:`Timestamp.strftime`"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:37
+msgid "Format a single Timestamp."
+msgstr "格式化单个 Timestamp。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:39
+msgid ":py:obj:`Period.strftime`"
+msgstr ""
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:40
+msgid "Format a single Period."
+msgstr "格式化单个 Period。"
+
+#: of
+#: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:43
+msgid "示例"
+msgstr ""
+

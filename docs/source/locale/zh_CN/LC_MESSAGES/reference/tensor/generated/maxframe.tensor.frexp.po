@@ -1,0 +1,108 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.frexp.rst:2
+msgid "maxframe.tensor.frexp"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.frexp.frexp:1 of
+msgid "Decompose the elements of x into mantissa and twos exponent."
+msgstr "将 x 的元素分解为尾数和二的幂次。"
+
+#: maxframe.tensor.arithmetic.frexp.frexp:3 of
+msgid ""
+"Returns (`mantissa`, `exponent`), where `x = mantissa * 2**exponent``. "
+"The mantissa is lies in the open interval(-1, 1), while the twos exponent"
+" is a signed integer."
+msgstr ""
+"返回 (`mantissa`, `exponent`)，其中 `x = mantissa * 2**exponent``。 尾数"
+"位于开区间 (-1, 1) 内，而二的幂次是一个有符号整数。"
+
+#: maxframe.tensor.arithmetic.frexp.frexp of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.frexp.frexp:7 of
+msgid "Tensor of numbers to be decomposed."
+msgstr "要分解的数字张量。"
+
+#: maxframe.tensor.arithmetic.frexp.frexp:9 of
+msgid "Output tensor for the mantissa. Must have the same shape as `x`."
+msgstr "用于存储尾数的输出张量。必须与 `x` 具有相同的形状。"
+
+#: maxframe.tensor.arithmetic.frexp.frexp:11 of
+msgid "Output tensor for the exponent. Must have the same shape as `x`."
+msgstr "用于存储指数的输出张量。必须与 `x` 具有相同的形状。"
+
+#: maxframe.tensor.arithmetic.frexp.frexp:13 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，则其形状必须可以广播到输入形状。如果未提供"
+"或为 `None`，则返回一个新分配的张量。元组（仅可作为关键字参数）的长度必须"
+"等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.frexp.frexp:18 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.frexp.frexp of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.frexp.frexp:23 of
+msgid ""
+"**(mantissa, exponent)** -- `mantissa` is a float array with values "
+"between -1 and 1. `exponent` is an int array which represents the "
+"exponent of 2."
+msgstr ""
+"**(mantissa, exponent)** -- `mantissa` 是一个值在 -1 和 1 之间的浮点数组"
+"。`exponent` 是一个表示 2 的幂次的整数数组。"
+
+#: maxframe.tensor.arithmetic.frexp.frexp of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.frexp.frexp:29 of
+msgid ":py:obj:`ldexp`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.frexp.frexp:30 of
+msgid "Compute ``y = x1 * 2**x2``, the inverse of `frexp`."
+msgstr "计算 ``y = x1 * 2**x2``，即 `frexp` 的逆运算。"
+
+#: maxframe.tensor.arithmetic.frexp.frexp:33 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.frexp.frexp:34 of
+msgid "Complex dtypes are not supported, they will raise a TypeError."
+msgstr "不支持复数数据类型，会引发 TypeError。"
+
+#: maxframe.tensor.arithmetic.frexp.frexp:37 of
+msgid "示例"
+msgstr ""
+

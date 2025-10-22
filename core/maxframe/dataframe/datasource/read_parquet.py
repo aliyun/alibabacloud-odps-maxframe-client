@@ -32,6 +32,7 @@ except ImportError:
 
 from ... import opcodes
 from ...config import options
+from ...lib.dtypes_extension import ArrowDtype
 from ...lib.filesystem import FileSystem, get_fs, glob, open_file
 from ...serialization.serializables import (
     AnyField,
@@ -43,10 +44,13 @@ from ...serialization.serializables import (
     StringField,
 )
 from ...utils import lazy_import
-from ..arrays import ArrowStringDtype
 from ..operators import OutputType
 from ..utils import parse_index, to_arrow_dtypes
-from .core import ColumnPruneSupportedDataSourceMixin, IncrementalIndexDatasource
+from .core import (
+    ColumnPruneSupportedDataSourceMixin,
+    DtypeBackendCompatibleMixin,
+    IncrementalIndexDatasource,
+)
 
 PARQUET_MEMORY_SCALE = 15
 STRING_FIELD_OVERHEAD = 50
@@ -89,13 +93,11 @@ class ParquetEngine:
     def read_dtypes(self, f, **kwargs):
         raise NotImplementedError
 
-    def read_to_pandas(
-        self, f, columns=None, nrows=None, use_arrow_dtype=None, **kwargs
-    ):
+    def read_to_pandas(self, f, columns=None, nrows=None, dtype_backend=None, **kwargs):
         raise NotImplementedError
 
     def read_group_to_pandas(
-        self, f, group_index, columns=None, nrows=None, use_arrow_dtype=None, **kwargs
+        self, f, group_index, columns=None, nrows=None, dtype_backend=None, **kwargs
     ):
         raise NotImplementedError
 
@@ -106,11 +108,11 @@ class ParquetEngine:
         partition_keys: Dict,
         columns=None,
         nrows=None,
-        use_arrow_dtype=None,
+        dtype_backend=None,
         **kwargs,
     ):
         raw_df = self.read_to_pandas(
-            f, columns=columns, nrows=nrows, use_arrow_dtype=use_arrow_dtype, **kwargs
+            f, columns=columns, nrows=nrows, dtype_backend=dtype_backend, **kwargs
         )
         for col, value in partition_keys.items():
             dictionary = partitions[col]
@@ -169,28 +171,26 @@ class ArrowEngine(ParquetEngine):
         return file.schema_arrow.empty_table().to_pandas().dtypes
 
     @classmethod
-    def _table_to_pandas(cls, t, nrows=None, use_arrow_dtype=None):
+    def _table_to_pandas(cls, t, nrows=None, dtype_backend=None):
         if nrows is not None:
             t = t.slice(0, nrows)
-        if use_arrow_dtype:
-            df = t.to_pandas(types_mapper={pa.string(): ArrowStringDtype()}.get)
+        if dtype_backend == "pyarrow":
+            df = t.to_pandas(types_mapper={pa.string(): ArrowDtype(pa.string())}.get)
         else:
             df = t.to_pandas()
         return df
 
-    def read_to_pandas(
-        self, f, columns=None, nrows=None, use_arrow_dtype=None, **kwargs
-    ):
+    def read_to_pandas(self, f, columns=None, nrows=None, dtype_backend=None, **kwargs):
         file = pq.ParquetFile(f)
         t = file.read(columns=columns, **kwargs)
-        return self._table_to_pandas(t, nrows=nrows, use_arrow_dtype=use_arrow_dtype)
+        return self._table_to_pandas(t, nrows=nrows, dtype_backend=dtype_backend)
 
     def read_group_to_pandas(
-        self, f, group_index, columns=None, nrows=None, use_arrow_dtype=None, **kwargs
+        self, f, group_index, columns=None, nrows=None, dtype_backend=None, **kwargs
     ):
         file = pq.ParquetFile(f)
         t = file.read_row_group(group_index, columns=columns, **kwargs)
-        return self._table_to_pandas(t, nrows=nrows, use_arrow_dtype=use_arrow_dtype)
+        return self._table_to_pandas(t, nrows=nrows, dtype_backend=dtype_backend)
 
 
 class FastpaquetEngine(ParquetEngine):
@@ -203,14 +203,12 @@ class FastpaquetEngine(ParquetEngine):
         dtypes_dict = file._dtypes()
         return pd.Series(dict((c, dtypes_dict[c]) for c in file.columns))
 
-    def read_to_pandas(
-        self, f, columns=None, nrows=None, use_arrow_dtype=None, **kwargs
-    ):
+    def read_to_pandas(self, f, columns=None, nrows=None, dtype_backend=None, **kwargs):
         file = fastparquet.ParquetFile(f)
         df = file.to_pandas(columns, **kwargs)
         if nrows is not None:
             df = df.head(nrows)
-        if use_arrow_dtype:
+        if dtype_backend == "pyarrow":
             df = df.astype(to_arrow_dtypes(df.dtypes).to_dict())
         return df
 
@@ -265,29 +263,30 @@ class CudfEngine:
 class DataFrameReadParquet(
     IncrementalIndexDatasource,
     ColumnPruneSupportedDataSourceMixin,
+    DtypeBackendCompatibleMixin,
 ):
     _op_type_ = opcodes.READ_PARQUET
 
     path = AnyField("path")
     engine = StringField("engine")
     columns = ListField("columns")
-    use_arrow_dtype = BoolField("use_arrow_dtype")
-    groups_as_chunks = BoolField("groups_as_chunks")
-    group_index = Int32Field("group_index")
-    read_kwargs = DictField("read_kwargs")
-    incremental_index = BoolField("incremental_index")
-    storage_options = DictField("storage_options")
-    is_partitioned = BoolField("is_partitioned")
-    merge_small_files = BoolField("merge_small_files")
-    merge_small_file_options = DictField("merge_small_file_options")
+    dtype_backend = StringField("dtype_backend", default=None)
+    groups_as_chunks = BoolField("groups_as_chunks", default=None)
+    group_index = Int32Field("group_index", default=None)
+    read_kwargs = DictField("read_kwargs", default=None)
+    incremental_index = BoolField("incremental_index", default=None)
+    storage_options = DictField("storage_options", default=None)
+    is_partitioned = BoolField("is_partitioned", default=None)
+    merge_small_files = BoolField("merge_small_files", default=None)
+    merge_small_file_options = DictField("merge_small_file_options", default=None)
     # for chunk
     partitions = DictField("partitions", default=None)
     partition_keys = DictField("partition_keys", default=None)
     num_group_rows = Int64Field("num_group_rows", default=None)
     # as read meta may be too time-consuming when number of files is large,
     # thus we only read first file to get row number and raw file size
-    first_chunk_row_num = Int64Field("first_chunk_row_num")
-    first_chunk_raw_bytes = Int64Field("first_chunk_raw_bytes")
+    first_chunk_row_num = Int64Field("first_chunk_row_num", default=None)
+    first_chunk_raw_bytes = Int64Field("first_chunk_raw_bytes", default=None)
 
     def get_columns(self):
         return self.columns
@@ -319,7 +318,7 @@ def read_parquet(
     engine: str = "auto",
     columns: list = None,
     groups_as_chunks: bool = False,
-    use_arrow_dtype: bool = None,
+    dtype_backend: str = None,
     incremental_index: bool = False,
     storage_options: dict = None,
     memory_scale: int = None,
@@ -356,8 +355,8 @@ def read_parquet(
     incremental_index: bool, default False
         If index_col not specified, ensure range index incremental,
         gain a slightly better performance if setting False.
-    use_arrow_dtype: bool, default None
-        If True, use arrow dtype to store columns.
+    dtype_backend: {'numpy', 'pyarrow'}, default 'numpy'
+        Back-end data type applied to the resultant DataFrame (still experimental).
     storage_options: dict, optional
         Options for storage connection.
     memory_scale: int, optional
@@ -401,9 +400,9 @@ def read_parquet(
     if columns:
         dtypes = dtypes[columns]
 
-    if use_arrow_dtype is None:
-        use_arrow_dtype = options.dataframe.use_arrow_dtype
-    if use_arrow_dtype:
+    if dtype_backend is None:
+        dtype_backend = options.dataframe.dtype_backend
+    if dtype_backend == "pyarrow":
         dtypes = to_arrow_dtypes(dtypes)
 
     index_value = parse_index(pd.RangeIndex(-1))
@@ -413,7 +412,7 @@ def read_parquet(
         engine=engine_type,
         columns=columns,
         groups_as_chunks=groups_as_chunks,
-        use_arrow_dtype=use_arrow_dtype,
+        dtype_backend=dtype_backend,
         read_kwargs=kwargs,
         incremental_index=incremental_index,
         storage_options=storage_options,

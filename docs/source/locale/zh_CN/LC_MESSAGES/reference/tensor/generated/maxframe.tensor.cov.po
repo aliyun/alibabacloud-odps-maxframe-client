@@ -1,0 +1,186 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.cov.rst:2
+msgid "maxframe.tensor.cov"
+msgstr ""
+
+#: maxframe.tensor.statistics.cov.cov:1 of
+msgid "Estimate a covariance matrix, given data and weights."
+msgstr "给定数据和权重，估计协方差矩阵。"
+
+#: maxframe.tensor.statistics.cov.cov:3 of
+#, python-brace-format
+msgid ""
+"Covariance indicates the level to which two variables vary together. If "
+"we examine N-dimensional samples, :math:`X = [x_1, x_2, ... x_N]^T`, then"
+" the covariance matrix element :math:`C_{ij}` is the covariance of "
+":math:`x_i` and :math:`x_j`. The element :math:`C_{ii}` is the variance "
+"of :math:`x_i`."
+msgstr ""
+"协方差表示两个变量一起变化的程度。如果我们检查 N 维样本 :math:`X = [x_1, "
+"x_2, ... x_N]^T`，则协方差矩阵元素 :math:`C_{ij}` 是 :math:`x_i` 和 :math"
+":`x_j` 的协方差。元素 :math:`C_{ii}` 是 :math:`x_i` 的方差。"
+
+#: maxframe.tensor.statistics.cov.cov:9 of
+msgid "See the notes for an outline of the algorithm."
+msgstr "有关算法的概述，请参见说明。"
+
+#: maxframe.tensor.statistics.cov.cov of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.statistics.cov.cov:11 of
+msgid ""
+"A 1-D or 2-D array containing multiple variables and observations. Each "
+"row of `m` represents a variable, and each column a single observation of"
+" all those variables. Also see `rowvar` below."
+msgstr ""
+"包含多个变量和观测值的 1-D 或 2-D 数组。`m` 的每一行代表一个变量，每一列"
+"代表所有这些变量的一个观测值。另请参见下面的 `rowvar`。"
+
+#: maxframe.tensor.statistics.cov.cov:15 of
+msgid ""
+"An additional set of variables and observations. `y` has the same form as"
+" that of `m`."
+msgstr "一组额外的变量和观测值。`y` 的形式与 `m` 相同。"
+
+#: maxframe.tensor.statistics.cov.cov:18 of
+msgid ""
+"If `rowvar` is True (default), then each row represents a variable, with "
+"observations in the columns. Otherwise, the relationship is transposed: "
+"each column represents a variable, while the rows contain observations."
+msgstr ""
+"如果 `rowvar` 为 True（默认值），则每一行代表一个变量，列中是观测值。否则"
+"，关系是转置的：每一列代表一个变量，行中包含观测值。"
+
+#: maxframe.tensor.statistics.cov.cov:23 of
+msgid ""
+"Default normalization (False) is by ``(N - 1)``, where ``N`` is the "
+"number of observations given (unbiased estimate). If `bias` is True, then"
+" normalization is by ``N``. These values can be overridden by using the "
+"keyword ``ddof`` in numpy versions >= 1.5."
+msgstr ""
+"默认归一化（False）是使用 ``(N - 1)``，其中 ``N`` 是给定的观测值数量（"
+"无偏估计）。如果 `bias` 为 True，则归一化使用 ``N``。在 numpy 版本 >= 1.5"
+" 中，这些值可以通过使用关键字 ``ddof`` 覆盖。"
+
+#: maxframe.tensor.statistics.cov.cov:28 of
+msgid ""
+"If not ``None`` the default value implied by `bias` is overridden. Note "
+"that ``ddof=1`` will return the unbiased estimate, even if both "
+"`fweights` and `aweights` are specified, and ``ddof=0`` will return the "
+"simple average. See the notes for the details. The default value is "
+"``None``."
+msgstr ""
+"如果不为 ``None``，则覆盖由 `bias` 暗示的默认值。请注意，即使指定了 `"
+"fweights` 和 `aweights`，``ddof=1`` 也会返回无偏估计，而 ``ddof=0`` 会"
+"返回简单平均值。详见说明。默认值为 ``None``。"
+
+#: maxframe.tensor.statistics.cov.cov:34 of
+msgid ""
+"1-D tensor of integer freguency weights; the number of times each "
+"observation vector should be repeated."
+msgstr "整数频率权重的一维张量；每个观测向量应重复的次数。"
+
+#: maxframe.tensor.statistics.cov.cov:37 of
+msgid ""
+"1-D tensor of observation vector weights. These relative weights are "
+"typically large for observations considered \"important\" and smaller for"
+" observations considered less \"important\". If ``ddof=0`` the array of "
+"weights can be used to assign probabilities to observation vectors."
+msgstr ""
+"观测向量权重的 1-D 张量。这些相对权重通常对于被认为 \"重要\" 的观测值较大"
+"，而对于被认为不太 \"重要\" 的观测值较小。如果 ``ddof=0``，权重数组可用于"
+"为观测向量分配概率。"
+
+#: maxframe.tensor.statistics.cov.cov of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.statistics.cov.cov:43 of
+msgid "**out** -- The covariance matrix of the variables."
+msgstr "**out** -- 变量的协方差矩阵。"
+
+#: maxframe.tensor.statistics.cov.cov of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.statistics.cov.cov:48 of
+msgid ":py:obj:`corrcoef`"
+msgstr ""
+
+#: maxframe.tensor.statistics.cov.cov:49 of
+msgid "Normalized covariance matrix"
+msgstr "归一化的协方差矩阵"
+
+#: maxframe.tensor.statistics.cov.cov:52 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.statistics.cov.cov:53 of
+msgid ""
+"Assume that the observations are in the columns of the observation array "
+"`m` and let ``f = fweights`` and ``a = aweights`` for brevity. The steps "
+"to compute the weighted covariance are as follows::"
+msgstr ""
+"假设观测值位于观测数组 `m` 的列中，并且为了简洁起见，令 ``f = fweights`` "
+"和 ``a = aweights``。计算加权协方差的步骤如下::"
+
+#: maxframe.tensor.statistics.cov.cov:63 of
+msgid ""
+"Note that when ``a == 1``, the normalization factor ``v1 / (v1**2 - ddof "
+"* v2)`` goes over to ``1 / (np.sum(f) - ddof)`` as it should."
+msgstr ""
+"请注意，当 ``a == 1`` 时，归一化因子 ``v1 / (v1**2 - ddof * v2)`` 会变为 "
+"``1 / (np.sum(f) - ddof)``，这是正确的。"
+
+#: maxframe.tensor.statistics.cov.cov:68 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.statistics.cov.cov:69 of
+msgid ""
+"Consider two variables, :math:`x_0` and :math:`x_1`, which correlate "
+"perfectly, but in opposite directions:"
+msgstr "考虑两个变量 :math:`x_0` 和 :math:`x_1`，它们完全相关但方向相反："
+
+#: maxframe.tensor.statistics.cov.cov:79 of
+msgid ""
+"Note how :math:`x_0` increases while :math:`x_1` decreases. The "
+"covariance matrix shows this clearly:"
+msgstr ""
+"注意 :math:`x_0` 增加的同时 :math:`x_1` 减少。协方差矩阵清楚地显示了这"
+"一点："
+
+#: maxframe.tensor.statistics.cov.cov:86 of
+#, python-brace-format
+msgid ""
+"Note that element :math:`C_{0,1}`, which shows the correlation between "
+":math:`x_0` and :math:`x_1`, is negative."
+msgstr ""
+"请注意元素 :math:`C_{0,1}` 显示了 :math:`x_0` 和 :math:`x_1` 之间的相关性"
+"，它是负的。"
+
+#: maxframe.tensor.statistics.cov.cov:89 of
+msgid "Further, note how `x` and `y` are combined:"
+msgstr "此外，请注意 `x` 和 `y` 是如何组合的："
+

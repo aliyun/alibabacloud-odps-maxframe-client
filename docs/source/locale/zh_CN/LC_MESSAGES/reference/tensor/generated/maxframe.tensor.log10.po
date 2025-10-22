@@ -1,0 +1,120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.log10.rst:2
+msgid "maxframe.tensor.log10"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.log10.log10:1 of
+msgid "Return the base 10 logarithm of the input tensor, element-wise."
+msgstr "返回输入张量的以 10 为底的对数，逐元素计算。"
+
+#: maxframe.tensor.arithmetic.log10.log10 of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.log10.log10:3 of
+msgid "Input values."
+msgstr "输入值。"
+
+#: maxframe.tensor.arithmetic.log10.log10:5 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，其形状必须可以广播到输入形状。如果未提供或"
+"为 `None`，则返回一个新分配的张量。元组（仅可作为关键字参数）的长度必须"
+"等于输出数量。"
+
+#: maxframe.tensor.arithmetic.log10.log10:10 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.log10.log10 of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.log10.log10:15 of
+msgid ""
+"**y** -- The logarithm to the base 10 of `x`, element-wise. NaNs are "
+"returned where x is negative."
+msgstr "**y** -- `x` 的以 10 为底的对数，逐元素计算。当 `x` 为负数时返回 NaN。"
+
+#: maxframe.tensor.arithmetic.log10.log10 of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.log10.log10:20 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.log10.log10:21 of
+msgid ""
+"Logarithm is a multivalued function: for each `x` there is an infinite "
+"number of `z` such that `10**z = x`. The convention is to return the `z` "
+"whose imaginary part lies in `[-pi, pi]`."
+msgstr ""
+"对数是一个多值函数：对于每个 `x`，存在无限多个 `z` 使得 `10**z = x`。约定"
+"返回虚部在 `[-pi, pi]` 范围内的 `z`。"
+
+#: maxframe.tensor.arithmetic.log10.log10:25 of
+msgid ""
+"For real-valued input data types, `log10` always returns real output. For"
+" each value that cannot be expressed as a real number or infinity, it "
+"yields ``nan`` and sets the `invalid` floating point error flag."
+msgstr ""
+"对于实数类型的输入数据，`log10` 总是返回实数输出。对于无法表示为实数或"
+"无穷大的值，它将返回 ``nan`` 并设置 `invalid` 浮点错误标志。"
+
+#: maxframe.tensor.arithmetic.log10.log10:29 of
+msgid ""
+"For complex-valued input, `log10` is a complex analytical function that "
+"has a branch cut `[-inf, 0]` and is continuous from above on it. `log10` "
+"handles the floating-point negative zero as an infinitesimal negative "
+"number, conforming to the C99 standard."
+msgstr ""
+"对于复数类型的输入，`log10` 是一个具有分支切割 `[-inf, 0]` 的复解析函数，"
+"并在其上从上方连续。`log10` 将浮点负零处理为无穷小的负数，符合 C99 标准。"
+
+#: maxframe.tensor.arithmetic.log10.log10:35 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.log10.log10:36 of
+msgid ""
+"M. Abramowitz and I.A. Stegun, \"Handbook of Mathematical Functions\", "
+"10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/"
+msgstr ""
+"M. Abramowitz 和 I.A. Stegun，《数学函数手册》，第 10 次印刷，1964 年，第"
+" 67 页。http://www.math.sfu.ca/~cbm/aands/"
+
+#: maxframe.tensor.arithmetic.log10.log10:38 of
+msgid "Wikipedia, \"Logarithm\". http://en.wikipedia.org/wiki/Logarithm"
+msgstr "维基百科，“对数”。http://en.wikipedia.org/wiki/Logarithm"
+
+#: maxframe.tensor.arithmetic.log10.log10:41 of
+msgid "示例"
+msgstr ""
+

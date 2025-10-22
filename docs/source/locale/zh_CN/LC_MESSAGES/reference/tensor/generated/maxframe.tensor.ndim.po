@@ -1,0 +1,75 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.ndim.rst:2
+msgid "maxframe.tensor.ndim"
+msgstr ""
+
+#: maxframe.tensor.misc.ndim.ndim:1 of
+msgid "Return the number of dimensions of a tensor."
+msgstr "返回张量的维度数。"
+
+#: maxframe.tensor.misc.ndim.ndim of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.ndim.ndim:3 of
+msgid "Input tebsir.  If it is not already a tensor, a conversion is attempted."
+msgstr "输入张量。如果它还不是张量，则尝试进行转换。"
+
+#: maxframe.tensor.misc.ndim.ndim of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.ndim.ndim:7 of
+msgid ""
+"**number_of_dimensions** -- The number of dimensions in `a`.  Scalars are"
+" zero-dimensional."
+msgstr "**number_of_dimensions** -- `a` 中的维度数。标量是零维的。"
+
+#: maxframe.tensor.misc.ndim.ndim of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.ndim.ndim:12 of
+msgid ":py:obj:`ndarray.ndim`"
+msgstr ""
+
+#: maxframe.tensor.misc.ndim.ndim:13 of
+msgid "equivalent method"
+msgstr "等效方法"
+
+#: maxframe.tensor.misc.ndim.ndim:15 of
+msgid ":py:obj:`shape`"
+msgstr ""
+
+#: maxframe.tensor.misc.ndim.ndim:16 maxframe.tensor.misc.ndim.ndim:19 of
+msgid "dimensions of tensor"
+msgstr "张量的维度"
+
+#: maxframe.tensor.misc.ndim.ndim:18 of
+msgid ":py:obj:`Tensor.shape`"
+msgstr ""
+
+#: maxframe.tensor.misc.ndim.ndim:22 of
+msgid "示例"
+msgstr ""
+

@@ -1,0 +1,122 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.shift.rst:2
+msgid "maxframe.dataframe.DataFrame.shift"
+msgstr ""
+
+#: maxframe.dataframe.misc.shift.shift:1 of
+msgid "Shift index by desired number of periods with an optional time `freq`."
+msgstr "根据指定的周期数以及可选的时间频率 `freq` 对索引进行偏移。"
+
+#: maxframe.dataframe.misc.shift.shift:3 of
+msgid ""
+"When `freq` is not passed, shift the index without realigning the data. "
+"If `freq` is passed (in this case, the index must be date or datetime, or"
+" it will raise a `NotImplementedError`), the index will be increased "
+"using the periods and the `freq`."
+msgstr ""
+"当未提供 `freq` 参数时，不重新对齐数据，仅偏移索引。如果提供了 `freq` "
+"参数（此时索引必须为日期或日期时间类型，否则会抛出 `NotImplementedError`"
+"），则将根据指定周期和频率 `freq` 来增加索引。"
+
+#: maxframe.dataframe.misc.shift.shift of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.shift.shift:8 of
+msgid "Number of periods to shift. Can be positive or negative."
+msgstr "要偏移的周期数。可以为正数或负数。"
+
+#: maxframe.dataframe.misc.shift.shift:10 of
+msgid ""
+"Offset to use from the tseries module or time rule (e.g. 'EOM'). If "
+"`freq` is specified then the index values are shifted but the data is not"
+" realigned. That is, use `freq` if you would like to extend the index "
+"when shifting and preserve the original data."
+msgstr ""
+"使用 tseries 模块中的偏移量或时间规则（例如 'EOM'）。如果指定了 `freq`，"
+"则索引值会偏移但数据不会重新对齐。也就是说，如果希望在偏移时扩展索引并"
+"保留原始数据，请使用 `freq`。"
+
+#: maxframe.dataframe.misc.shift.shift:15 of
+msgid "Shift direction."
+msgstr "偏移方向。"
+
+#: maxframe.dataframe.misc.shift.shift:17 of
+msgid ""
+"The scalar value to use for newly introduced missing values. the default "
+"depends on the dtype of `self`. For numeric data, ``np.nan`` is used. For"
+" datetime, timedelta, or period data, etc. :attr:`NaT` is used. For "
+"extension dtypes, ``self.dtype.na_value`` is used."
+msgstr ""
+"用于新增缺失值的标量值。默认值取决于 `self` 的数据类型。对于数值型数据，"
+"使用 ``np.nan``；对于日期时间、时间差或周期类型数据等，使用 :attr:`NaT`；"
+"对于扩展数据类型，则使用 ``self.dtype.na_value``。"
+
+#: maxframe.dataframe.misc.shift.shift of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.shift.shift:24 of
+msgid "Copy of input object, shifted."
+msgstr "输入对象的副本，已偏移。"
+
+#: maxframe.dataframe.misc.shift.shift of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.shift.shift:29 of
+msgid ":py:obj:`Index.shift`"
+msgstr ""
+
+#: maxframe.dataframe.misc.shift.shift:30 of
+msgid "Shift values of Index."
+msgstr "对 Index 的值进行偏移。"
+
+#: maxframe.dataframe.misc.shift.shift:32 of
+msgid ":py:obj:`DatetimeIndex.shift`"
+msgstr ""
+
+#: maxframe.dataframe.misc.shift.shift:33 of
+msgid "Shift values of DatetimeIndex."
+msgstr "对 DatetimeIndex 的值进行偏移。"
+
+#: maxframe.dataframe.misc.shift.shift:35 of
+msgid ":py:obj:`PeriodIndex.shift`"
+msgstr ""
+
+#: maxframe.dataframe.misc.shift.shift:36 of
+msgid "Shift values of PeriodIndex."
+msgstr "对 PeriodIndex 的值进行偏移。"
+
+#: maxframe.dataframe.misc.shift.shift:38 of
+msgid ":py:obj:`tshift`"
+msgstr ""
+
+#: maxframe.dataframe.misc.shift.shift:39 of
+msgid "Shift the time index, using the index's frequency if available."
+msgstr "对时间索引进行偏移，如果可用则使用索引的频率。"
+
+#: maxframe.dataframe.misc.shift.shift:42 of
+msgid "示例"
+msgstr ""
+

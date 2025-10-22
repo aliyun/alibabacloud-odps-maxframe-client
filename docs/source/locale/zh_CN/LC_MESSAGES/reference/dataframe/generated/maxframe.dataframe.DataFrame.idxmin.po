@@ -1,0 +1,107 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.idxmin.rst:2
+msgid "maxframe.dataframe.DataFrame.idxmin"
+msgstr ""
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:1 of
+msgid "Return index of first occurrence of minimum over requested axis."
+msgstr "返回沿指定轴首次出现最小值的索引。"
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:3 of
+msgid "NA/null values are excluded."
+msgstr "NA/null 值将被排除。"
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:5 of
+msgid ""
+"The axis to use. 0 or 'index' for row-wise, 1 or 'columns' for column-"
+"wise."
+msgstr "使用的轴。0 或 'index' 表示按行，1 或 'columns' 表示按列。"
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:7 of
+msgid ""
+"Exclude NA/null values. If an entire row/column is NA, the result will be"
+" NA."
+msgstr "排除 NA/null 值。如果整行/列都是 NA，则结果为 NA。"
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:11 of
+msgid "Indexes of minima along the specified axis."
+msgstr "沿指定轴最小值的索引。"
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:14 of
+msgid "* If the row/column is empty"
+msgstr "* 如果行/列为空"
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:14 of
+msgid "If the row/column is empty"
+msgstr "如果行/列为空"
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:18 of
+msgid ":py:obj:`Series.idxmin`"
+msgstr ""
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:19 of
+msgid "Return index of the minimum element."
+msgstr "返回最小元素的索引。"
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:22 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:23 of
+msgid "This method is the DataFrame version of ``ndarray.argmin``."
+msgstr "此方法是 ``ndarray.argmin`` 的 DataFrame 版本。"
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:26 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:27 of
+msgid "Consider a dataset containing food consumption in Argentina."
+msgstr "考虑一个包含阿根廷食品消费数据的数据集。"
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:40 of
+msgid "By default, it returns the index for the minimum value in each column."
+msgstr "默认情况下，它返回每列中最小值的索引。"
+
+#: maxframe.dataframe.reduction.idxmin.idxmin_dataframe:47 of
+msgid ""
+"To return the index for the minimum value in each row, use "
+"``axis=\"columns\"``."
+msgstr "要返回每行中最小值的索引，请使用 ``axis=\"columns\"``。"
+

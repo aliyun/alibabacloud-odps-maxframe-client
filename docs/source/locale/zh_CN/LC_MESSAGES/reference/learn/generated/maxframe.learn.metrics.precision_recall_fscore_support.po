@@ -1,0 +1,372 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.precision_recall_fscore_support.rst:2
+msgid "maxframe.learn.metrics.precision\\_recall\\_fscore\\_support"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:1 of
+msgid "Compute precision, recall, F-measure and support for each class"
+msgstr "计算每个类的精度、召回率、F值和支持度"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:3 of
+msgid ""
+"The precision is the ratio ``tp / (tp + fp)`` where ``tp`` is the number "
+"of true positives and ``fp`` the number of false positives. The precision"
+" is intuitively the ability of the classifier not to label as positive a "
+"sample that is negative."
+msgstr ""
+"精度是比率 ``tp / (tp + fp)``，其中 ``tp`` 是真正例的数量，``fp`` 是假"
+"正例的数量。直观上，精度是分类器不将负样本标记为正的能力。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:8 of
+msgid ""
+"The recall is the ratio ``tp / (tp + fn)`` where ``tp`` is the number of "
+"true positives and ``fn`` the number of false negatives. The recall is "
+"intuitively the ability of the classifier to find all the positive "
+"samples."
+msgstr ""
+"召回率是比率 ``tp / (tp + fn)``，其中 ``tp`` 是真正例的数量，``fn`` 是假"
+"负例的数量。直观上，召回率是分类器找出所有正样本的能力。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:12 of
+msgid ""
+"The F-beta score can be interpreted as a weighted harmonic mean of the "
+"precision and recall, where an F-beta score reaches its best value at 1 "
+"and worst score at 0."
+msgstr ""
+"F-beta 分数可以被解释为精度和召回率的加权调和平均数，其中 F-beta 分数在 1"
+" 时达到最佳值，在 0 时最差。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:16 of
+msgid ""
+"The F-beta score weights recall more than precision by a factor of "
+"``beta``. ``beta == 1.0`` means recall and precision are equally "
+"important."
+msgstr ""
+"F-beta 分数通过因子 ``beta`` 给予召回率比精度更高的权重。``beta == 1.0`` "
+"表示召回率和精度同样重要。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:19 of
+msgid "The support is the number of occurrences of each class in ``y_true``."
+msgstr "支持度是 ``y_true`` 中每个类出现的次数。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:21 of
+msgid ""
+"If ``pos_label is None`` and in binary classification, this function "
+"returns the average precision, recall and F-measure if ``average`` is one"
+" of ``'micro'``, ``'macro'``, ``'weighted'`` or ``'samples'``."
+msgstr ""
+"如果 ``pos_label is None`` 且是二分类任务，当 ``average`` 是 ``'micro'``"
+"、``'macro'``、``'weighted'`` 或 ``'samples'`` 之一时，此函数返回平均精度"
+"、召回率和 F 值。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:25 of
+msgid "Read more in the :ref:`User Guide <precision_recall_f_measure_metrics>`."
+msgstr "更多内容请参见 :ref:`用户指南 <precision_recall_f_measure_metrics>`。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:27 of
+msgid "Ground truth (correct) target values."
+msgstr "真实（正确）的目标值。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:29 of
+msgid "Estimated targets as returned by a classifier."
+msgstr "分类器返回的估计目标。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:31 of
+msgid "The strength of recall versus precision in the F-score."
+msgstr "F 分数中召回率与精度的权重比。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:33 of
+msgid ""
+"The set of labels to include when ``average != 'binary'``, and their "
+"order if ``average is None``. Labels present in the data can be excluded,"
+" for example to calculate a multiclass average ignoring a majority "
+"negative class, while labels not present in the data will result in 0 "
+"components in a macro average. For multilabel targets, labels are column "
+"indices. By default, all labels in ``y_true`` and ``y_pred`` are used in "
+"sorted order."
+msgstr ""
+"当 ``average != 'binary'`` 时要包括的标签集，以及当 ``average is None`` "
+"时的顺序。数据中存在的标签可以被排除，例如在计算多类平均值时忽略多数负类"
+"；而在数据中不存在的标签在宏平均时将导致 0 成分。对于多标签目标，标签是列"
+"索引。默认情况下，``y_true`` 和 ``y_pred`` 中的所有标签都按排序后的顺序"
+"使用。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:41 of
+msgid ""
+"The class to report if ``average='binary'`` and the data is binary. If "
+"the data are multiclass or multilabel, this will be ignored; setting "
+"``labels=[pos_label]`` and ``average != 'binary'`` will report scores for"
+" that label only."
+msgstr ""
+"当 ``average='binary'`` 且数据为二分类时要报告的类别。如果数据是多类或多"
+"标签，此设置将被忽略；若设置 ``labels=[pos_label]`` 并且 ``average != '"
+"binary'``，则仅报告该标签的得分。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:46 of
+#, python-brace-format
+msgid ""
+"If ``None``, the scores for each class are returned. Otherwise, this "
+"determines the type of averaging performed on the data:  ``'binary'``:"
+"     Only report results for the class specified by ``pos_label``.     "
+"This is applicable only if targets (``y_{true,pred}``) are binary. "
+"``'micro'``:     Calculate metrics globally by counting the total true "
+"positives,     false negatives and false positives. ``'macro'``:     "
+"Calculate metrics for each label, and find their unweighted     mean.  "
+"This does not take label imbalance into account. ``'weighted'``:     "
+"Calculate metrics for each label, and find their average weighted     by "
+"support (the number of true instances for each label). This     alters "
+"'macro' to account for label imbalance; it can result in an     F-score "
+"that is not between precision and recall. ``'samples'``:     Calculate "
+"metrics for each instance, and find their average (only     meaningful "
+"for multilabel classification where this differs from     "
+":func:`accuracy_score`)."
+msgstr ""
+"如果为 ``None``，则返回每个类的得分。否则，此参数确定在数据上执行的平均"
+"类型：``'binary'``：仅报告 ``pos_label`` 指定的类的结果。仅适用于目标（``"
+"y_{true,pred}``）为二元的情况。``'micro'``：通过计算总的真正例、假负例和"
+"假正例来全局计算指标。``'macro'``：为每个标签计算指标，并求其未加权的"
+"平均值。不考虑类别不平衡。``'weighted'``：为每个标签计算指标，并根据支持"
+"度（每个标签的真实实例数）进行加权平均。这会调整“macro”以考虑类别不平衡"
+"；它可能导致 F 分数不在精度和召回率之间。``'samples'``：为每个样本计算"
+"指标，并求其平均值（仅对多标签分类有意义，此时不同于 :func:`accuracy_"
+"score`）。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:46 of
+msgid ""
+"If ``None``, the scores for each class are returned. Otherwise, this "
+"determines the type of averaging performed on the data:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:49 of
+msgid "``'binary'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:50 of
+#, python-brace-format
+msgid ""
+"Only report results for the class specified by ``pos_label``. This is "
+"applicable only if targets (``y_{true,pred}``) are binary."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:52 of
+msgid "``'micro'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:53 of
+msgid ""
+"Calculate metrics globally by counting the total true positives, false "
+"negatives and false positives."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:55 of
+msgid "``'macro'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:56 of
+msgid ""
+"Calculate metrics for each label, and find their unweighted mean.  This "
+"does not take label imbalance into account."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:58 of
+msgid "``'weighted'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:59 of
+msgid ""
+"Calculate metrics for each label, and find their average weighted by "
+"support (the number of true instances for each label). This alters "
+"'macro' to account for label imbalance; it can result in an F-score that "
+"is not between precision and recall."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:63 of
+msgid "``'samples'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:64 of
+msgid ""
+"Calculate metrics for each instance, and find their average (only "
+"meaningful for multilabel classification where this differs from "
+":func:`accuracy_score`)."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:68 of
+msgid ""
+"This determines which warnings will be made in the case that this "
+"function is being used to return only one of its metrics."
+msgstr "这确定在使用此函数仅返回其中一个指标时将发出哪些警告。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:71 of
+msgid "Sample weights."
+msgstr "样本权重。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:73 of
+msgid ""
+"Sets the value to return when there is a zero division:    - recall: when"
+" there are no positive labels    - precision: when there are no positive "
+"predictions    - f-score: both  If set to \"warn\", this acts as 0, but "
+"warnings are also raised."
+msgstr ""
+"设置在零除时返回的值：    - recall：当没有正标签时    - precision：当没有"
+"正预测时    - f-score：两者皆是  如果设置为 \"warn\"，则行为与 0 相同，但"
+"也会引发警告。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:74 of
+msgid "Sets the value to return when there is a zero division:"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:75 of
+msgid "recall: when there are no positive labels"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:76 of
+msgid "precision: when there are no positive predictions"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:77 of
+msgid "f-score: both"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:79 of
+msgid "If set to \"warn\", this acts as 0, but warnings are also raised."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:82 of
+msgid ""
+"* **precision** (*float (if average is not None) or array of float, shape"
+" =        [n_unique_labels]*) * **recall** (*float (if average is not "
+"None) or array of float, , shape =        [n_unique_labels]*) * "
+"**fbeta_score** (*float (if average is not None) or array of float, shape"
+" =        [n_unique_labels]*) * **support** (*None (if average is not "
+"None) or array of int, shape =        [n_unique_labels]*) -- The number "
+"of occurrences of each label in ``y_true``."
+msgstr ""
+"* **precision** (*float (如果 average 不为 None) 或浮点数组，形状 =      "
+"  [n_unique_labels]*) * **recall** (*float (如果 average 不为 None) 或"
+"浮点数组，形状 =        [n_unique_labels]*) * **fbeta_score** (*float ("
+"如果 average 不为 None) 或浮点数组，形状 =        [n_unique_labels]*) * *"
+"*support** (*None (如果 average 不为 None) 或整数数组，形状 =        [n_"
+"unique_labels]*) -- ``y_true`` 中每个标签的出现次数。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:82 of
+msgid ""
+"**precision** (*float (if average is not None) or array of float, shape ="
+"        [n_unique_labels]*)"
+msgstr ""
+"**precision** (*float (如果 average 不为 None) 或浮点数组，形状 =        "
+"[n_unique_labels]*)"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:83 of
+msgid ""
+"**recall** (*float (if average is not None) or array of float, , shape ="
+"        [n_unique_labels]*)"
+msgstr ""
+"**recall** (*float (如果 average 不为 None) 或浮点数组，形状 =        [n_"
+"unique_labels]*)"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:84 of
+msgid ""
+"**fbeta_score** (*float (if average is not None) or array of float, shape"
+" =        [n_unique_labels]*)"
+msgstr ""
+"**fbeta_score** (*float (如果 average 不为 None) 或浮点数组，形状 =      "
+"  [n_unique_labels]*)"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:85 of
+msgid ""
+"**support** (*None (if average is not None) or array of int, shape ="
+"        [n_unique_labels]*) -- The number of occurrences of each label in"
+" ``y_true``."
+msgstr ""
+"**support** (*None (如果 average 不为 None) 或整数数组，形状 =        [n_"
+"unique_labels]*) —— ``y_true`` 中每个标签的出现次数。"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:88 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:89 of
+msgid ""
+"`Wikipedia entry for the Precision and recall "
+"<https://en.wikipedia.org/wiki/Precision_and_recall>`_"
+msgstr ""
+"`精确率与召回率的维基百科条目 <https://en.wikipedia.org/wiki/Precision_"
+"and_recall>`_"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:92 of
+msgid ""
+"`Wikipedia entry for the F1-score "
+"<https://en.wikipedia.org/wiki/F1_score>`_"
+msgstr "`F1 分数的维基百科条目 <https://en.wikipedia.org/wiki/F1_score>`_"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:95 of
+msgid ""
+"`Discriminative Methods for Multi-labeled Classification Advances in "
+"Knowledge Discovery and Data Mining (2004), pp. 22-30 by Shantanu "
+"Godbole, Sunita Sarawagi <http://www.godbole.net/shantanu/pubs"
+"/multilabelsvm-pakdd04.pdf>`_"
+msgstr ""
+"`用于多标签分类的判别方法 知识发现与数据挖掘进展 (2004)，第 22-30 页，"
+"作者 Shantanu Godbole, Sunita Sarawagi <http://www.godbole.net/shantanu/"
+"pubs/multilabelsvm-pakdd04.pdf>`_"
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:101
+#: of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:113
+#: of
+msgid ""
+"It is possible to compute per-label precisions, recalls, F1-scores and "
+"supports instead of averaging:"
+msgstr "可以计算每个标签的精确率、召回率、F1 分数和支持度，而不是取平均值："
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:123
+#: of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.precision_recall_fscore_support:124
+#: of
+msgid ""
+"When ``true positive + false positive == 0``, precision is undefined; "
+"When ``true positive + false negative == 0``, recall is undefined. In "
+"such cases, by default the metric will be set to 0, as will f-score, and "
+"``UndefinedMetricWarning`` will be raised. This behavior can be modified "
+"with ``zero_division``."
+msgstr ""
+"当 ``true positive + false positive == 0`` 时，精确率未定义；当 ``true "
+"positive + false negative == 0`` 时，召回率未定义。在这些情况下，默认度量"
+"将设为 0，F 分数也是如此，并会引发 ``UndefinedMetricWarning``。此行为可以"
+"通过 ``zero_division`` 修改。"
+

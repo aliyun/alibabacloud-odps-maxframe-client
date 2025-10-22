@@ -1,0 +1,177 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-23 09:55+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/creation.rst:4
+msgid "Tensor Creation Routines"
+msgstr "张量创建例程"
+
+#: ../../source/reference/tensor/creation.rst:7
+msgid "From shape or value"
+msgstr "根据形状或值创建"
+
+#: ../../source/reference/tensor/creation.rst:20:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.ones <maxframe.tensor.ones>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:20:<autosummary>:1
+msgid "Return a new tensor of given shape and type, filled with ones."
+msgstr "返回一个给定形状和类型的全1新张量。"
+
+#: ../../source/reference/tensor/creation.rst:20:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.zeros <maxframe.tensor.zeros>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:20:<autosummary>:1
+msgid "Return a new tensor of given shape and type, filled with zeros."
+msgstr "返回一个给定形状和类型的全0新张量。"
+
+#: ../../source/reference/tensor/creation.rst:20:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.empty <maxframe.tensor.empty>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:20:<autosummary>:1
+msgid "Return a new tensor of given shape and type, without initializing entries."
+msgstr "返回一个给定形状和类型但未初始化的新张量。"
+
+#: ../../source/reference/tensor/creation.rst:20:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.empty_like <maxframe.tensor.empty_like>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:20:<autosummary>:1
+msgid "Return a new tensor with the same shape and type as a given tensor."
+msgstr "返回一个与给定张量具有相同形状和类型的新张量。"
+
+#: ../../source/reference/tensor/creation.rst:20:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.full <maxframe.tensor.full>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:20:<autosummary>:1
+msgid "Return a new tensor of given shape and type, filled with `fill_value`."
+msgstr "返回一个给定形状和类型且填充值为`fill_value`的新张量。"
+
+#: ../../source/reference/tensor/creation.rst:20:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.full_like <maxframe.tensor.full_like>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:20:<autosummary>:1
+msgid "Return a full tensor with the same shape and type as a given tensor."
+msgstr "返回一个与给定张量具有相同形状和类型且填充相同值的新张量。"
+
+#: ../../source/reference/tensor/creation.rst:22
+msgid "From existing data"
+msgstr "从现有数据创建"
+
+#: ../../source/reference/tensor/creation.rst:32:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.tensor <maxframe.tensor.tensor>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:32:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.array <maxframe.tensor.array>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:32:<autosummary>:1
+msgid "Create a tensor."
+msgstr "创建一个张量。"
+
+#: ../../source/reference/tensor/creation.rst:32:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.asarray <maxframe.tensor.asarray>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:32:<autosummary>:1
+msgid "Convert the input to an array."
+msgstr "将输入转换为数组。"
+
+#: ../../source/reference/tensor/creation.rst:34
+msgid "Building matrices"
+msgstr "构建矩阵"
+
+#: ../../source/reference/tensor/creation.rst:45:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.diag <maxframe.tensor.diag>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:45:<autosummary>:1
+msgid "Extract a diagonal or construct a diagonal tensor."
+msgstr "提取对角线或构造对角张量。"
+
+#: ../../source/reference/tensor/creation.rst:45:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.diagflat <maxframe.tensor.diagflat>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:45:<autosummary>:1
+msgid "Create a two-dimensional tensor with the flattened input as a diagonal."
+msgstr "创建一个以展平输入作为对角线的二维张量。"
+
+#: ../../source/reference/tensor/creation.rst:45:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.tril <maxframe.tensor.tril>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:45:<autosummary>:1
+msgid "Lower triangle of a tensor."
+msgstr "返回张量的下三角部分。"
+
+#: ../../source/reference/tensor/creation.rst:45:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.triu <maxframe.tensor.triu>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:45:<autosummary>:1
+msgid "Upper triangle of a tensor."
+msgstr "返回张量的上三角部分。"
+
+#: ../../source/reference/tensor/creation.rst:47
+msgid "Numerical ranges"
+msgstr "数值范围"
+
+#: ../../source/reference/tensor/creation.rst:57:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.arange <maxframe.tensor.arange>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:57:<autosummary>:1
+msgid "Return evenly spaced values within a given interval."
+msgstr "返回给定区间内均匀间隔的值。"
+
+#: ../../source/reference/tensor/creation.rst:57:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.linspace <maxframe.tensor.linspace>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:57:<autosummary>:1
+msgid "Return evenly spaced numbers over a specified interval."
+msgstr "返回在指定区间内均匀分布的数字。"
+
+#: ../../source/reference/tensor/creation.rst:57:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.meshgrid <maxframe.tensor.meshgrid>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:57:<autosummary>:1
+msgid "Return coordinate matrices from coordinate vectors."
+msgstr "从坐标向量返回坐标矩阵。"
+
+#: ../../source/reference/tensor/creation.rst:57:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.mgrid <maxframe.tensor.mgrid>`"
+msgstr ""
+
+#: ../../source/reference/tensor/creation.rst:57:<autosummary>:1
+msgid "Construct a multi-dimensional \"meshgrid\"."
+msgstr "构造多维“网格”。"
+
+#: ../../source/reference/tensor/creation.rst:57:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.ogrid <maxframe.tensor.ogrid>`"
+msgstr ""
+

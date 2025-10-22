@@ -14,7 +14,7 @@
 
 # noinspection PyUnresolvedReferences
 from ..core import DataFrameGroupBy, GroupBy, SeriesGroupBy
-from .core import NamedAgg
+from .core import _make_named_agg_compat
 from .expanding import ExpandingGroupby
 from .rolling import RollingGroupby
 
@@ -99,3 +99,7 @@ def _install():
 
 _install()
 del _install
+
+
+__getattr__ = _make_named_agg_compat
+del _make_named_agg_compat

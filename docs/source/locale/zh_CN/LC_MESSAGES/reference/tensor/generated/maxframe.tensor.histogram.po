@@ -1,0 +1,195 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.histogram.rst:2
+msgid "maxframe.tensor.histogram"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram:1 of
+msgid "Compute the histogram of a set of data."
+msgstr "计算一组数据的直方图。"
+
+#: maxframe.tensor.statistics.histogram.histogram of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram:3 of
+msgid "Input data. The histogram is computed over the flattened tensor."
+msgstr "输入数据。直方图是在展平的 tensor 上计算的。"
+
+#: maxframe.tensor.statistics.histogram.histogram:5 of
+msgid ""
+"If `bins` is an int, it defines the number of equal-width bins in the "
+"given range (10, by default). If `bins` is a sequence, it defines a "
+"monotonically increasing tensor of bin edges, including the rightmost "
+"edge, allowing for non-uniform bin widths.  If `bins` is a string, it "
+"defines the method used to calculate the optimal bin width, as defined by"
+" `histogram_bin_edges`."
+msgstr ""
+"如果 `bins` 是一个整数，则定义了给定范围内的等宽 bins 数量（默认为 10）。"
+"如果 `bins` 是一个序列，则定义了一个单调递增的 bin 边缘张量，包括最右边的"
+"边缘，允许非均匀的 bin 宽度。如果 `bins` 是一个字符串，则定义了由 `"
+"histogram_bin_edges` 定义的计算最佳 bin 宽度的方法。"
+
+#: maxframe.tensor.statistics.histogram.histogram:5 of
+#, fuzzy
+msgid ""
+"If `bins` is an int, it defines the number of equal-width bins in the "
+"given range (10, by default). If `bins` is a sequence, it defines a "
+"monotonically increasing tensor of bin edges, including the rightmost "
+"edge, allowing for non-uniform bin widths."
+msgstr ""
+"如果 `bins` 是一个整数，则定义了给定范围内的等宽 bins 数量（默认为 10）。"
+"如果 `bins` 是一个序列，则定义了一个单调递增的 bin 边缘张量，包括最右边的"
+"边缘，允许非均匀的 bin 宽度。如果 `bins` 是一个字符串，则定义了由 `"
+"histogram_bin_edges` 定义的计算最佳 bin 宽度的方法。"
+
+#: maxframe.tensor.statistics.histogram.histogram:10 of
+msgid ""
+"If `bins` is a string, it defines the method used to calculate the "
+"optimal bin width, as defined by `histogram_bin_edges`."
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram:13 of
+msgid ""
+"The lower and upper range of the bins.  If not provided, range is simply "
+"``(a.min(), a.max())``.  Values outside the range are ignored. The first "
+"element of the range must be less than or equal to the second. `range` "
+"affects the automatic bin computation as well. While bin width is "
+"computed to be optimal based on the actual data within `range`, the bin "
+"count will fill the entire range including portions containing no data."
+msgstr ""
+"bins 的下限和上限。如果未提供，则范围为 ``(a.min(), a.max())``。范围外的"
+"值将被忽略。范围的第一个元素必须小于或等于第二个元素。`range` 也会影响"
+"自动 bin 计算。虽然 bin 宽度是根据 `range` 内的实际数据计算出最优值，但 "
+"bin 计数将填充整个范围，包括不包含数据的部分。"
+
+#: maxframe.tensor.statistics.histogram.histogram:21 of
+msgid ""
+"A tensor of weights, of the same shape as `a`.  Each value in `a` only "
+"contributes its associated weight towards the bin count (instead of 1). "
+"If `density` is True, the weights are normalized, so that the integral of"
+" the density over the range remains 1."
+msgstr ""
+"一个权重张量，形状与 `a` 相同。`a` 中的每个值仅将其关联的权重贡献给 bin "
+"计数（而不是 1）。如果 `density` 为 True，则对权重进行归一化，使得密度在"
+"范围内的积分为 1。"
+
+#: maxframe.tensor.statistics.histogram.histogram:27 of
+msgid ""
+"If ``False``, the result will contain the number of samples in each bin. "
+"If ``True``, the result is the value of the probability *density* "
+"function at the bin, normalized such that the *integral* over the range "
+"is 1. Note that the sum of the histogram values will not be equal to 1 "
+"unless bins of unity width are chosen; it is not a probability *mass* "
+"function.  Overrides the ``normed`` keyword if given."
+msgstr ""
+"如果为 ``False``，结果将包含每个 bin 中的样本数量。如果为 ``True``，结果"
+"是 bin 处的概率 *密度* 函数值，归一化为在该范围内的 *积分* 为 1。注意，"
+"只有在选择了单位宽度的 bins 时，直方图值的总和才会等于 1；它不是概率 *"
+"质量* 函数。如果给出，将覆盖 ``normed`` 关键字。"
+
+#: maxframe.tensor.statistics.histogram.histogram:27 of
+#, fuzzy
+msgid ""
+"If ``False``, the result will contain the number of samples in each bin. "
+"If ``True``, the result is the value of the probability *density* "
+"function at the bin, normalized such that the *integral* over the range "
+"is 1. Note that the sum of the histogram values will not be equal to 1 "
+"unless bins of unity width are chosen; it is not a probability *mass* "
+"function."
+msgstr ""
+"如果为 ``False``，结果将包含每个 bin 中的样本数量。如果为 ``True``，结果"
+"是 bin 处的概率 *密度* 函数值，归一化为在该范围内的 *积分* 为 1。注意，"
+"只有在选择了单位宽度的 bins 时，直方图值的总和才会等于 1；它不是概率 *"
+"质量* 函数。如果给出，将覆盖 ``normed`` 关键字。"
+
+#: maxframe.tensor.statistics.histogram.histogram:34 of
+msgid "Overrides the ``normed`` keyword if given."
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram:37 of
+msgid ""
+"* **hist** (*tensor*) -- The values of the histogram. See `density` and "
+"`weights` for a   description of the possible semantics. * **bin_edges** "
+"(*tensor of dtype float*) -- Return the bin edges ``(length(hist)+1)``."
+msgstr ""
+"* **hist** (*tensor*) -- 直方图的值。请参见 `density` 和 `weights` 以了解"
+"可能的语义描述。 * **bin_edges** (*dtype 为 float 的 tensor*) -- 返回 bin"
+" 边缘 ``(length(hist)+1)``。"
+
+#: maxframe.tensor.statistics.histogram.histogram:37 of
+msgid ""
+"**hist** (*tensor*) -- The values of the histogram. See `density` and "
+"`weights` for a description of the possible semantics."
+msgstr ""
+"**hist** (*tensor*) -- 直方图的值。请参见 `density` 和 `weights` 以了解"
+"可能的语义描述。"
+
+#: maxframe.tensor.statistics.histogram.histogram:39 of
+msgid ""
+"**bin_edges** (*tensor of dtype float*) -- Return the bin edges "
+"``(length(hist)+1)``."
+msgstr ""
+"**bin_edges** (*dtype 为 float 的 tensor*) -- 返回 bin 边缘 ``(length("
+"hist)+1)``。"
+
+#: maxframe.tensor.statistics.histogram.histogram:41 of
+msgid ""
+":py:obj:`histogramdd`, :py:obj:`bincount`, :py:obj:`searchsorted`, "
+":py:obj:`digitize`, :py:obj:`histogram_bin_edges`"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram:44 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram:45 of
+msgid ""
+"All but the last (righthand-most) bin is half-open.  In other words, if "
+"`bins` is::"
+msgstr ""
+"除最后一个（最右边的）bin 之外的所有 bin 都是半开的。换句话说，如果 `bins"
+"` 是：："
+
+#: maxframe.tensor.statistics.histogram.histogram:50 of
+msgid ""
+"then the first bin is ``[1, 2)`` (including 1, but excluding 2) and the "
+"second ``[2, 3)``.  The last bin, however, is ``[3, 4]``, which "
+"*includes* 4."
+msgstr ""
+"则第一个 bin 是 ``[1, 2)``（包含 1，但不包含 2），第二个是 ``[2, 3)``。"
+"然而，最后一个 bin 是 ``[3, 4]``，它 *包含* 4。"
+
+#: maxframe.tensor.statistics.histogram.histogram:55 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.statistics.histogram.histogram:73 of
+msgid ""
+"Automated Bin Selection Methods example, using 2 peak random data with "
+"2000 points:"
+msgstr "自动 Bin 选择方法示例，使用 2 个峰值的随机数据，共 2000 个点："
+

@@ -1,0 +1,57 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.unstack.rst:2
+msgid "maxframe.dataframe.DataFrame.unstack"
+msgstr ""
+
+#: maxframe.dataframe.reshape.unstack.unstack:1 of
+msgid "Unstack, also known as pivot, Series with MultiIndex to produce DataFrame."
+msgstr "解堆，也称为透视，将具有 MultiIndex 的 Series 转换为 DataFrame。"
+
+#: maxframe.dataframe.reshape.unstack.unstack of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.reshape.unstack.unstack:3 of
+msgid "Level(s) to unstack, can pass level name."
+msgstr "要解堆的层级，可以传递层级名称。"
+
+#: maxframe.dataframe.reshape.unstack.unstack:5 of
+msgid "Value to use when replacing NaN values."
+msgstr "替换 NaN 值时使用的值。"
+
+#: maxframe.dataframe.reshape.unstack.unstack of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.reshape.unstack.unstack:8 of
+msgid "Unstacked Series."
+msgstr "解堆后的 Series。"
+
+#: maxframe.dataframe.reshape.unstack.unstack of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.reshape.unstack.unstack:12 of
+msgid "示例"
+msgstr ""
+

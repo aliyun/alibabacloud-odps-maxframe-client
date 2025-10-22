@@ -1,0 +1,203 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.apply.rst:2
+msgid "maxframe.dataframe.Series.apply"
+msgstr ""
+
+#: maxframe.dataframe.misc.apply.series_apply:1 of
+msgid "Invoke function on values of Series."
+msgstr "对 Series 的值调用函数。"
+
+#: maxframe.dataframe.misc.apply.series_apply:3 of
+msgid ""
+"Can be ufunc (a NumPy function that applies to the entire Series) or a "
+"Python function that only works on single values."
+msgstr ""
+"可以是 ufunc（应用于整个 Series 的 NumPy 函数）或仅适用于单个值的 Python "
+"函数。"
+
+#: maxframe.dataframe.misc.apply.series_apply of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.apply.series_apply:6 of
+msgid "Python function or NumPy ufunc to apply."
+msgstr "要应用的 Python 函数或 NumPy ufunc。"
+
+#: maxframe.dataframe.misc.apply.series_apply:8 of
+msgid ""
+"Try to find better dtype for elementwise function results. If False, "
+"leave as dtype=object."
+msgstr ""
+"尝试为逐元素函数结果找到更好的 dtype。如果为 False，则保留为 dtype=object"
+"。"
+
+#: maxframe.dataframe.misc.apply.series_apply:11 of
+msgid "Specify type of returned object. See `Notes` for more details."
+msgstr "指定返回对象的类型。详见 `Notes`。"
+
+#: maxframe.dataframe.misc.apply.series_apply:13 of
+msgid "Specify dtypes of returned DataFrames. See `Notes` for more details."
+msgstr "指定返回 DataFrame 的 dtypes。详见 `Notes`。"
+
+#: maxframe.dataframe.misc.apply.series_apply:15 of
+msgid "Specify dtype of returned Series. See `Notes` for more details."
+msgstr "指定返回 Series 的 dtype。详见 `Notes`。"
+
+#: maxframe.dataframe.misc.apply.series_apply:17 of
+msgid "Specify name of returned Series. See `Notes` for more details."
+msgstr "指定返回 Series 的名称。详见 `Notes`。"
+
+#: maxframe.dataframe.misc.apply.series_apply:19 of
+msgid "Specify index of returned object. See `Notes` for more details."
+msgstr "指定返回对象的索引。详见 `Notes`。"
+
+#: maxframe.dataframe.misc.apply.series_apply:21 of
+msgid "Positional arguments passed to func after the series value."
+msgstr "传递给 func 的位置参数，在 series 值之后。"
+
+#: maxframe.dataframe.misc.apply.series_apply:23 of
+msgid "Whether infer dtypes when dtypes or output_type is not specified."
+msgstr "当未指定 dtypes 或 output_type 时是否推断 dtypes。"
+
+#: maxframe.dataframe.misc.apply.series_apply:25 of
+msgid "Additional keyword arguments passed to func."
+msgstr "传递给 func 的其他关键字参数。"
+
+#: maxframe.dataframe.misc.apply.series_apply of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.apply.series_apply:27 of
+msgid "If func returns a Series object the result will be a DataFrame."
+msgstr "如果 func 返回一个 Series 对象，结果将是一个 DataFrame。"
+
+#: maxframe.dataframe.misc.apply.series_apply of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.apply.series_apply:32 of
+msgid ":py:obj:`Series.map`"
+msgstr ""
+
+#: maxframe.dataframe.misc.apply.series_apply:33 of
+msgid "For element-wise operations."
+msgstr "用于逐元素操作。"
+
+#: maxframe.dataframe.misc.apply.series_apply:35 of
+msgid ":py:obj:`Series.agg`"
+msgstr ""
+
+#: maxframe.dataframe.misc.apply.series_apply:36 of
+msgid "Only perform aggregating type operations."
+msgstr "仅执行聚合类型操作。"
+
+#: maxframe.dataframe.misc.apply.series_apply:38 of
+msgid ":py:obj:`Series.transform`"
+msgstr ""
+
+#: maxframe.dataframe.misc.apply.series_apply:39 of
+msgid "Only perform transforming type operations."
+msgstr "仅执行变换类型操作。"
+
+#: maxframe.dataframe.misc.apply.series_apply:42 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.misc.apply.series_apply:43 of
+msgid ""
+"When deciding output dtypes and shape of the return value, MaxFrame will "
+"try applying ``func`` onto a mock Series, and the apply call may fail. "
+"When this happens, you need to specify the type of apply call (DataFrame "
+"or Series) in output_type."
+msgstr ""
+"在决定输出 dtypes 和返回值形状时，MaxFrame 会尝试将 ``func`` 应用于模拟的"
+" Series，apply 调用可能会失败。发生这种情况时，您需要在 output_type 中"
+"指定 apply 调用的类型（DataFrame 或 Series）。"
+
+#: maxframe.dataframe.misc.apply.series_apply:48 of
+msgid ""
+"For DataFrame output, you need to specify a list or a pandas Series as "
+"``dtypes`` of output DataFrame. ``index`` of output can also be "
+"specified."
+msgstr ""
+"对于 DataFrame 输出，您需要指定一个列表或 pandas Series 作为输出 "
+"DataFrame 的 ``dtypes``。还可以指定输出的 ``index``。"
+
+#: maxframe.dataframe.misc.apply.series_apply:51 of
+msgid ""
+"For Series output, you need to specify ``dtype`` and ``name`` of output "
+"Series."
+msgstr "对于 Series 输出，您需要指定输出 Series 的 ``dtype`` 和 ``name``。"
+
+#: maxframe.dataframe.misc.apply.series_apply:53 of
+msgid ""
+"For any input with data type ``pandas.ArrowDtype(pyarrow.MapType)``, it "
+"will always be converted to a Python dict. And for any output with this "
+"data type, it must be returned as a Python dict as well."
+msgstr ""
+"对于任何数据类型为 ``pandas.ArrowDtype(pyarrow.MapType)`` 的输入，它将"
+"始终被转换为 Python 字典。对于任何具有此数据类型的输出，也必须作为 Python"
+" 字典返回。"
+
+#: maxframe.dataframe.misc.apply.series_apply:58 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.apply.series_apply:59 of
+msgid "Create a series with typical summer temperatures for each city."
+msgstr "为每个城市创建一个包含典型夏季温度的 Series。"
+
+#: maxframe.dataframe.misc.apply.series_apply:71 of
+msgid ""
+"Square the values by defining a function and passing it as an argument to"
+" ``apply()``."
+msgstr "通过定义一个函数并将其作为参数传递给 ``apply()`` 来对值进行平方。"
+
+#: maxframe.dataframe.misc.apply.series_apply:82 of
+msgid ""
+"Square the values by passing an anonymous function as an argument to "
+"``apply()``."
+msgstr "通过将匿名函数作为参数传递给 ``apply()`` 来对值进行平方。"
+
+#: maxframe.dataframe.misc.apply.series_apply:91 of
+msgid ""
+"Define a custom function that needs additional positional arguments and "
+"pass these additional arguments using the ``args`` keyword."
+msgstr ""
+"定义一个需要额外位置参数的自定义函数，并使用 ``args`` 关键字传递这些额外"
+"参数。"
+
+#: maxframe.dataframe.misc.apply.series_apply:104 of
+msgid ""
+"Define a custom function that takes keyword arguments and pass these "
+"arguments to ``apply``."
+msgstr "定义一个接受关键字参数的自定义函数，并将这些参数传递给 ``apply``。"
+
+#: maxframe.dataframe.misc.apply.series_apply:118 of
+msgid "Create a series with a map type."
+msgstr "创建一个包含映射类型的 Series。"
+
+#: maxframe.dataframe.misc.apply.series_apply:133 of
+msgid "Define a function that updates the map type with a new key-value pair."
+msgstr "定义一个用新键值对更新映射类型的函数。"
+

@@ -1,0 +1,154 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.transform.rst:2
+msgid "maxframe.dataframe.DataFrame.transform"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.df_transform:1 of
+msgid "Call ``func`` on self producing a DataFrame with transformed values."
+msgstr "在自身上调用 ``func``，生成一个包含转换后值的 DataFrame。"
+
+#: maxframe.dataframe.misc.transform.df_transform:3 of
+msgid "Produced DataFrame will have same axis length as self."
+msgstr "生成的 DataFrame 将具有与自身相同的轴长度。"
+
+#: maxframe.dataframe.misc.transform.df_transform of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.df_transform:5 of
+msgid ""
+"Function to use for transforming the data. If a function, must either "
+"work when passed a DataFrame or when passed to DataFrame.apply.  Accepted"
+" combinations are:  - function - string function name - list of functions"
+" and/or function names, e.g. ``[np.exp. 'sqrt']`` - dict of axis labels "
+"-> functions, function names or list of such."
+msgstr ""
+"用于转换数据的函数。如果是一个函数，则必须能够在传入 DataFrame 时工作，"
+"或者可以被传递给 DataFrame.apply。可接受的组合包括： - 函数 - 字符串形式"
+"的函数名 - 函数和/或函数名的列表，例如 ``[np.exp. 'sqrt']`` - 轴标签到"
+"函数、函数名或其列表的字典。"
+
+#: maxframe.dataframe.misc.transform.df_transform:5 of
+msgid ""
+"Function to use for transforming the data. If a function, must either "
+"work when passed a DataFrame or when passed to DataFrame.apply."
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.df_transform:8 of
+msgid "Accepted combinations are:"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.df_transform:10 of
+msgid "function"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.df_transform:11 of
+#, fuzzy
+msgid "string function name"
+msgstr "在 DataFrame 上调用函数。"
+
+#: maxframe.dataframe.misc.transform.df_transform:12 of
+msgid "list of functions and/or function names, e.g. ``[np.exp. 'sqrt']``"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.df_transform:13 of
+msgid "dict of axis labels -> functions, function names or list of such."
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.df_transform:15 of
+msgid ""
+"If 0 or 'index': apply function to each column. If 1 or 'columns': apply "
+"function to each row."
+msgstr ""
+"如果为 0 或 'index'：将函数应用于每一列。如果为 1 或 'columns'：将函数"
+"应用于每一行。"
+
+#: maxframe.dataframe.misc.transform.df_transform:18 of
+msgid "Specify dtypes of returned DataFrames. See `Notes` for more details."
+msgstr "指定返回的 DataFrame 的数据类型。详见“说明”部分。"
+
+#: maxframe.dataframe.misc.transform.df_transform:20 of
+msgid "Whether infer dtypes when dtypes or output_type is not specified."
+msgstr "当未指定 dtypes 或 output_type 时是否推断数据类型。"
+
+#: maxframe.dataframe.misc.transform.df_transform:22 of
+msgid "Positional arguments to pass to `func`."
+msgstr "传递给 `func` 的位置参数。"
+
+#: maxframe.dataframe.misc.transform.df_transform:23 of
+msgid "Keyword arguments to pass to `func`."
+msgstr "传递给 `func` 的关键字参数。"
+
+#: maxframe.dataframe.misc.transform.df_transform of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.df_transform:25 of
+msgid "A DataFrame that must have the same length as self."
+msgstr "一个必须与自身具有相同长度的 DataFrame。"
+
+#: maxframe.dataframe.misc.transform.df_transform of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.df_transform:28 of
+msgid ""
+":raises ValueError : If the returned DataFrame has a different length "
+"than self.:"
+msgstr ":raises ValueError : 如果返回的 DataFrame 与自身的长度不同。:"
+
+#: maxframe.dataframe.misc.transform.df_transform:32 of
+msgid ":py:obj:`DataFrame.agg`"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.df_transform:33 of
+msgid "Only perform aggregating type operations."
+msgstr "仅执行聚合类型的操作。"
+
+#: maxframe.dataframe.misc.transform.df_transform:35 of
+msgid ":py:obj:`DataFrame.apply`"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.df_transform:36 of
+msgid "Invoke function on a DataFrame."
+msgstr "在 DataFrame 上调用函数。"
+
+#: maxframe.dataframe.misc.transform.df_transform:39 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.misc.transform.df_transform:40 of
+msgid ""
+"When deciding output dtypes and shape of the return value, MaxFrame will "
+"try applying ``func`` onto a mock DataFrame and the apply call may fail. "
+"When this happens, you need to specify a list or a pandas Series as "
+"``dtypes`` of output DataFrame."
+msgstr ""
+"在确定输出数据类型和返回值形状时，MaxFrame 会尝试将 ``func`` 应用于一个"
+"模拟 DataFrame，此时 apply 调用可能失败。发生这种情况时，你需要指定一个"
+"列表或 pandas Series 作为输出 DataFrame 的 ``dtypes``。"
+
+#: maxframe.dataframe.misc.transform.df_transform:46 of
+msgid "示例"
+msgstr ""
+

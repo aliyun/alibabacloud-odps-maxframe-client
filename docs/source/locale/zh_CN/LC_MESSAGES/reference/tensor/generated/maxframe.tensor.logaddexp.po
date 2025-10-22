@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.logaddexp.rst:2
+msgid "maxframe.tensor.logaddexp"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp:1 of
+msgid "Logarithm of the sum of exponentiations of the inputs."
+msgstr "输入指数和的对数。"
+
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp:3 of
+msgid ""
+"Calculates ``log(exp(x1) + exp(x2))``. This function is useful in "
+"statistics where the calculated probabilities of events may be so small "
+"as to exceed the range of normal floating point numbers.  In such cases "
+"the logarithm of the calculated probability is stored. This function "
+"allows adding probabilities stored in such a fashion."
+msgstr ""
+"计算 ``log(exp(x1) + exp(x2))``。此函数在统计学中非常有用，因为事件的计算"
+"概率可能非常小，以至于超出常规浮点数的范围。在这种情况下，会存储计算出的"
+"概率的对数。此函数允许以这种方式存储的概率相加。"
+
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp:9
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp:11 of
+msgid "Input values."
+msgstr "输入值。"
+
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp:13 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供了该参数，则其形状必须能够广播到输入的形状。"
+"如果未提供或为 `None`，则返回一个新的 tensor。元组（只能作为关键字参数）"
+"的长度必须等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp:18 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp:21 of
+msgid ""
+"For other keyword-only arguments, see the :ref:`ufunc docs "
+"<ufuncs.kwargs>`."
+msgstr "有关其他仅限关键字的参数，请参见 :ref:`ufunc 文档 <ufuncs.kwargs>`。"
+
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp:24 of
+msgid "**result** -- Logarithm of ``exp(x1) + exp(x2)``."
+msgstr "**result** -- ``exp(x1) + exp(x2)`` 的对数。"
+
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp:29 of
+msgid ":py:obj:`logaddexp2`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp:30 of
+msgid "Logarithm of the sum of exponentiations of inputs in base 2."
+msgstr "以 2 为底的输入指数和的对数。"
+
+#: maxframe.tensor.arithmetic.logaddexp.logaddexp:33 of
+msgid "示例"
+msgstr ""
+

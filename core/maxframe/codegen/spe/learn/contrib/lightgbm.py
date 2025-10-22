@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import inspect
-from typing import List
+from typing import List, Optional
 
 from .....learn.contrib.lightgbm._predict import LGBMPredict
 from .....learn.contrib.lightgbm._train import LGBMTrain
@@ -23,11 +23,12 @@ from ...core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
 
 
 class _LightGBMAdapter(SPEOperatorAdapter):
-    def generate_code(self, op: OperatorType, context: SPECodeContext) -> List[str]:
+    def generate_code(
+        self, op: OperatorType, context: SPECodeContext
+    ) -> Optional[List[str]]:
         context.register_import("lightgbm")
         context.register_import("pandas", "pd")
         context.register_import("numpy", "np")
-        return []
 
 
 @register_op_adapter(ToLGBMDataset)

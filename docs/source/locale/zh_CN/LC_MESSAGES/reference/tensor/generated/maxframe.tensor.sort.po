@@ -1,0 +1,319 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.sort.rst:2
+msgid "maxframe.tensor.sort"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:1 of
+msgid "Return a sorted copy of a tensor."
+msgstr "返回一个排序后的 tensor 副本。"
+
+#: maxframe.tensor.sort.sort.sort of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:3 of
+msgid "Tensor to be sorted."
+msgstr "要排序的 Tensor。"
+
+#: maxframe.tensor.sort.sort.sort:5 of
+msgid ""
+"Axis along which to sort. If None, the tensor is flattened before "
+"sorting. The default is -1, which sorts along the last axis."
+msgstr ""
+"排序的轴。如果为 None，则在排序前将 tensor 展平。默认值为 -1，表示沿最后"
+"一个轴排序。"
+
+#: maxframe.tensor.sort.sort.sort:8 of
+msgid ""
+"Sorting algorithm. The default is 'quicksort'. Note that both 'stable' "
+"and 'mergesort' use timsort or radix sort under the covers and, in "
+"general, the actual implementation will vary with data type. The "
+"'mergesort' option is retained for backwards compatibility. Note that "
+"this argument would not take effect if `a` has more than 1 chunk on the "
+"sorting axis."
+msgstr ""
+"排序算法。默认值为 'quicksort'。注意 'stable' 和 'mergesort' 实际上都使用"
+" timsort 或 radix sort，并且实际实现会根据数据类型变化。保留 'mergesort' "
+"是为了向后兼容。注意，如果 `a` 在排序轴上有超过 1 个 chunk，该参数不会"
+"生效。"
+
+#: maxframe.tensor.sort.sort.sort:15 of
+msgid ""
+"When `a` is a tensor with fields defined, this argument specifies which "
+"fields to compare first, second, etc.  A single field can be specified as"
+" a string, and not all fields need be specified, but unspecified fields "
+"will still be used, in the order in which they come up in the dtype, to "
+"break ties."
+msgstr ""
+"当 `a` 是一个定义了字段的 tensor 时，该参数指定首先、其次等比较哪些字段。"
+"单个字段可以指定为字符串，并非所有字段都需要指定，但未指定的字段仍然会"
+"按照它们在 dtype 中出现的顺序用于打破平局。"
+
+#: maxframe.tensor.sort.sort.sort:21 of
+msgid ""
+"Sort stability. If `True`, the returned array will maintain the relative "
+"order of `a` values which compare as equal. If `False` or `None`, this is"
+" not guaranteed. Internally, this option selects `kind='stable'`. "
+"Default: `None`."
+msgstr ""
+"排序稳定性。如果为 `True`，返回的数组将保持 `a` 中相等元素的相对顺序。"
+"如果为 `False` 或 `None`，则不保证这一点。在内部，该选项会选择 `kind='"
+"stable'`。默认值：`None`。"
+
+#: maxframe.tensor.sort.sort.sort:26 of
+msgid ""
+"Parallel sorting algorithm, for the details, refer to: "
+"http://csweb.cs.wfu.edu/bigiron/LittleFE-"
+"PSRS/build/html/PSRSalgorithm.html"
+msgstr ""
+"并行排序算法，详情请参考：http://csweb.cs.wfu.edu/bigiron/LittleFE-PSRS/"
+"build/html/PSRSalgorithm.html"
+
+#: maxframe.tensor.sort.sort.sort:29 of
+msgid "Sorting algorithms during PSRS algorithm."
+msgstr "PSRS 算法中的排序算法。"
+
+#: maxframe.tensor.sort.sort.sort:31 of
+msgid "Return indices as well if True."
+msgstr "如果为 True，同时返回索引。"
+
+#: maxframe.tensor.sort.sort.sort of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:34 of
+msgid "**sorted_tensor** -- Tensor of the same type and shape as `a`."
+msgstr "**sorted_tensor** -- 与 `a` 类型和形状相同的 Tensor。"
+
+#: maxframe.tensor.sort.sort.sort of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:39 of
+msgid ":py:obj:`Tensor.sort`"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:40 of
+msgid "Method to sort a tensor in-place."
+msgstr "原地排序 tensor 的方法。"
+
+#: maxframe.tensor.sort.sort.sort:42 of
+msgid ":py:obj:`argsort`"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:43 of
+msgid "Indirect sort."
+msgstr "间接排序。"
+
+#: maxframe.tensor.sort.sort.sort:45 of
+msgid ":py:obj:`lexsort`"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:46 of
+msgid "Indirect stable sort on multiple keys."
+msgstr "基于多个键的间接稳定排序。"
+
+#: maxframe.tensor.sort.sort.sort:48 of
+msgid ":py:obj:`searchsorted`"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:49 of
+msgid "Find elements in a sorted tensor."
+msgstr "在已排序的 tensor 中查找元素。"
+
+#: maxframe.tensor.sort.sort.sort:51 of
+msgid ":py:obj:`partition`"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:52 of
+msgid "Partial sort."
+msgstr "部分排序。"
+
+#: maxframe.tensor.sort.sort.sort:55 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:56 of
+msgid ""
+"The various sorting algorithms are characterized by their average speed, "
+"worst case performance, work space size, and whether they are stable. A "
+"stable sort keeps items with the same key in the same relative order. The"
+" four algorithms implemented in NumPy have the following properties:"
+msgstr ""
+"各种排序算法的特点包括其平均速度、最坏情况性能、工作空间大小以及是否稳定"
+"。稳定排序保持具有相同键的元素的相对顺序。NumPy 中实现的四种算法具有以下"
+"属性："
+
+#: maxframe.tensor.sort.sort.sort:63 of
+msgid "kind"
+msgstr "类型"
+
+#: maxframe.tensor.sort.sort.sort:63 of
+msgid "speed"
+msgstr "速度"
+
+#: maxframe.tensor.sort.sort.sort:63 of
+msgid "worst case"
+msgstr "最坏情况"
+
+#: maxframe.tensor.sort.sort.sort:63 of
+msgid "work space"
+msgstr "工作空间"
+
+#: maxframe.tensor.sort.sort.sort:63 of
+msgid "stable"
+msgstr "稳定"
+
+#: maxframe.tensor.sort.sort.sort:65 of
+msgid "'quicksort'"
+msgstr "'快速排序'"
+
+#: maxframe.tensor.sort.sort.sort:65 of
+msgid "1"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:65 of
+msgid "O(n^2)"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:65 maxframe.tensor.sort.sort.sort:66 of
+msgid "0"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:65 maxframe.tensor.sort.sort.sort:66 of
+msgid "no"
+msgstr "否"
+
+#: maxframe.tensor.sort.sort.sort:66 of
+msgid "'heapsort'"
+msgstr "'堆排序'"
+
+#: maxframe.tensor.sort.sort.sort:66 of
+msgid "3"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:66 maxframe.tensor.sort.sort.sort:67
+#: maxframe.tensor.sort.sort.sort:68 of
+msgid "O(n*log(n))"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:67 of
+msgid "'mergesort'"
+msgstr "'归并排序'"
+
+#: maxframe.tensor.sort.sort.sort:67 maxframe.tensor.sort.sort.sort:68 of
+msgid "2"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:67 maxframe.tensor.sort.sort.sort:68 of
+msgid "~n/2"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:67 maxframe.tensor.sort.sort.sort:68 of
+msgid "yes"
+msgstr "是"
+
+#: maxframe.tensor.sort.sort.sort:68 of
+msgid "'timsort'"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:71 of
+msgid ""
+"The datatype determines which of 'mergesort' or 'timsort' is actually "
+"used, even if 'mergesort' is specified. User selection at a finer scale "
+"is not currently available."
+msgstr ""
+"数据类型决定实际使用 'mergesort' 还是 'timsort'，即使指定了 'mergesort'。"
+"目前尚不支持用户在更细粒度上进行选择。"
+
+#: maxframe.tensor.sort.sort.sort:75 of
+msgid ""
+"All the sort algorithms make temporary copies of the data when sorting "
+"along any but the last axis.  Consequently, sorting along the last axis "
+"is faster and uses less space than sorting along any other axis."
+msgstr ""
+"所有排序算法在沿除最后一轴之外的其他轴排序时都会创建数据的临时副本。因此"
+"，沿最后一轴排序比沿任何其他轴排序更快且占用更少的空间。"
+
+#: maxframe.tensor.sort.sort.sort:80 of
+msgid ""
+"The sort order for complex numbers is lexicographic. If both the real and"
+" imaginary parts are non-nan then the order is determined by the real "
+"parts except when they are equal, in which case the order is determined "
+"by the imaginary parts."
+msgstr ""
+"复数的排序顺序是字典序的。如果实部和虚部都不是 NaN，则排序由实部决定，"
+"除非它们相等，在这种情况下由虚部决定排序顺序。"
+
+#: maxframe.tensor.sort.sort.sort:85 of
+msgid ""
+"quicksort has been changed to an introsort which will switch heapsort "
+"when it does not make enough progress. This makes its worst case "
+"O(n*log(n))."
+msgstr ""
+"快速排序已被更改为内省排序（introsort），当排序进度不足时会切换到堆排序。"
+"这使其最坏情况的时间复杂度为 O(n*log(n))。"
+
+#: maxframe.tensor.sort.sort.sort:89 of
+msgid ""
+"'stable' automatically choses the best stable sorting algorithm for the "
+"data type being sorted. It, along with 'mergesort' is currently mapped to"
+" timsort or radix sort depending on the data type. API forward "
+"compatibility currently limits the ability to select the implementation "
+"and it is hardwired for the different data types."
+msgstr ""
+"'stable' 会自动为正在排序的数据类型选择最佳的稳定排序算法。它与 '"
+"mergesort' 一样，目前根据数据类型映射到 timsort 或基数排序。API 的向后"
+"兼容性目前限制了选择实现的能力，并且针对不同的数据类型进行了硬编码。"
+
+#: maxframe.tensor.sort.sort.sort:96 of
+msgid ""
+"Timsort is added for better performance on already or nearly sorted data."
+" On random data timsort is almost identical to mergesort. It is now used "
+"for stable sort while quicksort is still the default sort if none is "
+"chosen. For details of timsort, refer to `CPython listsort.txt "
+"<https://github.com/python/cpython/blob/3.7/Objects/listsort.txt>`_. "
+"'mergesort' and 'stable' are mapped to radix sort for integer data types."
+" Radix sort is an O(n) sort instead of O(n log n)."
+msgstr ""
+"添加了 Timsort 以提高对已排序或接近排序数据的性能。在随机数据上，timsort "
+"几乎与 mergesort 相同。现在它被用于稳定排序，而如果未指定排序方法，快速"
+"排序仍是默认选项。关于 timsort 的详细信息，请参阅 `CPython listsort.txt <"
+"https://github.com/python/cpython/blob/3.7/Objects/listsort.txt>`_。对于"
+"整数数据类型，'mergesort' 和 'stable' 被映射到基数排序。基数排序是一种 O("
+"n) 的排序算法，而不是 O(n log n)。"
+
+#: maxframe.tensor.sort.sort.sort:105 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.sort.sort.sort:117 of
+msgid ""
+"Use the `order` keyword to specify a field to use when sorting a "
+"structured array:"
+msgstr "使用 `order` 关键字指定在排序结构化数组时要使用的字段："
+
+#: maxframe.tensor.sort.sort.sort:129 of
+msgid "Sort by age, then height if ages are equal:"
+msgstr "按年龄排序，如果年龄相同则按身高排序："
+

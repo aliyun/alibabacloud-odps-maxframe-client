@@ -1,0 +1,143 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.random_integers.rst:2
+msgid "maxframe.tensor.random.random\\_integers"
+msgstr ""
+
+#: maxframe.tensor.random.random_integers.random_integers:1 of
+msgid "Random integers of type mt.int between `low` and `high`, inclusive."
+msgstr "在 `low` 和 `high` 之间（包括两者）生成类型为 mt.int 的随机整数。"
+
+#: maxframe.tensor.random.random_integers.random_integers:3 of
+msgid ""
+"Return random integers of type mt.int from the \"discrete uniform\" "
+"distribution in the closed interval [`low`, `high`].  If `high` is None "
+"(the default), then results are from [1, `low`]. The np.int type "
+"translates to the C long type used by Python 2 for \"short\" integers and"
+" its precision is platform dependent."
+msgstr ""
+"从闭区间 [`low`, `high`] 内的“离散均匀”分布中返回类型为 mt.int 的随机"
+"整数。如果 `high` 为 None（默认值），则结果来自 [1, `low`]。np.int 类型会"
+"转换为 Python 2 中用于“短整数”的 C long 类型，其精度取决于平台。"
+
+#: maxframe.tensor.random.random_integers.random_integers:9 of
+msgid "This function has been deprecated. Use randint instead."
+msgstr "此函数已被弃用。请改用 randint。"
+
+#: maxframe.tensor.random.random_integers.random_integers of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.random_integers.random_integers:11 of
+msgid ""
+"Lowest (signed) integer to be drawn from the distribution (unless "
+"``high=None``, in which case this parameter is the *highest* such "
+"integer)."
+msgstr ""
+"从分布中抽取的最小（有符号）整数（除非 ``high=None``，在这种情况下此参数"
+"是最大的此类整数）。"
+
+#: maxframe.tensor.random.random_integers.random_integers:15 of
+msgid ""
+"If provided, the largest (signed) integer to be drawn from the "
+"distribution (see above for behavior if ``high=None``)."
+msgstr ""
+"如果提供此参数，则是从分布中抽取的最大（有符号）整数（如果 ``high=None``"
+"，请参见上文的行为说明）。"
+
+#: maxframe.tensor.random.random_integers.random_integers:18 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  Default is None, in which case a single value is"
+" returned."
+msgstr ""
+"输出形状。如果给定的形状是例如 ``(m, n, k)``，则抽取 ``m * n * k`` 个样本"
+"。默认值为 None，这种情况下返回单个值。"
+
+#: maxframe.tensor.random.random_integers.random_integers:22 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.random.random_integers.random_integers:24 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.random_integers.random_integers of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.random_integers.random_integers:27 of
+msgid ""
+"**out** -- `size`-shaped array of random integers from the appropriate "
+"distribution, or a single such random int if `size` not provided."
+msgstr ""
+"**out** -- 来自适当分布的 `size` 形状的随机整数数组，如果未提供 `size`，"
+"则返回单个这样的随机整数。"
+
+#: maxframe.tensor.random.random_integers.random_integers of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.random_integers.random_integers:33 of
+msgid ":py:obj:`random.randint`"
+msgstr ""
+
+#: maxframe.tensor.random.random_integers.random_integers:34 of
+msgid ""
+"Similar to `random_integers`, only for the half-open interval [`low`, "
+"`high`), and 0 is the lowest value if `high` is omitted."
+msgstr ""
+"与 `random_integers` 类似，但用于半开区间 [`low`, `high`)，如果省略 `high"
+"`，则 0 是最小值。"
+
+#: maxframe.tensor.random.random_integers.random_integers:37 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.random_integers.random_integers:38 of
+msgid ""
+"To sample from N evenly spaced floating-point numbers between a and b, "
+"use::"
+msgstr "要从 a 和 b 之间的 N 个等间距浮点数中采样，请使用："
+
+#: maxframe.tensor.random.random_integers.random_integers:44 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.random_integers.random_integers:56 of
+#, python-brace-format
+msgid ""
+"Choose five random numbers from the set of five evenly-spaced numbers "
+"between 0 and 2.5, inclusive (*i.e.*, from the set :math:`{0, 5/8, 10/8, "
+"15/8, 20/8}`):"
+msgstr ""
+"从 0 到 2.5 之间（包括两者）五个等间距数字的集合中选择五个随机数（即从"
+"集合 :math:`{0, 5/8, 10/8, 15/8, 20/8}` 中选择）："
+
+#: maxframe.tensor.random.random_integers.random_integers:63 of
+msgid "Roll two six sided dice 1000 times and sum the results:"
+msgstr "掷两次六面骰子共 1000 次，并将结果相加："
+
+#: maxframe.tensor.random.random_integers.random_integers:69 of
+msgid "Display results as a histogram:"
+msgstr "将结果以直方图形式显示："
+

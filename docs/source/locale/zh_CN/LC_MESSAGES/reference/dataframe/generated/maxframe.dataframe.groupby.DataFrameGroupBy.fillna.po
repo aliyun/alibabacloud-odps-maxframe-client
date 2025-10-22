@@ -1,0 +1,75 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.DataFrameGroupBy.fillna.rst:2
+msgid "maxframe.dataframe.groupby.DataFrameGroupBy.fillna"
+msgstr ""
+
+#: maxframe.dataframe.groupby.fill.fillna:1 of
+msgid "Fill NA/NaN values using the specified method"
+msgstr "使用指定方法填充 NA/NaN 值"
+
+#: maxframe.dataframe.groupby.fill.fillna:3 of
+msgid "value:  scalar, dict, Series, or DataFrame"
+msgstr "value: 标量、字典、Series 或 DataFrame"
+
+#: maxframe.dataframe.groupby.fill.fillna:4 of
+msgid ""
+"Value to use to fill holes (e.g. 0), alternately a dict/Series/DataFrame "
+"of values specifying which value to use for each index (for a Series) or "
+"column (for a DataFrame). Values not in the dict/Series/DataFrame will "
+"not be filled. This value cannot be a list."
+msgstr ""
+"用于填充缺失值的值（例如 0），或者是一个字典/Series/DataFrame，指定每个"
+"索引（对于 Series）或列（对于 DataFrame）使用哪个值。不在字典/Series/"
+"DataFrame 中的值将不会被填充。该值不能是列表。"
+
+#: maxframe.dataframe.groupby.fill.fillna:8 of
+#, python-brace-format
+msgid ""
+"method: {'backfill','bfill','ffill',None}, default None axis:   {0 or "
+"'index', 1 or 'column'} limit:  int, default None"
+msgstr ""
+"method: {'backfill','bfill','ffill',None}，默认为 None axis:   {0 或 '"
+"index', 1 或 'column'} limit: 整数，默认为 None"
+
+#: maxframe.dataframe.groupby.fill.fillna:11 of
+msgid ""
+"If method is specified, this is the maximum number of consecutive NaN "
+"values to forward/backward fill"
+msgstr "如果指定了 method，则这是向前/向后填充连续 NaN 值的最大数量"
+
+#: maxframe.dataframe.groupby.fill.fillna:13 of
+msgid "downcast:   dict, default None"
+msgstr "downcast: 字典，默认为 None"
+
+#: maxframe.dataframe.groupby.fill.fillna:14 of
+msgid ""
+"A dict of item->dtype of what to downcast if possible, or the string ‘"
+"infer’ which will try to downcast to an appropriate equal type"
+msgstr ""
+"一个 item->dtype 的字典，表示在可能的情况下要降级的数据类型，或者是字符串"
+" 'infer'，它会尝试降级为合适的相等类型"
+
+#: maxframe.dataframe.groupby.fill.fillna:17 of
+msgid "return: DataFrame or None"
+msgstr "返回：DataFrame 或 None"
+

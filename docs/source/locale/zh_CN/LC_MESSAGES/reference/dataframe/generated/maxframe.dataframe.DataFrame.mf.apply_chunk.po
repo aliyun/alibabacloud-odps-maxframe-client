@@ -1,0 +1,239 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.mf.apply_chunk.rst:2
+msgid "maxframe.dataframe.DataFrame.mf.apply_chunk"
+msgstr ""
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:1 of
+msgid ""
+"Apply a function that takes pandas DataFrame and outputs pandas "
+"DataFrame/Series. The pandas DataFrame given to the function is a chunk "
+"of the input dataframe, consider as a batch rows."
+msgstr ""
+"应用一个函数，该函数接收 pandas DataFrame 并输出 pandas DataFrame/Series"
+"。提供给该函数的 pandas DataFrame 是输入 dataframe 的一个区块，可视为一批"
+"行数据。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:4 of
+msgid ""
+"The objects passed into this function are slices of the original "
+"DataFrame, containing at most batch_rows number of rows and all columns. "
+"It is equivalent to merging multiple ``df.apply`` with ``axis=1`` inputs "
+"and then passing them into the function for execution, thereby improving "
+"performance in specific scenarios. The function output can be either a "
+"DataFrame or a Series. ``apply_chunk`` will ultimately merge the results "
+"into a new DataFrame or Series."
+msgstr ""
+"传递给此函数的对象是原始 DataFrame 的切片，包含最多 batch_rows 行数和所有"
+"列。它等效于合并多个带有 ``axis=1`` 参数的 ``df.apply`` 输入，然后将它们"
+"传递给函数执行，从而在特定场景下提升性能。函数输出可以是 DataFrame 或 "
+"Series。``apply_chunk`` 最终会将结果合并到一个新的 DataFrame 或 Series 中"
+"。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:10 of
+msgid ""
+"Don't expect to receive all rows of the DataFrame in the function, as it "
+"depends on the implementation of MaxFrame and the internal running state "
+"of MaxCompute."
+msgstr ""
+"不要期望在函数中接收到 DataFrame 的所有行，因为它依赖于 MaxFrame 的实现和"
+" MaxCompute 的内部运行状态。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:13 of
+msgid "Function to apply to the dataframe chunk."
+msgstr "应用于 dataframe 区块的函数。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:15 of
+msgid ""
+"Specify expected number of rows in a batch, as well as the len of "
+"function input dataframe. When the remaining data is insufficient, it may"
+" be less than this number."
+msgstr ""
+"指定批次中预期的行数，以及函数输入 dataframe 的长度。当剩余数据不足时，"
+"可能少于这个数量。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:18 of
+msgid "Specify type of returned object. See `Notes` for more details."
+msgstr "指定返回对象的类型。详见 `备注` 部分。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:20 of
+msgid "Specify dtypes of returned DataFrames. See `Notes` for more details."
+msgstr "指定返回 DataFrames 的 dtypes。详见 `备注` 部分。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:22 of
+msgid "Specify dtype of returned Series. See `Notes` for more details."
+msgstr "指定返回 Series 的 dtype。详见 `备注` 部分。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:24 of
+msgid "Specify name of returned Series. See `Notes` for more details."
+msgstr "指定返回 Series 的名称。详见 `备注` 部分。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:26 of
+msgid "Specify index of returned object. See `Notes` for more details."
+msgstr "指定返回对象的索引。详见 `备注` 部分。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:28 of
+msgid "Whether infer dtypes when dtypes or output_type is not specified."
+msgstr "当未指定 dtypes 或 output_type 时是否推断 dtypes。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:30 of
+msgid "Positional arguments to pass to ``func`` in addition to the array/series."
+msgstr "除了数组/序列之外传递给 ``func`` 的位置参数。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:33 of
+msgid "Additional keyword arguments to pass as keywords arguments to ``func``."
+msgstr "作为关键字参数传递给 ``func`` 的额外关键字参数。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:36 of
+msgid "Result of applying ``func`` along the given chunk of the DataFrame."
+msgstr "对 DataFrame 给定区块应用 ``func`` 的结果。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:42 of
+msgid ":py:obj:`DataFrame.apply`"
+msgstr ""
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:43 of
+msgid "For non-batching operations."
+msgstr "用于非批处理操作。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:45 of
+msgid ":py:obj:`Series.mf.apply_chunk`"
+msgstr ""
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:46 of
+msgid "Apply function to Series chunk."
+msgstr "对 Series 区块应用函数。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:49 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:50 of
+msgid ""
+"When deciding output dtypes and shape of the return value, MaxFrame will "
+"try applying ``func`` onto a mock DataFrame,  and the apply call may "
+"fail. When this happens, you need to specify the type of apply call "
+"(DataFrame or Series) in output_type."
+msgstr ""
+"当决定输出 dtypes 和返回值形状时，MaxFrame 将尝试将 ``func`` 应用到一个"
+"模拟 DataFrame 上，apply 调用可能会失败。当这种情况发生时，您需要在 "
+"output_type 中指定 apply 调用的类型（DataFrame 或 Series）。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:55 of
+msgid ""
+"For DataFrame output, you need to specify a list or a pandas Series as "
+"``dtypes`` of output DataFrame. ``index`` of output can also be "
+"specified."
+msgstr ""
+"对于 DataFrame 输出，您需要指定一个列表或 pandas Series 作为输出 "
+"DataFrame 的 ``dtypes``。也可以指定输出的 ``index``。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:58 of
+msgid ""
+"For Series output, you need to specify ``dtype`` and ``name`` of output "
+"Series."
+msgstr "对于 Series 输出，您需要指定输出 Series 的 ``dtype`` 和 ``name``。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:60 of
+msgid ""
+"For any input with data type ``pandas.ArrowDtype(pyarrow.MapType)``, it "
+"will always be converted to a Python dict. And for any output with this "
+"data type, it must be returned as a Python dict as well."
+msgstr ""
+"对于任何数据类型为 ``pandas.ArrowDtype(pyarrow.MapType)`` 的输入，它将"
+"始终被转换为 Python dict。对于任何具有此数据类型的输出，也必须作为 Python"
+" dict 返回。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:65 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:76 of
+msgid ""
+"Use different batch_rows will collect different dataframe chunk into the "
+"function."
+msgstr "使用不同的 batch_rows 将收集不同的 dataframe 区块到函数中。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:78 of
+msgid ""
+"For example, when you use ``batch_rows=3``, it means that the function "
+"will wait until 3 rows are collected."
+msgstr "例如，当您使用 ``batch_rows=3`` 时，意味着函数将等待直到收集到 3 行数据。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:85 of
+msgid ""
+"While, if ``batch_rows=2``, the data will be divided into at least two "
+"segments. Additionally, if your function alters the shape of the "
+"dataframe, it may result in different outputs."
+msgstr ""
+"而如果 ``batch_rows=2``，数据将被分成至少两个片段。此外，如果您的函数改变"
+"了 dataframe 的形状，可能会导致不同的输出。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:95 of
+msgid ""
+"If the function requires some parameters, you can specify them using args"
+" or kwargs."
+msgstr "如果函数需要一些参数，您可以使用 args 或 kwargs 来指定它们。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:105 of
+msgid ""
+"The batch rows will benefit the actions consume a dataframe, like sklearn"
+" predict. You can easily use sklearn in MaxFrame to perform offline "
+"inference, and apply_chunk makes this process more efficient. The "
+"``@with_python_requirements`` provides the capability to automatically "
+"package and load dependencies."
+msgstr ""
+"批处理行将有利于消耗 dataframe 的操作，如 sklearn 预测。您可以轻松地在 "
+"MaxFrame 中使用 sklearn 执行离线推理，而 apply_chunk 使这个过程更加高效。"
+"``@with_python_requirements`` 提供了自动打包和加载依赖项的功能。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:110 of
+msgid ""
+"Once you rely on some third-party dependencies, MaxFrame may not be able "
+"to correctly infer the return type. Therefore, using ``output_type`` with"
+" ``dtype`` or ``dtypes`` is necessary."
+msgstr ""
+"一旦您依赖某些第三方依赖项，MaxFrame 可能无法正确推断返回类型。因此，使用"
+"带有 ``dtype`` 或 ``dtypes`` 的 ``output_type`` 是必要的。"
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:138 of
+msgid "Create a dataframe with a dict type."
+msgstr ""
+
+#: maxframe.dataframe.extensions.apply_chunk.df_apply_chunk:159 of
+msgid ""
+"Define a function that updates the map type with a new key-value pair in "
+"a batch."
+msgstr ""
+

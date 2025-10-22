@@ -1,0 +1,170 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.nlargest.rst:2
+msgid "maxframe.dataframe.DataFrame.nlargest"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:1 of
+msgid "Return the first `n` rows ordered by `columns` in descending order."
+msgstr "返回按 `columns` 降序排列的前 `n` 行。"
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:3 of
+msgid ""
+"Return the first `n` rows with the largest values in `columns`, in "
+"descending order. The columns that are not specified are returned as "
+"well, but not used for ordering."
+msgstr ""
+"返回 `columns` 中具有最大值的前 `n` 行，按降序排列。未指定的列也会返回，"
+"但不用于排序。"
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:7 of
+msgid ""
+"This method is equivalent to ``df.sort_values(columns, "
+"ascending=False).head(n)``, but more performant."
+msgstr ""
+"此方法等效于 ``df.sort_values(columns, ascending=False).head(n)``，但性能"
+"更优。"
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:11 of
+msgid "Number of rows to return."
+msgstr "要返回的行数。"
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:13 of
+msgid "Column label(s) to order by."
+msgstr "用于排序的列标签。"
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:15 of
+msgid ""
+"Where there are duplicate values:  - `first` : prioritize the first "
+"occurrence(s) - `last` : prioritize the last occurrence(s) - ``all`` : do"
+" not drop any duplicates, even it means             selecting more than "
+"`n` items."
+msgstr ""
+"当存在重复值时：  - `first` ：优先选择首次出现的值 - `last` ：优先选择"
+"最后出现的值 - ``all`` ：不删除任何重复项，即使这意味着选择超过 `n` 个项"
+"。"
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:15 of
+msgid "Where there are duplicate values:"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:17 of
+msgid "`first` : prioritize the first occurrence(s)"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:18 of
+msgid "`last` : prioritize the last occurrence(s)"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:19 of
+msgid "``all``"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:-1 of
+msgid "do not drop any duplicates, even it means"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:20 of
+msgid "selecting more than `n` items."
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:23 of
+msgid "The first `n` rows ordered by the given columns in descending order."
+msgstr "按给定列降序排列的前 `n` 行。"
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:29 of
+msgid ":py:obj:`DataFrame.nsmallest`"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:30 of
+msgid "Return the first `n` rows ordered by `columns` in ascending order."
+msgstr "返回按 `columns` 升序排列的前 `n` 行。"
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:32 of
+msgid ":py:obj:`DataFrame.sort_values`"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:33 of
+msgid "Sort DataFrame by the values."
+msgstr "按值对 DataFrame 进行排序。"
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:35 of
+msgid ":py:obj:`DataFrame.head`"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:36 of
+msgid "Return the first `n` rows without re-ordering."
+msgstr "返回前 `n` 行，不重新排序。"
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:39 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:40 of
+msgid ""
+"This function cannot be used with all column types. For example, when "
+"specifying columns with `object` or `category` dtypes, ``TypeError`` is "
+"raised."
+msgstr ""
+"此函数不能用于所有列类型。例如，当指定具有 `object` 或 `category` "
+"数据类型的列时，会引发 ``TypeError``。"
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:45 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:69 of
+msgid ""
+"In the following example, we will use ``nlargest`` to select the three "
+"rows having the largest values in column \"population\"."
+msgstr ""
+"在以下示例中，我们将使用 ``nlargest`` 选择在 \"population\" 列中具有"
+"最大值的三行。"
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:78 of
+msgid "When using ``keep='last'``, ties are resolved in reverse order:"
+msgstr "当使用 ``keep='last'`` 时，重复项按相反顺序处理："
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:86 of
+msgid "When using ``keep='all'``, all duplicate items are maintained:"
+msgstr "当使用 ``keep='all'`` 时，所有重复项都会保留："
+
+#: maxframe.dataframe.sort.nlargest.df_nlargest:96 of
+msgid ""
+"To order by the largest values in column \"population\" and then \"GDP\","
+" we can specify multiple columns like in the next example."
+msgstr ""
+"要按列 \"population\" 和 \"GDP\" 中的最大值进行排序，我们可以在下一个示例"
+"中指定多个列。"
+

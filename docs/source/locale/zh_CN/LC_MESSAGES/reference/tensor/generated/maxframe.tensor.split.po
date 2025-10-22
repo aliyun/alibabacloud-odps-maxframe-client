@@ -1,0 +1,191 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.split.rst:2
+msgid "maxframe.tensor.split"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:1 of
+msgid "Split a tensor into multiple sub-tensors."
+msgstr "将一个张量分割成多个子张量。"
+
+#: maxframe.tensor.misc.split.split of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:3 of
+msgid "Tensor to be divided into sub-tensors."
+msgstr "要分割成子张量的张量。"
+
+#: maxframe.tensor.misc.split.split:5 of
+msgid ""
+"If `indices_or_sections` is an integer, N, the array will be divided into"
+" N equal tensors along `axis`.  If such a split is not possible, an error"
+" is raised.  If `indices_or_sections` is a 1-D tensor of sorted integers,"
+" the entries indicate where along `axis` the array is split.  For "
+"example, ``[2, 3]`` would, for ``axis=0``, result in    - ary[:2]   - "
+"ary[2:3]   - ary[3:]  If an index exceeds the dimension of the tensor "
+"along `axis`, an empty sub-tensor is returned correspondingly."
+msgstr ""
+"如果 `indices_or_sections` 是一个整数 N，则数组将沿着 `axis` 被分割成 N "
+"个相等的张量。如果这样的分割不可行，则会引发一个错误。如果 `indices_or_"
+"sections` 是一个排序的 1 维整数张量，则条目表示数组沿 `axis` 的分割位置。"
+"例如，对于 ``axis=0``，``[2, 3]`` 会得到：    - ary[:2]   - ary[2:3]   - "
+"ary[3:]  如果索引超过沿 `axis` 的张量维度，则相应地返回一个空的子张量。"
+
+#: maxframe.tensor.misc.split.split:5 of
+msgid ""
+"If `indices_or_sections` is an integer, N, the array will be divided into"
+" N equal tensors along `axis`.  If such a split is not possible, an error"
+" is raised."
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:9 of
+msgid ""
+"If `indices_or_sections` is a 1-D tensor of sorted integers, the entries "
+"indicate where along `axis` the array is split.  For example, ``[2, 3]`` "
+"would, for ``axis=0``, result in"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:13 of
+msgid "ary[:2]"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:14 of
+msgid "ary[2:3]"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:15 of
+msgid "ary[3:]"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:17 of
+msgid ""
+"If an index exceeds the dimension of the tensor along `axis`, an empty "
+"sub-tensor is returned correspondingly."
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:20 of
+msgid "The axis along which to split, default is 0."
+msgstr "分割的轴，默认为 0。"
+
+#: maxframe.tensor.misc.split.split of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:23 of
+msgid "**sub-tensors** -- A list of sub-tensors."
+msgstr "**子张量** -- 子张量的列表。"
+
+#: maxframe.tensor.misc.split.split of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:26 of
+msgid ""
+"If `indices_or_sections` is given as an integer, but     a split does not"
+" result in equal division."
+msgstr "如果 `indices_or_sections` 被指定为整数，但分割不能实现等分。"
+
+#: maxframe.tensor.misc.split.split:30 of
+msgid ":py:obj:`array_split`"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:31 of
+msgid ""
+"Split a tensor into multiple sub-tensors of equal or near-equal size.  "
+"Does not raise an exception if an equal division cannot be made."
+msgstr ""
+"将张量分割成多个大小相等或接近相等的子张量。如果无法实现等分，不会引发"
+"异常。"
+
+#: maxframe.tensor.misc.split.split:33 of
+msgid ":py:obj:`hsplit`"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:34 of
+msgid "Split  into multiple sub-arrays horizontally (column-wise)."
+msgstr "将张量水平（按列）分割成多个子数组。"
+
+#: maxframe.tensor.misc.split.split:36 of
+msgid ":py:obj:`vsplit`"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:37 of
+msgid "Split tensor into multiple sub-tensors vertically (row wise)."
+msgstr "将张量垂直（按行）分割成多个子张量。"
+
+#: maxframe.tensor.misc.split.split:39 of
+msgid ":py:obj:`dsplit`"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:40 of
+msgid "Split tensor into multiple sub-tensors along the 3rd axis (depth)."
+msgstr "将张量沿着第三个轴（深度）分割成多个子张量。"
+
+#: maxframe.tensor.misc.split.split:42 of
+msgid ":py:obj:`concatenate`"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:43 of
+msgid "Join a sequence of tensors along an existing axis."
+msgstr "沿着已有轴连接一系列张量。"
+
+#: maxframe.tensor.misc.split.split:45 of
+msgid ":py:obj:`stack`"
+msgstr ""
+
+#: maxframe.tensor.misc.split.split:46 of
+msgid "Join a sequence of tensors along a new axis."
+msgstr "沿着新轴连接一系列张量。"
+
+#: maxframe.tensor.misc.split.split:48 of
+msgid ":py:obj:`hstack`"
+msgstr "：py:obj:`hstack`"
+
+#: maxframe.tensor.misc.split.split:49 of
+msgid "Stack tensors in sequence horizontally (column wise)."
+msgstr "按顺序水平堆叠张量（按列）。"
+
+#: maxframe.tensor.misc.split.split:51 of
+msgid ":py:obj:`vstack`"
+msgstr "：py:obj:`vstack`"
+
+#: maxframe.tensor.misc.split.split:52 of
+msgid "Stack tensors in sequence vertically (row wise)."
+msgstr "按顺序垂直堆叠张量（按行）。"
+
+#: maxframe.tensor.misc.split.split:54 of
+msgid ":py:obj:`dstack`"
+msgstr "：py:obj:`dstack`"
+
+#: maxframe.tensor.misc.split.split:55 of
+msgid "Stack tensors in sequence depth wise (along third dimension)."
+msgstr "按顺序深度堆叠张量（沿第三维度）。"
+
+#: maxframe.tensor.misc.split.split:58 of
+msgid "示例"
+msgstr ""
+

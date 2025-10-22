@@ -1,0 +1,140 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/getting_started/tutorials/10min.rst:2
+msgid "10 minutes to MaxFrame"
+msgstr "十分钟入门 MaxFrame"
+
+#: ../../source/getting_started/tutorials/10min.rst:4
+msgid ""
+"Here, `movielens 100K <https://grouplens.org/datasets/movielens/100k/>`_ "
+"is used as an example. Assume that three tables already exist, which are "
+"``maxframe_ml_100k_movies`` (movie-related data), "
+"``maxframe_ml_100k_users`` (user-related data), and "
+"``maxframe_ml_100k_ratings`` (rating-related data)."
+msgstr ""
+"这里以 `movielens 100K <https://grouplens.org/datasets/movielens/100k/>`_"
+" 为例。假设已存在三张表，分别是 ``maxframe_ml_100k_movies``（电影相关数据"
+"）、``maxframe_ml_100k_users``（用户相关数据）和 ``maxframe_ml_100k_"
+"ratings``（评分相关数据）。"
+
+#: ../../source/getting_started/tutorials/10min.rst:9
+msgid "Create a MaxFrame session object before starting the following steps:"
+msgstr "在开始以下步骤前，请先创建一个 MaxFrame 会话对象："
+
+#: ../../source/getting_started/tutorials/10min.rst:28
+msgid ""
+"You only need to use ``read_odps_table`` API to create a DataFrame "
+"object. For instance,"
+msgstr "您只需要使用 ``read_odps_table`` API 来创建一个 DataFrame 对象。例如，"
+
+#: ../../source/getting_started/tutorials/10min.rst:36
+msgid ""
+"View columns of DataFrame and the types of the columns through the "
+"``dtypes`` attribute, as shown in the following code:"
+msgstr "通过 ``dtypes`` 属性查看 DataFrame 的列及其类型，如下代码所示："
+
+#: ../../source/getting_started/tutorials/10min.rst:49
+msgid ""
+"Simply view the representation of the object will automatically show the "
+"first and last rows of the DataFrame."
+msgstr "简单查看对象的表示形式，将自动显示 DataFrame 的前几行和后几行。"
+
+#: ../../source/getting_started/tutorials/10min.rst:68
+msgid ""
+"You can use the head method to obtain the first N data records for easy "
+"and quick data preview. For example:"
+msgstr "您可以使用 head 方法获取前 N 条数据记录，以便快速预览数据。例如："
+
+#: ../../source/getting_started/tutorials/10min.rst:86
+msgid ""
+"You can add a filter on the columns if you do not want to view all of "
+"them. For example:"
+msgstr "如果您不想查看所有列，可以在列上添加筛选器。例如："
+
+#: ../../source/getting_started/tutorials/10min.rst:98
+msgid "You can also drop several columns. For example:"
+msgstr "您也可以删除某些列。例如："
+
+#: ../../source/getting_started/tutorials/10min.rst:110
+msgid ""
+"When excluding some columns, you may want to obtain new columns through "
+"computation. For example, add the sex_bool attribute and set it to True "
+"if sex is Male. Otherwise, set it to False. For example:"
+msgstr ""
+"在排除某些列时，您可能希望通过计算得到新列。例如，添加 sex_bool 属性，当"
+"性别为 Male 时设为 True，否则设为 False。例如："
+
+#: ../../source/getting_started/tutorials/10min.rst:126
+msgid ""
+"Obtain the number of persons at age of 20 to 25, as shown in the "
+"following code:"
+msgstr "获取年龄在 20 到 25 岁之间的人数，如下代码所示："
+
+#: ../../source/getting_started/tutorials/10min.rst:133
+msgid ""
+"Obtain the numbers of male and female users, as shown in the following "
+"code:"
+msgstr "获取男性和女性用户的数量，如下代码所示："
+
+#: ../../source/getting_started/tutorials/10min.rst:142
+msgid ""
+"To divide users by job, obtain the first 10 jobs that have the largest "
+"population, and sort the jobs in the descending order of population. See "
+"the following:"
+msgstr "按职业划分用户，获取人数最多的前 10 个职业，并按人数降序排列。见下文："
+
+#: ../../source/getting_started/tutorials/10min.rst:162
+msgid ""
+"DataFrame APIs provide the ``value_counts`` method to quickly achieve the"
+" same result. An example is shown below."
+msgstr "DataFrame API 提供了 ``value_counts`` 方法来快速实现相同的效果。示例如下。"
+
+#: ../../source/getting_started/tutorials/10min.rst:180
+msgid "Show data in a more intuitive graph, as shown in the following code:"
+msgstr "以更直观的图表展示数据，如下代码所示："
+
+#: ../../source/getting_started/tutorials/10min.rst:186
+msgid ""
+"Use a horizontal bar chart to visualize data, as shown in the following "
+"code:"
+msgstr "使用水平条形图来可视化数据，如下代码所示："
+
+#: ../../source/getting_started/tutorials/10min.rst:193
+msgid "_images/df-value-count-plot.png"
+msgstr ""
+
+#: ../../source/getting_started/tutorials/10min.rst:195
+msgid ""
+"Divide ages into 30 groups and view the histogram of age distribution, as"
+" shown in the following code:"
+msgstr "将年龄分为 30 组，查看年龄分布的直方图，如下代码所示："
+
+#: ../../source/getting_started/tutorials/10min.rst:203
+msgid "_images/df-age-hist.png"
+msgstr ""
+
+#: ../../source/getting_started/tutorials/10min.rst:205
+msgid ""
+"Use join to join the three tables and save the joined tables as a new "
+"table. For example:"
+msgstr "使用 join 将三张表连接，并将连接后的表保存为一张新表。例如："
+

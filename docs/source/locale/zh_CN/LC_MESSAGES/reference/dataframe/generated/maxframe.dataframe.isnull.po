@@ -1,0 +1,105 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.isnull.rst:2
+msgid "maxframe.dataframe.isnull"
+msgstr ""
+
+#: maxframe.dataframe.missing.checkna.isna:1 of
+msgid "Detect missing values."
+msgstr "检测缺失值。"
+
+#: maxframe.dataframe.missing.checkna.isna:3 of
+msgid ""
+"Return a boolean same-sized object indicating if the values are NA. NA "
+"values, such as None or :attr:`numpy.NaN`, gets mapped to True values."
+msgstr ""
+"返回一个与原对象大小相同的布尔值对象，用于指示值是否为 NA。NA 值，例如 "
+"None 或 :attr:`numpy.NaN`，会被映射为 True。"
+
+#: maxframe.dataframe.missing.checkna.isna:7 of
+msgid ""
+"Everything else gets mapped to False values. Characters such as empty "
+"strings ``''`` or :attr:`numpy.inf` are not considered NA values (unless "
+"you set ``pandas.options.mode.use_inf_as_na = True``)."
+msgstr ""
+"其他所有值都会被映射为 False。诸如空字符串 ``''`` 或 :attr:`numpy.inf` 等"
+"字符不被视为 NA 值（除非你设置了 ``pandas.options.mode.use_inf_as_na = "
+"True``）。"
+
+#: maxframe.dataframe.missing.checkna.isna of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.missing.checkna.isna:11 of
+msgid ""
+"Mask of bool values for each element in DataFrame that indicates whether "
+"an element is not an NA value."
+msgstr "一个与 DataFrame 中每个元素对应的布尔值掩码，指示该元素是否不是 NA 值。"
+
+#: maxframe.dataframe.missing.checkna.isna of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.missing.checkna.isna:17 of
+msgid ":py:obj:`DataFrame.isnull`"
+msgstr ""
+
+#: maxframe.dataframe.missing.checkna.isna:18 of
+msgid "Alias of isna."
+msgstr "isna 的别名。"
+
+#: maxframe.dataframe.missing.checkna.isna:20 of
+msgid ":py:obj:`DataFrame.notna`"
+msgstr ""
+
+#: maxframe.dataframe.missing.checkna.isna:21 of
+msgid "Boolean inverse of isna."
+msgstr "isna 的布尔反值。"
+
+#: maxframe.dataframe.missing.checkna.isna:23 of
+msgid ":py:obj:`DataFrame.dropna`"
+msgstr ""
+
+#: maxframe.dataframe.missing.checkna.isna:24 of
+msgid "Omit axes labels with missing values."
+msgstr "删除包含缺失值的轴标签。"
+
+#: maxframe.dataframe.missing.checkna.isna:26 of
+msgid ":py:obj:`isna`"
+msgstr ""
+
+#: maxframe.dataframe.missing.checkna.isna:27 of
+msgid "Top-level isna."
+msgstr "顶层的 isna 函数。"
+
+#: maxframe.dataframe.missing.checkna.isna:30 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.missing.checkna.isna:31 of
+msgid "Show which entries in a DataFrame are NA."
+msgstr "显示 DataFrame 中哪些条目是 NA。"
+
+#: maxframe.dataframe.missing.checkna.isna:52 of
+msgid "Show which entries in a Series are NA."
+msgstr "显示 Series 中哪些条目是 NA。"
+

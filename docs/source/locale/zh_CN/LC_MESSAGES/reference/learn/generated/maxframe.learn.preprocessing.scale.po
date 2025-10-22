@@ -1,0 +1,174 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.scale.rst:2
+msgid "maxframe.learn.preprocessing.scale"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:1 of
+msgid "Standardize a dataset along any axis."
+msgstr "沿任意轴标准化数据集。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:3 of
+msgid "Center to the mean and component wise scale to unit variance."
+msgstr "中心化到均值，并按分量缩放至单位方差。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:5 of
+msgid "Read more in the :ref:`User Guide <preprocessing_scaler>`."
+msgstr "更多内容请参见 :ref:`用户指南 <preprocessing_scaler>`。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:7 of
+msgid "The data to center and scale."
+msgstr "需要中心化和缩放的数据。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:9 of
+msgid ""
+"Axis used to compute the means and standard deviations along. If 0, "
+"independently standardize each feature, otherwise (if 1) standardize each"
+" sample."
+msgstr ""
+"用于计算均值和标准差的轴。如果为 0，则独立标准化每个特征，否则（如果为 1"
+"）标准化每个样本。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:13 of
+msgid "If True, center the data before scaling."
+msgstr "如果为 True，则在缩放前对数据进行中心化。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:15 of
+msgid ""
+"If True, scale the data to unit variance (or equivalently, unit standard "
+"deviation)."
+msgstr "如果为 True，则将数据缩放至单位方差（或等效地，单位标准差）。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:18 of
+msgid ""
+"If False, try to avoid a copy and scale in place. This is not guaranteed "
+"to always work in place; e.g. if the data is a numpy array with an int "
+"dtype, a copy will be returned even with copy=False."
+msgstr ""
+"如果为 False，尝试避免复制并在原地缩放。但这不保证总是能在原地完成；例如"
+"，如果数据是 int 类型的 numpy 数组，即使 copy=False，也会返回一个副本。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:24 of
+msgid "**X_tr** -- The transformed data."
+msgstr "**X_tr** -- 转换后的数据。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:29 of
+msgid ":py:obj:`StandardScaler`"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:30 of
+msgid ""
+"Performs scaling to unit variance using the Transformer API (e.g. as part"
+" of a preprocessing :class:`~sklearn.pipeline.Pipeline`)."
+msgstr ""
+"使用 Transformer API 执行单位方差缩放（例如作为预处理的一部分 :class:`~"
+"sklearn.pipeline.Pipeline`）。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:33 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:34 of
+msgid ""
+"This implementation will refuse to center scipy.sparse matrices since it "
+"would make them non-sparse and would potentially crash the program with "
+"memory exhaustion problems."
+msgstr ""
+"此实现将拒绝中心化 scipy.sparse 矩阵，因为这会使它们非稀疏化，并可能导致"
+"程序因内存耗尽而崩溃。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:38 of
+msgid ""
+"Instead the caller is expected to either set explicitly `with_mean=False`"
+" (in that case, only variance scaling will be performed on the features "
+"of the CSC matrix) or to call `X.toarray()` if he/she expects the "
+"materialized dense array to fit in memory."
+msgstr ""
+"调用者应显式设置 `with_mean=False`（这种情况下，仅对 CSC 矩阵的特征执行"
+"方差缩放），或者如果他/她期望物化的密集数组能放入内存中，则调用 `X."
+"toarray()`。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:43 of
+msgid "To avoid memory copy the caller should pass a CSC matrix."
+msgstr "为了避免内存复制，调用者应传递一个 CSC 矩阵。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:45 of
+msgid ""
+"NaNs are treated as missing values: disregarded to compute the "
+"statistics, and maintained during the data transformation."
+msgstr "NaN 被视为缺失值：在计算统计量时被忽略，并在数据转换过程中保留。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:48 of
+msgid ""
+"We use a biased estimator for the standard deviation, equivalent to "
+"`numpy.std(x, ddof=0)`. Note that the choice of `ddof` is unlikely to "
+"affect model performance."
+msgstr ""
+"我们使用有偏估计量计算标准差，等价于 `numpy.std(x, ddof=0)`。注意，`ddof`"
+" 的选择不太可能影响模型性能。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:52 of
+msgid ""
+"For a comparison of the different scalers, transformers, and normalizers,"
+" see: :ref:`sphx_glr_auto_examples_preprocessing_plot_all_scaling.py`."
+msgstr ""
+"有关不同缩放器、变换器和归一化器的比较，请参见：:ref:`sphx_glr_auto_"
+"examples_preprocessing_plot_all_scaling.py`。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:55 of
+msgid "Risk of data leak"
+msgstr "数据泄露风险"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:57 of
+msgid ""
+"Do not use :func:`~sklearn.preprocessing.scale` unless you know what you "
+"are doing. A common mistake is to apply it to the entire data *before* "
+"splitting into training and test sets. This will bias the model "
+"evaluation because information would have leaked from the test set to the"
+" training set. In general, we recommend using "
+":class:`~sklearn.preprocessing.StandardScaler` within a :ref:`Pipeline "
+"<pipeline>` in order to prevent most risks of data leaking: `pipe = "
+"make_pipeline(StandardScaler(), LogisticRegression())`."
+msgstr ""
+"除非你知道自己在做什么，否则不要使用 :func:`~sklearn.preprocessing.scale`"
+"。一个常见的错误是在将数据分割为训练集和测试集 *之前* 应用它。这会导致"
+"模型评估产生偏差，因为信息会从测试集泄露到训练集。通常，我们建议在 :ref:`"
+"Pipeline <pipeline>` 中使用 :class:`~sklearn.preprocessing.StandardScaler"
+"` 以防止大多数数据泄露风险：`pipe = make_pipeline(StandardScaler(), "
+"LogisticRegression())`。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.scale:68 of
+msgid "示例"
+msgstr ""
+

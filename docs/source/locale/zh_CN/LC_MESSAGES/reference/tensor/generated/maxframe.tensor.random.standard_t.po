@@ -1,0 +1,179 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.standard_t.rst:2
+msgid "maxframe.tensor.random.standard\\_t"
+msgstr ""
+
+#: maxframe.tensor.random.standard_t.standard_t:1 of
+msgid ""
+"Draw samples from a standard Student's t distribution with `df` degrees "
+"of freedom."
+msgstr "从具有 `df` 自由度的标准学生 t 分布中抽取样本。"
+
+#: maxframe.tensor.random.standard_t.standard_t:4 of
+msgid ""
+"A special case of the hyperbolic distribution.  As `df` gets large, the "
+"result resembles that of the standard normal distribution "
+"(`standard_normal`)."
+msgstr ""
+"双曲分布的一个特例。当 `df` 变大时，结果类似于标准正态分布 (`standard_"
+"normal`)。"
+
+#: maxframe.tensor.random.standard_t.standard_t of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.standard_t.standard_t:8 of
+msgid "Degrees of freedom, should be > 0."
+msgstr "自由度，应大于 0。"
+
+#: maxframe.tensor.random.standard_t.standard_t:10 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``df`` is a scalar.  Otherwise, ``mt.array(df).size`` "
+"samples are drawn."
+msgstr ""
+"输出形状。如果给定的形状是，例如 ``(m, n, k)``，则抽取 ``m * n * k`` 个"
+"样本。如果 size 是 ``None``（默认），当 ``df`` 是标量时返回单个值。否则，"
+"抽取 ``mt.array(df).size`` 个样本。"
+
+#: maxframe.tensor.random.standard_t.standard_t:15 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.random.standard_t.standard_t:17 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则将张量分配在 GPU 上，默认为 False"
+
+#: maxframe.tensor.random.standard_t.standard_t:19 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.standard_t.standard_t of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.standard_t.standard_t:22 of
+msgid ""
+"**out** -- Drawn samples from the parameterized standard Student's t "
+"distribution."
+msgstr "**out** -- 从参数化的标准学生 t 分布中抽取的样本。"
+
+#: maxframe.tensor.random.standard_t.standard_t of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.standard_t.standard_t:26 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.standard_t.standard_t:27 of
+msgid "The probability density function for the t distribution is"
+msgstr "t 分布的概率密度函数为"
+
+#: maxframe.tensor.random.standard_t.standard_t:29 of
+msgid ""
+"P(x, df) = \\frac{\\Gamma(\\frac{df+1}{2})}{\\sqrt{\\pi df}\n"
+"\\Gamma(\\frac{df}{2})}\\Bigl( 1+\\frac{x^2}{df} \\Bigr)^{-(df+1)/2}\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.standard_t.standard_t:32 of
+msgid ""
+"The t test is based on an assumption that the data come from a Normal "
+"distribution. The t test provides a way to test whether the sample mean "
+"(that is the mean calculated from the data) is a good estimate of the "
+"true mean."
+msgstr ""
+"t 检验基于数据来自正态分布的假设。t 检验提供了一种方法来检验样本均值（即"
+"从数据中计算出的均值）是否是对真实均值的良好估计。"
+
+#: maxframe.tensor.random.standard_t.standard_t:37 of
+msgid ""
+"The derivation of the t-distribution was first published in 1908 by "
+"William Gosset while working for the Guinness Brewery in Dublin. Due to "
+"proprietary issues, he had to publish under a pseudonym, and so he used "
+"the name Student."
+msgstr ""
+"t 分布的推导最早由威廉·戈塞特于 1908 年在都柏林的吉尼斯酿酒厂工作时发表。"
+"由于产权问题，他必须使用笔名发表，因此他使用了“Student”这个名字。"
+
+#: maxframe.tensor.random.standard_t.standard_t:43 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.standard_t.standard_t:44 of
+msgid "Dalgaard, Peter, \"Introductory Statistics With R\", Springer, 2002."
+msgstr ""
+
+#: maxframe.tensor.random.standard_t.standard_t:46 of
+msgid ""
+"Wikipedia, \"Student's t-distribution\" "
+"http://en.wikipedia.org/wiki/Student's_t-distribution"
+msgstr ""
+
+#: maxframe.tensor.random.standard_t.standard_t:50 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.standard_t.standard_t:51 of
+msgid ""
+"From Dalgaard page 83 [1]_, suppose the daily energy intake for 11 women "
+"in Kj is:"
+msgstr ""
+"根据 Dalgaard 第 83 页 [1]_，假设 11 名女性每日的能量摄入量（单位：千焦）"
+"为："
+
+#: maxframe.tensor.random.standard_t.standard_t:59 of
+msgid ""
+"Does their energy intake deviate systematically from the recommended "
+"value of 7725 kJ?"
+msgstr "她们的能量摄入是否系统性偏离推荐值 7725 千焦？"
+
+#: maxframe.tensor.random.standard_t.standard_t:62 of
+#, python-format
+msgid ""
+"We have 10 degrees of freedom, so is the sample mean within 95% of the "
+"recommended value?"
+msgstr "我们有 10 个自由度，那么样本均值是否在推荐值的 95% 范围内？"
+
+#: maxframe.tensor.random.standard_t.standard_t:71 of
+msgid ""
+"Calculate the t statistic, setting the ddof parameter to the unbiased "
+"value so the divisor in the standard deviation will be degrees of "
+"freedom, N-1."
+msgstr "计算 t 统计量，将 ddof 参数设置为无偏值，使得标准差中的除数为自由度 N-1。"
+
+#: maxframe.tensor.random.standard_t.standard_t:79 of
+msgid ""
+"For a one-sided t-test, how far out in the distribution does the t "
+"statistic appear?"
+msgstr "对于单侧 t 检验，t 统计量在分布中出现的位置有多远？"
+
+#: maxframe.tensor.random.standard_t.standard_t:85 of
+#, python-format
+msgid ""
+"So the p-value is about 0.009, which says the null hypothesis has a "
+"probability of about 99% of being true."
+msgstr "因此 p 值约为 0.009，这意味着原假设为真的概率约为 99%。"
+

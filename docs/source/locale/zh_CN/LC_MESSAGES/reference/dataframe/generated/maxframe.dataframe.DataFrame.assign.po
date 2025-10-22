@@ -1,0 +1,99 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.assign.rst:2
+msgid "maxframe.dataframe.DataFrame.assign"
+msgstr ""
+
+#: maxframe.dataframe.core.DataFrame.assign:1 of
+msgid ""
+"Assign new columns to a DataFrame. Returns a new object with all original"
+" columns in addition to new ones. Existing columns that are re-assigned "
+"will be overwritten."
+msgstr ""
+"为 DataFrame 分配新列。返回一个包含所有原始列以及新列的新对象。重新分配的"
+"现有列将被覆盖。"
+
+#: maxframe.dataframe.core.DataFrame.assign of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.core.DataFrame.assign:5 of
+msgid ""
+"The column names are keywords. If the values are callable, they are "
+"computed on the DataFrame and assigned to the new columns. The callable "
+"must not change input DataFrame (though pandas doesn't check it). If the "
+"values are not callable, (e.g. a Series, scalar, or array), they are "
+"simply assigned."
+msgstr ""
+"列名是关键字。如果值是可调用的，则在 DataFrame 上计算并分配给新列。可调用"
+"对象不得更改输入 DataFrame（尽管 pandas 不会检查）。如果值不可调用（例如 "
+"Series、标量或数组），则直接分配。"
+
+#: maxframe.dataframe.core.DataFrame.assign of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.core.DataFrame.assign:13 of
+msgid ""
+"A new DataFrame with the new columns in addition to all the existing "
+"columns."
+msgstr "一个包含所有现有列以及新列的新 DataFrame。"
+
+#: maxframe.dataframe.core.DataFrame.assign of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.core.DataFrame.assign:18 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.core.DataFrame.assign:19 of
+msgid ""
+"Assigning multiple columns within the same ``assign`` is possible. Later "
+"items in 'kwargs' may refer to newly created or modified columns in 'df';"
+" items are computed and assigned into 'df' in order."
+msgstr ""
+"可以在同一个 ``assign`` 中分配多个列。'kwargs' 中后面的项可以引用 'df' 中"
+"新创建或修改的列；各项按顺序计算并分配到 'df' 中。"
+
+#: maxframe.dataframe.core.DataFrame.assign:24 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.core.DataFrame.assign:33 of
+msgid "Where the value is a callable, evaluated on `df`:"
+msgstr "当值是可调用对象时，在 `df` 上进行求值："
+
+#: maxframe.dataframe.core.DataFrame.assign:40 of
+msgid ""
+"Alternatively, the same behavior can be achieved by directly referencing "
+"an existing Series or sequence:"
+msgstr "或者，可以通过直接引用现有的 Series 或序列来实现相同的行为："
+
+#: maxframe.dataframe.core.DataFrame.assign:48 of
+msgid ""
+"You can create multiple columns within the same assign where one of the "
+"columns depends on another one defined within the same assign:"
+msgstr ""
+"你可以在同一个 assign 中创建多个列，其中一个列依赖于同一 assign 中定义的"
+"另一个列："
+

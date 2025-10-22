@@ -1,0 +1,110 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.str.zfill.rst:2
+msgid "maxframe.dataframe.Series.str.zfill"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:1
+msgid "Pad strings in the Series/Index by prepending '0' characters."
+msgstr "通过在字符串前面添加 '0' 字符来填充 Series/Index 中的字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:3
+msgid ""
+"Strings in the Series/Index are padded with '0' characters on the left of"
+" the string to reach a total string length  `width`. Strings in the "
+"Series/Index with length greater or equal to `width` are unchanged."
+msgstr ""
+"Series/Index 中的字符串会在左侧添加 '0' 字符，使其总长度达到 `width`。"
+"长度大于或等于 `width` 的字符串将保持不变。"
+
+#: of pandas.core.strings.accessor.StringMethods.zfill
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:8
+msgid ""
+"Minimum length of resulting string; strings with length less than `width`"
+" be prepended with '0' characters."
+msgstr "结果字符串的最小长度；长度小于 `width` 的字符串将在前面添加 '0' 字符。"
+
+#: of pandas.core.strings.accessor.StringMethods.zfill
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:16
+msgid ":py:obj:`Series.str.rjust`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:17
+msgid "Fills the left side of strings with an arbitrary character."
+msgstr "用任意字符填充字符串的左侧。"
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:19
+msgid ":py:obj:`Series.str.ljust`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:20
+msgid "Fills the right side of strings with an arbitrary character."
+msgstr "用任意字符填充字符串的右侧。"
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:22
+msgid ":py:obj:`Series.str.pad`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:23
+msgid "Fills the specified sides of strings with an arbitrary character."
+msgstr "用任意字符填充字符串的指定侧。"
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:25
+msgid ":py:obj:`Series.str.center`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:26
+msgid "Fills both sides of strings with an arbitrary character."
+msgstr "用任意字符填充字符串的两侧。"
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:29
+msgid "备注"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:30
+msgid ""
+"Differs from :meth:`str.zfill` which has special handling for '+'/'-' in "
+"the string."
+msgstr "与 :meth:`str.zfill` 不同，后者对字符串中的 '+'/'-' 有特殊处理。"
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:34
+msgid "示例"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.zfill:46
+msgid ""
+"Note that ``10`` and ``NaN`` are not strings, therefore they are "
+"converted to ``NaN``. The minus sign in ``'-1'`` is treated as a special "
+"character and the zero is added to the right of it (:meth:`str.zfill` "
+"would have moved it to the left). ``1000`` remains unchanged as it is "
+"longer than `width`."
+msgstr ""
+"注意 ``10`` 和 ``NaN`` 不是字符串，因此它们会被转换为 ``NaN``。``'-1'`` "
+"中的负号被视为特殊字符，零被添加到它的右侧（:meth:`str.zfill` 会将其移到"
+"左侧）。``1000`` 保持不变，因为它的长度超过了 `width`。"
+

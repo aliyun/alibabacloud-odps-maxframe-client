@@ -1,0 +1,117 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.corrwith.rst:2
+msgid "maxframe.dataframe.DataFrame.corrwith"
+msgstr ""
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:1 of
+msgid "Compute pairwise correlation."
+msgstr "计算成对相关性。"
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:3 of
+msgid ""
+"Pairwise correlation is computed between rows or columns of DataFrame "
+"with rows or columns of Series or DataFrame. DataFrames are first aligned"
+" along both axes before computing the correlations."
+msgstr ""
+"在 DataFrame 的行或列与 Series 或 DataFrame 的行或列之间计算成对相关性。"
+"在计算相关性之前，首先沿两个轴对齐 DataFrames。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.corrwith.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:8 of
+msgid "Object with which to compute correlations."
+msgstr "用于计算相关性的对象。"
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:10 of
+msgid ""
+"The axis to use. 0 or 'index' to compute column-wise, 1 or 'columns' for "
+"row-wise."
+msgstr "使用的轴。0 或 'index' 表示按列计算，1 或 'columns' 表示按行计算。"
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:13 of
+msgid "Drop missing indices from result."
+msgstr "从结果中删除缺失的索引。"
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:15 of
+msgid ""
+"Method of correlation:  * pearson : standard correlation coefficient * "
+"kendall : Kendall Tau correlation coefficient * spearman : Spearman rank "
+"correlation * callable: callable with input two 1d ndarrays     and "
+"returning a float.  .. note::     kendall, spearman and callables not "
+"supported on multiple chunks yet."
+msgstr ""
+"相关方法：  * pearson : 标准相关系数 * kendall : Kendall Tau 相关系数 * "
+"spearman : Spearman 秩相关 * callable: 可调用对象，输入为两个一维数组，"
+"返回一个浮点数。  .. note::     kendall、spearman 和可调用对象尚未支持"
+"多个块。"
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:15 of
+msgid "Method of correlation:"
+msgstr ""
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:17 of
+msgid "pearson : standard correlation coefficient"
+msgstr ""
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:18 of
+msgid "kendall : Kendall Tau correlation coefficient"
+msgstr ""
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:19 of
+msgid "spearman : Spearman rank correlation"
+msgstr ""
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:20 of
+msgid "callable: callable with input two 1d ndarrays"
+msgstr ""
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:21 of
+msgid "and returning a float."
+msgstr ""
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:24 of
+msgid "kendall, spearman and callables not supported on multiple chunks yet."
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.corrwith.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:27 of
+msgid "Pairwise correlations."
+msgstr "成对相关性。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.corrwith.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:32 of
+msgid ":py:obj:`DataFrame.corr`"
+msgstr ""
+
+#: maxframe.dataframe.statistics.corr.df_corrwith:33 of
+msgid "Compute pairwise correlation of columns."
+msgstr "计算列的成对相关性。"
+

@@ -1,0 +1,113 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.isclose.rst:2
+msgid "maxframe.tensor.isclose"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isclose.isclose:1 of
+msgid ""
+"Returns a boolean tensor where two tensors are element-wise equal within "
+"a tolerance."
+msgstr "返回一个布尔张量，其中两个张量在给定容差内逐元素相等。"
+
+#: maxframe.tensor.arithmetic.isclose.isclose:4 of
+msgid ""
+"The tolerance values are positive, typically very small numbers.  The "
+"relative difference (`rtol` * abs(`b`)) and the absolute difference "
+"`atol` are added together to compare against the absolute difference "
+"between `a` and `b`."
+msgstr ""
+"容差值为正数，通常是非常小的数。相对差值（`rtol` * abs(`b`)）和绝对差值 `"
+"atol` 相加后与 `a` 和 `b` 之间的绝对差值进行比较。"
+
+#: maxframe.tensor.arithmetic.isclose.isclose of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isclose.isclose:9
+#: maxframe.tensor.arithmetic.isclose.isclose:11 of
+msgid "Input tensors to compare."
+msgstr "要比较的输入张量。"
+
+#: maxframe.tensor.arithmetic.isclose.isclose:13 of
+msgid "The relative tolerance parameter (see Notes)."
+msgstr "相对容差参数（参见注释）。"
+
+#: maxframe.tensor.arithmetic.isclose.isclose:15 of
+msgid "The absolute tolerance parameter (see Notes)."
+msgstr "绝对容差参数（参见注释）。"
+
+#: maxframe.tensor.arithmetic.isclose.isclose:17 of
+msgid ""
+"Whether to compare NaN's as equal.  If True, NaN's in `a` will be "
+"considered equal to NaN's in `b` in the output tensor."
+msgstr ""
+"是否将 NaN 视为相等。如果为 True，则 `a` 中的 NaN 将在输出张量中被视为与 "
+"`b` 中的 NaN 相等。"
+
+#: maxframe.tensor.arithmetic.isclose.isclose of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isclose.isclose:21 of
+msgid ""
+"**y** -- Returns a boolean tensor of where `a` and `b` are equal within "
+"the given tolerance. If both `a` and `b` are scalars, returns a single "
+"boolean value."
+msgstr ""
+"**y** -- 返回一个布尔张量，表示 `a` 和 `b` 在给定容差内相等的位置。如果 `"
+"a` 和 `b` 都是标量，则返回单个布尔值。"
+
+#: maxframe.tensor.arithmetic.isclose.isclose of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isclose.isclose:26 of
+msgid ":py:obj:`allclose`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isclose.isclose:29 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isclose.isclose:30 of
+msgid ""
+"For finite values, isclose uses the following equation to test whether "
+"two floating point values are equivalent."
+msgstr "对于有限值，isclose 使用以下等式来测试两个浮点值是否相等。"
+
+#: maxframe.tensor.arithmetic.isclose.isclose:33 of
+msgid "absolute(`a` - `b`) <= (`atol` + `rtol` * absolute(`b`))"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.isclose.isclose:35 of
+msgid ""
+"The above equation is not symmetric in `a` and `b`, so that `isclose(a, "
+"b)` might be different from `isclose(b, a)` in some rare cases."
+msgstr ""
+"上述等式在 `a` 和 `b` 中不对称，因此在某些罕见情况下 `isclose(a, b)` 可能"
+"与 `isclose(b, a)` 不同。"
+
+#: maxframe.tensor.arithmetic.isclose.isclose:40 of
+msgid "示例"
+msgstr ""
+

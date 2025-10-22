@@ -1,0 +1,281 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.join.rst:2
+msgid "maxframe.dataframe.DataFrame.join"
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:1 of
+msgid "Join columns of another DataFrame."
+msgstr "连接另一个 DataFrame 的列。"
+
+#: maxframe.dataframe.merge.merge.join:3 of
+msgid ""
+"Join columns with `other` DataFrame either on index or on a key column. "
+"Efficiently join multiple DataFrame objects by index at once by passing a"
+" list."
+msgstr ""
+"将列与 `other` DataFrame 按索引或键列连接。通过传递一个列表，可以高效地"
+"一次性按索引连接多个 DataFrame 对象。"
+
+#: maxframe.dataframe.merge.merge.join of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:7 of
+msgid ""
+"Index should be similar to one of the columns in this one. If a Series is"
+" passed, its name attribute must be set, and that will be used as the "
+"column name in the resulting joined DataFrame."
+msgstr ""
+"索引应与此 DataFrame 中的某一列相似。如果传递的是 Series，则必须设置其 "
+"name 属性，该属性将用作结果连接 DataFrame 中的列名。"
+
+#: maxframe.dataframe.merge.merge.join:11 of
+msgid ""
+"Column or index level name(s) in the caller to join on the index in "
+"`other`, otherwise joins index-on-index. If multiple values given, the "
+"`other` DataFrame must have a MultiIndex. Can pass an array as the join "
+"key if it is not already contained in the calling DataFrame. Like an "
+"Excel VLOOKUP operation."
+msgstr ""
+"调用方中用于与 `other` 中索引连接的列或索引层级名称，否则按索引与索引连接"
+"。如果给定多个值，`other` DataFrame 必须具有 MultiIndex。如果连接键不在"
+"调用方 DataFrame 中，可以传递一个数组。类似 Excel 的 VLOOKUP 操作。"
+
+#: maxframe.dataframe.merge.merge.join:17 of
+msgid ""
+"How to handle the operation of the two objects.  * left: use calling "
+"frame's index (or column if on is specified) * right: use `other`'s "
+"index. * outer: form union of calling frame's index (or column if on is"
+"   specified) with `other`'s index, and sort it.   lexicographically. * "
+"inner: form intersection of calling frame's index (or column if   on is "
+"specified) with `other`'s index, preserving the order   of the calling's "
+"one."
+msgstr ""
+"如何处理两个对象的操作。  * left：使用调用方的索引（如果指定了 on，则使用"
+"列） * right：使用 `other` 的索引。 * outer：将调用方的索引（如果指定了 "
+"on，则使用列）与 `other` 的索引取并集，并按字典序排序。 * inner：将调用方"
+"的索引（如果指定了 on，则使用列）与 `other` 的索引取交集，并保留调用方的"
+"顺序。"
+
+#: maxframe.dataframe.merge.merge.join:17 of
+msgid "How to handle the operation of the two objects."
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:19 of
+msgid "left: use calling frame's index (or column if on is specified)"
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:20 of
+msgid "right: use `other`'s index."
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:21 of
+msgid ""
+"outer: form union of calling frame's index (or column if on is specified)"
+" with `other`'s index, and sort it. lexicographically."
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:24 of
+msgid ""
+"inner: form intersection of calling frame's index (or column if on is "
+"specified) with `other`'s index, preserving the order of the calling's "
+"one."
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:28 of
+msgid "Suffix to use from left frame's overlapping columns."
+msgstr "来自左框中重叠列的后缀。"
+
+#: maxframe.dataframe.merge.merge.join:30 of
+msgid "Suffix to use from right frame's overlapping columns."
+msgstr "来自右框中重叠列的后缀。"
+
+#: maxframe.dataframe.merge.merge.join:32 of
+msgid ""
+"Order result DataFrame lexicographically by the join key. If False, the "
+"order of the join key depends on the join type (how keyword)."
+msgstr ""
+"按连接键对结果 DataFrame 进行字典序排序。如果为 False，则连接键的顺序"
+"取决于连接类型（how 关键字）。"
+
+#: maxframe.dataframe.merge.merge.join:35 of
+msgid ""
+"\"broadcast\" is recommended when one DataFrame is much smaller than the "
+"other, otherwise, \"shuffle\" will be a better choice. By default, we "
+"choose method according to actual data size."
+msgstr ""
+"当一个 DataFrame 远小于另一个时，建议使用 \"broadcast\"，否则 \"shuffle\""
+" 是更好的选择。默认情况下，我们会根据实际数据大小选择方法。"
+
+#: maxframe.dataframe.merge.merge.join:39 of
+msgid ""
+"Auto merge small chunks before or after merge  * \"both\": auto merge "
+"small chunks before and after, * \"none\": do not merge small chunks * "
+"\"before\": only merge small chunks before merge * \"after\": only merge "
+"small chunks after merge"
+msgstr ""
+"在合并前后自动合并小块  * \"both\"：在合并前后都自动合并小块， * \"none\""
+"：不合并小块 * \"before\"：仅在合并前合并小块 * \"after\"：仅在合并后合并"
+"小块"
+
+#: maxframe.dataframe.merge.merge.join:39 of
+msgid "Auto merge small chunks before or after merge"
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:41 of
+msgid "\"both\": auto merge small chunks before and after,"
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:42 of
+msgid "\"none\": do not merge small chunks"
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:43 of
+msgid "\"before\": only merge small chunks before merge"
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:44 of
+msgid "\"after\": only merge small chunks after merge"
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:46 of
+msgid ""
+"When how is \"inner\", merged result could be much smaller than original "
+"DataFrame, if the number of chunks is greater than the threshold, it will"
+" merge small chunks automatically."
+msgstr ""
+"当 how 为 \"inner\" 时，合并结果可能远小于原始 DataFrame，如果块数超过"
+"阈值，将自动合并小块。"
+
+#: maxframe.dataframe.merge.merge.join:50 of
+msgid "Use bloom filter to optimize merge"
+msgstr "使用布隆过滤器优化合并"
+
+#: maxframe.dataframe.merge.merge.join:52 of
+msgid ""
+"* \"max_elements\": max elements in bloom filter,   default value is the "
+"max size of all input chunks * \"error_rate\": error raite, default 0.1. "
+"* \"apply_chunk_size_threshold\": min chunk size of input chunks to apply"
+" bloom filter, default 10   when chunk size of left and right is greater "
+"than this threshold, apply bloom filter * \"filter\": \"large\", "
+"\"small\", \"both\", default \"large\"   decides to filter on large, "
+"small or both DataFrames."
+msgstr ""
+"* \"max_elements\"：布隆过滤器中的最大元素数，默认值为所有输入块的最大"
+"大小 * \"error_rate\"：错误率，默认为 0.1 * \"apply_chunk_size_threshold"
+"\"：应用布隆过滤器的最小输入块大小，默认为 10 当左右块大小超过此阈值时，"
+"应用布隆过滤器 * \"filter\"：\"large\", \"small\", \"both\"，默认为 \""
+"large\" 决定在大、小或两个 DataFrame 上进行过滤。"
+
+#: maxframe.dataframe.merge.merge.join:53 of
+msgid ""
+"\"max_elements\": max elements in bloom filter, default value is the max "
+"size of all input chunks"
+msgstr "\"max_elements\"：布隆过滤器中的最大元素数，默认值为所有输入块的最大大小"
+
+#: maxframe.dataframe.merge.merge.join:55 of
+msgid "\"error_rate\": error raite, default 0.1."
+msgstr "\"error_rate\"：错误率，默认为 0.1。"
+
+#: maxframe.dataframe.merge.merge.join:56 of
+msgid ""
+"\"apply_chunk_size_threshold\": min chunk size of input chunks to apply "
+"bloom filter, default 10 when chunk size of left and right is greater "
+"than this threshold, apply bloom filter"
+msgstr ""
+"\"apply_chunk_size_threshold\"：应用布隆过滤器的最小输入块大小，默认为 10"
+" 当左右块大小超过此阈值时，应用布隆过滤器"
+
+#: maxframe.dataframe.merge.merge.join:58 of
+msgid ""
+"\"filter\": \"large\", \"small\", \"both\", default \"large\" decides to "
+"filter on large, small or both DataFrames."
+msgstr ""
+"\"filter\"：\"large\", \"small\", \"both\"，默认为 \"large\" 决定在大、小"
+"或两个 DataFrame 上进行过滤。"
+
+#: maxframe.dataframe.merge.merge.join:61 of
+msgid ""
+"Join strategy to use for left frame. When data skew occurs, consider "
+"these strategies to avoid long-tail issues, but use them cautiously to "
+"prevent OOM and unnecessary overhead."
+msgstr ""
+"左侧 DataFrame 使用的连接策略。当出现数据倾斜时，可以考虑使用这些策略来"
+"避免长尾问题，但应谨慎使用以防止内存溢出和不必要的开销。"
+
+#: maxframe.dataframe.merge.merge.join:64 of
+msgid "Join strategy to use for right frame."
+msgstr "右侧 DataFrame 使用的连接策略。"
+
+#: maxframe.dataframe.merge.merge.join of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:67 of
+msgid "A dataframe containing columns from both the caller and `other`."
+msgstr "一个包含调用者和 `other` 列的 DataFrame。"
+
+#: maxframe.dataframe.merge.merge.join of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:72 of
+msgid ":py:obj:`DataFrame.merge`"
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:73 of
+msgid "For column(s)-on-column(s) operations."
+msgstr "用于列与列之间的操作。"
+
+#: maxframe.dataframe.merge.merge.join:76 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.merge.merge.join:99 of
+msgid "Join DataFrames using their indexes."
+msgstr "使用索引连接 DataFrame。"
+
+#: maxframe.dataframe.merge.merge.join:110 of
+msgid ""
+"If we want to join using the key columns, we need to set key to be the "
+"index in both `df` and `other`. The joined DataFrame will have key as its"
+" index."
+msgstr ""
+"如果我们想使用关键列进行连接，则需要将 `df` 和 `other` 中的关键列设为索引"
+"。连接后的 DataFrame 将以该关键列为索引。"
+
+#: maxframe.dataframe.merge.merge.join:124 of
+msgid ""
+"Another option to join using the key columns is to use the `on` "
+"parameter. DataFrame.join always uses `other`'s index but we can use any "
+"column in `df`. This method preserves the original DataFrame's index in "
+"the result."
+msgstr ""
+"另一种使用关键列进行连接的方法是使用 `on` 参数。DataFrame.join 总是使用 `"
+"other` 的索引，但我们可以使用 `df` 中的任意列。此方法会在结果中保留原始 "
+"DataFrame 的索引。"
+
+#: maxframe.dataframe.merge.merge.join:138 of
+msgid "Using non-unique key values shows how they are matched."
+msgstr "使用非唯一键值可以展示它们是如何匹配的。"
+

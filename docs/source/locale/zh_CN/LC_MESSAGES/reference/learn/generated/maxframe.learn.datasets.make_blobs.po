@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.datasets.make_blobs.rst:2
+msgid "maxframe.learn.datasets.make\\_blobs"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:1 of
+msgid "Generate isotropic Gaussian blobs for clustering."
+msgstr "生成用于聚类的各向同性高斯斑点。"
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:3 of
+msgid "Read more in the :ref:`User Guide <sample_generators>`."
+msgstr "更多信息请参见 :ref:`用户指南 <sample_generators>`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.datasets.make_blobs.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:5 of
+msgid ""
+"If int, it is the total number of points equally divided among clusters. "
+"If array-like, each element of the sequence indicates the number of "
+"samples per cluster."
+msgstr ""
+"如果为 int，则表示所有簇中平均分配的点的总数。如果为 array-like，序列中的"
+"每个元素表示每个簇的样本数量。"
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:10 of
+msgid "The number of features for each sample."
+msgstr "每个样本的特征数量。"
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:12 of
+msgid ""
+"(default=None) The number of centers to generate, or the fixed center "
+"locations. If n_samples is an int and centers is None, 3 centers are "
+"generated. If n_samples is array-like, centers must be either None or an "
+"array of length equal to the length of n_samples."
+msgstr ""
+"(默认值为 None) 要生成的中心数量，或固定的中心位置。如果 n_samples 是整数"
+"且 centers 为 None，则生成 3 个中心。如果 n_samples 是 array-like，则 "
+"centers 必须为 None 或者长度等于 n_samples 的数组。"
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:18 of
+msgid "The standard deviation of the clusters."
+msgstr "簇的标准差。"
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:20 of
+msgid ""
+"The bounding box for each cluster center when centers are generated at "
+"random."
+msgstr "当中心随机生成时，每个簇中心的边界框。"
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:23 of
+msgid "Shuffle the samples."
+msgstr "是否打乱样本顺序。"
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:25 of
+msgid ""
+"Determines random number generation for dataset creation. Pass an int for"
+" reproducible output across multiple function calls. See :term:`Glossary "
+"<random_state>`."
+msgstr ""
+"确定数据集创建时的随机数生成方式。传入一个 int 可在多次函数调用中获得可"
+"复现的结果。参见 :term:`术语表 <random_state>`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.datasets.make_blobs.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:30 of
+msgid ""
+"* **X** (*tensor of shape [n_samples, n_features]*) -- The generated "
+"samples. * **y** (*tensor of shape [n_samples]*) -- The integer labels "
+"for cluster membership of each sample."
+msgstr ""
+"* **X** (*tensor of shape [n_samples, n_features]*) -- 生成的样本。* **y*"
+"* (*tensor of shape [n_samples]*) -- 每个样本所属簇的整数标签。"
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:30 of
+msgid ""
+"**X** (*tensor of shape [n_samples, n_features]*) -- The generated "
+"samples."
+msgstr "**X** (*tensor of shape [n_samples, n_features]*) -- 生成的样本。"
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:31 of
+msgid ""
+"**y** (*tensor of shape [n_samples]*) -- The integer labels for cluster "
+"membership of each sample."
+msgstr "**y** (*tensor of shape [n_samples]*) -- 每个样本所属簇的整数标签。"
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:34 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:51 of
+msgid ":py:obj:`make_classification`"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_blobs:52 of
+msgid "a more intricate variant"
+msgstr "一个更复杂的变体"
+

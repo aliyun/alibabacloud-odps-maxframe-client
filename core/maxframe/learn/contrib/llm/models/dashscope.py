@@ -19,7 +19,7 @@ from .....serialization.serializables.core import Serializable
 from .....serialization.serializables.field import StringField
 from ..core import LLMTextGenOperator
 from ..multi_modal import MultiModalLLM
-from ..text import TextLLM
+from ..text import TextGenLLM
 
 
 class DashScopeLLMMixin(Serializable):
@@ -33,7 +33,7 @@ class DashScopeLLMMixin(Serializable):
                 raise ValueError(f"{k} is not supported")
 
 
-class DashScopeTextLLM(TextLLM, DashScopeLLMMixin):
+class DashScopeTextLLM(TextGenLLM, DashScopeLLMMixin):
     """
     DashScope text LLM.
     """
@@ -59,7 +59,7 @@ class DashScopeTextLLM(TextLLM, DashScopeLLMMixin):
         prompt_template: Dict[str, Any],
         params: Dict[str, Any] = None,
     ):
-        return DashScopeTextGenerationOperator(
+        return DashScopeTextGenerationOp(
             model=self,
             prompt_template=prompt_template,
             params=params,
@@ -93,16 +93,22 @@ class DashScopeMultiModalLLM(MultiModalLLM, DashScopeLLMMixin):
         params: Dict[str, Any] = None,
     ):
         # TODO add precheck here
-        return DashScopeMultiModalGenerationOperator(
+        return DashScopeMultiModalGenerationOp(
             model=self,
             prompt_template=prompt_template,
             params=params,
         )(data)
 
 
-class DashScopeTextGenerationOperator(LLMTextGenOperator):
+class DashScopeTextGenerationOp(LLMTextGenOperator):
     _op_type_ = opcodes.DASHSCOPE_TEXT_GENERATION
+    _legacy_name = "DashScopeTextGenerationOperator"
 
 
-class DashScopeMultiModalGenerationOperator(LLMTextGenOperator):
+class DashScopeMultiModalGenerationOp(LLMTextGenOperator):
     _op_type_ = opcodes.DASHSCOPE_MULTI_MODAL_GENERATION
+    _legacy_name = "DashScopeMultiModalGenerationOperator"
+
+
+DashScopeTextGenerationOperator = DashScopeTextGenerationOp
+DashScopeMultiModalGenerationOperator = DashScopeMultiModalGenerationOp

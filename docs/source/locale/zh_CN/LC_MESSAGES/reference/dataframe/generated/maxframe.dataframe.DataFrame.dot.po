@@ -1,0 +1,119 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.dot.rst:2
+msgid "maxframe.dataframe.DataFrame.dot"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic.dot.dot:1 of
+msgid "Compute the matrix multiplication between the DataFrame and other."
+msgstr "计算 DataFrame 与 other 之间的矩阵乘法。"
+
+#: maxframe.dataframe.arithmetic.dot.dot:3 of
+msgid ""
+"This method computes the matrix product between the DataFrame and the "
+"values of an other Series, DataFrame or a numpy array."
+msgstr ""
+"此方法计算 DataFrame 与另一个 Series、DataFrame 或 numpy 数组的值之间的"
+"矩阵乘积。"
+
+#: maxframe.dataframe.arithmetic.dot.dot:6 of
+msgid "It can also be called using ``self @ other`` in Python >= 3.5."
+msgstr "在 Python >= 3.5 中，也可以使用 ``self @ other`` 调用此方法。"
+
+#: maxframe.dataframe.arithmetic.dot.dot of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic.dot.dot:8 of
+msgid "The other object to compute the matrix product with."
+msgstr "用于计算矩阵乘积的另一个对象。"
+
+#: maxframe.dataframe.arithmetic.dot.dot of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic.dot.dot:11 of
+msgid ""
+"If other is a Series, return the matrix product between self and other as"
+" a Series. If other is a DataFrame or a numpy.array, return the matrix "
+"product of self and other in a DataFrame of a np.array."
+msgstr ""
+"如果 other 是一个 Series，则返回 self 与 other 的矩阵乘积作为一个 Series"
+"。如果 other 是一个 DataFrame 或 numpy.array，则返回 self 与 other 的矩阵"
+"乘积，结果为一个 DataFrame 或 np.array。"
+
+#: maxframe.dataframe.arithmetic.dot.dot of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic.dot.dot:18 of
+msgid ":py:obj:`Series.dot`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic.dot.dot:19 of
+msgid "Similar method for Series."
+msgstr "Series 的类似方法。"
+
+#: maxframe.dataframe.arithmetic.dot.dot:22 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic.dot.dot:23 of
+msgid ""
+"The dimensions of DataFrame and other must be compatible in order to "
+"compute the matrix multiplication. In addition, the column names of "
+"DataFrame and the index of other must contain the same values, as they "
+"will be aligned prior to the multiplication."
+msgstr ""
+"为了计算矩阵乘法，DataFrame 和 other 的维度必须兼容。此外，DataFrame 的"
+"列名和 other 的索引必须包含相同的值，因为它们将在乘法之前对齐。"
+
+#: maxframe.dataframe.arithmetic.dot.dot:28 of
+msgid ""
+"The dot method for Series computes the inner product, instead of the "
+"matrix product here."
+msgstr "Series 的 dot 方法计算的是内积，而不是这里的矩阵乘积。"
+
+#: maxframe.dataframe.arithmetic.dot.dot:32 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic.dot.dot:33 of
+msgid "Here we multiply a DataFrame with a Series."
+msgstr "这里我们将一个 DataFrame 与一个 Series 相乘。"
+
+#: maxframe.dataframe.arithmetic.dot.dot:44 of
+msgid "Here we multiply a DataFrame with another DataFrame."
+msgstr "这里我们将一个 DataFrame 与另一个 DataFrame 相乘。"
+
+#: maxframe.dataframe.arithmetic.dot.dot:52 of
+msgid "Note that the dot method give the same result as @"
+msgstr "注意，dot 方法给出的结果与 @ 相同"
+
+#: maxframe.dataframe.arithmetic.dot.dot:59 of
+msgid "The dot method works also if other is an np.array."
+msgstr "如果 other 是一个 np.array，dot 方法也可以工作。"
+
+#: maxframe.dataframe.arithmetic.dot.dot:67 of
+msgid "Note how shuffling of the objects does not change the result."
+msgstr "注意对象的打乱不会改变结果。"
+

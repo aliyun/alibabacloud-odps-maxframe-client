@@ -1,0 +1,236 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/metrics.rst:4
+msgid "Metrics"
+msgstr "指标"
+
+#: ../../source/reference/learn/metrics.rst:7
+msgid "Classification Metrics"
+msgstr "分类指标"
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`metrics.accuracy_score "
+"<maxframe.learn.metrics.accuracy_score>`\\ \\(y\\_true\\, y\\_pred\\[\\, "
+"...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid "Accuracy classification score."
+msgstr "准确率分类评分。"
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`metrics.auc <maxframe.learn.metrics.auc>`\\ \\(x\\, y\\[\\, "
+"execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid "Compute Area Under the Curve (AUC) using the trapezoidal rule"
+msgstr "使用梯形法则计算曲线下面积（AUC）。"
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`metrics.f1_score <maxframe.learn.metrics.f1_score>`\\ "
+"\\(y\\_true\\, y\\_pred\\, \\*\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid "Compute the F1 score, also known as balanced F-score or F-measure"
+msgstr "计算 F1 分数，也称为平衡 F 分数或 F 测度。"
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`metrics.fbeta_score <maxframe.learn.metrics.fbeta_score>`\\ "
+"\\(y\\_true\\, y\\_pred\\, \\*\\, beta\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid "Compute the F-beta score"
+msgstr "计算 F-beta 分数。"
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`metrics.log_loss <maxframe.learn.metrics.log_loss>`\\ "
+"\\(y\\_true\\, y\\_pred\\, \\*\\[\\, eps\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid "Log loss, aka logistic loss or cross-entropy loss."
+msgstr "对数损失，也称为逻辑损失或交叉熵损失。"
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`metrics.multilabel_confusion_matrix "
+"<maxframe.learn.metrics.multilabel_confusion_matrix>`\\ \\(y\\_true\\, "
+"...\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid "Compute a confusion matrix for each class or sample."
+msgstr "为每个类别或样本计算混淆矩阵。"
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`metrics.precision_recall_fscore_support "
+"<maxframe.learn.metrics.precision_recall_fscore_support>`\\ \\(...\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid "Compute precision, recall, F-measure and support for each class"
+msgstr "为每个类别计算精确率、召回率、F 测度和支持度。"
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`metrics.precision_score "
+"<maxframe.learn.metrics.precision_score>`\\ \\(y\\_true\\, y\\_pred\\, "
+"\\*\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid "Compute the precision"
+msgstr "计算精确率。"
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`metrics.recall_score <maxframe.learn.metrics.recall_score>`\\ "
+"\\(y\\_true\\, y\\_pred\\, \\*\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid "Compute the recall"
+msgstr "计算召回率。"
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`metrics.roc_auc_score <maxframe.learn.metrics.roc_auc_score>`\\ "
+"\\(y\\_true\\, y\\_score\\, \\*\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid ""
+"Compute Area Under the Receiver Operating Characteristic Curve (ROC AUC) "
+"from prediction scores."
+msgstr "从预测得分中计算接收者操作特征曲线下面积（ROC AUC）。"
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`metrics.roc_curve <maxframe.learn.metrics.roc_curve>`\\ "
+"\\(y\\_true\\, y\\_score\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:25:<autosummary>:1
+msgid "Compute Receiver operating characteristic (ROC)"
+msgstr "计算接收者操作特征（ROC）曲线。"
+
+#: ../../source/reference/learn/metrics.rst:27
+msgid "Regression Metrics"
+msgstr "回归指标"
+
+#: ../../source/reference/learn/metrics.rst:35:<autosummary>:1
+msgid ""
+":py:obj:`metrics.r2_score <maxframe.learn.metrics.r2_score>`\\ "
+"\\(y\\_true\\, y\\_pred\\, \\*\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:35:<autosummary>:1
+msgid ":math:`R^2` (coefficient of determination) regression score function."
+msgstr ":math:`R^2`（决定系数）回归评分函数。"
+
+#: ../../source/reference/learn/metrics.rst:37
+msgid "Pairwise metrics"
+msgstr "成对指标"
+
+#: ../../source/reference/learn/metrics.rst:50:<autosummary>:1
+msgid ""
+":py:obj:`metrics.pairwise.cosine_distances "
+"<maxframe.learn.metrics.pairwise.cosine_distances>`\\ \\(X\\[\\, Y\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:50:<autosummary>:1
+msgid "Compute cosine distance between samples in X and Y."
+msgstr "计算 X 和 Y 中样本之间的余弦距离。"
+
+#: ../../source/reference/learn/metrics.rst:50:<autosummary>:1
+msgid ""
+":py:obj:`metrics.pairwise.cosine_similarity "
+"<maxframe.learn.metrics.pairwise.cosine_similarity>`\\ \\(X\\[\\, Y\\, "
+"...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:50:<autosummary>:1
+msgid "Compute cosine similarity between samples in X and Y."
+msgstr "计算 X 和 Y 中样本之间的余弦相似度。"
+
+#: ../../source/reference/learn/metrics.rst:50:<autosummary>:1
+msgid ""
+":py:obj:`metrics.pairwise.euclidean_distances "
+"<maxframe.learn.metrics.pairwise.euclidean_distances>`\\ \\(X\\[\\, Y\\, "
+"...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:50:<autosummary>:1
+msgid ""
+"Considering the rows of X (and Y=X) as vectors, compute the distance "
+"matrix between each pair of vectors."
+msgstr "将 X 的行（以及 Y=X）视为向量，计算每对向量之间的距离矩阵。"
+
+#: ../../source/reference/learn/metrics.rst:50:<autosummary>:1
+msgid ""
+":py:obj:`metrics.pairwise.haversine_distances "
+"<maxframe.learn.metrics.pairwise.haversine_distances>`\\ \\(X\\[\\, "
+"Y\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:50:<autosummary>:1
+msgid "Compute the Haversine distance between samples in X and Y"
+msgstr "计算 X 和 Y 中样本之间的 Haversine 距离"
+
+#: ../../source/reference/learn/metrics.rst:50:<autosummary>:1
+msgid ""
+":py:obj:`metrics.pairwise.manhattan_distances "
+"<maxframe.learn.metrics.pairwise.manhattan_distances>`\\ \\(X\\[\\, "
+"Y\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:50:<autosummary>:1
+msgid "Compute the L1 distances between the vectors in X and Y."
+msgstr "计算 X 和 Y 中向量之间的 L1 距离。"
+
+#: ../../source/reference/learn/metrics.rst:50:<autosummary>:1
+msgid ""
+":py:obj:`metrics.pairwise.rbf_kernel "
+"<maxframe.learn.metrics.pairwise.rbf_kernel>`\\ \\(X\\[\\, Y\\, "
+"gamma\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/metrics.rst:50:<autosummary>:1
+msgid "Compute the rbf (gaussian) kernel between X and Y."
+msgstr "计算 X 和 Y 之间的 RBF（高斯）核。"
+
+#: ../../source/reference/learn/metrics.rst:50:<autosummary>:1
+msgid ""
+":py:obj:`metrics.pairwise_distances "
+"<maxframe.learn.metrics.pairwise_distances>`\\ \\(X\\[\\, Y\\, "
+"metric\\]\\)"
+msgstr ""
+

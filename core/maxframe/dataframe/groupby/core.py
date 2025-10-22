@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections import namedtuple
+import os
+import warnings
 from typing import Any, Dict, List
 
 import pandas as pd
@@ -20,6 +21,7 @@ import pandas as pd
 from ... import opcodes
 from ...core import ENTITY_TYPE, Entity, EntityData, OutputType
 from ...core.operator import MapReduceOperator
+from ...env import MAXFRAME_INSIDE_TASK
 from ...serialization import PickleContainer
 from ...serialization.serializables import AnyField, BoolField, DictField, Int32Field
 from ...udf import BuiltinFunction
@@ -36,9 +38,6 @@ from ..utils import (
 )
 
 cudf = lazy_import("cudf")
-
-
-NamedAgg = namedtuple("NamedAgg", ["column", "aggfunc"])
 
 
 class DataFrameGroupByOp(MapReduceOperator, DataFrameOperatorMixin):
@@ -324,3 +323,20 @@ class BaseGroupByWindowOp(DataFrameOperatorMixin, DataFrameOperator):
             name, dtype = out_dtypes
             kw.update(dtype=dtype, name=name, shape=(groupby.shape[0],))
         return self.new_tileable([in_df], **kw)
+
+
+def _make_named_agg_compat(name):  # pragma: no cover
+    # to make imports compatible
+    from ..reduction import NamedAgg
+
+    if name == "NamedAgg":
+        if MAXFRAME_INSIDE_TASK not in os.environ:
+            warnings.warn(
+                "Please import NamedAgg from maxframe.dataframe",
+                DeprecationWarning,
+            )
+        return NamedAgg
+    raise AttributeError(f"module {__name__} has no attribute {name}")
+
+
+__getattr__ = _make_named_agg_compat

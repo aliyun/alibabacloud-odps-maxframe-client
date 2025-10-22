@@ -1,0 +1,148 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.GroupBy.transform.rst:2
+msgid "maxframe.dataframe.groupby.GroupBy.transform"
+msgstr ""
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:1 of
+msgid ""
+"Call function producing a like-indexed DataFrame on each group and return"
+" a DataFrame having the same indexes as the original object filled with "
+"the transformed values"
+msgstr ""
+"对每个分组调用生成具有相同索引的 DataFrame 的函数，并返回一个与原始对象"
+"具有相同索引且填充了转换值的 DataFrame"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:5 of
+msgid "Function to apply to each group."
+msgstr "应用到每个分组的函数。"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:7 of
+msgid "Specify dtypes of returned DataFrames. See `Notes` for more details."
+msgstr "指定返回的 DataFrames 的数据类型。详见“注意事项”。"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:9 of
+msgid "Specify dtype of returned Series. See `Notes` for more details."
+msgstr "指定返回的 Series 的数据类型。详见“注意事项”。"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:11 of
+msgid "Specify name of returned Series. See `Notes` for more details."
+msgstr "指定返回的 Series 的名称。详见“注意事项”。"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:13 of
+msgid "Whether infer dtypes when dtypes or output_type is not specified."
+msgstr "当未指定 dtypes 或 output_type 时是否推断数据类型。"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:15 of
+msgid "Positional arguments to pass to func"
+msgstr "传递给 func 的位置参数"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:16 of
+msgid "Keyword arguments to be passed into func."
+msgstr "传递给 func 的关键字参数。"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:20 of
+msgid ""
+":py:obj:`DataFrame.groupby.apply`, :py:obj:`DataFrame.groupby.aggregate`,"
+" :py:obj:`DataFrame.transform`"
+msgstr ""
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:23
+#: maxframe.dataframe.groupby.transform.groupby_transform:40 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:24 of
+msgid ""
+"Each group is endowed the attribute 'name' in case you need to know which"
+" group you are working on."
+msgstr "每个分组都会被赋予 'name' 属性，以便你知道当前处理的是哪个分组。"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:27 of
+msgid "The current implementation imposes three requirements on f:"
+msgstr "当前实现对 f 提出了三项要求："
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:29 of
+msgid ""
+"f must return a value that either has the same shape as the input "
+"subframe or can be broadcast to the shape of the input subframe. For "
+"example, if `f` returns a scalar it will be broadcast to have the same "
+"shape as the input subframe."
+msgstr ""
+"f 必须返回一个与输入子帧形状相同或可以广播为输入子帧形状的值。例如，如果 "
+"`f` 返回一个标量，则它将被广播为与输入子帧相同的形状。"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:33 of
+msgid ""
+"if this is a DataFrame, f must support application column-by-column in "
+"the subframe. If f also supports application to the entire subframe, then"
+" a fast path is used starting from the second chunk."
+msgstr ""
+"如果这是一个 DataFrame，f 必须支持在子帧中逐列应用。如果 f 还支持应用于"
+"整个子帧，则从第二个分块开始使用快速路径。"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:36 of
+msgid ""
+"f must not mutate groups. Mutation is not supported and may produce "
+"unexpected results."
+msgstr "f 不得修改分组。修改操作不受支持，可能会产生意外结果。"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:41 of
+msgid ""
+"When deciding output dtypes and shape of the return value, MaxFrame will "
+"try applying ``func`` onto a mock grouped object, and the transform call "
+"may fail."
+msgstr ""
+"在决定输出数据类型和返回值形状时，MaxFrame 会尝试将 ``func`` 应用于模拟的"
+"分组对象，此时 transform 调用可能会失败。"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:45 of
+msgid ""
+"For DataFrame output, you need to specify a list or a pandas Series as "
+"``dtypes`` of output DataFrame. ``index`` of output can also be "
+"specified."
+msgstr ""
+"对于 DataFrame 输出，你需要将一个列表或 pandas Series 指定为输出 "
+"DataFrame 的 ``dtypes``。也可以指定输出的 ``index``。"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:48 of
+msgid ""
+"For Series output, you need to specify ``dtype`` and ``name`` of output "
+"Series."
+msgstr "对于 Series 输出，你需要指定输出 Series 的 ``dtype`` 和 ``name``。"
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:52 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.groupby.transform.groupby_transform:70 of
+msgid "Broadcast result of the transformation"
+msgstr "广播转换结果"
+

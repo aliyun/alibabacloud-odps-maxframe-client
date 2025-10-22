@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.str.rfind.rst:2
+msgid "maxframe.dataframe.Series.str.rfind"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.rfind:1
+msgid "Return highest indexes in each strings in the Series/Index."
+msgstr "返回 Series/Index 中每个字符串的最高索引。"
+
+#: of pandas.core.strings.accessor.StringMethods.rfind:3
+msgid ""
+"Each of returned indexes corresponds to the position where the substring "
+"is fully contained between [start:end]. Return -1 on failure. Equivalent "
+"to standard :meth:`str.rfind`."
+msgstr ""
+"返回的每个索引对应于子字符串在 [start:end] 范围内完全包含的位置。失败时"
+"返回 -1。等效于标准 :meth:`str.rfind`。"
+
+#: of pandas.core.strings.accessor.StringMethods.rfind
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.rfind:7
+msgid "Substring being searched."
+msgstr "要搜索的子字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.rfind:9
+msgid "Left edge index."
+msgstr "左边界索引。"
+
+#: of pandas.core.strings.accessor.StringMethods.rfind:11
+msgid "Right edge index."
+msgstr "右边界索引。"
+
+#: of pandas.core.strings.accessor.StringMethods.rfind
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.rfind:18
+msgid ":py:obj:`find`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.rfind:19
+msgid "Return lowest indexes in each strings."
+msgstr "返回每个字符串中的最低索引。"
+
+#: of pandas.core.strings.accessor.StringMethods.rfind:22
+msgid "示例"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.rfind:23
+msgid "For Series.str.find:"
+msgstr "对于 Series.str.find："
+
+#: of pandas.core.strings.accessor.StringMethods.rfind:33
+msgid "For Series.str.rfind:"
+msgstr "对于 Series.str.rfind："
+

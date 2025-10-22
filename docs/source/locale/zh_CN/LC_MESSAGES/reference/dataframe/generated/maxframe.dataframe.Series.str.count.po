@@ -1,0 +1,111 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.str.count.rst:2
+msgid "maxframe.dataframe.Series.str.count"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.count:1
+msgid "Count occurrences of pattern in each string of the Series/Index."
+msgstr "计算 Series/Index 中每个字符串中模式出现的次数。"
+
+#: of pandas.core.strings.accessor.StringMethods.count:3
+msgid ""
+"This function is used to count the number of times a particular regex "
+"pattern is repeated in each of the string elements of the "
+":class:`~pandas.Series`."
+msgstr ""
+"此函数用于计算特定正则表达式模式在 :class:`~pandas.Series` 的每个字符串"
+"元素中重复的次数。"
+
+#: of pandas.core.strings.accessor.StringMethods.count
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.count:7
+msgid "Valid regular expression."
+msgstr "有效的正则表达式。"
+
+#: of pandas.core.strings.accessor.StringMethods.count:9
+msgid ""
+"Flags for the `re` module. For a complete list, `see here "
+"<https://docs.python.org/3/howto/regex.html#compilation-flags>`_."
+msgstr ""
+"`re` 模块的标志。完整列表请参见 <https://docs.python.org/3/howto/regex."
+"html#compilation-flags>`_。"
+
+#: of pandas.core.strings.accessor.StringMethods.count:12
+msgid "For compatibility with other string methods. Not used."
+msgstr "为了与其他字符串方法兼容。未使用。"
+
+#: of pandas.core.strings.accessor.StringMethods.count
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.count:14
+msgid "Same type as the calling object containing the integer counts."
+msgstr "与调用对象类型相同，包含整数计数。"
+
+#: of pandas.core.strings.accessor.StringMethods.count
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.count:19
+msgid ":py:obj:`re`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.count:20
+msgid "Standard library module for regular expressions."
+msgstr "用于正则表达式的标准库模块。"
+
+#: of pandas.core.strings.accessor.StringMethods.count:22
+msgid ":py:obj:`str.count`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.count:23
+msgid "Standard library version, without regular expression support."
+msgstr "标准库版本，不支持正则表达式。"
+
+#: of pandas.core.strings.accessor.StringMethods.count:26
+msgid "备注"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.count:27
+msgid ""
+"Some characters need to be escaped when passing in `pat`. eg. ``'$'`` has"
+" a special meaning in regex and must be escaped when finding this literal"
+" character."
+msgstr ""
+"传入 `pat` 时，某些字符需要转义。例如，``'$'`` 在正则表达式中有特殊含义，"
+"查找该字面字符时必须转义。"
+
+#: of pandas.core.strings.accessor.StringMethods.count:32
+msgid "示例"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.count:46
+msgid "Escape ``'$'`` to find the literal dollar sign."
+msgstr "转义 ``'$'`` 以查找字面美元符号。"
+
+#: of pandas.core.strings.accessor.StringMethods.count:58
+msgid "This is also available on Index"
+msgstr "这在 Index 上也可用"
+

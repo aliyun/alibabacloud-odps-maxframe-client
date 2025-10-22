@@ -39,12 +39,13 @@ class SeriesFlatJSONOperator(DataFrameOperator, DataFrameOperatorMixin):
                 name=name,
                 dtype=make_dtype(dtype),
             )
+        dtypes = make_dtypes(dtypes)
         return self.new_dataframe(
             [series],
             shape=(series.shape[0], len(dtypes)),
             index_value=series.index_value,
             columns_value=parse_index(dtypes.index, store_data=True),
-            dtypes=make_dtypes(dtypes),
+            dtypes=dtypes,
         )
 
 

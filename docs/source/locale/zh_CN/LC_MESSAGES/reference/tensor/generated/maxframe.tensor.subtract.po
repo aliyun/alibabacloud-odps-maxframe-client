@@ -1,0 +1,81 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.subtract.rst:2
+msgid "maxframe.tensor.subtract"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.subtract.subtract:1 of
+msgid "Subtract arguments, element-wise."
+msgstr "逐元素相减。"
+
+#: maxframe.tensor.arithmetic.subtract.subtract of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.subtract.subtract:3
+#: maxframe.tensor.arithmetic.subtract.subtract:5 of
+msgid "The tensors to be subtracted from each other."
+msgstr "要相互减去的张量。"
+
+#: maxframe.tensor.arithmetic.subtract.subtract:7 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，则其形状必须可广播到输入的形状。如果未提供"
+"或为 `None`，则返回一个新分配的张量。元组（只能作为关键字参数）的长度必须"
+"等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.subtract.subtract:12 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算通用函数，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.subtract.subtract of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.subtract.subtract:17 of
+msgid ""
+"**y** -- The difference of `x1` and `x2`, element-wise.  Returns a scalar"
+" if both  `x1` and `x2` are scalars."
+msgstr "**y** -- `x1` 和 `x2` 的逐元素差。如果 `x1` 和 `x2` 都是标量，则返回标量。"
+
+#: maxframe.tensor.arithmetic.subtract.subtract of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.subtract.subtract:22 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.subtract.subtract:23 of
+msgid "Equivalent to ``x1 - x2`` in terms of tensor broadcasting."
+msgstr "在张量广播方面等价于 ``x1 - x2``。"
+
+#: maxframe.tensor.arithmetic.subtract.subtract:26 of
+msgid "示例"
+msgstr ""
+

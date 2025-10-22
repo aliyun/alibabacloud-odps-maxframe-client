@@ -1,0 +1,169 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/user_guide/dataframe/io.rst:2
+msgid "Data input and output"
+msgstr "数据输入和输出"
+
+#: ../../source/user_guide/dataframe/io.rst:6
+msgid "MaxCompute"
+msgstr "大数据计算服务"
+
+#: ../../source/user_guide/dataframe/io.rst:9
+msgid "Read and convert to tables"
+msgstr "读取并转换为表格"
+
+#: ../../source/user_guide/dataframe/io.rst:10
+msgid ""
+"Users can create MaxFrame DataFrame objects from MaxCompute tables with "
+":func:`read_odps_table` , and store computed results into MaxCompute "
+"tables with :func:`DataFrame.to_odps_table`."
+msgstr ""
+"用户可以使用 :func:`read_odps_table` 创建来自大数据计算服务表的 MaxFrame "
+"DataFrame 对象，并使用 :func:`DataFrame.to_odps_table` 将计算结果存储到大"
+"数据计算服务表中。"
+
+#: ../../source/user_guide/dataframe/io.rst:13
+msgid ""
+"For instance, if you want to get data from non-partitioned table "
+"`test_odps_table`, do some transformation by MaxFrame and store it into "
+"another partitioned table `test_processed_odps_table`, you may use "
+":func:`read_odps_table` as is shown below."
+msgstr ""
+"例如，如果您想从非分区表 `test_odps_table` 获取数据，通过 MaxFrame 进行"
+"一些转换，并将其存储到另一个分区表 `test_processed_odps_table` 中，您可以"
+"使用 :func:`read_odps_table` 如下所示。"
+
+#: ../../source/user_guide/dataframe/io.rst:25
+msgid ""
+"If the table is partitioned, ``read_odps_table`` will read data from all "
+"partitions which should be definitely avoided if there are a number of "
+"partitions. You can select one partition or a number of partitions with "
+"``partitions`` argument."
+msgstr ""
+"如果表是分区的，``read_odps_table`` 将从所有分区读取数据，如果存在多个"
+"分区，这应被绝对避免。您可以通过 ``partitions`` 参数选择一个分区或多个"
+"分区。"
+
+#: ../../source/user_guide/dataframe/io.rst:35
+msgid ""
+"Values of partition columns are not included in results by default. If "
+"you need these values, you may specify ``append_partitions=True``."
+msgstr ""
+"默认情况下，分区列的值不会包含在结果中。如果您需要这些值，您可以指定 ``"
+"append_partitions=True``。"
+
+#: ../../source/user_guide/dataframe/io.rst:44
+msgid ""
+"The resulting DataFrame will produce a RangeIndex by default. You may use"
+" ``index_col`` argument to specify existing columns as indexes."
+msgstr ""
+"默认情况下，生成的 DataFrame 将产生 RangeIndex。您可以使用 ``index_col`` "
+"参数指定现有列作为索引。"
+
+#: ../../source/user_guide/dataframe/io.rst:53
+msgid ""
+"If you want to store prepreocessed ``df`` into a MaxCompute table, you "
+"can use :func:`to_odps_table` as is shown below."
+msgstr ""
+"如果您想要将预处理的 ``df`` 存储到大数据计算服务表中，您可以使用 :func:`"
+"to_odps_table` 如下所示。"
+
+#: ../../source/user_guide/dataframe/io.rst:60
+msgid ""
+"You can control the behavior of index output via ``index`` and "
+"``index_label`` arguments. By default the index is outputted. If you do "
+"not want to output the index, you may specify ``index`` argument as "
+"False."
+msgstr ""
+"您可以通过 ``index`` 和 ``index_label`` 参数控制索引输出的行为。默认情况"
+"下，索引会被输出。如果您不想输出索引，您可以将 ``index`` 参数设置为 False"
+"。"
+
+#: ../../source/user_guide/dataframe/io.rst:68
+msgid ""
+"The names of columns for indexes is the names of the indexes by default. "
+"If names of indexes are not specified, the name ``index`` will be used if"
+" the index only has one level, or ``level_x`` will be used, where ``x`` "
+"is the integer index of the level."
+msgstr ""
+"默认情况下，索引列的名称是索引的名称。如果没有指定索引名，则如果索引只有"
+"一个级别，将使用名称 ``index``，否则将使用 ``level_x``，其中 ``x`` 是级别"
+"的整数索引。"
+
+#: ../../source/user_guide/dataframe/io.rst:72
+msgid ""
+"Data can be stored as partitioned tables. You may specify ``partition`` "
+"argument as the partition to write."
+msgstr "数据可以存储为分区表。您可以将 ``partition`` 参数指定为要写的分区。"
+
+#: ../../source/user_guide/dataframe/io.rst:79
+msgid ""
+"You can also specify columns as partition columns. The data of these "
+"columns will dynamically decide the partition the row will be written to."
+msgstr "您还可以指定列作为分区列。这些列的数据将动态决定行将被写入哪个分区。"
+
+#: ../../source/user_guide/dataframe/io.rst:87
+msgid "Read from SQL queries"
+msgstr "从 SQL 查询读取"
+
+#: ../../source/user_guide/dataframe/io.rst:88
+msgid ""
+"Users can create MaxFrame DataFrame objects with MaxCompute queries with "
+":func:`read_odps_query`. MaxFrame will retrieve DataFrame schema with "
+"`EXPLAIN <https://www.alibabacloud.com/help/zh/maxcompute/user-"
+"guide/explain>`_ statement and execute queries in MaxCompute."
+msgstr ""
+"用户可以通过使用 :func:`read_odps_query` 来使用大数据计算服务查询创建 "
+"MaxFrame DataFrame 对象。MaxFrame 将使用 `EXPLAIN <https://www."
+"alibabacloud.com/help/zh/maxcompute/user-guide/explain>`_ 语句检索 "
+"DataFrame 架构并在大数据计算服务中执行查询。"
+
+#: ../../source/user_guide/dataframe/io.rst:93
+msgid "For instance, you can create a DataFrame with SQL statement below."
+msgstr "例如，您可以使用以下 SQL 语句创建一个 DataFrame。"
+
+#: ../../source/user_guide/dataframe/io.rst:103
+msgid "pandas objects"
+msgstr "pandas 对象"
+
+#: ../../source/user_guide/dataframe/io.rst:104
+msgid ""
+"Users can convert between local pandas objects and DataFrames with "
+":func:`read_pandas` and :func:`DataFrame.to_pandas`."
+msgstr ""
+"用户可以通过使用 :func:`read_pandas` 和 :func:`DataFrame.to_pandas` 在"
+"本地 pandas 对象和 DataFrame 之间进行转换。"
+
+#: ../../source/user_guide/dataframe/io.rst:107
+msgid ""
+"When ``read_pandas`` is called, these pandas objects will be uploaded to "
+"MaxCompute and be used in the cluster."
+msgstr ""
+"当调用 ``read_pandas`` 时，这些 pandas 对象将被上传到大数据计算服务并用于"
+"集群。"
+
+#: ../../source/user_guide/dataframe/io.rst:114
+msgid ""
+"After transformation is done in MaxFrame, data can be downloaded to "
+"client with ``to_pandas``."
+msgstr "在 MaxFrame 完成转换后，数据可以使用 ``to_pandas`` 下载到客户端。"
+

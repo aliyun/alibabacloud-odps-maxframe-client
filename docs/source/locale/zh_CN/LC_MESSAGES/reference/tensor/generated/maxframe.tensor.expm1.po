@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.expm1.rst:2
+msgid "maxframe.tensor.expm1"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.expm1.expm1:1 of
+msgid "Calculate ``exp(x) - 1`` for all elements in the tensor."
+msgstr "计算张量中所有元素的 ``exp(x) - 1``。"
+
+#: maxframe.tensor.arithmetic.expm1.expm1 of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.expm1.expm1:3 of
+msgid "Input values."
+msgstr "输入值。"
+
+#: maxframe.tensor.arithmetic.expm1.expm1:5 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供了该参数，则其形状必须可以广播到输入的形状。"
+"如果未提供或为 `None`，则返回一个新分配的张量。元组（仅可作为关键字参数）"
+"的长度必须等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.expm1.expm1:10 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "为 True 的值表示在该位置计算 ufunc，为 False 的值表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.expm1.expm1 of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.expm1.expm1:15 of
+msgid "**out** -- Element-wise exponential minus one: ``out = exp(x) - 1``."
+msgstr "**out** -- 元素级指数减一：``out = exp(x) - 1``。"
+
+#: maxframe.tensor.arithmetic.expm1.expm1 of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.expm1.expm1:20 of
+msgid ":py:obj:`log1p`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.expm1.expm1:21 of
+msgid "``log(1 + x)``, the inverse of expm1."
+msgstr "``log(1 + x)``，expm1 的反函数。"
+
+#: maxframe.tensor.arithmetic.expm1.expm1:24 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.expm1.expm1:25 of
+msgid ""
+"This function provides greater precision than ``exp(x) - 1`` for small "
+"values of ``x``."
+msgstr "对于较小的 ``x`` 值，此函数比 ``exp(x) - 1`` 提供更高的精度。"
+
+#: maxframe.tensor.arithmetic.expm1.expm1:29 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.expm1.expm1:30 of
+msgid ""
+"The true value of ``exp(1e-10) - 1`` is ``1.00000000005e-10`` to about 32"
+" significant digits. This example shows the superiority of expm1 in this "
+"case."
+msgstr ""
+"``exp(1e-10) - 1`` 的真实值约为 ``1.00000000005e-10``，精确到大约32位"
+"有效数字。此示例展示了 expm1 在这种情况下更优的精度。"
+

@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from odps import ODPS
+from odps import options as odps_options
 
 import maxframe.dataframe as md
 import maxframe.remote as mr
@@ -207,6 +208,29 @@ def test_run_empty_table(start_mock_session):
     assert 0 == len(fetched)
 
     empty_table.drop()
+
+
+def test_read_table_with_arrow_dtype(start_mock_session):
+    if not hasattr(pd, "ArrowDtype"):
+        pytest.skip("Need ArrowDtype in pandas to run the test")
+
+    odps_entry = ODPS.from_environments()
+    odps_options.sql.use_odps2_extension = True
+
+    table_name = tn("test_read_table_with_arrow_dtype")
+    odps_entry.delete_table(table_name, if_exists=True)
+    test_table = odps_entry.create_table(table_name, "a bigint, b binary", lifecycle=1)
+
+    with test_table.open_writer() as writer:
+        writer.write([123, b"abcd"])
+        writer.write([None, b"uvx"])
+        writer.write([456, b"asfdl\x11hawl"])
+
+    df = md.read_odps_table(table_name, dtype_backend="pyarrow")
+    executed = df.execute().fetch()
+    assert all(isinstance(tp, pd.ArrowDtype) for tp in executed.dtypes)
+    assert executed.a.tolist() == [123, pd.NA, 456]
+    assert executed.b.tolist() == [b"abcd", b"uvx", b"asfdl\x11hawl"]
 
 
 def test_run_odps_query_without_schema(start_mock_session):

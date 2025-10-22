@@ -1,0 +1,104 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellip_harm_2.rst:2
+msgid "maxframe.tensor.special.ellip\\_harm\\_2"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:1 of
+msgid "Ellipsoidal harmonic functions F^p_n(l)"
+msgstr "椭球谐波函数 F^p_n(l)"
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:3 of
+msgid ""
+"These are also known as Lame functions of the second kind, and are "
+"solutions to the Lame equation:"
+msgstr "这些也被称为第二类拉梅函数，是拉梅方程的解："
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:6 of
+msgid ""
+"(s^2 - h^2)(s^2 - k^2)F''(s)\n"
+"+ s(2s^2 - h^2 - k^2)F'(s) + (a - q s^2)F(s) = 0\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:9 of
+msgid ""
+"where :math:`q = (n+1)n` and :math:`a` is the eigenvalue (not returned) "
+"corresponding to the solutions."
+msgstr "其中 :math:`q = (n+1)n`，:math:`a` 是对应解的特征值（不返回）。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellip_harm_2.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:12 of
+msgid "``h**2``"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:14 of
+msgid "``k**2``; should be larger than ``h**2``"
+msgstr "``k**2``；应大于 ``h**2``"
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:16 of
+msgid "Degree."
+msgstr "度。"
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:18 of
+msgid "Order, can range between [1,2n+1]."
+msgstr "阶数，取值范围为 [1,2n+1]。"
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:20 of
+msgid "Coordinate"
+msgstr "坐标"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellip_harm_2.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:23 of
+msgid "**F** -- The harmonic :math:`F^p_n(s)`"
+msgstr "**F** -- 谐波 :math:`F^p_n(s)`"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellip_harm_2.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:26 of
+msgid ":py:obj:`ellip_harm`, :py:obj:`ellip_normal`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:29 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:30 of
+msgid ""
+"Lame functions of the second kind are related to the functions of the "
+"first kind:"
+msgstr "第二类拉梅函数与第一类函数相关："
+
+#: maxframe.tensor.special.ellip_harm.ellip_harm_2:32 of
+msgid ""
+"F^p_n(s)=(2n + 1)E^p_n(s)\\int_{0}^{1/s}\n"
+"\\frac{du}{(E^p_n(1/u))^2\\sqrt{(1-u^2k^2)(1-u^2h^2)}}"
+msgstr ""
+

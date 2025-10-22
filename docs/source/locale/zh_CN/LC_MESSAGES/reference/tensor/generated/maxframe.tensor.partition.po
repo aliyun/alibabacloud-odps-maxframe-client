@@ -1,0 +1,202 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.partition.rst:2
+msgid "maxframe.tensor.partition"
+msgstr ""
+
+#: maxframe.tensor.sort.partition.partition:1 of
+msgid "Return a partitioned copy of a tensor."
+msgstr "返回一个分区后的张量副本。"
+
+#: maxframe.tensor.sort.partition.partition:3 of
+msgid ""
+"Creates a copy of the tensor with its elements rearranged in such a way "
+"that the value of the element in k-th position is in the position it "
+"would be in a sorted tensor. All elements smaller than the k-th element "
+"are moved before this element and all equal or greater are moved behind "
+"it. The ordering of the elements in the two partitions is undefined."
+msgstr ""
+"创建一个张量副本，并将其元素重新排列，使得第 k 个位置的元素处于其在排序后"
+"张量中的最终位置。所有小于第 k 个元素的值都会被移到它前面，所有等于或大于"
+"它的值会被移到它后面。两个分区中元素的顺序是未定义的。"
+
+#: maxframe.tensor.sort.partition.partition of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.sort.partition.partition:10 of
+msgid "Tensor to be sorted."
+msgstr "待排序的张量。"
+
+#: maxframe.tensor.sort.partition.partition:12 of
+msgid ""
+"Element index to partition by. The k-th value of the element will be in "
+"its final sorted position and all smaller elements will be moved before "
+"it and all equal or greater elements behind it. The order of all elements"
+" in the partitions is undefined. If provided with a sequence of k-th it "
+"will partition all elements indexed by k-th  of them into their sorted "
+"position at once."
+msgstr ""
+"用于分区的元素索引。第 k 个元素的值将会被放到其最终排序后的位置，所有比它"
+"小的元素会被移到它前面，所有等于或大于它的元素会被移到它后面。分区中所有"
+"元素的顺序是未定义的。如果提供一个 k 值序列，则会一次性将所有由 k 指定的"
+"元素放到它们排序后的位置。"
+
+#: maxframe.tensor.sort.partition.partition:19 of
+msgid ""
+"Axis along which to sort. If None, the tensor is flattened before "
+"sorting. The default is -1, which sorts along the last axis."
+msgstr ""
+"沿哪个轴进行排序。如果为 None，则在排序前先将张量展平。默认值为 -1，表示"
+"沿最后一个轴进行排序。"
+
+#: maxframe.tensor.sort.partition.partition:22 of
+msgid "Selection algorithm. Default is 'introselect'."
+msgstr "选择算法。默认为 'introselect'。"
+
+#: maxframe.tensor.sort.partition.partition:24 of
+msgid ""
+"When `a` is a tensor with fields defined, this argument specifies which "
+"fields to compare first, second, etc.  A single field can be specified as"
+" a string.  Not all fields need be specified, but unspecified fields will"
+" still be used, in the order in which they come up in the dtype, to break"
+" ties."
+msgstr ""
+"当 `a` 是一个定义了字段的张量时，此参数指定首先比较哪些字段，其次比较哪些"
+"字段，等等。可以将单个字段指定为字符串。并非所有字段都需要指定，但未指定"
+"的字段仍会按照它们在 dtype 中出现的顺序用于解决平局情况。"
+
+#: maxframe.tensor.sort.partition.partition of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.sort.partition.partition:31 of
+msgid "**partitioned_tensor** -- Tensor of the same type and shape as `a`."
+msgstr "**partitioned_tensor** -- 与 `a` 具有相同类型和形状的张量。"
+
+#: maxframe.tensor.sort.partition.partition of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.sort.partition.partition:36 of
+msgid ":py:obj:`Tensor.partition`"
+msgstr ""
+
+#: maxframe.tensor.sort.partition.partition:37 of
+msgid "Method to sort a tensor in-place."
+msgstr "就地排序张量的方法。"
+
+#: maxframe.tensor.sort.partition.partition:39 of
+msgid ":py:obj:`argpartition`"
+msgstr ""
+
+#: maxframe.tensor.sort.partition.partition:40 of
+msgid "Indirect partition."
+msgstr "间接分区。"
+
+#: maxframe.tensor.sort.partition.partition:42 of
+msgid ":py:obj:`sort`"
+msgstr ""
+
+#: maxframe.tensor.sort.partition.partition:43 of
+msgid "Full sorting"
+msgstr "完全排序"
+
+#: maxframe.tensor.sort.partition.partition:46 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.sort.partition.partition:47 of
+msgid ""
+"The various selection algorithms are characterized by their average "
+"speed, worst case performance, work space size, and whether they are "
+"stable. A stable sort keeps items with the same key in the same relative "
+"order. The available algorithms have the following properties:"
+msgstr ""
+"各种选择算法的特征包括它们的平均速度、最坏情况下的性能、工作空间大小以及"
+"是否稳定。稳定的排序会保持具有相同键的项的相对顺序。可用的算法具有以下"
+"属性："
+
+#: maxframe.tensor.sort.partition.partition:54 of
+msgid "kind"
+msgstr "种类"
+
+#: maxframe.tensor.sort.partition.partition:54 of
+msgid "speed"
+msgstr "速度"
+
+#: maxframe.tensor.sort.partition.partition:54 of
+msgid "worst case"
+msgstr "最坏情况"
+
+#: maxframe.tensor.sort.partition.partition:54 of
+msgid "work space"
+msgstr "工作空间"
+
+#: maxframe.tensor.sort.partition.partition:54 of
+msgid "stable"
+msgstr "稳定"
+
+#: maxframe.tensor.sort.partition.partition:56 of
+msgid "'introselect'"
+msgstr ""
+
+#: maxframe.tensor.sort.partition.partition:56 of
+msgid "1"
+msgstr ""
+
+#: maxframe.tensor.sort.partition.partition:56 of
+msgid "O(n)"
+msgstr ""
+
+#: maxframe.tensor.sort.partition.partition:56 of
+msgid "0"
+msgstr ""
+
+#: maxframe.tensor.sort.partition.partition:56 of
+msgid "no"
+msgstr "否"
+
+#: maxframe.tensor.sort.partition.partition:59 of
+msgid ""
+"All the partition algorithms make temporary copies of the data when "
+"partitioning along any but the last axis.  Consequently, partitioning "
+"along the last axis is faster and uses less space than partitioning along"
+" any other axis."
+msgstr ""
+"所有分区算法在沿除最后一个轴以外的任何轴进行分区时都会创建数据的临时副本"
+"。因此，沿最后一个轴进行分区比沿任何其他轴进行分区更快且使用的空间更少。"
+
+#: maxframe.tensor.sort.partition.partition:64 of
+msgid ""
+"The sort order for complex numbers is lexicographic. If both the real and"
+" imaginary parts are non-nan then the order is determined by the real "
+"parts except when they are equal, in which case the order is determined "
+"by the imaginary parts."
+msgstr ""
+"复数的排序顺序是字典序的。如果实部和虚部都非 NaN，则顺序由实部决定，除非"
+"它们相等，在这种情况下顺序由虚部决定。"
+
+#: maxframe.tensor.sort.partition.partition:70 of
+msgid "示例"
+msgstr ""
+

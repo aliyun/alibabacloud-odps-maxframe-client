@@ -1,0 +1,73 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.GroupBy.expanding.rst:2
+msgid "maxframe.dataframe.groupby.GroupBy.expanding"
+msgstr ""
+
+#: maxframe.dataframe.groupby.expanding.expanding:1 of
+msgid "Return an expanding grouper, providing expanding functionality per group."
+msgstr "返回一个扩展分组器，为每个分组提供扩展功能。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.GroupBy.expanding.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.groupby.expanding.expanding:4 of
+msgid ""
+"Minimum number of observations in window required to have a value; "
+"otherwise, result is ``np.nan``."
+msgstr "窗口中需要有值的最小观测数；否则结果为 ``np.nan``。"
+
+#: maxframe.dataframe.groupby.expanding.expanding:7 of
+msgid ""
+"If specified, the window will be shifted by `shift` rows (or data will be"
+" shifted by `-shift` rows) before computing window function."
+msgstr ""
+"如果指定，窗口将在计算窗口函数之前按 `shift` 行进行偏移（或数据按 `-shift"
+"` 行进行偏移）。"
+
+#: maxframe.dataframe.groupby.expanding.expanding:10 of
+msgid ""
+"If True, the window for current row is expanded from the last row to the "
+"current instead of the first row."
+msgstr "如果为 True，则当前行的窗口是从最后一行扩展到当前行，而不是从第一行开始。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.GroupBy.expanding.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.groupby.expanding.expanding:18 of
+msgid ":py:obj:`Series.groupby`"
+msgstr ""
+
+#: maxframe.dataframe.groupby.expanding.expanding:19 of
+msgid "Apply a function groupby to a Series."
+msgstr "对一个 Series 应用 groupby 函数。"
+
+#: maxframe.dataframe.groupby.expanding.expanding:21 of
+msgid ":py:obj:`DataFrame.groupby`"
+msgstr ""
+
+#: maxframe.dataframe.groupby.expanding.expanding:22 of
+msgid "Apply a function groupby to each row or column of a DataFrame."
+msgstr "对 DataFrame 的每一行或每一列应用 groupby 函数。"
+

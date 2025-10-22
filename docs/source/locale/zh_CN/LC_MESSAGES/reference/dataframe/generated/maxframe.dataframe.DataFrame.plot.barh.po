@@ -1,0 +1,310 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.barh.rst:2
+msgid "maxframe.dataframe.DataFrame.plot.barh"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:1
+#: of
+msgid "Make a horizontal bar plot."
+msgstr "制作一个水平条形图。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:3
+#: of
+msgid ""
+"A horizontal bar plot is a plot that presents quantitative data with "
+"rectangular bars with lengths proportional to the values that they "
+"represent. A bar plot shows comparisons among discrete categories. One "
+"axis of the plot shows the specific categories being compared, and the "
+"other axis represents a measured value."
+msgstr ""
+"水平条形图是用矩形条表示定量数据的图形，其长度与所代表的数值成比例。"
+"条形图显示了离散类别之间的比较。图形的一个轴显示正在比较的特定类别，另"
+"一个轴表示测量值。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:9
+#: of
+msgid ""
+"Allows plotting of one column versus another. If not specified, the index"
+" of the DataFrame is used."
+msgstr "允许绘制一列相对于另一列的图。如果未指定，则使用 DataFrame 的索引。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:12
+#: of
+msgid ""
+"Allows plotting of one column versus another. If not specified, all "
+"numerical columns are used."
+msgstr "允许绘制一列相对于另一列的图。如果未指定，则使用所有数值列。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:15
+#: of
+#, python-brace-format
+msgid ""
+"The color for each of the DataFrame's columns. Possible values are:  - A "
+"single color string referred to by name, RGB or RGBA code,     for "
+"instance 'red' or '#a98d19'.  - A sequence of color strings referred to "
+"by name, RGB or RGBA     code, which will be used for each column "
+"recursively. For     instance ['green','yellow'] each column's bar will "
+"be filled in     green or yellow, alternatively. If there is only a "
+"single column to     be plotted, then only the first color from the color"
+" list will be     used.  - A dict of the form {column name : color}, so "
+"that each column will be     colored accordingly. For example, if your "
+"columns are called `a` and     `b`, then passing {'a': 'green', 'b': "
+"'red'} will color bars for     column `a` in green and bars for column "
+"`b` in red."
+msgstr ""
+"DataFrame 每一列的颜色。可能的值包括：  - 通过名称、RGB 或 RGBA 代码引用"
+"的单个颜色字符串，例如 'red' 或 '#a98d19'。  - 通过名称、RGB 或 RGBA 代码"
+"引用的颜色字符串序列，将递归地用于每一列。例如 ['green','yellow']，每列的"
+"条形将交替填充为绿色或黄色。如果只绘制一列，则只会使用颜色列表中的第一个"
+"颜色。  - 形如 {列名 : 颜色} 的字典，以便每列都按相应颜色着色。例如，如果"
+"您的列名为 `a` 和 `b`，那么传递 {'a': 'green', 'b': 'red'} 将使列 `a` 的"
+"条形为绿色，列 `b` 的条形为红色。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:15
+#: of
+msgid "The color for each of the DataFrame's columns. Possible values are:"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:17
+#: of
+msgid "A single color string referred to by name, RGB or RGBA code,"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:18
+#: of
+msgid "for instance 'red' or '#a98d19'."
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:20
+#: of
+msgid "A sequence of color strings referred to by name, RGB or RGBA"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:21
+#: of
+msgid ""
+"code, which will be used for each column recursively. For instance "
+"['green','yellow'] each column's bar will be filled in green or yellow, "
+"alternatively. If there is only a single column to be plotted, then only "
+"the first color from the color list will be used."
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:27
+#: of
+msgid "A dict of the form {column name"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:-1
+#: of
+msgid "color}, so that each column will be"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:28
+#: of
+#, python-brace-format
+msgid ""
+"colored accordingly. For example, if your columns are called `a` and `b`,"
+" then passing {'a': 'green', 'b': 'red'} will color bars for column `a` "
+"in green and bars for column `b` in red."
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:32
+#: of
+msgid "Additional keyword arguments are documented in :meth:`DataFrame.plot`."
+msgstr "其他关键字参数在 :meth:`DataFrame.plot` 中有文档说明。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:35
+#: of
+#, python-brace-format
+msgid ""
+"An ndarray is returned with one :class:`matplotlib.axes.Axes` per column "
+"when ``subplots=True``.      See Also     --------     "
+"DataFrame.plot.bar: Vertical bar plot.     DataFrame.plot : Make plots of"
+" DataFrame using matplotlib.     matplotlib.axes.Axes.bar : Plot a "
+"vertical bar plot using matplotlib.      Examples     --------     Basic "
+"example      .. plot::         :context: close-figs          >>> import "
+"maxframe.tensor as mt         >>> import maxframe.dataframe as md"
+"         >>> df = md.DataFrame({'lab': ['A', 'B', 'C'], 'val': [10, 30, "
+"20]})         >>> ax = df.plot.barh(x='lab', y='val')      Plot a whole "
+"DataFrame to a horizontal bar plot      .. plot::         :context: "
+"close-figs          >>> speed = [0.1, 17.5, 40, 48, 52, 69, 88]         "
+">>> lifespan = [2, 8, 70, 1.5, 25, 12, 28]         >>> index = ['snail', "
+"'pig', 'elephant',         ...          'rabbit', 'giraffe', 'coyote', "
+"'horse']         >>> df = md.DataFrame({'speed': speed,         ..."
+"                    'lifespan': lifespan}, index=index)         >>> ax = "
+"df.plot.barh()      Plot stacked barh charts for the DataFrame      .. "
+"plot::         :context: close-figs          >>> ax = "
+"df.plot.barh(stacked=True)      We can specify colors for each column"
+"      .. plot::         :context: close-figs          >>> ax = "
+"df.plot.barh(color={\"speed\": \"red\", \"lifespan\": \"green\"})      "
+"Plot a column of the DataFrame to a horizontal bar plot      .. plot::"
+"         :context: close-figs          >>> speed = [0.1, 17.5, 40, 48, "
+"52, 69, 88]         >>> lifespan = [2, 8, 70, 1.5, 25, 12, 28]         "
+">>> index = ['snail', 'pig', 'elephant',         ...          'rabbit', "
+"'giraffe', 'coyote', 'horse']         >>> df = md.DataFrame({'speed': "
+"speed,         ...                    'lifespan': lifespan}, index=index)"
+"         >>> ax = df.plot.barh(y='speed')      Plot DataFrame versus the "
+"desired column      .. plot::         :context: close-figs          >>> "
+"speed = [0.1, 17.5, 40, 48, 52, 69, 88]         >>> lifespan = [2, 8, 70,"
+" 1.5, 25, 12, 28]         >>> index = ['snail', 'pig', 'elephant',"
+"         ...          'rabbit', 'giraffe', 'coyote', 'horse']         >>>"
+" df = md.DataFrame({'speed': speed,         ...                    "
+"'lifespan': lifespan}, index=index)         >>> ax = "
+"df.plot.barh(x='lifespan')"
+msgstr ""
+"当 ``subplots=True`` 时，返回一个包含每个列对应一个 :class:`matplotlib."
+"axes.Axes` 的 ndarray。      参见     --------     DataFrame.plot.bar: "
+"垂直条形图。     DataFrame.plot : 使用 matplotlib 绘制 DataFrame 的图表。"
+"     matplotlib.axes.Axes.bar : 使用 matplotlib 绘制垂直条形图。      "
+"示例     --------     基础示例      .. plot::         :context: close-"
+"figs          >>> import maxframe.tensor as mt         >>> import "
+"maxframe.dataframe as md         >>> df = md.DataFrame({'lab': ['A', 'B',"
+" 'C'], 'val': [10, 30, 20]})         >>> ax = df.plot.barh(x='lab', y='"
+"val')      将整个 DataFrame 绘制为水平条形图      .. plot::         :"
+"context: close-figs          >>> speed = [0.1, 17.5, 40, 48, 52, 69, 88] "
+"        >>> lifespan = [2, 8, 70, 1.5, 25, 12, 28]         >>> index = ['"
+"snail', 'pig', 'elephant',         ...          'rabbit', 'giraffe', '"
+"coyote', 'horse']         >>> df = md.DataFrame({'speed': speed,         "
+"...                    'lifespan': lifespan}, index=index)         >>> ax"
+" = df.plot.barh()      为 DataFrame 绘制堆叠的水平条形图      .. plot::  "
+"       :context: close-figs          >>> ax = df.plot.barh(stacked=True) "
+"     我们可以为每列指定颜色      .. plot::         :context: close-figs  "
+"        >>> ax = df.plot.barh(color={\"speed\": \"red\", \"lifespan\": \""
+"green\"})      将 DataFrame 的一列绘制为水平条形图      .. plot::        "
+" :context: close-figs          >>> speed = [0.1, 17.5, 40, 48, 52, 69, 88"
+"]         >>> lifespan = [2, 8, 70, 1.5, 25, 12, 28]         >>> index = "
+"['snail', 'pig', 'elephant',         ...          'rabbit', 'giraffe', '"
+"coyote', 'horse']         >>> df = md.DataFrame({'speed': speed,         "
+"...                    'lifespan': lifespan}, index=index)         >>> ax"
+" = df.plot.barh(y='speed')      按指定列绘制 DataFrame      .. plot::    "
+"     :context: close-figs          >>> speed = [0.1, 17.5, 40, 48, 52, 69"
+", 88]         >>> lifespan = [2, 8, 70, 1.5, 25, 12, 28]         >>> "
+"index = ['snail', 'pig', 'elephant',         ...          'rabbit', '"
+"giraffe', 'coyote', 'horse']         >>> df = md.DataFrame({'speed': "
+"speed,         ...                    'lifespan': lifespan}, index=index)"
+"         >>> ax = df.plot.barh(x='lifespan')"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:35
+#: of
+msgid ""
+"An ndarray is returned with one :class:`matplotlib.axes.Axes` per column "
+"when ``subplots=True``."
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:40
+#: of
+msgid ""
+"DataFrame.plot.bar: Vertical bar plot. DataFrame.plot : Make plots of "
+"DataFrame using matplotlib. matplotlib.axes.Axes.bar : Plot a vertical "
+"bar plot using matplotlib."
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:46
+#: of
+msgid "Basic example"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.barh.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-barh-1.py>`)"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:56
+#: of
+#, fuzzy
+msgid "Plot a whole DataFrame to a horizontal bar plot"
+msgstr "制作一个水平条形图。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.barh.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-barh-2.py>`)"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:69
+#: of
+msgid "Plot stacked barh charts for the DataFrame"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.barh.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-barh-3.py>`)"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:76
+#: of
+msgid "We can specify colors for each column"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.barh.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-barh-4.py>`)"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:83
+#: of
+#, fuzzy
+msgid "Plot a column of the DataFrame to a horizontal bar plot"
+msgstr "制作一个水平条形图。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.barh.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-barh-5.py>`)"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:96
+#: of
+msgid "Plot DataFrame versus the desired column"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.barh.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-barh-6.py>`)"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "返回类型"
+msgstr ""
+

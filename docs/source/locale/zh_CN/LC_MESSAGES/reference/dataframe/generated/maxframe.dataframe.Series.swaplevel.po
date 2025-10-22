@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.swaplevel.rst:2
+msgid "maxframe.dataframe.Series.swaplevel"
+msgstr ""
+
+#: maxframe.dataframe.indexing.swaplevel.series_swaplevel:1 of
+msgid "Swap levels i and j in a :class:`MultiIndex`."
+msgstr "交换 :class:`MultiIndex` 中的层级 i 和 j。"
+
+#: maxframe.dataframe.indexing.swaplevel.series_swaplevel:3 of
+msgid "Default is to swap the two innermost levels of the index."
+msgstr "默认交换索引中最内层的两个层级。"
+
+#: maxframe.dataframe.indexing.swaplevel.series_swaplevel of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.swaplevel.series_swaplevel:5
+#: maxframe.dataframe.indexing.swaplevel.series_swaplevel:7 of
+msgid "Levels of the indices to be swapped. Can pass level name as string."
+msgstr "要交换的索引层级。可以传递层级名称作为字符串。"
+
+#: maxframe.dataframe.indexing.swaplevel.series_swaplevel of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.indexing.swaplevel.series_swaplevel:10 of
+msgid "Series with levels swapped in MultiIndex."
+msgstr "在 MultiIndex 中交换层级后的 Series。"
+
+#: maxframe.dataframe.indexing.swaplevel.series_swaplevel of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.swaplevel.series_swaplevel:14 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.indexing.swaplevel.series_swaplevel:31 of
+msgid ""
+"In the following example, we will swap the levels of the indices. Here, "
+"we will swap the levels column-wise, but levels can be swapped row-wise "
+"in a similar manner. Note that column-wise is the default behaviour. By "
+"not supplying any arguments for i and j, we swap the last and second to "
+"last indices."
+msgstr ""
+"在以下示例中，我们将交换索引的层级。这里我们按列交换层级，但也可以按行以"
+"类似方式交换。注意，默认行为是按列交换。如果不提供 i 和 j 的参数，我们将"
+"交换最后两个层级。"
+
+#: maxframe.dataframe.indexing.swaplevel.series_swaplevel:44 of
+msgid ""
+"By supplying one argument, we can choose which index to swap the last "
+"index with. We can for example swap the first index with the last one as "
+"follows."
+msgstr ""
+"通过提供一个参数，我们可以选择将最后一个索引与哪个索引交换。例如，我们"
+"可以将第一个索引与最后一个索引交换如下。"
+
+#: maxframe.dataframe.indexing.swaplevel.series_swaplevel:55 of
+msgid ""
+"We can also define explicitly which indices we want to swap by supplying "
+"values for both i and j. Here, we for example swap the first and second "
+"indices."
+msgstr ""
+"我们还可以通过为 i 和 j 提供值来明确定义要交换的索引。例如，这里我们交换"
+"第一和第二层级。"
+

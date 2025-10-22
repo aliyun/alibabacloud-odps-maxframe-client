@@ -1,0 +1,325 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-23 09:55+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/manipulation.rst:2
+msgid "Tensor Manipulation Routines"
+msgstr "张量操作例程"
+
+#: ../../source/reference/tensor/manipulation.rst:5
+msgid "Basic operations"
+msgstr "基本操作"
+
+#: ../../source/reference/tensor/manipulation.rst:15:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.copyto <maxframe.tensor.copyto>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:15:<autosummary>:1
+msgid "Copies values from one array to another, broadcasting as necessary."
+msgstr "将值从一个数组复制到另一个数组，必要时进行广播。"
+
+#: ../../source/reference/tensor/manipulation.rst:15:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.ndim <maxframe.tensor.ndim>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:15:<autosummary>:1
+msgid "Return the number of dimensions of a tensor."
+msgstr "返回张量的维度数。"
+
+#: ../../source/reference/tensor/manipulation.rst:15:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.shape <maxframe.tensor.shape>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:15:<autosummary>:1
+msgid "Return the shape of a tensor."
+msgstr "返回张量的形状。"
+
+#: ../../source/reference/tensor/manipulation.rst:17
+msgid "Changing array shape"
+msgstr "改变数组形状"
+
+#: ../../source/reference/tensor/manipulation.rst:27:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.reshape <maxframe.tensor.reshape>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:27:<autosummary>:1
+msgid "Gives a new shape to a tensor without changing its data."
+msgstr "在不改变数据的情况下给张量一个新的形状。"
+
+#: ../../source/reference/tensor/manipulation.rst:27:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.ravel <maxframe.tensor.ravel>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:27:<autosummary>:1
+msgid "Return a contiguous flattened tensor."
+msgstr "返回一个连续的扁平化张量。"
+
+#: ../../source/reference/tensor/manipulation.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.core.Tensor.flatten "
+"<maxframe.tensor.core.Tensor.flatten>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:27:<autosummary>:1
+msgid "Return a copy of the tensor collapsed into one dimension."
+msgstr "返回一个折叠成一维的张量副本。"
+
+#: ../../source/reference/tensor/manipulation.rst:29
+msgid "Transpose-like operations"
+msgstr "类似转置的操作"
+
+#: ../../source/reference/tensor/manipulation.rst:41:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.moveaxis <maxframe.tensor.moveaxis>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:41:<autosummary>:1
+msgid "Move axes of a tensor to new positions."
+msgstr "将张量的轴移动到新位置。"
+
+#: ../../source/reference/tensor/manipulation.rst:41:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.rollaxis <maxframe.tensor.rollaxis>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:41:<autosummary>:1
+msgid "Roll the specified axis backwards, until it lies in a given position."
+msgstr "将指定轴向后滚动，直到它位于给定位置。"
+
+#: ../../source/reference/tensor/manipulation.rst:41:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.swapaxes <maxframe.tensor.swapaxes>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:41:<autosummary>:1
+msgid "Interchange two axes of a tensor."
+msgstr "交换张量的两个轴。"
+
+#: ../../source/reference/tensor/manipulation.rst:41:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.core.Tensor.T <maxframe.tensor.core.Tensor.T>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:41:<autosummary>:1
+msgid "Same as self.transpose(), except that self is returned if self.ndim < 2."
+msgstr "与 self.transpose() 相同，但如果 self.ndim < 2，则返回 self。"
+
+#: ../../source/reference/tensor/manipulation.rst:41:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.transpose <maxframe.tensor.transpose>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:41:<autosummary>:1
+msgid "Returns an array with axes transposed."
+msgstr "返回转置后的数组。"
+
+#: ../../source/reference/tensor/manipulation.rst:43
+msgid "Changing number of dimensions"
+msgstr "改变维度数量"
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.atleast_1d <maxframe.tensor.atleast_1d>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid "Convert inputs to tensors with at least one dimension."
+msgstr "将输入转换为至少具有一维的张量。"
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.atleast_2d <maxframe.tensor.atleast_2d>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid "View inputs as tensors with at least two dimensions."
+msgstr "将输入视作至少具有两个维度的张量。"
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.atleast_3d <maxframe.tensor.atleast_3d>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid "View inputs as tensors with at least three dimensions."
+msgstr "将输入视作至少具有三个维度的张量。"
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.broadcast_to <maxframe.tensor.broadcast_to>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid "Broadcast a tensor to a new shape."
+msgstr "将张量广播到新的形状。"
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid ""
+":py:obj:`maxframe.tensor.broadcast_arrays "
+"<maxframe.tensor.broadcast_arrays>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid "Broadcast any number of arrays against each other."
+msgstr "将任意数量的数组相互广播。"
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.expand_dims <maxframe.tensor.expand_dims>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid "Expand the shape of a tensor."
+msgstr "扩展张量的形状。"
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.squeeze <maxframe.tensor.squeeze>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:57:<autosummary>:1
+msgid "Remove single-dimensional entries from the shape of a tensor."
+msgstr "从张量的形状中移除长度为1的维度。"
+
+#: ../../source/reference/tensor/manipulation.rst:59
+msgid "Joining tensors"
+msgstr "连接张量"
+
+#: ../../source/reference/tensor/manipulation.rst:68:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.concatenate <maxframe.tensor.concatenate>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:68:<autosummary>:1
+msgid "Join a sequence of arrays along an existing axis."
+msgstr "沿已有轴连接一系列数组。"
+
+#: ../../source/reference/tensor/manipulation.rst:68:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.vstack <maxframe.tensor.vstack>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:68:<autosummary>:1
+msgid "Stack tensors in sequence vertically (row wise)."
+msgstr "沿垂直方向（行方向）堆叠张量。"
+
+#: ../../source/reference/tensor/manipulation.rst:70
+msgid "Splitting arrays"
+msgstr "分割数组"
+
+#: ../../source/reference/tensor/manipulation.rst:82:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.split <maxframe.tensor.split>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:82:<autosummary>:1
+msgid "Split a tensor into multiple sub-tensors."
+msgstr "将张量分割为多个子张量。"
+
+#: ../../source/reference/tensor/manipulation.rst:82:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.array_split <maxframe.tensor.array_split>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:82:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.dsplit <maxframe.tensor.dsplit>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:82:<autosummary>:1
+msgid "Split tensor into multiple sub-tensors along the 3rd axis (depth)."
+msgstr "沿第3轴（深度方向）将张量分割为多个子张量。"
+
+#: ../../source/reference/tensor/manipulation.rst:82:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.hsplit <maxframe.tensor.hsplit>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:82:<autosummary>:1
+msgid "Split a tensor into multiple sub-tensors horizontally (column-wise)."
+msgstr "沿水平方向（列方向）将张量分割为多个子张量。"
+
+#: ../../source/reference/tensor/manipulation.rst:82:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.vsplit <maxframe.tensor.vsplit>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:82:<autosummary>:1
+msgid "Split a tensor into multiple sub-tensors vertically (row-wise)."
+msgstr "沿垂直方向（行方向）将张量分割为多个子张量。"
+
+#: ../../source/reference/tensor/manipulation.rst:84
+msgid "Tiling arrays"
+msgstr "平铺数组"
+
+#: ../../source/reference/tensor/manipulation.rst:92:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.tile <maxframe.tensor.tile>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:92:<autosummary>:1
+msgid "Construct a tensor by repeating A the number of times given by reps."
+msgstr "通过重复A若干次来构造一个张量。"
+
+#: ../../source/reference/tensor/manipulation.rst:92:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.repeat <maxframe.tensor.repeat>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:92:<autosummary>:1
+msgid "Repeat elements of a tensor."
+msgstr "重复张量中的元素。"
+
+#: ../../source/reference/tensor/manipulation.rst:94
+msgid "Adding and removing elements"
+msgstr "添加和删除元素"
+
+#: ../../source/reference/tensor/manipulation.rst:102:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.delete <maxframe.tensor.delete>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:102:<autosummary>:1
+msgid "Return a new array with sub-arrays along an axis deleted."
+msgstr "返回一个沿指定轴删除子数组的新数组。"
+
+#: ../../source/reference/tensor/manipulation.rst:102:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.insert <maxframe.tensor.insert>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:102:<autosummary>:1
+msgid "Insert values along the given axis before the given indices."
+msgstr "在给定索引之前沿指定轴插入值。"
+
+#: ../../source/reference/tensor/manipulation.rst:104
+msgid "Rearranging elements"
+msgstr "重新排列元素"
+
+#: ../../source/reference/tensor/manipulation.rst:113:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.flip <maxframe.tensor.flip>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:113:<autosummary>:1
+msgid "Reverse the order of elements in a tensor along the given axis."
+msgstr "沿给定轴反转张量中元素的顺序。"
+
+#: ../../source/reference/tensor/manipulation.rst:113:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.fliplr <maxframe.tensor.fliplr>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:113:<autosummary>:1
+msgid "Flip tensor in the left/right direction."
+msgstr "将张量在左右方向上翻转。"
+
+#: ../../source/reference/tensor/manipulation.rst:113:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.flipud <maxframe.tensor.flipud>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:113:<autosummary>:1
+msgid "Flip tensor in the up/down direction."
+msgstr "将张量在上下方向上翻转。"
+
+#: ../../source/reference/tensor/manipulation.rst:113:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.roll <maxframe.tensor.roll>`"
+msgstr ""
+
+#: ../../source/reference/tensor/manipulation.rst:113:<autosummary>:1
+msgid "Roll tensor elements along a given axis."
+msgstr "沿给定轴滚动张量元素。"
+

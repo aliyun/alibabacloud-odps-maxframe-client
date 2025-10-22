@@ -29,7 +29,7 @@ from odps.types import Column, OdpsSchema, validate_data_type
 from odps.utils import split_sql_by_semicolon
 
 from ... import opcodes
-from ...config import options
+from ...config import option_context, options
 from ...core import OutputType
 from ...core.graph import DAG
 from ...io.odpsio import odps_schema_to_pandas_dtypes
@@ -44,8 +44,12 @@ from ...serialization.serializables import (
     StringField,
 )
 from ...utils import is_empty
-from ..utils import parse_index
-from .core import ColumnPruneSupportedDataSourceMixin, IncrementalIndexDatasource
+from ..utils import parse_index, validate_dtype_backend
+from .core import (
+    ColumnPruneSupportedDataSourceMixin,
+    DtypeBackendCompatibleMixin,
+    IncrementalIndexDatasource,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -266,6 +270,7 @@ def _build_explain_sql(
 class DataFrameReadODPSQuery(
     IncrementalIndexDatasource,
     ColumnPruneSupportedDataSourceMixin,
+    DtypeBackendCompatibleMixin,
 ):
     _op_type_ = opcodes.READ_ODPS_QUERY
 
@@ -273,11 +278,15 @@ class DataFrameReadODPSQuery(
     dtypes = SeriesField("dtypes", default=None)
     columns = AnyField("columns", default=None)
     nrows = Int64Field("nrows", default=None)
-    use_arrow_dtype = BoolField("use_arrow_dtype", default=None)
+    dtype_backend = StringField("dtype_backend", default=None)
     string_as_binary = BoolField("string_as_binary", default=None)
     index_columns = ListField("index_columns", FieldTypes.string, default=None)
     index_dtypes = SeriesField("index_dtypes", default=None)
     column_renames = DictField("column_renames", default=None)
+
+    def __init__(self, dtype_backend=None, **kw):
+        dtype_backend = validate_dtype_backend(dtype_backend)
+        super().__init__(dtype_backend=dtype_backend, **kw)
 
     def get_columns(self):
         return self.columns or list(self.dtypes.index)
@@ -404,6 +413,7 @@ def read_odps_query(
     sql_hints: Dict[str, str] = None,
     anonymous_col_prefix: str = _DEFAULT_ANONYMOUS_COL_PREFIX,
     skip_schema: bool = False,
+    dtype_backend: str = None,
     **kw,
 ):
     """
@@ -428,6 +438,8 @@ def read_odps_query(
         Skip resolving output schema before execution. Once this is configured,
         the output DataFrame cannot be inputs of other DataFrame operators
         before execution.
+    dtype_backend: {'numpy', 'pyarrow'}, default 'numpy'
+        Back-end data type applied to the resultant DataFrame (still experimental).
 
     Returns
     -------
@@ -459,6 +471,14 @@ def read_odps_query(
     if odps_entry is None:
         raise ValueError("Missing odps_entry parameter")
 
+    if "use_arrow_dtype" in kw:
+        dtype_backend = dtype_backend or validate_dtype_backend(
+            kw.pop("use_arrow_dtype")
+        )
+    dtype_backend = validate_dtype_backend(
+        dtype_backend or options.dataframe.dtype_backend
+    )
+
     col_renames = {}
     if not skip_schema:
         odps_schema = _resolve_query_schema(
@@ -479,7 +499,9 @@ def read_odps_query(
             else:
                 new_columns.append(col)
 
-        dtypes = odps_schema_to_pandas_dtypes(OdpsSchema(new_columns))
+        with option_context():
+            options.dataframe.dtype_backend = dtype_backend
+            dtypes = odps_schema_to_pandas_dtypes(OdpsSchema(new_columns))
     else:
         dtypes = None
 
@@ -500,10 +522,11 @@ def read_odps_query(
 
     chunk_bytes = kw.pop("chunk_bytes", None)
     chunk_size = kw.pop("chunk_size", None)
+
     op = DataFrameReadODPSQuery(
         query=query,
         dtypes=dtypes,
-        use_arrow_dtype=kw.pop("use_arrow_dtype", True),
+        dtype_backend=dtype_backend,
         string_as_binary=string_as_binary,
         index_columns=index_col,
         index_dtypes=index_dtypes,

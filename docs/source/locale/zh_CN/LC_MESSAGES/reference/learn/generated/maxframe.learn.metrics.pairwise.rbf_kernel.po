@@ -1,0 +1,57 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.pairwise.rbf_kernel.rst:2
+msgid "maxframe.learn.metrics.pairwise.rbf\\_kernel"
+msgstr ""
+
+#: maxframe.learn.metrics.pairwise.rbf_kernel.rbf_kernel:1 of
+msgid "Compute the rbf (gaussian) kernel between X and Y::"
+msgstr "计算 X 和 Y 之间的 rbf（高斯）核：："
+
+#: maxframe.learn.metrics.pairwise.rbf_kernel.rbf_kernel:5 of
+msgid "for each pair of rows x in X and y in Y."
+msgstr "对于 X 中的每一行 x 和 Y 中的每一行 y。"
+
+#: maxframe.learn.metrics.pairwise.rbf_kernel.rbf_kernel:7 of
+msgid "Read more in the :ref:`User Guide <rbf_kernel>`."
+msgstr "更多内容请参见 :ref:`用户指南 <rbf_kernel>`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.pairwise.rbf_kernel.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.metrics.pairwise.rbf_kernel.rbf_kernel:13 of
+msgid "If None, defaults to 1.0 / n_features"
+msgstr "如果为 None，默认为 1.0 / n_features"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.pairwise.rbf_kernel.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.metrics.pairwise.rbf_kernel.rbf_kernel:16 of
+msgid "**kernel_matrix**"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.pairwise.rbf_kernel.rst
+msgid "返回类型"
+msgstr ""
+

@@ -251,6 +251,9 @@ class Tensor(HasShapeTileable):
     def __len__(self):
         return len(self._data)
 
+    def __bool__(self):
+        return True if is_build_mode() else bool(self.to_numpy())
+
     @property
     def shape(self):
         return self._data.shape

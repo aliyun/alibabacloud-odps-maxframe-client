@@ -15,6 +15,9 @@
 import numpy as np
 
 from ... import tensor as mt
+from ...core import ENTITY_TYPE
+from ...dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+from ...tensor.datasource import TensorZeros
 
 
 # Use at least float64 for the accumulating functions to avoid precision issue
@@ -42,7 +45,11 @@ def _safe_accumulator_op(op, x, *args, **kwargs):
     -------
     result : The output of the accumulator function passed to this function
     """
-    if np.issubdtype(x.dtype, np.floating) and x.dtype.itemsize < 8:
+    if (
+        hasattr(x, "dtype")
+        and np.issubdtype(x.dtype, np.floating)
+        and x.dtype.itemsize < 8
+    ):
         result = op(x, *args, **kwargs, dtype=np.float64)
     else:
         result = op(x, *args, **kwargs)
@@ -117,16 +124,31 @@ def _incremental_mean_and_var(
     `utils.sparsefuncs.incr_mean_variance_axis` and
     `utils.sparsefuncs_fast.incr_mean_variance_axis0`
     """
+    has_last_sample = isinstance(last_sample_count, ENTITY_TYPE) and not isinstance(
+        last_sample_count.op, TensorZeros
+    )
+    is_df_type = isinstance(X, (DATAFRAME_TYPE, SERIES_TYPE))
+
     # old = stats until now
     # new = the current increment
     # updated = the aggregated stats
-    last_sum = last_mean * last_sample_count
+    last_sum = last_mean * last_sample_count if has_last_sample else 0
     X_nan_mask = mt.isnan(X)
     # if mt.any(X_nan_mask):
     #     sum_op = mt.nansum
     # else:
     #     sum_op = mt.sum
-    sum_op = mt.nansum
+
+    def df_sum(val, **kw):
+        if "dtype" in kw:
+            val = val.astype(kw.pop("dtype"))
+        return val.sum(**kw)
+
+    if is_df_type:
+        sum_op = df_sum
+    else:
+        sum_op = mt.nansum
+
     if sample_weight is not None:
         # equivalent to np.nansum(X * sample_weight, axis=0)
         # safer because np.float64(X*W) != np.float64(X)*np.float64(W)
@@ -138,10 +160,16 @@ def _incremental_mean_and_var(
         )
     else:
         new_sum = _safe_accumulator_op(sum_op, X, axis=0)
-        n_samples = X.shape[0]
-        new_sample_count = n_samples - mt.sum(X_nan_mask, axis=0)
+        if is_df_type:
+            new_sample_count = X.count()
+        else:
+            n_samples = X.shape[0]
+            new_sample_count = n_samples - mt.sum(X_nan_mask, axis=0)
 
-    updated_sample_count = last_sample_count + new_sample_count
+    if not has_last_sample:
+        updated_sample_count = new_sample_count
+    else:
+        updated_sample_count = last_sample_count + new_sample_count
 
     updated_mean = (last_sum + new_sum) / updated_sample_count
 
@@ -170,7 +198,9 @@ def _incremental_mean_and_var(
         # and recommendations", by Chan, Golub, and LeVeque.
         new_unnormalized_variance -= correction**2 / new_sample_count
 
-        last_unnormalized_variance = last_variance * last_sample_count
+        last_unnormalized_variance = (
+            last_variance * last_sample_count if has_last_sample else 0
+        )
 
         with mt.errstate(divide="ignore", invalid="ignore"):
             last_over_new_count = last_sample_count / new_sample_count
@@ -182,8 +212,11 @@ def _incremental_mean_and_var(
                 * (last_sum / last_over_new_count - new_sum) ** 2
             )
 
-        zeros = last_sample_count == 0
-        updated_unnormalized_variance[zeros] = new_unnormalized_variance[zeros]
+        if not has_last_sample:
+            updated_unnormalized_variance = new_unnormalized_variance
+        else:
+            zeros = last_sample_count == 0
+            updated_unnormalized_variance[zeros] = new_unnormalized_variance[zeros]
         updated_variance = updated_unnormalized_variance / updated_sample_count
 
     return updated_mean, updated_variance, updated_sample_count

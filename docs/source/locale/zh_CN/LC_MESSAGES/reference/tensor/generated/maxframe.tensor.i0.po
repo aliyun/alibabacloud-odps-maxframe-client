@@ -1,0 +1,118 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.i0.rst:2
+msgid "maxframe.tensor.i0"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.i0.i0:1 of
+msgid "Modified Bessel function of the first kind, order 0."
+msgstr "第一类修正贝塞尔函数，阶数为 0。"
+
+#: maxframe.tensor.arithmetic.i0.i0:3 of
+msgid ""
+"Usually denoted :math:`I_0`.  This function does broadcast, but will "
+"*not* \"up-cast\" int dtype arguments unless accompanied by at least one "
+"float or complex dtype argument (see Raises below)."
+msgstr ""
+"通常表示为 :math:`I_0`。此函数支持广播，但不会将纯整数类型的参数“提升”"
+"为更高精度，除非至少有一个参数是浮点型或复数类型（见下方 Raises）。"
+
+#: maxframe.tensor.arithmetic.i0.i0 of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.i0.i0:7 of
+msgid "Argument of the Bessel function."
+msgstr "贝塞尔函数的参数。"
+
+#: maxframe.tensor.arithmetic.i0.i0 of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.i0.i0:10 of
+msgid ""
+"**out** -- The modified Bessel function evaluated at each of the elements"
+" of `x`."
+msgstr "**out** -- 在 `x` 的每个元素处计算的第一类修正贝塞尔函数值。"
+
+#: maxframe.tensor.arithmetic.i0.i0 of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.i0.i0 of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.i0.i0:13 of
+msgid ""
+"array cannot be safely cast to required type: If argument consists "
+"exclusively of int dtypes."
+msgstr "数组无法安全地转换为所需类型：如果参数完全由整数类型组成。"
+
+#: maxframe.tensor.arithmetic.i0.i0:15 of
+msgid ":py:obj:`scipy.special.iv`, :py:obj:`scipy.special.ive`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.i0.i0:18 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.i0.i0:19 of
+msgid ""
+"We use the algorithm published by Clenshaw [1]_ and referenced by "
+"Abramowitz and Stegun [2]_, for which the function domain is partitioned "
+"into the two intervals [0,8] and (8,inf), and Chebyshev polynomial "
+"expansions are employed in each interval. Relative error on the domain "
+"[0,30] using IEEE arithmetic is documented [3]_ as having a peak of "
+"5.8e-16 with an rms of 1.4e-16 (n = 30000)."
+msgstr ""
+"我们使用 Clenshaw [1]_ 发表并由 Abramowitz 和 Stegun [2]_ 引用的算法，该"
+"算法将函数定义域划分为两个区间 [0,8] 和 (8,inf)，并在每个区间中使用切"
+"比雪夫多项式展开。在 [0,30] 区间内使用 IEEE 算术计算所得的相对误差峰值为 "
+"5.8e-16，均方根误差为 1.4e-16（n = 30000）[3]_。"
+
+#: maxframe.tensor.arithmetic.i0.i0:27 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.i0.i0:28 of
+msgid ""
+"C. W. Clenshaw, \"Chebyshev series for mathematical functions\", in "
+"*National Physical Laboratory Mathematical Tables*, vol. 5, London: Her "
+"Majesty's Stationery Office, 1962."
+msgstr ""
+
+#: maxframe.tensor.arithmetic.i0.i0:31 of
+msgid ""
+"M. Abramowitz and I. A. Stegun, *Handbook of Mathematical Functions*, "
+"10th printing, New York: Dover, 1964, pp. 379. "
+"http://www.math.sfu.ca/~cbm/aands/page_379.htm"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.i0.i0:34 of
+msgid "http://kobesearch.cpan.org/htdocs/Math-Cephes/Math/Cephes.html"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.i0.i0:37 of
+msgid "示例"
+msgstr ""
+

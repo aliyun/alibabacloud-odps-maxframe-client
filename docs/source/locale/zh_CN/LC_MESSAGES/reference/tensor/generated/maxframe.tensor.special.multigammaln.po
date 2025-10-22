@@ -1,0 +1,102 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.multigammaln.rst:2
+msgid "maxframe.tensor.special.multigammaln"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln:1 of
+msgid ""
+"Returns the log of multivariate gamma, also sometimes called the "
+"generalized gamma."
+msgstr "返回多元 gamma 函数的对数，有时也称为广义 gamma 函数。"
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln:4 of
+msgid "The multivariate gamma is computed for each item of `a`."
+msgstr "为 `a` 的每个元素计算多元 gamma 函数。"
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln:6 of
+msgid "The dimension of the space of integration."
+msgstr "积分空间的维度。"
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln:9 of
+msgid ""
+"**res** -- The values of the log multivariate gamma at the given points "
+"`a`."
+msgstr "**res** -- 在给定点 `a` 处的对数多元 gamma 函数值。"
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln:13 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln:14 of
+msgid ""
+"The formal definition of the multivariate gamma of dimension d for a real"
+" `a` is"
+msgstr "对于实数 `a`，维度为 d 的多元 gamma 函数的形式定义为"
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln:17 of
+#, python-brace-format
+msgid "\\Gamma_d(a) = \\int_{A>0} e^{-tr(A)} |A|^{a - (d+1)/2} dA"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln:21 of
+msgid ""
+"with the condition :math:`a > (d-1)/2`, and :math:`A > 0` being the set "
+"of all the positive definite matrices of dimension `d`.  Note that `a` is"
+" a scalar: the integrand only is multivariate, the argument is not (the "
+"function is defined over a subset of the real set)."
+msgstr ""
+"条件为 :math:`a > (d-1)/2`，且 :math:`A > 0` 是所有维度为 `d` 的正定矩阵"
+"组成的集合。注意 `a` 是一个标量：被积函数是多元的，但参数不是（该函数定义"
+"在实数集的一个子集上）。"
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln:26 of
+msgid "This can be proven to be equal to the much friendlier equation"
+msgstr "可以证明它等于更友好的等式"
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln:28 of
+#, python-brace-format
+msgid "\\Gamma_d(a) = \\pi^{d(d-1)/4} \\prod_{i=1}^{d} \\Gamma(a - (i-1)/2)."
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln:33 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.multigammaln:34 of
+msgid ""
+"R. J. Muirhead, Aspects of multivariate statistical theory (Wiley Series "
+"in probability and mathematical statistics)."
+msgstr ""
+

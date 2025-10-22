@@ -1,0 +1,96 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.rename.rst:2
+msgid "maxframe.dataframe.Series.rename"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.series_rename:1 of
+msgid "Alter Series index labels or name."
+msgstr "修改 Series 索引标签或名称。"
+
+#: maxframe.dataframe.indexing.rename.series_rename:3 of
+msgid ""
+"Function / dict values must be unique (1-to-1). Labels not contained in a"
+" dict / Series will be left as-is. Extra labels listed don't throw an "
+"error."
+msgstr ""
+"函数或字典的值必须是一一对应的。不在字典或 Series 中的标签将保持原样不变"
+"。列出的多余标签不会引发错误。"
+
+#: maxframe.dataframe.indexing.rename.series_rename:7 of
+msgid "Alternatively, change ``Series.name`` with a scalar value."
+msgstr "或者，使用标量值更改 ``Series.name``。"
+
+#: maxframe.dataframe.indexing.rename.series_rename of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.series_rename:9 of
+msgid "Unused. Accepted for compatibility with DataFrame method only."
+msgstr "未使用。仅为了与 DataFrame 方法兼容而接受。"
+
+#: maxframe.dataframe.indexing.rename.series_rename:11 of
+msgid ""
+"Functions or dict-like are transformations to apply to the index. Scalar "
+"or hashable sequence-like will alter the ``Series.name`` attribute."
+msgstr ""
+"函数或类字典对象是应用于索引的变换。标量或可哈希的序列类对象将更改 ``"
+"Series.name`` 属性。"
+
+#: maxframe.dataframe.indexing.rename.series_rename:16 of
+msgid ""
+"Additional keyword arguments passed to the function. Only the \"inplace\""
+" keyword is used."
+msgstr "传递给函数的额外关键字参数。仅使用 \"inplace\" 关键字。"
+
+#: maxframe.dataframe.indexing.rename.series_rename of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.series_rename:19 of
+msgid "Series with index labels or name altered."
+msgstr "索引标签或名称被更改的 Series。"
+
+#: maxframe.dataframe.indexing.rename.series_rename of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.series_rename:24 of
+msgid ":py:obj:`DataFrame.rename`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.series_rename:25 of
+msgid "Corresponding DataFrame method."
+msgstr "对应的 DataFrame 方法。"
+
+#: maxframe.dataframe.indexing.rename.series_rename:27 of
+msgid ":py:obj:`Series.rename_axis`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.rename.series_rename:28 of
+msgid "Set the name of the axis."
+msgstr "设置轴的名称。"
+
+#: maxframe.dataframe.indexing.rename.series_rename:31 of
+msgid "示例"
+msgstr ""
+

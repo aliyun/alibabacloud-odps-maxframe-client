@@ -25,9 +25,9 @@ from typing import TYPE_CHECKING, Any, Callable, List, Optional
 
 import numpy as np
 import pandas as pd
-from pandas.api.types import is_string_dtype
 from pandas.core.dtypes.inference import is_dict_like, is_list_like
 
+from ..config.validators import dtype_backend_validator
 from ..core import ENTITY_TYPE, Entity, ExecutableTuple, OutputType, get_output_types
 from ..lib.dtypes_extension import ExternalBlobDtype, SolidBlob
 from ..lib.mmh3 import hash as mmh_hash
@@ -36,7 +36,6 @@ from ..utils import (
     ModulePlaceholder,
     is_full_slice,
     lazy_import,
-    make_dtype,
     make_dtypes,
     quiet_stdio,
     sbytes,
@@ -105,9 +104,9 @@ def hash_dtypes(dtypes, size):
     return [dtypes[index] for index in hashed_indexes]
 
 
-def sort_dataframe_inplace(df, *axis):
+def sort_dataframe_inplace(df, *axis, **kw):
     for ax in axis:
-        df.sort_index(axis=ax, inplace=True)
+        df.sort_index(axis=ax, inplace=True, **kw)
     return df
 
 
@@ -1024,27 +1023,21 @@ def create_sa_connection(con, **kwargs):
             engine.dispose()
 
 
-def to_arrow_dtypes(dtypes, test_df=None):
-    from .arrays import ArrowStringDtype
+def to_arrow_dtypes(dtypes):
+    from ..io.odpsio.schema import pandas_dtypes_to_arrow_schema
 
+    arrow_schema = pandas_dtypes_to_arrow_schema(dtypes)
     new_dtypes = dtypes.copy()
     for i in range(len(dtypes)):
-        dtype = dtypes.iloc[i]
-        if is_string_dtype(dtype):
-            if test_df is not None:
-                series = test_df.iloc[:, i]
-                # check value
-                non_na_series = series[series.notna()]
-                if len(non_na_series) > 0:
-                    first_value = non_na_series.iloc[0]
-                    if isinstance(first_value, str):
-                        new_dtypes.iloc[i] = ArrowStringDtype()
-                else:  # pragma: no cover
-                    # empty, set arrow string dtype
-                    new_dtypes.iloc[i] = ArrowStringDtype()
-            else:
-                # empty, set arrow string dtype
-                new_dtypes.iloc[i] = ArrowStringDtype()
+        arrow_type = arrow_schema.types[i]
+        dt = dtypes.iloc[i]
+        if isinstance(dt, pd.api.extensions.ExtensionDtype):
+            # make existing extension dtype consistent
+            new_dtypes.iloc[i] = dt
+        elif arrow_type == pa.string():
+            new_dtypes.iloc[i] = pd.StringDtype("pyarrow")
+        else:
+            new_dtypes.iloc[i] = ArrowDtype(arrow_type)
     return new_dtypes
 
 
@@ -1482,7 +1475,8 @@ def infer_dataframe_return_value(
                 elementwise=elementwise or False,
             )
 
-    ret_output_type = ret_dtypes = None
+    ret_output_type = None
+    ret_dtypes = dtypes
     maybe_agg = False
     build_kw = build_kw or {}
     obj_key = df_obj.key
@@ -1529,7 +1523,8 @@ def infer_dataframe_return_value(
                     f'please specify `output_type` as "dataframe"'
                 )
             ret_output_type = ret_output_type or OutputType.dataframe
-            ret_dtypes = ret_dtypes or infer_df_obj.dtypes
+            if ret_dtypes is None:
+                ret_dtypes = infer_df_obj.dtypes
         else:
             if output_type is not None and output_type == OutputType.dataframe:
                 raise TypeError(
@@ -1549,7 +1544,7 @@ def infer_dataframe_return_value(
         return InferredDataFrameMeta(
             ret_output_type,
             make_dtypes(ret_dtypes),
-            make_dtype(dtype),
+            make_dtypes(dtype),
             name,
             ret_index_value,
             maybe_agg,
@@ -1562,7 +1557,7 @@ def infer_dataframe_return_value(
         return InferredDataFrameMeta(
             output_type,
             make_dtypes(dtypes),
-            make_dtype(dtype),
+            make_dtypes(dtype),
             name,
             ret_index_value,
             maybe_agg,
@@ -1645,3 +1640,12 @@ def call_groupby_with_params(df_or_series, groupby_params: dict):
     if selection:
         res = res[selection]
     return res
+
+
+def validate_dtype_backend(value):
+    if isinstance(value, bool):
+        # compatibility for legacy use_arrow_dtype property
+        value = "pyarrow" if value else "numpy"
+    if not dtype_backend_validator(value):
+        raise ValueError(f"Invalid dtype_backend: {value}")
+    return value

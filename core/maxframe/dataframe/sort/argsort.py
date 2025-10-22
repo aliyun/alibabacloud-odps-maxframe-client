@@ -40,7 +40,7 @@ def series_argsort(series, axis=0, kind="quicksort", order=None, stable=None):
 
     See Also
     --------
-    numpy.ndarray.argsort : Returns the indices that would sort this array.
+    maxframe.tensor.argsort : Returns the indices that would sort this array.
 
     Examples
     --------
@@ -60,3 +60,9 @@ def series_argsort(series, axis=0, kind="quicksort", order=None, stable=None):
     axis = 0
     t = mt.argsort(series.to_tensor(), axis=axis, kind=kind)
     return series_from_tensor(t, index=series.index)
+
+
+def index_argsort(index, *args, **kwargs):
+    from ... import tensor as mt
+
+    return mt.argsort(index.to_tensor(), *args, **kwargs)

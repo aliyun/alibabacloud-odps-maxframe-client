@@ -1,0 +1,391 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.roc_auc_score.rst:2
+msgid "maxframe.learn.metrics.roc\\_auc\\_score"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:1 of
+msgid ""
+"Compute Area Under the Receiver Operating Characteristic Curve (ROC AUC) "
+"from prediction scores."
+msgstr "根据预测得分计算接收者操作特征曲线下面积（ROC AUC）。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:4 of
+msgid ""
+"Note: this implementation can be used with binary, multiclass and "
+"multilabel classification, but some restrictions apply (see Parameters)."
+msgstr ""
+"注意：此实现可用于二分类、多分类和多标签分类，但有一些限制（参见参数说明"
+"）。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:7 of
+msgid "Read more in the :ref:`User Guide <roc_metrics>`."
+msgstr "更多信息请参阅 :ref:`用户指南 <roc_metrics>`。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:9 of
+msgid ""
+"True labels or binary label indicators. The binary and multiclass cases "
+"expect labels with shape (n_samples,) while the multilabel case expects "
+"binary label indicators with shape (n_samples, n_classes)."
+msgstr ""
+"真实标签或二分类标签指示器。二分类和多分类情况下期望标签的形状为 (n_"
+"samples,)，而多标签情况下期望二分类标签指示器的形状为 (n_samples, n_"
+"classes)。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:13 of
+msgid ""
+"Target scores.  * In the binary case, it corresponds to an array of shape"
+"   `(n_samples,)`. Both probability estimates and non-thresholded   "
+"decision values can be provided. The probability estimates correspond   "
+"to the **probability of the class with the greater label**,   i.e. "
+"`estimator.classes_[1]` and thus   `estimator.predict_proba(X, y)[:, 1]`."
+" The decision values   corresponds to the output of "
+"`estimator.decision_function(X, y)`.   See more information in the "
+":ref:`User guide <roc_auc_binary>`; * In the multiclass case, it "
+"corresponds to an array of shape   `(n_samples, n_classes)` of "
+"probability estimates provided by the   `predict_proba` method. The "
+"probability estimates **must**   sum to 1 across the possible classes. In"
+" addition, the order of the   class scores must correspond to the order "
+"of ``labels``,   if provided, or else to the numerical or lexicographical"
+" order of   the labels in ``y_true``. See more information in the   "
+":ref:`User guide <roc_auc_multiclass>`; * In the multilabel case, it "
+"corresponds to an array of shape   `(n_samples, n_classes)`. Probability "
+"estimates are provided by the   `predict_proba` method and the non-"
+"thresholded decision values by   the `decision_function` method. The "
+"probability estimates correspond   to the **probability of the class with"
+" the greater label for each   output** of the classifier. See more "
+"information in the   :ref:`User guide <roc_auc_multilabel>`."
+msgstr ""
+"目标得分。* 在二分类情况下，它对应于形状为 `(n_samples,)` 的数组。可以"
+"提供概率估计值和非阈值化的决策值。概率估计值对应于**标签较大类别的概率**"
+"，即 `estimator.classes_[1]`，因此为 `estimator.predict_proba(X, y)[:, 1]"
+"`。决策值对应于 `estimator.decision_function(X, y)` 的输出。更多信息"
+"请参阅 :ref:`用户指南 <roc_auc_binary>`；* 在多分类情况下，它对应于形状为"
+" `(n_samples, n_classes)` 的概率估计数组，由 `predict_proba` 方法提供。"
+"概率估计值在所有可能类别上的和必须为 1。此外，类别得分的顺序必须与 ``"
+"labels``（如果提供）或 ``y_true`` 中标签的数字或字典序一致。更多信息"
+"请参阅 :ref:`用户指南 <roc_auc_multiclass>`；* 在多标签情况下，它对应于"
+"形状为 `(n_samples, n_classes)` 的数组。概率估计由 `predict_proba` 方法"
+"提供，非阈值化决策值由 `decision_function` 方法提供。概率估计对应于分类器"
+"每个输出中**标签较大类别的概率**。更多信息请参阅 :ref:`用户指南 <roc_auc_"
+"multilabel>`。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:13 of
+msgid "Target scores."
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:15 of
+msgid ""
+"In the binary case, it corresponds to an array of shape `(n_samples,)`. "
+"Both probability estimates and non-thresholded decision values can be "
+"provided. The probability estimates correspond to the **probability of "
+"the class with the greater label**, i.e. `estimator.classes_[1]` and thus"
+" `estimator.predict_proba(X, y)[:, 1]`. The decision values corresponds "
+"to the output of `estimator.decision_function(X, y)`. See more "
+"information in the :ref:`User guide <roc_auc_binary>`;"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:23 of
+msgid ""
+"In the multiclass case, it corresponds to an array of shape `(n_samples, "
+"n_classes)` of probability estimates provided by the `predict_proba` "
+"method. The probability estimates **must** sum to 1 across the possible "
+"classes. In addition, the order of the class scores must correspond to "
+"the order of ``labels``, if provided, or else to the numerical or "
+"lexicographical order of the labels in ``y_true``. See more information "
+"in the :ref:`User guide <roc_auc_multiclass>`;"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:31 of
+msgid ""
+"In the multilabel case, it corresponds to an array of shape `(n_samples, "
+"n_classes)`. Probability estimates are provided by the `predict_proba` "
+"method and the non-thresholded decision values by the `decision_function`"
+" method. The probability estimates correspond to the **probability of the"
+" class with the greater label for each output** of the classifier. See "
+"more information in the :ref:`User guide <roc_auc_multilabel>`."
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:39 of
+msgid ""
+"If ``None``, the scores for each class are returned. Otherwise, this "
+"determines the type of averaging performed on the data: Note: multiclass "
+"ROC AUC currently only handles the 'macro' and 'weighted' averages.  "
+"``'micro'``:     Calculate metrics globally by considering each element "
+"of the label     indicator matrix as a label. ``'macro'``:     Calculate "
+"metrics for each label, and find their unweighted     mean.  This does "
+"not take label imbalance into account. ``'weighted'``:     Calculate "
+"metrics for each label, and find their average, weighted     by support "
+"(the number of true instances for each label). ``'samples'``:     "
+"Calculate metrics for each instance, and find their average.  Will be "
+"ignored when ``y_true`` is binary."
+msgstr ""
+"如果为 ``None``，则返回每个类别的得分。否则，此参数确定对数据执行的平均"
+"类型：注意：多分类 ROC AUC 目前只支持 'macro' 和 'weighted' 平均方式。``'"
+"micro'``：通过将标签指示矩阵中的每个元素视为一个标签来全局计算指标。``'"
+"macro'``：为每个标签计算指标，并计算它们的未加权平均值。该方法不考虑标签"
+"不平衡。``'weighted'``：为每个标签计算指标，并根据支持度（每个标签的真实"
+"实例数）进行加权平均。``'samples'``：为每个实例计算指标，并计算它们的"
+"平均值。当 ``y_true`` 为二分类时将被忽略。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:39 of
+msgid ""
+"If ``None``, the scores for each class are returned. Otherwise, this "
+"determines the type of averaging performed on the data: Note: multiclass "
+"ROC AUC currently only handles the 'macro' and 'weighted' averages."
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:44 of
+msgid "``'micro'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:45 of
+msgid ""
+"Calculate metrics globally by considering each element of the label "
+"indicator matrix as a label."
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:47 of
+msgid "``'macro'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:48 of
+msgid ""
+"Calculate metrics for each label, and find their unweighted mean.  This "
+"does not take label imbalance into account."
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:50 of
+msgid "``'weighted'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:51 of
+msgid ""
+"Calculate metrics for each label, and find their average, weighted by "
+"support (the number of true instances for each label)."
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:53 of
+msgid "``'samples'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:54 of
+msgid "Calculate metrics for each instance, and find their average."
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:56 of
+msgid "Will be ignored when ``y_true`` is binary."
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:58 of
+msgid "Sample weights."
+msgstr "样本权重。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:60 of
+msgid ""
+"If not ``None``, the standardized partial AUC [2]_ over the range [0, "
+"max_fpr] is returned. For the multiclass case, ``max_fpr``, should be "
+"either equal to ``None`` or ``1.0`` as AUC ROC partial computation "
+"currently is not supported for multiclass."
+msgstr ""
+"如果非 ``None``，则返回 [0, max_fpr] 范围内的标准化部分 AUC [2]_。对于多"
+"分类情况，``max_fpr`` 应等于 ``None`` 或 ``1.0``，因为目前多分类不支持 "
+"AUC ROC 部分计算。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:65 of
+msgid ""
+"Only used for multiclass targets. Determines the type of configuration to"
+" use. The default value raises an error, so either ``'ovr'`` or ``'ovo'``"
+" must be passed explicitly.  ``'ovr'``:     Stands for One-vs-rest. "
+"Computes the AUC of each class     against the rest [3]_ [4]_. This     "
+"treats the multiclass case in the same way as the multilabel case.     "
+"Sensitive to class imbalance even when ``average == 'macro'``,     "
+"because class imbalance affects the composition of each of the     'rest'"
+" groupings. ``'ovo'``:     Stands for One-vs-one. Computes the average "
+"AUC of all     possible pairwise combinations of classes [5]_.     "
+"Insensitive to class imbalance when     ``average == 'macro'``."
+msgstr ""
+"仅用于多分类目标。确定使用的配置类型。默认值会引发错误，因此必须显式传递 "
+"``'ovr'`` 或 ``'ovo'``。``'ovr'``：表示 One-vs-rest。计算每个类别与其余"
+"类别的 AUC [3]_ [4]_。这将以与多标签情况相同的方式处理多分类情况。即使 ``"
+"average == 'macro'``，对类别不平衡也敏感，因为类别不平衡会影响每个 'rest'"
+" 组合的构成。``'ovo'``：表示 One-vs-one。计算所有可能类别对组合的平均 AUC"
+" [5]_。当 ``average == 'macro'`` 时，对类别不平衡不敏感。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:65 of
+msgid ""
+"Only used for multiclass targets. Determines the type of configuration to"
+" use. The default value raises an error, so either ``'ovr'`` or ``'ovo'``"
+" must be passed explicitly."
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:69 of
+msgid "``'ovr'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:70 of
+msgid ""
+"Stands for One-vs-rest. Computes the AUC of each class against the rest "
+"[3]_ [4]_. This treats the multiclass case in the same way as the "
+"multilabel case. Sensitive to class imbalance even when ``average == "
+"'macro'``, because class imbalance affects the composition of each of the"
+" 'rest' groupings."
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:76 of
+msgid "``'ovo'``:"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:77 of
+msgid ""
+"Stands for One-vs-one. Computes the average AUC of all possible pairwise "
+"combinations of classes [5]_. Insensitive to class imbalance when "
+"``average == 'macro'``."
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:82 of
+msgid ""
+"Only used for multiclass targets. List of labels that index the classes "
+"in ``y_score``. If ``None``, the numerical or lexicographical order of "
+"the labels in ``y_true`` is used."
+msgstr ""
+"仅用于多类目标。用于索引 ``y_score`` 中类别的标签列表。如果为 ``None``，"
+"则使用 ``y_true`` 中标签的数字或字典序。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:87 of
+msgid "**auc**"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:91 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:92 of
+msgid ""
+"`Wikipedia entry for the Receiver operating characteristic "
+"<https://en.wikipedia.org/wiki/Receiver_operating_characteristic>`_"
+msgstr ""
+"`Wikipedia 上的接收者操作特征条目 <https://en.wikipedia.org/wiki/Receiver"
+"_operating_characteristic>`_"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:95 of
+msgid ""
+"`Analyzing a portion of the ROC curve. McClish, 1989 "
+"<https://www.ncbi.nlm.nih.gov/pubmed/2668680>`_"
+msgstr ""
+"`分析 ROC 曲线的一部分。McClish, 1989 <https://www.ncbi.nlm.nih.gov/"
+"pubmed/2668680>`_"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:98 of
+msgid ""
+"Provost, F., Domingos, P. (2000). Well-trained PETs: Improving "
+"probability estimation trees (Section 6.2), CeDER Working Paper "
+"#IS-00-04, Stern School of Business, New York University."
+msgstr ""
+"Provost, F., Domingos, P. (2000). 训练良好的 PET：改进概率估计树（第 6.2 "
+"节），CeDER 工作论文 #IS-00-04，纽约大学斯特恩商学院。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:102 of
+msgid ""
+"`Fawcett, T. (2006). An introduction to ROC analysis. Pattern Recognition"
+" Letters, 27(8), 861-874. "
+"<https://www.sciencedirect.com/science/article/pii/S016786550500303X>`_"
+msgstr ""
+"`Fawcett, T. (2006). ROC 分析简介。Pattern Recognition Letters, 27(8), "
+"861-874. <https://www.sciencedirect.com/science/article/pii/"
+"S016786550500303X>`_"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:106 of
+msgid ""
+"`Hand, D.J., Till, R.J. (2001). A Simple Generalisation of the Area Under"
+" the ROC Curve for Multiple Class Classification Problems. Machine "
+"Learning, 45(2), 171-186. "
+"<http://link.springer.com/article/10.1023/A:1010920819831>`_"
+msgstr ""
+"`Hand, D.J., Till, R.J. (2001). 多类分类问题中 ROC 曲线下面积的一种简单"
+"推广。Machine Learning, 45(2), 171-186. <http://link.springer.com/article"
+"/10.1023/A:1010920819831>`_"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:113 of
+msgid ":py:obj:`average_precision_score`"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:114 of
+msgid "Area under the precision-recall curve."
+msgstr "精确率-召回率曲线下的面积。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:116 of
+msgid ":py:obj:`roc_curve`"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:117 of
+msgid "Compute Receiver operating characteristic (ROC) curve."
+msgstr "计算接收者操作特征（ROC）曲线。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:119 of
+msgid ":py:obj:`RocCurveDisplay.from_estimator`"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:120 of
+msgid ""
+"Plot Receiver Operating Characteristic (ROC) curve given an estimator and"
+" some data."
+msgstr "给定一个估计器和一些数据，绘制接收者操作特征（ROC）曲线。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:122 of
+msgid ":py:obj:`RocCurveDisplay.from_predictions`"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:123 of
+msgid ""
+"Plot Receiver Operating Characteristic (ROC) curve given the true and "
+"predicted values."
+msgstr "给定真实值和预测值，绘制接收者操作特征（ROC）曲线。"
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:126 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:127 of
+msgid "Binary case:"
+msgstr "二分类情况："
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:139 of
+msgid "Multiclass case:"
+msgstr "多分类情况："
+
+#: maxframe.learn.metrics._ranking.roc_auc_score:147 of
+msgid "Multilabel case:"
+msgstr "多标签情况："
+

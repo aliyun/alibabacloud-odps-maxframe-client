@@ -1,0 +1,99 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.expand_dims.rst:2
+msgid "maxframe.tensor.expand\\_dims"
+msgstr ""
+
+#: maxframe.tensor.misc.expand_dims.expand_dims:1 of
+msgid "Expand the shape of a tensor."
+msgstr "扩展张量的形状。"
+
+#: maxframe.tensor.misc.expand_dims.expand_dims:3 of
+msgid ""
+"Insert a new axis that will appear at the `axis` position in the expanded"
+" array shape."
+msgstr "插入一个新轴，该轴将出现在扩展数组形状的 `axis` 位置。"
+
+#: maxframe.tensor.misc.expand_dims.expand_dims of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.expand_dims.expand_dims:6 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.misc.expand_dims.expand_dims:8 of
+msgid "Position in the expanded axes where the new axis is placed."
+msgstr "新轴在扩展轴中的位置。"
+
+#: maxframe.tensor.misc.expand_dims.expand_dims of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.expand_dims.expand_dims:11 of
+msgid ""
+"**res** -- Output tensor. The number of dimensions is one greater than "
+"that of the input tensor."
+msgstr "**res** -- 输出张量。其维度数比输入张量多一。"
+
+#: maxframe.tensor.misc.expand_dims.expand_dims of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.expand_dims.expand_dims:17 of
+msgid ":py:obj:`squeeze`"
+msgstr ""
+
+#: maxframe.tensor.misc.expand_dims.expand_dims:18 of
+msgid "The inverse operation, removing singleton dimensions"
+msgstr "逆操作，移除单例维度"
+
+#: maxframe.tensor.misc.expand_dims.expand_dims:20 of
+msgid ":py:obj:`reshape`"
+msgstr ""
+
+#: maxframe.tensor.misc.expand_dims.expand_dims:21 of
+msgid "Insert, remove, and combine dimensions, and resize existing ones"
+msgstr "插入、移除和组合维度，以及调整现有维度的大小"
+
+#: maxframe.tensor.misc.expand_dims.expand_dims:23 of
+msgid ""
+":py:obj:`doc.indexing`, :py:obj:`atleast_1d`, :py:obj:`atleast_2d`, "
+":py:obj:`atleast_3d`"
+msgstr ""
+
+#: maxframe.tensor.misc.expand_dims.expand_dims:26 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.misc.expand_dims.expand_dims:33 of
+msgid "The following is equivalent to ``x[mt.newaxis,:]`` or ``x[mt.newaxis]``:"
+msgstr "以下等价于 ``x[mt.newaxis,:]`` 或 ``x[mt.newaxis]``："
+
+#: maxframe.tensor.misc.expand_dims.expand_dims:48 of
+msgid ""
+"Note that some examples may use ``None`` instead of ``np.newaxis``.  "
+"These are the same objects:"
+msgstr ""
+"请注意，某些示例可能使用 ``None`` 而不是 ``np.newaxis``。它们是相同的对象"
+"："
+

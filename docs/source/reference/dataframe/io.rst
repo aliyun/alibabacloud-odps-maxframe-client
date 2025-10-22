@@ -4,6 +4,14 @@ Input/output
 ============
 .. currentmodule:: maxframe.dataframe
 
+Clipboard
+~~~~~~~~~
+.. autosummary::
+   :toctree: generated/
+
+   read_clipboard
+   DataFrame.to_clipboard
+
 MaxCompute
 ~~~~~~~~~~
 .. autosummary::

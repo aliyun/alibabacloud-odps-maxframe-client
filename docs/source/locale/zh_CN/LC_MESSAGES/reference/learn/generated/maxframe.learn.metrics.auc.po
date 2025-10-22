@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.auc.rst:2
+msgid "maxframe.learn.metrics.auc"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.auc:1 of
+msgid "Compute Area Under the Curve (AUC) using the trapezoidal rule"
+msgstr "使用梯形法则计算曲线下面积 (AUC)"
+
+#: maxframe.learn.metrics._ranking.auc:3 of
+msgid ""
+"This is a general function, given points on a curve.  For computing the "
+"area under the ROC-curve, see :func:`roc_auc_score`.  For an alternative "
+"way to summarize a precision-recall curve, see "
+":func:`average_precision_score`."
+msgstr ""
+"这是一个通用函数，给定曲线上的点。要计算 ROC 曲线下的面积，请参见 :func:`"
+"roc_auc_score`。要以另一种方式总结 precision-recall 曲线，请参见 :func:`"
+"average_precision_score`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.auc.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.auc:8 of
+msgid ""
+"x coordinates. These must be either monotonic increasing or monotonic "
+"decreasing."
+msgstr "x 坐标。这些值必须是单调递增或单调递减的。"
+
+#: maxframe.learn.metrics._ranking.auc:11 of
+msgid "y coordinates."
+msgstr "y 坐标。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.auc.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.auc:14 of
+msgid "**auc**"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.auc.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.auc:18 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.auc:29 of
+msgid ":py:obj:`roc_auc_score`"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.auc:30 of
+msgid "Compute the area under the ROC curve"
+msgstr "计算 ROC 曲线下的面积"
+
+#: maxframe.learn.metrics._ranking.auc:32 of
+msgid ":py:obj:`average_precision_score`"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.auc:33 of
+msgid "Compute average precision from prediction scores"
+msgstr "根据预测得分计算平均精度"
+
+#: maxframe.learn.metrics._ranking.auc:35 of
+msgid ":py:obj:`precision_recall_curve`"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.auc:36 of
+msgid "Compute precision-recall pairs for different probability thresholds"
+msgstr "计算不同概率阈值下的 precision-recall 对"
+

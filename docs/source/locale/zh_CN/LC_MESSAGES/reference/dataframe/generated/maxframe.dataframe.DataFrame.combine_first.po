@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.combine_first.rst:2
+msgid "maxframe.dataframe.DataFrame.combine\\_first"
+msgstr ""
+
+#: maxframe.dataframe.merge.combine_first.df_combine_first:1 of
+msgid "Update null elements with value in the same location in `other`."
+msgstr "使用 `other` 中相同位置的值更新空元素。"
+
+#: maxframe.dataframe.merge.combine_first.df_combine_first:3 of
+msgid ""
+"Combine two DataFrame objects by filling null values in one DataFrame "
+"with non-null values from other DataFrame. The row and column indexes of "
+"the resulting DataFrame will be the union of the two. The resulting "
+"dataframe contains the 'first' dataframe values and overrides the second "
+"one values where both first.loc[index, col] and second.loc[index, col] "
+"are not missing values, upon calling first.combine_first(second)."
+msgstr ""
+"通过用另一个 DataFrame 中的非空值填充一个 DataFrame 中的空值来合并两个 "
+"DataFrame 对象。结果 DataFrame 的行索引和列索引将是两者的并集。在调用 "
+"first.combine_first(second) 时，结果 DataFrame 包含 'first' DataFrame 的"
+"值，并在 first.loc[index, col] 和 second.loc[index, col] 都非空的情况下"
+"覆盖第二个 DataFrame 的值。"
+
+#: maxframe.dataframe.merge.combine_first.df_combine_first of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.merge.combine_first.df_combine_first:11 of
+msgid "Provided DataFrame to use to fill null values."
+msgstr "用于填充空值的 DataFrame。"
+
+#: maxframe.dataframe.merge.combine_first.df_combine_first of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.merge.combine_first.df_combine_first:14 of
+msgid "The result of combining the provided DataFrame with the other object."
+msgstr "将提供的 DataFrame 与另一个对象合并后的结果。"
+
+#: maxframe.dataframe.merge.combine_first.df_combine_first of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.merge.combine_first.df_combine_first:19 of
+msgid ":py:obj:`DataFrame.combine`"
+msgstr ""
+
+#: maxframe.dataframe.merge.combine_first.df_combine_first:20 of
+msgid "Perform series-wise operation on two DataFrames using a given function."
+msgstr "使用给定函数对两个 DataFrame 执行逐列操作。"
+
+#: maxframe.dataframe.merge.combine_first.df_combine_first:23 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.merge.combine_first.df_combine_first:32 of
+msgid ""
+"Null values still persist if the location of that null value does not "
+"exist in `other`"
+msgstr "如果该空值的位置在 `other` 中不存在，则空值仍然保留"
+

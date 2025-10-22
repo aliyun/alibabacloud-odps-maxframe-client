@@ -1,0 +1,89 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.moveaxis.rst:2
+msgid "maxframe.tensor.moveaxis"
+msgstr ""
+
+#: maxframe.tensor.misc.moveaxis.moveaxis:1 of
+msgid "Move axes of a tensor to new positions."
+msgstr "将张量的轴移动到新位置。"
+
+#: maxframe.tensor.misc.moveaxis.moveaxis:3 of
+msgid "Other axes remain in their original order."
+msgstr "其他轴保持原始顺序不变。"
+
+#: maxframe.tensor.misc.moveaxis.moveaxis of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.moveaxis.moveaxis:5 of
+msgid "The tensor whose axes should be reordered."
+msgstr "需要重新排列轴的张量。"
+
+#: maxframe.tensor.misc.moveaxis.moveaxis:7 of
+msgid "Original positions of the axes to move. These must be unique."
+msgstr "要移动的轴的原始位置。这些位置必须唯一。"
+
+#: maxframe.tensor.misc.moveaxis.moveaxis:9 of
+msgid ""
+"Destination positions for each of the original axes. These must also be "
+"unique."
+msgstr "每个原始轴的目标位置。这些位置也必须唯一。"
+
+#: maxframe.tensor.misc.moveaxis.moveaxis of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.moveaxis.moveaxis:13 of
+msgid ""
+"**result** -- Array with moved axes. This tensor is a view of the input "
+"tensor."
+msgstr "**result** -- 轴已移动的数组。此张量是输入张量的视图。"
+
+#: maxframe.tensor.misc.moveaxis.moveaxis of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.moveaxis.moveaxis:18 of
+msgid ":py:obj:`transpose`"
+msgstr ""
+
+#: maxframe.tensor.misc.moveaxis.moveaxis:19 of
+msgid "Permute the dimensions of an array."
+msgstr "重新排列数组的维度。"
+
+#: maxframe.tensor.misc.moveaxis.moveaxis:21 of
+msgid ":py:obj:`swapaxes`"
+msgstr ""
+
+#: maxframe.tensor.misc.moveaxis.moveaxis:22 of
+msgid "Interchange two axes of an array."
+msgstr "交换数组的两个轴。"
+
+#: maxframe.tensor.misc.moveaxis.moveaxis:25 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.misc.moveaxis.moveaxis:34 of
+msgid "These all achieve the same result:"
+msgstr "这些操作都实现相同的结果："
+

@@ -1,0 +1,176 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-10 10:10+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.to_dict.rst:2
+msgid "maxframe.dataframe.DataFrame.to\\_dict"
+msgstr ""
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:1 of
+msgid "Convert the DataFrame to a dictionary."
+msgstr "将 DataFrame 转换为字典。"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:3 of
+msgid ""
+"The type of the key-value pairs can be customized with the parameters "
+"(see below)."
+msgstr "键值对的类型可以通过参数自定义（见下文）。"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:6 of
+msgid ""
+"Determines the type of the values of the dictionary.  - 'dict' (default) "
+": dict like {column -> {index -> value}} - 'list' : dict like {column -> "
+"[values]} - 'series' : dict like {column -> Series(values)} - 'split' : "
+"dict like   {'index' -> [index], 'columns' -> [columns], 'data' -> "
+"[values]} - 'tight' : dict like   {'index' -> [index], 'columns' -> "
+"[columns], 'data' -> [values],   'index_names' -> [index.names], "
+"'column_names' -> [column.names]} - 'records' : list like   [{column -> "
+"value}, ... , {column -> value}] - 'index' : dict like {index -> {column "
+"-> value}}"
+msgstr ""
+"确定字典值的类型。  - 'dict'（默认）: 类似 {column -> {index -> value}} "
+"的字典 - 'list' : 类似 {column -> [values]} 的字典 - 'series' : 类似 {"
+"column -> Series(values)} 的字典 - 'split' : 类似 {'index' -> [index], '"
+"columns' -> [columns], 'data' -> [values]} 的字典 - 'tight' : 类似 {'"
+"index' -> [index], 'columns' -> [columns], 'data' -> [values], 'index_"
+"names' -> [index.names], 'column_names' -> [column.names]} 的字典 - '"
+"records' : 类似 [{column -> value}, ... , {column -> value}] 的列表 - '"
+"index' : 类似 {index -> {column -> value}} 的字典"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:6 of
+msgid "Determines the type of the values of the dictionary."
+msgstr "确定字典值的类型。"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:8 of
+msgid "'dict' (default) : dict like {column -> {index -> value}}"
+msgstr "'dict'（默认）: 类似 {column -> {index -> value}} 的字典"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:9 of
+#, python-brace-format
+msgid "'list' : dict like {column -> [values]}"
+msgstr "'list' : 类似 {column -> [values]} 的字典"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:10 of
+#, python-brace-format
+msgid "'series' : dict like {column -> Series(values)}"
+msgstr "'series' : 类似 {column -> Series(values)} 的字典"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:11 of
+#, python-brace-format
+msgid ""
+"'split' : dict like {'index' -> [index], 'columns' -> [columns], 'data' "
+"-> [values]}"
+msgstr ""
+"'split' : 类似 {'index' -> [index], 'columns' -> [columns], 'data' -> ["
+"values]} 的字典"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:13 of
+#, python-brace-format
+msgid ""
+"'tight' : dict like {'index' -> [index], 'columns' -> [columns], 'data' "
+"-> [values], 'index_names' -> [index.names], 'column_names' -> "
+"[column.names]}"
+msgstr ""
+"'tight' : 类似 {'index' -> [index], 'columns' -> [columns], 'data' -> ["
+"values], 'index_names' -> [index.names], 'column_names' -> [column.names]"
+"} 的字典"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:16 of
+#, python-brace-format
+msgid "'records' : list like [{column -> value}, ... , {column -> value}]"
+msgstr "'records' : 类似 [{column -> value}, ... , {column -> value}] 的列表"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:18 of
+msgid "'index' : dict like {index -> {column -> value}}"
+msgstr "'index' : 类似 {index -> {column -> value}} 的字典"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:20 of
+msgid ""
+"The collections.abc.MutableMapping subclass used for all Mappings in the "
+"return value.  Can be the actual class or an empty instance of the "
+"mapping type you want.  If you want a collections.defaultdict, you must "
+"pass it initialized."
+msgstr ""
+"返回值中所有映射使用的 collections.abc.MutableMapping 子类。可以是实际的"
+"类或你想要的映射类型的空实例。如果需要 collections.defaultdict，必须传入"
+"已初始化的对象。"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:25 of
+msgid ""
+"Whether to include the index item (and index_names item if `orient` is "
+"'tight') in the returned dictionary. Can only be ``False`` when `orient` "
+"is 'split' or 'tight'."
+msgstr ""
+"是否在返回的字典中包含索引项（如果 `orient` 是 'tight'，还包括 index_"
+"names 项）。只有当 `orient` 是 'split' 或 'tight' 时才能为 ``False``。"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:30 of
+msgid ""
+"Return a collections.abc.MutableMapping object representing the "
+"DataFrame. The resulting transformation depends on the `orient` "
+"parameter."
+msgstr ""
+"返回表示 DataFrame 的 collections.abc.MutableMapping 对象。结果转换取决于"
+" `orient` 参数。"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:37 of
+msgid ":py:obj:`DataFrame.from_dict`"
+msgstr ""
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:38 of
+msgid "Create a DataFrame from a dictionary."
+msgstr "从字典创建 DataFrame。"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:40 of
+msgid ":py:obj:`DataFrame.to_json`"
+msgstr ""
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:41 of
+msgid "Convert a DataFrame to JSON format."
+msgstr "将 DataFrame 转换为 JSON 格式。"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:44 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:56 of
+msgid "You can specify the return orientation."
+msgstr "你可以指定返回的结构。"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:80 of
+msgid "You can also specify the mapping type."
+msgstr "你也可以指定映射类型。"
+
+#: maxframe.dataframe.datastore.direct.df_to_dict:87 of
+msgid "If you want a `defaultdict`, you need to initialize it:"
+msgstr "如果你想要一个 `defaultdict`，你需要先初始化它："
+

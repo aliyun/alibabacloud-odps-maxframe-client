@@ -1,0 +1,260 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.linalg.norm.rst:2
+msgid "maxframe.tensor.linalg.norm"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:1 of
+msgid "Matrix or vector norm."
+msgstr "矩阵或向量范数。"
+
+#: maxframe.tensor.linalg.norm.norm:3 of
+msgid ""
+"This function is able to return one of eight different matrix norms, or "
+"one of an infinite number of vector norms (described below), depending on"
+" the value of the ``ord`` parameter."
+msgstr ""
+"此函数能够根据 ``ord`` 参数的值返回八种不同的矩阵范数之一，或无限多种向量"
+"范数之一（如下所述）。"
+
+#: maxframe.tensor.linalg.norm.norm of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:7 of
+msgid "Input tensor.  If `axis` is None, `x` must be 1-D or 2-D."
+msgstr "输入张量。如果 `axis` 为 None，则 `x` 必须是一维或二维。"
+
+#: maxframe.tensor.linalg.norm.norm:9 of
+msgid ""
+"Order of the norm (see table under ``Notes``). inf means maxframe "
+"tensor's `inf` object."
+msgstr ""
+"范数的阶数（参见 ``Notes`` 下的表格）。inf 表示 maxframe 张量的 `inf` "
+"对象。"
+
+#: maxframe.tensor.linalg.norm.norm:12 of
+msgid ""
+"If `axis` is an integer, it specifies the axis of `x` along which to "
+"compute the vector norms.  If `axis` is a 2-tuple, it specifies the axes "
+"that hold 2-D matrices, and the matrix norms of these matrices are "
+"computed.  If `axis` is None then either a vector norm (when `x` is 1-D) "
+"or a matrix norm (when `x` is 2-D) is returned."
+msgstr ""
+"如果 `axis` 是一个整数，它指定计算向量范数时 `x` 的轴。如果 `axis` 是"
+"一个二元组，它指定包含二维矩阵的轴，并计算这些矩阵的矩阵范数。如果 `axis`"
+" 为 None，则返回向量范数（当 `x` 是一维时）或矩阵范数（当 `x` 是二维时）"
+"。"
+
+#: maxframe.tensor.linalg.norm.norm:18 of
+msgid ""
+"If this is set to True, the axes which are normed over are left in the "
+"result as dimensions with size one.  With this option the result will "
+"broadcast correctly against the original `x`."
+msgstr ""
+"如果设置为 True，范数计算所涉及的轴将保留在结果中，尺寸为 1。使用此选项时"
+"，结果将可以正确地与原始 `x` 广播。"
+
+#: maxframe.tensor.linalg.norm.norm of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:23 of
+msgid "**n** -- Norm of the matrix or vector(s)."
+msgstr "**n** -- 矩阵或向量的范数。"
+
+#: maxframe.tensor.linalg.norm.norm of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:27 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:28 of
+msgid ""
+"For values of ``ord <= 0``, the result is, strictly speaking, not a "
+"mathematical 'norm', but it may still be useful for various numerical "
+"purposes."
+msgstr ""
+"对于 ``ord <= 0`` 的值，严格来说结果不是数学意义上的“范数”，但对各种"
+"数值计算目的仍然可能有用。"
+
+#: maxframe.tensor.linalg.norm.norm:32 of
+msgid "The following norms can be calculated:"
+msgstr "可以计算以下范数："
+
+#: maxframe.tensor.linalg.norm.norm:35 of
+msgid "ord"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:35 of
+msgid "norm for matrices"
+msgstr "矩阵范数"
+
+#: maxframe.tensor.linalg.norm.norm:35 of
+msgid "norm for vectors"
+msgstr "向量范数"
+
+#: maxframe.tensor.linalg.norm.norm:37 of
+msgid "None"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:37 maxframe.tensor.linalg.norm.norm:38 of
+msgid "Frobenius norm"
+msgstr "Frobenius 范数"
+
+#: maxframe.tensor.linalg.norm.norm:37 of
+msgid "2-norm"
+msgstr "2-范数"
+
+#: maxframe.tensor.linalg.norm.norm:38 of
+msgid "'fro'"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:38 maxframe.tensor.linalg.norm.norm:39
+#: maxframe.tensor.linalg.norm.norm:42 maxframe.tensor.linalg.norm.norm:47 of
+msgid "--"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:39 of
+msgid "'nuc'"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:39 of
+msgid "nuclear norm"
+msgstr "核范数"
+
+#: maxframe.tensor.linalg.norm.norm:40 of
+msgid "inf"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:40 of
+msgid "max(sum(abs(x), axis=1))"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:40 of
+msgid "max(abs(x))"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:41 of
+msgid "-inf"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:41 of
+msgid "min(sum(abs(x), axis=1))"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:41 of
+msgid "min(abs(x))"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:42 of
+msgid "0"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:42 of
+msgid "sum(x != 0)"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:43 of
+msgid "1"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:43 of
+msgid "max(sum(abs(x), axis=0))"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:43 maxframe.tensor.linalg.norm.norm:44
+#: maxframe.tensor.linalg.norm.norm:45 maxframe.tensor.linalg.norm.norm:46 of
+msgid "as below"
+msgstr "如下所示"
+
+#: maxframe.tensor.linalg.norm.norm:44 of
+msgid "-1"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:44 of
+msgid "min(sum(abs(x), axis=0))"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:45 of
+msgid "2"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:45 of
+msgid "2-norm (largest sing. value)"
+msgstr "2-范数（最大奇异值）"
+
+#: maxframe.tensor.linalg.norm.norm:46 of
+msgid "-2"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:46 of
+msgid "smallest singular value"
+msgstr "最小奇异值"
+
+#: maxframe.tensor.linalg.norm.norm:47 of
+msgid "other"
+msgstr "其他"
+
+#: maxframe.tensor.linalg.norm.norm:47 of
+msgid "sum(abs(x)**ord)**(1./ord)"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:50 of
+msgid "The Frobenius norm is given by [1]_:"
+msgstr "Frobenius 范数由 [1]_ 给出："
+
+#: maxframe.tensor.linalg.norm.norm:52 of
+#, python-brace-format
+msgid ":math:`||A||_F = [\\\\sum_{i,j} abs(a_{i,j})^2]^{1/2}`"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:54 of
+msgid "The nuclear norm is the sum of the singular values."
+msgstr "核范数是奇异值的和。"
+
+#: maxframe.tensor.linalg.norm.norm:57 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:58 of
+msgid ""
+"G. H. Golub and C. F. Van Loan, *Matrix Computations*, Baltimore, MD, "
+"Johns Hopkins University Press, 1985, pg. 15"
+msgstr ""
+"G. H. Golub 和 C. F. Van Loan，《矩阵计算》，巴尔的摩，马里兰州，"
+"约翰霍普金斯大学出版社，1985年，第15页"
+
+#: maxframe.tensor.linalg.norm.norm:62 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.linalg.norm.norm:111 of
+msgid "Using the `axis` argument to compute vector norms:"
+msgstr "使用 `axis` 参数计算向量范数："
+
+#: maxframe.tensor.linalg.norm.norm:122 of
+msgid "Using the `axis` argument to compute matrix norms:"
+msgstr "使用 `axis` 参数计算矩阵范数："
+

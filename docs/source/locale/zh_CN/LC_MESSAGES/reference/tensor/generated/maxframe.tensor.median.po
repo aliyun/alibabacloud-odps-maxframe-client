@@ -1,0 +1,115 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.median.rst:2
+msgid "maxframe.tensor.median"
+msgstr ""
+
+#: maxframe.tensor.statistics.median.median:1 of
+msgid "Compute the median along the specified axis."
+msgstr "沿指定轴计算中位数。"
+
+#: maxframe.tensor.statistics.median.median:3 of
+msgid "Returns the median of the tensor elements."
+msgstr "返回张量元素的中位数。"
+
+#: maxframe.tensor.statistics.median.median of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.statistics.median.median:5 of
+msgid "Input tensor or object that can be converted to a tensor."
+msgstr "输入张量或可转换为张量的对象。"
+
+#: maxframe.tensor.statistics.median.median:7 of
+msgid ""
+"Axis or axes along which the medians are computed. The default is to "
+"compute the median along a flattened version of the tensor. A sequence of"
+" axes is supported since version 1.9.0."
+msgstr ""
+"计算中位数的轴。默认情况下沿张量的展平版本计算中位数。自版本 1.9.0 起支持"
+"轴序列。"
+
+#: maxframe.tensor.statistics.median.median:11 of
+msgid ""
+"Alternative output tensor in which to place the result. It must have the "
+"same shape and buffer length as the expected output, but the type (of the"
+" output) will be cast if necessary."
+msgstr ""
+"用于放置结果的替代输出张量。它必须具有与预期输出相同的形状和缓冲区长度，"
+"但必要时会进行类型转换。"
+
+#: maxframe.tensor.statistics.median.median:15 of
+msgid "Just for compatibility with Numpy, would not take effect."
+msgstr "仅为了与 Numpy 兼容，不会生效。"
+
+#: maxframe.tensor.statistics.median.median:17 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the original `arr`."
+msgstr ""
+"如果设置为 True，则在结果中将被规约的轴保留为大小为一的维度。使用此选项时"
+"，结果将能正确地与原始 `arr` 广播。"
+
+#: maxframe.tensor.statistics.median.median of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.statistics.median.median:22 of
+msgid ""
+"**median** -- A new tensor holding the result. If the input contains "
+"integers or floats smaller than ``float64``, then the output data-type is"
+" ``np.float64``.  Otherwise, the data-type of the output is the same as "
+"that of the input. If `out` is specified, that tensor is returned "
+"instead."
+msgstr ""
+"**median** -- 保存结果的新张量。如果输入包含小于 ``float64`` 的整数或"
+"浮点数，则输出数据类型为 ``np.float64``。否则，输出的数据类型与输入相同。"
+"如果指定了 `out`，则返回该张量。"
+
+#: maxframe.tensor.statistics.median.median of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.statistics.median.median:29 of
+msgid ":py:obj:`mean`, :py:obj:`percentile`"
+msgstr ""
+
+#: maxframe.tensor.statistics.median.median:32 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.statistics.median.median:33 of
+msgid ""
+"Given a vector ``V`` of length ``N``, the median of ``V`` is the middle "
+"value of a sorted copy of ``V``, ``V_sorted`` - i e., "
+"``V_sorted[(N-1)/2]``, when ``N`` is odd, and the average of the two "
+"middle values of ``V_sorted`` when ``N`` is even."
+msgstr ""
+"给定长度为 ``N`` 的向量 ``V``，``V`` 的中位数是其排序后副本 ``V_sorted`` "
+"的中间值——即当 ``N`` 为奇数时的 ``V_sorted[(N-1)/2]``，以及当 ``N`` 为"
+"偶数时 ``V_sorted`` 中间两个值的平均值。"
+
+#: maxframe.tensor.statistics.median.median:39 of
+msgid "示例"
+msgstr ""
+

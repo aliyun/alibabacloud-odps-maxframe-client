@@ -1,0 +1,147 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.standard_cauchy.rst:2
+msgid "maxframe.tensor.random.standard\\_cauchy"
+msgstr ""
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:1 of
+msgid "Draw samples from a standard Cauchy distribution with mode = 0."
+msgstr "从模式为 0 的标准柯西分布中抽取样本。"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:3 of
+msgid "Also known as the Lorentz distribution."
+msgstr "也称为洛伦兹分布。"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:5 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  Default is None, in which case a single value is"
+" returned."
+msgstr ""
+"输出形状。如果给定的形状是，例如 ``(m, n, k)``，则抽取 ``m * n * k`` 个"
+"样本。默认为 None，此时返回一个单一值。"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:9 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的分块大小"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:11 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:13 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:16 of
+msgid "**samples** -- The drawn samples."
+msgstr "**samples** -- 抽取的样本。"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:20 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:21 of
+msgid "The probability density function for the full Cauchy distribution is"
+msgstr "完整柯西分布的概率密度函数为"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:23 of
+#, python-brace-format
+msgid ""
+"P(x; x_0, \\gamma) = \\frac{1}{\\pi \\gamma \\bigl[ 1+\n"
+"(\\frac{x-x_0}{\\gamma})^2 \\bigr] }\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:26 of
+msgid ""
+"and the Standard Cauchy distribution just sets :math:`x_0=0` and "
+":math:`\\gamma=1`"
+msgstr "而标准柯西分布只是设定了 :math:`x_0=0` 和 :math:`\\gamma=1`"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:29 of
+msgid ""
+"The Cauchy distribution arises in the solution to the driven harmonic "
+"oscillator problem, and also describes spectral line broadening. It also "
+"describes the distribution of values at which a line tilted at a random "
+"angle will cut the x axis."
+msgstr ""
+"柯西分布在受驱谐振子问题的解中出现，并且也描述了谱线的展宽。它还描述了"
+"一条以随机角度倾斜的直线与 x 轴相交位置的分布。"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:34 of
+msgid ""
+"When studying hypothesis tests that assume normality, seeing how the "
+"tests perform on data from a Cauchy distribution is a good indicator of "
+"their sensitivity to a heavy-tailed distribution, since the Cauchy looks "
+"very much like a Gaussian distribution, but with heavier tails."
+msgstr ""
+"在研究假设正态性的假设检验时，观察这些检验在来自柯西分布的数据上的表现，"
+"是衡量它们对重尾分布敏感性的一个良好指标，因为柯西分布看起来非常像"
+"高斯分布，但尾部更重。"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:40 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:41 of
+msgid ""
+"NIST/SEMATECH e-Handbook of Statistical Methods, \"Cauchy Distribution\","
+" http://www.itl.nist.gov/div898/handbook/eda/section3/eda3663.htm"
+msgstr ""
+"NIST/SEMATECH 统计方法电子手册，“柯西分布”，http://www.itl.nist.gov/"
+"div898/handbook/eda/section3/eda3663.htm"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:44 of
+msgid ""
+"Weisstein, Eric W. \"Cauchy Distribution.\" From MathWorld--A Wolfram Web"
+" Resource. http://mathworld.wolfram.com/CauchyDistribution.html"
+msgstr ""
+"Weisstein, Eric W. “柯西分布。” 来自 MathWorld--Wolfram 网络资源。http:"
+"//mathworld.wolfram.com/CauchyDistribution.html"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:47 of
+msgid ""
+"Wikipedia, \"Cauchy distribution\" "
+"http://en.wikipedia.org/wiki/Cauchy_distribution"
+msgstr "维基百科，“柯西分布” http://en.wikipedia.org/wiki/Cauchy_distribution"
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:51 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.standard_cauchy.standard_cauchy:52 of
+msgid "Draw samples and plot the distribution:"
+msgstr "抽取样本并绘制分布："
+

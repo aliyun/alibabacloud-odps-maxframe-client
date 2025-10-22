@@ -16,9 +16,17 @@ from abc import abstractmethod
 from typing import Any, Dict, List
 
 from ....dataframe.core import DATAFRAME_TYPE
-from ....dataframe.sort import DataFrameSortIndex, DataFrameSortValues
+from ....dataframe.sort import DataFrameRank, DataFrameSortIndex, DataFrameSortValues
 from ....dataframe.sort.core import DataFrameSortOperator
 from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
+from ..utils import build_method_call_adapter
+
+DataFrameRankAdapter = build_method_call_adapter(
+    DataFrameRank,
+    "rank",
+    kw_keys=["axis", "method", "numeric_only", "na_option", "ascending", "pct"],
+    skip_none=True,
+)
 
 
 class _DataFrameSortAdapter(SPEOperatorAdapter):

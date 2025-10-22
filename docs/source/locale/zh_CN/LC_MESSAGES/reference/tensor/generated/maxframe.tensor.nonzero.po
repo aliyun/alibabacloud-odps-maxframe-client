@@ -1,0 +1,114 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.nonzero.rst:2
+msgid "maxframe.tensor.nonzero"
+msgstr ""
+
+#: maxframe.tensor.indexing.nonzero.nonzero:1 of
+msgid "Return the indices of the elements that are non-zero."
+msgstr "返回非零元素的索引。"
+
+#: maxframe.tensor.indexing.nonzero.nonzero:3 of
+msgid ""
+"Returns a tuple of tensors, one for each dimension of `a`, containing the"
+" indices of the non-zero elements in that dimension. The values in `a` "
+"are always tested and returned. The corresponding non-zero values can be "
+"obtained with::"
+msgstr ""
+"返回一个元组，其中每个元素是一个 Tensor，对应 `a` 的每个维度中非零元素的"
+"索引。`a` 中的值总是被测试并返回。可以通过以下方式获取对应的非零值："
+
+#: maxframe.tensor.indexing.nonzero.nonzero:11 of
+msgid "To group the indices by element, rather than dimension, use::"
+msgstr "如果要按元素而不是维度对索引进行分组，请使用："
+
+#: maxframe.tensor.indexing.nonzero.nonzero:15 of
+msgid ""
+"The result of this is always a 2-D array, with a row for each non-zero "
+"element."
+msgstr "结果总是一个二维数组，每一行对应一个非零元素。"
+
+#: maxframe.tensor.indexing.nonzero.nonzero of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.indexing.nonzero.nonzero:18 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.indexing.nonzero.nonzero of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.indexing.nonzero.nonzero:21 of
+msgid "**tuple_of_arrays** -- Indices of elements that are non-zero."
+msgstr "**tuple_of_arrays** -- 非零元素的索引。"
+
+#: maxframe.tensor.indexing.nonzero.nonzero of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.indexing.nonzero.nonzero:26 of
+msgid ":py:obj:`flatnonzero`"
+msgstr ""
+
+#: maxframe.tensor.indexing.nonzero.nonzero:27 of
+msgid ""
+"Return indices that are non-zero in the flattened version of the input "
+"tensor."
+msgstr "返回输入张量展平后非零元素的索引。"
+
+#: maxframe.tensor.indexing.nonzero.nonzero:29 of
+msgid ":py:obj:`Tensor.nonzero`"
+msgstr ""
+
+#: maxframe.tensor.indexing.nonzero.nonzero:30 of
+msgid "Equivalent tensor method."
+msgstr "等效的张量方法。"
+
+#: maxframe.tensor.indexing.nonzero.nonzero:32 of
+msgid ":py:obj:`count_nonzero`"
+msgstr ""
+
+#: maxframe.tensor.indexing.nonzero.nonzero:33 of
+msgid "Counts the number of non-zero elements in the input tensor."
+msgstr "计算输入张量中非零元素的数量。"
+
+#: maxframe.tensor.indexing.nonzero.nonzero:36 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.indexing.nonzero.nonzero:51 of
+msgid ""
+"A common use for ``nonzero`` is to find the indices of an array, where a "
+"condition is True.  Given an array `a`, the condition `a` > 3 is a "
+"boolean array and since False is interpreted as 0, np.nonzero(a > 3) "
+"yields the indices of the `a` where the condition is true."
+msgstr ""
+"``nonzero`` 的常见用法是查找数组中满足条件的位置。给定一个数组 `a`，条件 "
+"`a` > 3 是一个布尔数组，由于 False 被解释为 0，因此 np.nonzero(a > 3) "
+"返回满足条件的 `a` 的索引。"
+
+#: maxframe.tensor.indexing.nonzero.nonzero:64 of
+msgid "The ``nonzero`` method of the boolean array can also be called."
+msgstr "也可以调用布尔数组的 ``nonzero`` 方法。"
+

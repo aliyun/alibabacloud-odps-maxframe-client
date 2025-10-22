@@ -1,0 +1,131 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.log.rst:2
+msgid "maxframe.tensor.log"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.log.log:1 of
+msgid "Natural logarithm, element-wise."
+msgstr "自然对数，逐元素计算。"
+
+#: maxframe.tensor.arithmetic.log.log:3 of
+msgid ""
+"The natural logarithm `log` is the inverse of the exponential function, "
+"so that `log(exp(x)) = x`. The natural logarithm is logarithm in base "
+"`e`."
+msgstr ""
+"自然对数 `log` 是指数函数的反函数，因此 `log(exp(x)) = x`。自然对数是以 `"
+"e` 为底的对数。"
+
+#: maxframe.tensor.arithmetic.log.log of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.log.log:7 of
+msgid "Input value."
+msgstr "输入值。"
+
+#: maxframe.tensor.arithmetic.log.log:9 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，其形状必须与输入广播兼容。如果未提供或为 `"
+"None`，则返回一个新分配的 tensor。元组（只能作为关键字参数）的长度必须"
+"等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.log.log:14 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.log.log of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.log.log:19 of
+msgid "**y** -- The natural logarithm of `x`, element-wise."
+msgstr "**y** -- `x` 的自然对数，逐元素计算。"
+
+#: maxframe.tensor.arithmetic.log.log of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.log.log:22 of
+msgid ":py:obj:`log10`, :py:obj:`log2`, :py:obj:`log1p`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.log.log:25 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.log.log:26 of
+msgid ""
+"Logarithm is a multivalued function: for each `x` there is an infinite "
+"number of `z` such that `exp(z) = x`. The convention is to return the `z`"
+" whose imaginary part lies in `[-pi, pi]`."
+msgstr ""
+"对数是多值函数：对于每个 `x`，存在无限多个 `z` 使得 `exp(z) = x`。约定"
+"返回虚部在 `[-pi, pi]` 范围内的 `z`。"
+
+#: maxframe.tensor.arithmetic.log.log:30 of
+msgid ""
+"For real-valued input data types, `log` always returns real output. For "
+"each value that cannot be expressed as a real number or infinity, it "
+"yields ``nan`` and sets the `invalid` floating point error flag."
+msgstr ""
+"对于实数输入数据类型，`log` 总是返回实数输出。对于不能表示为实数或无穷大"
+"的值，它返回 ``nan`` 并设置 `invalid` 浮点错误标志。"
+
+#: maxframe.tensor.arithmetic.log.log:34 of
+msgid ""
+"For complex-valued input, `log` is a complex analytical function that has"
+" a branch cut `[-inf, 0]` and is continuous from above on it. `log` "
+"handles the floating-point negative zero as an infinitesimal negative "
+"number, conforming to the C99 standard."
+msgstr ""
+"对于复数输入，`log` 是一个复解析函数，其分支切割为 `[-inf, 0]`，并在其上"
+"从上方连续。`log` 将浮点负零视为无穷小负数，符合 C99 标准。"
+
+#: maxframe.tensor.arithmetic.log.log:40 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.log.log:41 of
+msgid ""
+"M. Abramowitz and I.A. Stegun, \"Handbook of Mathematical Functions\", "
+"10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/"
+msgstr ""
+"M. Abramowitz 和 I.A. Stegun，《数学函数手册》，第10版，1964年，第67页。"
+"http://www.math.sfu.ca/~cbm/aands/"
+
+#: maxframe.tensor.arithmetic.log.log:43 of
+msgid "Wikipedia, \"Logarithm\". http://en.wikipedia.org/wiki/Logarithm"
+msgstr "维基百科，“对数”。http://en.wikipedia.org/wiki/Logarithm"
+
+#: maxframe.tensor.arithmetic.log.log:46 of
+msgid "示例"
+msgstr ""
+

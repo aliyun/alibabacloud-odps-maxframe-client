@@ -1,0 +1,109 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.full_like.rst:2
+msgid "maxframe.tensor.full\\_like"
+msgstr ""
+
+#: maxframe.tensor.datasource.full.full_like:1 of
+msgid "Return a full tensor with the same shape and type as a given tensor."
+msgstr "返回一个与给定张量具有相同形状和类型的全值张量。"
+
+#: maxframe.tensor.datasource.full.full_like of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.datasource.full.full_like:3 of
+msgid ""
+"The shape and data-type of `a` define these same attributes of the "
+"returned tensor."
+msgstr "`a` 的形状和数据类型定义了返回张量的这些相同属性。"
+
+#: maxframe.tensor.datasource.full.full_like:6 of
+msgid "Fill value."
+msgstr "填充值。"
+
+#: maxframe.tensor.datasource.full.full_like:8 of
+msgid "Overrides the data type of the result."
+msgstr "覆盖结果的数据类型。"
+
+#: maxframe.tensor.datasource.full.full_like:10 of
+msgid "Allocate the tensor on GPU if True, None as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 None"
+
+#: maxframe.tensor.datasource.full.full_like:12 of
+msgid ""
+"Overrides the memory layout of the result. 'C' means C-order, 'F' means "
+"F-order, 'A' means 'F' if `a` is Fortran contiguous, 'C' otherwise. 'K' "
+"means match the layout of `a` as closely as possible."
+msgstr ""
+"覆盖结果的内存布局。'C' 表示 C 顺序，'F' 表示 Fortran 顺序，'A' 表示如果 "
+"`a` 是 Fortran 连续的则为 'F'，否则为 'C'。'K' 表示尽可能匹配 `a` 的布局"
+"。"
+
+#: maxframe.tensor.datasource.full.full_like of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.datasource.full.full_like:18 of
+msgid "**out** -- Tensor of `fill_value` with the same shape and type as `a`."
+msgstr "**out** -- 一个与 `a` 具有相同形状和类型的 `fill_value` 张量。"
+
+#: maxframe.tensor.datasource.full.full_like of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.datasource.full.full_like:23 of
+msgid ":py:obj:`empty_like`"
+msgstr ""
+
+#: maxframe.tensor.datasource.full.full_like:24 of
+msgid "Return an empty tensor with shape and type of input."
+msgstr "返回一个与输入具有相同形状和类型的空张量。"
+
+#: maxframe.tensor.datasource.full.full_like:26 of
+msgid ":py:obj:`ones_like`"
+msgstr ""
+
+#: maxframe.tensor.datasource.full.full_like:27 of
+msgid "Return a tensor of ones with shape and type of input."
+msgstr "返回一个与输入具有相同形状和类型的一张量。"
+
+#: maxframe.tensor.datasource.full.full_like:29 of
+msgid ":py:obj:`zeros_like`"
+msgstr ""
+
+#: maxframe.tensor.datasource.full.full_like:30 of
+msgid "Return a tensor of zeros with shape and type of input."
+msgstr "返回一个与输入具有相同形状和类型的零张量。"
+
+#: maxframe.tensor.datasource.full.full_like:32 of
+msgid ":py:obj:`full`"
+msgstr ""
+
+#: maxframe.tensor.datasource.full.full_like:33 of
+msgid "Return a new tensor of given shape filled with value."
+msgstr "返回一个给定形状并填充了值的新张量。"
+
+#: maxframe.tensor.datasource.full.full_like:36 of
+msgid "示例"
+msgstr ""
+

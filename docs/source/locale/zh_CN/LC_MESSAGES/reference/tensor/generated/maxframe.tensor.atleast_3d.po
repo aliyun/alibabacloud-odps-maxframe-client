@@ -1,0 +1,73 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.atleast_3d.rst:2
+msgid "maxframe.tensor.atleast\\_3d"
+msgstr ""
+
+#: maxframe.tensor.misc.atleast_3d.atleast_3d:1 of
+msgid "View inputs as tensors with at least three dimensions."
+msgstr "将输入视为至少具有三个维度的张量。"
+
+#: maxframe.tensor.misc.atleast_3d.atleast_3d of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.atleast_3d.atleast_3d:3
+#: maxframe.tensor.misc.atleast_3d.atleast_3d:7
+#: maxframe.tensor.misc.atleast_3d.atleast_3d:11 of
+msgid ""
+"One or more tensor-like sequences.  Non-tensor inputs are converted to "
+"tensors.  Tensors that already have three or more dimensions are "
+"preserved."
+msgstr ""
+"一个或多个类张量序列。非张量输入将被转换为张量。已经具有三个或更多维度的"
+"张量将被保留。"
+
+#: maxframe.tensor.misc.atleast_3d.atleast_3d of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.atleast_3d.atleast_3d:16 of
+msgid ""
+"**res1, res2, ...** -- A tensor, or list of tensors, each with ``a.ndim "
+">= 3``.  Copies are avoided where possible, and views with three or more "
+"dimensions are returned.  For example, a 1-D tensor of shape ``(N,)`` "
+"becomes a view of shape ``(1, N, 1)``, and a 2-D tensor of shape ``(M, "
+"N)`` becomes a view of shape ``(M, N, 1)``."
+msgstr ""
+"**res1, res2, ...** —— 一个张量，或张量列表，每个张量满足 ``a.ndim >= 3``"
+"。尽可能避免复制，返回具有三个或更多维度的视图。例如，形状为 ``(N,)`` 的"
+"一维张量将变成形状为 ``(1, N, 1)`` 的视图，形状为 ``(M, N)`` 的二维张量将"
+"变成形状为 ``(M, N, 1)`` 的视图。"
+
+#: maxframe.tensor.misc.atleast_3d.atleast_3d of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.atleast_3d.atleast_3d:23 of
+msgid ":py:obj:`atleast_1d`, :py:obj:`atleast_2d`"
+msgstr ""
+
+#: maxframe.tensor.misc.atleast_3d.atleast_3d:26 of
+msgid "示例"
+msgstr ""
+

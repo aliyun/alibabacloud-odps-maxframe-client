@@ -1,0 +1,122 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.accuracy_score.rst:2
+msgid "maxframe.learn.metrics.accuracy\\_score"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.accuracy_score:1 of
+msgid "Accuracy classification score."
+msgstr "准确率分类评分。"
+
+#: maxframe.learn.metrics._classification.accuracy_score:3 of
+msgid ""
+"In multilabel classification, this function computes subset accuracy: the"
+" set of labels predicted for a sample must *exactly* match the "
+"corresponding set of labels in y_true."
+msgstr ""
+"在多标签分类中，此函数计算子集准确率：样本预测的标签集必须与 y_true 中"
+"对应的标签集*完全*匹配。"
+
+#: maxframe.learn.metrics._classification.accuracy_score:7 of
+msgid "Read more in the :ref:`User Guide <accuracy_score>`."
+msgstr "更多内容请参见 :ref:`用户指南 <accuracy_score>`。"
+
+#: maxframe.learn.metrics._classification.accuracy_score of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.accuracy_score:9 of
+msgid "Ground truth (correct) labels."
+msgstr "真实（正确）标签。"
+
+#: maxframe.learn.metrics._classification.accuracy_score:11 of
+msgid "Predicted labels, as returned by a classifier."
+msgstr "由分类器返回的预测标签。"
+
+#: maxframe.learn.metrics._classification.accuracy_score:13 of
+msgid ""
+"If ``False``, return the number of correctly classified samples. "
+"Otherwise, return the fraction of correctly classified samples."
+msgstr "如果为 ``False``，则返回正确分类的样本数。否则，返回正确分类样本的比例。"
+
+#: maxframe.learn.metrics._classification.accuracy_score:16 of
+msgid "Sample weights."
+msgstr "样本权重。"
+
+#: maxframe.learn.metrics._classification.accuracy_score of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.accuracy_score:19 of
+msgid ""
+"**score** -- If ``normalize == True``, return the fraction of correctly "
+"classified samples (float), else returns the number of correctly "
+"classified samples (int).  The best performance is 1 with ``normalize == "
+"True`` and the number of samples with ``normalize == False``."
+msgstr ""
+"**score** -- 如果 ``normalize == True``，则返回正确分类样本的比例（float"
+"），否则返回正确分类样本的数量（int）。最佳性能是当 ``normalize == True``"
+" 时为 1，当 ``normalize == False`` 时为样本数量。"
+
+#: maxframe.learn.metrics._classification.accuracy_score:19 of
+#, fuzzy
+msgid ""
+"**score** -- If ``normalize == True``, return the fraction of correctly "
+"classified samples (float), else returns the number of correctly "
+"classified samples (int)."
+msgstr ""
+"**score** -- 如果 ``normalize == True``，则返回正确分类样本的比例（float"
+"），否则返回正确分类样本的数量（int）。最佳性能是当 ``normalize == True``"
+" 时为 1，当 ``normalize == False`` 时为样本数量。"
+
+#: maxframe.learn.metrics._classification.accuracy_score:23 of
+msgid ""
+"The best performance is 1 with ``normalize == True`` and the number of "
+"samples with ``normalize == False``."
+msgstr ""
+
+#: maxframe.learn.metrics._classification.accuracy_score of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.accuracy_score:27 of
+msgid ":py:obj:`jaccard_score`, :py:obj:`hamming_loss`, :py:obj:`zero_one_loss`"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.accuracy_score:30 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.accuracy_score:31 of
+msgid ""
+"In binary and multiclass classification, this function is equal to the "
+"``jaccard_score`` function."
+msgstr "在二分类和多分类中，此函数等同于 ``jaccard_score`` 函数。"
+
+#: maxframe.learn.metrics._classification.accuracy_score:35 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.accuracy_score:44 of
+msgid "In the multilabel case with binary label indicators:"
+msgstr "在使用二进制标签指示符的多标签情况下："
+

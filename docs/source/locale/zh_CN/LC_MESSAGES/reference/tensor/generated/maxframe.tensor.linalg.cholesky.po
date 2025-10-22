@@ -1,0 +1,130 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.linalg.cholesky.rst:2
+msgid "maxframe.tensor.linalg.cholesky"
+msgstr ""
+
+#: maxframe.tensor.linalg.cholesky.cholesky:1 of
+msgid "Cholesky decomposition."
+msgstr "Cholesky 分解。"
+
+#: maxframe.tensor.linalg.cholesky.cholesky:3 of
+msgid ""
+"Return the Cholesky decomposition, `L * L.H`, of the square matrix `a`, "
+"where `L` is lower-triangular and .H is the conjugate transpose operator "
+"(which is the ordinary transpose if `a` is real-valued).  `a` must be "
+"Hermitian (symmetric if real-valued) and positive-definite.  Only `L` is "
+"actually returned."
+msgstr ""
+"返回方阵 `a` 的 Cholesky 分解 `L * L.H`，其中 `L` 是下三角矩阵，.H 是共轭"
+"转置运算符（如果 `a` 是实数，则为普通转置）。`a` 必须是 Hermitian 矩阵（"
+"如果是实数则是对称矩阵）且正定。只返回 `L`。"
+
+#: maxframe.tensor.linalg.cholesky.cholesky of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.linalg.cholesky.cholesky:9 of
+msgid ""
+"Hermitian (symmetric if all elements are real), positive-definite input "
+"matrix."
+msgstr "Hermitian（如果所有元素都是实数则为对称）正定输入矩阵。"
+
+#: maxframe.tensor.linalg.cholesky.cholesky:12 of
+msgid ""
+"Whether to compute the upper or lower triangular Cholesky factorization."
+"  Default is upper-triangular."
+msgstr "是否计算上三角或下三角 Cholesky 分解。默认为上三角。"
+
+#: maxframe.tensor.linalg.cholesky.cholesky of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.linalg.cholesky.cholesky:16 of
+msgid "**L** -- Upper or lower-triangular Cholesky factor of `a`."
+msgstr "**L** -- `a` 的上三角或下三角 Cholesky 因子。"
+
+#: maxframe.tensor.linalg.cholesky.cholesky of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.linalg.cholesky.cholesky of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.tensor.linalg.cholesky.cholesky:19 of
+msgid ""
+"If the decomposition fails, for example, if `a` is not     positive-"
+"definite."
+msgstr "如果分解失败，例如 `a` 不是正定矩阵。"
+
+#: maxframe.tensor.linalg.cholesky.cholesky:22 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.linalg.cholesky.cholesky:23 of
+msgid "Broadcasting rules apply, see the `mt.linalg` documentation for details."
+msgstr "广播规则适用，请参阅 `mt.linalg` 文档了解详情。"
+
+#: maxframe.tensor.linalg.cholesky.cholesky:26 of
+msgid "The Cholesky decomposition is often used as a fast way of solving"
+msgstr "Cholesky 分解通常用于快速求解"
+
+#: maxframe.tensor.linalg.cholesky.cholesky:28 of
+#, python-brace-format
+msgid ""
+"A \\mathbf{x} = \\mathbf{b}\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.linalg.cholesky.cholesky:30 of
+msgid "(when `A` is both Hermitian/symmetric and positive-definite)."
+msgstr "（当 `A` 既是 Hermitian/对称矩阵又是正定矩阵时）。"
+
+#: maxframe.tensor.linalg.cholesky.cholesky:32 of
+#, python-brace-format
+msgid "First, we solve for :math:`\\mathbf{y}` in"
+msgstr "首先，我们求解 :math:`\\mathbf{y}`，满足"
+
+#: maxframe.tensor.linalg.cholesky.cholesky:34 of
+#, python-brace-format
+msgid ""
+"L \\mathbf{y} = \\mathbf{b},\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.linalg.cholesky.cholesky:36 of
+#, python-brace-format
+msgid "and then for :math:`\\mathbf{x}` in"
+msgstr "然后求解 :math:`\\mathbf{x}`，满足"
+
+#: maxframe.tensor.linalg.cholesky.cholesky:38 of
+#, python-brace-format
+msgid ""
+"L.H \\mathbf{x} = \\mathbf{y}.\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.linalg.cholesky.cholesky:41 of
+msgid "示例"
+msgstr ""
+

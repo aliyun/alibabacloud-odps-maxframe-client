@@ -25,6 +25,6 @@ Transform Functions
     :toctree: generated/
 
     preprocessing.label_binarize
-    preprocessing.min_max_scaler
+    preprocessing.minmax_scale
     preprocessing.normalize
     preprocessing.scale

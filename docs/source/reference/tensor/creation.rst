@@ -55,13 +55,3 @@ Numerical ranges
    maxframe.tensor.meshgrid
    maxframe.tensor.mgrid
    maxframe.tensor.ogrid
-
-
-Misc
-----
-
-.. autosummary::
-   :toctree: generated/
-   :nosignatures:
-
-   maxframe.tensor.ExecutableTuple

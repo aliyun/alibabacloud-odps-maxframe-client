@@ -1,0 +1,134 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.isin.rst:2
+msgid "maxframe.tensor.isin"
+msgstr ""
+
+#: maxframe.tensor.misc.isin.isin:1 of
+msgid ""
+"Calculates `element in test_elements`, broadcasting over `element` only. "
+"Returns a boolean array of the same shape as `element` that is True where"
+" an element of `element` is in `test_elements` and False otherwise."
+msgstr ""
+"计算 `element in test_elements`，仅对 `element` 进行广播。返回一个与 `"
+"element` 形状相同的布尔数组，当 `element` 中的元素在 `test_elements` 中时"
+"为 True，否则为 False。"
+
+#: maxframe.tensor.misc.isin.isin of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.isin.isin:5 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.misc.isin.isin:7 of
+msgid ""
+"The values against which to test each value of `element`. This argument "
+"is flattened if it is a tensor or array_like. See notes for behavior with"
+" non-array-like parameters."
+msgstr ""
+"用于测试 `element` 中每个值的值。如果该参数是张量或 array_like，则会被"
+"展平。有关非类数组参数的行为，请参见说明。"
+
+#: maxframe.tensor.misc.isin.isin:11 of
+msgid ""
+"If True, the input tensors are both assumed to be unique, which can speed"
+" up the calculation.  Default is False."
+msgstr "如果为 True，则假定输入张量都是唯一的，这可以加快计算速度。默认为 False。"
+
+#: maxframe.tensor.misc.isin.isin:14 of
+msgid ""
+"If True, the values in the returned tensor are inverted, as if "
+"calculating `element not in test_elements`. Default is False. "
+"``mt.isin(a, b, invert=True)`` is equivalent to (but faster than) "
+"``mt.invert(mt.isin(a, b))``."
+msgstr ""
+"如果为 True，则返回张量中的值会被反转，如同计算 `element not in test_"
+"elements`。默认为 False。``mt.isin(a, b, invert=True)`` 等价于（但比）``"
+"mt.invert(mt.isin(a, b))`` 更快。"
+
+#: maxframe.tensor.misc.isin.isin of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.isin.isin:20 of
+msgid ""
+"**isin** -- Has the same shape as `element`. The values `element[isin]` "
+"are in `test_elements`."
+msgstr ""
+"**isin** -- 与 `element` 具有相同的形状。`element[isin]` 的值在 `test_"
+"elements` 中。"
+
+#: maxframe.tensor.misc.isin.isin of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.isin.isin:26 of
+msgid ":py:obj:`in1d`"
+msgstr ""
+
+#: maxframe.tensor.misc.isin.isin:27 of
+msgid "Flattened version of this function."
+msgstr "此函数的展平版本。"
+
+#: maxframe.tensor.misc.isin.isin:30 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.misc.isin.isin:31 of
+msgid ""
+"`isin` is an element-wise function version of the python keyword `in`. "
+"``isin(a, b)`` is roughly equivalent to ``mt.array([item in b for item in"
+" a])`` if `a` and `b` are 1-D sequences."
+msgstr ""
+"`isin` 是 Python 关键字 `in` 的逐元素函数版本。如果 `a` 和 `b` 是一维序列"
+"，则 ``isin(a, b)`` 大致等价于 ``mt.array([item in b for item in a])``。"
+
+#: maxframe.tensor.misc.isin.isin:35 of
+msgid ""
+"`element` and `test_elements` are converted to tensors if they are not "
+"already. If `test_elements` is a set (or other non-sequence collection) "
+"it will be converted to an object tensor with one element, rather than a "
+"tensor of the values contained in `test_elements`. This is a consequence "
+"of the `tensor` constructor's way of handling non-sequence collections. "
+"Converting the set to a list usually gives the desired behavior."
+msgstr ""
+"`element` 和 `test_elements` 如果不是张量则会被转换为张量。如果 `test_"
+"elements` 是一个集合（或其他非序列集合），它将被转换为一个包含一个元素的"
+"对象张量，而不是包含 `test_elements` 中的值的张量。这是 `tensor` 构造函数"
+"处理非序列集合的方式造成的。将集合转换为列表通常能得到期望的行为。"
+
+#: maxframe.tensor.misc.isin.isin:43 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.misc.isin.isin:64 of
+msgid ""
+"Because of how `array` handles sets, the following does not work as "
+"expected:"
+msgstr "由于 `array` 处理集合的方式，以下操作不会按预期工作："
+
+#: maxframe.tensor.misc.isin.isin:72 of
+msgid "Casting the set to a list gives the expected result:"
+msgstr "将集合转换为列表可以得到预期结果："
+

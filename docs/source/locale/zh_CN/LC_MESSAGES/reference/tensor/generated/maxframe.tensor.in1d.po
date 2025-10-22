@@ -1,0 +1,127 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.in1d.rst:2
+msgid "maxframe.tensor.in1d"
+msgstr ""
+
+#: maxframe.tensor.misc.in1d.in1d:1 of
+msgid ""
+"Test whether each element of a 1-D tensor is also present in a second "
+"tensor."
+msgstr "测试一维张量中的每个元素是否也存在于第二个张量中。"
+
+#: maxframe.tensor.misc.in1d.in1d:3 of
+msgid ""
+"Returns a boolean tensor the same length as `ar1` that is True where an "
+"element of `ar1` is in `ar2` and False otherwise."
+msgstr ""
+"返回一个与 `ar1` 长度相同的布尔张量，当 `ar1` 中的元素在 `ar2` 中时为 "
+"True，否则为 False。"
+
+#: maxframe.tensor.misc.in1d.in1d:6 of
+msgid "We recommend using :func:`isin` instead of `in1d` for new code."
+msgstr "我们建议在新代码中使用 :func:`isin` 而不是 `in1d`。"
+
+#: maxframe.tensor.misc.in1d.in1d of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.in1d.in1d:8 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.misc.in1d.in1d:10 of
+msgid "The values against which to test each value of `ar1`."
+msgstr "用于测试 `ar1` 中每个值的参考值。"
+
+#: maxframe.tensor.misc.in1d.in1d:12 of
+msgid ""
+"If True, the input tensors are both assumed to be unique, which can speed"
+" up the calculation.  Default is False."
+msgstr ""
+"如果为 True，则假定输入张量中的元素都是唯一的，这可以加快计算速度。默认为"
+" False。"
+
+#: maxframe.tensor.misc.in1d.in1d:15 of
+msgid ""
+"If True, the values in the returned tensor are inverted (that is, False "
+"where an element of `ar1` is in `ar2` and True otherwise). Default is "
+"False. ``np.in1d(a, b, invert=True)`` is equivalent to (but is faster "
+"than) ``np.invert(in1d(a, b))``."
+msgstr ""
+"如果为 True，则返回张量中的值会被反转（即 `ar1` 中存在于 `ar2` 的元素对应"
+"为 False，否则为 True）。默认为 False。``np.in1d(a, b, invert=True)`` "
+"等价于（但比）``np.invert(in1d(a, b))`` 更快。"
+
+#: maxframe.tensor.misc.in1d.in1d of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.in1d.in1d:21 of
+msgid "**in1d** -- The values `ar1[in1d]` are in `ar2`."
+msgstr "**in1d** -- `ar1[in1d]` 中的值存在于 `ar2` 中。"
+
+#: maxframe.tensor.misc.in1d.in1d of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.in1d.in1d:26 of
+msgid ":py:obj:`isin`"
+msgstr ""
+
+#: maxframe.tensor.misc.in1d.in1d:27 of
+msgid "Version of this function that preserves the shape of ar1."
+msgstr "保留 ar1 形状的该函数版本。"
+
+#: maxframe.tensor.misc.in1d.in1d:29 of
+msgid ":py:obj:`numpy.lib.arraysetops`"
+msgstr ""
+
+#: maxframe.tensor.misc.in1d.in1d:30 of
+msgid ""
+"Module with a number of other functions for performing set operations on "
+"arrays."
+msgstr "包含多个用于对数组执行集合操作的函数的模块。"
+
+#: maxframe.tensor.misc.in1d.in1d:33 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.misc.in1d.in1d:34 of
+msgid ""
+"`in1d` can be considered as an element-wise function version of the "
+"python keyword `in`, for 1-D sequences. ``in1d(a, b)`` is roughly "
+"equivalent to ``mt.array([item in b for item in a])``. However, this idea"
+" fails if `ar2` is a set, or similar (non-sequence) container:  As "
+"``ar2`` is converted to a tensor, in those cases ``asarray(ar2)`` is an "
+"object tensor rather than the expected tensor of contained values."
+msgstr ""
+"`in1d` 可以看作是 Python 关键字 `in` 在一维序列上的逐元素函数版本。``in1d"
+"(a, b)`` 大致等价于 ``mt.array([item in b for item in a])``。但如果 `ar2`"
+" 是集合或类似的（非序列）容器，这种想法就会失败：因为 ``ar2`` 会被转换为"
+"张量，在这些情况下 ``asarray(ar2)`` 是一个对象张量，而不是预期的包含值的"
+"张量。"
+
+#: maxframe.tensor.misc.in1d.in1d:43 of
+msgid "示例"
+msgstr ""
+

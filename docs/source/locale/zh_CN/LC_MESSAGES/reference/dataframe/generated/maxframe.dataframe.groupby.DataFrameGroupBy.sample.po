@@ -1,0 +1,132 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.DataFrameGroupBy.sample.rst:2
+msgid "maxframe.dataframe.groupby.DataFrameGroupBy.sample"
+msgstr ""
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:1 of
+msgid "Return a random sample of items from each group."
+msgstr "从每个组中返回随机样本项。"
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:3 of
+msgid "You can use `random_state` for reproducibility."
+msgstr "您可以使用 `random_state` 来保证结果的可重现性。"
+
+#: maxframe.dataframe.groupby.sample.groupby_sample of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:5 of
+msgid ""
+"Number of items to return for each group. Cannot be used with `frac` and "
+"must be no larger than the smallest group unless `replace` is True. "
+"Default is one if `frac` is None."
+msgstr ""
+"每组要返回的项数。不能与 `frac` 同时使用，且除非 `replace` 为 True，否则"
+"不能超过最小组的大小。如果 `frac` 为 None，则默认值为 1。"
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:9 of
+msgid "Fraction of items to return. Cannot be used with `n`."
+msgstr "要返回的项的比例。不能与 `n` 同时使用。"
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:11 of
+msgid "Allow or disallow sampling of the same row more than once."
+msgstr "允许或不允许对同一行进行多次采样。"
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:13 of
+msgid ""
+"Default None results in equal probability weighting. If passed a list-"
+"like then values must have the same length as the underlying DataFrame or"
+" Series object and will be used as sampling probabilities after "
+"normalization within each group. Values must be non-negative with at "
+"least one positive element within each group."
+msgstr ""
+"默认值 None 表示等概率加权。如果传入一个类列表对象，则其值必须与底层 "
+"DataFrame 或 Series 对象具有相同的长度，并将作为每组内归一化后的采样概率"
+"。值必须是非负数，并且每组中至少有一个正值元素。"
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:20 of
+msgid ""
+"If int, array-like, or BitGenerator (NumPy>=1.17), seed for random number"
+" generator If np.random.RandomState, use as numpy RandomState object."
+msgstr ""
+"如果为 int、array-like 或 BitGenerator (NumPy>=1.17)，则为随机数生成器的"
+"种子；如果为 np.random.RandomState，则用作 numpy RandomState 对象。"
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:24 of
+msgid ""
+"If ignore, errors will not be raised when `replace` is False and size of "
+"some group is less than `n`."
+msgstr ""
+"如果为 ignore，当 `replace` 为 False 且某些组的大小小于 `n` 时将不会引发"
+"错误。"
+
+#: maxframe.dataframe.groupby.sample.groupby_sample of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:28 of
+msgid ""
+"A new object of same type as caller containing items randomly sampled "
+"within each group from the caller object."
+msgstr "一个与调用者相同类型的新对象，其中包含从调用者对象中每个组内随机采样的项。"
+
+#: maxframe.dataframe.groupby.sample.groupby_sample of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:34 of
+msgid ":py:obj:`DataFrame.sample`"
+msgstr ""
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:35 of
+msgid "Generate random samples from a DataFrame object."
+msgstr "从 DataFrame 对象中生成随机样本。"
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:37 of
+msgid ":py:obj:`numpy.random.choice`"
+msgstr ""
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:38 of
+msgid "Generate a random sample from a given 1-D numpy array."
+msgstr "从给定的一维 numpy 数组中生成随机样本。"
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:41 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:55 of
+msgid ""
+"Select one row at random for each distinct value in column a. The "
+"`random_state` argument can be used to guarantee reproducibility:"
+msgstr ""
+"为列 a 中的每个不同值随机选择一行。`random_state` 参数可用于保证结果的可"
+"重现性："
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:64 of
+msgid "Set `frac` to sample fixed proportions rather than counts:"
+msgstr "设置 `frac` 来按固定比例而不是固定数量进行采样："
+
+#: maxframe.dataframe.groupby.sample.groupby_sample:72 of
+msgid "Control sample probabilities within groups by setting weights:"
+msgstr "通过设置权重来控制组内的采样概率："
+

@@ -1,0 +1,95 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.vstack.rst:2
+msgid "maxframe.tensor.vstack"
+msgstr ""
+
+#: maxframe.tensor.merge.vstack.vstack:1 of
+msgid "Stack tensors in sequence vertically (row wise)."
+msgstr "沿垂直方向（行方向）顺序堆叠张量。"
+
+#: maxframe.tensor.merge.vstack.vstack:3 of
+msgid ""
+"This is equivalent to concatenation along the first axis after 1-D "
+"tensors of shape `(N,)` have been reshaped to `(1,N)`. Rebuilds tensors "
+"divided by `vsplit`."
+msgstr ""
+"这相当于在形状为 `(N,)` 的一维张量被重塑为 `(1,N)` 后，沿第一个轴进行连接"
+"操作。该函数可以重建由 `vsplit` 分割的张量。"
+
+#: maxframe.tensor.merge.vstack.vstack:7 of
+msgid ""
+"This function makes most sense for tensors with up to 3 dimensions. For "
+"instance, for pixel-data with a height (first axis), width (second axis),"
+" and r/g/b channels (third axis). The functions `concatenate`, `stack` "
+"and `block` provide more general stacking and concatenation operations."
+msgstr ""
+"此函数对于最多三维的张量最有意义。例如，对于具有高度（第一轴）、宽度（"
+"第二轴）和 r/g/b 通道（第三轴）的像素数据。函数 `concatenate`、`stack` 和"
+" `block` 提供了更通用的堆叠和连接操作。"
+
+#: maxframe.tensor.merge.vstack.vstack of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.merge.vstack.vstack:12 of
+msgid ""
+"The tensors must have the same shape along all but the first axis. 1-D "
+"tensors must have the same length."
+msgstr ""
+"除了第一个轴之外，张量必须在所有其他轴上具有相同的形状。一维张量必须具有"
+"相同的长度。"
+
+#: maxframe.tensor.merge.vstack.vstack of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.merge.vstack.vstack:16 of
+msgid ""
+"**stacked** -- The tensor formed by stacking the given tensors, will be "
+"at least 2-D."
+msgstr "**stacked** -- 通过堆叠给定张量形成的张量，至少为二维。"
+
+#: maxframe.tensor.merge.vstack.vstack of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.merge.vstack.vstack:21 of
+msgid ":py:obj:`stack`"
+msgstr ""
+
+#: maxframe.tensor.merge.vstack.vstack:22 of
+msgid "Join a sequence of tensors along a new axis."
+msgstr "沿新轴连接一系列张量。"
+
+#: maxframe.tensor.merge.vstack.vstack:24 of
+msgid ":py:obj:`concatenate`"
+msgstr ""
+
+#: maxframe.tensor.merge.vstack.vstack:25 of
+msgid "Join a sequence of tensors along an existing axis."
+msgstr "沿现有轴连接一系列张量。"
+
+#: maxframe.tensor.merge.vstack.vstack:28 of
+msgid "示例"
+msgstr ""
+

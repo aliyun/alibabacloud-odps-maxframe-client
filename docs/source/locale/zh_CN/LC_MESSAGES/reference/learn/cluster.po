@@ -1,0 +1,53 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/cluster.rst:4
+msgid "Clustering"
+msgstr "聚类"
+
+#: ../../source/reference/learn/cluster.rst:7
+msgid "Classes"
+msgstr "类"
+
+#: ../../source/reference/learn/cluster.rst:15:<autosummary>:1
+msgid ""
+":py:obj:`cluster.KMeans <maxframe.learn.cluster.KMeans>`\\ "
+"\\(\\[n\\_clusters\\, init\\, n\\_init\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/cluster.rst:15:<autosummary>:1
+msgid "K-Means clustering."
+msgstr "K-Means 聚类。"
+
+#: ../../source/reference/learn/cluster.rst:17
+msgid "Functions"
+msgstr "函数"
+
+#: ../../source/reference/learn/cluster.rst:24:<autosummary>:1
+msgid ""
+":py:obj:`cluster.k_means <maxframe.learn.cluster.k_means>`\\ \\(X\\, "
+"n\\_clusters\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/cluster.rst:24:<autosummary>:1
+msgid "K-means clustering algorithm."
+msgstr "K-means 聚类算法。"
+

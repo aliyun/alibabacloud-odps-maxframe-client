@@ -1,0 +1,199 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.le.rst:2
+msgid "maxframe.dataframe.DataFrame.le"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:1
+#: of
+msgid ""
+"Get Less than or equal to of dataframe and other, element-wise (binary "
+"operator `le`). Among flexible wrappers (`eq`, `ne`, `le`, `lt`, `ge`, "
+"`gt`) to comparison operators."
+msgstr ""
+"获取 DataFrame 和 other 的小于等于比较结果，按元素计算（二元运算符 `le`）"
+"。在灵活的比较运算符包装函数（`eq`, `ne`, `le`, `lt`, `ge`, `gt`）之中。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:5
+#: of
+msgid ""
+"Equivalent to `dataframe <= other` with support to choose axis (rows or "
+"columns) and level for comparison."
+msgstr "等价于 `dataframe <= other`，支持选择比较的轴（行或列）和层级。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill
+#: of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:8
+#: of
+msgid "Any single or multiple element data structure, or list-like object."
+msgstr "任何单个或多个元素的数据结构，或类列表对象。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:10
+#: of
+msgid ""
+"Whether to compare by the index (0 or 'index') or columns (1 or "
+"'columns')."
+msgstr "按索引（0 或 'index'）或列（1 或 'columns'）进行比较。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:13
+#: of
+msgid ""
+"Broadcast across a level, matching Index values on the passed MultiIndex "
+"level."
+msgstr "跨层级广播，在传入的 MultiIndex 层级上匹配索引值。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill
+#: of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:17
+#: of
+msgid "Result of the comparison."
+msgstr "比较结果。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill
+#: of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:22
+#: of
+msgid ":py:obj:`DataFrame.eq`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:23
+#: of
+msgid "Compare DataFrames for equality elementwise."
+msgstr "按元素比较 DataFrames 是否相等。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:25
+#: of
+msgid ":py:obj:`DataFrame.ne`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:26
+#: of
+msgid "Compare DataFrames for inequality elementwise."
+msgstr "按元素比较 DataFrames 是否不相等。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:28
+#: of
+msgid ":py:obj:`DataFrame.le`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:29
+#: of
+msgid "Compare DataFrames for less than inequality or equality elementwise."
+msgstr "按元素比较 DataFrames 是否小于等于。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:31
+#: of
+msgid ":py:obj:`DataFrame.lt`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:32
+#: of
+msgid "Compare DataFrames for strictly less than inequality elementwise."
+msgstr "按元素比较 DataFrames 是否严格小于。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:34
+#: of
+msgid ":py:obj:`DataFrame.ge`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:35
+#: of
+msgid "Compare DataFrames for greater than inequality or equality elementwise."
+msgstr "按元素比较 DataFrames 是否大于等于。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:37
+#: of
+msgid ":py:obj:`DataFrame.gt`"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:38
+#: of
+msgid "Compare DataFrames for strictly greater than inequality elementwise."
+msgstr "按元素比较 DataFrames 是否严格大于。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:41
+#: of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:42
+#: of
+msgid ""
+"Mismatched indices will be unioned together. `NaN` values are considered "
+"different (i.e. `NaN` != `NaN`)."
+msgstr "不匹配的索引将被合并。`NaN` 值被视为不同（即 `NaN` != `NaN`）。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:46
+#: of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:57
+#: of
+msgid "Comparison with a scalar, using either the operator or method:"
+msgstr "与标量比较，使用运算符或方法："
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:71
+#: of
+msgid ""
+"When `other` is a :class:`Series`, the columns of a DataFrame are aligned"
+" with the index of `other` and broadcast:"
+msgstr ""
+"当 `other` 是 :class:`Series` 时，DataFrame 的列会与 `other` 的索引对齐并"
+"广播："
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:80
+#: of
+msgid "Use the method to control the broadcast axis:"
+msgstr "使用方法控制广播轴："
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:89
+#: of
+msgid ""
+"When comparing to an arbitrary sequence, the number of columns must match"
+" the number elements in `other`:"
+msgstr "与任意序列比较时，列数必须与 `other` 中的元素数量匹配："
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:98
+#: of
+msgid "Use the method to control the axis:"
+msgstr "使用该方法控制轴："
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:106
+#: of
+msgid "Compare to a DataFrame of different shape."
+msgstr "与不同形状的 DataFrame 进行比较。"
+
+#: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill:124
+#: of
+msgid "Compare to a MultiIndex by level."
+msgstr "按层级与 MultiIndex 进行比较。"
+

@@ -419,6 +419,37 @@ def series_drop(
     )
 
 
+def series_pop(series, item):
+    """
+    Return item and drops from series. Raise KeyError if not found.
+
+    Parameters
+    ----------
+    item : label
+        Index of the element that needs to be removed.
+
+    Returns
+    -------
+    Value that is popped from series.
+
+    Examples
+    --------
+    >>> import maxframe.dataframe as md
+    >>> ser = md.Series([1,2,3])
+
+    >>> ser.pop(0).execute()
+    1
+
+    >>> ser.execute()
+    1    2
+    2    3
+    dtype: int64
+    """
+    scalar = series.data[item]
+    series_drop(series, item, inplace=True)
+    return scalar
+
+
 def index_drop(index, labels, errors="raise"):
     """
     Make new Index with passed list of labels deleted.

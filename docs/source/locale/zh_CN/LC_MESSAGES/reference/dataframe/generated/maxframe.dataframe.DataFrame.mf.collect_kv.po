@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.mf.collect_kv.rst:2
+msgid "maxframe.dataframe.DataFrame.mf.collect_kv"
+msgstr ""
+
+#: maxframe.dataframe.extensions.collect_kv.collect_kv:1 of
+msgid "Merge values in specified columns into a key-value represented column."
+msgstr "将指定列中的值合并为一个以键值对表示的列。"
+
+#: maxframe.dataframe.extensions.collect_kv.collect_kv of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.extensions.collect_kv.collect_kv:3 of
+msgid "The columns to be merged."
+msgstr "要合并的列。"
+
+#: maxframe.dataframe.extensions.collect_kv.collect_kv:5 of
+msgid "Delimiter between key and value."
+msgstr "键和值之间的分隔符。"
+
+#: maxframe.dataframe.extensions.collect_kv.collect_kv:7 of
+msgid "Delimiter between key-value pairs."
+msgstr "键值对之间的分隔符。"
+
+#: maxframe.dataframe.extensions.collect_kv.collect_kv:9 of
+msgid "Name of the new key-value column"
+msgstr "新的键值列的名称"
+
+#: maxframe.dataframe.extensions.collect_kv.collect_kv of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.extensions.collect_kv.collect_kv:12 of
+msgid "converted data frame"
+msgstr "转换后的数据框"
+
+#: maxframe.dataframe.extensions.collect_kv.collect_kv of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.extensions.collect_kv.collect_kv:15 of
+msgid ":py:obj:`DataFrame.mf.extract_kv`"
+msgstr ""
+
+#: maxframe.dataframe.extensions.collect_kv.collect_kv:18 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.extensions.collect_kv.collect_kv:36 of
+msgid ""
+"The field names to be merged are specified by columns kv_delim is to "
+"delimit the key and value and '=' is default item_delim is to delimit the"
+" Key-Value pairs, ',' is default The new column name is specified by "
+"kv_col, 'kv_col' is default"
+msgstr ""
+"要合并的字段名由 columns 指定，kv_delim 用于分隔键和值，默认为 '='；item_"
+"delim 用于分隔键值对，默认为 ','；新列名由 kv_col 指定，默认为 'kv_col'"
+

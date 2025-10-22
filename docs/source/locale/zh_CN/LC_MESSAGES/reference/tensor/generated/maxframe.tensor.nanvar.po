@@ -1,0 +1,198 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.nanvar.rst:2
+msgid "maxframe.tensor.nanvar"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanvar.nanvar:1 of
+msgid "Compute the variance along the specified axis, while ignoring NaNs."
+msgstr "沿指定轴计算方差，同时忽略 NaN。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:3 of
+msgid ""
+"Returns the variance of the tensor elements, a measure of the spread of a"
+" distribution.  The variance is computed for the flattened tensor by "
+"default, otherwise over the specified axis."
+msgstr ""
+"返回张量元素的方差，用于衡量分布的离散程度。默认情况下，方差是针对展平后"
+"的张量计算的，否则就在指定轴上进行计算。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:7 of
+msgid ""
+"For all-NaN slices or slices with zero degrees of freedom, NaN is "
+"returned and a `RuntimeWarning` is raised."
+msgstr ""
+"对于全为 NaN 的切片或自由度为零的切片，将返回 NaN 并引发 `RuntimeWarning`"
+"。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanvar.nanvar:10 of
+msgid ""
+"Tensor containing numbers whose variance is desired.  If `a` is not a "
+"tensor, a conversion is attempted."
+msgstr "包含所需方差数值的张量。如果 `a` 不是一个张量，则会尝试进行转换。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:13 of
+msgid ""
+"Axis along which the variance is computed.  The default is to compute the"
+" variance of the flattened array."
+msgstr "计算方差所沿用的轴。默认情况下，是计算展平后数组的方差。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:16 of
+msgid ""
+"Type to use in computing the variance.  For tensors of integer type the "
+"default is `float32`; for tensors of float types it is the same as the "
+"tensor type."
+msgstr ""
+"用于计算方差的数据类型。对于整数类型的张量，默认为 `float32`；对于浮点"
+"类型的张量，则与张量类型相同。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:20 of
+msgid ""
+"Alternate output tensor in which to place the result.  It must have the "
+"same shape as the expected output, but the type is cast if necessary."
+msgstr ""
+"用于放置结果的替代输出张量。它必须与期望输出具有相同的形状，如有必要，"
+"类型会被转换。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:24 of
+msgid ""
+"\"Delta Degrees of Freedom\": the divisor used in the calculation is ``N "
+"- ddof``, where ``N`` represents the number of non-NaN elements. By "
+"default `ddof` is zero."
+msgstr ""
+"“Delta 自由度”：计算中使用的除数是 ``N - ddof``，其中 ``N`` 表示非 NaN "
+"元素的数量。默认情况下，`ddof` 为零。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:28 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the original `a`."
+msgstr ""
+"如果设置为 True，则在结果中保留被规约的轴，其大小为 1。使用此选项时，结果"
+"将能正确地与原始 `a` 进行广播。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanvar.nanvar:33 of
+msgid ""
+"**variance** -- If `out` is None, return a new tensor containing the "
+"variance, otherwise return a reference to the output tensor. If ddof is "
+">= the number of non-NaN elements in a slice or the slice contains only "
+"NaNs, then the result for that slice is NaN."
+msgstr ""
+"**方差** —— 如果 `out` 为 None，则返回一个包含方差的新张量；否则返回对"
+"输出张量的引用。如果 ddof >= 切片中的非 NaN 元素数量，或者切片只包含 NaN"
+"，则该切片的结果为 NaN。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanvar.nanvar:41 of
+msgid ":py:obj:`std`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanvar.nanvar:42 of
+msgid "Standard deviation"
+msgstr "标准差"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:44 of
+msgid ":py:obj:`mean`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanvar.nanvar:45 of
+msgid "Average"
+msgstr "平均值"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:47 of
+msgid ":py:obj:`var`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanvar.nanvar:48 of
+msgid "Variance while not ignoring NaNs"
+msgstr "不忽略 NaN 时的方差"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:50 of
+msgid ":py:obj:`nanstd`, :py:obj:`nanmean`"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanvar.nanvar:53 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.reduction.nanvar.nanvar:54 of
+msgid ""
+"The variance is the average of the squared deviations from the mean, "
+"i.e.,  ``var = mean(abs(x - x.mean())**2)``."
+msgstr "方差是与均值的平方偏差的平均值，即 ``var = mean(abs(x - x.mean())**2)``。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:57 of
+msgid ""
+"The mean is normally calculated as ``x.sum() / N``, where ``N = len(x)``."
+" If, however, `ddof` is specified, the divisor ``N - ddof`` is used "
+"instead.  In standard statistical practice, ``ddof=1`` provides an "
+"unbiased estimator of the variance of a hypothetical infinite population."
+"  ``ddof=0`` provides a maximum likelihood estimate of the variance for "
+"normally distributed variables."
+msgstr ""
+"通常均值是按 ``x.sum() / N`` 来计算的，其中 ``N = len(x)``。但如果指定了 "
+"`ddof`，则使用除数 ``N - ddof``。在标准统计实践中，``ddof=1`` 提供了假设"
+"无限总体方差的无偏估计；而 ``ddof=0`` 则为正态分布变量的方差提供了最大"
+"似然估计。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:64 of
+msgid ""
+"Note that for complex numbers, the absolute value is taken before "
+"squaring, so that the result is always real and nonnegative."
+msgstr "请注意，对于复数，在平方之前先取绝对值，因此结果始终为实数且非负。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:67 of
+msgid ""
+"For floating-point input, the variance is computed using the same "
+"precision the input has.  Depending on the input data, this can cause the"
+" results to be inaccurate, especially for `float32` (see example below)."
+"  Specifying a higher-accuracy accumulator using the ``dtype`` keyword "
+"can alleviate this issue."
+msgstr ""
+"对于浮点数输入，方差是以输入数据相同的精度进行计算的。根据输入数据的不同"
+"，这可能导致结果不准确，尤其是对于 `float32`（参见下面的示例）。通过使用 "
+"``dtype`` 关键字指定更高精度的累加器可以缓解这一问题。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:73 of
+msgid ""
+"For this function to work on sub-classes of Tensor, they must define "
+"`sum` with the kwarg `keepdims`"
+msgstr ""
+"为了让此函数能在 Tensor 的子类上正常工作，它们必须定义带有关键字参数 `"
+"keepdims` 的 `sum` 方法。"
+
+#: maxframe.tensor.reduction.nanvar.nanvar:77 of
+msgid "示例"
+msgstr ""
+

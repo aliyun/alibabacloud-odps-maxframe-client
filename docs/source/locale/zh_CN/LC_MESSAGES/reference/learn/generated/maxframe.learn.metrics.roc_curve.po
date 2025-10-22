@@ -1,0 +1,174 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.roc_curve.rst:2
+msgid "maxframe.learn.metrics.roc\\_curve"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_curve:1 of
+msgid "Compute Receiver operating characteristic (ROC)"
+msgstr "计算接收者操作特征（ROC）"
+
+#: maxframe.learn.metrics._ranking.roc_curve:3 of
+msgid "Note: this implementation is restricted to the binary classification task."
+msgstr "注意：此实现仅限于二分类任务。"
+
+#: maxframe.learn.metrics._ranking.roc_curve:5 of
+msgid "Read more in the :ref:`User Guide <roc_metrics>`."
+msgstr "更多信息请参见 :ref:`用户指南 <roc_metrics>`。"
+
+#: maxframe.learn.metrics._ranking.roc_curve of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_curve:7 of
+#, python-brace-format
+msgid ""
+"True binary labels. If labels are not either {-1, 1} or {0, 1}, then "
+"pos_label should be explicitly given."
+msgstr "真实的二分类标签。如果标签不是{-1, 1}或{0, 1}，则应显式指定pos_label。"
+
+#: maxframe.learn.metrics._ranking.roc_curve:10 of
+msgid ""
+"Target scores, can either be probability estimates of the positive class,"
+" confidence values, or non-thresholded measure of decisions (as returned "
+"by \"decision_function\" on some classifiers)."
+msgstr ""
+"目标得分，可以是正类的概率估计、置信度值，或非阈值化的决策度量（例如某些"
+"分类器的\"decision_function\"返回值）。"
+
+#: maxframe.learn.metrics._ranking.roc_curve:14 of
+#, python-brace-format
+msgid ""
+"The label of the positive class. When ``pos_label=None``, if y_true is in"
+" {-1, 1} or {0, 1}, ``pos_label`` is set to 1, otherwise an error will be"
+" raised."
+msgstr ""
+"正类的标签。当 ``pos_label=None`` 时，若 y_true 属于 {-1, 1} 或 {0, 1}，"
+"则 ``pos_label`` 被设为 1，否则将抛出错误。"
+
+#: maxframe.learn.metrics._ranking.roc_curve:18 of
+msgid "Sample weights."
+msgstr "样本权重。"
+
+#: maxframe.learn.metrics._ranking.roc_curve:20 of
+msgid ""
+"Whether to drop some suboptimal thresholds which would not appear on a "
+"plotted ROC curve. This is useful in order to create lighter ROC curves."
+msgstr ""
+"是否丢弃一些不会出现在ROC曲线上的次优阈值。这对于生成更轻便的ROC曲线很"
+"有用。"
+
+#: maxframe.learn.metrics._ranking.roc_curve of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_curve:25 of
+msgid ""
+"* **fpr** (*tensor, shape = [>2]*) -- Increasing false positive rates "
+"such that element i is the false   positive rate of predictions with "
+"score >= thresholds[i]. * **tpr** (*tensor, shape = [>2]*) -- Increasing "
+"true positive rates such that element i is the true   positive rate of "
+"predictions with score >= thresholds[i]. * **thresholds** (*tensor, shape"
+" = [n_thresholds]*) -- Decreasing thresholds on the decision function "
+"used to compute   fpr and tpr. `thresholds[0]` represents no instances "
+"being predicted   and is arbitrarily set to `max(y_score) + 1`."
+msgstr ""
+"* **fpr** (*tensor, shape = [>2]*) -- 递增的假正率，其中元素i表示得分 >= "
+"thresholds[i] 的预测的假正率。\n"
+"* **tpr** (*tensor, shape = [>2]*) -- 递增的真正率，其中元素i表示得分 >= "
+"thresholds[i] 的预测的真正率。\n"
+"* **thresholds** (*tensor, shape = [n_thresholds]*) -- 决策函数上用于计算"
+" fpr 和 tpr 的递减阈值。\n"
+"`thresholds[0]` 表示没有实例被预测，该值被任意设置为 `max(y_score) + 1`。"
+
+#: maxframe.learn.metrics._ranking.roc_curve:25 of
+msgid ""
+"**fpr** (*tensor, shape = [>2]*) -- Increasing false positive rates such "
+"that element i is the false positive rate of predictions with score >= "
+"thresholds[i]."
+msgstr ""
+"**fpr** (*tensor, shape = [>2]*) -- 递增的假正率，其中元素i表示得分 >= "
+"thresholds[i] 的预测的假正率。"
+
+#: maxframe.learn.metrics._ranking.roc_curve:27 of
+msgid ""
+"**tpr** (*tensor, shape = [>2]*) -- Increasing true positive rates such "
+"that element i is the true positive rate of predictions with score >= "
+"thresholds[i]."
+msgstr ""
+"**tpr** (*tensor, shape = [>2]*) -- 递增的真正率，其中元素i表示得分 >= "
+"thresholds[i] 的预测的真正率。"
+
+#: maxframe.learn.metrics._ranking.roc_curve:29 of
+msgid ""
+"**thresholds** (*tensor, shape = [n_thresholds]*) -- Decreasing "
+"thresholds on the decision function used to compute fpr and tpr. "
+"`thresholds[0]` represents no instances being predicted and is "
+"arbitrarily set to `max(y_score) + 1`."
+msgstr ""
+"**thresholds** (*tensor, shape = [n_thresholds]*) -- 决策函数上用于计算 "
+"fpr 和 tpr 的递减阈值。\n"
+"`thresholds[0]` 表示没有实例被预测，该值被任意设置为 `max(y_score) + 1`。"
+
+#: maxframe.learn.metrics._ranking.roc_curve:35 of
+msgid ":py:obj:`roc_auc_score`"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_curve:36 of
+msgid "Compute the area under the ROC curve"
+msgstr "计算ROC曲线下面积"
+
+#: maxframe.learn.metrics._ranking.roc_curve:39 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_curve:40 of
+msgid ""
+"Since the thresholds are sorted from low to high values, they are "
+"reversed upon returning them to ensure they correspond to both ``fpr`` "
+"and ``tpr``, which are sorted in reversed order during their calculation."
+msgstr ""
+"由于阈值是按从低到高的顺序排列的，返回时会将其反转，以确保它们与 ``fpr`` "
+"和 ``tpr`` 相对应，这两个值在计算过程中是按相反顺序排列的。"
+
+#: maxframe.learn.metrics._ranking.roc_curve:45 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_curve:46 of
+msgid ""
+"`Wikipedia entry for the Receiver operating characteristic "
+"<https://en.wikipedia.org/wiki/Receiver_operating_characteristic>`_"
+msgstr ""
+"`接收者操作特征的维基百科条目 <https://en.wikipedia.org/wiki/Receiver_"
+"operating_characteristic>`_"
+
+#: maxframe.learn.metrics._ranking.roc_curve:49 of
+msgid ""
+"Fawcett T. An introduction to ROC analysis[J]. Pattern Recognition "
+"Letters, 2006, 27(8):861-874."
+msgstr ""
+
+#: maxframe.learn.metrics._ranking.roc_curve:53 of
+msgid "示例"
+msgstr ""
+

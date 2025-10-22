@@ -1,0 +1,105 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-10 10:10+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/io.rst:4
+msgid "Input/output"
+msgstr "输入/输出"
+
+#: ../../source/reference/dataframe/io.rst:8
+msgid "Clipboard"
+msgstr "剪贴板"
+
+#: ../../source/reference/dataframe/io.rst:14:<autosummary>:1
+msgid ""
+":py:obj:`read_clipboard <maxframe.dataframe.read_clipboard>`\\ "
+"\\(\\[sep\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:14:<autosummary>:1
+msgid "Read text from clipboard and pass to :func:`~pandas.read_csv`."
+msgstr "从剪贴板复制文本并传递给 :func:`~pandas.read_csv`。"
+
+#: ../../source/reference/dataframe/io.rst:14:<autosummary>:1
+msgid ""
+":py:obj:`DataFrame.to_clipboard "
+"<maxframe.dataframe.DataFrame.to_clipboard>`\\ \\(\\*\\[\\, excel\\, "
+"sep\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:14:<autosummary>:1
+msgid "Copy object to the system clipboard."
+msgstr "将对象复制到系统剪贴板。"
+
+#: ../../source/reference/dataframe/io.rst:16
+msgid "MaxCompute"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:23:<autosummary>:1
+msgid ""
+":py:obj:`read_odps_query <maxframe.dataframe.read_odps_query>`\\ "
+"\\(query\\[\\, odps\\_entry\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:23:<autosummary>:1
+msgid "Read data from a MaxCompute (ODPS) query into DataFrame."
+msgstr "从 MaxCompute (ODPS) 查询中读取数据到 DataFrame。"
+
+#: ../../source/reference/dataframe/io.rst:23:<autosummary>:1
+msgid ""
+":py:obj:`read_odps_table <maxframe.dataframe.read_odps_table>`\\ "
+"\\(table\\_name\\[\\, partitions\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:23:<autosummary>:1
+msgid "Read data from a MaxCompute (ODPS) table into DataFrame."
+msgstr "从 MaxCompute (ODPS) 表中读取数据到 DataFrame。"
+
+#: ../../source/reference/dataframe/io.rst:23:<autosummary>:1
+msgid ""
+":py:obj:`DataFrame.to_odps_table "
+"<maxframe.dataframe.DataFrame.to_odps_table>`\\ \\(table\\[\\, "
+"partition\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:23:<autosummary>:1
+msgid "Write DataFrame object into a MaxCompute (ODPS) table."
+msgstr "将 DataFrame 对象写入 MaxCompute (ODPS) 表。"
+
+#: ../../source/reference/dataframe/io.rst:25
+msgid "Native pandas"
+msgstr "原生 pandas"
+
+#: ../../source/reference/dataframe/io.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`read_pandas <maxframe.dataframe.read_pandas>`\\ \\(data\\, "
+"\\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:30:<autosummary>:1
+msgid "Create MaxFrame objects from pandas."
+msgstr "从 pandas 创建 MaxFrame 对象。"
+
+#: ../../source/reference/dataframe/io.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`DataFrame.to_pandas <maxframe.dataframe.DataFrame.to_pandas>`\\ "
+"\\(\\[session\\]\\)"
+msgstr ""
+

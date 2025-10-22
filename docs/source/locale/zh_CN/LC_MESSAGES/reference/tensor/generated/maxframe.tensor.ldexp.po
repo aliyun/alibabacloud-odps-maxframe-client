@@ -1,0 +1,104 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.ldexp.rst:2
+msgid "maxframe.tensor.ldexp"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp:1 of
+msgid "Returns x1 * 2**x2, element-wise."
+msgstr "逐元素返回 x1 * 2**x2。"
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp:3 of
+msgid ""
+"The mantissas `x1` and twos exponents `x2` are used to construct floating"
+" point numbers ``x1 * 2**x2``."
+msgstr "使用尾数 `x1` 和以2为底的指数 `x2` 来构造浮点数 ``x1 * 2**x2``。"
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp:6 of
+msgid "Tensor of multipliers."
+msgstr "乘数张量。"
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp:8 of
+msgid "Tensor of twos exponents."
+msgstr "以2为底的指数张量。"
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp:10 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，其形状必须可广播至输入形状。如果未提供或为 "
+"`None`，将返回一个新分配的张量。元组（仅能作为关键字参数）的长度必须等于"
+"输出数量。"
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp:15 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "True 值表示在该位置计算 ufunc，False 值表示保留输出中的原值。"
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp:20 of
+msgid "**y** -- The result of ``x1 * 2**x2``."
+msgstr "**y** -- ``x1 * 2**x2`` 的结果。"
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp:25 of
+msgid ":py:obj:`frexp`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp:26 of
+msgid "Return (y1, y2) from ``x = y1 * 2**y2``, inverse to `ldexp`."
+msgstr "从 ``x = y1 * 2**y2`` 返回 (y1, y2)，是 `ldexp` 的逆运算。"
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp:29 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp:30 of
+msgid "Complex dtypes are not supported, they will raise a TypeError."
+msgstr "不支持复数数据类型，将引发 TypeError。"
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp:32 of
+msgid ""
+"`ldexp` is useful as the inverse of `frexp`, if used by itself it is more"
+" clear to simply use the expression ``x1 * 2**x2``."
+msgstr ""
+"`ldexp` 可作为 `frexp` 的逆运算使用，若单独使用，直接使用表达式 ``x1 * 2*"
+"*x2`` 更为清晰。"
+
+#: maxframe.tensor.arithmetic.ldexp.ldexp:36 of
+msgid "示例"
+msgstr ""
+

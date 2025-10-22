@@ -715,55 +715,6 @@ class IndexData(HasShapeTileableData, _ToPandasMixin):
         return from_index(self, dtype=dtype, extract_multi_index=extract_multi_index)
 
     def to_frame(self, index: bool = True, name=None):
-        """
-        Create a DataFrame with a column containing the Index.
-
-        Parameters
-        ----------
-        index : bool, default True
-            Set the index of the returned DataFrame as the original Index.
-
-        name : object, default None
-            The passed name should substitute for the index name (if it has
-            one).
-
-        Returns
-        -------
-        DataFrame
-            DataFrame containing the original Index data.
-
-        See Also
-        --------
-        Index.to_series : Convert an Index to a Series.
-        Series.to_frame : Convert Series to DataFrame.
-
-        Examples
-        --------
-        >>> import maxframe.dataframe as md
-        >>> idx = md.Index(['Ant', 'Bear', 'Cow'], name='animal')
-        >>> idx.to_frame().execute()
-               animal
-        animal
-        Ant       Ant
-        Bear     Bear
-        Cow       Cow
-
-        By default, the original Index is reused. To enforce a new Index:
-
-        >>> idx.to_frame(index=False).execute()
-          animal
-        0    Ant
-        1   Bear
-        2    Cow
-
-        To override the name of the resulting column, specify `name`:
-
-        >>> idx.to_frame(index=False, name='zoo').execute()
-            zoo
-        0   Ant
-        1  Bear
-        2   Cow
-        """
         from . import dataframe_from_tensor
 
         if isinstance(self.index_value.value, IndexValue.MultiIndex):
@@ -789,33 +740,19 @@ class IndexData(HasShapeTileableData, _ToPandasMixin):
             columns = [name or self.name or 0]
         index_ = self if index else None
         return dataframe_from_tensor(
-            self._to_maxframe_tensor(self, extract_multi_index=True),
+            self._to_maxframe_tensor(extract_multi_index=True),
             index=index_,
             columns=columns,
         )
 
     def to_series(self, index=None, name=None):
-        """
-        Create a Series with both index and values equal to the index keys.
-
-        Useful with map for returning an indexer based on an index.
-
-        Parameters
-        ----------
-        index : Index, optional
-            Index of resulting Series. If None, defaults to original index.
-        name : str, optional
-            Dame of resulting Series. If None, defaults to name of original
-            index.
-
-        Returns
-        -------
-        Series
-            The dtype will be based on the type of the Index values.
-        """
         from . import series_from_index
 
         return series_from_index(self, index=index, name=name)
+
+    @property
+    def hasnans(self):
+        return self.isna().any()
 
 
 class Index(HasShapeTileable, _ToPandasMixin):
@@ -886,6 +823,99 @@ class Index(HasShapeTileable, _ToPandasMixin):
     @property
     def values(self):
         return self.to_tensor()
+
+    def to_frame(self, index: bool = True, name=None):
+        """
+        Create a DataFrame with a column containing the Index.
+
+        Parameters
+        ----------
+        index : bool, default True
+            Set the index of the returned DataFrame as the original Index.
+
+        name : object, default None
+            The passed name should substitute for the index name (if it has
+            one).
+
+        Returns
+        -------
+        DataFrame
+            DataFrame containing the original Index data.
+
+        See Also
+        --------
+        Index.to_series : Convert an Index to a Series.
+        Series.to_frame : Convert Series to DataFrame.
+
+        Examples
+        --------
+        >>> import maxframe.dataframe as md
+        >>> idx = md.Index(['Ant', 'Bear', 'Cow'], name='animal')
+        >>> idx.to_frame().execute()
+               animal
+        animal
+        Ant       Ant
+        Bear     Bear
+        Cow       Cow
+
+        By default, the original Index is reused. To enforce a new Index:
+
+        >>> idx.to_frame(index=False).execute()
+          animal
+        0    Ant
+        1   Bear
+        2    Cow
+
+        To override the name of the resulting column, specify `name`:
+
+        >>> idx.to_frame(index=False, name='zoo').execute()
+            zoo
+        0   Ant
+        1  Bear
+        2   Cow
+        """
+        return self._data.to_frame(index=index, name=name)
+
+    def to_series(self, index=None, name=None):
+        """
+        Create a Series with both index and values equal to the index keys.
+
+        Useful with map for returning an indexer based on an index.
+
+        Parameters
+        ----------
+        index : Index, optional
+            Index of resulting Series. If None, defaults to original index.
+        name : str, optional
+            Dame of resulting Series. If None, defaults to name of original
+            index.
+
+        Returns
+        -------
+        Series
+            The dtype will be based on the type of the Index values.
+        """
+        return self._data.to_series(index=index, name=name)
+
+    @property
+    def hasnans(self):
+        """
+        Return True if there are any NaNs.
+
+        Returns
+        -------
+        bool
+
+        Examples
+        --------
+        >>> import maxframe.dataframe as md
+        >>> idx = md.Index([1, 2, 3, None])
+        >>> idx.execute()
+        Index([1.0, 2.0, 3.0, nan], dtype='float64')
+        >>> idx.hasnans.execute()
+        True
+        """
+        return self._data.hasnans
 
 
 class RangeIndex(Index):
@@ -1085,12 +1115,6 @@ class SeriesData(_BatchedFetcher, BaseSeriesData):
 
     items = iteritems
 
-    def to_dict(self, into=dict, batch_size=10000, session=None):
-        fetch_kwargs = dict(batch_size=batch_size)
-        return self.to_pandas(session=session, fetch_kwargs=fetch_kwargs).to_dict(
-            into=into
-        )
-
     def to_frame(self, name=None):
         from . import dataframe_from_tensor
 
@@ -1284,38 +1308,6 @@ class Series(HasShapeTileable, _ToPandasMixin):
         return self._data.iteritems(batch_size=batch_size, session=session)
 
     items = iteritems
-
-    def to_dict(self, into=dict, batch_size=10000, session=None):
-        """
-        Convert Series to {label -> value} dict or dict-like object.
-
-        Parameters
-        ----------
-        into : class, default dict
-            The collections.abc.Mapping subclass to use as the return
-            object. Can be the actual class or an empty
-            instance of the mapping type you want.  If you want a
-            collections.defaultdict, you must pass it initialized.
-
-        Returns
-        -------
-        collections.abc.Mapping
-            Key-value representation of Series.
-
-        Examples
-        --------
-        >>> import maxframe.dataframe as md
-        >>> s = md.Series([1, 2, 3, 4])
-        >>> s.to_dict()
-        {0: 1, 1: 2, 2: 3, 3: 4}
-        >>> from collections import OrderedDict, defaultdict
-        >>> s.to_dict(OrderedDict)
-        OrderedDict([(0, 1), (1, 2), (2, 3), (3, 4)])
-        >>> dd = defaultdict(list)
-        >>> s.to_dict(dd)
-        defaultdict(<class 'list'>, {0: 1, 1: 2, 2: 3, 3: 4})
-        """
-        return self._data.to_dict(into=into, batch_size=batch_size, session=session)
 
     def to_frame(self, name=None):
         """

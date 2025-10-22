@@ -20,8 +20,9 @@ except ImportError:  # pragma: no cover
 from ... import opcodes
 from ...config import options
 from ...core import OutputType
-from ...serialization.serializables import BoolField
+from ...serialization.serializables import BoolField, StringField
 from ...utils import lazy_import
+from ..utils import validate_dtype_backend
 from .core import DataFrameReduction, DataFrameReductionMixin, ReductionCallable
 
 cudf = lazy_import("cudf")
@@ -32,7 +33,13 @@ class DataFrameNunique(DataFrameReduction, DataFrameReductionMixin):
     _func_name = "nunique"
 
     dropna = BoolField("dropna", default=None)
-    use_arrow_dtype = BoolField("use_arrow_dtype", default=None)
+    dtype_backend = StringField(
+        "dtype_backend", on_deserialize=validate_dtype_backend, default=None
+    )
+
+    def __init__(self, dtype_backend=None, **kw):
+        dtype_backend = validate_dtype_backend(dtype_backend)
+        super().__init__(dtype_backend=dtype_backend, **kw)
 
     @property
     def is_atomic(self):
@@ -137,6 +144,6 @@ def nunique_series(series, dropna=True):
     op = DataFrameNunique(
         dropna=dropna,
         output_types=[OutputType.scalar],
-        use_arrow_dtype=options.dataframe.use_arrow_dtype,
+        dtype_backend=options.dataframe.dtype_backend,
     )
     return op(series)

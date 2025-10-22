@@ -1,0 +1,60 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.c_.rst:2
+msgid "maxframe.tensor.c\\_"
+msgstr ""
+
+#: ../../docstring maxframe.tensor.c_:1 of
+msgid "Translates slice objects to concatenation along the second axis."
+msgstr "将切片对象转换为沿第二轴的拼接。"
+
+#: ../../docstring maxframe.tensor.c_:3 of
+msgid ""
+"This is short-hand for ``mt.r_['-1,2,0', index expression]``, which is "
+"useful because of its common occurrence. In particular, tensors will be "
+"stacked along their last axis after being upgraded to at least 2-D with "
+"1's post-pended to the shape (column vectors made out of 1-D tensors)."
+msgstr ""
+"这是 ``mt.r_['-1,2,0', 索引表达式]`` 的简写形式，由于其常见用途而非常实用"
+"。特别地，张量在被提升为至少二维并在形状后追加1（将一维张量转换为列向量）"
+"之后，会沿其最后一个轴进行堆叠。"
+
+#: ../../docstring maxframe.tensor.c_:10 of
+msgid ":py:obj:`column_stack`"
+msgstr ""
+
+#: ../../docstring maxframe.tensor.c_:11 of
+msgid "Stack 1-D tensors as columns into a 2-D tensor."
+msgstr "将一维张量作为列堆叠成二维张量。"
+
+#: ../../docstring maxframe.tensor.c_:13 of
+msgid ":py:obj:`r_`"
+msgstr ""
+
+#: ../../docstring maxframe.tensor.c_:14 of
+msgid "For more detailed documentation."
+msgstr "获取更详细的文档说明。"
+
+#: ../../docstring maxframe.tensor.c_:17 of
+msgid "示例"
+msgstr ""
+

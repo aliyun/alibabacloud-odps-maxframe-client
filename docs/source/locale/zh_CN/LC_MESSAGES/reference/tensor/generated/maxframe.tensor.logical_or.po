@@ -1,0 +1,83 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.logical_or.rst:2
+msgid "maxframe.tensor.logical\\_or"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logical_or.logical_or:1 of
+msgid "Compute the truth value of x1 OR x2 element-wise."
+msgstr "逐元素计算 x1 或 x2 的真值。"
+
+#: maxframe.tensor.arithmetic.logical_or.logical_or of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logical_or.logical_or:3
+#: maxframe.tensor.arithmetic.logical_or.logical_or:6 of
+msgid ""
+"Logical OR is applied to the elements of `x1` and `x2`. They have to be "
+"of the same shape."
+msgstr "逻辑或运算应用于 `x1` 和 `x2` 的元素。它们必须具有相同的形状。"
+
+#: maxframe.tensor.arithmetic.logical_or.logical_or:9 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，其形状必须可以广播到输入形状。如果未提供或"
+"为 `None`，则返回一个新分配的张量。元组（只能作为关键字参数）的长度必须"
+"等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.logical_or.logical_or:14 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "为 True 的值表示在该位置计算 ufunc，为 False 的值表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.logical_or.logical_or of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logical_or.logical_or:19 of
+msgid ""
+"**y** -- Boolean result with the same shape as `x1` and `x2` of the "
+"logical OR operation on elements of `x1` and `x2`."
+msgstr ""
+"**y** -- 布尔结果，形状与 `x1` 和 `x2` 相同，表示对 `x1` 和 `x2` 元素进行"
+"逻辑或运算的结果。"
+
+#: maxframe.tensor.arithmetic.logical_or.logical_or of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logical_or.logical_or:23 of
+msgid ""
+":py:obj:`logical_and`, :py:obj:`logical_not`, :py:obj:`logical_xor`, "
+":py:obj:`bitwise_or`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.logical_or.logical_or:26 of
+msgid "示例"
+msgstr ""
+

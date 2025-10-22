@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.vsplit.rst:2
+msgid "maxframe.tensor.vsplit"
+msgstr ""
+
+#: maxframe.tensor.misc.vsplit.vsplit:1 of
+msgid "Split a tensor into multiple sub-tensors vertically (row-wise)."
+msgstr "将一个张量按行（垂直方向）分割成多个子张量。"
+
+#: maxframe.tensor.misc.vsplit.vsplit:3 of
+msgid ""
+"Please refer to the ``split`` documentation.  ``vsplit`` is equivalent to"
+" ``split`` with `axis=0` (default), the tensor is always split along the "
+"first axis regardless of the tensor dimension."
+msgstr ""
+"请参考 ``split`` 文档。``vsplit`` 等价于 `axis=0`（默认值）的 ``split``，"
+"无论张量维度如何，总是沿第一个轴进行分割。"
+
+#: maxframe.tensor.misc.vsplit.vsplit:9 of
+msgid ":py:obj:`split`"
+msgstr ""
+
+#: maxframe.tensor.misc.vsplit.vsplit:10 of
+msgid "Split a tensor into multiple sub-tensors of equal size."
+msgstr "将一个张量分割成多个大小相等的子张量。"
+
+#: maxframe.tensor.misc.vsplit.vsplit:13 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.misc.vsplit.vsplit:34 of
+msgid "With a higher dimensional tensor the split is still along the first axis."
+msgstr "对于更高维度的张量，分割仍然沿第一个轴进行。"
+

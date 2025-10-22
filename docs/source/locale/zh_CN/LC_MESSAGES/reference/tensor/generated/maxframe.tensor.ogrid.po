@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.ogrid.rst:2
+msgid "maxframe.tensor.ogrid"
+msgstr ""
+
+#: ../../docstring maxframe.tensor.ogrid:1 of
+msgid "Construct a multi-dimensional \"meshgrid\"."
+msgstr "构造一个多维的“网格”。"
+
+#: ../../docstring maxframe.tensor.ogrid:3 of
+msgid ""
+"``grid = nd_grid()`` creates an instance which will return a mesh-grid "
+"when indexed.  The dimension and number of the output arrays are equal to"
+" the number of indexing dimensions.  If the step length is not a complex "
+"number, then the stop is not inclusive."
+msgstr ""
+"``grid = nd_grid()`` 创建一个实例，当被索引时会返回一个网格。输出数组的"
+"维度和数量等于索引维度的数量。如果步长不是一个复数，则终点不包含在内。"
+
+#: ../../docstring maxframe.tensor.ogrid:8 of
+msgid ""
+"However, if the step length is a **complex number** (e.g. 5j), then the "
+"integer part of its magnitude is interpreted as specifying the number of "
+"points to create between the start and stop values, where the stop value "
+"**is inclusive**."
+msgstr ""
+"然而，如果步长是一个**复数**（例如 5j），则其大小的整数部分被解释为指定在"
+"起始值和终止值之间创建的点的数量，其中终止值**是包含在内的**。"
+
+#: ../../docstring maxframe.tensor.ogrid:13 of
+msgid ""
+"If instantiated with an argument of ``sparse=True``, the mesh-grid is "
+"open (or not fleshed out) so that only one-dimension of each returned "
+"argument is greater than 1."
+msgstr ""
+"如果使用参数 ``sparse=True`` 实例化，则网格是开放的（或未完全展开的），"
+"因此每个返回参数中只有一个维度大于1。"
+
+#: ../../docstring maxframe.tensor.ogrid of
+msgid "参数"
+msgstr ""
+
+#: ../../docstring maxframe.tensor.ogrid:17 of
+msgid "Whether the grid is sparse or not. Default is False."
+msgstr "网格是否为稀疏格式。默认为 False。"
+
+#: ../../docstring maxframe.tensor.ogrid:21 of
+msgid "备注"
+msgstr ""
+
+#: ../../docstring maxframe.tensor.ogrid:22 of
+msgid ""
+"Two instances of `nd_grid` are made available in the maxframe.tensor "
+"namespace, `mgrid` and `ogrid`::"
+msgstr ""
+"在 maxframe.tensor 命名空间中提供了两个 `nd_grid` 的实例：`mgrid` 和 `"
+"ogrid`："
+
+#: ../../docstring maxframe.tensor.ogrid:28 of
+msgid ""
+"Users should use these pre-defined instances instead of using `nd_grid` "
+"directly."
+msgstr "用户应使用这些预定义的实例，而不是直接使用 `nd_grid`。"
+
+#: ../../docstring maxframe.tensor.ogrid:32 of
+msgid "示例"
+msgstr ""
+

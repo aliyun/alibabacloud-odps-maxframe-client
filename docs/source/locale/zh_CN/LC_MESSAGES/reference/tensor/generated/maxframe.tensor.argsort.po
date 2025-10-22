@@ -1,0 +1,183 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, pandas development team
+# This file is distributed under the same license as the pandas package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pandas 1.2.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.argsort.rst:2
+msgid "maxframe.tensor.argsort"
+msgstr ""
+
+#: maxframe.tensor.sort.argsort.argsort:1 of
+msgid "Returns the indices that would sort a tensor."
+msgstr "返回能够排序张量的索引。"
+
+#: maxframe.tensor.sort.argsort.argsort:3 of
+msgid ""
+"Perform an indirect sort along the given axis using the algorithm "
+"specified by the `kind` keyword. It returns a tensor of indices of the "
+"same shape as `a` that index data along the given axis in sorted order."
+msgstr ""
+"使用 `kind` 关键字指定的算法沿给定轴执行间接排序。它返回与 `a` 相同形状的"
+"索引张量，该索引沿给定轴按排序顺序索引数据。"
+
+#: maxframe.tensor.sort.argsort.argsort of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.sort.argsort.argsort:7 of
+msgid "Tensor to sort."
+msgstr "要排序的张量。"
+
+#: maxframe.tensor.sort.argsort.argsort:9 of
+msgid ""
+"Axis along which to sort.  The default is -1 (the last axis). If None, "
+"the flattened tensor is used."
+msgstr "排序的轴。默认值为 -1（最后一个轴）。如果为 None，则使用展平后的张量。"
+
+#: maxframe.tensor.sort.argsort.argsort:12 of
+msgid ""
+"Sorting algorithm. The default is 'quicksort'. Note that both 'stable' "
+"and 'mergesort' use timsort under the covers and, in general, the actual "
+"implementation will vary with data type. The 'mergesort' option is "
+"retained for backwards compatibility.  .. versionchanged:: 1.15.0.    The"
+" 'stable' option was added."
+msgstr ""
+"排序算法。默认为 'quicksort'。注意 'stable' 和 'mergesort' 都在底层使用 "
+"timsort，且实际实现通常随数据类型而变化。保留 'mergesort' 选项是为了向后"
+"兼容。  .. versionchanged:: 1.15.0.    添加了 'stable' 选项。"
+
+#: maxframe.tensor.sort.argsort.argsort:12 of
+#, fuzzy
+msgid ""
+"Sorting algorithm. The default is 'quicksort'. Note that both 'stable' "
+"and 'mergesort' use timsort under the covers and, in general, the actual "
+"implementation will vary with data type. The 'mergesort' option is "
+"retained for backwards compatibility."
+msgstr ""
+"排序算法。默认为 'quicksort'。注意 'stable' 和 'mergesort' 都在底层使用 "
+"timsort，且实际实现通常随数据类型而变化。保留 'mergesort' 选项是为了向后"
+"兼容。  .. versionchanged:: 1.15.0.    添加了 'stable' 选项。"
+
+#: maxframe.tensor.sort.argsort.argsort:17 of
+msgid "The 'stable' option was added."
+msgstr ""
+
+#: maxframe.tensor.sort.argsort.argsort:20 of
+msgid ""
+"When `a` is a tensor with fields defined, this argument specifies which "
+"fields to compare first, second, etc.  A single field can be specified as"
+" a string, and not all fields need be specified, but unspecified fields "
+"will still be used, in the order in which they come up in the dtype, to "
+"break ties."
+msgstr ""
+"当 `a` 是一个定义了字段的张量时，此参数指定首先比较哪些字段、其次比较哪些"
+"字段等。单个字段可以指定为字符串，且并非所有字段都需要指定，但未指定的字"
+"段仍会按照它们在 dtype 中出现的顺序用于打破平局。"
+
+#: maxframe.tensor.sort.argsort.argsort:26 of
+msgid ""
+"Sort stability. If `True`, the returned array will maintain the relative "
+"order of `a` values which compare as equal. If `False` or `None`, this is"
+" not guaranteed. Internally, this option selects `kind='stable'`. "
+"Default: `None`."
+msgstr ""
+"排序稳定性。如果为 `True`，返回的数组将保持比较相等的 `a` 值的相对顺序。"
+"如果为 `False` 或 `None`，则不保证这一点。在内部，此选项会选择 `kind='"
+"stable'`。默认值：`None`。"
+
+#: maxframe.tensor.sort.argsort.argsort of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.sort.argsort.argsort:32 of
+msgid ""
+"**index_tensor** -- Tensor of indices that sort `a` along the specified "
+"`axis`. If `a` is one-dimensional, ``a[index_tensor]`` yields a sorted "
+"`a`. More generally, ``np.take_along_axis(a, index_tensor, axis=axis)`` "
+"always yields the sorted `a`, irrespective of dimensionality."
+msgstr ""
+"**index_tensor** -- 沿指定 `axis` 对 `a` 进行排序的索引张量。如果 `a` 是"
+"一维的，则 ``a[index_tensor]`` 会产生排序后的 `a`。更一般地，``np.take_"
+"along_axis(a, index_tensor, axis=axis)`` 总是会生成排序后的 `a`，无论维度"
+"如何。"
+
+#: maxframe.tensor.sort.argsort.argsort of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.sort.argsort.argsort:40 of
+msgid ":py:obj:`sort`"
+msgstr ""
+
+#: maxframe.tensor.sort.argsort.argsort:41 of
+msgid "Describes sorting algorithms used."
+msgstr "描述所使用的排序算法。"
+
+#: maxframe.tensor.sort.argsort.argsort:43 of
+msgid ":py:obj:`lexsort`"
+msgstr ""
+
+#: maxframe.tensor.sort.argsort.argsort:44 of
+msgid "Indirect stable sort with multiple keys."
+msgstr "使用多个键的间接稳定排序。"
+
+#: maxframe.tensor.sort.argsort.argsort:46 of
+msgid ":py:obj:`Tensor.sort`"
+msgstr ""
+
+#: maxframe.tensor.sort.argsort.argsort:47 of
+msgid "Inplace sort."
+msgstr "原地排序。"
+
+#: maxframe.tensor.sort.argsort.argsort:49 of
+msgid ":py:obj:`argpartition`"
+msgstr ""
+
+#: maxframe.tensor.sort.argsort.argsort:50 of
+msgid "Indirect partial sort."
+msgstr "间接部分排序。"
+
+#: maxframe.tensor.sort.argsort.argsort:53 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.sort.argsort.argsort:54 of
+msgid "See `sort` for notes on the different sorting algorithms."
+msgstr "关于不同排序算法的说明，请参见 `sort`。"
+
+#: maxframe.tensor.sort.argsort.argsort:57 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.sort.argsort.argsort:58 of
+msgid "One dimensional tensor:"
+msgstr "一维张量："
+
+#: maxframe.tensor.sort.argsort.argsort:65 of
+msgid "Two-dimensional tensor:"
+msgstr "二维张量："
+
+#: maxframe.tensor.sort.argsort.argsort:88 of
+msgid "Indices of the sorted elements of a N-dimensional array:"
+msgstr "N维数组排序元素的索引："
+
+#: maxframe.tensor.sort.argsort.argsort:96 of
+msgid "Sorting with keys:"
+msgstr "使用键排序："
+

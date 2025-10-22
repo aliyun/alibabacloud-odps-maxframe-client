@@ -1,0 +1,81 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.not_equal.rst:2
+msgid "maxframe.tensor.not\\_equal"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.not_equal.not_equal:1 of
+msgid "Return (x1 != x2) element-wise."
+msgstr "返回 (x1 != x2) 的逐元素比较结果。"
+
+#: maxframe.tensor.arithmetic.not_equal.not_equal of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.not_equal.not_equal:3
+#: maxframe.tensor.arithmetic.not_equal.not_equal:5 of
+msgid "Input tensors."
+msgstr "输入张量。"
+
+#: maxframe.tensor.arithmetic.not_equal.not_equal:7 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供了该参数，则其形状必须可广播为输入张量的形状"
+"。如果未提供或为 `None`，则返回一个新分配的张量。元组（只能作为关键字参数"
+"）的长度必须等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.not_equal.not_equal:12 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "为 True 的值表示在该位置计算 ufunc，为 False 的值表示保留输出中的原有值。"
+
+#: maxframe.tensor.arithmetic.not_equal.not_equal of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.not_equal.not_equal:17 of
+msgid ""
+"**not_equal** -- For each element in `x1, x2`, return True if `x1` is not"
+" equal to `x2` and False otherwise."
+msgstr ""
+"**not_equal** -- 对于 `x1, x2` 中的每个元素，如果 `x1` 不等于 `x2` 则返回"
+" True，否则返回 False。"
+
+#: maxframe.tensor.arithmetic.not_equal.not_equal of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.not_equal.not_equal:21 of
+msgid ""
+":py:obj:`equal`, :py:obj:`greater`, :py:obj:`greater_equal`, "
+":py:obj:`less`, :py:obj:`less_equal`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.not_equal.not_equal:24 of
+msgid "示例"
+msgstr ""
+

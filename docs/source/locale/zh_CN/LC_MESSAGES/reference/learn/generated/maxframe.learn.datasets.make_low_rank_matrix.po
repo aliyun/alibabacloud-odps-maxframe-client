@@ -1,0 +1,116 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.datasets.make_low_rank_matrix.rst:2
+msgid "maxframe.learn.datasets.make\\_low\\_rank\\_matrix"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:1 of
+msgid "Generate a mostly low rank matrix with bell-shaped singular values"
+msgstr "生成一个具有钟形奇异值的 mostly low rank 矩阵"
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:3 of
+msgid ""
+"Most of the variance can be explained by a bell-shaped curve of width "
+"effective_rank: the low rank part of the singular values profile is::"
+msgstr ""
+"大多数方差可以通过宽度为 effective_rank 的钟形曲线来解释：奇异值分布的低"
+"秩部分为："
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:8 of
+msgid "The remaining singular values' tail is fat, decreasing as::"
+msgstr "剩余的奇异值尾部是厚尾的，按如下方式递减："
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:12 of
+msgid ""
+"The low rank part of the profile can be considered the structured signal "
+"part of the data while the tail can be considered the noisy part of the "
+"data that cannot be summarized by a low number of linear components "
+"(singular vectors)."
+msgstr ""
+"分布中的低秩部分可以视为数据的结构化信号部分，而尾部则可视为无法通过少量"
+"线性成分（奇异向量）概括的数据噪声部分。"
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:17 of
+msgid "This kind of singular profiles is often seen in practice, for instance:"
+msgstr "这种奇异值分布在实际中经常出现，例如："
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:18 of
+msgid "gray level pictures of faces"
+msgstr "人脸的灰度图像"
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:19 of
+msgid "TF-IDF vectors of text documents crawled from the web"
+msgstr "从网络爬取的文本文档的 TF-IDF 向量"
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:21 of
+msgid "Read more in the :ref:`User Guide <sample_generators>`."
+msgstr "更多内容请参见 :ref:`用户指南 <sample_generators>`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.datasets.make_low_rank_matrix.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:23 of
+msgid "The number of samples."
+msgstr "样本数量。"
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:25 of
+msgid "The number of features."
+msgstr "特征数量。"
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:27 of
+msgid ""
+"The approximate number of singular vectors required to explain most of "
+"the data by linear combinations."
+msgstr "用线性组合解释大部分数据所需的奇异向量近似数量。"
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:30 of
+msgid ""
+"The relative importance of the fat noisy tail of the singular values "
+"profile."
+msgstr "奇异值分布中厚噪声尾部的相对重要性。"
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:33 of
+msgid ""
+"Determines random number generation for dataset creation. Pass an int for"
+" reproducible output across multiple function calls. See :term:`Glossary "
+"<random_state>`."
+msgstr ""
+"决定数据集创建时的随机数生成方式。传入一个整数可以在多次函数调用中获得可"
+"重现的输出。详见 :term:`术语表 <random_state>`。"
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:37 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的分块大小"
+
+#: ../../source/reference/learn/generated/maxframe.learn.datasets.make_low_rank_matrix.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.datasets.samples_generator.make_low_rank_matrix:40 of
+msgid "**X** -- The matrix."
+msgstr "**X** -- 矩阵。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.datasets.make_low_rank_matrix.rst
+msgid "返回类型"
+msgstr ""
+

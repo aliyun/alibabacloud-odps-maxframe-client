@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.dict.contains.rst:2
+msgid "maxframe.dataframe.Series.dict.contains"
+msgstr ""
+
+#: maxframe.dataframe.accessors.dict_.contains.series_dict_contains:1 of
+msgid "Check whether the key is in each dict of the Series."
+msgstr "检查键是否在 Series 的每个字典中。"
+
+#: maxframe.dataframe.accessors.dict_.contains.series_dict_contains of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.accessors.dict_.contains.series_dict_contains:3 of
+msgid "The key to check, must be in the same key type of the dict."
+msgstr "要检查的键，必须与字典中的键类型相同。"
+
+#: maxframe.dataframe.accessors.dict_.contains.series_dict_contains of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.accessors.dict_.contains.series_dict_contains:6 of
+msgid ""
+"A Series with data type ``pandas.ArrowDtype(pyarrow.bool_)``. The value "
+"will be ``True`` if the key is in the dict, ``False`` otherwise, or "
+"``None`` if the dict is None."
+msgstr ""
+"一个数据类型为 ``pandas.ArrowDtype(pyarrow.bool_)`` 的 Series。如果键在"
+"字典中，值为 ``True``，否则为 ``False``，如果字典为 None，则为 ``None``。"
+
+#: maxframe.dataframe.accessors.dict_.contains.series_dict_contains of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.accessors.dict_.contains.series_dict_contains:12 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.accessors.dict_.contains.series_dict_contains:13 of
+msgid "Create a series with dict type data."
+msgstr "创建一个包含字典类型数据的 Series。"
+

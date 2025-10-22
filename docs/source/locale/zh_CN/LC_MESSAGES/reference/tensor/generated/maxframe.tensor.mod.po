@@ -1,0 +1,146 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.mod.rst:2
+msgid "maxframe.tensor.mod"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.mod.mod:1 of
+msgid "Return element-wise remainder of division."
+msgstr "返回逐元素的除法余数。"
+
+#: maxframe.tensor.arithmetic.mod.mod:3 of
+#, python-format
+msgid ""
+"Computes the remainder complementary to the `floor_divide` function.  It "
+"is equivalent to the Python modulus operator``x1 % x2`` and has the same "
+"sign as the divisor `x2`. The MATLAB function equivalent to "
+"``np.remainder`` is ``mod``."
+msgstr ""
+"计算与 `floor_divide` 函数互补的余数。它等价于 Python 的取模运算符 ``x1 %"
+" x2``，并且符号与除数 `x2` 相同。与 ``np.remainder`` 等价的 MATLAB 函数是"
+" ``mod``。"
+
+#: maxframe.tensor.arithmetic.mod.mod:10 of
+msgid "This should not be confused with:"
+msgstr "不要将其与以下内容混淆："
+
+#: maxframe.tensor.arithmetic.mod.mod:12 of
+msgid ""
+"Python 3.7's `math.remainder` and C's ``remainder``, which computes the "
+"IEEE remainder, which are the complement to ``round(x1 / x2)``."
+msgstr ""
+"Python 3.7 的 `math.remainder` 和 C 的 ``remainder``，它们计算的是 IEEE "
+"余数，是 ``round(x1 / x2)`` 的互补运算。"
+
+#: maxframe.tensor.arithmetic.mod.mod:15 of
+msgid ""
+"The MATLAB ``rem`` function and or the C ``%`` operator which is the "
+"complement to ``int(x1 / x2)``."
+msgstr ""
+"MATLAB 的 ``rem`` 函数或 C 的 ``%`` 运算符，它们是 ``int(x1 / x2)`` 的"
+"互补运算。"
+
+#: maxframe.tensor.arithmetic.mod.mod of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.mod.mod:18 of
+msgid "Dividend array."
+msgstr "被除数数组。"
+
+#: maxframe.tensor.arithmetic.mod.mod:20 of
+msgid "Divisor array."
+msgstr "除数数组。"
+
+#: maxframe.tensor.arithmetic.mod.mod:22 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供了该参数，则其形状必须可以广播到输入形状。"
+"如果未提供或为 `None`，则返回一个新分配的 tensor。元组（只能作为关键字"
+"参数）的长度必须等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.mod.mod:27 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.mod.mod of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.mod.mod:32 of
+msgid ""
+"**y** -- The element-wise remainder of the quotient ``floor_divide(x1, "
+"x2)``. Returns a scalar if both  `x1` and `x2` are scalars."
+msgstr ""
+"**y** -- 逐元素的商 ``floor_divide(x1, x2)`` 的余数。如果 `x1` 和 `x2` 都"
+"是标量，则返回一个标量。"
+
+#: maxframe.tensor.arithmetic.mod.mod of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.mod.mod:38 of
+msgid ":py:obj:`floor_divide`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.mod.mod:39 of
+msgid "Equivalent of Python ``//`` operator."
+msgstr "等价于 Python 的 ``//`` 运算符。"
+
+#: maxframe.tensor.arithmetic.mod.mod:41 of
+msgid ":py:obj:`divmod`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.mod.mod:42 of
+msgid "Simultaneous floor division and remainder."
+msgstr "同时进行向下取整除法和求余。"
+
+#: maxframe.tensor.arithmetic.mod.mod:44 of
+msgid ":py:obj:`fmod`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.mod.mod:45 of
+msgid "Equivalent of the MATLAB ``rem`` function."
+msgstr "等价于 MATLAB 的 ``rem`` 函数。"
+
+#: maxframe.tensor.arithmetic.mod.mod:47 of
+msgid ":py:obj:`divide`, :py:obj:`floor`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.mod.mod:50 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.mod.mod:51 of
+msgid "Returns 0 when `x2` is 0 and both `x1` and `x2` are (tensors of) integers."
+msgstr "当 `x2` 为 0 且 `x1` 和 `x2` 都是（tensor 的）整数时，返回 0。"
+
+#: maxframe.tensor.arithmetic.mod.mod:55 of
+msgid "示例"
+msgstr ""
+

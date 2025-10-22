@@ -1,0 +1,107 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.fft.ihfft.rst:2
+msgid "maxframe.tensor.fft.ihfft"
+msgstr ""
+
+#: maxframe.tensor.fft.ihfft.ihfft:1 of
+msgid "Compute the inverse FFT of a signal that has Hermitian symmetry."
+msgstr "计算具有 Hermitian 对称性的信号的逆 FFT。"
+
+#: maxframe.tensor.fft.ihfft.ihfft of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.fft.ihfft.ihfft:3 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.fft.ihfft.ihfft:5 of
+msgid ""
+"Length of the inverse FFT, the number of points along transformation axis"
+" in the input to use.  If `n` is smaller than the length of the input, "
+"the input is cropped.  If it is larger, the input is padded with zeros. "
+"If `n` is not given, the length of the input along the axis specified by "
+"`axis` is used."
+msgstr ""
+"逆 FFT 的长度，即沿变换轴使用的输入点数。如果 `n` 小于输入的长度，则输入"
+"会被裁剪。如果 `n` 更大，则输入会用零填充。如果未指定 `n`，则使用沿 `axis"
+"` 指定轴的输入长度。"
+
+#: maxframe.tensor.fft.ihfft.ihfft:11 of
+msgid ""
+"Axis over which to compute the inverse FFT. If not given, the last axis "
+"is used."
+msgstr "计算逆 FFT 所用的轴。如果未指定，则使用最后一个轴。"
+
+#: maxframe.tensor.fft.ihfft.ihfft:14 of
+msgid "Normalization mode (see `numpy.fft`). Default is None."
+msgstr "归一化模式（参见 `numpy.fft`）。默认为 None。"
+
+#: maxframe.tensor.fft.ihfft.ihfft of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.fft.ihfft.ihfft:17 of
+msgid ""
+"**out** -- The truncated or zero-padded input, transformed along the axis"
+" indicated by `axis`, or the last one if `axis` is not specified. The "
+"length of the transformed axis is ``n//2 + 1``."
+msgstr ""
+"**out** -- 被截断或零填充的输入，按照 `axis` 指定的轴（或未指定时为最后"
+"一个轴）进行变换。变换后轴的长度为 ``n//2 + 1``。"
+
+#: maxframe.tensor.fft.ihfft.ihfft of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.fft.ihfft.ihfft:22 of
+msgid ":py:obj:`hfft`, :py:obj:`irfft`"
+msgstr ""
+
+#: maxframe.tensor.fft.ihfft.ihfft:25 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.fft.ihfft.ihfft:26 of
+msgid ""
+"`hfft`/`ihfft` are a pair analogous to `rfft`/`irfft`, but for the "
+"opposite case: here the signal has Hermitian symmetry in the time domain "
+"and is real in the frequency domain. So here it's `hfft` for which you "
+"must supply the length of the result if it is to be odd:"
+msgstr ""
+"`hfft`/`ihfft` 是与 `rfft`/`irfft` 类似的一对函数，但用于相反的情况：这里"
+"的信号在时域中具有 Hermitian 对称性，在频域中是实数。因此，如果你希望结果"
+"是奇数长度，需要为 `hfft` 提供结果长度："
+
+#: maxframe.tensor.fft.ihfft.ihfft:31 of
+msgid "even: ``ihfft(hfft(a, 2*len(a) - 2) == a``, within roundoff error,"
+msgstr "偶数：``ihfft(hfft(a, 2*len(a) - 2) == a``，在舍入误差范围内，"
+
+#: maxframe.tensor.fft.ihfft.ihfft:32 of
+msgid "odd: ``ihfft(hfft(a, 2*len(a) - 1) == a``, within roundoff error."
+msgstr "奇数：``ihfft(hfft(a, 2*len(a) - 1) == a``，在舍入误差范围内。"
+
+#: maxframe.tensor.fft.ihfft.ihfft:35 of
+msgid "示例"
+msgstr ""
+

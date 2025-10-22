@@ -1,0 +1,144 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.around.rst:2
+msgid "maxframe.tensor.around"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.around.around:1 of
+msgid "Evenly round to the given number of decimals."
+msgstr "均匀舍入到给定的小数位数。"
+
+#: maxframe.tensor.arithmetic.around.around of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.around.around:3 of
+msgid "Input data."
+msgstr "输入数据。"
+
+#: maxframe.tensor.arithmetic.around.around:5 of
+msgid ""
+"Number of decimal places to round to (default: 0).  If decimals is "
+"negative, it specifies the number of positions to the left of the decimal"
+" point."
+msgstr ""
+"要舍入到的小数位数（默认值：0）。如果 decimals 是负数，则指定小数点左侧的"
+"位数。"
+
+#: maxframe.tensor.arithmetic.around.around:9 of
+msgid ""
+"Alternative output tensor in which to place the result. It must have the "
+"same shape as the expected output, but the type of the output values will"
+" be cast if necessary."
+msgstr ""
+"用于放置结果的可选输出 tensor。它必须与预期输出具有相同的形状，但输出值的"
+"类型在必要时会被转换。"
+
+#: maxframe.tensor.arithmetic.around.around of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.around.around:14 of
+msgid ""
+"**rounded_array** -- An tensor of the same type as `a`, containing the "
+"rounded values. Unless `out` was specified, a new tensor is created.  A "
+"reference to the result is returned.  The real and imaginary parts of "
+"complex numbers are rounded separately.  The result of rounding a float "
+"is a float."
+msgstr ""
+"**rounded_array** -- 一个与 `a` 类型相同的 tensor，包含舍入后的值。除非"
+"指定了 `out`，否则会创建一个新的 tensor。返回结果的引用。复数的实部和虚"
+"部分别进行舍入。浮点数舍入的结果是浮点数。"
+
+#: maxframe.tensor.arithmetic.around.around:14 of
+#, fuzzy
+msgid ""
+"**rounded_array** -- An tensor of the same type as `a`, containing the "
+"rounded values. Unless `out` was specified, a new tensor is created.  A "
+"reference to the result is returned."
+msgstr ""
+"**rounded_array** -- 一个与 `a` 类型相同的 tensor，包含舍入后的值。除非"
+"指定了 `out`，否则会创建一个新的 tensor。返回结果的引用。复数的实部和虚"
+"部分别进行舍入。浮点数舍入的结果是浮点数。"
+
+#: maxframe.tensor.arithmetic.around.around:18 of
+msgid ""
+"The real and imaginary parts of complex numbers are rounded separately.  "
+"The result of rounding a float is a float."
+msgstr ""
+
+#: maxframe.tensor.arithmetic.around.around of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.around.around:24 of
+msgid ":py:obj:`Tensor.round`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.around.around:25 of
+msgid "equivalent method"
+msgstr "等效方法"
+
+#: maxframe.tensor.arithmetic.around.around:27 of
+msgid ""
+":py:obj:`ceil`, :py:obj:`fix`, :py:obj:`floor`, :py:obj:`rint`, "
+":py:obj:`trunc`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.around.around:30 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.around.around:31 of
+msgid ""
+"For values exactly halfway between rounded decimal values, NumPy rounds "
+"to the nearest even value. Thus 1.5 and 2.5 round to 2.0, -0.5 and 0.5 "
+"round to 0.0, etc. Results may also be surprising due to the inexact "
+"representation of decimal fractions in the IEEE floating point standard "
+"[1]_ and errors introduced when scaling by powers of ten."
+msgstr ""
+"对于位于两个舍入小数值之间的中间值，NumPy 会舍入到最近的偶数值。因此，1.5"
+" 和 2.5 舍入到 2.0，-0.5 和 0.5 舍入到 0.0，等等。由于 IEEE 浮点标准中"
+"十进制分数的不精确表示 [1]_ 以及在按十的幂次缩放时引入的误差，结果可能"
+"令人惊讶。"
+
+#: maxframe.tensor.arithmetic.around.around:39 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.around.around:40 of
+msgid ""
+"\"Lecture Notes on the Status of  IEEE 754\", William Kahan, "
+"http://www.cs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.around.around:42 of
+msgid ""
+"\"How Futile are Mindless Assessments of Roundoff in Floating-Point "
+"Computation?\", William Kahan, "
+"http://www.cs.berkeley.edu/~wkahan/Mindless.pdf"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.around.around:47 of
+msgid "示例"
+msgstr ""
+

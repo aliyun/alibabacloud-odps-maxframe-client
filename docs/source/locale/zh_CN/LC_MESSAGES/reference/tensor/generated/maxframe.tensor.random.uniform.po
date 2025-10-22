@@ -1,0 +1,182 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.uniform.rst:2
+msgid "maxframe.tensor.random.uniform"
+msgstr ""
+
+#: maxframe.tensor.random.uniform.uniform:1 of
+msgid "Draw samples from a uniform distribution."
+msgstr "从均匀分布中抽取样本。"
+
+#: maxframe.tensor.random.uniform.uniform:3 of
+msgid ""
+"Samples are uniformly distributed over the half-open interval ``[low, "
+"high)`` (includes low, but excludes high).  In other words, any value "
+"within the given interval is equally likely to be drawn by `uniform`."
+msgstr ""
+"样本在半开区间 ``[low, high)``（包括 low，但不包括 high）上均匀分布。"
+"换句话说，给定区间内的任何值被 `uniform` 抽取的可能性相同。"
+
+#: maxframe.tensor.random.uniform.uniform of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.uniform.uniform:8 of
+msgid ""
+"Lower boundary of the output interval.  All values generated will be "
+"greater than or equal to low.  The default value is 0."
+msgstr "输出区间的下界。所有生成的值都将大于或等于 low。默认值为 0。"
+
+#: maxframe.tensor.random.uniform.uniform:11 of
+msgid ""
+"Upper boundary of the output interval.  All values generated will be less"
+" than high.  The default value is 1.0."
+msgstr "输出区间的上界。所有生成的值都将小于 high。默认值为 1.0。"
+
+#: maxframe.tensor.random.uniform.uniform:14 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``low`` and ``high`` are both scalars. Otherwise, "
+"``mt.broadcast(low, high).size`` samples are drawn."
+msgstr ""
+"输出形状。如果给定的形状为，例如 ``(m, n, k)``，则抽取 ``m * n * k`` 个"
+"样本。如果 size 为 ``None``（默认），且 ``low`` 和 ``high`` 都是标量，则"
+"返回单个值。否则抽取 ``mt.broadcast(low, high).size`` 个样本。"
+
+#: maxframe.tensor.random.uniform.uniform:19 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.random.uniform.uniform:21 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.uniform.uniform:23 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.uniform.uniform of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.uniform.uniform:26 of
+msgid "**out** -- Drawn samples from the parameterized uniform distribution."
+msgstr "**out** -- 从参数化的均匀分布中抽取的样本。"
+
+#: maxframe.tensor.random.uniform.uniform of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.uniform.uniform:31 of
+msgid ":py:obj:`randint`"
+msgstr ""
+
+#: maxframe.tensor.random.uniform.uniform:32 of
+msgid "Discrete uniform distribution, yielding integers."
+msgstr "离散均匀分布，生成整数。"
+
+#: maxframe.tensor.random.uniform.uniform:34 of
+msgid ":py:obj:`random_integers`"
+msgstr ""
+
+#: maxframe.tensor.random.uniform.uniform:35 of
+msgid "Discrete uniform distribution over the closed interval ``[low, high]``."
+msgstr "在闭区间 ``[low, high]`` 上的离散均匀分布。"
+
+#: maxframe.tensor.random.uniform.uniform:37 of
+msgid ":py:obj:`random_sample`"
+msgstr ""
+
+#: maxframe.tensor.random.uniform.uniform:38 of
+msgid "Floats uniformly distributed over ``[0, 1)``."
+msgstr "在 ``[0, 1)`` 上均匀分布的浮点数。"
+
+#: maxframe.tensor.random.uniform.uniform:40 of
+msgid ":py:obj:`random`"
+msgstr ""
+
+#: maxframe.tensor.random.uniform.uniform:41 of
+msgid "Alias for `random_sample`."
+msgstr "`random_sample` 的别名。"
+
+#: maxframe.tensor.random.uniform.uniform:43 of
+msgid ":py:obj:`rand`"
+msgstr ""
+
+#: maxframe.tensor.random.uniform.uniform:44 of
+msgid ""
+"Convenience function that accepts dimensions as input, e.g., "
+"``rand(2,2)`` would generate a 2-by-2 array of floats, uniformly "
+"distributed over ``[0, 1)``."
+msgstr ""
+"便捷函数，接受维度作为输入，例如 ``rand(2,2)`` 会生成一个 2x2 的浮点数组"
+"，均匀分布在 ``[0, 1)`` 上。"
+
+#: maxframe.tensor.random.uniform.uniform:47 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.uniform.uniform:48 of
+msgid "The probability density function of the uniform distribution is"
+msgstr "均匀分布的概率密度函数为"
+
+#: maxframe.tensor.random.uniform.uniform:50 of
+#, python-brace-format
+msgid ""
+"p(x) = \\frac{1}{b - a}\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.uniform.uniform:52 of
+msgid "anywhere within the interval ``[a, b)``, and zero elsewhere."
+msgstr "在区间 ``[a, b)`` 内任意位置为该值，其它位置为零。"
+
+#: maxframe.tensor.random.uniform.uniform:54 of
+msgid ""
+"When ``high`` == ``low``, values of ``low`` will be returned. If ``high``"
+" < ``low``, the results are officially undefined and may eventually raise"
+" an error, i.e. do not rely on this function to behave when passed "
+"arguments satisfying that inequality condition."
+msgstr ""
+"当 ``high`` == ``low`` 时，将返回 ``low`` 的值。如果 ``high`` < ``low``，"
+"结果未定义，并可能最终引发错误，即不要依赖该函数在传入满足此不等式条件的"
+"参数时的行为。"
+
+#: maxframe.tensor.random.uniform.uniform:61 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.uniform.uniform:62 of
+msgid "Draw samples from the distribution:"
+msgstr "从分布中抽取样本："
+
+#: maxframe.tensor.random.uniform.uniform:68 of
+msgid "All values are within the given interval:"
+msgstr "所有值都在给定区间内："
+
+#: maxframe.tensor.random.uniform.uniform:75 of
+msgid ""
+"Display the histogram of the samples, along with the probability density "
+"function:"
+msgstr "显示样本的直方图以及概率密度函数："
+

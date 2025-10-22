@@ -1,0 +1,173 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.plot.box.rst:2
+msgid "maxframe.dataframe.Series.plot.box"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:1
+#: of
+msgid "Make a box plot of the DataFrame columns."
+msgstr "制作 DataFrame 列的箱线图。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:3
+#: of
+msgid ""
+"A box plot is a method for graphically depicting groups of numerical data"
+" through their quartiles. The box extends from the Q1 to Q3 quartile "
+"values of the data, with a line at the median (Q2). The whiskers extend "
+"from the edges of box to show the range of the data. The position of the "
+"whiskers is set by default to 1.5*IQR (IQR = Q3 - Q1) from the edges of "
+"the box. Outlier points are those past the end of the whiskers."
+msgstr ""
+"箱线图是一种通过四分位数来图形化展示数值数据组的方法。箱体从数据的第一"
+"四分位数（Q1）延伸到第三四分位数（Q3），中间有一条线表示中位数（Q2）。"
+"须线从箱体的边缘延伸，用于显示数据的范围。默认情况下，须线的位置设置为"
+"箱体边缘外延 1.5 倍的四分位距（IQR = Q3 - Q1）。超出须线末端的点被视为"
+"异常值。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:11
+#: of
+msgid ""
+"For further details see Wikipedia's entry for `boxplot "
+"<https://en.wikipedia.org/wiki/Box_plot>`__."
+msgstr ""
+"更多详情请参见维基百科的 `箱线图 <https://en.wikipedia.org/wiki/Box_plot>"
+"`__ 条目。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:14
+#: of
+msgid ""
+"A consideration when using this chart is that the box and the whiskers "
+"can overlap, which is very common when plotting small sets of data."
+msgstr ""
+"在使用此图表时需要注意的是，箱体和须线可能会重叠，这在绘制小数据集时非常"
+"常见。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:17
+#: of
+msgid ""
+"Column in the DataFrame to group by.  .. versionchanged:: 1.4.0     "
+"Previously, `by` is silently ignore and makes no groupings"
+msgstr ""
+"用于分组的 DataFrame 列。  .. versionchanged:: 1.4.0     此前，`by` 参数"
+"会被静默忽略，不会进行任何分组。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:17
+#: of
+msgid "Column in the DataFrame to group by."
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:21
+#: of
+#, fuzzy
+msgid "Previously, `by` is silently ignore and makes no groupings"
+msgstr ""
+"用于分组的 DataFrame 列。  .. versionchanged:: 1.4.0     此前，`by` 参数"
+"会被静默忽略，不会进行任何分组。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:23
+#: of
+msgid "Additional keywords are documented in :meth:`DataFrame.plot`."
+msgstr "更多关键字请参见 :meth:`DataFrame.plot`。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:26
+#: of
+msgid ":class:`matplotlib.axes.Axes` or numpy.ndarray of them"
+msgstr ":class:`matplotlib.axes.Axes` 或其组成的 numpy.ndarray"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:30
+#: of
+msgid ":py:obj:`DataFrame.boxplot`"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:31
+#: of
+msgid "Another method to draw a box plot."
+msgstr "另一种绘制箱线图的方法。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:33
+#: of
+msgid ":py:obj:`Series.plot.box`"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:34
+#: of
+msgid "Draw a box plot from a Series object."
+msgstr "从 Series 对象绘制箱线图。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:36
+#: of
+msgid ":py:obj:`matplotlib.pyplot.boxplot`"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:37
+#: of
+msgid "Draw a box plot in matplotlib."
+msgstr "在 matplotlib 中绘制箱线图。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:40
+#: of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:41
+#: of
+msgid ""
+"Draw a box plot from a DataFrame with four columns of randomly generated "
+"data."
+msgstr "从包含四列随机生成数据的 DataFrame 中绘制箱线图。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.plot.box.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-Series-plot-box-1.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-Series-plot-box-1.py>`)"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:53
+#: of
+msgid ""
+"You can also generate groupings if you specify the `by` parameter (which "
+"can take a column name, or a list or tuple of column names):"
+msgstr "如果你指定了 `by` 参数（可以是列名，或列名的列表或元组），也可以生成分组："
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.plot.box.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-Series-plot-box-2.py>`)"
+msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-Series-plot-box-2.py>`)"
+

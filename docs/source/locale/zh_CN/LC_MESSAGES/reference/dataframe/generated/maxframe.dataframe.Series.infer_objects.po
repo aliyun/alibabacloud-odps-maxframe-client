@@ -1,0 +1,84 @@
+# Translations template for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.infer_objects.rst:2
+msgid "maxframe.dataframe.Series.infer\\_objects"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects:1 of
+msgid "Attempt to infer better dtypes for object columns."
+msgstr "尝试为对象列推断更好的数据类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects:3 of
+msgid ""
+"Attempts soft conversion of object-dtyped columns, leaving non-object and"
+" unconvertible columns unchanged. The inference rules are the same as "
+"during normal Series/DataFrame construction."
+msgstr ""
+"尝试对 object 类型的列进行软转换，保持非 object 和无法转换的列不变。推断"
+"规则与正常 Series/DataFrame 构造时相同。"
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects:8 of
+msgid "**converted**"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects:13 of
+msgid ":py:obj:`to_datetime`"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects:14 of
+msgid "Convert argument to datetime."
+msgstr "将参数转换为 datetime。"
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects:16 of
+msgid ":py:obj:`to_timedelta`"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects:17 of
+msgid "Convert argument to timedelta."
+msgstr "将参数转换为 timedelta。"
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects:19 of
+msgid ":py:obj:`to_numeric`"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects:20 of
+msgid "Convert argument to numeric type."
+msgstr "将参数转换为数值类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects:22 of
+msgid ":py:obj:`convert_dtypes`"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects:23 of
+msgid "Convert argument to best possible dtype."
+msgstr "将参数转换为最佳可能的数据类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.infer_objects:26 of
+msgid "示例"
+msgstr ""
+

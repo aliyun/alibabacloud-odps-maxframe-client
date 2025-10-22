@@ -1,0 +1,239 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.concat.rst:2
+msgid "maxframe.dataframe.concat"
+msgstr ""
+
+#: maxframe.dataframe.merge.concat.concat:1 of
+msgid ""
+"Concatenate dataframe objects along a particular axis with optional set "
+"logic along the other axes."
+msgstr "沿着特定轴连接 dataframe 对象，并可选择在其他轴上应用集合逻辑。"
+
+#: maxframe.dataframe.merge.concat.concat:4 of
+msgid ""
+"Can also add a layer of hierarchical indexing on the concatenation axis, "
+"which may be useful if the labels are the same (or overlapping) on the "
+"passed axis number."
+msgstr ""
+"还可以在连接轴上添加一层分层索引，如果传递的轴编号上的标签相同（或重叠）"
+"，这可能会很有用。"
+
+#: maxframe.dataframe.merge.concat.concat of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.merge.concat.concat:8 of
+msgid ""
+"If a mapping is passed, the sorted keys will be used as the `keys` "
+"argument, unless it is passed, in which case the values will be selected "
+"(see below). Any None objects will be dropped silently unless they are "
+"all None in which case a ValueError will be raised."
+msgstr ""
+"如果传递了映射，则将使用排序后的键作为 `keys` 参数，除非已传递该参数，在"
+"这种情况下将选择值（见下文）。任何 None 对象将被静默丢弃，除非它们全部为 "
+"None，此时将引发 ValueError。"
+
+#: maxframe.dataframe.merge.concat.concat:13 of
+msgid "The axis to concatenate along."
+msgstr "要连接的轴。"
+
+#: maxframe.dataframe.merge.concat.concat:15 of
+msgid "How to handle indexes on other axis (or axes)."
+msgstr "如何处理其他轴上的索引。"
+
+#: maxframe.dataframe.merge.concat.concat:17 of
+msgid ""
+"If True, do not use the index values along the concatenation axis. The "
+"resulting axis will be labeled 0, ..., n - 1. This is useful if you are "
+"concatenating objects where the concatenation axis does not have "
+"meaningful indexing information. Note the index values on the other axes "
+"are still respected in the join."
+msgstr ""
+"如果为 True，则不使用连接轴上的索引值。结果轴将被标记为 0, ..., n - 1。"
+"如果你连接的对象的连接轴没有有意义的索引信息，则这很有用。请注意，其他"
+"轴上的索引值在连接中仍然会被保留。"
+
+#: maxframe.dataframe.merge.concat.concat:23 of
+msgid ""
+"If multiple levels passed, should contain tuples. Construct hierarchical "
+"index using the passed keys as the outermost level."
+msgstr "如果传递了多个级别，则应包含元组。使用传递的键作为最外层构造分层索引。"
+
+#: maxframe.dataframe.merge.concat.concat:26 of
+msgid ""
+"Specific levels (unique values) to use for constructing a MultiIndex. "
+"Otherwise they will be inferred from the keys."
+msgstr "用于构造 MultiIndex 的特定级别（唯一值）。否则将从键中推断出来。"
+
+#: maxframe.dataframe.merge.concat.concat:29 of
+msgid "Names for the levels in the resulting hierarchical index."
+msgstr "结果分层索引中各级别的名称。"
+
+#: maxframe.dataframe.merge.concat.concat:31 of
+msgid ""
+"Check whether the new concatenated axis contains duplicates. This can be "
+"very expensive relative to the actual data concatenation."
+msgstr "检查新的连接轴是否包含重复项。相对于实际的数据连接，这可能非常耗时。"
+
+#: maxframe.dataframe.merge.concat.concat:34 of
+msgid ""
+"Sort non-concatenation axis if it is not already aligned when `join` is "
+"'outer'. This has no effect when ``join='inner'``, which already "
+"preserves the order of the non-concatenation axis."
+msgstr ""
+"如果 `join` 为 'outer' 且非连接轴尚未对齐，则对其进行排序。当 ``join='"
+"inner'`` 时无效，因为此时已经保留了非连接轴的顺序。"
+
+#: maxframe.dataframe.merge.concat.concat:39 of
+msgid "If False, do not copy data unnecessarily."
+msgstr "如果为 False，则不必要时不复制数据。"
+
+#: maxframe.dataframe.merge.concat.concat of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.merge.concat.concat:42 of
+msgid ""
+"When concatenating all ``Series`` along the index (axis=0), a ``Series`` "
+"is returned. When ``objs`` contains at least one ``DataFrame``, a "
+"``DataFrame`` is returned. When concatenating along the columns (axis=1),"
+" a ``DataFrame`` is returned."
+msgstr ""
+"当沿索引（axis=0）连接所有 ``Series`` 时，返回一个 ``Series``。当 ``objs`"
+"` 包含至少一个 ``DataFrame`` 时，返回一个 ``DataFrame``。当沿列（axis=1）"
+"连接时，返回一个 ``DataFrame``。"
+
+#: maxframe.dataframe.merge.concat.concat of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.merge.concat.concat:50 of
+msgid ":py:obj:`Series.append`"
+msgstr ""
+
+#: maxframe.dataframe.merge.concat.concat:51 of
+msgid "Concatenate Series."
+msgstr "连接 Series。"
+
+#: maxframe.dataframe.merge.concat.concat:53 of
+msgid ":py:obj:`DataFrame.append`"
+msgstr ""
+
+#: maxframe.dataframe.merge.concat.concat:54 of
+msgid "Concatenate DataFrames."
+msgstr "连接 DataFrames。"
+
+#: maxframe.dataframe.merge.concat.concat:56 of
+msgid ":py:obj:`DataFrame.join`"
+msgstr ""
+
+#: maxframe.dataframe.merge.concat.concat:57 of
+msgid "Join DataFrames using indexes."
+msgstr "使用索引连接 DataFrames。"
+
+#: maxframe.dataframe.merge.concat.concat:59 of
+msgid ":py:obj:`DataFrame.merge`"
+msgstr ""
+
+#: maxframe.dataframe.merge.concat.concat:60 of
+msgid "Merge DataFrames by indexes or columns."
+msgstr "通过索引或列合并 DataFrames。"
+
+#: maxframe.dataframe.merge.concat.concat:63 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.merge.concat.concat:64 of
+msgid "The keys, levels, and names arguments are all optional."
+msgstr "keys、levels 和 names 参数都是可选的。"
+
+#: maxframe.dataframe.merge.concat.concat:66 of
+msgid ""
+"A walkthrough of how this method fits in with other tools for combining "
+"pandas objects can be found `here <https://pandas.pydata.org/pandas-"
+"docs/stable/user_guide/merging.html>`__."
+msgstr ""
+"有关此方法如何与其他组合 pandas 对象的工具配合使用的详细说明，请参见 `"
+"此处 <https://pandas.pydata.org/pandas-docs/stable/user_guide/merging."
+"html>`__。"
+
+#: maxframe.dataframe.merge.concat.concat:71 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.merge.concat.concat:72 of
+msgid "Combine two ``Series``."
+msgstr "合并两个 ``Series``。"
+
+#: maxframe.dataframe.merge.concat.concat:84 of
+msgid ""
+"Clear the existing index and reset it in the result by setting the "
+"``ignore_index`` option to ``True``."
+msgstr ""
+"通过将 ``ignore_index`` 选项设置为 ``True``，清除现有索引并在结果中重置它"
+"。"
+
+#: maxframe.dataframe.merge.concat.concat:94 of
+msgid ""
+"Add a hierarchical index at the outermost level of the data with the "
+"``keys`` option."
+msgstr "使用 ``keys`` 选项在数据的最外层添加一个分层索引。"
+
+#: maxframe.dataframe.merge.concat.concat:104 of
+msgid "Label the index keys you create with the ``names`` option."
+msgstr "使用 ``names`` 选项为创建的索引键添加标签。"
+
+#: maxframe.dataframe.merge.concat.concat:115 of
+msgid "Combine two ``DataFrame`` objects with identical columns."
+msgstr "合并两个具有相同列的 ``DataFrame`` 对象。"
+
+#: maxframe.dataframe.merge.concat.concat:136 of
+msgid ""
+"Combine ``DataFrame`` objects with overlapping columns and return "
+"everything. Columns outside the intersection will be filled with ``NaN`` "
+"values."
+msgstr ""
+"合并具有重叠列的 ``DataFrame`` 对象并返回所有内容。交集之外的列将用 ``NaN"
+"`` 值填充。"
+
+#: maxframe.dataframe.merge.concat.concat:153 of
+msgid ""
+"Combine ``DataFrame`` objects with overlapping columns and return only "
+"those that are shared by passing ``inner`` to the ``join`` keyword "
+"argument."
+msgstr ""
+"合并具有重叠列的 ``DataFrame`` 对象，并通过向 ``join`` 关键字参数传递 ``"
+"inner`` 来仅返回共享的列。"
+
+#: maxframe.dataframe.merge.concat.concat:164 of
+msgid ""
+"Combine ``DataFrame`` objects horizontally along the x axis by passing in"
+" ``axis=1``."
+msgstr "通过传入 ``axis=1`` 沿 x 轴水平合并 ``DataFrame`` 对象。"
+
+#: maxframe.dataframe.merge.concat.concat:174 of
+msgid ""
+"Prevent the result from including duplicate index values with the "
+"``verify_integrity`` option."
+msgstr "使用 ``verify_integrity`` 选项防止结果包含重复的索引值。"
+

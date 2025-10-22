@@ -1,0 +1,178 @@
+# Translations template for PROJECT.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.convert_dtypes.rst:2
+msgid "maxframe.dataframe.Series.convert\\_dtypes"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:1 of
+msgid "Convert columns to best possible dtypes using dtypes supporting ``pd.NA``."
+msgstr "将列转换为支持 ``pd.NA`` 的最佳数据类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:3 of
+msgid "Whether object dtypes should be converted to the best possible types."
+msgstr "是否应将 object 类型转换为最佳的类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:5 of
+msgid "Whether object dtypes should be converted to ``StringDtype()``."
+msgstr "是否应将 object 类型转换为 ``StringDtype()``。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:7 of
+msgid "Whether, if possible, conversion can be done to integer extension types."
+msgstr "是否可以在可能的情况下，将转换执行为整数扩展类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:9 of
+msgid "Whether object dtypes should be converted to ``BooleanDtypes()``."
+msgstr "是否应将 object 类型转换为 ``BooleanDtype()``。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:11 of
+msgid ""
+"Whether, if possible, conversion can be done to floating extension types."
+" If `convert_integer` is also True, preference will be give to integer "
+"dtypes if the floats can be faithfully casted to integers."
+msgstr ""
+"是否可以在可能的情况下，将转换执行为浮点扩展类型。如果 `convert_integer` "
+"也为 True，则如果浮点数可以精确转换为整数时，优先使用整数类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:16 of
+msgid "Copy of input object with new dtype."
+msgstr "具有新类型的输入对象的副本。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:21 of
+msgid ":py:obj:`infer_objects`"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:22 of
+msgid "Infer dtypes of objects."
+msgstr "推断对象的数据类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:24 of
+msgid ":py:obj:`to_datetime`"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:25 of
+msgid "Convert argument to datetime."
+msgstr "将参数转换为 datetime 类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:27 of
+msgid ":py:obj:`to_timedelta`"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:28 of
+msgid "Convert argument to timedelta."
+msgstr "将参数转换为 timedelta 类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:30 of
+msgid ":py:obj:`to_numeric`"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:31 of
+msgid "Convert argument to a numeric type."
+msgstr "将参数转换为数值类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:34 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:35 of
+msgid ""
+"By default, ``convert_dtypes`` will attempt to convert a Series (or each "
+"Series in a DataFrame) to dtypes that support ``pd.NA``. By using the "
+"options ``convert_string``, ``convert_integer``, ``convert_boolean`` and "
+"``convert_boolean``, it is possible to turn off individual conversions to"
+" ``StringDtype``, the integer extension types, ``BooleanDtype`` or "
+"floating extension types, respectively."
+msgstr ""
+"默认情况下，``convert_dtypes`` 会尝试将 Series（或 DataFrame 中的每个 "
+"Series）转换为支持 ``pd.NA`` 的数据类型。通过使用选项 ``convert_string``"
+"、``convert_integer``、``convert_boolean`` 和 ``convert_floating``，可以"
+"分别关闭对 ``StringDtype``、整数扩展类型、``BooleanDtype`` 或浮点扩展类型"
+"的转换。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:42 of
+msgid ""
+"For object-dtyped columns, if ``infer_objects`` is ``True``, use the "
+"inference rules as during normal Series/DataFrame construction.  Then, if"
+" possible, convert to ``StringDtype``, ``BooleanDtype`` or an appropriate"
+" integer or floating extension type, otherwise leave as ``object``."
+msgstr ""
+"对于 object 类型的列，如果 ``infer_objects`` 为 ``True``，则使用与常规 "
+"Series/DataFrame 构造时相同的推断规则。然后，如果可能的话，将其转换为 ``"
+"StringDtype``、``BooleanDtype`` 或适当的整数或浮点扩展类型，否则保留为 ``"
+"object`` 类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:47 of
+msgid "If the dtype is integer, convert to an appropriate integer extension type."
+msgstr "如果数据类型是整数类型，则转换为适当的整数扩展类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:49 of
+msgid ""
+"If the dtype is numeric, and consists of all integers, convert to an "
+"appropriate integer extension type. Otherwise, convert to an appropriate "
+"floating extension type."
+msgstr ""
+"如果数据类型是数值型，并且全部为整数，则转换为适当的整数扩展类型。否则，"
+"转换为适当的浮点扩展类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:53 of
+msgid ""
+"Starting with pandas 1.2, this method also converts float columns to the "
+"nullable floating extension type."
+msgstr "从 pandas 1.2 开始，此方法还会将浮点列转换为可空的浮点扩展类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:57 of
+msgid ""
+"In the future, as new dtypes are added that support ``pd.NA``, the "
+"results of this method will change to support those new dtypes."
+msgstr ""
+"将来，随着支持 ``pd.NA`` 的新数据类型增加，此方法的结果将随之变化以支持"
+"这些新的数据类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:61 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:75 of
+msgid "Start with a DataFrame with default dtypes."
+msgstr "从一个具有默认数据类型的 DataFrame 开始。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:92 of
+msgid "Convert the DataFrame to use best possible dtypes."
+msgstr "将 DataFrame 转换为使用最佳可能的数据类型。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:110 of
+msgid "Start with a Series of strings and missing data represented by ``np.nan``."
+msgstr "从一个包含字符串和由 ``np.nan`` 表示的缺失数据的 Series 开始。"
+
+#: maxframe.dataframe.misc.infer_dtypes.convert_dtypes:119 of
+msgid "Obtain a Series with dtype ``StringDtype``."
+msgstr "获得一个具有 ``StringDtype`` 数据类型的 Series。"
+

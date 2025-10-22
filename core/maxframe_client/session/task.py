@@ -112,7 +112,14 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
                 return None
             else:
                 raise SessionAlreadyClosedError(self._instance.id)
-        result_data = base64.b64decode(encoded_result)
+
+        try:
+            result_data = base64.b64decode(encoded_result)
+        except:
+            # todo change to a better logic when it is possible
+            #  to judge if server side returns success or fail
+            raise parse_instance_error(encoded_result)
+
         if self._output_format == MAXFRAME_OUTPUT_MAXFRAME_FORMAT:
             return deserialize_serializable(result_data)
         elif self._output_format == MAXFRAME_OUTPUT_JSON_FORMAT:

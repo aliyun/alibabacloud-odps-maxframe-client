@@ -1,0 +1,162 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.multinomial.rst:2
+msgid "maxframe.tensor.random.multinomial"
+msgstr ""
+
+#: maxframe.tensor.random.multinomial.multinomial:1 of
+msgid "Draw samples from a multinomial distribution."
+msgstr "从多项分布中抽取样本。"
+
+#: maxframe.tensor.random.multinomial.multinomial:3 of
+msgid ""
+"The multinomial distribution is a multivariate generalisation of the "
+"binomial distribution.  Take an experiment with one of ``p`` possible "
+"outcomes.  An example of such an experiment is throwing a dice, where the"
+" outcome can be 1 through 6.  Each sample drawn from the distribution "
+"represents `n` such experiments.  Its values, ``X_i = [X_0, X_1, ..., "
+"X_p]``, represent the number of times the outcome was ``i``."
+msgstr ""
+"多项分布是二项分布的多元推广。考虑一个有 ``p`` 种可能结果的实验，例如"
+"掷骰子，其结果可以是 1 到 6。从该分布中抽取的每个样本代表 `n` 次这样的"
+"实验。其值 ``X_i = [X_0, X_1, ..., X_p]`` 表示结果为 ``i`` 的次数。"
+
+#: maxframe.tensor.random.multinomial.multinomial of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.multinomial.multinomial:11 of
+msgid "Number of experiments."
+msgstr "实验次数。"
+
+#: maxframe.tensor.random.multinomial.multinomial:13 of
+msgid ""
+"Probabilities of each of the ``p`` different outcomes.  These should sum "
+"to 1 (however, the last element is always assumed to account for the "
+"remaining probability, as long as ``sum(pvals[:-1]) <= 1)``."
+msgstr ""
+"每种 ``p`` 个不同结果的概率。它们的总和应为 1（不过只要 ``sum(pvals[:-1])"
+" <= 1``，最后一个元素总是被假定为占剩余概率）。"
+
+#: maxframe.tensor.random.multinomial.multinomial:18 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  Default is None, in which case a single value is"
+" returned."
+msgstr ""
+"输出形状。如果给定的形状是，例如 ``(m, n, k)``，则抽取 ``m * n * k`` 个"
+"样本。默认为 None，此时返回单个值。"
+
+#: maxframe.tensor.random.multinomial.multinomial:22 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上的期望分块大小"
+
+#: maxframe.tensor.random.multinomial.multinomial:24 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.multinomial.multinomial:26 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.multinomial.multinomial of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.multinomial.multinomial:29 of
+msgid ""
+"**out** -- The drawn samples, of shape *size*, if that was provided.  If "
+"not, the shape is ``(N,)``.  In other words, each entry "
+"``out[i,j,...,:]`` is an N-dimensional value drawn from the distribution."
+msgstr ""
+"**out** -- 抽取的样本，形状为 *size*（如果提供了该参数）。否则，形状为 ``"
+"(N,)``。换句话说，每个条目 ``out[i,j,...,:]`` 是从分布中抽取的一个 N 维值"
+"。"
+
+#: maxframe.tensor.random.multinomial.multinomial:29 of
+#, fuzzy
+msgid ""
+"**out** -- The drawn samples, of shape *size*, if that was provided.  If "
+"not, the shape is ``(N,)``."
+msgstr ""
+"**out** -- 抽取的样本，形状为 *size*（如果提供了该参数）。否则，形状为 ``"
+"(N,)``。换句话说，每个条目 ``out[i,j,...,:]`` 是从分布中抽取的一个 N 维值"
+"。"
+
+#: maxframe.tensor.random.multinomial.multinomial:32 of
+#, fuzzy
+msgid ""
+"In other words, each entry ``out[i,j,...,:]`` is an N-dimensional value "
+"drawn from the distribution."
+msgstr ""
+"**out** -- 抽取的样本，形状为 *size*（如果提供了该参数）。否则，形状为 ``"
+"(N,)``。换句话说，每个条目 ``out[i,j,...,:]`` 是从分布中抽取的一个 N 维值"
+"。"
+
+#: maxframe.tensor.random.multinomial.multinomial of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.multinomial.multinomial:37 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.multinomial.multinomial:38 of
+msgid "Throw a dice 20 times:"
+msgstr "掷骰子 20 次："
+
+#: maxframe.tensor.random.multinomial.multinomial:45 of
+msgid "It landed 4 times on 1, once on 2, etc."
+msgstr "结果中 1 出现了 4 次，2 出现了 1 次，等等。"
+
+#: maxframe.tensor.random.multinomial.multinomial:47 of
+msgid "Now, throw the dice 20 times, and 20 times again:"
+msgstr "现在，掷骰子 20 次，再掷 20 次："
+
+#: maxframe.tensor.random.multinomial.multinomial:53 of
+msgid ""
+"For the first run, we threw 3 times 1, 4 times 2, etc.  For the second, "
+"we threw 2 times 1, 4 times 2, etc."
+msgstr ""
+"第一次掷骰，1 出现了 3 次，2 出现了 4 次，等等。第二次掷骰，1 出现了 2 次"
+"，2 出现了 4 次，等等。"
+
+#: maxframe.tensor.random.multinomial.multinomial:56 of
+msgid "A loaded die is more likely to land on number 6:"
+msgstr "一个灌铅的骰子更可能落在数字 6 上："
+
+#: maxframe.tensor.random.multinomial.multinomial:61 of
+msgid ""
+"The probability inputs should be normalized. As an implementation detail,"
+" the value of the last entry is ignored and assumed to take up any "
+"leftover probability mass, but this should not be relied on. A biased "
+"coin which has twice as much weight on one side as on the other should be"
+" sampled like so:"
+msgstr ""
+"概率输入应进行归一化。作为实现细节，最后一个值将被忽略，并被假定占据任何"
+"剩余的概率质量，但不应依赖于此。一枚偏向一边的硬币（某一侧的权重是另一侧"
+"的两倍）应这样采样："
+
+#: maxframe.tensor.random.multinomial.multinomial:70 of
+msgid "not like:"
+msgstr "而不是这样："
+

@@ -1,0 +1,160 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.unique.rst:2
+msgid "maxframe.tensor.unique"
+msgstr ""
+
+#: maxframe.tensor.misc.unique.unique:1 of
+msgid "Find the unique elements of a tensor."
+msgstr "查找张量中的唯一元素。"
+
+#: maxframe.tensor.misc.unique.unique:3 of
+msgid ""
+"Returns the sorted unique elements of a tensor. There are three optional "
+"outputs in addition to the unique elements:"
+msgstr "返回张量中排序后的唯一元素。除了唯一元素外，还有三个可选输出："
+
+#: maxframe.tensor.misc.unique.unique:6 of
+msgid "the indices of the input tensor that give the unique values"
+msgstr "输入张量中产生唯一值的索引"
+
+#: maxframe.tensor.misc.unique.unique:7 of
+msgid "the indices of the unique tensor that reconstruct the input tensor"
+msgstr "唯一张量中用于重构输入张量的索引"
+
+#: maxframe.tensor.misc.unique.unique:8 of
+msgid "the number of times each unique value comes up in the input tensor"
+msgstr "每个唯一值在输入张量中出现的次数"
+
+#: maxframe.tensor.misc.unique.unique of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.unique.unique:10 of
+msgid ""
+"Input tensor. Unless `axis` is specified, this will be flattened if it is"
+" not already 1-D."
+msgstr "输入张量。除非指定了 `axis`，否则如果不是一维的，它将被展平。"
+
+#: maxframe.tensor.misc.unique.unique:13 of
+msgid ""
+"If True, also return the indices of `ar` (along the specified axis, if "
+"provided, or in the flattened tensor) that result in the unique tensor."
+msgstr ""
+"如果为 True，则还返回 `ar` 的索引（沿指定轴，如果提供；或者在展平后的张量"
+"中），这些索引可生成唯一张量。"
+
+#: maxframe.tensor.misc.unique.unique:16 of
+msgid ""
+"If True, also return the indices of the unique tensor (for the specified "
+"axis, if provided) that can be used to reconstruct `ar`."
+msgstr ""
+"如果为 True，则还返回唯一张量的索引（对于指定轴，如果提供），这些索引可"
+"用于重构 `ar`。"
+
+#: maxframe.tensor.misc.unique.unique:19 of
+msgid "If True, also return the number of times each unique item appears in `ar`."
+msgstr "如果为 True，则还返回每个唯一项在 `ar` 中出现的次数。"
+
+#: maxframe.tensor.misc.unique.unique:22 of
+msgid ""
+"The axis to operate on. If None, `ar` will be flattened. If an integer, "
+"the subarrays indexed by the given axis will be flattened and treated as "
+"the elements of a 1-D tensor with the dimension of the given axis, see "
+"the notes for more details.  Object tensors or structured tensors that "
+"contain objects are not supported if the `axis` kwarg is used. The "
+"default is None."
+msgstr ""
+"操作的轴。如果为 None，则 `ar` 将被展平。如果为整数，则由给定轴索引的子"
+"数组将被展平，并视为具有给定轴维度的一维张量的元素，更多细节参见说明。"
+"如果使用 `axis` 参数，则不支持包含对象的对象张量或结构化张量。默认值为 "
+"None。"
+
+#: maxframe.tensor.misc.unique.unique of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.unique.unique:30 of
+msgid ""
+"* **unique** (*Tensor*) -- The sorted unique values. * **unique_indices**"
+" (*Tensor, optional*) -- The indices of the first occurrences of the "
+"unique values in the   original tensor. Only provided if `return_index` "
+"is True. * **unique_inverse** (*Tensor, optional*) -- The indices to "
+"reconstruct the original tensor from the   unique tensor. Only provided "
+"if `return_inverse` is True. * **unique_counts** (*Tensor, optional*) -- "
+"The number of times each of the unique values comes up in the   original "
+"tensor. Only provided if `return_counts` is True."
+msgstr ""
+"* **unique** (*Tensor*) -- 排序后的唯一值。* **unique_indices** (*Tensor,"
+" optional*) -- 唯一值在原始张量中首次出现的索引。仅当 `return_index` 为 "
+"True 时提供。* **unique_inverse** (*Tensor, optional*) -- 从唯一张量重构"
+"原始张量的索引。仅当 `return_inverse` 为 True 时提供。* **unique_counts**"
+" (*Tensor, optional*) -- 每个唯一值在原始张量中出现的次数。仅当 `return_"
+"counts` 为 True 时提供。"
+
+#: maxframe.tensor.misc.unique.unique:30 of
+msgid "**unique** (*Tensor*) -- The sorted unique values."
+msgstr "**unique** (*Tensor*) -- 排序后的唯一值。"
+
+#: maxframe.tensor.misc.unique.unique:31 of
+msgid ""
+"**unique_indices** (*Tensor, optional*) -- The indices of the first "
+"occurrences of the unique values in the original tensor. Only provided if"
+" `return_index` is True."
+msgstr ""
+"**unique_indices** (*Tensor, optional*) -- 唯一值在原始张量中首次出现的"
+"索引。仅当 `return_index` 为 True 时提供。"
+
+#: maxframe.tensor.misc.unique.unique:33 of
+msgid ""
+"**unique_inverse** (*Tensor, optional*) -- The indices to reconstruct the"
+" original tensor from the unique tensor. Only provided if "
+"`return_inverse` is True."
+msgstr ""
+"**unique_inverse** (*Tensor, optional*) -- 用于从唯一张量重构原始张量的"
+"索引。仅当 `return_inverse` 为 True 时提供。"
+
+#: maxframe.tensor.misc.unique.unique:35 of
+msgid ""
+"**unique_counts** (*Tensor, optional*) -- The number of times each of the"
+" unique values comes up in the original tensor. Only provided if "
+"`return_counts` is True."
+msgstr ""
+"**unique_counts** (*Tensor, optional*) -- 每个唯一值在原始张量中出现的"
+"次数。仅当 `return_counts` 为 True 时提供。"
+
+#: maxframe.tensor.misc.unique.unique:39 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.misc.unique.unique:48 of
+msgid "Return the unique rows of a 2D tensor"
+msgstr "返回二维张量的唯一行"
+
+#: maxframe.tensor.misc.unique.unique:54 of
+msgid "Return the indices of the original tensor that give the unique values:"
+msgstr "返回原始张量中生成唯一值的索引："
+
+#: maxframe.tensor.misc.unique.unique:67 of
+msgid "Reconstruct the input array from the unique values:"
+msgstr "从唯一值重构输入数组："
+

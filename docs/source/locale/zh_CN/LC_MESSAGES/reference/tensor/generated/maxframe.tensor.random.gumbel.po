@@ -1,0 +1,195 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.gumbel.rst:2
+msgid "maxframe.tensor.random.gumbel"
+msgstr ""
+
+#: maxframe.tensor.random.gumbel.gumbel:1 of
+msgid "Draw samples from a Gumbel distribution."
+msgstr "从 Gumbel 分布中抽取样本。"
+
+#: maxframe.tensor.random.gumbel.gumbel:3 of
+msgid ""
+"Draw samples from a Gumbel distribution with specified location and "
+"scale.  For more information on the Gumbel distribution, see Notes and "
+"References below."
+msgstr ""
+"从具有指定位置和尺度参数的 Gumbel 分布中抽取样本。有关 Gumbel 分布的更多"
+"信息，请参见下面的说明和参考文献。"
+
+#: maxframe.tensor.random.gumbel.gumbel of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.gumbel.gumbel:7 of
+msgid "The location of the mode of the distribution. Default is 0."
+msgstr "分布众数的位置。默认值为 0。"
+
+#: maxframe.tensor.random.gumbel.gumbel:9 of
+msgid "The scale parameter of the distribution. Default is 1."
+msgstr "分布的尺度参数。默认值为 1。"
+
+#: maxframe.tensor.random.gumbel.gumbel:11 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``loc`` and ``scale`` are both scalars. Otherwise, "
+"``np.broadcast(loc, scale).size`` samples are drawn."
+msgstr ""
+"输出形状。如果给定形状，例如 ``(m, n, k)``，则抽取 ``m * n * k`` 个样本。"
+"如果 size 为 ``None``（默认），并且 ``loc`` 和 ``scale`` 都是标量，则返回"
+"单个值。否则抽取 ``np.broadcast(loc, scale).size`` 个样本。"
+
+#: maxframe.tensor.random.gumbel.gumbel:16 of
+msgid "Desired chunk size on each dimension"
+msgstr "每一维度上期望的分块大小"
+
+#: maxframe.tensor.random.gumbel.gumbel:18 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.gumbel.gumbel:20 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.gumbel.gumbel of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.gumbel.gumbel:23 of
+msgid "**out** -- Drawn samples from the parameterized Gumbel distribution."
+msgstr "**out** -- 从参数化的 Gumbel 分布中抽取的样本。"
+
+#: maxframe.tensor.random.gumbel.gumbel of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.gumbel.gumbel:26 of
+msgid ""
+":py:obj:`scipy.stats.gumbel_l`, :py:obj:`scipy.stats.gumbel_r`, "
+":py:obj:`scipy.stats.genextreme`, :py:obj:`weibull`"
+msgstr ""
+
+#: maxframe.tensor.random.gumbel.gumbel:29 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.gumbel.gumbel:30 of
+msgid ""
+"The Gumbel (or Smallest Extreme Value (SEV) or the Smallest Extreme Value"
+" Type I) distribution is one of a class of Generalized Extreme Value "
+"(GEV) distributions used in modeling extreme value problems. The Gumbel "
+"is a special case of the Extreme Value Type I distribution for maximums "
+"from distributions with \"exponential-like\" tails."
+msgstr ""
+"Gumbel（或最小极值（SEV）或最小极值 I 型）分布是一类用于建模极值问题的"
+"广义极值（GEV）分布之一。Gumbel 是来自具有“指数类”尾部分布的最大值的"
+"极值 I 型分布的特殊情况。"
+
+#: maxframe.tensor.random.gumbel.gumbel:36 of
+msgid "The probability density for the Gumbel distribution is"
+msgstr "Gumbel 分布的概率密度为"
+
+#: maxframe.tensor.random.gumbel.gumbel:38 of
+msgid ""
+"p(x) = \\frac{e^{-(x - \\mu)/ \\beta}}{\\beta} e^{ -e^{-(x - \\mu)/\n"
+"\\beta}},\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.gumbel.gumbel:41 of
+msgid ""
+"where :math:`\\mu` is the mode, a location parameter, and :math:`\\beta` "
+"is the scale parameter."
+msgstr "其中 :math:`\\mu` 是众数，即位置参数，:math:`\\beta` 是尺度参数。"
+
+#: maxframe.tensor.random.gumbel.gumbel:44 of
+msgid ""
+"The Gumbel (named for German mathematician Emil Julius Gumbel) was used "
+"very early in the hydrology literature, for modeling the occurrence of "
+"flood events. It is also used for modeling maximum wind speed and "
+"rainfall rates.  It is a \"fat-tailed\" distribution - the probability of"
+" an event in the tail of the distribution is larger than if one used a "
+"Gaussian, hence the surprisingly frequent occurrence of 100-year floods. "
+"Floods were initially modeled as a Gaussian process, which underestimated"
+" the frequency of extreme events."
+msgstr ""
+"Gumbel（以德国数学家 Emil Julius Gumbel 命名）很早就在水文学文献中用于"
+"建模洪水事件的发生。它也用于建模最大风速和降雨率。它是一种“厚尾”分布——"
+"分布尾部事件的概率比使用高斯分布时更大，因此出现了令人惊讶的频繁的"
+"百年一遇洪水。洪水最初被建模为高斯过程，这低估了极端事件的频率。"
+
+#: maxframe.tensor.random.gumbel.gumbel:53 of
+msgid ""
+"It is one of a class of extreme value distributions, the Generalized "
+"Extreme Value (GEV) distributions, which also includes the Weibull and "
+"Frechet."
+msgstr ""
+"它是一类极值分布，即广义极值（GEV）分布中的一种，还包括 Weibull 和 "
+"Frechet。"
+
+#: maxframe.tensor.random.gumbel.gumbel:57 of
+#, python-brace-format
+msgid ""
+"The function has a mean of :math:`\\mu + 0.57721\\beta` and a variance of"
+" :math:`\\frac{\\pi^2}{6}\\beta^2`."
+msgstr ""
+"该函数的均值为 :math:`\\mu + 0.57721\\beta`，方差为 :math:`\\frac{\\pi^2}"
+"{6}\\beta^2`。"
+
+#: maxframe.tensor.random.gumbel.gumbel:61 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.gumbel.gumbel:62 of
+msgid ""
+"Gumbel, E. J., \"Statistics of Extremes,\" New York: Columbia University "
+"Press, 1958."
+msgstr ""
+
+#: maxframe.tensor.random.gumbel.gumbel:64 of
+msgid ""
+"Reiss, R.-D. and Thomas, M., \"Statistical Analysis of Extreme Values "
+"from Insurance, Finance, Hydrology and Other Fields,\" Basel: Birkhauser "
+"Verlag, 2001."
+msgstr ""
+
+#: maxframe.tensor.random.gumbel.gumbel:69 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.gumbel.gumbel:70 of
+msgid "Draw samples from the distribution:"
+msgstr "从分布中抽取样本："
+
+#: maxframe.tensor.random.gumbel.gumbel:77 of
+msgid ""
+"Display the histogram of the samples, along with the probability density "
+"function:"
+msgstr "显示样本的直方图，以及概率密度函数："
+
+#: maxframe.tensor.random.gumbel.gumbel:88 of
+msgid ""
+"Show how an extreme value distribution can arise from a Gaussian process "
+"and compare to a Gaussian:"
+msgstr "展示极值分布如何从高斯过程中产生，并与高斯分布进行比较："
+

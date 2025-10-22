@@ -1,0 +1,111 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.hankel2.rst:2
+msgid "maxframe.tensor.special.hankel2"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.hankel2:1 of
+msgid "Hankel function of the second kind"
+msgstr "第二类汉克尔函数"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.hankel2.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.hankel2:3 of
+msgid "Order (float)."
+msgstr "阶数（浮点数）。"
+
+#: maxframe.tensor.special.bessel.hankel2:5 of
+msgid "Argument (float or complex)."
+msgstr "自变量（浮点数或复数）。"
+
+#: maxframe.tensor.special.bessel.hankel2:7 of
+msgid "Optional output array for the function values"
+msgstr "可选的输出数组，用于存储函数值"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.hankel2.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.hankel2:10 of
+msgid "Values of the Hankel function of the second kind."
+msgstr "第二类汉克尔函数的值。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.hankel2.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.hankel2:15 of
+msgid ":py:obj:`hankel2e`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.hankel2:16 of
+msgid "this function with leading exponential behavior stripped off."
+msgstr "该函数去除了前导指数行为的形式。"
+
+#: maxframe.tensor.special.bessel.hankel2:19 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.hankel2:20 of
+msgid ""
+"A wrapper for the AMOS [1]_ routine `zbesh`, which carries out the "
+"computation using the relation,"
+msgstr "对 AMOS [1]_ 例程 `zbesh` 的封装，该例程使用以下关系进行计算，"
+
+#: maxframe.tensor.special.bessel.hankel2:23 of
+#, python-brace-format
+msgid ""
+"H^{(2)}_v(z) =\n"
+"-\\frac{2}{\\imath\\pi} \\exp(\\imath \\pi v/2) K_v(z "
+"\\exp(\\imath\\pi/2))\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.hankel2:26 of
+msgid ""
+"where :math:`K_v` is the modified Bessel function of the second kind. For"
+" negative orders, the relation"
+msgstr "其中 :math:`K_v` 是第二类变形贝塞尔函数。对于负阶数，使用如下关系："
+
+#: maxframe.tensor.special.bessel.hankel2:29 of
+#, python-brace-format
+msgid ""
+"H^{(2)}_{-v}(z) = H^{(2)}_v(z) \\exp(-\\imath\\pi v)\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.hankel2:31 of
+msgid "is used."
+msgstr "进行计算。"
+
+#: maxframe.tensor.special.bessel.hankel2:34 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.hankel2:35 of
+msgid ""
+"Donald E. Amos, \"AMOS, A Portable Package for Bessel Functions of a "
+"Complex Argument and Nonnegative Order\", http://netlib.org/amos/"
+msgstr ""
+

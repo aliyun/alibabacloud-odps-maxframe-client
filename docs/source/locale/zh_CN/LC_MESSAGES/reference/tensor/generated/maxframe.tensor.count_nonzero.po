@@ -1,0 +1,89 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.count_nonzero.rst:2
+msgid "maxframe.tensor.count\\_nonzero"
+msgstr ""
+
+#: maxframe.tensor.reduction.count_nonzero.count_nonzero:1 of
+msgid "Counts the number of non-zero values in the tensor ``a``."
+msgstr "计算张量 ``a`` 中非零值的数量。"
+
+#: maxframe.tensor.reduction.count_nonzero.count_nonzero:3 of
+msgid ""
+"The word \"non-zero\" is in reference to the Python 2.x built-in method "
+"``__nonzero__()`` (renamed ``__bool__()`` in Python 3.x) of Python "
+"objects that tests an object's \"truthfulness\". For example, any number "
+"is considered truthful if it is nonzero, whereas any string is considered"
+" truthful if it is not the empty string. Thus, this function "
+"(recursively) counts how many elements in ``a`` (and in sub-tensors "
+"thereof) have their ``__nonzero__()`` or ``__bool__()`` method evaluated "
+"to ``True``."
+msgstr ""
+"“非零”一词参考了 Python 2.x 的内置方法 ``__nonzero__()``（在 Python 3.x"
+" 中重命名为 ``__bool__()``），用于测试对象的“真实性”。例如，任何非零"
+"数字被认为是真实的，而任何非空字符串也被认为是真实的。因此，此函数（递归"
+"地）计算 ``a``（及其子张量）中 ``__nonzero__()`` 或 ``__bool__()`` 方法"
+"返回 ``True`` 的元素数量。"
+
+#: maxframe.tensor.reduction.count_nonzero.count_nonzero of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.reduction.count_nonzero.count_nonzero:13 of
+msgid "The tensor for which to count non-zeros."
+msgstr "需要计算非零值数量的张量。"
+
+#: maxframe.tensor.reduction.count_nonzero.count_nonzero:15 of
+msgid ""
+"Axis or tuple of axes along which to count non-zeros. Default is None, "
+"meaning that non-zeros will be counted along a flattened version of "
+"``a``."
+msgstr ""
+"计算非零值的轴或轴的元组。默认为 None，表示将沿 ``a`` 的展平版本计算"
+"非零值。"
+
+#: maxframe.tensor.reduction.count_nonzero.count_nonzero of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.reduction.count_nonzero.count_nonzero:20 of
+msgid ""
+"**count** -- Number of non-zero values in the array along a given axis. "
+"Otherwise, the total number of non-zero values in the tensor is returned."
+msgstr "**count** -- 给定轴上数组中非零值的数量。否则，返回张量中非零值的总数。"
+
+#: maxframe.tensor.reduction.count_nonzero.count_nonzero of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.reduction.count_nonzero.count_nonzero:27 of
+msgid ":py:obj:`nonzero`"
+msgstr ""
+
+#: maxframe.tensor.reduction.count_nonzero.count_nonzero:28 of
+msgid "Return the coordinates of all the non-zero values."
+msgstr "返回所有非零值的坐标。"
+
+#: maxframe.tensor.reduction.count_nonzero.count_nonzero:31 of
+msgid "示例"
+msgstr ""
+

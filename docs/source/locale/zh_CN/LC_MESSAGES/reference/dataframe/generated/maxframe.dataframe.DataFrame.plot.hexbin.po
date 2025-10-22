@@ -1,0 +1,179 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.hexbin.rst:2
+msgid "maxframe.dataframe.DataFrame.plot.hexbin"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:1
+#: of
+msgid "Generate a hexagonal binning plot."
+msgstr "生成一个六边形箱图。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:3
+#: of
+msgid ""
+"Generate a hexagonal binning plot of `x` versus `y`. If `C` is `None` "
+"(the default), this is a histogram of the number of occurrences of the "
+"observations at ``(x[i], y[i])``."
+msgstr ""
+"生成 `x` 与 `y` 的六边形箱图。如果 `C` 为 `None`（默认值），则这是在 ``(x"
+"[i], y[i])`` 位置观测值出现次数的直方图。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:7
+#: of
+msgid ""
+"If `C` is specified, specifies values at given coordinates ``(x[i], "
+"y[i])``. These values are accumulated for each hexagonal bin and then "
+"reduced according to `reduce_C_function`, having as default the NumPy's "
+"mean function (:meth:`numpy.mean`). (If `C` is specified, it must also be"
+" a 1-D sequence of the same length as `x` and `y`, or a column label.)"
+msgstr ""
+"如果指定了 `C`，则指定在给定坐标 ``(x[i], y[i])`` 处的值。这些值会被"
+"累积到每个六边形箱中，然后根据 `reduce_C_function` 进行归约，默认使用 "
+"NumPy 的均值函数 (:meth:`numpy.mean`)。（如果指定了 `C`，它也必须是与 `x`"
+" 和 `y` 长度相同的 1 维序列，或一个列标签。）"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:14
+#: of
+msgid "The column label or position for x points."
+msgstr "x 点的列标签或位置。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:16
+#: of
+msgid "The column label or position for y points."
+msgstr "y 点的列标签或位置。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:18
+#: of
+msgid "The column label or position for the value of `(x, y)` point."
+msgstr "`(x, y)` 点值的列标签或位置。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:20
+#: of
+msgid ""
+"Function of one argument that reduces all the values in a bin to a single"
+" number (e.g. `np.mean`, `np.max`, `np.sum`, `np.std`)."
+msgstr ""
+"将箱中的所有值归约为单个数值的函数（例如 `np.mean`、`np.max`、`np.sum`、`"
+"np.std`）。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:23
+#: of
+msgid ""
+"The number of hexagons in the x-direction. The corresponding number of "
+"hexagons in the y-direction is chosen in a way that the hexagons are "
+"approximately regular. Alternatively, gridsize can be a tuple with two "
+"elements specifying the number of hexagons in the x-direction and the "
+"y-direction."
+msgstr ""
+"x 方向的六边形数量。y 方向的六边形数量会以使六边形近似规整的方式选择。"
+"或者，gridsize 可以是一个包含两个元素的元组，分别指定 x 和 y 方向上的"
+"六边形数量。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:30
+#: of
+msgid "Additional keyword arguments are documented in :meth:`DataFrame.plot`."
+msgstr "其他关键字参数请参考 :meth:`DataFrame.plot`。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:33
+#: of
+msgid "The matplotlib ``Axes`` on which the hexbin is plotted."
+msgstr "绘制六边形箱图的 matplotlib ``Axes``。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner
+#: of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:38
+#: of
+msgid ":py:obj:`DataFrame.plot`"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:39
+#: of
+msgid "Make plots of a DataFrame."
+msgstr "绘制 DataFrame 的图表。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:41
+#: of
+msgid ":py:obj:`matplotlib.pyplot.hexbin`"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:42
+#: of
+msgid ""
+"Hexagonal binning plot using matplotlib, the matplotlib function that is "
+"used under the hood."
+msgstr "使用 matplotlib 的六边形箱图，是底层使用的 matplotlib 函数。"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:45
+#: of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:46
+#: of
+msgid ""
+"The following examples are generated with random data from a normal "
+"distribution."
+msgstr "以下示例使用来自正态分布的随机数据生成。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.hexbin.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-hexbin-1.py>`)"
+msgstr ""
+"(:download:`源码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-DataFrame-plot-hexbin-1.py>`)"
+
+#: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:59
+#: of
+msgid ""
+"The next example uses `C` and `np.sum` as `reduce_C_function`. Note that "
+"`'observations'` values ranges from 1 to 5 but the result plot shows "
+"values up to more than 25. This is because of the `reduce_C_function`."
+msgstr ""
+"下一个示例使用 `C` 和 `np.sum` 作为 `reduce_C_function`。注意 `'"
+"observations'` 的值范围为 1 到 5，但结果图显示的值超过 25。这是因为 `"
+"reduce_C_function` 的作用。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.hexbin.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/dataframe/generated"
+"/maxframe-dataframe-DataFrame-plot-hexbin-2.py>`)"
+msgstr ""
+"(:download:`源码 <../../../../build/locale/plot_directive/reference/"
+"dataframe/generated/maxframe-dataframe-DataFrame-plot-hexbin-2.py>`)"
+

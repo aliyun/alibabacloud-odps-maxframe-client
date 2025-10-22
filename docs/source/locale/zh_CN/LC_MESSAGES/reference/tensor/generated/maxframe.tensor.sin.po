@@ -1,0 +1,112 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.sin.rst:2
+msgid "maxframe.tensor.sin"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.sin.sin:1 of
+msgid "Trigonometric sine, element-wise."
+msgstr "三角正弦，逐元素计算。"
+
+#: maxframe.tensor.arithmetic.sin.sin of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.sin.sin:3 of
+msgid "Angle, in radians (:math:`2 \\pi` rad equals 360 degrees)."
+msgstr "角度，以弧度为单位（:math:`2 \\pi` 弧度等于 360 度）。"
+
+#: maxframe.tensor.arithmetic.sin.sin:5 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，其形状必须可以广播到输入。如果未提供或为 `"
+"None`，则返回一个新分配的张量。元组（只能作为关键字参数）的长度必须等于"
+"输出的数量。"
+
+#: maxframe.tensor.arithmetic.sin.sin:10 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.sin.sin of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.sin.sin:15 of
+msgid "**y** -- The sine of each element of x."
+msgstr "**y** -- x 中每个元素的正弦值。"
+
+#: maxframe.tensor.arithmetic.sin.sin of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.sin.sin:18 of
+msgid ":py:obj:`arcsin`, :py:obj:`sinh`, :py:obj:`cos`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.sin.sin:21 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.sin.sin:22 of
+msgid ""
+"The sine is one of the fundamental functions of trigonometry (the "
+"mathematical study of triangles).  Consider a circle of radius 1 centered"
+" on the origin.  A ray comes in from the :math:`+x` axis, makes an angle "
+"at the origin (measured counter-clockwise from that axis), and departs "
+"from the origin.  The :math:`y` coordinate of the outgoing ray's "
+"intersection with the unit circle is the sine of that angle.  It ranges "
+"from -1 for :math:`x=3\\pi / 2` to +1 for :math:`\\pi / 2.`  The function"
+" has zeroes where the angle is a multiple of :math:`\\pi`. Sines of "
+"angles between :math:`\\pi` and :math:`2\\pi` are negative. The numerous "
+"properties of the sine and related functions are included in any standard"
+" trigonometry text."
+msgstr ""
+"正弦是三角学（研究三角形的数学）的基本函数之一。考虑一个以原点为中心、"
+"半径为 1 的圆。一条射线从 :math:`+x` 轴进入，在原点处形成一个角度（从该轴"
+"逆时针测量），然后从原点出发。出射射线与单位圆交点的 :math:`y` 坐标即为该"
+"角度的正弦值。当 :math:`x=3\\pi / 2` 时为 -1，当 :math:`\\pi / 2` 时为 +1"
+"。当角度为 :math:`\\pi` 的倍数时，函数值为零。在 :math:`\\pi` 和 :math:`2"
+"\\pi` 之间的角度，其正弦值为负。正弦及相关函数的众多性质在任何标准三角学"
+"教材中都有介绍。"
+
+#: maxframe.tensor.arithmetic.sin.sin:35 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.sin.sin:36 of
+msgid "Print sine of one angle:"
+msgstr "打印一个角度的正弦值："
+
+#: maxframe.tensor.arithmetic.sin.sin:43 of
+msgid "Print sines of an array of angles given in degrees:"
+msgstr "打印一组以度为单位的角度的正弦值："
+
+#: maxframe.tensor.arithmetic.sin.sin:48 of
+msgid "Plot the sine function:"
+msgstr "绘制正弦函数图像："
+

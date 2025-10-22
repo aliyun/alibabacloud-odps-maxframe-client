@@ -1,0 +1,49 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.insert.rst:2
+msgid "maxframe.dataframe.DataFrame.insert"
+msgstr ""
+
+#: maxframe.dataframe.indexing.insert.df_insert:1 of
+msgid "Insert column into DataFrame at specified location."
+msgstr "在指定位置将列插入 DataFrame。"
+
+#: maxframe.dataframe.indexing.insert.df_insert:3 of
+msgid ""
+"Raises a ValueError if `column` is already contained in the DataFrame, "
+"unless `allow_duplicates` is set to True."
+msgstr ""
+"如果 `column` 已经包含在 DataFrame 中，则会引发 ValueError，除非将 `allow"
+"_duplicates` 设置为 True。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.insert.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.insert.df_insert:6 of
+msgid "Insertion index. Must verify 0 <= loc <= len(columns)."
+msgstr "插入位置索引。必须满足 0 <= loc <= len(columns)。"
+
+#: maxframe.dataframe.indexing.insert.df_insert:8 of
+msgid "Label of the inserted column."
+msgstr "插入列的标签。"
+

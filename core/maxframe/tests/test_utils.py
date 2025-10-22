@@ -31,6 +31,7 @@ import pyarrow as pa
 import pytest
 
 from .. import utils
+from ..lib.dtypes_extension import ArrowDtype
 from ..serialization import PickleContainer
 from ..utils import parse_size_to_megabytes, validate_and_adjust_resource_ratio
 
@@ -298,11 +299,11 @@ def test_estimate_pandas_size():
     s1 = pd.Series(np.random.rand(1000))
     assert utils.estimate_pandas_size(s1) == sys.getsizeof(s1)
 
-    from ..dataframe.arrays import ArrowStringArray
-
-    array = ArrowStringArray(np.random.choice(["abcd", "def", "gh"], size=(1000,)))
-    s2 = pd.Series(array)
-    assert utils.estimate_pandas_size(s2) == sys.getsizeof(s2)
+    if hasattr(pd, "ArrowDtype"):
+        arrow_array = pa.array(np.random.choice(["abcd", "def", "gh"], size=(1000,)))
+        array = pd.array(arrow_array, dtype=ArrowDtype(arrow_array.type))
+        s2 = pd.Series(array)
+        assert utils.estimate_pandas_size(s2) == sys.getsizeof(s2)
 
     s3 = pd.Series(np.random.choice(["abcd", "def", "gh"], size=(1000,)))
     assert (
@@ -366,6 +367,8 @@ def test_arrow_type_from_string():
     _assert_arrow_type_convert(pa.decimal128(10, 2))
     _assert_arrow_type_convert(pa.list_(pa.int64()))
     _assert_arrow_type_convert(pa.map_(pa.string(), pa.int64()))
+    _assert_arrow_type_convert(pa.date32())
+    _assert_arrow_type_convert(pa.date64())
     _assert_arrow_type_convert(
         pa.struct([("key", pa.string()), ("value", pa.list_(pa.int64()))])
     )

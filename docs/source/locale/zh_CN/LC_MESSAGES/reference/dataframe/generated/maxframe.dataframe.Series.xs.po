@@ -1,0 +1,130 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.xs.rst:2
+msgid "maxframe.dataframe.Series.xs"
+msgstr ""
+
+#: maxframe.dataframe.indexing.xs.xs:1 of
+msgid "Return cross-section from the Series/DataFrame."
+msgstr "从 Series/DataFrame 返回交叉部分。"
+
+#: maxframe.dataframe.indexing.xs.xs:3 of
+msgid ""
+"This method takes a `key` argument to select data at a particular level "
+"of a MultiIndex."
+msgstr "此方法使用 `key` 参数来选择 MultiIndex 的特定级别的数据。"
+
+#: maxframe.dataframe.indexing.xs.xs of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.xs.xs:6 of
+msgid "Label contained in the index, or partially in a MultiIndex."
+msgstr "索引中包含的标签，或部分在 MultiIndex 中。"
+
+#: maxframe.dataframe.indexing.xs.xs:8 of
+msgid "Axis to retrieve cross-section on."
+msgstr "用于检索交叉部分的轴。"
+
+#: maxframe.dataframe.indexing.xs.xs:10 of
+msgid ""
+"In case of a key partially contained in a MultiIndex, indicate which "
+"levels are used. Levels can be referred by label or position."
+msgstr ""
+"如果 key 部分包含在 MultiIndex 中，则指示使用哪些级别。级别可以通过标签或"
+"位置引用。"
+
+#: maxframe.dataframe.indexing.xs.xs:13 of
+msgid "If False, returns object with same levels as self."
+msgstr "如果为 False，则返回与自身具有相同级别的对象。"
+
+#: maxframe.dataframe.indexing.xs.xs of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.indexing.xs.xs:16 of
+msgid ""
+"Cross-section from the original Series or DataFrame corresponding to the "
+"selected index levels."
+msgstr "来自原始 Series 或 DataFrame 的交叉部分，对应于选定的索引级别。"
+
+#: maxframe.dataframe.indexing.xs.xs of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.xs.xs:22 of
+msgid ":py:obj:`DataFrame.loc`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.xs.xs:23 of
+msgid "Access a group of rows and columns by label(s) or a boolean array."
+msgstr "通过标签或布尔数组访问一组行和列。"
+
+#: maxframe.dataframe.indexing.xs.xs:25 of
+msgid ":py:obj:`DataFrame.iloc`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.xs.xs:26 of
+msgid "Purely integer-location based indexing for selection by position."
+msgstr "基于纯整数位置的索引，用于按位置选择。"
+
+#: maxframe.dataframe.indexing.xs.xs:29 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.indexing.xs.xs:30 of
+msgid "`xs` can not be used to set values."
+msgstr "`xs` 不能用于设置值。"
+
+#: maxframe.dataframe.indexing.xs.xs:32 of
+msgid ""
+"MultiIndex Slicers is a generic way to get/set values on any level or "
+"levels. It is a superset of `xs` functionality, see :ref:`MultiIndex "
+"Slicers <advanced.mi_slicers>`."
+msgstr ""
+"MultiIndex Slicers 是一种通用方法，可在任意级别上获取/设置值。它是 `xs` "
+"功能的超集，请参见 :ref:`MultiIndex Slicers <advanced.mi_slicers>`。"
+
+#: maxframe.dataframe.indexing.xs.xs:38 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.indexing.xs.xs:55 of
+msgid "Get values at specified index"
+msgstr "获取指定索引处的值"
+
+#: maxframe.dataframe.indexing.xs.xs:64 of
+msgid "Get values at several indexes"
+msgstr "获取多个索引处的值"
+
+#: maxframe.dataframe.indexing.xs.xs:71 of
+msgid "Get values at specified index and level"
+msgstr "获取指定索引和级别的值"
+
+#: maxframe.dataframe.indexing.xs.xs:78 of
+msgid "Get values at several indexes and levels"
+msgstr "获取多个索引和级别的值"
+
+#: maxframe.dataframe.indexing.xs.xs:86 of
+msgid "Get values at specified column and axis"
+msgstr "获取指定列和轴的值"
+

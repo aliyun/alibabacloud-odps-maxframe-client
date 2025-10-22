@@ -1,0 +1,105 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.indices.rst:2
+msgid "maxframe.tensor.indices"
+msgstr ""
+
+#: maxframe.tensor.datasource.indices.indices:1 of
+msgid "Return a tensor representing the indices of a grid."
+msgstr "返回一个表示网格索引的张量。"
+
+#: maxframe.tensor.datasource.indices.indices:3 of
+msgid ""
+"Compute a tensor where the subtensors contain index values 0,1,... "
+"varying only along the corresponding axis."
+msgstr "计算一个张量，其子张量包含索引值 0,1,...，仅在相应轴上变化。"
+
+#: maxframe.tensor.datasource.indices.indices of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.datasource.indices.indices:6 of
+msgid "The shape of the grid."
+msgstr "网格的形状。"
+
+#: maxframe.tensor.datasource.indices.indices:8 of
+msgid "Data type of the result."
+msgstr "结果的数据类型。"
+
+#: maxframe.tensor.datasource.indices.indices:10 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.datasource.indices.indices of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.datasource.indices.indices:13 of
+msgid ""
+"**grid** -- The tensor of grid indices, ``grid.shape = (len(dimensions),)"
+" + tuple(dimensions)``."
+msgstr ""
+"**grid** -- 网格索引的张量，``grid.shape = (len(dimensions),) + tuple("
+"dimensions)``。"
+
+#: maxframe.tensor.datasource.indices.indices of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.datasource.indices.indices:17 of
+msgid ":py:obj:`mgrid`, :py:obj:`meshgrid`"
+msgstr ""
+
+#: maxframe.tensor.datasource.indices.indices:20 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.datasource.indices.indices:21 of
+msgid ""
+"The output shape is obtained by prepending the number of dimensions in "
+"front of the tuple of dimensions, i.e. if `dimensions` is a tuple ``(r0, "
+"..., rN-1)`` of length ``N``, the output shape is ``(N,r0,...,rN-1)``."
+msgstr ""
+"输出形状是通过在维度元组前面加上维度数量得到的，即如果 `dimensions` 是"
+"长度为 ``N`` 的元组 ``(r0, ..., rN-1)``，则输出形状为 ``(N,r0,...,rN-1)``"
+"。"
+
+#: maxframe.tensor.datasource.indices.indices:26 of
+msgid ""
+"The subtensors ``grid[k]`` contains the N-D array of indices along the "
+"``k-th`` axis. Explicitly::"
+msgstr "子张量 ``grid[k]`` 包含沿第 ``k`` 个轴的 N 维索引数组。显式地："
+
+#: maxframe.tensor.datasource.indices.indices:32 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.datasource.indices.indices:45 of
+msgid "The indices can be used as an index into a tensor."
+msgstr "这些索引可以用作张量的索引。"
+
+#: maxframe.tensor.datasource.indices.indices:51 of
+msgid ""
+"Note that it would be more straightforward in the above example to "
+"extract the required elements directly with ``x[:2, :3]``."
+msgstr "注意，在上面的示例中，直接使用 ``x[:2, :3]`` 提取所需元素会更直接。"
+

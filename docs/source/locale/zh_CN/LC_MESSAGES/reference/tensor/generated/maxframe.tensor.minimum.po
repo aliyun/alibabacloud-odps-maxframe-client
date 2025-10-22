@@ -1,0 +1,139 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.minimum.rst:2
+msgid "maxframe.tensor.minimum"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.minimum.minimum:1 of
+msgid "Element-wise minimum of tensor elements."
+msgstr "逐元素计算张量元素的最小值。"
+
+#: maxframe.tensor.arithmetic.minimum.minimum:3 of
+msgid ""
+"Compare two tensors and returns a new tensor containing the element-wise "
+"minima. If one of the elements being compared is a NaN, then that element"
+" is returned. If both elements are NaNs then the first is returned. The "
+"latter distinction is important for complex NaNs, which are defined as at"
+" least one of the real or imaginary parts being a NaN. The net effect is "
+"that NaNs are propagated."
+msgstr ""
+"比较两个张量并返回一个包含逐元素最小值的新张量。如果被比较的元素中有一个"
+"是 NaN，则返回该元素。如果两个元素都是 NaN，则返回第一个元素。后一个区别"
+"对于复数 NaN 非常重要，复数 NaN 定义为实部或虚部中至少有一个是 NaN。最终"
+"效果是 NaN 会被传播。"
+
+#: maxframe.tensor.arithmetic.minimum.minimum of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.minimum.minimum:10
+#: maxframe.tensor.arithmetic.minimum.minimum:13 of
+msgid ""
+"The tensors holding the elements to be compared. They must have the same "
+"shape, or shapes that can be broadcast to a single shape."
+msgstr "包含待比较元素的张量。它们必须具有相同的形状，或者可以广播为单一形状。"
+
+#: maxframe.tensor.arithmetic.minimum.minimum:16 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供了该参数，则其形状必须与输入广播后的形状一致"
+"。如果未提供或为 `None`，则返回一个新分配的张量。元组（仅能作为关键字参数"
+"）的长度必须等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.minimum.minimum:21 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保持输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.minimum.minimum of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.minimum.minimum:26 of
+msgid ""
+"**y** -- The minimum of `x1` and `x2`, element-wise.  Returns scalar if "
+"both  `x1` and `x2` are scalars."
+msgstr ""
+"**y** -- `x1` 和 `x2` 的逐元素最小值。如果 `x1` 和 `x2` 都是标量，则返回"
+"标量。"
+
+#: maxframe.tensor.arithmetic.minimum.minimum of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.minimum.minimum:32 of
+msgid ":py:obj:`maximum`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.minimum.minimum:33 of
+msgid "Element-wise maximum of two tensors, propagates NaNs."
+msgstr "两个张量的逐元素最大值，传播 NaN。"
+
+#: maxframe.tensor.arithmetic.minimum.minimum:35 of
+msgid ":py:obj:`fmin`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.minimum.minimum:36 of
+msgid "Element-wise minimum of two tensors, ignores NaNs."
+msgstr "两个张量的逐元素最小值，忽略 NaN。"
+
+#: maxframe.tensor.arithmetic.minimum.minimum:38 of
+msgid ":py:obj:`amin`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.minimum.minimum:39 of
+msgid "The minimum value of a tensor along a given axis, propagates NaNs."
+msgstr "沿给定轴的张量最小值，传播 NaN。"
+
+#: maxframe.tensor.arithmetic.minimum.minimum:41 of
+msgid ":py:obj:`nanmin`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.minimum.minimum:42 of
+msgid "The minimum value of a tenosr along a given axis, ignores NaNs."
+msgstr "沿给定轴的张量最小值，忽略 NaN。"
+
+#: maxframe.tensor.arithmetic.minimum.minimum:44 of
+msgid ":py:obj:`fmax`, :py:obj:`amax`, :py:obj:`nanmax`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.minimum.minimum:47 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.minimum.minimum:48 of
+msgid ""
+"The minimum is equivalent to ``mt.where(x1 <= x2, x1, x2)`` when neither "
+"x1 nor x2 are NaNs, but it is faster and does proper broadcasting."
+msgstr ""
+"当 x1 和 x2 都不是 NaN 时，最小值等价于 ``mt.where(x1 <= x2, x1, x2)``，"
+"但它更快且能正确广播。"
+
+#: maxframe.tensor.arithmetic.minimum.minimum:53 of
+msgid "示例"
+msgstr ""
+

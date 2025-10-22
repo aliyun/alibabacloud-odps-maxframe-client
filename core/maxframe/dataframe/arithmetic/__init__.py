@@ -53,6 +53,8 @@ from .less_equal import DataFrameLessEqual, le
 from .log import DataFrameLog
 from .log2 import DataFrameLog2
 from .log10 import DataFrameLog10
+from .maximum import DataFrameMaximum
+from .minimum import DataFrameMinimum
 from .mod import DataFrameMod, mod, rmod
 from .multiply import DataFrameMul, mul, rmul
 from .negative import DataFrameNegative, negative
@@ -250,6 +252,8 @@ def _install():
         DataFramePower,
         DataFrameSubtract,
         DataFrameTrueDiv,
+        DataFrameMaximum,
+        DataFrameMinimum,
     ]
     for ufunc_op in ufunc_ops:
         register_tensor_ufunc(ufunc_op)

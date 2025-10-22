@@ -1,0 +1,140 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.pivot.rst:2
+msgid "maxframe.dataframe.DataFrame.pivot"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot.pivot:1 of
+msgid "Return reshaped DataFrame organized by given index / column values."
+msgstr "返回按给定索引/列值组织的重塑 DataFrame。"
+
+#: maxframe.dataframe.reshape.pivot.pivot:3 of
+msgid ""
+"Reshape data (produce a \"pivot\" table) based on column values. Uses "
+"unique values from specified `index` / `columns` to form axes of the "
+"resulting DataFrame. This function does not support data aggregation, "
+"multiple values will result in a MultiIndex in the columns. See the "
+":ref:`User Guide <reshaping>` for more on reshaping."
+msgstr ""
+"根据列值重塑数据（生成“透视”表）。使用指定 `index` / `columns` 的唯一"
+"值来构成结果 DataFrame 的轴。此函数不支持数据聚合，多个值将导致列中出现 "
+"MultiIndex。有关重塑的更多信息，请参见 :ref:`用户指南 <reshaping>`。"
+
+#: maxframe.dataframe.reshape.pivot.pivot of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot.pivot:9 of
+msgid "Column to use to make new frame's index. If None, uses existing index."
+msgstr "用于创建新框架索引的列。如果为 None，则使用现有索引。"
+
+#: maxframe.dataframe.reshape.pivot.pivot:12 of
+msgid "Column to use to make new frame's columns."
+msgstr "用于创建新框架列的列。"
+
+#: maxframe.dataframe.reshape.pivot.pivot:14 of
+msgid ""
+"Column(s) to use for populating new frame's values. If not specified, all"
+" remaining columns will be used and the result will have hierarchically "
+"indexed columns."
+msgstr ""
+"用于填充新框架值的列。如果未指定，则使用所有剩余列，并且结果将具有层次"
+"索引列。"
+
+#: maxframe.dataframe.reshape.pivot.pivot of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot.pivot:19 of
+msgid "Returns reshaped DataFrame."
+msgstr "返回重塑后的 DataFrame。"
+
+#: maxframe.dataframe.reshape.pivot.pivot of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot.pivot of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot.pivot:22 of
+msgid ""
+"When there are any `index`, `columns` combinations with multiple     "
+"values. `DataFrame.pivot_table` when you need to aggregate."
+msgstr ""
+"当存在任何具有多个值的 `index`、`columns` 组合时。如果需要聚合，请使用 `"
+"DataFrame.pivot_table`。"
+
+#: maxframe.dataframe.reshape.pivot.pivot:26 of
+msgid ":py:obj:`DataFrame.pivot_table`"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot.pivot:27 of
+msgid ""
+"Generalization of pivot that can handle duplicate values for one "
+"index/column pair."
+msgstr "透视表的泛化形式，可以处理一个索引/列对的重复值。"
+
+#: maxframe.dataframe.reshape.pivot.pivot:29 of
+msgid ":py:obj:`DataFrame.unstack`"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot.pivot:30 of
+msgid "Pivot based on the index values instead of a column."
+msgstr "基于索引值而不是列进行透视。"
+
+#: maxframe.dataframe.reshape.pivot.pivot:32 of
+msgid ":py:obj:`wide_to_long`"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot.pivot:33 of
+msgid "Wide panel to long format. Less flexible but more user-friendly than melt."
+msgstr "宽格式面板转为长格式。比 melt 更少灵活性但更友好。"
+
+#: maxframe.dataframe.reshape.pivot.pivot:36 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot.pivot:37 of
+msgid ""
+"For finer-tuned control, see hierarchical indexing documentation along "
+"with the related stack/unstack methods."
+msgstr "如需更精细的控制，请参阅层次索引文档以及相关的 stack/unstack 方法。"
+
+#: maxframe.dataframe.reshape.pivot.pivot:41 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.reshape.pivot.pivot:70 of
+msgid "You could also assign a list of column names or a list of index names."
+msgstr "也可以分配一个列名列表或一个索引名列表。"
+
+#: maxframe.dataframe.reshape.pivot.pivot:102 of
+msgid "A ValueError is raised if there are any duplicates."
+msgstr "如果存在任何重复项，则会引发 ValueError。"
+
+#: maxframe.dataframe.reshape.pivot.pivot:114 of
+msgid ""
+"Notice that the first two rows are the same for our `index` and `columns`"
+" arguments."
+msgstr "注意，对于我们的 `index` 和 `columns` 参数来说，前两行是相同的。"
+

@@ -1,0 +1,152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.arange.rst:2
+msgid "maxframe.tensor.arange"
+msgstr ""
+
+#: maxframe.tensor.datasource.arange.arange:1 of
+msgid "Return evenly spaced values within a given interval."
+msgstr "返回给定区间内均匀间隔的值。"
+
+#: maxframe.tensor.datasource.arange.arange:3 of
+msgid ""
+"Values are generated within the half-open interval ``[start, stop)`` (in "
+"other words, the interval including `start` but excluding `stop`). For "
+"integer arguments the function is equivalent to the Python built-in "
+"`range <http://docs.python.org/lib/built-in-funcs.html>`_ function, but "
+"returns a tensor rather than a list."
+msgstr ""
+"值在半开区间 ``[start, stop)`` 内生成（换句话说，区间包括 `start` 但不"
+"包括 `stop`）。对于整数参数，此函数等价于 Python 内置的 `range <http://"
+"docs.python.org/lib/built-in-funcs.html>`_ 函数，但返回的是张量而不是列表"
+"。"
+
+#: maxframe.tensor.datasource.arange.arange:9 of
+msgid ""
+"When using a non-integer step, such as 0.1, the results will often not be"
+" consistent.  It is better to use ``linspace`` for these cases."
+msgstr ""
+"当使用非整数步长（如 0.1）时，结果通常不一致。在这种情况下，最好使用 ``"
+"linspace``。"
+
+#: maxframe.tensor.datasource.arange.arange of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.datasource.arange.arange:12 of
+msgid ""
+"Start of interval.  The interval includes this value.  The default start "
+"value is 0."
+msgstr "区间的起始值。区间包括该值。默认起始值为 0。"
+
+#: maxframe.tensor.datasource.arange.arange:15 of
+msgid ""
+"End of interval.  The interval does not include this value, except in "
+"some cases where `step` is not an integer and floating point round-off "
+"affects the length of `out`."
+msgstr ""
+"区间的结束值。区间不包括该值，除非在某些 `step` 不是整数且浮点数舍入影响 "
+"`out` 长度的情况下。"
+
+#: maxframe.tensor.datasource.arange.arange:19 of
+msgid ""
+"Spacing between values.  For any output `out`, this is the distance "
+"between two adjacent values, ``out[i+1] - out[i]``.  The default step "
+"size is 1.  If `step` is specified as a position argument, `start` must "
+"also be given."
+msgstr ""
+"值之间的间隔。对于任何输出 `out`，这是两个相邻值之间的距离，``out[i+1] - "
+"out[i]``。默认步长为 1。如果 `step` 作为位置参数指定，则必须同时给出 `"
+"start`。"
+
+#: maxframe.tensor.datasource.arange.arange:24 of
+msgid ""
+"The type of the output tensor.  If `dtype` is not given, infer the data "
+"type from the other input arguments."
+msgstr "输出张量的类型。如果未给出 `dtype`，则从其他输入参数推断数据类型。"
+
+#: maxframe.tensor.datasource.arange.arange:27 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.datasource.arange.arange of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.datasource.arange.arange:30 of
+msgid ""
+"**arange** -- Tensor of evenly spaced values.  For floating point "
+"arguments, the length of the result is ``ceil((stop - start)/step)``.  "
+"Because of floating point overflow, this rule may result in the last "
+"element of `out` being greater than `stop`."
+msgstr ""
+"**arange** -- 均匀间隔值的张量。对于浮点参数，结果的长度为 ``ceil((stop -"
+" start)/step)``。由于浮点溢出，此规则可能导致 `out` 的最后一个元素大于 `"
+"stop`。"
+
+#: maxframe.tensor.datasource.arange.arange:30 of
+msgid "**arange** -- Tensor of evenly spaced values."
+msgstr ""
+
+#: maxframe.tensor.datasource.arange.arange:32 of
+#, fuzzy
+msgid ""
+"For floating point arguments, the length of the result is ``ceil((stop - "
+"start)/step)``.  Because of floating point overflow, this rule may result"
+" in the last element of `out` being greater than `stop`."
+msgstr ""
+"**arange** -- 均匀间隔值的张量。对于浮点参数，结果的长度为 ``ceil((stop -"
+" start)/step)``。由于浮点溢出，此规则可能导致 `out` 的最后一个元素大于 `"
+"stop`。"
+
+#: maxframe.tensor.datasource.arange.arange of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.datasource.arange.arange:40 of
+msgid ":py:obj:`linspace`"
+msgstr ""
+
+#: maxframe.tensor.datasource.arange.arange:41 of
+msgid "Evenly spaced numbers with careful handling of endpoints."
+msgstr "均匀间隔的数字，并仔细处理端点。"
+
+#: maxframe.tensor.datasource.arange.arange:43 of
+msgid ":py:obj:`ogrid`"
+msgstr ""
+
+#: maxframe.tensor.datasource.arange.arange:44 of
+msgid "Tensors of evenly spaced numbers in N-dimensions."
+msgstr "N 维空间中均匀间隔数字的张量。"
+
+#: maxframe.tensor.datasource.arange.arange:46 of
+msgid ":py:obj:`mgrid`"
+msgstr ""
+
+#: maxframe.tensor.datasource.arange.arange:47 of
+msgid "Grid-shaped tensors of evenly spaced numbers in N-dimensions."
+msgstr "N 维空间中均匀间隔数字的网格形状张量。"
+
+#: maxframe.tensor.datasource.arange.arange:50 of
+msgid "示例"
+msgstr ""
+

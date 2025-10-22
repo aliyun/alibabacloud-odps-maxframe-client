@@ -1,0 +1,122 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.from_dict.rst:2
+msgid "maxframe.dataframe.DataFrame.from\\_dict"
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:1 of
+msgid "Construct DataFrame from dict of array-like or dicts."
+msgstr "从 array-like 或 dict 的字典构造 DataFrame。"
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:3 of
+msgid ""
+"Creates DataFrame object from dictionary by columns or by index allowing "
+"dtype specification."
+msgstr "通过列或索引从字典创建 DataFrame 对象，允许指定数据类型。"
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:6 of
+#, python-brace-format
+msgid "Of the form {field : array-like} or {field : dict}."
+msgstr "形式为 {field : array-like} 或 {field : dict}。"
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:8 of
+msgid ""
+"The \"orientation\" of the data. If the keys of the passed dict should be"
+" the columns of the resulting DataFrame, pass 'columns' (default). "
+"Otherwise if the keys should be rows, pass 'index'. If 'tight', assume a "
+"dict with keys ['index', 'columns', 'data', 'index_names', "
+"'column_names']."
+msgstr ""
+"数据的“方向”。如果传入的字典的键应该是结果 DataFrame 的列，请传递 '"
+"columns'（默认）。如果键应该是行，请传递 'index'。如果为 'tight'，则假定"
+"字典包含键 ['index', 'columns', 'data', 'index_names', 'column_names']。"
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:14 of
+msgid "Data type to force after DataFrame construction, otherwise infer."
+msgstr "在 DataFrame 构造后强制使用的数据类型，否则进行推断。"
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:16 of
+msgid ""
+"Column labels to use when ``orient='index'``. Raises a ValueError if used"
+" with ``orient='columns'`` or ``orient='tight'``."
+msgstr ""
+"当 ``orient='index'`` 时使用的列标签。如果与 ``orient='columns'`` 或 ``"
+"orient='tight'`` 一起使用会引发 ValueError。"
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:24 of
+msgid ":py:obj:`DataFrame.from_records`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:25 of
+msgid ""
+"DataFrame from structured ndarray, sequence of tuples or dicts, or "
+"DataFrame."
+msgstr "从结构化 ndarray、元组或字典序列，或 DataFrame 构造 DataFrame。"
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:27 of
+msgid ":py:obj:`DataFrame`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:28 of
+msgid "DataFrame object creation using constructor."
+msgstr "使用构造函数创建 DataFrame 对象。"
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:30 of
+msgid ":py:obj:`DataFrame.to_dict`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:31 of
+msgid "Convert the DataFrame to a dictionary."
+msgstr "将 DataFrame 转换为字典。"
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:34 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:35 of
+msgid "By default the keys of the dict become the DataFrame columns:"
+msgstr "默认情况下，字典的键将成为 DataFrame 的列："
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:46 of
+msgid ""
+"Specify ``orient='index'`` to create the DataFrame using dictionary keys "
+"as rows:"
+msgstr "指定 ``orient='index'`` 以使用字典键作为行来创建 DataFrame："
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:55 of
+msgid ""
+"When using the 'index' orientation, the column names can be specified "
+"manually:"
+msgstr "使用 'index' 方向时，可以手动指定列名："
+
+#: maxframe.dataframe.datasource.from_dict.dataframe_from_dict:64 of
+msgid "Specify ``orient='tight'`` to create the DataFrame using a 'tight' format:"
+msgstr "指定 ``orient='tight'`` 以使用 'tight' 格式创建 DataFrame："
+

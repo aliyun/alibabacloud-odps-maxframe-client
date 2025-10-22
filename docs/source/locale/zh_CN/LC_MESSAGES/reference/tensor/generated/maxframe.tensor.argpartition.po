@@ -1,0 +1,137 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.argpartition.rst:2
+msgid "maxframe.tensor.argpartition"
+msgstr ""
+
+#: maxframe.tensor.sort.argpartition.argpartition:1 of
+msgid ""
+"Perform an indirect partition along the given axis using the algorithm "
+"specified by the `kind` keyword. It returns an array of indices of the "
+"same shape as `a` that index data along the given axis in partitioned "
+"order."
+msgstr ""
+"使用 `kind` 关键字指定的算法沿给定轴执行间接分区。它返回一个与 `a` 形状"
+"相同的索引数组，该数组沿给定轴以分区顺序索引数据。"
+
+#: maxframe.tensor.sort.argpartition.argpartition of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.sort.argpartition.argpartition:8 of
+msgid "Tensor to sort."
+msgstr "要排序的张量。"
+
+#: maxframe.tensor.sort.argpartition.argpartition:10 of
+msgid ""
+"Element index to partition by. The k-th element will be in its final "
+"sorted position and all smaller elements will be moved before it and all "
+"larger elements behind it. The order all elements in the partitions is "
+"undefined. If provided with a sequence of k-th it will partition all of "
+"them into their sorted position at once."
+msgstr ""
+"用于分区的元素索引。第 k 个元素将位于其最终排序位置，所有较小的元素将被"
+"移到它之前，所有较大的元素将被移到它之后。分区中所有元素的顺序是未定义的"
+"。如果提供了一个 k-th 序列，它将一次性将所有元素分区到其排序位置。"
+
+#: maxframe.tensor.sort.argpartition.argpartition:17 of
+msgid ""
+"Axis along which to sort. The default is -1 (the last axis). If None, the"
+" flattened tensor is used."
+msgstr "用于排序的轴。默认值为 -1（最后一个轴）。如果为 None，则使用展平的张量。"
+
+#: maxframe.tensor.sort.argpartition.argpartition:20 of
+msgid "Selection algorithm. Default is 'introselect'"
+msgstr "选择算法。默认为 'introselect'"
+
+#: maxframe.tensor.sort.argpartition.argpartition:22 of
+msgid ""
+"When `a` is a tensor with fields defined, this argument specifies which "
+"fields to compare first, second, etc. A single field can be specified as "
+"a string, and not all fields need be specified, but unspecified fields "
+"will still be used, in the order in which they come up in the dtype, to "
+"break ties."
+msgstr ""
+"当 `a` 是具有定义字段的张量时，此参数指定首先、其次等比较哪些字段。单个字"
+"段可以指定为字符串，并非所有字段都需要指定，但未指定的字段仍将在 dtype 中"
+"出现的顺序用于打破平局。"
+
+#: maxframe.tensor.sort.argpartition.argpartition of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.sort.argpartition.argpartition:29 of
+msgid ""
+"**index_tensor** -- Tensor of indices that partition `a` along the "
+"specified axis. If `a` is one-dimensional, ``a[index_tensor]`` yields a "
+"partitioned `a`. More generally, ``np.take_along_axis(a, index_tensor, "
+"axis=a)`` always yields the partitioned `a`, irrespective of "
+"dimensionality."
+msgstr ""
+"**index_tensor** -- 沿指定轴对 `a` 进行分区的索引张量。如果 `a` 是一维的"
+"，则 ``a[index_tensor]`` 产生分区后的 `a`。更一般地，``np.take_along_axis"
+"(a, index_tensor, axis=a)`` 总是产生分区后的 `a`，无论维度如何。"
+
+#: maxframe.tensor.sort.argpartition.argpartition of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.sort.argpartition.argpartition:37 of
+msgid ":py:obj:`partition`"
+msgstr ""
+
+#: maxframe.tensor.sort.argpartition.argpartition:38 of
+msgid "Describes partition algorithms used."
+msgstr "描述所使用的分区算法。"
+
+#: maxframe.tensor.sort.argpartition.argpartition:40 of
+msgid ":py:obj:`Tensor.partition`"
+msgstr ""
+
+#: maxframe.tensor.sort.argpartition.argpartition:41 of
+msgid "Inplace partition."
+msgstr "就地分区。"
+
+#: maxframe.tensor.sort.argpartition.argpartition:43 of
+msgid ":py:obj:`argsort`"
+msgstr ""
+
+#: maxframe.tensor.sort.argpartition.argpartition:44 of
+msgid "Full indirect sort"
+msgstr "完全间接排序"
+
+#: maxframe.tensor.sort.argpartition.argpartition:47 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.sort.argpartition.argpartition:48 of
+msgid "See `partition` for notes on the different selection algorithms."
+msgstr "有关不同选择算法的说明，请参见 `partition`。"
+
+#: maxframe.tensor.sort.argpartition.argpartition:51 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.sort.argpartition.argpartition:52 of
+msgid "One dimensional tensor:"
+msgstr "一维张量："
+

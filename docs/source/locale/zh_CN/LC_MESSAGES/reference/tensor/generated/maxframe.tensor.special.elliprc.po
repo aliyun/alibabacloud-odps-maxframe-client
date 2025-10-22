@@ -1,0 +1,147 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.elliprc.rst:2
+msgid "maxframe.tensor.special.elliprc"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:1 of
+msgid "Degenerate symmetric elliptic integral."
+msgstr "退化的对称椭圆积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:3 of
+msgid "The function RC is defined as [1]_"
+msgstr "函数 RC 定义为 [1]_"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:5 of
+msgid ""
+"R_{\\mathrm{C}}(x, y) =\n"
+"   \\frac{1}{2} \\int_0^{+\\infty} (t + x)^{-1/2} (t + y)^{-1} dt\n"
+"   = R_{\\mathrm{F}}(x, y, y)"
+msgstr ""
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.elliprc.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:11
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:14 of
+msgid ""
+"Real or complex input parameters. `x` can be any number in the complex "
+"plane cut along the negative real axis. `y` must be non-zero."
+msgstr ""
+"实数或复数输入参数。`x` 可以是沿负实轴切割的复平面上的任意数。`y` 必须"
+"非零。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:17 of
+msgid "Optional output array for the function values"
+msgstr "函数值的可选输出数组"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.elliprc.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:20 of
+msgid ""
+"**R** -- Value of the integral. If `y` is real and negative, the Cauchy "
+"principal value is returned. If both of `x` and `y` are real, the return "
+"value is real. Otherwise, the return value is complex."
+msgstr ""
+"**R** -- 积分值。如果 `y` 是实数且为负，则返回柯西主值。如果 `x` 和 `y` "
+"都是实数，则返回值为实数。否则，返回值为复数。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.elliprc.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:27 of
+msgid ":py:obj:`elliprf`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:28 of
+msgid "Completely-symmetric elliptic integral of the first kind."
+msgstr "第一类完全对称椭圆积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:30 of
+msgid ":py:obj:`elliprd`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:31 of
+msgid "Symmetric elliptic integral of the second kind."
+msgstr "第二类对称椭圆积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:33 of
+msgid ":py:obj:`elliprg`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:34 of
+msgid "Completely-symmetric elliptic integral of the second kind."
+msgstr "第二类完全对称椭圆积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:36 of
+msgid ":py:obj:`elliprj`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:37 of
+msgid "Symmetric elliptic integral of the third kind."
+msgstr "第三类对称椭圆积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:40 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:41 of
+msgid ""
+"RC is a degenerate case of the symmetric integral RF: ``elliprc(x, y) == "
+"elliprf(x, y, y)``. It is an elementary function rather than an elliptic "
+"integral."
+msgstr ""
+"RC 是对称积分 RF 的退化情况：``elliprc(x, y) == elliprf(x, y, y)``。它是"
+"一个初等函数，而不是椭圆积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:45 of
+msgid ""
+"The code implements Carlson's algorithm based on the duplication theorems"
+" and series expansion up to the 7th order. [2]_"
+msgstr "代码实现了基于倍增定理和级数展开至第 7 阶的 Carlson 算法。[2]_"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:49 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:50 of
+msgid ""
+"B. C. Carlson, ed., Chapter 19 in \"Digital Library of Mathematical "
+"Functions,\" NIST, US Dept. of Commerce. https://dlmf.nist.gov/19.16.E6"
+msgstr ""
+"B. C. Carlson 编，《数学函数数字图书馆》第 19 章，NIST，美国商务部。https"
+"://dlmf.nist.gov/19.16.E6"
+
+#: maxframe.tensor.special.ellip_func_integrals.elliprc:53 of
+msgid ""
+"B. C. Carlson, \"Numerical computation of real or complex elliptic "
+"integrals,\" Numer. Algorithm, vol. 10, no. 1, pp. 13-26, 1995. "
+"https://arxiv.org/abs/math/9409227 https://doi.org/10.1007/BF02198293"
+msgstr ""
+"B. C. Carlson, \"实数或复数椭圆积分的数值计算,\" Numer. Algorithm, 第 10 "
+"卷, 第 1 期, pp. 13-26, 1995. https://arxiv.org/abs/math/9409227 https://"
+"doi.org/10.1007/BF02198293"
+

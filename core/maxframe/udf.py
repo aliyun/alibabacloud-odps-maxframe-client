@@ -13,13 +13,18 @@
 # limitations under the License.
 
 import shlex
+import sys
 from typing import Callable, List, Optional, Union
 
-from odps.models import Resource
+import numpy as np
+from odps.models import Function as ODPSFunctionObj
+from odps.models import Resource as ODPSResourceObj
 
 from .config.validators import is_positive_integer
+from .core.mode import is_mock_mode
 from .serialization import load_member
 from .serialization.serializables import (
+    AnyField,
     BoolField,
     DictField,
     FieldTypes,
@@ -28,7 +33,8 @@ from .serialization.serializables import (
     Serializable,
     StringField,
 )
-from .utils import extract_class_name, tokenize
+from .typing_ import PandasDType
+from .utils import extract_class_name, make_dtype, tokenize
 
 
 class PythonPackOptions(Serializable):
@@ -122,8 +128,100 @@ class MarkedFunction(Serializable):
         return f"<MarkedFunction {self.func!r}>"
 
 
-def with_resources(*resources: Union[str, Resource], use_wrapper_class: bool = True):
-    def res_to_str(res: Union[str, Resource]) -> str:
+class ODPSFunction(Serializable):
+    __slots__ = ("_caller_type",)
+
+    full_function_name = StringField("full_function_name")
+    expect_engine = StringField("expect_engine", default=None)
+    expect_resources = DictField(
+        "expect_resources", FieldTypes.string, default_factory=dict
+    )
+    result_dtype = AnyField("result_dtype", default=None)
+
+    def __init__(
+        self,
+        func,
+        expect_engine: str = None,
+        expect_resources: dict = None,
+        dtype: PandasDType = None,
+        **kw,
+    ):
+        full_function_name = None
+        if isinstance(func, str):
+            full_function_name = func
+        elif isinstance(func, ODPSFunctionObj):
+            func_parts = [func.project.name]
+            if func.schema:
+                func_parts.append(func.schema.name)
+            func_parts.append(func.name)
+            full_function_name = ":".join(func_parts)
+        if full_function_name:
+            kw["full_function_name"] = full_function_name
+
+        if dtype is not None:
+            kw["result_dtype"] = make_dtype(dtype)
+        super().__init__(
+            expect_engine=expect_engine, expect_resources=expect_resources, **kw
+        )
+
+    @property
+    def __name__(self):
+        return self.full_function_name.rsplit(":", 1)[-1]
+
+    def _detect_caller_type(self) -> Optional[str]:
+        if hasattr(self, "_caller_type"):
+            return self._caller_type
+
+        frame = sys._getframe(1)
+        is_set = False
+        while frame.f_back:
+            f_mod = frame.f_globals.get("__name__")
+            if f_mod and f_mod.startswith("maxframe.dataframe."):
+                if f_mod.endswith(".map"):
+                    self._caller_type, is_set = "map", True
+                elif f_mod.endswith(".aggregation") or ".reduction." in f_mod:
+                    self._caller_type, is_set = "agg", True
+                if is_set:
+                    return self._caller_type
+            frame = frame.f_back
+        return None
+
+    def __call__(self, obj, *args, **kwargs):
+        caller_type = self._detect_caller_type()
+        if caller_type == "agg":
+            return self._call_aggregate(obj, *args, **kwargs)
+        raise NotImplementedError("Need to be referenced inside apply or map functions")
+
+    def _call_aggregate(self, obj, *args, **kwargs):
+        from .dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+        from .dataframe.reduction.custom_reduction import build_custom_reduction_result
+
+        if isinstance(obj, (DATAFRAME_TYPE, SERIES_TYPE)):
+            return build_custom_reduction_result(obj, self)
+        if is_mock_mode():
+            ret = obj.iloc[0]
+            if self.result_dtype:
+                if hasattr(ret, "astype"):
+                    ret = ret.astype(self.result_dtype)
+                else:  # pragma: no cover
+                    ret = np.array(ret).astype(self.result_dtype).item()
+            return ret
+        raise NotImplementedError("Need to be referenced inside apply or map functions")
+
+    def __repr__(self):
+        return f"<ODPSStoredFunction {self.full_function_name}>"
+
+    @classmethod
+    def wrap(cls, func):
+        if isinstance(func, ODPSFunctionObj):
+            return ODPSFunction(func)
+        return func
+
+
+def with_resources(
+    *resources: Union[str, ODPSResourceObj], use_wrapper_class: bool = True
+):
+    def res_to_str(res: Union[str, ODPSResourceObj]) -> str:
         if isinstance(res, str):
             return res
         res_parts = [res.project.name]
@@ -250,9 +348,7 @@ def with_running_options(
 with_resource_libraries = with_resources
 
 
-def get_udf_resources(
-    func: Callable,
-) -> List[Union[Resource, str]]:
+def get_udf_resources(func: Callable) -> List[Union[ODPSResourceObj, str]]:
     return getattr(func, "resources", None) or []
 
 

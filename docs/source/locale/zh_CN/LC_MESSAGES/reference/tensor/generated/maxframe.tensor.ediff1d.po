@@ -1,0 +1,71 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.ediff1d.rst:2
+msgid "maxframe.tensor.ediff1d"
+msgstr ""
+
+#: maxframe.tensor.misc.ediff1d.ediff1d:1 of
+msgid "The differences between consecutive elements of a tensor."
+msgstr "张量中连续元素之间的差值。"
+
+#: maxframe.tensor.misc.ediff1d.ediff1d of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.ediff1d.ediff1d:3 of
+msgid "If necessary, will be flattened before the differences are taken."
+msgstr "如有必要，将在计算差值之前将其展平。"
+
+#: maxframe.tensor.misc.ediff1d.ediff1d:5 of
+msgid "Number(s) to append at the end of the returned differences."
+msgstr "附加在返回差值末尾的数字。"
+
+#: maxframe.tensor.misc.ediff1d.ediff1d:7 of
+msgid "Number(s) to prepend at the beginning of the returned differences."
+msgstr "前置在返回差值开头的数字。"
+
+#: maxframe.tensor.misc.ediff1d.ediff1d of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.ediff1d.ediff1d:10 of
+msgid ""
+"**ediff1d** -- The differences. Loosely, this is ``a.flat[1:] - "
+"a.flat[:-1]``."
+msgstr "**ediff1d** -- 差值。大致上，这是 ``a.flat[1:] - a.flat[:-1]``。"
+
+#: maxframe.tensor.misc.ediff1d.ediff1d of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.ediff1d.ediff1d:13 of
+msgid ":py:obj:`diff`, :py:obj:`gradient`"
+msgstr ""
+
+#: maxframe.tensor.misc.ediff1d.ediff1d:16 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.misc.ediff1d.ediff1d:26 of
+msgid "The returned tensor is always 1D."
+msgstr "返回的张量始终是一维的。"
+

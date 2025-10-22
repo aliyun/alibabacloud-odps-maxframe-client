@@ -20,12 +20,16 @@ import pandas as pd
 from ....core.entity.output_types import OutputType
 from ....core.operator.base import Operator
 from ....core.operator.core import TileableOperatorMixin
-from ....dataframe.core import SERIES_TYPE
 from ....dataframe.operators import DataFrameOperatorMixin
 from ....dataframe.utils import parse_index
 from ....serialization.serializables import Int32Field
 from ....serialization.serializables.core import Serializable
-from ....serialization.serializables.field import AnyField, DictField, StringField
+from ....serialization.serializables.field import (
+    AnyField,
+    BoolField,
+    DictField,
+    StringField,
+)
 
 
 class LLM(Serializable):
@@ -55,11 +59,7 @@ class LLMTaskOperator(Operator, DataFrameOperatorMixin):
         col_name = list(outputs.keys())
         columns = parse_index(pd.Index(col_name), store_data=True)
         out_dtypes = pd.Series(list(outputs.values()), index=col_name)
-        index_value = index or (
-            parse_index(pd.RangeIndex(-1), data)
-            if isinstance(data, SERIES_TYPE)
-            else data.index_value
-        )
+        index_value = index or data.index_value
 
         return self.new_dataframe(
             inputs=[data],
@@ -72,6 +72,15 @@ class LLMTaskOperator(Operator, DataFrameOperatorMixin):
 
 class LLMTextGenOperator(LLMTaskOperator, TileableOperatorMixin):
     prompt_template = AnyField("prompt_template", default=None)
+
+    def get_output_dtypes(self) -> Dict[str, np.dtype]:
+        return {"response": np.dtype("O"), "success": np.dtype("bool")}
+
+
+class LLMTextEmbeddingOp(LLMTaskOperator, TileableOperatorMixin):
+    dimensions = Int32Field("dimensions", default=None)
+    encoding_format = StringField("encoding_format", default=None)
+    simple_output = BoolField("simple_output", default=False)
 
     def get_output_dtypes(self) -> Dict[str, np.dtype]:
         return {"response": np.dtype("O"), "success": np.dtype("bool")}

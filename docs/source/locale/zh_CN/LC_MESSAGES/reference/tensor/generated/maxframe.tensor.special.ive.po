@@ -1,0 +1,162 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ive.rst:2
+msgid "maxframe.tensor.special.ive"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.ive:1 of
+msgid "Exponentially scaled modified Bessel function of the first kind."
+msgstr "第一类指数缩放修正贝塞尔函数。"
+
+#: maxframe.tensor.special.bessel.ive:3 of
+msgid "Defined as::"
+msgstr "定义为："
+
+#: maxframe.tensor.special.bessel.ive:7 of
+msgid ""
+"For imaginary numbers without a real part, returns the unscaled Bessel "
+"function of the first kind `iv`."
+msgstr "对于没有实部的虚数，返回第一类未缩放的贝塞尔函数 `iv`。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ive.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.ive:10 of
+msgid "Order."
+msgstr "阶数。"
+
+#: maxframe.tensor.special.bessel.ive:12 of
+msgid "Argument."
+msgstr "参数。"
+
+#: maxframe.tensor.special.bessel.ive:14 of
+msgid "Optional output array for the function values"
+msgstr "函数值的可选输出数组"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ive.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.ive:17 of
+msgid "Values of the exponentially scaled modified Bessel function."
+msgstr "指数缩放修正贝塞尔函数的值。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ive.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.ive:22 of
+msgid ":py:obj:`iv`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.ive:23 of
+msgid "Modified Bessel function of the first kind"
+msgstr "第一类修正贝塞尔函数"
+
+#: maxframe.tensor.special.bessel.ive:25 of
+msgid ":py:obj:`i0e`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.ive:26 of
+msgid "Faster implementation of this function for order 0"
+msgstr "阶数为 0 时该函数的快速实现"
+
+#: maxframe.tensor.special.bessel.ive:28 of
+msgid ":py:obj:`i1e`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.ive:29 of
+msgid "Faster implementation of this function for order 1"
+msgstr "阶数为 1 时该函数的快速实现"
+
+#: maxframe.tensor.special.bessel.ive:32 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.ive:33 of
+msgid ""
+"For positive `v`, the AMOS [1]_ `zbesi` routine is called. It uses a "
+"power series for small `z`, the asymptotic expansion for large `abs(z)`, "
+"the Miller algorithm normalized by the Wronskian and a Neumann series for"
+" intermediate magnitudes, and the uniform asymptotic expansions for "
+":math:`I_v(z)` and :math:`J_v(z)` for large orders. Backward recurrence "
+"is used to generate sequences or reduce orders when necessary."
+msgstr ""
+"对于正数 `v`，调用 AMOS [1]_ 中的 `zbesi` 程序。它对小 `z` 使用幂级数，对"
+"大的 `abs(z)` 使用渐近展开，对中等幅度使用由 Wronskian 归一化的 Miller "
+"算法和 Neumann 级数，并对大阶数使用 :math:`I_v(z)` 和 :math:`J_v(z)` 的"
+"一致渐近展开。必要时使用向后递推生成序列或降低阶数。"
+
+#: maxframe.tensor.special.bessel.ive:41 of
+msgid ""
+"The calculations above are done in the right half plane and continued "
+"into the left half plane by the formula,"
+msgstr "上述计算在右半平面进行，并通过以下公式延拓到左半平面，"
+
+#: maxframe.tensor.special.bessel.ive:44 of
+msgid ""
+"I_v(z \\exp(\\pm\\imath\\pi)) = \\exp(\\pm\\pi v) I_v(z)\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.ive:46 of
+msgid ""
+"(valid when the real part of `z` is positive).  For negative `v`, the "
+"formula"
+msgstr "（当 `z` 的实部为正时有效）。对于负 `v`，使用公式"
+
+#: maxframe.tensor.special.bessel.ive:49 of
+#, python-brace-format
+msgid ""
+"I_{-v}(z) = I_v(z) + \\frac{2}{\\pi} \\sin(\\pi v) K_v(z)\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.ive:51 of
+msgid ""
+"is used, where :math:`K_v(z)` is the modified Bessel function of the "
+"second kind, evaluated using the AMOS routine `zbesk`."
+msgstr ""
+"其中 :math:`K_v(z)` 是第二类修正贝塞尔函数，使用 AMOS 程序 `zbesk` 进行"
+"计算。"
+
+#: maxframe.tensor.special.bessel.ive:54 of
+msgid ""
+"`ive` is useful for large arguments `z`: for these, `iv` easily "
+"overflows, while `ive` does not due to the exponential scaling."
+msgstr ""
+"`ive` 适用于大的 `z` 参数：对于这些值，`iv` 容易溢出，而 `ive` 由于指数"
+"缩放不会溢出。"
+
+#: maxframe.tensor.special.bessel.ive:58 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.ive:59 of
+msgid ""
+"Donald E. Amos, \"AMOS, A Portable Package for Bessel Functions of a "
+"Complex Argument and Nonnegative Order\", http://netlib.org/amos/"
+msgstr ""
+"Donald E. Amos, \"AMOS, 一种用于复变参数和非负整数阶贝塞尔函数的可移植"
+"程序包\", http://netlib.org/amos/"
+

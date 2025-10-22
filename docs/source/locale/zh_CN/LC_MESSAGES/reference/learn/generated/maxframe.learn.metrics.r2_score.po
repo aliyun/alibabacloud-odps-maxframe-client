@@ -1,0 +1,159 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.r2_score.rst:2
+msgid "maxframe.learn.metrics.r2\\_score"
+msgstr ""
+
+#: maxframe.learn.metrics._regression.r2_score:1 of
+msgid ":math:`R^2` (coefficient of determination) regression score function."
+msgstr ":math:`R^2`（决定系数）回归评分函数。"
+
+#: maxframe.learn.metrics._regression.r2_score:3 of
+msgid ""
+"Best possible score is 1.0 and it can be negative (because the model can "
+"be arbitrarily worse). A constant model that always predicts the expected"
+" value of y, disregarding the input features, would get a :math:`R^2` "
+"score of 0.0."
+msgstr ""
+"最佳可能得分为 1.0，且得分可能为负（因为模型可能表现任意差）。一个总是"
+"预测 y 的期望值而忽略输入特征的常量模型将得到 :math:`R^2` 得分 0.0。"
+
+#: maxframe.learn.metrics._regression.r2_score:8 of
+msgid "Read more in the :ref:`User Guide <r2_score>`."
+msgstr "更多信息请参见 :ref:`用户指南 <r2_score>`。"
+
+#: maxframe.learn.metrics._regression.r2_score of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.metrics._regression.r2_score:10 of
+msgid "Ground truth (correct) target values."
+msgstr "真实（正确）的目标值。"
+
+#: maxframe.learn.metrics._regression.r2_score:12 of
+msgid "Estimated target values."
+msgstr "估计的目标值。"
+
+#: maxframe.learn.metrics._regression.r2_score:14 of
+msgid "Sample weights."
+msgstr "样本权重。"
+
+#: maxframe.learn.metrics._regression.r2_score:16 of
+msgid ""
+"Defines aggregating of multiple output scores. Array-like value defines "
+"weights used to average scores. Default is \"uniform_average\".  "
+"'raw_values' :     Returns a full set of scores in case of multioutput "
+"input.  'uniform_average' :     Scores of all outputs are averaged with "
+"uniform weight.  'variance_weighted' :     Scores of all outputs are "
+"averaged, weighted by the variances     of each individual output."
+msgstr ""
+"定义多个输出得分的聚合方式。类数组的值定义用于平均得分的权重。默认为 \""
+"uniform_average\"。  'raw_values' : 在多输出输入的情况下返回完整的一组"
+"得分。  'uniform_average' : 所有输出的得分以相同权重平均。  'variance_"
+"weighted' : 所有输出的得分以各自输出的方差为权重进行平均。"
+
+#: maxframe.learn.metrics._regression.r2_score:16 of
+msgid ""
+"Defines aggregating of multiple output scores. Array-like value defines "
+"weights used to average scores. Default is \"uniform_average\"."
+msgstr ""
+
+#: maxframe.learn.metrics._regression.r2_score:20 of
+msgid "'raw_values' :"
+msgstr ""
+
+#: maxframe.learn.metrics._regression.r2_score:21 of
+msgid "Returns a full set of scores in case of multioutput input."
+msgstr ""
+
+#: maxframe.learn.metrics._regression.r2_score:23 of
+msgid "'uniform_average' :"
+msgstr ""
+
+#: maxframe.learn.metrics._regression.r2_score:24 of
+msgid "Scores of all outputs are averaged with uniform weight."
+msgstr ""
+
+#: maxframe.learn.metrics._regression.r2_score:26 of
+msgid "'variance_weighted' :"
+msgstr ""
+
+#: maxframe.learn.metrics._regression.r2_score:27 of
+msgid ""
+"Scores of all outputs are averaged, weighted by the variances of each "
+"individual output."
+msgstr ""
+
+#: maxframe.learn.metrics._regression.r2_score of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.metrics._regression.r2_score:31 of
+msgid ""
+"**z** -- The :math:`R^2` score or ndarray of scores if 'multioutput' is "
+"'raw_values'."
+msgstr ""
+"**z** -- :math:`R^2` 得分，若 'multioutput' 为 'raw_values' 则返回得分的 "
+"ndarray。"
+
+#: maxframe.learn.metrics._regression.r2_score of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.metrics._regression.r2_score:36 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.metrics._regression.r2_score:37 of
+msgid "This is not a symmetric function."
+msgstr "这不是一个对称函数。"
+
+#: maxframe.learn.metrics._regression.r2_score:39 of
+msgid ""
+"Unlike most other scores, :math:`R^2` score may be negative (it need not "
+"actually be the square of a quantity R)."
+msgstr ""
+"与大多数其他得分不同，:math:`R^2` 得分可能为负（它实际上不一定是某个量 R "
+"的平方）。"
+
+#: maxframe.learn.metrics._regression.r2_score:42 of
+msgid ""
+"This metric is not well-defined for single samples and will return a NaN "
+"value if n_samples is less than two."
+msgstr "该指标对于单个样本未良好定义，如果 n_samples 小于 2 将返回 NaN 值。"
+
+#: maxframe.learn.metrics._regression.r2_score:46 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.learn.metrics._regression.r2_score:47 of
+msgid ""
+"`Wikipedia entry on the Coefficient of determination "
+"<https://en.wikipedia.org/wiki/Coefficient_of_determination>`_"
+msgstr ""
+"`决定系数的维基百科条目 <https://en.wikipedia.org/wiki/Coefficient_of_"
+"determination>`_"
+
+#: maxframe.learn.metrics._regression.r2_score:51 of
+msgid "示例"
+msgstr ""
+

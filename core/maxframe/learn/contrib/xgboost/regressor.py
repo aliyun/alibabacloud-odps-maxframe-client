@@ -14,6 +14,7 @@
 
 from typing import Union
 
+from ...utils.odpsio import register_odps_model
 from ..utils import make_import_error_func
 from .core import XGBScikitLearnBase, xgboost
 
@@ -24,6 +25,7 @@ else:
 
     from .predict import predict
 
+    @register_odps_model
     class XGBRegressor(XGBScikitLearnBase, XGBRegressorBase):
         """
         Implementation of the scikit-learn API for XGBoost regressor.
@@ -69,6 +71,9 @@ else:
                 A list of the form [L_1, L_2, ..., L_n], where each L_i is a list
                 of group weights on the i-th validation set.
             """
+            if y.ndim == 2:
+                kw["num_class"] = y.shape[1]
+                kw["output_ndim"] = 2
             super().fit(
                 X,
                 y,

@@ -1,0 +1,115 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.sort_values.rst:2
+msgid "maxframe.dataframe.DataFrame.sort\\_values"
+msgstr ""
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:1 of
+msgid "Sort by the values along either axis."
+msgstr "按值沿任一轴排序。"
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:3 of
+msgid "Input dataframe."
+msgstr "输入的 DataFrame。"
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:5 of
+msgid "Name or list of names to sort by."
+msgstr "用于排序的列名或列名列表。"
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:7 of
+msgid "Axis to be sorted."
+msgstr "要排序的轴。"
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:9 of
+msgid ""
+"Sort ascending vs. descending. Specify list for multiple sort orders.  If"
+" this is a list of bools, must match the length of the by."
+msgstr ""
+"升序或降序排序。若指定多个排序顺序，请提供列表。如果这是一个布尔值列表，"
+"则必须与 by 的长度一致。"
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:13 of
+msgid "If True, perform operation in-place."
+msgstr "如果为 True，则就地执行操作。"
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:15 of
+msgid ""
+"Choice of sorting algorithm. See also ndarray.np.sort for more "
+"information.  `mergesort` is the only stable algorithm. For DataFrames, "
+"this option is only applied when sorting on a single column or label."
+msgstr ""
+"排序算法的选择。更多信息请参见 ndarray.np.sort。`mergesort` 是唯一的稳定"
+"算法。对于 DataFrame，此选项仅在按单个列或标签排序时应用。"
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:20 of
+msgid "Puts NaNs at the beginning if `first`; `last` puts NaNs at the end."
+msgstr "如果为 `first`，则将 NaN 值放在开头；`last` 将 NaN 值放在结尾。"
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:23 of
+msgid "If True, the resulting axis will be labeled 0, 1, …, n - 1."
+msgstr "如果为 True，则结果轴的标签将为 0, 1, ..., n - 1。"
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:25 of
+msgid ""
+"Parallel sorting algorithm, for the details, refer to: "
+"http://csweb.cs.wfu.edu/bigiron/LittleFE-"
+"PSRS/build/html/PSRSalgorithm.html"
+msgstr ""
+"并行排序算法，详细信息请参考：http://csweb.cs.wfu.edu/bigiron/LittleFE-"
+"PSRS/build/html/PSRSalgorithm.html"
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:29 of
+msgid ""
+"**sorted_obj** -- DataFrame with sorted values if inplace=False, None "
+"otherwise."
+msgstr ""
+"**sorted_obj** -- 如果 inplace=False，则返回按值排序的 DataFrame，否则"
+"返回 None。"
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:33 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:49 of
+msgid "Sort by col1"
+msgstr "按 col1 排序"
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:60 of
+msgid "Sort by multiple columns"
+msgstr "按多个列排序"
+
+#: maxframe.dataframe.sort.sort_values.dataframe_sort_values:71 of
+msgid "Sort Descending"
+msgstr "降序排序"
+

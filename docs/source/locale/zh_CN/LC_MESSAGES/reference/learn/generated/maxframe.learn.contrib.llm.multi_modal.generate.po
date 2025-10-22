@@ -1,0 +1,190 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.multi_modal.generate.rst:2
+msgid "maxframe.learn.contrib.llm.multi\\_modal.generate"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:1 of
+msgid ""
+"Generate text with multi model llm based on given data and prompt "
+"template."
+msgstr "基于给定的数据和提示模板，使用多模态大语言模型生成文本。"
+
+#: maxframe.learn.contrib.llm.multi_modal.generate of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:3 of
+msgid ""
+"Input data used for generation. Can be maxframe DataFrame, Series that "
+"contain text to be processed."
+msgstr "用于生成的输入数据。可以是包含待处理文本的 maxframe DataFrame 或 Series。"
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:5 of
+msgid ""
+"Language model instance support **MultiModal** inputs used for text "
+"generation."
+msgstr "支持 **MultiModal** 输入的用于文本生成的语言模型实例。"
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:7 of
+#, python-brace-format
+msgid ""
+"List of message with column names as placeholders. Each message contains "
+"a role and content. Content is a list of dict, each dict contains a text "
+"or image, the value can reference column data from input.  Here is an "
+"example of prompt template.  .. code-block:: python      [         {"
+"             \"role\": \"<role>\",  # e.g. \"user\" or \"assistant\""
+"             \"content\": [                 {                     # At "
+"least one of these fields is required                     \"image\": "
+"\"<image_data_url>\",  # optional                     \"text\": "
+"\"<prompt_text_template>\"  # optional                 },"
+"                 ...             ]         }     ]  Where:  - ``text`` "
+"can be a Python format string using column names from input data as "
+"parameters (e.g. ``\"{column_name}\"``) - ``image`` should be a DataURL "
+"string following `RFC2397 "
+"<https://en.wikipedia.org/wiki/Data_URI_scheme>`_ standard with format.  "
+".. code-block:: none      data:<mime_type>[;base64],<column_name>"
+msgstr ""
+"包含以列名作为占位符的消息列表。每条消息包含一个角色和内容。内容是一个"
+"字典列表，每个字典包含文本或图像，值可以引用输入数据中的列。以下是一个"
+"提示模板的示例。"
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:7 of
+msgid ""
+"List of message with column names as placeholders. Each message contains "
+"a role and content. Content is a list of dict, each dict contains a text "
+"or image, the value can reference column data from input."
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:9 of
+msgid "Here is an example of prompt template."
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:27 of
+msgid "Where:"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:29 of
+#, python-brace-format
+msgid ""
+"``text`` can be a Python format string using column names from input data"
+" as parameters (e.g. ``\"{column_name}\"``)"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:30 of
+msgid ""
+"``image`` should be a DataURL string following `RFC2397 "
+"<https://en.wikipedia.org/wiki/Data_URI_scheme>`_ standard with format."
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:37 of
+msgid "params"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:-1 of
+msgid "Dict[str, Any], optional"
+msgstr "Dict[str, Any], 可选"
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:38 of
+msgid ""
+"Additional parameters for generation configuration, by default None. Can "
+"include settings like temperature, max_tokens, etc."
+msgstr ""
+"用于生成配置的附加参数，默认为 None。可以包括如 temperature、max_tokens "
+"等设置。"
+
+#: maxframe.learn.contrib.llm.multi_modal.generate of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:41 of
+msgid ""
+"Generated text raw response and success status. If the success is False, "
+"the generated text will return the error message."
+msgstr ""
+"生成文本的原始响应和成功状态。如果成功状态为 False，则生成的文本将返回"
+"错误信息。"
+
+#: maxframe.learn.contrib.llm.multi_modal.generate of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:46 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:47 of
+msgid ""
+"The ``api_key_resource`` parameter should reference a text file resource "
+"in MaxCompute that contains only your DashScope API key."
+msgstr ""
+"``api_key_resource`` 参数应引用 MaxCompute 中仅包含 DashScope API 密钥的"
+"文本文件资源。"
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:49 of
+msgid ""
+"Using DashScope services requires enabling public network access for your"
+" MaxCompute project. This can be configured through the MaxCompute "
+"console by `enabling the Internet access feature "
+"<https://help.aliyun.com/zh/maxcompute/user-guide/network-connection-"
+"process>`_ for your project. Without this configuration, the API calls to"
+" DashScope will fail due to network connectivity issues."
+msgstr ""
+"使用 DashScope 服务需要为您的 MaxCompute 项目启用公网访问。这可通过 "
+"MaxCompute 控制台为您的项目`启用 Internet 访问功能 <https://help.aliyun."
+"com/zh/maxcompute/user-guide/network-connection-process>`_ 来配置。没有此"
+"配置，对 DashScope 的 API 调用将因网络连接问题而失败。"
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:52 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:53 of
+msgid ""
+"You can initialize a DashScope multi-modal model (such as qwen-vl-max) by"
+" providing a model name and an ``api_key_resource``. The "
+"``api_key_resource`` is a MaxCompute resource name that points to a text "
+"file containing a `DashScope <https://dashscope.aliyun.com/>`_ API key."
+msgstr ""
+"您可以通过提供模型名称和 ``api_key_resource`` 来初始化 DashScope 多模态"
+"模型（例如 qwen-vl-max）。``api_key_resource`` 是指向包含 `DashScope <"
+"https://dashscope.aliyun.com/>`_ API 密钥的文本文件的 MaxCompute 资源名称"
+"。"
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:64 of
+msgid ""
+"We use Data Url Schema to provide multi modal input in prompt template, "
+"here is an example to fill in the image from table."
+msgstr ""
+"我们在提示模板中使用 Data URL Schema 提供多模态输入，以下是一个从表中填充"
+"图像的示例。"
+
+#: maxframe.learn.contrib.llm.multi_modal.generate:66 of
+msgid ""
+"Assuming you have a MaxCompute table with two columns: ``image_id`` (as "
+"the index) and ``encoded_image_data_base64`` (containing Base64 encoded "
+"image data), you can construct a prompt message template as follows:"
+msgstr ""
+"假设您有一个 MaxCompute 表，包含两个列：``image_id``（作为索引）和 ``"
+"encoded_image_data_base64``（包含 Base64 编码的图像数据），您可以按如下"
+"方式构造提示消息模板："
+

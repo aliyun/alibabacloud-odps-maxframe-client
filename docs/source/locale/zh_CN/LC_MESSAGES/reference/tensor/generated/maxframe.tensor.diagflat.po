@@ -1,0 +1,100 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.diagflat.rst:2
+msgid "maxframe.tensor.diagflat"
+msgstr ""
+
+#: maxframe.tensor.datasource.diagflat.diagflat:1 of
+msgid "Create a two-dimensional tensor with the flattened input as a diagonal."
+msgstr "创建一个二维张量，其对角线为展平后的输入。"
+
+#: maxframe.tensor.datasource.diagflat.diagflat of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.datasource.diagflat.diagflat:3 of
+msgid ""
+"Input data, which is flattened and set as the `k`-th diagonal of the "
+"output."
+msgstr "输入数据，将被展平并设置为输出的第 `k` 条对角线。"
+
+#: maxframe.tensor.datasource.diagflat.diagflat:6 of
+msgid ""
+"Diagonal to set; 0, the default, corresponds to the \"main\" diagonal, a "
+"positive (negative) `k` giving the number of the diagonal above (below) "
+"the main."
+msgstr ""
+"要设置的对角线；默认值 0 对应“主”对角线，正值（负值）`k` 表示主对角线"
+"上方（下方）的第几条对角线。"
+
+#: maxframe.tensor.datasource.diagflat.diagflat:10 of
+msgid "Create sparse tensor if True, False as default"
+msgstr "如果为 True 则创建稀疏张量，默认为 False"
+
+#: maxframe.tensor.datasource.diagflat.diagflat:12 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True 则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.datasource.diagflat.diagflat:14 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.datasource.diagflat.diagflat of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.datasource.diagflat.diagflat:17 of
+msgid "**out** -- The 2-D output tensor."
+msgstr "**out** -- 二维输出张量。"
+
+#: maxframe.tensor.datasource.diagflat.diagflat of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.datasource.diagflat.diagflat:22 of
+msgid ":py:obj:`diag`"
+msgstr ""
+
+#: maxframe.tensor.datasource.diagflat.diagflat:23 of
+msgid "MATLAB work-alike for 1-D and 2-D tensors."
+msgstr "与 MATLAB 类似的用于一维和二维张量的函数。"
+
+#: maxframe.tensor.datasource.diagflat.diagflat:25 of
+msgid ":py:obj:`diagonal`"
+msgstr ""
+
+#: maxframe.tensor.datasource.diagflat.diagflat:26 of
+msgid "Return specified diagonals."
+msgstr "返回指定的对角线。"
+
+#: maxframe.tensor.datasource.diagflat.diagflat:28 of
+msgid ":py:obj:`trace`"
+msgstr ""
+
+#: maxframe.tensor.datasource.diagflat.diagflat:29 of
+msgid "Sum along diagonals."
+msgstr "沿对角线求和。"
+
+#: maxframe.tensor.datasource.diagflat.diagflat:32 of
+msgid "示例"
+msgstr ""
+

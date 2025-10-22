@@ -1,0 +1,138 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.random.rayleigh.rst:2
+msgid "maxframe.tensor.random.rayleigh"
+msgstr ""
+
+#: maxframe.tensor.random.rayleigh.rayleigh:1 of
+msgid "Draw samples from a Rayleigh distribution."
+msgstr "从瑞利分布中抽取样本。"
+
+#: maxframe.tensor.random.rayleigh.rayleigh:3 of
+msgid ""
+"The :math:`\\chi` and Weibull distributions are generalizations of the "
+"Rayleigh."
+msgstr ":math:`\\chi` 和韦布尔分布是瑞利分布的推广。"
+
+#: maxframe.tensor.random.rayleigh.rayleigh of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.random.rayleigh.rayleigh:6 of
+msgid "Scale, also equals the mode. Should be >= 0. Default is 1."
+msgstr "尺度参数，也等于众数。应大于等于 0。默认为 1。"
+
+#: maxframe.tensor.random.rayleigh.rayleigh:8 of
+msgid ""
+"Output shape.  If the given shape is, e.g., ``(m, n, k)``, then ``m * n *"
+" k`` samples are drawn.  If size is ``None`` (default), a single value is"
+" returned if ``scale`` is a scalar.  Otherwise, ``mt.array(scale).size`` "
+"samples are drawn."
+msgstr ""
+"输出形状。如果给定形状例如 ``(m, n, k)``，则抽取 ``m * n * k`` 个样本。"
+"如果 size 是 ``None``（默认），当 ``scale`` 是标量时返回单个值。否则抽取 "
+"``mt.array(scale).size`` 个样本。"
+
+#: maxframe.tensor.random.rayleigh.rayleigh:13 of
+msgid "Desired chunk size on each dimension"
+msgstr "每个维度上期望的块大小"
+
+#: maxframe.tensor.random.rayleigh.rayleigh:15 of
+msgid "Allocate the tensor on GPU if True, False as default"
+msgstr "如果为 True，则在 GPU 上分配张量，默认为 False"
+
+#: maxframe.tensor.random.rayleigh.rayleigh:17 of
+msgid "Data-type of the returned tensor."
+msgstr "返回张量的数据类型。"
+
+#: maxframe.tensor.random.rayleigh.rayleigh of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.random.rayleigh.rayleigh:20 of
+msgid "**out** -- Drawn samples from the parameterized Rayleigh distribution."
+msgstr "**out** -- 从参数化的瑞利分布中抽取的样本。"
+
+#: maxframe.tensor.random.rayleigh.rayleigh of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.random.rayleigh.rayleigh:24 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.random.rayleigh.rayleigh:25 of
+msgid "The probability density function for the Rayleigh distribution is"
+msgstr "瑞利分布的概率密度函数为"
+
+#: maxframe.tensor.random.rayleigh.rayleigh:27 of
+msgid ""
+"P(x;scale) = \\frac{x}{scale^2}e^{\\frac{-x^2}{2 \\cdotp scale^2}}\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.random.rayleigh.rayleigh:29 of
+msgid ""
+"The Rayleigh distribution would arise, for example, if the East and North"
+" components of the wind velocity had identical zero-mean Gaussian "
+"distributions.  Then the wind speed would have a Rayleigh distribution."
+msgstr ""
+"例如，如果风速的东向和北向分量具有相同的零均值高斯分布，则风速将服从瑞利"
+"分布。"
+
+#: maxframe.tensor.random.rayleigh.rayleigh:35 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.random.rayleigh.rayleigh:36 of
+msgid ""
+"Brighton Webs Ltd., \"Rayleigh Distribution,\" http://www.brighton-"
+"webs.co.uk/distributions/rayleigh.asp"
+msgstr ""
+
+#: maxframe.tensor.random.rayleigh.rayleigh:38 of
+msgid ""
+"Wikipedia, \"Rayleigh distribution\" "
+"http://en.wikipedia.org/wiki/Rayleigh_distribution"
+msgstr ""
+
+#: maxframe.tensor.random.rayleigh.rayleigh:42 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.random.rayleigh.rayleigh:43 of
+msgid "Draw values from the distribution and plot the histogram"
+msgstr "从分布中抽取值并绘制直方图"
+
+#: maxframe.tensor.random.rayleigh.rayleigh:50 of
+msgid ""
+"Wave heights tend to follow a Rayleigh distribution. If the mean wave "
+"height is 1 meter, what fraction of waves are likely to be larger than 3 "
+"meters?"
+msgstr ""
+"波高通常服从瑞利分布。如果平均波高为 1 米，那么有多少比例的波高可能超过 3"
+" 米？"
+
+#: maxframe.tensor.random.rayleigh.rayleigh:58 of
+msgid "The percentage of waves larger than 3 meters is:"
+msgstr "波高超过 3 米的比例为："
+

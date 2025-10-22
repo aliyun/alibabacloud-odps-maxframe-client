@@ -1,0 +1,232 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.date_range.rst:2
+msgid "maxframe.dataframe.date\\_range"
+msgstr ""
+
+#: maxframe.dataframe.datasource.date_range.date_range:1 of
+msgid "Return a fixed frequency DatetimeIndex."
+msgstr "返回一个固定频率的 DatetimeIndex。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.date_range.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.datasource.date_range.date_range:3 of
+msgid "Left bound for generating dates."
+msgstr "生成日期的左边界。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:5 of
+msgid "Right bound for generating dates."
+msgstr "生成日期的右边界。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:7 of
+msgid "Number of periods to generate."
+msgstr "要生成的周期数。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:9 of
+msgid ""
+"Frequency strings can have multiples, e.g. '5H'. See :ref:`here "
+"<timeseries.offset_aliases>` for a list of frequency aliases."
+msgstr ""
+"频率字符串可以有倍数，例如 '5H'。请参见 :ref:`此处 <timeseries.offset_"
+"aliases>` 获取频率别名列表。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:13 of
+msgid ""
+"Time zone name for returning localized DatetimeIndex, for example "
+"'Asia/Hong_Kong'. By default, the resulting DatetimeIndex is timezone-"
+"naive."
+msgstr ""
+"用于返回本地化 DatetimeIndex 的时区名称，例如 'Asia/Hong_Kong'。默认情况"
+"下，结果 DatetimeIndex 是非时区感知的。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:17 of
+msgid "Normalize start/end dates to midnight before generating date range."
+msgstr "在生成日期范围之前将起始/结束日期规范化到午夜。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:19 of
+msgid "Name of the resulting DatetimeIndex."
+msgstr "结果 DatetimeIndex 的名称。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:21 of
+msgid "Include boundaries; Whether to set each bound as closed or open."
+msgstr "包含边界；是否将每个边界设置为闭合或开放。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:23 of
+msgid "For compatibility. Has no effect on the result."
+msgstr "用于兼容性。对结果没有影响。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.date_range.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.datasource.date_range.date_range:25 of
+msgid "**rng**"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.date_range.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.datasource.date_range.date_range:30 of
+msgid ":py:obj:`DatetimeIndex`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.date_range.date_range:31 of
+msgid "An immutable container for datetimes."
+msgstr "一个用于日期时间的不可变容器。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:33 of
+msgid ":py:obj:`timedelta_range`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.date_range.date_range:34 of
+msgid "Return a fixed frequency TimedeltaIndex."
+msgstr "返回一个固定频率的 TimedeltaIndex。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:36 of
+msgid ":py:obj:`period_range`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.date_range.date_range:37 of
+msgid "Return a fixed frequency PeriodIndex."
+msgstr "返回一个固定频率的 PeriodIndex。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:39 of
+msgid ":py:obj:`interval_range`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.date_range.date_range:40 of
+msgid "Return a fixed frequency IntervalIndex."
+msgstr "返回一个固定频率的 IntervalIndex。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:43 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.datasource.date_range.date_range:44 of
+msgid ""
+"Of the four parameters ``start``, ``end``, ``periods``, and ``freq``, "
+"exactly three must be specified. If ``freq`` is omitted, the resulting "
+"``DatetimeIndex`` will have ``periods`` linearly spaced elements between "
+"``start`` and ``end`` (closed on both sides)."
+msgstr ""
+"在 ``start``、``end``、``periods`` 和 ``freq`` 这四个参数中，必须指定其中"
+"三个。如果省略 ``freq``，则结果 ``DatetimeIndex`` 将在 ``start`` 和 ``end"
+"`` 之间具有 ``periods`` 个线性分布的元素（两端闭合）。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:49 of
+msgid ""
+"To learn more about the frequency strings, please see `this link "
+"<https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html"
+"#offset-aliases>`__."
+msgstr ""
+"要了解更多关于频率字符串的信息，请参见 `此链接 <https://pandas.pydata.org"
+"/pandas-docs/stable/user_guide/timeseries.html#offset-aliases>`__。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:53 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.datasource.date_range.date_range:54 of
+msgid "**Specifying the values**"
+msgstr "**指定值**"
+
+#: maxframe.dataframe.datasource.date_range.date_range:56 of
+msgid ""
+"The next four examples generate the same `DatetimeIndex`, but vary the "
+"combination of `start`, `end` and `periods`."
+msgstr ""
+"接下来的四个示例生成相同的 `DatetimeIndex`，但 `start`、`end` 和 `periods"
+"` 的组合各不相同。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:59 of
+msgid ""
+"Specify `start` and `end`, with the default daily frequency. >>> import "
+"maxframe.dataframe as md"
+msgstr ""
+"指定 `start` 和 `end`，使用默认的日频率。>>> import maxframe.dataframe as"
+" md"
+
+#: maxframe.dataframe.datasource.date_range.date_range:67 of
+msgid "Specify `start` and `periods`, the number of periods (days)."
+msgstr "指定 `start` 和 `periods`，表示周期数（天数）。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:74 of
+msgid "Specify `end` and `periods`, the number of periods (days)."
+msgstr "指定 `end` 和 `periods`，表示周期数（天数）。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:81 of
+msgid ""
+"Specify `start`, `end`, and `periods`; the frequency is generated "
+"automatically (linearly spaced)."
+msgstr "指定 `start`、`end` 和 `periods`；频率会自动生成（线性间隔）。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:89 of
+msgid "**Other Parameters**"
+msgstr "**其他参数**"
+
+#: maxframe.dataframe.datasource.date_range.date_range:91 of
+msgid "Changed the `freq` (frequency) to ``'M'`` (month end frequency)."
+msgstr "将 `freq`（频率）更改为 ``'M'``（月末频率）。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:98 of
+msgid "Multiples are allowed"
+msgstr "允许多倍数"
+
+#: maxframe.dataframe.datasource.date_range.date_range:105 of
+msgid "`freq` can also be specified as an Offset object."
+msgstr "`freq` 也可以指定为 Offset 对象。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:112 of
+msgid "Specify `tz` to set the timezone."
+msgstr "指定 `tz` 来设置时区。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:120 of
+msgid ""
+"`inclusive` controls whether to include `start` and `end` that are on the"
+" boundary. The default, \"both\", includes boundary points on either end."
+msgstr ""
+"`inclusive` 控制是否包含位于边界上的 `start` 和 `end`。默认值 \"both\" "
+"表示包含两端的边界点。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:127 of
+msgid "Use ``inclusive='left'`` to exclude `end` if it falls on the boundary."
+msgstr "使用 ``inclusive='left'`` 可在 `end` 落在边界上时将其排除。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:133 of
+msgid ""
+"Use ``inclusive='right'`` to exclude `start` if it falls on the boundary,"
+" and similarly inclusive='neither' will exclude both `start` and `end`."
+msgstr ""
+"使用 ``inclusive='right'`` 可在 `start` 落在边界上时将其排除，类似地，"
+"inclusive='neither' 将同时排除 `start` 和 `end`。"
+
+#: maxframe.dataframe.datasource.date_range.date_range:141 of
+msgid ""
+"Pandas 1.4.0 or later is required to use ``inclusive='neither'``. "
+"Otherwise an error may be raised."
+msgstr ""
+"使用 ``inclusive='neither'`` 需要 Pandas 1.4.0 或更高版本。否则可能会引发"
+"错误。"
+

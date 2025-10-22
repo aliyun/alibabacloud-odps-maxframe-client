@@ -1,0 +1,106 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.yn.rst:2
+msgid "maxframe.tensor.special.yn"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yn:1 of
+msgid "Bessel function of the second kind of integer order and real argument."
+msgstr "整数阶实数参数的第二类贝塞尔函数。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.yn.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yn:3 of
+msgid "Order (integer)."
+msgstr "阶数（整数）。"
+
+#: maxframe.tensor.special.bessel.yn:5 of
+msgid "Argument (float)."
+msgstr "参数（浮点数）。"
+
+#: maxframe.tensor.special.bessel.yn:7 of
+msgid "Optional output array for the function results"
+msgstr "函数结果的可选输出数组"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.yn.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yn:10 of
+msgid "**Y** -- Value of the Bessel function, :math:`Y_n(x)`."
+msgstr "**Y** -- 贝塞尔函数的值，:math:`Y_n(x)`。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.yn.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yn:15 of
+msgid ":py:obj:`yv`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yn:16 of
+msgid "For real order and real or complex argument."
+msgstr "适用于实数阶和实数或复数参数。"
+
+#: maxframe.tensor.special.bessel.yn:18 of
+msgid ":py:obj:`y0`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yn:19 of
+msgid "faster implementation of this function for order 0"
+msgstr "阶数为 0 时该函数的快速实现"
+
+#: maxframe.tensor.special.bessel.yn:21 of
+msgid ":py:obj:`y1`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yn:22 of
+msgid "faster implementation of this function for order 1"
+msgstr "阶数为 1 时该函数的快速实现"
+
+#: maxframe.tensor.special.bessel.yn:25 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yn:26 of
+msgid "Wrapper for the Cephes [1]_ routine `yn`."
+msgstr "对 Cephes [1]_ 例程 `yn` 的封装。"
+
+#: maxframe.tensor.special.bessel.yn:28 of
+msgid ""
+"The function is evaluated by forward recurrence on `n`, starting with "
+"values computed by the Cephes routines `y0` and `y1`. If ``n = 0`` or 1, "
+"the routine for `y0` or `y1` is called directly."
+msgstr ""
+"该函数通过 `n` 的前向递推进行计算，初始值由 Cephes 例程 `y0` 和 `y1` 计算"
+"得出。如果 ``n = 0`` 或 1，则直接调用 `y0` 或 `y1` 的例程。"
+
+#: maxframe.tensor.special.bessel.yn:33 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yn:34 of
+msgid "Cephes Mathematical Functions Library, http://www.netlib.org/cephes/"
+msgstr "Cephes 数学函数库，http://www.netlib.org/cephes/"
+

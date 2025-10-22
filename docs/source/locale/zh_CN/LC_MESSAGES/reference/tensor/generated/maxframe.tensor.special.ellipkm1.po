@@ -1,0 +1,155 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellipkm1.rst:2
+msgid "maxframe.tensor.special.ellipkm1"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:1 of
+msgid "Complete elliptic integral of the first kind around `m` = 1"
+msgstr "当 `m` = 1 时第一类完全椭圆积分"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:3 of
+msgid "This function is defined as"
+msgstr "该函数定义为"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:5 of
+#, python-brace-format
+msgid ""
+"K(p) = \\\\int_0^{\\\\pi/2} [1 - m \\\\sin(t)^2]^{-1/2} dt\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:7 of
+msgid "where `m = 1 - p`."
+msgstr "其中 `m = 1 - p`。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellipkm1.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:9 of
+msgid "Defines the parameter of the elliptic integral as `m = 1 - p`."
+msgstr "定义椭圆积分的参数为 `m = 1 - p`。"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:11 of
+msgid "Optional output array for the function values"
+msgstr "可选的函数值输出数组"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellipkm1.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:14 of
+msgid "**K** -- Value of the elliptic integral."
+msgstr "**K** -- 椭圆积分的值。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.ellipkm1.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:19 of
+msgid ":py:obj:`ellipk`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:20 of
+msgid "Complete elliptic integral of the first kind"
+msgstr "第一类完全椭圆积分"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:22 of
+msgid ":py:obj:`ellipkinc`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:23 of
+msgid "Incomplete elliptic integral of the first kind"
+msgstr "第一类不完全椭圆积分"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:25 of
+msgid ":py:obj:`ellipe`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:26 of
+msgid "Complete elliptic integral of the second kind"
+msgstr "第二类完全椭圆积分"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:28 of
+msgid ":py:obj:`ellipeinc`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:29 of
+msgid "Incomplete elliptic integral of the second kind"
+msgstr "第二类不完全椭圆积分"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:31 of
+msgid ":py:obj:`elliprf`"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:32 of
+msgid "Completely-symmetric elliptic integral of the first kind."
+msgstr "第一类完全对称椭圆积分。"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:35 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:36 of
+msgid "Wrapper for the Cephes [1]_ routine `ellpk`."
+msgstr "对 Cephes [1]_ 例程 `ellpk` 的封装。"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:38 of
+msgid "For ``p <= 1``, computation uses the approximation,"
+msgstr "对于 ``p <= 1``，计算使用近似公式，"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:40 of
+msgid ""
+"K(p) \\\\approx P(p) - \\\\log(p) Q(p),\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:42 of
+msgid ""
+"where :math:`P` and :math:`Q` are tenth-order polynomials.  The argument "
+"`p` is used internally rather than `m` so that the logarithmic "
+"singularity at ``m = 1`` will be shifted to the origin; this preserves "
+"maximum accuracy.  For ``p > 1``, the identity"
+msgstr ""
+"其中 :math:`P` 和 :math:`Q` 是十次多项式。内部使用参数 `p` 而不是 `m`，"
+"以便将 ``m = 1`` 处的对数奇点移到原点；这样可以保持最大精度。对于 ``p > 1"
+"``，使用恒等式"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:47 of
+msgid ""
+"K(p) = K(1/p)/\\\\sqrt(p)\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:49 of
+msgid "is used."
+msgstr "进行计算。"
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:52 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.ellip_func_integrals.ellipkm1:53 of
+msgid "Cephes Mathematical Functions Library, http://www.netlib.org/cephes/"
+msgstr "Cephes 数学函数库，http://www.netlib.org/cephes/"
+

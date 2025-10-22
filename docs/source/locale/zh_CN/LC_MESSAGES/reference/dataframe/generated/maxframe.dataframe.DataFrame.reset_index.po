@@ -1,0 +1,149 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.reset_index.rst:2
+msgid "maxframe.dataframe.DataFrame.reset\\_index"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:1 of
+msgid "Reset the index, or a level of it."
+msgstr "重置索引，或索引的某个层级。"
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:3 of
+msgid ""
+"Reset the index of the DataFrame, and use the default one instead. If the"
+" DataFrame has a MultiIndex, this method can remove one or more levels."
+msgstr ""
+"重置 DataFrame 的索引，并使用默认索引。如果 DataFrame 具有 MultiIndex，此"
+"方法可以移除一个或多个层级。"
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:7 of
+msgid ""
+"Only remove the given levels from the index. Removes all levels by "
+"default."
+msgstr "仅从索引中移除指定的层级。默认移除所有层级。"
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:10 of
+msgid ""
+"Do not try to insert index into dataframe columns. This resets the index "
+"to the default integer index."
+msgstr "不要尝试将索引插入到 DataFrame 的列中。此操作将索引重置为默认的整数索引。"
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:13 of
+msgid "Modify the DataFrame in place (do not create a new object)."
+msgstr "就地修改 DataFrame（不创建新对象）。"
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:15 of
+msgid ""
+"If the columns have multiple levels, determines which level the labels "
+"are inserted into. By default it is inserted into the first level."
+msgstr "如果列具有多个层级，则确定标签插入到哪一层级。默认插入到第一层级。"
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:19 of
+msgid ""
+"If the columns have multiple levels, determines how the other levels are "
+"named. If None then the index name is repeated."
+msgstr ""
+"如果列具有多个层级，则确定其他层级的命名方式。如果为 None，则重复使用索引"
+"名称。"
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:23 of
+msgid "DataFrame with the new index or None if ``inplace=True``."
+msgstr "具有新索引的 DataFrame，如果 ``inplace=True`` 则返回 None。"
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:28 of
+msgid ":py:obj:`DataFrame.set_index`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:29 of
+msgid "Opposite of reset_index."
+msgstr "reset_index 的反向操作。"
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:31 of
+msgid ":py:obj:`DataFrame.reindex`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:32 of
+msgid "Change to new indices or expand indices."
+msgstr "更改索引或扩展索引。"
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:34 of
+msgid ":py:obj:`DataFrame.reindex_like`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:35 of
+msgid "Change to same indices as other DataFrame."
+msgstr "将索引更改为与其他 DataFrame 相同。"
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:38 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:54 of
+msgid ""
+"When we reset the index, the old index is added as a column, and a new "
+"sequential index is used:"
+msgstr "当我们重置索引时，旧索引将作为一列添加，同时使用新的顺序索引："
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:64 of
+msgid ""
+"We can use the `drop` parameter to avoid the old index being added as a "
+"column:"
+msgstr "我们可以使用 `drop` 参数来避免旧索引作为列添加："
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:74 of
+msgid "You can also use `reset_index` with `MultiIndex`."
+msgstr "您也可以在 `MultiIndex` 上使用 `reset_index`。"
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:99 of
+msgid "If the index has multiple levels, we can reset a subset of them:"
+msgstr "如果索引具有多个层级，我们可以重置其中的一部分："
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:110 of
+msgid ""
+"If we are not dropping the index, by default, it is placed in the top "
+"level. We can place it in another level:"
+msgstr ""
+"如果我们不删除索引，默认情况下它会被放置在顶层。我们可以将其放置在其他"
+"层级："
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:122 of
+msgid ""
+"When the index is inserted under another level, we can specify under "
+"which one with the parameter `col_fill`:"
+msgstr "当索引插入到另一个层级之下时，可以通过 `col_fill` 参数指定具体层级："
+
+#: maxframe.dataframe.indexing.reset_index.df_reset_index:134 of
+msgid "If we specify a nonexistent level for `col_fill`, it is created:"
+msgstr "如果我们为 `col_fill` 指定一个不存在的层级，则会创建该层级："
+

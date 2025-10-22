@@ -1,0 +1,182 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.reindex_like.rst:2
+msgid "maxframe.dataframe.Series.reindex\\_like"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:1 of
+msgid "Return an object with matching indices as other object."
+msgstr "返回一个与另一个对象具有匹配索引的对象。"
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:3 of
+msgid ""
+"Conform the object to the same index on all axes. Optional filling logic,"
+" placing NaN in locations having no value in the previous index. A new "
+"object is produced unless the new index is equivalent to the current one "
+"and copy=False."
+msgstr ""
+"使对象在所有轴上符合相同的索引。可选的填充逻辑，将 NaN 放置在先前索引中"
+"没有值的位置。除非新索引与当前索引等效且 copy=False，否则将生成一个新对象"
+"。"
+
+#: maxframe.dataframe.indexing.reindex.reindex_like of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:8 of
+msgid ""
+"Its row and column indices are used to define the new indices of this "
+"object."
+msgstr "其行和列索引用于定义此对象的新索引。"
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:11 of
+msgid ""
+"Method to use for filling holes in reindexed DataFrame. Please note: this"
+" is only applicable to DataFrames/Series with a monotonically "
+"increasing/decreasing index.  * None (default): don't fill gaps * pad / "
+"ffill: propagate last valid observation forward to next   valid * "
+"backfill / bfill: use next valid observation to fill gap * nearest: use "
+"nearest valid observations to fill gap."
+msgstr ""
+"用于在重新索引的 DataFrame 中填充空洞的方法。请注意：这仅适用于具有单调"
+"递增/递减索引的 DataFrames/Series。  * None（默认）：不填充空缺 * pad / "
+"ffill：将上一个有效观测值向前传播到下一个有效值 * backfill / bfill：使用"
+"下一个有效观测值填充空缺 * nearest：使用最近的有效观测值填充空缺。"
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:11 of
+msgid ""
+"Method to use for filling holes in reindexed DataFrame. Please note: this"
+" is only applicable to DataFrames/Series with a monotonically "
+"increasing/decreasing index."
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:15 of
+msgid "None (default): don't fill gaps"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:16 of
+msgid "pad / ffill: propagate last valid observation forward to next valid"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:18 of
+msgid "backfill / bfill: use next valid observation to fill gap"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:19 of
+msgid "nearest: use nearest valid observations to fill gap."
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:21 of
+msgid "Return a new object, even if the passed indexes are the same."
+msgstr "即使传递的索引相同，也返回一个新对象。"
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:23 of
+msgid "Maximum number of consecutive labels to fill for inexact matches."
+msgstr "不精确匹配时要填充的最大连续标签数。"
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:25 of
+msgid ""
+"Maximum distance between original and new labels for inexact matches. The"
+" values of the index at the matching locations must satisfy the equation "
+"``abs(index[indexer] - target) <= tolerance``.  Tolerance may be a scalar"
+" value, which applies the same tolerance to all values, or list-like, "
+"which applies variable tolerance per element. List-like includes list, "
+"tuple, array, Series, and must be the same size as the index and its "
+"dtype must exactly match the index's type."
+msgstr ""
+"不精确匹配时原始标签与新标签之间的最大距离。索引在匹配位置的值必须满足"
+"方程 ``abs(index[indexer] - target) <= tolerance``。容差可以是一个标量值"
+"，对所有值应用相同的容差，或者类似列表的形式，对每个元素应用不同的容差。"
+"类似列表的包括列表、元组、数组、Series，并且必须与索引大小相同，其"
+"数据类型必须与索引的类型完全匹配。"
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:25 of
+msgid ""
+"Maximum distance between original and new labels for inexact matches. The"
+" values of the index at the matching locations must satisfy the equation "
+"``abs(index[indexer] - target) <= tolerance``."
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:29 of
+#, fuzzy
+msgid ""
+"Tolerance may be a scalar value, which applies the same tolerance to all "
+"values, or list-like, which applies variable tolerance per element. List-"
+"like includes list, tuple, array, Series, and must be the same size as "
+"the index and its dtype must exactly match the index's type."
+msgstr ""
+"不精确匹配时原始标签与新标签之间的最大距离。索引在匹配位置的值必须满足"
+"方程 ``abs(index[indexer] - target) <= tolerance``。容差可以是一个标量值"
+"，对所有值应用相同的容差，或者类似列表的形式，对每个元素应用不同的容差。"
+"类似列表的包括列表、元组、数组、Series，并且必须与索引大小相同，其"
+"数据类型必须与索引的类型完全匹配。"
+
+#: maxframe.dataframe.indexing.reindex.reindex_like of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:36 of
+msgid "Same type as caller, but with changed indices on each axis."
+msgstr "与调用者相同类型，但在每个轴上的索引已更改。"
+
+#: maxframe.dataframe.indexing.reindex.reindex_like of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:41 of
+msgid ":py:obj:`DataFrame.set_index`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:42 of
+msgid "Set row labels."
+msgstr "设置行标签。"
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:44 of
+msgid ":py:obj:`DataFrame.reset_index`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:45 of
+msgid "Remove row labels or move them to new columns."
+msgstr "删除行标签或将它们移至新列。"
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:47 of
+msgid ":py:obj:`DataFrame.reindex`"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:48 of
+msgid "Change to new indices or expand indices."
+msgstr "更改到新索引或扩展索引。"
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:51 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:52 of
+msgid ""
+"Same as calling ``.reindex(index=other.index, "
+"columns=other.columns,...)``."
+msgstr "与调用 ``.reindex(index=other.index, columns=other.columns,...)`` 相同。"
+
+#: maxframe.dataframe.indexing.reindex.reindex_like:56 of
+msgid "示例"
+msgstr ""
+

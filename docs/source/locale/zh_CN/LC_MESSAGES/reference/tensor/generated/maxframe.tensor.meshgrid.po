@@ -1,0 +1,115 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.meshgrid.rst:2
+msgid "maxframe.tensor.meshgrid"
+msgstr ""
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid:1 of
+msgid "Return coordinate matrices from coordinate vectors."
+msgstr "从坐标向量返回坐标矩阵。"
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid:3 of
+msgid ""
+"Make N-D coordinate arrays for vectorized evaluations of N-D "
+"scalar/vector fields over N-D grids, given one-dimensional coordinate "
+"tensors x1, x2,..., xn."
+msgstr ""
+"给定一维坐标张量 x1, x2,..., xn，为 N 维网格上的 N 维标量/向量场的向量化"
+"计算生成 N 维坐标数组。"
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid:7
+#: maxframe.tensor.datasource.meshgrid.meshgrid:9
+#: maxframe.tensor.datasource.meshgrid.meshgrid:11
+#: maxframe.tensor.datasource.meshgrid.meshgrid:13 of
+msgid "1-D arrays representing the coordinates of a grid."
+msgstr "表示网格坐标的 1 维数组。"
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid:15 of
+msgid ""
+"Cartesian ('xy', default) or matrix ('ij') indexing of output. See Notes "
+"for more details."
+msgstr "输出的笛卡尔 ('xy'，默认) 或矩阵 ('ij') 索引方式。详见说明部分。"
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid:18 of
+msgid ""
+"If True a sparse grid is returned in order to conserve memory. Default is"
+" False."
+msgstr "如果为 True，则返回稀疏网格以节省内存。默认为 False。"
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid:22 of
+msgid ""
+"**X1, X2,..., XN** -- For vectors `x1`, `x2`,..., 'xn' with lengths "
+"``Ni=len(xi)`` , return ``(N1, N2, N3,...Nn)`` shaped tensors if "
+"indexing='ij' or ``(N2, N1, N3,...Nn)`` shaped tensors if indexing='xy' "
+"with the elements of `xi` repeated to fill the matrix along the first "
+"dimension for `x1`, the second for `x2` and so on."
+msgstr ""
+"**X1, X2,..., XN** -- 对于长度为 ``Ni=len(xi)`` 的向量 `x1`, `x2`,..., '"
+"xn'，如果 indexing='ij' 则返回形状为 ``(N1, N2, N3,...Nn)`` 的张量；如果 "
+"indexing='xy' 则返回形状为 ``(N2, N1, N3,...Nn)`` 的张量，其中 `xi` 的"
+"元素沿第一个维度（对于 `x1`）、第二个维度（对于 `x2`）等重复填充矩阵。"
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid:30 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid:31 of
+msgid ""
+"This function supports both indexing conventions through the indexing "
+"keyword argument.  Giving the string 'ij' returns a meshgrid with matrix "
+"indexing, while 'xy' returns a meshgrid with Cartesian indexing. In the "
+"2-D case with inputs of length M and N, the outputs are of shape (N, M) "
+"for 'xy' indexing and (M, N) for 'ij' indexing.  In the 3-D case with "
+"inputs of length M, N and P, outputs are of shape (N, M, P) for 'xy' "
+"indexing and (M, N, P) for 'ij' indexing.  The difference is illustrated "
+"by the following code snippet::"
+msgstr ""
+"该函数通过 indexing 关键字参数支持两种索引约定。指定字符串 'ij' 将返回"
+"使用矩阵索引的网格，而 'xy' 将返回使用笛卡尔索引的网格。在二维情况下，"
+"输入长度分别为 M 和 N 时，'xy' 索引输出形状为 (N, M)，'ij' 索引输出形状为"
+" (M, N)。在三维情况下，输入长度分别为 M、N 和 P 时，'xy' 索引输出形状为 ("
+"N, M, P)，'ij' 索引输出形状为 (M, N, P)。差异可通过以下代码片段说明："
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid:50 of
+msgid "In the 1-D and 0-D case, the indexing and sparse keywords have no effect."
+msgstr "在一维和零维情况下，indexing 和 sparse 关键字不起作用。"
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid:53 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.datasource.meshgrid.meshgrid:73 of
+msgid "`meshgrid` is very useful to evaluate functions on a grid."
+msgstr "`meshgrid` 在网格上计算函数时非常有用。"
+

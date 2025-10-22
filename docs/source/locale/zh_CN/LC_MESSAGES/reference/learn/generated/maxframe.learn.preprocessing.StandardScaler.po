@@ -1,0 +1,408 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-10 10:10+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:2
+msgid "maxframe.learn.preprocessing.StandardScaler"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:1 of
+msgid "Standardize features by removing the mean and scaling to unit variance."
+msgstr "通过去除均值并将方差缩放到单位值来标准化特征。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:3 of
+msgid "The standard score of a sample `x` is calculated as:"
+msgstr "样本 `x` 的标准分数计算为："
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:9 of
+msgid ""
+"where `u` is the mean of the training samples or zero if "
+"`with_mean=False`, and `s` is the standard deviation of the training "
+"samples or one if `with_std=False`."
+msgstr ""
+"其中 `u` 是训练样本的均值，如果 `with_mean=False` 则为零；`s` 是训练样本"
+"的标准差，如果 `with_std=False` 则为一。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:13 of
+msgid ""
+"Centering and scaling happen independently on each feature by computing "
+"the relevant statistics on the samples in the training set. Mean and "
+"standard deviation are then stored to be used on later data using "
+":meth:`transform`."
+msgstr ""
+"通过计算训练集中样本的相关统计量，对每个特征分别进行中心化和缩放。然后将"
+"均值和标准差存储起来，以便后续数据使用 :meth:`transform` 处理。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:18 of
+msgid ""
+"Standardization of a dataset is a common requirement for many machine "
+"learning estimators: they might behave badly if the individual features "
+"do not more or less look like standard normally distributed data (e.g. "
+"Gaussian with 0 mean and unit variance)."
+msgstr ""
+"标准化是许多机器学习算法的常见要求：如果各个特征不近似于标准的正态分布（"
+"例如均值为 0 且方差为 1 的高斯分布），这些算法的表现可能会很差。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:23 of
+msgid ""
+"For instance many elements used in the objective function of a learning "
+"algorithm (such as the RBF kernel of Support Vector Machines or the L1 "
+"and L2 regularizers of linear models) assume that all features are "
+"centered around 0 and have variance in the same order. If a feature has a"
+" variance that is orders of magnitude larger than others, it might "
+"dominate the objective function and make the estimator unable to learn "
+"from other features correctly as expected."
+msgstr ""
+"例如，许多用于学习算法目标函数的元素（如支持向量机的 RBF 核，或线性模型的"
+" L1 和 L2 正则化项）都假设所有特征都围绕 0 中心化，并且方差处于同一量级。"
+"如果某个特征的方差远大于其他特征，它可能会主导目标函数，使得估计器无法如"
+"预期那样从其他特征中正确学习。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:31 of
+msgid ""
+"`StandardScaler` is sensitive to outliers, and the features may scale "
+"differently from each other in the presence of outliers. For an example "
+"visualization, refer to :ref:`Compare StandardScaler with other scalers "
+"<plot_all_scaling_standard_scaler_section>`."
+msgstr ""
+"`StandardScaler` 对异常值敏感，在存在异常值的情况下，特征之间的缩放方式"
+"可能不同。示例可视化请参见 :ref:`Compare StandardScaler with other "
+"scalers <plot_all_scaling_standard_scaler_section>`。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:36 of
+msgid ""
+"This scaler can also be applied to sparse CSR or CSC matrices by passing "
+"`with_mean=False` to avoid breaking the sparsity structure of the data."
+msgstr ""
+"此缩放器也可以应用于稀疏的 CSR 或 CSC 矩阵，只需传入 `with_mean=False`，"
+"以避免破坏数据的稀疏结构。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:39 of
+msgid "Read more in the :ref:`User Guide <preprocessing_scaler>`."
+msgstr "更多内容请参阅 :ref:`用户指南 <preprocessing_scaler>`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:41 of
+msgid ""
+"If False, try to avoid a copy and do inplace scaling instead. This is not"
+" guaranteed to always work inplace; e.g. if the data is not a NumPy array"
+" or scipy.sparse CSR matrix, a copy may still be returned."
+msgstr ""
+"如果为 False，则尝试避免复制数据，而是就地缩放。但这并不能保证总是就地"
+"执行；例如，如果数据不是 NumPy 数组或 scipy.sparse CSR 矩阵，仍可能返回"
+"副本。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:46 of
+msgid ""
+"If True, center the data before scaling. This does not work (and will "
+"raise an exception) when attempted on sparse matrices, because centering "
+"them entails building a dense matrix which in common use cases is likely "
+"to be too large to fit in memory."
+msgstr ""
+"如果为 True，在缩放前对数据进行中心化处理。在稀疏矩阵上此操作无效（并会"
+"引发异常），因为中心化需要构建一个密集矩阵，这在常见使用情况下可能太大而"
+"无法放入内存。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:52 of
+msgid ""
+"If True, scale the data to unit variance (or equivalently, unit standard "
+"deviation)."
+msgstr "如果为 True，将数据缩放到单位方差（等价于单位标准差）。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:58 of
+msgid ""
+"Per feature relative scaling of the data to achieve zero mean and unit "
+"variance. Generally this is calculated using `np.sqrt(var_)`. If a "
+"variance is zero, we can't achieve unit variance, and the data is left "
+"as-is, giving a scaling factor of 1. `scale_` is equal to `None` when "
+"`with_std=False`."
+msgstr ""
+"按特征对数据进行相对缩放，使其具有零均值和单位方差。通常使用 `np.sqrt(var"
+"_)` 计算。如果某个方差为零，则无法实现单位方差，数据将保持不变，缩放因子"
+"为 1。当 `with_std=False` 时，`scale_` 等于 `None`。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler of
+msgid "type"
+msgstr "类型"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:64
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:71
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:79 of
+msgid "ndarray of shape (n_features,) or None"
+msgstr "形状为 (n_features,) 的 ndarray 或 None"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:68 of
+msgid ""
+"The mean value for each feature in the training set. Equal to ``None`` "
+"when ``with_mean=False`` and ``with_std=False``."
+msgstr ""
+"训练集中每个特征的均值。当 ``with_mean=False`` 且 ``with_std=False`` 时为"
+" ``None``。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:75 of
+msgid ""
+"The variance for each feature in the training set. Used to compute "
+"`scale_`. Equal to ``None`` when ``with_mean=False`` and "
+"``with_std=False``."
+msgstr ""
+"训练集中每个特征的方差。用于计算 `scale_`。当 ``with_mean=False`` 且 ``"
+"with_std=False`` 时为 ``None``。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:83 of
+msgid "Number of features seen during :term:`fit`."
+msgstr "在 :term:`fit` 过程中看到的特征数。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:85 of
+msgid "int"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:89 of
+msgid ""
+"Names of features seen during :term:`fit`. Defined only when `X` has "
+"feature names that are all strings."
+msgstr "在 :term:`fit` 过程中看到的特征名称。仅在 `X` 的特征名称均为字符串时定义。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:92 of
+msgid "ndarray of shape (`n_features_in_`,)"
+msgstr "形状为 (`n_features_in_`,) 的 ndarray"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:96 of
+msgid ""
+"The number of samples processed by the estimator for each feature. If "
+"there are no missing samples, the ``n_samples_seen`` will be an integer, "
+"otherwise it will be an array of dtype int. If `sample_weights` are used "
+"it will be a float (if no missing data) or an array of dtype float that "
+"sums the weights seen so far. Will be reset on new calls to fit, but "
+"increments across ``partial_fit`` calls."
+msgstr ""
+"每个特征由估计器处理的样本数。如果没有缺失样本，``n_samples_seen`` 将是"
+"一个整数，否则是一个 dtype 为 int 的数组。如果使用了 `sample_weights`，它"
+"将是一个浮点数（如果没有缺失数据）或一个 dtype 为 float 的数组，汇总到"
+"目前为止看到的权重。在新的 `fit` 调用时将重置，但在 ``partial_fit`` 调用"
+"之间会递增。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:104 of
+msgid "int or ndarray of shape (n_features,)"
+msgstr "int 或形状为 (n_features,) 的 ndarray"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:108 of
+msgid ":py:obj:`scale`"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:109 of
+msgid "Equivalent function without the estimator API."
+msgstr "不使用估计器 API 的等效函数。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:111 of
+msgid ":class:`~sklearn.decomposition.PCA`"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:112 of
+msgid "Further removes the linear correlation across features with 'whiten=True'."
+msgstr "使用 'whiten=True' 进一步消除特征之间的线性相关性。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:115 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:116 of
+msgid ""
+"NaNs are treated as missing values: disregarded in fit, and maintained in"
+" transform."
+msgstr "NaN 被视为缺失值：在拟合时被忽略，在变换时保留。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:119 of
+msgid ""
+"We use a biased estimator for the standard deviation, equivalent to "
+"`numpy.std(x, ddof=0)`. Note that the choice of `ddof` is unlikely to "
+"affect model performance."
+msgstr ""
+"我们使用有偏估计量计算标准差，等价于 `numpy.std(x, ddof=0)`。注意 `ddof` "
+"的选择不太可能影响模型性能。"
+
+#: maxframe.learn.preprocessing._data.standard_scaler.StandardScaler:124 of
+msgid "示例"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`__init__ "
+"<maxframe.learn.preprocessing.StandardScaler.__init__>`\\ \\(\\*\\[\\, "
+"copy\\, with\\_mean\\, with\\_std\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`execute <maxframe.learn.preprocessing.StandardScaler.execute>`\\"
+" \\(\\[session\\, run\\_kwargs\\, extra\\_tileables\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`fetch <maxframe.learn.preprocessing.StandardScaler.fetch>`\\ "
+"\\(\\[session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`fit <maxframe.learn.preprocessing.StandardScaler.fit>`\\ "
+"\\(X\\[\\, y\\, sample\\_weight\\, execute\\, session\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid "Compute the mean and std to be used for later scaling."
+msgstr "计算用于后续缩放的均值和标准差。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`fit_transform "
+"<maxframe.learn.preprocessing.StandardScaler.fit_transform>`\\ \\(X\\[\\,"
+" y\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid "Fit to data, then transform it."
+msgstr "拟合数据，然后进行变换。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`get_metadata_routing "
+"<maxframe.learn.preprocessing.StandardScaler.get_metadata_routing>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid "Get metadata routing of this object."
+msgstr "获取此对象的元数据路由信息。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`get_params "
+"<maxframe.learn.preprocessing.StandardScaler.get_params>`\\ "
+"\\(\\[deep\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid "Get parameters for this estimator."
+msgstr "获取此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`inverse_transform "
+"<maxframe.learn.preprocessing.StandardScaler.inverse_transform>`\\ "
+"\\(X\\[\\, copy\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid "Scale back the data to the original representation."
+msgstr "将数据缩放回原始表示形式。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`partial_fit "
+"<maxframe.learn.preprocessing.StandardScaler.partial_fit>`\\ \\(X\\[\\, "
+"y\\, sample\\_weight\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid "Online computation of mean and std on X for later scaling."
+msgstr "在线计算 X 的均值和标准差以供后续缩放使用。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`set_fit_request "
+"<maxframe.learn.preprocessing.StandardScaler.set_fit_request>`\\ "
+"\\(\\*\\[\\, execute\\, run\\_kwargs\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``fit`` method."
+msgstr "配置是否应请求将元数据传递给 ``fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`set_inverse_transform_request "
+"<maxframe.learn.preprocessing.StandardScaler.set_inverse_transform_request>`\\"
+" \\(\\*\\[\\, copy\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``inverse_transform`` method."
+msgstr "配置是否应请求将元数据传递给 ``inverse_transform`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`set_params "
+"<maxframe.learn.preprocessing.StandardScaler.set_params>`\\ "
+"\\(\\*\\*params\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid "Set the parameters of this estimator."
+msgstr "设置此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`set_partial_fit_request "
+"<maxframe.learn.preprocessing.StandardScaler.set_partial_fit_request>`\\ "
+"\\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``partial_fit`` method."
+msgstr "配置是否应请求将元数据传递给 ``partial_fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`set_transform_request "
+"<maxframe.learn.preprocessing.StandardScaler.set_transform_request>`\\ "
+"\\(\\*\\[\\, copy\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``transform`` method."
+msgstr "配置是否应请求将元数据传递给 ``transform`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`transform "
+"<maxframe.learn.preprocessing.StandardScaler.transform>`\\ \\(X\\[\\, "
+"copy\\, execute\\, session\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
+msgid "Perform standardization by centering and scaling."
+msgstr ""
+

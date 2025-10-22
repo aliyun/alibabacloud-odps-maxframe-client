@@ -89,7 +89,7 @@ Note that you need to read API documents of these functions before rewriting you
    "DataFrame.left_join", "DataFrame.merge"
    "DataFrame.limit", "DataFrame.head"
    "DataFrame.map_reduce", "DataFrame.mf.map_reduce"
-   "DataFrame.min_max_scale", "Not implemented yet"
+   "DataFrame.minmax_scale", "Not implemented yet"
    "DataFrame.outer_join", "DataFrame.merge"
    "DataFrame.persist", "DataFrame.to_odps_table"
    "DataFrame.reshuffle", "DataFrame.mf.reshuffle"

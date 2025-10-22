@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/xgboost.rst:4
+msgid "XGBoost Integration"
+msgstr "XGBoost 集成"
+
+#: ../../source/reference/learn/xgboost.rst:9
+msgid "Data Structure"
+msgstr "数据结构"
+
+#: ../../source/reference/learn/xgboost.rst:15:<autosummary>:1
+msgid ""
+":py:obj:`xgboost.DMatrix <maxframe.learn.contrib.xgboost.DMatrix>`\\ "
+"\\(data\\[\\, label\\, missing\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/xgboost.rst:17
+msgid "Training"
+msgstr "训练"
+
+#: ../../source/reference/learn/xgboost.rst:24:<autosummary>:1
+msgid ""
+":py:obj:`xgboost.predict <maxframe.learn.contrib.xgboost.predict>`\\ "
+"\\(model\\, data\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/xgboost.rst:24:<autosummary>:1
+msgid "Using MaxFrame XGBoost model to predict data."
+msgstr "使用 MaxFrame XGBoost 模型预测数据。"
+
+#: ../../source/reference/learn/xgboost.rst:24:<autosummary>:1
+msgid ""
+":py:obj:`xgboost.train <maxframe.learn.contrib.xgboost.train>`\\ "
+"\\(params\\, dtrain\\[\\, evals\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/xgboost.rst:24:<autosummary>:1
+msgid "Train XGBoost model in MaxFrame manner."
+msgstr "以 MaxFrame 方式训练 XGBoost 模型。"
+
+#: ../../source/reference/learn/xgboost.rst:26
+msgid "Callbacks"
+msgstr "回调函数"
+
+#: ../../source/reference/learn/xgboost.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`xgboost.callback.EarlyStopping "
+"<maxframe.learn.contrib.xgboost.callback.EarlyStopping>`\\ \\(\\*\\, "
+"rounds\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/xgboost.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`xgboost.callback.LearningRateScheduler "
+"<maxframe.learn.contrib.xgboost.callback.LearningRateScheduler>`\\ "
+"\\(...\\)"
+msgstr ""
+
+#: ../../source/reference/learn/xgboost.rst:35
+msgid "Scikit-learn API"
+msgstr ""
+
+#: ../../source/reference/learn/xgboost.rst:41:<autosummary>:1
+msgid ""
+":py:obj:`xgboost.XGBClassifier "
+"<maxframe.learn.contrib.xgboost.XGBClassifier>`\\ \\(\\[xgb\\_model\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/xgboost.rst:41:<autosummary>:1
+msgid "Implementation of the scikit-learn API for XGBoost classification."
+msgstr "XGBoost 分类器的 scikit-learn API 实现。"
+
+#: ../../source/reference/learn/xgboost.rst:41:<autosummary>:1
+msgid ""
+":py:obj:`xgboost.XGBRegressor "
+"<maxframe.learn.contrib.xgboost.XGBRegressor>`\\ \\(\\[xgb\\_model\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/xgboost.rst:41:<autosummary>:1
+msgid "Implementation of the scikit-learn API for XGBoost regressor."
+msgstr "XGBoost 回归器的 scikit-learn API 实现。"
+

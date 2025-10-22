@@ -1,0 +1,126 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-10 10:10+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.to_clipboard.rst:2
+msgid "maxframe.dataframe.DataFrame.to\\_clipboard"
+msgstr ""
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:1 of
+msgid "Copy object to the system clipboard."
+msgstr "将对象复制到系统剪贴板。"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:3 of
+msgid ""
+"Write a text representation of object to the system clipboard. This can "
+"be pasted into Excel, for example."
+msgstr "将对象的文本表示写入系统剪贴板。例如，可以将其粘贴到 Excel 中。"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:6 of
+msgid ""
+"Produce output in a csv format for easy pasting into excel.  - True, use "
+"the provided separator for csv pasting. - False, write a string "
+"representation of the object to the clipboard."
+msgstr ""
+"以 csv 格式输出，便于粘贴到 Excel 中。- True，使用提供的分隔符进行 csv "
+"粘贴。- False，将对象的字符串表示写入剪贴板。"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:6 of
+msgid "Produce output in a csv format for easy pasting into excel."
+msgstr "以 csv 格式输出，便于粘贴到 Excel 中。"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:8 of
+msgid "True, use the provided separator for csv pasting."
+msgstr "True，使用提供的分隔符进行 csv 粘贴。"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:9 of
+msgid "False, write a string representation of the object to the clipboard."
+msgstr "False，将对象的字符串表示写入剪贴板。"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:11 of
+msgid "Field delimiter."
+msgstr "字段分隔符。"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:13 of
+msgid "These parameters will be passed to DataFrame.to_csv."
+msgstr "这些参数将传递给 DataFrame.to_csv。"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:17 of
+msgid ":py:obj:`DataFrame.to_csv`"
+msgstr ""
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:18 of
+msgid "Write a DataFrame to a comma-separated values (csv) file."
+msgstr "将 DataFrame 写入逗号分隔值 (csv) 文件。"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:20 of
+msgid ":py:obj:`read_clipboard`"
+msgstr ""
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:21 of
+msgid "Read text from clipboard and pass to read_csv."
+msgstr "从剪贴板读取文本并传递给 read_csv。"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:24 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:25 of
+msgid "Requirements for your platform."
+msgstr "您平台的要求。"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:27 of
+msgid "Linux : `xclip`, or `xsel` (with `PyQt4` modules)"
+msgstr "Linux : `xclip`，或 `xsel`（带有 `PyQt4` 模块）"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:28 of
+msgid "Windows : none"
+msgstr "Windows : 无"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:29 of
+msgid "macOS : none"
+msgstr "macOS : 无"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:31 of
+msgid ""
+"This method uses the processes developed for the package `pyperclip`. A "
+"solution to render any output string format is given in the examples."
+msgstr ""
+"此方法使用为 `pyperclip` 包开发的进程。示例中提供了渲染任何输出字符串格式"
+"的解决方案。"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:35 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:36 of
+msgid "Copy the contents of a DataFrame to the clipboard."
+msgstr "将 DataFrame 的内容复制到剪贴板。"
+
+#: maxframe.dataframe.datastore.direct.to_clipboard:47 of
+msgid ""
+"We can omit the index by passing the keyword `index` and setting it to "
+"false."
+msgstr "我们可以通过传递关键字 `index` 并将其设置为 false 来省略索引。"
+

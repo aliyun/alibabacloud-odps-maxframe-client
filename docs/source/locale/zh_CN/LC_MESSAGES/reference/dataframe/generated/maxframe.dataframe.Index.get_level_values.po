@@ -1,0 +1,71 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.get_level_values.rst:2
+msgid "maxframe.dataframe.Index.get\\_level\\_values"
+msgstr ""
+
+#: maxframe.dataframe.indexing.get_level_values.get_level_values:1 of
+msgid "Return vector of label values for requested level."
+msgstr "返回请求级别的标签值向量。"
+
+#: maxframe.dataframe.indexing.get_level_values.get_level_values:3 of
+msgid "Length of returned vector is equal to the length of the index."
+msgstr "返回向量的长度等于索引的长度。"
+
+#: maxframe.dataframe.indexing.get_level_values.get_level_values of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.indexing.get_level_values.get_level_values:5 of
+msgid ""
+"``level`` is either the integer position of the level in the MultiIndex, "
+"or the name of the level."
+msgstr "``level`` 是 MultiIndex 中级别的整数位置，或级别的名称。"
+
+#: maxframe.dataframe.indexing.get_level_values.get_level_values of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.indexing.get_level_values.get_level_values:9 of
+msgid ""
+"**values** -- Values is a level of this MultiIndex converted to a single "
+":class:`Index` (or subclass thereof)."
+msgstr ""
+"**values** -- 值是此 MultiIndex 的一个级别转换为单个 :class:`Index`（或"
+"其子类）。"
+
+#: maxframe.dataframe.indexing.get_level_values.get_level_values of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.indexing.get_level_values.get_level_values:14 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.indexing.get_level_values.get_level_values:15 of
+msgid "Create a MultiIndex:"
+msgstr "创建一个 MultiIndex："
+
+#: maxframe.dataframe.indexing.get_level_values.get_level_values:21 of
+msgid "Get level values by supplying level as either integer or name:"
+msgstr "通过提供整数或名称作为级别来获取级别值："
+

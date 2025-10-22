@@ -1,0 +1,591 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:2
+msgid "maxframe.learn.contrib.lightgbm.LGBMRegressor"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:1 of
+msgid "Construct a gradient boosting model."
+msgstr "构建一个梯度提升模型。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:3 of
+msgid ""
+"'gbdt', traditional Gradient Boosting Decision Tree. 'dart', Dropouts "
+"meet Multiple Additive Regression Trees. 'rf', Random Forest."
+msgstr ""
+"'gbdt'，传统的梯度提升决策树。'dart'，Dropouts 与多加性回归树结合。'rf'，"
+"随机森林。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:7 of
+msgid "Maximum tree leaves for base learners."
+msgstr "基学习器的最大树叶子数。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:9 of
+msgid ""
+"Maximum tree depth for base learners, <=0 means no limit. If setting this"
+" to a positive value, consider also changing ``num_leaves`` to ``<= "
+"2^max_depth``."
+msgstr ""
+"基学习器的最大树深度，<=0 表示无限制。如果设置为正值，建议同时将 ``num_"
+"leaves`` 改为 ``<= 2^max_depth``。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:12 of
+msgid ""
+"Boosting learning rate. You can use ``callbacks`` parameter of ``fit`` "
+"method to shrink/adapt learning rate in training using "
+"``reset_parameter`` callback. Note, that this will ignore the "
+"``learning_rate`` argument in training."
+msgstr ""
+"提升学习率。你可以使用 ``fit`` 方法的 ``callbacks`` 参数，在训练中通过 ``"
+"reset_parameter`` 回调函数来缩小/调整学习率。注意，这将忽略训练中的 ``"
+"learning_rate`` 参数。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:17 of
+msgid "Number of boosted trees to fit."
+msgstr "拟合的提升树数量。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:19 of
+msgid "Number of samples for constructing bins."
+msgstr "用于构建分箱的样本数量。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:21 of
+msgid ""
+"Specify the learning task and the corresponding learning objective or a "
+"custom objective function to be used (see note below). Default: "
+"'regression' for LGBMRegressor, 'binary' or 'multiclass' for "
+"LGBMClassifier, 'lambdarank' for LGBMRanker."
+msgstr ""
+"指定学习任务及相应的学习目标，或使用自定义目标函数（见下方说明）。默认值"
+"：LGBMRegressor 为 'regression'，LGBMClassifier 为 'binary' 或 '"
+"multiclass'，LGBMRanker 为 'lambdarank'。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:25 of
+#, python-brace-format
+msgid ""
+"Weights associated with classes in the form ``{class_label: weight}``. "
+"Use this parameter only for multi-class classification task; for binary "
+"classification task you may use ``is_unbalance`` or ``scale_pos_weight`` "
+"parameters. Note, that the usage of all these parameters will result in "
+"poor estimates of the individual class probabilities. You may want to "
+"consider performing probability calibration (https://scikit-"
+"learn.org/stable/modules/calibration.html) of your model. The 'balanced' "
+"mode uses the values of y to automatically adjust weights inversely "
+"proportional to class frequencies in the input data as ``n_samples / "
+"(n_classes * np.bincount(y))``. If None, all classes are supposed to have"
+" weight one. Note, that these weights will be multiplied with "
+"``sample_weight`` (passed through the ``fit`` method) if "
+"``sample_weight`` is specified."
+msgstr ""
+"以 ``{class_label: weight}`` 形式表示的类别权重。仅用于多分类任务；对于二"
+"分类任务，可以使用 ``is_unbalance`` 或 ``scale_pos_weight`` 参数。注意，"
+"使用这些参数会导致各个类别的概率估计不准确。你可能需要考虑对模型进行概率"
+"校准（https://scikit-learn.org/stable/modules/calibration.html）。'"
+"balanced' 模式会根据输入数据中类别的频率自动调整权重，公式为 ``n_samples "
+"/ (n_classes * np.bincount(y))``。如果为 None，则所有类别的权重默认为 1。"
+"注意，如果指定了 ``sample_weight``（通过 ``fit`` 方法传递），这些权重将与"
+" ``sample_weight`` 相乘。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:37 of
+msgid ""
+"Minimum loss reduction required to make a further partition on a leaf "
+"node of the tree."
+msgstr "在树的叶节点上进一步划分所需的最小损失减少量。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:39 of
+msgid "Minimum sum of instance weight (Hessian) needed in a child (leaf)."
+msgstr "子节点（叶节点）所需的最小样本权重总和（Hessian）。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:41 of
+msgid "Minimum number of data needed in a child (leaf)."
+msgstr "子节点（叶节点）所需的最小数据数量。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:43 of
+msgid "Subsample ratio of the training instance."
+msgstr "训练样本的子采样比例。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:45 of
+msgid "Frequency of subsample, <=0 means no enable."
+msgstr "子采样的频率，<=0 表示禁用。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:47 of
+msgid "Subsample ratio of columns when constructing each tree."
+msgstr "构建每棵树时列的子采样比例。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:49 of
+msgid "L1 regularization term on weights."
+msgstr "权重上的 L1 正则化项。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:51 of
+msgid "L2 regularization term on weights."
+msgstr "权重上的 L2 正则化项。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:53 of
+msgid ""
+"Random number seed. If int, this number is used to seed the C++ code. If "
+"RandomState or Generator object (numpy), a random integer is picked based"
+" on its state to seed the C++ code. If None, default seeds in C++ code "
+"are used."
+msgstr ""
+"随机数种子。如果为整数，则用于为 C++ 代码设置种子。如果为 RandomState 或 "
+"Generator 对象（numpy），则根据其状态选择一个随机整数作为 C++ 代码的种子"
+"。如果为 None，则使用 C++ 代码中的默认种子。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:58 of
+msgid ""
+"Number of parallel threads to use for training (can be changed at "
+"prediction time by passing it as an extra keyword argument).  For better "
+"performance, it is recommended to set this to the number of physical "
+"cores in the CPU.  Negative integers are interpreted as following "
+"joblib's formula (n_cpus + 1 + n_jobs), just like scikit-learn (so e.g. "
+"-1 means using all threads). A value of zero corresponds the default "
+"number of threads configured for OpenMP in the system. A value of "
+"``None`` (the default) corresponds to using the number of physical cores "
+"in the system (its correct detection requires either the ``joblib`` or "
+"the ``psutil`` util libraries to be installed).  .. versionchanged:: "
+"4.0.0"
+msgstr ""
+"用于训练的并行线程数（在预测时可以通过额外的关键字参数更改）。为了获得"
+"更好的性能，建议将其设置为 CPU 的物理核心数。负整数按照 joblib 的公式（n_"
+"cpus + 1 + n_jobs）进行解释，类似于 scikit-learn（例如 -1 表示使用所有"
+"线程）。值为零表示使用系统中为 OpenMP 配置的默认线程数。``None``（默认值"
+"）表示使用系统中的物理核心数（其正确检测需要安装 ``joblib`` 或 ``psutil``"
+" 工具库）。  .. versionchanged:: 4.0.0"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:58 of
+msgid ""
+"Number of parallel threads to use for training (can be changed at "
+"prediction time by passing it as an extra keyword argument)."
+msgstr ""
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:61 of
+msgid ""
+"For better performance, it is recommended to set this to the number of "
+"physical cores in the CPU."
+msgstr ""
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:64 of
+#, fuzzy
+msgid ""
+"Negative integers are interpreted as following joblib's formula (n_cpus +"
+" 1 + n_jobs), just like scikit-learn (so e.g. -1 means using all "
+"threads). A value of zero corresponds the default number of threads "
+"configured for OpenMP in the system. A value of ``None`` (the default) "
+"corresponds to using the number of physical cores in the system (its "
+"correct detection requires either the ``joblib`` or the ``psutil`` util "
+"libraries to be installed)."
+msgstr ""
+"用于训练的并行线程数（在预测时可以通过额外的关键字参数更改）。为了获得"
+"更好的性能，建议将其设置为 CPU 的物理核心数。负整数按照 joblib 的公式（n_"
+"cpus + 1 + n_jobs）进行解释，类似于 scikit-learn（例如 -1 表示使用所有"
+"线程）。值为零表示使用系统中为 OpenMP 配置的默认线程数。``None``（默认值"
+"）表示使用系统中的物理核心数（其正确检测需要安装 ``joblib`` 或 ``psutil``"
+" 工具库）。  .. versionchanged:: 4.0.0"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:72 of
+msgid ""
+"The type of feature importance to be filled into "
+"``feature_importances_``. If 'split', result contains numbers of times "
+"the feature is used in a model. If 'gain', result contains total gains of"
+" splits which use the feature."
+msgstr ""
+"填充到 ``feature_importances_`` 中的特征重要性类型。如果为 'split'，结果"
+"包含特征在模型中被使用的次数。如果为 'gain'，结果包含使用该特征的分割的总"
+"增益。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:76 of
+msgid ""
+"Other parameters for the model. Check "
+"http://lightgbm.readthedocs.io/en/latest/Parameters.html for more "
+"parameters.  .. warning::      \\*\\*kwargs is not supported in sklearn, "
+"it may cause unexpected issues."
+msgstr ""
+"模型的其他参数。更多参数请查看 http://lightgbm.readthedocs.io/en/latest/"
+"Parameters.html。  .. warning::      \\*\\*kwargs 在 sklearn 中不受支持，"
+"可能导致意外问题。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:76 of
+#, fuzzy
+msgid ""
+"Other parameters for the model. Check "
+"http://lightgbm.readthedocs.io/en/latest/Parameters.html for more "
+"parameters."
+msgstr ""
+"模型的其他参数。更多参数请查看 http://lightgbm.readthedocs.io/en/latest/"
+"Parameters.html。  .. warning::      \\*\\*kwargs 在 sklearn 中不受支持，"
+"可能导致意外问题。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:81 of
+msgid "\\*\\*kwargs is not supported in sklearn, it may cause unexpected issues."
+msgstr ""
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:85 of
+msgid ""
+"A custom objective function can be provided for the ``objective`` "
+"parameter. In this case, it should have the signature ``objective(y_true,"
+" y_pred) -> grad, hess``, ``objective(y_true, y_pred, weight) -> grad, "
+"hess`` or ``objective(y_true, y_pred, weight, group) -> grad, hess``:"
+msgstr ""
+"可以为 ``objective`` 参数提供自定义目标函数。在这种情况下，其签名应为 ``"
+"objective(y_true, y_pred) -> grad, hess``，``objective(y_true, y_pred, "
+"weight) -> grad, hess`` 或 ``objective(y_true, y_pred, weight, group) -> "
+"grad, hess``："
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:91 of
+msgid "y_true"
+msgstr ""
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:-1 of
+msgid "numpy 1-D array of shape = [n_samples]"
+msgstr "形状为 [n_samples] 的 numpy 一维数组"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:92 of
+msgid "The target values."
+msgstr "目标值。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:93 of
+msgid "y_pred"
+msgstr ""
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:-1 of
+msgid ""
+"numpy 1-D array of shape = [n_samples] or numpy 2-D array of shape = "
+"[n_samples, n_classes] (for multi-class task)"
+msgstr ""
+"形状为 [n_samples] 的 numpy 一维数组或形状为 [n_samples, n_classes] 的 "
+"numpy 二维数组（用于多分类任务）"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:94 of
+msgid ""
+"The predicted values. Predicted values are returned before any "
+"transformation, e.g. they are raw margin instead of probability of "
+"positive class for binary task."
+msgstr ""
+"预测值。返回的预测值未经过任何变换，例如在二分类任务中是原始得分而不是"
+"正类的概率。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:97 of
+msgid "weight"
+msgstr ""
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:98 of
+msgid "The weight of samples. Weights should be non-negative."
+msgstr "样本的权重。权重应为非负数。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:99 of
+msgid "group"
+msgstr ""
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:-1 of
+msgid "numpy 1-D array"
+msgstr "numpy 一维数组"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:100 of
+msgid ""
+"Group/query data. Only used in the learning-to-rank task. sum(group) = "
+"n_samples. For example, if you have a 100-document dataset with ``group ="
+" [10, 20, 40, 10, 10, 10]``, that means that you have 6 groups, where the"
+" first 10 records are in the first group, records 11-30 are in the second"
+" group, records 31-70 are in the third group, etc."
+msgstr ""
+"组/查询数据。仅用于排序学习任务。sum(group) = n_samples。例如，如果你有"
+"一个包含 100 个文档的数据集，且 ``group = [10, 20, 40, 10, 10, 10]``，这"
+"意味着你有 6 个组，其中前 10 条记录属于第一组，第 11 到 30 条记录属于"
+"第二组，第 31 到 70 条记录属于第三组，以此类推。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:105 of
+msgid "grad"
+msgstr ""
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:106 of
+msgid ""
+"The value of the first order derivative (gradient) of the loss with "
+"respect to the elements of y_pred for each sample point."
+msgstr "每个样本点处损失函数对 y_pred 元素的一阶导数（梯度）的值。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:108 of
+msgid "hess"
+msgstr ""
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:109 of
+msgid ""
+"The value of the second order derivative (Hessian) of the loss with "
+"respect to the elements of y_pred for each sample point."
+msgstr "每个样本点处损失函数对 y_pred 元素的二阶导数（海森矩阵）的值。"
+
+#: maxframe.learn.contrib.lightgbm.core.LGBMScikitLearnBase.__init__:112 of
+msgid ""
+"For multi-class task, y_pred is a numpy 2-D array of shape = [n_samples, "
+"n_classes], and grad and hess should be returned in the same format."
+msgstr ""
+"对于多分类任务，y_pred 是形状为 [n_samples, n_classes] 的 numpy 二维数组"
+"，grad 和 hess 应以相同格式返回。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`__init__ "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.__init__>`\\ \\(\\*args\\,"
+" \\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`execute "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.execute>`\\ "
+"\\(\\[session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`fetch <maxframe.learn.contrib.lightgbm.LGBMRegressor.fetch>`\\ "
+"\\(\\[session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`fit <maxframe.learn.contrib.lightgbm.LGBMRegressor.fit>`\\ "
+"\\(X\\, y\\, \\*\\[\\, sample\\_weight\\, init\\_score\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid "unsupported features: 1."
+msgstr "不支持的功能：1."
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`get_metadata_routing "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.get_metadata_routing>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid "Get metadata routing of this object."
+msgstr "获取此对象的元数据路由信息。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`get_params "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.get_params>`\\ "
+"\\(\\[deep\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid "Get parameters for this estimator."
+msgstr "获取该估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`predict "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.predict>`\\ \\(X\\[\\, "
+"raw\\_score\\, start\\_iteration\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid "Return the predicted value for each sample."
+msgstr "返回每个样本的预测值。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`score <maxframe.learn.contrib.lightgbm.LGBMRegressor.score>`\\ "
+"\\(X\\, y\\[\\, sample\\_weight\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid "Return :ref:`coefficient of determination <r2_score>` on test data."
+msgstr "返回测试数据上的 :ref:`决定系数 <r2_score>`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`set_fit_request "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.set_fit_request>`\\ "
+"\\(\\*\\[\\, callbacks\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``fit`` method."
+msgstr "配置是否请求将元数据传递给 ``fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`set_params "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.set_params>`\\ "
+"\\(\\*\\*params\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid "Set the parameters of this estimator."
+msgstr "设置此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`set_predict_request "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.set_predict_request>`\\ "
+"\\(\\*\\[\\, num\\_iteration\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``predict`` method."
+msgstr "配置是否请求将元数据传递给 ``predict`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`set_score_request "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.set_score_request>`\\ "
+"\\(\\*\\[\\, sample\\_weight\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:32:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``score`` method."
+msgstr "配置是否请求将元数据传递给 ``score`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:34
+msgid "Attributes"
+msgstr "属性"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`best_iteration_ "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.best_iteration_>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid ""
+"The best iteration of fitted model if ``early_stopping()`` callback has "
+"been specified."
+msgstr "如果指定了 ``early_stopping()`` 回调，则为拟合模型的最佳迭代次数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`best_score_ "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.best_score_>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid "The best score of fitted model."
+msgstr "拟合模型的最佳得分。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`booster_ "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.booster_>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid "The underlying Booster of this model."
+msgstr "此模型的基础 Booster。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`evals_result_ "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.evals_result_>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid "The evaluation results if validation sets have been specified."
+msgstr "如果指定了验证集，则为评估结果。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`feature_importances_ "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.feature_importances_>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid "The feature importances (the higher, the more important)."
+msgstr "特征重要性（值越高越重要）。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`feature_name_ "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.feature_name_>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid "The names of features."
+msgstr "特征的名称。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`feature_names_in_ "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.feature_names_in_>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid "scikit-learn compatible version of ``.feature_name_``."
+msgstr "与 ``.feature_name_`` 兼容的 scikit-learn 版本。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`n_estimators_ "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.n_estimators_>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid "True number of boosting iterations performed."
+msgstr "实际执行的提升迭代次数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`n_features_ "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.n_features_>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid "The number of features of fitted model."
+msgstr "拟合模型的特征数量。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`n_features_in_ "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.n_features_in_>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`n_iter_ "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.n_iter_>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`objective_ "
+"<maxframe.learn.contrib.lightgbm.LGBMRegressor.objective_>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.lightgbm.LGBMRegressor.rst:48:<autosummary>:1
+msgid "The concrete objective used while fitting this model."
+msgstr "拟合此模型时使用的具体目标函数。"
+

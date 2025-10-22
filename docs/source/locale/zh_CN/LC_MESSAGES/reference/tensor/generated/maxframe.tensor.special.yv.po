@@ -1,0 +1,134 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.yv.rst:2
+msgid "maxframe.tensor.special.yv"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yv:1 of
+msgid "Bessel function of the second kind of real order and complex argument."
+msgstr "实数阶和复数参数的第二类贝塞尔函数。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.yv.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yv:3 of
+msgid "Order (float)."
+msgstr "阶数（浮点数）。"
+
+#: maxframe.tensor.special.bessel.yv:5 of
+msgid "Argument (float or complex)."
+msgstr "参数（浮点数或复数）。"
+
+#: maxframe.tensor.special.bessel.yv:7 of
+msgid "Optional output array for the function results"
+msgstr "用于函数结果的可选输出数组"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.yv.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yv:10 of
+msgid "**Y** -- Value of the Bessel function of the second kind, :math:`Y_v(x)`."
+msgstr "**Y** -- 第二类贝塞尔函数的值，:math:`Y_v(x)`。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.yv.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yv:15 of
+msgid ":py:obj:`yve`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yv:16 of
+msgid ":math:`Y_v` with leading exponential behavior stripped off."
+msgstr "去除主导指数行为后的 :math:`Y_v`。"
+
+#: maxframe.tensor.special.bessel.yv:18 of
+msgid ":py:obj:`y0`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yv:19 of
+msgid "faster implementation of this function for order 0"
+msgstr "该函数在阶数为 0 时的快速实现"
+
+#: maxframe.tensor.special.bessel.yv:21 of
+msgid ":py:obj:`y1`"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yv:22 of
+msgid "faster implementation of this function for order 1"
+msgstr "该函数在阶数为 1 时的快速实现"
+
+#: maxframe.tensor.special.bessel.yv:25 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yv:26 of
+#, python-brace-format
+msgid ""
+"For positive `v` values, the computation is carried out using the AMOS "
+"[1]_ `zbesy` routine, which exploits the connection to the Hankel Bessel "
+"functions :math:`H_v^{(1)}` and :math:`H_v^{(2)}`,"
+msgstr ""
+"对于正的 `v` 值，使用 AMOS [1]_ 的 `zbesy` 程序进行计算，它利用了与汉克尔"
+"贝塞尔函数 :math:`H_v^{(1)}` 和 :math:`H_v^{(2)}` 的关系，"
+
+#: maxframe.tensor.special.bessel.yv:30 of
+#, python-brace-format
+msgid ""
+"Y_v(z) = \\frac{1}{2\\imath} (H_v^{(1)} - H_v^{(2)}).\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yv:32 of
+msgid "For negative `v` values the formula,"
+msgstr "对于负的 `v` 值，使用以下公式，"
+
+#: maxframe.tensor.special.bessel.yv:34 of
+#, python-brace-format
+msgid ""
+"Y_{-v}(z) = Y_v(z) \\cos(\\pi v) + J_v(z) \\sin(\\pi v)\n"
+"\n"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yv:36 of
+msgid ""
+"is used, where :math:`J_v(z)` is the Bessel function of the first kind, "
+"computed using the AMOS routine `zbesj`.  Note that the second term is "
+"exactly zero for integer `v`; to improve accuracy the second term is "
+"explicitly omitted for `v` values such that `v = floor(v)`."
+msgstr ""
+"其中 :math:`J_v(z)` 是第一类贝塞尔函数，通过 AMOS 程序 `zbesj` 计算。注意"
+"第二项在整数 `v` 时恰好为零；为了提高精度，当 `v = floor(v)` 时，第二项被"
+"显式省略。"
+
+#: maxframe.tensor.special.bessel.yv:42 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.bessel.yv:43 of
+msgid ""
+"Donald E. Amos, \"AMOS, A Portable Package for Bessel Functions of a "
+"Complex Argument and Nonnegative Order\", http://netlib.org/amos/"
+msgstr ""
+

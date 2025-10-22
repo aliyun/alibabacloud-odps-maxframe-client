@@ -1,0 +1,124 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.xlogy.rst:2
+msgid "maxframe.tensor.special.xlogy"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:1 of
+msgid "Compute ``x*log(y)`` so that the result is 0 if ``x = 0``."
+msgstr "计算 ``x*log(y)``，当 ``x = 0`` 时结果为 0。"
+
+#: maxframe.tensor.special.misc.xlogy of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:3 of
+msgid "Multiplier"
+msgstr "乘数"
+
+#: maxframe.tensor.special.misc.xlogy:5 of
+msgid "Argument"
+msgstr "参数"
+
+#: maxframe.tensor.special.misc.xlogy:7 of
+msgid "Optional output array for the function results"
+msgstr "函数结果的可选输出数组"
+
+#: maxframe.tensor.special.misc.xlogy of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:10 of
+msgid "**z** -- Computed x*log(y)"
+msgstr "**z** -- 计算得到的 x*log(y)"
+
+#: maxframe.tensor.special.misc.xlogy of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:14 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:15 of
+msgid "The log function used in the computation is the natural log."
+msgstr "计算中使用的对数函数是自然对数。"
+
+#: maxframe.tensor.special.misc.xlogy:17 of
+msgid ""
+"`xlogy` has experimental support for Python Array API Standard compatible"
+" backends in addition to NumPy. Please consider testing these features by"
+" setting an environment variable ``SCIPY_ARRAY_API=1`` and providing "
+"CuPy, PyTorch, JAX, or Dask arrays as array arguments. The following "
+"combinations of backend and device (or other capability) are supported."
+msgstr ""
+"`xlogy` 除了支持 NumPy 外，还实验性地支持与 Python Array API 标准兼容的后"
+"端。请通过设置环境变量 ``SCIPY_ARRAY_API=1`` 并传入 CuPy、PyTorch、JAX 或"
+" Dask 数组来测试这些功能。以下是支持的后端与设备（或其他能力）的组合。"
+
+#: maxframe.tensor.special.misc.xlogy:24 of
+msgid "Library"
+msgstr "库"
+
+#: maxframe.tensor.special.misc.xlogy:24 of
+msgid "CPU"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:24 of
+msgid "GPU"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:26 of
+msgid "NumPy"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:26 maxframe.tensor.special.misc.xlogy:27
+#: maxframe.tensor.special.misc.xlogy:28 maxframe.tensor.special.misc.xlogy:29
+#: maxframe.tensor.special.misc.xlogy:30 of
+msgid "✅"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:26 maxframe.tensor.special.misc.xlogy:27
+#: maxframe.tensor.special.misc.xlogy:30 of
+msgid "n/a"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:27 of
+msgid "CuPy"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:28 of
+msgid "PyTorch"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:29 of
+msgid "JAX"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:30 of
+msgid "Dask"
+msgstr ""
+
+#: maxframe.tensor.special.misc.xlogy:33 of
+msgid "See :ref:`dev-arrayapi` for more information."
+msgstr "更多信息请参见 :ref:`dev-arrayapi`。"
+

@@ -1,0 +1,233 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2020, pandas development team
+# This file is distributed under the same license as the pandas package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pandas 1.2.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.k_means.rst:2
+msgid "maxframe.learn.cluster.k\\_means"
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.k_means:1 of
+msgid "K-means clustering algorithm."
+msgstr "K-means 聚类算法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.k_means.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.k_means:3 of
+msgid ""
+"The observations to cluster. It must be noted that the data will be "
+"converted to C ordering, which will cause a memory copy if the given data"
+" is not C-contiguous."
+msgstr ""
+"要聚类的观测数据。需要注意的是数据将被转换为 C 顺序存储，如果给定数据不是"
+" C 连续的，则会导致内存拷贝。"
+
+#: maxframe.learn.cluster._kmeans.k_means:7 of
+msgid ""
+"The number of clusters to form as well as the number of centroids to "
+"generate."
+msgstr "要形成的聚类数，也是要生成的质心数量。"
+
+#: maxframe.learn.cluster._kmeans.k_means:10 of
+msgid ""
+"The weights for each observation in X. If None, all observations are "
+"assigned equal weight (default: None)"
+msgstr ""
+"X 中每个观测值的权重。如果为 None，则所有观测值被分配相等权重（默认：None"
+"）。"
+
+#: maxframe.learn.cluster._kmeans.k_means:13 of
+msgid ""
+"Method for initialization, default to 'k-means||':  'k-means++' : selects"
+" initial cluster centers for k-mean clustering in a smart way to speed up"
+" convergence. See section Notes in k_init for more details.  'k-means||':"
+" scalable k-means++.  'random': choose k observations (rows) at random "
+"from data for the initial centroids.  If an ndarray is passed, it should "
+"be of shape (n_clusters, n_features) and gives the initial centers.  If a"
+" callable is passed, it should take arguments X, k and and a random state"
+" and return an initialization."
+msgstr ""
+"初始化方法，默认为 'k-means||'：'k-means++'：以一种智能的方式选择 k-means"
+" 聚类的初始聚类中心，以加快收敛速度。详见 k_init 中的 Notes 部分。'k-"
+"means||'：可扩展的 k-means++。'random'：从数据中随机选择 k 个观测值（行）"
+"作为初始质心。如果传入的是一个 ndarray，其形状应为 (n_clusters, n_"
+"features)，并给出初始中心。如果传入的是一个可调用对象，则该对象应该接受"
+"参数 X、k 和随机状态，并返回一个初始化结果。"
+
+#: maxframe.learn.cluster._kmeans.k_means:13 of
+msgid "Method for initialization, default to 'k-means||':"
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.k_means:15 of
+msgid ""
+"'k-means++' : selects initial cluster centers for k-mean clustering in a "
+"smart way to speed up convergence. See section Notes in k_init for more "
+"details."
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.k_means:19 of
+msgid "'k-means||': scalable k-means++."
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.k_means:21 of
+msgid ""
+"'random': choose k observations (rows) at random from data for the "
+"initial centroids."
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.k_means:24 of
+msgid ""
+"If an ndarray is passed, it should be of shape (n_clusters, n_features) "
+"and gives the initial centers."
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.k_means:27 of
+msgid ""
+"If a callable is passed, it should take arguments X, k and and a random "
+"state and return an initialization."
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.k_means:30 of
+msgid ""
+"Number of time the k-means algorithm will be run with different centroid "
+"seeds. The final results will be the best output of n_init consecutive "
+"runs in terms of inertia."
+msgstr ""
+"k-means 算法将以不同质心种子运行的次数。最终结果将是 n_init 次连续运行中"
+"惯性最小的最佳输出。"
+
+#: maxframe.learn.cluster._kmeans.k_means:34 of
+msgid "Maximum number of iterations of the k-means algorithm to run."
+msgstr "k-means 算法运行的最大迭代次数。"
+
+#: maxframe.learn.cluster._kmeans.k_means:36 of
+msgid "Verbosity mode."
+msgstr "详细模式。"
+
+#: maxframe.learn.cluster._kmeans.k_means:38 of
+msgid "The relative increment in the results before declaring convergence."
+msgstr "在宣告收敛之前结果的相对增量。"
+
+#: maxframe.learn.cluster._kmeans.k_means:40 of
+msgid ""
+"Determines random number generation for centroid initialization. Use an "
+"int to make the randomness deterministic. See :term:`Glossary "
+"<random_state>`."
+msgstr ""
+"确定质心初始化的随机数生成方式。使用整数可使随机性变为确定性的。参见 :"
+"term:`Glossary <random_state>`。"
+
+#: maxframe.learn.cluster._kmeans.k_means:44 of
+msgid ""
+"When pre-computing distances it is more numerically accurate to center "
+"the data first.  If copy_x is True (default), then the original data is "
+"not modified, ensuring X is C-contiguous.  If False, the original data is"
+" modified, and put back before the function returns, but small numerical "
+"differences may be introduced by subtracting and then adding the data "
+"mean, in this case it will also not ensure that data is C-contiguous "
+"which may cause a significant slowdown."
+msgstr ""
+"在预先计算距离时，先对数据进行中心化处理会更加数值稳定。如果 copy_x 为 "
+"True（默认），则原始数据不会被修改，确保 X 是 C 连续的。如果为 False，则"
+"原始数据会被修改，并在函数返回前恢复，但通过减去并加回数据均值可能会引入"
+"微小的数值差异，在这种情况下也不能保证数据是 C 连续的，从而可能导致显著的"
+"性能下降。"
+
+#: maxframe.learn.cluster._kmeans.k_means:52 of
+msgid ""
+"K-means algorithm to use. The classical EM-style algorithm is \"full\". "
+"The \"elkan\" variation is more efficient by using the triangle "
+"inequality, but currently doesn't support sparse data. \"auto\" chooses "
+"\"elkan\" for dense data and \"full\" for sparse data."
+msgstr ""
+"使用的 K-means 算法。经典的 EM 风格算法是 \"full\"。\"elkan\" 变体通过"
+"使用三角不等式更为高效，但目前不支持稀疏数据。\"auto\" 会在密集数据时选择"
+" \"elkan\"，而在稀疏数据时选择 \"full\"。"
+
+#: maxframe.learn.cluster._kmeans.k_means:57 of
+msgid "Only work for kmeans||, used in each iteration in kmeans||."
+msgstr "仅适用于 kmeans||，用于 kmeans|| 的每次迭代中。"
+
+#: maxframe.learn.cluster._kmeans.k_means:59 of
+msgid "Only work for kmeans||, indicates how may iterations required."
+msgstr "仅适用于 kmeans||，表示需要多少次迭代。"
+
+#: maxframe.learn.cluster._kmeans.k_means:61 of
+msgid "Whether or not to return the number of iterations."
+msgstr "是否返回迭代次数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.cluster.k_means.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.cluster._kmeans.k_means:64 of
+msgid ""
+"* **centroid** (*float ndarray with shape (k, n_features)*) -- Centroids "
+"found at the last iteration of k-means. * **label** (*integer ndarray "
+"with shape (n_samples,)*) -- label[i] is the code or index of the "
+"centroid the   i'th observation is closest to. * **inertia** (*float*) --"
+" The final value of the inertia criterion (sum of squared distances to   "
+"the closest centroid for all observations in the training set). * "
+"**best_n_iter** (*int*) -- Number of iterations corresponding to the best"
+" results.   Returned only if `return_n_iter` is set to True."
+msgstr ""
+"* **centroid** (*float ndarray with shape (k, n_features)*) -- 在 k-means"
+" 最后一次迭代中找到的质心。\n"
+"* **label** (*integer ndarray with shape (n_samples,)*) -- label[i] 是第 "
+"i 个观测值最近的质心的代码或索引。\n"
+"* **inertia** (*float*) -- 惯性准则的最终值（训练集中所有观测值到最近质心"
+"的平方距离之和）。\n"
+"* **best_n_iter** (*int*) -- 与最佳结果对应的迭代次数。仅当 `return_n_"
+"iter` 设置为 True 时返回。"
+
+#: maxframe.learn.cluster._kmeans.k_means:64 of
+msgid ""
+"**centroid** (*float ndarray with shape (k, n_features)*) -- Centroids "
+"found at the last iteration of k-means."
+msgstr ""
+"**centroid** (*float ndarray with shape (k, n_features)*) -- 在 k-means "
+"最后一次迭代中找到的质心。"
+
+#: maxframe.learn.cluster._kmeans.k_means:65 of
+msgid ""
+"**label** (*integer ndarray with shape (n_samples,)*) -- label[i] is the "
+"code or index of the centroid the i'th observation is closest to."
+msgstr ""
+"**label** (*integer ndarray with shape (n_samples,)*) -- label[i] 是第 i "
+"个观测值最近的质心的代码或索引。"
+
+#: maxframe.learn.cluster._kmeans.k_means:67 of
+msgid ""
+"**inertia** (*float*) -- The final value of the inertia criterion (sum of"
+" squared distances to the closest centroid for all observations in the "
+"training set)."
+msgstr ""
+"**inertia** (*float*) -- 惯性准则的最终值（训练集中所有观测值到最近质心的"
+"平方距离之和）。"
+
+#: maxframe.learn.cluster._kmeans.k_means:69 of
+msgid ""
+"**best_n_iter** (*int*) -- Number of iterations corresponding to the best"
+" results. Returned only if `return_n_iter` is set to True."
+msgstr ""
+"**best_n_iter** (*int*) -- 与最佳结果对应的迭代次数。仅当 `return_n_iter`"
+" 设置为 True 时返回。"
+

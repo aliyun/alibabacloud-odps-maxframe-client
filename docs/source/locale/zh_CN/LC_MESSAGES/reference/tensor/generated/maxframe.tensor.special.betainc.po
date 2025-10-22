@@ -1,0 +1,247 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.betainc.rst:2
+msgid "maxframe.tensor.special.betainc"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:1 of
+msgid "Regularized incomplete beta function."
+msgstr "正则化不完全 beta 函数。"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:3 of
+msgid "Computes the regularized incomplete beta function, defined as [1]_:"
+msgstr "计算正则化不完全 beta 函数，定义如下 [1]_:"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:5 of
+#, python-brace-format
+msgid ""
+"I_x(a, b) = \\frac{\\Gamma(a+b)}{\\Gamma(a)\\Gamma(b)} \\int_0^x\n"
+"t^{a-1}(1-t)^{b-1}dt,"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:10 of
+msgid "for :math:`0 \\leq x \\leq 1`."
+msgstr "其中 :math:`0 \\leq x \\leq 1`。"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:12 of
+msgid ""
+"This function is the cumulative distribution function for the beta "
+"distribution; its range is [0, 1]."
+msgstr "该函数是 beta 分布的累积分布函数；其取值范围为 [0, 1]。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.betainc.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:15
+#: maxframe.tensor.special.gamma_funcs.betainc:17 of
+msgid "Positive, real-valued parameters"
+msgstr "正的实值参数"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:19 of
+msgid ""
+"Real-valued such that :math:`0 \\leq x \\leq 1`, the upper limit of "
+"integration"
+msgstr "实数值，满足 :math:`0 \\leq x \\leq 1`，是积分上限"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:22 of
+msgid "Optional output array for the function values"
+msgstr "可选的输出数组，用于存储函数值"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.betainc.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:25 of
+msgid "Value of the regularized incomplete beta function"
+msgstr "正则化不完全 beta 函数的值"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.betainc.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:30 of
+msgid ":func:`beta`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:31 of
+msgid "beta function"
+msgstr "beta 函数"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:33 of
+msgid ":func:`betaincinv`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:34 of
+msgid "inverse of the regularized incomplete beta function"
+msgstr "正则化不完全 beta 函数的反函数"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:36 of
+msgid ":func:`betaincc`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:37 of
+msgid "complement of the regularized incomplete beta function"
+msgstr "正则化不完全 beta 函数的补函数"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:39 of
+msgid ":func:`scipy.stats.beta`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:40 of
+msgid "beta distribution"
+msgstr "beta 分布"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:43 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:44 of
+msgid ""
+"The term *regularized* in the name of this function refers to the scaling"
+" of the function by the gamma function terms shown in the formula.  When "
+"not qualified as *regularized*, the name *incomplete beta function* often"
+" refers to just the integral expression, without the gamma terms.  One "
+"can use the function `beta` from `scipy.special` to get this "
+"\"nonregularized\" incomplete beta function by multiplying the result of "
+"``betainc(a, b, x)`` by ``beta(a, b)``."
+msgstr ""
+"该函数名称中的 *正则化* 一词指的是该函数通过公式中的 gamma 函数项进行缩放"
+"。如果不加 *正则化* 限定，*不完全 beta 函数* 通常仅指积分表达式本身，而不"
+"包括 gamma 函数项。可以使用 `scipy.special` 中的 `beta` 函数，将 ``"
+"betainc(a, b, x)`` 的结果乘以 ``beta(a, b)`` 来获得这种“非正则化”的不"
+"完全 beta 函数。"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:53 of
+msgid ""
+"``betainc(a, b, x)`` is treated as a two parameter family of functions of"
+" a single variable `x`, rather than as a function of three variables. "
+"This impacts only the limiting cases ``a = 0``, ``b = 0``, ``a = inf``, "
+"``b = inf``."
+msgstr ""
+"``betainc(a, b, x)`` 被视为单变量 `x` 的双参数函数族，而不是三变量的函数"
+"。这仅影响极限情况 ``a = 0``, ``b = 0``, ``a = inf``, ``b = inf``。"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:58 of
+msgid "In general"
+msgstr "通常"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:60 of
+#, python-brace-format
+msgid "\\lim_{(a, b) \\rightarrow (a_0, b_0)} \\mathrm{betainc}(a, b, x)"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:64 of
+msgid ""
+"is treated as a pointwise limit in ``x``. Thus for example, ``betainc(0, "
+"b, 0)`` equals ``0`` for ``b > 0``, although it would be indeterminate "
+"when considering the simultaneous limit ``(a, x) -> (0+, 0+)``."
+msgstr ""
+"被视为 ``x`` 的逐点极限。例如，``betainc(0, b, 0)`` 在 ``b > 0`` 时等于 `"
+"`0``，尽管在考虑同时极限 ``(a, x) -> (0+, 0+)`` 时是未定式的。"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:68 of
+msgid ""
+"This function wraps the ``ibeta`` routine from the Boost Math C++ library"
+" [2]_."
+msgstr "该函数是对 Boost Math C++ 库中 ``ibeta`` 例程的封装 [2]_。"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:71 of
+msgid ""
+"`betainc` has experimental support for Python Array API Standard "
+"compatible backends in addition to NumPy. Please consider testing these "
+"features by setting an environment variable ``SCIPY_ARRAY_API=1`` and "
+"providing CuPy, PyTorch, JAX, or Dask arrays as array arguments. The "
+"following combinations of backend and device (or other capability) are "
+"supported."
+msgstr ""
+"`betainc` 除了支持 NumPy 外，还实验性地支持与 Python Array API 标准兼容的"
+"后端。请考虑通过设置环境变量 ``SCIPY_ARRAY_API=1`` 并提供 CuPy、PyTorch、"
+"JAX 或 Dask 数组作为参数来测试这些功能。支持以下后端与设备（或其他功能）"
+"的组合。"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:78 of
+msgid "Library"
+msgstr "库"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:78 of
+msgid "CPU"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:78 of
+msgid "GPU"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:80 of
+msgid "NumPy"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:80
+#: maxframe.tensor.special.gamma_funcs.betainc:81
+#: maxframe.tensor.special.gamma_funcs.betainc:82
+#: maxframe.tensor.special.gamma_funcs.betainc:83
+#: maxframe.tensor.special.gamma_funcs.betainc:84 of
+msgid "✅"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:80
+#: maxframe.tensor.special.gamma_funcs.betainc:81
+#: maxframe.tensor.special.gamma_funcs.betainc:84 of
+msgid "n/a"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:81 of
+msgid "CuPy"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:82 of
+msgid "PyTorch"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:82 of
+msgid "⛔"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:83 of
+msgid "JAX"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:84 of
+msgid "Dask"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:87 of
+msgid "See :ref:`dev-arrayapi` for more information."
+msgstr "参见 :ref:`dev-arrayapi` 了解更多信息。"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:90 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betainc:91 of
+msgid "NIST Digital Library of Mathematical Functions https://dlmf.nist.gov/8.17"
+msgstr "NIST 数学函数数字图书馆 https://dlmf.nist.gov/8.17"
+
+#: maxframe.tensor.special.gamma_funcs.betainc:93 of
+msgid "The Boost Developers. \"Boost C++ Libraries\". https://www.boost.org/."
+msgstr "Boost 开发者。“Boost C++ 库”。https://www.boost.org/。"
+

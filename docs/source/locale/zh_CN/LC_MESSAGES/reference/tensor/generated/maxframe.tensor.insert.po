@@ -1,0 +1,117 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.insert.rst:2
+msgid "maxframe.tensor.insert"
+msgstr ""
+
+#: maxframe.tensor.misc.insert.insert:1 of
+msgid "Insert values along the given axis before the given indices."
+msgstr "在给定轴上，于指定索引之前插入值。"
+
+#: maxframe.tensor.misc.insert.insert of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.misc.insert.insert:3 of
+msgid "Input array."
+msgstr "输入数组。"
+
+#: maxframe.tensor.misc.insert.insert:5 of
+msgid ""
+"Object that defines the index or indices before which `values` is "
+"inserted."
+msgstr "定义 `values` 插入位置的索引或索引集合。"
+
+#: maxframe.tensor.misc.insert.insert:8 of
+msgid ""
+"Values to insert into `arr`. If the type of `values` is different from "
+"that of `arr`, `values` is converted to the type of `arr`. `values` "
+"should be shaped so that ``arr[...,obj,...] = values`` is legal."
+msgstr ""
+"要插入到 `arr` 中的值。如果 `values` 的类型与 `arr` 不同，则会将 `values`"
+" 转换为 `arr` 的类型。`values` 的形状应使得 ``arr[...,obj,...] = values``"
+" 是合法的。"
+
+#: maxframe.tensor.misc.insert.insert:13 of
+msgid ""
+"Axis along which to insert `values`.  If `axis` is None then `arr` is "
+"flattened first."
+msgstr "插入 `values` 的轴。如果 `axis` 为 None，则先将 `arr` 展平。"
+
+#: maxframe.tensor.misc.insert.insert of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.misc.insert.insert:17 of
+msgid ""
+"**out** -- A copy of `arr` with `values` inserted.  Note that `insert` "
+"does not occur in-place: a new array is returned. If `axis` is None, "
+"`out` is a flattened array."
+msgstr ""
+"**out** -- 插入 `values` 后 `arr` 的副本。注意 `insert` 操作不会就地进行"
+"：会返回一个新数组。如果 `axis` 为 None，`out` 是一个展平的数组。"
+
+#: maxframe.tensor.misc.insert.insert of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.misc.insert.insert:24 of
+msgid ":py:obj:`append`"
+msgstr ""
+
+#: maxframe.tensor.misc.insert.insert:25 of
+msgid "Append elements at the end of an array."
+msgstr "在数组末尾追加元素。"
+
+#: maxframe.tensor.misc.insert.insert:27 of
+msgid ":py:obj:`concatenate`"
+msgstr ""
+
+#: maxframe.tensor.misc.insert.insert:28 of
+msgid "Join a sequence of arrays along an existing axis."
+msgstr "沿现有轴连接数组序列。"
+
+#: maxframe.tensor.misc.insert.insert:30 of
+msgid ":py:obj:`delete`"
+msgstr ""
+
+#: maxframe.tensor.misc.insert.insert:31 of
+msgid "Delete elements from an array."
+msgstr "从数组中删除元素。"
+
+#: maxframe.tensor.misc.insert.insert:34 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.misc.insert.insert:35 of
+msgid ""
+"Note that for higher dimensional inserts `obj=0` behaves very different "
+"from `obj=[0]` just like `arr[:,0,:] = values` is different from "
+"`arr[:,[0],:] = values`."
+msgstr ""
+"注意，在高维插入中，`obj=0` 和 `obj=[0]` 行为完全不同，就像 `arr[:,0,:] ="
+" values` 与 `arr[:,[0],:] = values` 是不同的一样。"
+
+#: maxframe.tensor.misc.insert.insert:40 of
+msgid "示例"
+msgstr ""
+

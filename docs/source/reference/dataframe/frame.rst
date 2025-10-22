@@ -36,6 +36,9 @@ Conversion
    :toctree: generated/
 
    DataFrame.astype
+   DataFrame.convert_dtypes
+   DataFrame.copy
+   DataFrame.infer_objects
 
 Indexing, iteration
 ~~~~~~~~~~~~~~~~~~~
@@ -83,6 +86,7 @@ Binary operator functions
    DataFrame.ge
    DataFrame.ne
    DataFrame.eq
+   DataFrame.combine
    DataFrame.combine_first
 
 Function application, GroupBy & window
@@ -123,11 +127,13 @@ Computations / descriptive stats
    DataFrame.mean
    DataFrame.median
    DataFrame.min
+   DataFrame.mode
    DataFrame.nunique
    DataFrame.pct_change
    DataFrame.prod
    DataFrame.product
    DataFrame.quantile
+   DataFrame.rank
    DataFrame.round
    DataFrame.sem
    DataFrame.std
@@ -143,6 +149,8 @@ Reindexing / selection / label manipulation
    DataFrame.add_prefix
    DataFrame.add_suffix
    DataFrame.align
+   DataFrame.at_time
+   DataFrame.between_time
    DataFrame.drop
    DataFrame.drop_duplicates
    DataFrame.droplevel
@@ -253,7 +261,9 @@ Serialization / IO / conversion
 
    DataFrame.from_dict
    DataFrame.from_records
+   DataFrame.to_clipboard
    DataFrame.to_csv
+   DataFrame.to_dict
    DataFrame.to_odps_table
    DataFrame.to_pandas
 

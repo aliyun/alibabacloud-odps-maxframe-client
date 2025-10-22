@@ -1,0 +1,142 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.select_dtypes.rst:2
+msgid "maxframe.dataframe.DataFrame.select\\_dtypes"
+msgstr ""
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:1 of
+msgid "Return a subset of the DataFrame's columns based on the column dtypes."
+msgstr "根据列的数据类型返回 DataFrame 列的一个子集。"
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:3
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:6 of
+msgid ""
+"A selection of dtypes or strings to be included/excluded. At least one of"
+" these parameters must be supplied."
+msgstr "要包含/排除的数据类型或字符串的选择。至少需要提供其中一个参数。"
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:10 of
+msgid ""
+"The subset of the frame including the dtypes in ``include`` and excluding"
+" the dtypes in ``exclude``."
+msgstr "包含 ``include`` 中的数据类型并排除 ``exclude`` 中的数据类型的帧的子集。"
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:14 of
+msgid ""
+"* If both of ``include`` and ``exclude`` are empty     * If ``include`` "
+"and ``exclude`` have overlapping elements     * If any kind of string "
+"dtype is passed in."
+msgstr ""
+"* 如果 ``include`` 和 ``exclude`` 都为空\n"
+"    * 如果 ``include`` 和 ``exclude`` 有重叠元素\n"
+"    * 如果传入了任何形式的字符串数据类型"
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:14 of
+msgid ""
+"If both of ``include`` and ``exclude`` are empty     * If ``include`` and"
+" ``exclude`` have overlapping elements     * If any kind of string dtype "
+"is passed in."
+msgstr ""
+"如果 ``include`` 和 ``exclude`` 都为空\n"
+"    * 如果 ``include`` 和 ``exclude`` 有重叠元素\n"
+"    * 如果传入了任何形式的字符串数据类型"
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:18 of
+msgid ":py:obj:`DataFrame.dtypes`"
+msgstr ""
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:19 of
+msgid "Return Series with the data type of each column."
+msgstr "返回每个列数据类型的 Series。"
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:22 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:23 of
+msgid "To select all *numeric* types, use ``np.number`` or ``'number'``"
+msgstr "要选择所有 *数值* 类型，请使用 ``np.number`` 或 ``'number'``"
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:24 of
+msgid ""
+"To select strings you must use the ``object`` dtype, but note that this "
+"will return *all* object dtype columns"
+msgstr ""
+"要选择字符串，您必须使用 ``object`` 数据类型，但请注意这将返回 *所有* "
+"对象数据类型列"
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:26 of
+msgid ""
+"See the `numpy dtype hierarchy "
+"<https://numpy.org/doc/stable/reference/arrays.scalars.html>`__"
+msgstr ""
+"参见 `numpy 数据类型层次结构 <https://numpy.org/doc/stable/reference/"
+"arrays.scalars.html>`__"
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:28 of
+msgid ""
+"To select datetimes, use ``np.datetime64``, ``'datetime'`` or "
+"``'datetime64'``"
+msgstr ""
+"要选择日期时间，请使用 ``np.datetime64``、``'datetime'`` 或 ``'datetime64"
+"'``"
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:30 of
+msgid ""
+"To select timedeltas, use ``np.timedelta64``, ``'timedelta'`` or "
+"``'timedelta64'``"
+msgstr ""
+"要选择时间差，请使用 ``np.timedelta64``、``'timedelta'`` 或 ``'"
+"timedelta64'``"
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:32 of
+msgid "To select Pandas categorical dtypes, use ``'category'``"
+msgstr "要选择 Pandas 分类数据类型，请使用 ``'category'``"
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:33 of
+msgid ""
+"To select Pandas datetimetz dtypes, use ``'datetimetz'`` (new in 0.20.0) "
+"or ``'datetime64[ns, tz]'``"
+msgstr ""
+"要选择 Pandas 带时区的日期时间数据类型，请使用 ``'datetimetz'``（0.20.0 "
+"新增）或 ``'datetime64[ns, tz]'``"
+
+#: maxframe.dataframe.misc.select_dtypes.select_dtypes:37 of
+msgid "示例"
+msgstr ""
+

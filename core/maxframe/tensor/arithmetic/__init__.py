@@ -154,7 +154,7 @@ def _install():
         def inner(lhs, rhs, **kwargs):
             ret = func(lhs, rhs, **kwargs)
             if isinstance(ret, TENSOR_TYPE):
-                ret.op.magic = True
+                ret.op.extra_params["magic"] = True
             return ret
 
         return inner

@@ -1,0 +1,201 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.percentile.rst:2
+msgid "maxframe.tensor.percentile"
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:1 of
+msgid "Compute the q-th percentile of the data along the specified axis."
+msgstr "计算沿指定轴的数据的第 q 个百分位数。"
+
+#: maxframe.tensor.statistics.percentile.percentile:3 of
+msgid "Returns the q-th percentile(s) of the array elements."
+msgstr "返回数组元素的第 q 个百分位数。"
+
+#: maxframe.tensor.statistics.percentile.percentile of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:5 of
+msgid "Input tensor or object that can be converted to a tensor."
+msgstr "输入张量或可以转换为张量的对象。"
+
+#: maxframe.tensor.statistics.percentile.percentile:7 of
+msgid ""
+"Percentile or sequence of percentiles to compute, which must be between 0"
+" and 100 inclusive."
+msgstr "要计算的百分位数或百分位数序列，必须在 0 到 100 之间（包含 0 和 100）。"
+
+#: maxframe.tensor.statistics.percentile.percentile:10 of
+msgid ""
+"Axis or axes along which the percentiles are computed. The default is to "
+"compute the percentile(s) along a flattened version of the tensor."
+msgstr "计算百分位数的轴。默认情况下，沿张量的扁平化版本计算百分位数。"
+
+#: maxframe.tensor.statistics.percentile.percentile:14 of
+msgid ""
+"Alternative output array in which to place the result. It must have the "
+"same shape and buffer length as the expected output, but the type (of the"
+" output) will be cast if necessary."
+msgstr ""
+"用于放置结果的替代输出数组。它必须与期望输出具有相同的形状和缓冲区长度，"
+"但如果需要，输出类型将被转换。"
+
+#: maxframe.tensor.statistics.percentile.percentile:18 of
+msgid "Just for compatibility with Numpy, would not take effect."
+msgstr "仅为了与 Numpy 兼容，不会生效。"
+
+#: maxframe.tensor.statistics.percentile.percentile:20 of
+msgid ""
+"This optional parameter specifies the interpolation method to use when "
+"the desired percentile lies between two data points ``i < j``:  * "
+"'linear': ``i + (j - i) * fraction``, where ``fraction``   is the "
+"fractional part of the index surrounded by ``i``   and ``j``. * 'lower': "
+"``i``. * 'higher': ``j``. * 'nearest': ``i`` or ``j``, whichever is "
+"nearest. * 'midpoint': ``(i + j) / 2``."
+msgstr ""
+"此可选参数指定当所需百分位数位于两个数据点 ``i < j`` 之间时使用的插值方法"
+"：  * 'linear': ``i + (j - i) * fraction``，其中 ``fraction`` 是 ``i`` 和"
+" ``j`` 之间的索引的小数部分。 * 'lower': ``i``。 * 'higher': ``j``。 * '"
+"nearest': ``i`` 或 ``j``，选择最近的一个。 * 'midpoint': ``(i + j) / 2``"
+"。"
+
+#: maxframe.tensor.statistics.percentile.percentile:20 of
+msgid ""
+"This optional parameter specifies the interpolation method to use when "
+"the desired percentile lies between two data points ``i < j``:"
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:24 of
+msgid ""
+"'linear': ``i + (j - i) * fraction``, where ``fraction`` is the "
+"fractional part of the index surrounded by ``i`` and ``j``."
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:27 of
+msgid "'lower': ``i``."
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:28 of
+msgid "'higher': ``j``."
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:29 of
+msgid "'nearest': ``i`` or ``j``, whichever is nearest."
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:30 of
+msgid "'midpoint': ``(i + j) / 2``."
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:32 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the original array `a`."
+msgstr ""
+"如果设置为 True，则在结果中保留被规约的轴，其大小为一。使用此选项时，结果"
+"将可以正确地与原始数组 `a` 进行广播。"
+
+#: maxframe.tensor.statistics.percentile.percentile of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:37 of
+msgid ""
+"**percentile** -- If `q` is a single percentile and `axis=None`, then the"
+" result is a scalar. If multiple percentiles are given, first axis of the"
+" result corresponds to the percentiles. The other axes are the axes that "
+"remain after the reduction of `a`. If the input contains integers or "
+"floats smaller than ``float64``, the output data-type is ``float64``. "
+"Otherwise, the output data-type is the same as that of the input. If "
+"`out` is specified, that array is returned instead."
+msgstr ""
+"**percentile** -- 如果 `q` 是单个百分位数且 `axis=None`，则结果为标量。"
+"如果提供了多个百分位数，则结果的第一个轴对应于百分位数。其余轴是 `a` 被"
+"规约后保留的轴。如果输入包含小于 ``float64`` 的整数或浮点数，则输出"
+"数据类型为 ``float64``。否则，输出数据类型与输入相同。如果指定了 `out`，"
+"则返回该数组。"
+
+#: maxframe.tensor.statistics.percentile.percentile of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:49 of
+msgid ":py:obj:`mean`"
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:51 of
+msgid ":py:obj:`median`"
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:52 of
+msgid "equivalent to ``percentile(..., 50)``"
+msgstr "等价于 ``percentile(..., 50)``"
+
+#: maxframe.tensor.statistics.percentile.percentile:54 of
+msgid ":py:obj:`nanpercentile`"
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:56 of
+msgid ":py:obj:`quantile`"
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:57 of
+msgid "equivalent to percentile, except with q in the range [0, 1]."
+msgstr "等价于百分位数，但 q 的取值范围是 [0, 1]。"
+
+#: maxframe.tensor.statistics.percentile.percentile:60 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:61 of
+msgid ""
+"Given a vector ``V`` of length ``N``, the q-th percentile of ``V`` is the"
+" value ``q/100`` of the way from the minimum to the maximum in a sorted "
+"copy of ``V``. The values and distances of the two nearest neighbors as "
+"well as the `interpolation` parameter will determine the percentile if "
+"the normalized ranking does not match the location of ``q`` exactly. This"
+" function is the same as the median if ``q=50``, the same as the minimum "
+"if ``q=0`` and the same as the maximum if ``q=100``."
+msgstr ""
+"给定长度为 ``N`` 的向量 ``V``，``V`` 的第 q 个百分位数是从最小值到最大值"
+"之间 ``q/100`` 处的值，在 ``V`` 的已排序副本中计算。若标准化排名不完全"
+"匹配 ``q`` 的位置，两个最近邻的值和距离以及 `interpolation` 参数将决定"
+"百分位数。当 ``q=50`` 时，此函数与中位数相同；当 ``q=0`` 时与最小值相同；"
+"当 ``q=100`` 时与最大值相同。"
+
+#: maxframe.tensor.statistics.percentile.percentile:71 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.statistics.percentile.percentile:94 of
+msgid "The different types of interpolation can be visualized graphically:"
+msgstr "不同类型的插值可以图形化显示："
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.percentile.rst:7
+msgid ""
+"(:download:`Source code "
+"<../../../../build/locale/plot_directive/reference/tensor/generated"
+"/maxframe-tensor-percentile-1.py>`)"
+msgstr ""
+

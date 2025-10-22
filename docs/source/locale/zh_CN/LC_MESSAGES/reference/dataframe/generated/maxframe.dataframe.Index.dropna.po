@@ -1,0 +1,43 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.dropna.rst:2
+msgid "maxframe.dataframe.Index.dropna"
+msgstr ""
+
+#: maxframe.dataframe.missing.dropna.index_dropna:1 of
+msgid "Return Index without NA/NaN values."
+msgstr "返回不包含 NA/NaN 值的 Index。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.dropna.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.missing.dropna.index_dropna:3 of
+msgid ""
+"If the Index is a MultiIndex, drop the value when any or all levels are "
+"NaN."
+msgstr "如果 Index 是 MultiIndex，则在任何或所有层级为 NaN 时删除该值。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.dropna.rst
+msgid "返回类型"
+msgstr ""
+

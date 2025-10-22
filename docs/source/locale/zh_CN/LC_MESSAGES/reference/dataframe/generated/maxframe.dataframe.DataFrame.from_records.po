@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.from_records.rst:2
+msgid "maxframe.dataframe.DataFrame.from\\_records"
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_records.from_records:1 of
+msgid "Convert structured or record ndarray to DataFrame."
+msgstr "将结构化或记录型 ndarray 转换为 DataFrame。"
+
+#: maxframe.dataframe.datasource.from_records.from_records:3 of
+msgid ""
+"Creates a DataFrame object from a structured ndarray, sequence of tuples "
+"or dicts, or DataFrame."
+msgstr "从结构化 ndarray、元组或字典序列，或 DataFrame 创建一个 DataFrame 对象。"
+
+#: maxframe.dataframe.datasource.from_records.from_records of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_records.from_records:6 of
+msgid ""
+"Structured input data.  .. deprecated:: 2.1.0     Passing a DataFrame is "
+"deprecated."
+msgstr "结构化输入数据。  .. deprecated:: 2.1.0     传递 DataFrame 已被弃用。"
+
+#: maxframe.dataframe.datasource.from_records.from_records:6 of
+msgid "Structured input data."
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_records.from_records:8 of
+msgid "Passing a DataFrame is deprecated."
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_records.from_records:11 of
+msgid ""
+"Field of array to use as the index, alternately a specific set of input "
+"labels to use."
+msgstr "用作索引的数组字段，或使用特定的一组输入标签。"
+
+#: maxframe.dataframe.datasource.from_records.from_records:14 of
+msgid "Columns or fields to exclude."
+msgstr "要排除的列或字段。"
+
+#: maxframe.dataframe.datasource.from_records.from_records:16 of
+msgid ""
+"Column names to use. If the passed data do not have names associated with"
+" them, this argument provides names for the columns. Otherwise this "
+"argument indicates the order of the columns in the result (any names not "
+"found in the data will become all-NA columns)."
+msgstr ""
+"要使用的列名。如果传入的数据没有关联名称，则此参数为列提供名称。否则"
+"此参数表示结果中列的顺序（数据中未找到的名称将变成全为 NA 的列）。"
+
+#: maxframe.dataframe.datasource.from_records.from_records:22 of
+msgid ""
+"Attempt to convert values of non-string, non-numeric objects (like "
+"decimal.Decimal) to floating point, useful for SQL result sets."
+msgstr ""
+"尝试将非字符串、非数值对象（如 decimal.Decimal）的值转换为浮点数，对 SQL "
+"结果集有用。"
+
+#: maxframe.dataframe.datasource.from_records.from_records:25 of
+msgid "Number of rows to read if data is an iterator."
+msgstr "如果数据是迭代器，则为要读取的行数。"
+
+#: maxframe.dataframe.datasource.from_records.from_records of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_records.from_records:32 of
+msgid ":py:obj:`DataFrame.from_dict`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_records.from_records:33 of
+msgid "DataFrame from dict of array-like or dicts."
+msgstr "从类似数组或字典的字典创建 DataFrame。"
+
+#: maxframe.dataframe.datasource.from_records.from_records:35 of
+msgid ":py:obj:`DataFrame`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_records.from_records:36 of
+msgid "DataFrame object creation using constructor."
+msgstr "使用构造函数创建 DataFrame 对象。"
+
+#: maxframe.dataframe.datasource.from_records.from_records:39 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.datasource.from_records.from_records:40 of
+msgid "Data can be provided as a structured ndarray:"
+msgstr "数据可以以结构化 ndarray 的形式提供："
+
+#: maxframe.dataframe.datasource.from_records.from_records:53 of
+msgid "Data can be provided as a list of dicts:"
+msgstr "数据可以以字典列表的形式提供："
+
+#: maxframe.dataframe.datasource.from_records.from_records:66 of
+msgid "Data can be provided as a list of tuples with corresponding columns:"
+msgstr "数据可以以带有相应列的元组列表形式提供："
+

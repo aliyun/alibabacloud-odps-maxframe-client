@@ -1,0 +1,175 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.rank.rst:2
+msgid "maxframe.dataframe.Series.rank"
+msgstr ""
+
+#: maxframe.dataframe.sort.rank.rank:1 of
+msgid "Compute numerical data ranks (1 through n) along axis."
+msgstr "沿轴计算数值数据的排名（从1到n）。"
+
+#: maxframe.dataframe.sort.rank.rank:3 of
+msgid ""
+"By default, equal values are assigned a rank that is the average of the "
+"ranks of those values."
+msgstr "默认情况下，相等的值会被赋予其排名的平均值。"
+
+#: maxframe.dataframe.sort.rank.rank of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.sort.rank.rank:6 of
+msgid "Index to direct ranking."
+msgstr "用于指定排序方向的索引。"
+
+#: maxframe.dataframe.sort.rank.rank:8 of
+msgid ""
+"How to rank the group of records that have the same value (i.e. ties):  *"
+" average: average rank of the group * min: lowest rank in the group * "
+"max: highest rank in the group * first: ranks assigned in order they "
+"appear in the array * dense: like 'min', but rank always increases by 1 "
+"between groups."
+msgstr ""
+"如何对具有相同值（即并列）的记录组进行排名：  * average: 组的平均排名 * "
+"min: 组中的最低排名 * max: 组中的最高排名 * first: 按照记录在数组中出现的"
+"顺序分配排名 * dense: 类似 'min'，但组间的排名总是增加1。"
+
+#: maxframe.dataframe.sort.rank.rank:8 of
+msgid "How to rank the group of records that have the same value (i.e. ties):"
+msgstr "如何对具有相同值（即并列）的记录组进行排名："
+
+#: maxframe.dataframe.sort.rank.rank:10 of
+msgid "average: average rank of the group"
+msgstr "average: 组的平均排名"
+
+#: maxframe.dataframe.sort.rank.rank:11 of
+msgid "min: lowest rank in the group"
+msgstr "min: 组中的最低排名"
+
+#: maxframe.dataframe.sort.rank.rank:12 of
+msgid "max: highest rank in the group"
+msgstr "max: 组中的最高排名"
+
+#: maxframe.dataframe.sort.rank.rank:13 of
+msgid "first: ranks assigned in order they appear in the array"
+msgstr "first: 按照记录在数组中出现的顺序分配排名"
+
+#: maxframe.dataframe.sort.rank.rank:14 of
+msgid "dense: like 'min', but rank always increases by 1 between groups."
+msgstr "dense: 类似 'min'，但组间的排名总是增加1。"
+
+#: maxframe.dataframe.sort.rank.rank:16 of
+msgid "For DataFrame objects, rank only numeric columns if set to True."
+msgstr "对于 DataFrame 对象，如果设置为 True，则仅对数值列进行排名。"
+
+#: maxframe.dataframe.sort.rank.rank:18 of
+msgid ""
+"How to rank NaN values:  * keep: assign NaN rank to NaN values * top: "
+"assign lowest rank to NaN values * bottom: assign highest rank to NaN "
+"values"
+msgstr ""
+"如何对 NaN 值进行排名：  * keep: 将 NaN 排名赋给 NaN 值 * top: 将最低排名"
+"赋给 NaN 值 * bottom: 将最高排名赋给 NaN 值"
+
+#: maxframe.dataframe.sort.rank.rank:18 of
+msgid "How to rank NaN values:"
+msgstr "如何对 NaN 值进行排名："
+
+#: maxframe.dataframe.sort.rank.rank:20 of
+msgid "keep: assign NaN rank to NaN values"
+msgstr "keep: 将 NaN 排名赋给 NaN 值"
+
+#: maxframe.dataframe.sort.rank.rank:21 of
+msgid "top: assign lowest rank to NaN values"
+msgstr "top: 将最低排名赋给 NaN 值"
+
+#: maxframe.dataframe.sort.rank.rank:22 of
+msgid "bottom: assign highest rank to NaN values"
+msgstr "bottom: 将最高排名赋给 NaN 值"
+
+#: maxframe.dataframe.sort.rank.rank:24 of
+msgid "Whether or not the elements should be ranked in ascending order."
+msgstr "是否应按升序对元素进行排名。"
+
+#: maxframe.dataframe.sort.rank.rank:26 of
+msgid "Whether or not to display the returned rankings in percentile form."
+msgstr "是否以百分位数形式显示返回的排名。"
+
+#: maxframe.dataframe.sort.rank.rank of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.sort.rank.rank:30 of
+msgid "Return a Series or DataFrame with data ranks as values."
+msgstr "返回一个以数据排名为值的 Series 或 DataFrame。"
+
+#: maxframe.dataframe.sort.rank.rank of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.sort.rank.rank:35 of
+msgid ":py:obj:`core.groupby.GroupBy.rank`"
+msgstr ""
+
+#: maxframe.dataframe.sort.rank.rank:36 of
+msgid "Rank of values within each group."
+msgstr "每组内值的排名。"
+
+#: maxframe.dataframe.sort.rank.rank:39 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.sort.rank.rank:53 of
+msgid ""
+"The following example shows how the method behaves with the above "
+"parameters:"
+msgstr "以下示例展示了该方法在上述参数下的行为："
+
+#: maxframe.dataframe.sort.rank.rank:56 of
+msgid ""
+"default_rank: this is the default behaviour obtained without using any "
+"parameter."
+msgstr "default_rank: 这是在不使用任何参数时获得的默认行为。"
+
+#: maxframe.dataframe.sort.rank.rank:58 of
+msgid ""
+"max_rank: setting ``method = 'max'`` the records that have the same "
+"values are ranked using the highest rank (e.g.: since 'cat' and 'dog' are"
+" both in the 2nd and 3rd position, rank 3 is assigned.)"
+msgstr ""
+"max_rank: 设置 ``method = 'max'`` 时，具有相同值的记录将使用最高排名（"
+"例如：由于 'cat' 和 'dog' 都在第2和第3位，因此分配排名3。）"
+
+#: maxframe.dataframe.sort.rank.rank:61 of
+msgid ""
+"NA_bottom: choosing ``na_option = 'bottom'``, if there are records with "
+"NaN values they are placed at the bottom of the ranking."
+msgstr ""
+"NA_bottom: 选择 ``na_option = 'bottom'``，如果有包含 NaN 值的记录，它们会"
+"被放置在排名的底部。"
+
+#: maxframe.dataframe.sort.rank.rank:63 of
+msgid ""
+"pct_rank: when setting ``pct = True``, the ranking is expressed as "
+"percentile rank."
+msgstr "pct_rank: 当设置 ``pct = True`` 时，排名会以百分位数排名表示。"
+

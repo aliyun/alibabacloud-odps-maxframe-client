@@ -1,0 +1,137 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/indexing.rst:4
+msgid "Tensor Indexing Routines"
+msgstr "张量索引例程"
+
+#: ../../source/reference/tensor/indexing.rst:7
+msgid "Generating index arrays"
+msgstr "生成索引数组"
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.c_ <maxframe.tensor.c_>`"
+msgstr ""
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid "Translates slice objects to concatenation along the second axis."
+msgstr "将切片对象转换为沿第二个轴连接。"
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.r_ <maxframe.tensor.r_>`"
+msgstr ""
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid "Translates slice objects to concatenation along the first axis."
+msgstr "将切片对象转换为沿第一个轴连接。"
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.nonzero <maxframe.tensor.nonzero>`"
+msgstr ""
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid "Return the indices of the elements that are non-zero."
+msgstr "返回非零元素的索引。"
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.where <maxframe.tensor.where>`"
+msgstr ""
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid "Return elements, either from `x` or `y`, depending on `condition`."
+msgstr "根据条件从 `x` 或 `y` 中返回元素。"
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.indices <maxframe.tensor.indices>`"
+msgstr ""
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid "Return a tensor representing the indices of a grid."
+msgstr "返回表示网格索引的张量。"
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.ogrid <maxframe.tensor.ogrid>`"
+msgstr ""
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid "Construct a multi-dimensional \"meshgrid\"."
+msgstr "构造多维“网格”。"
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.unravel_index <maxframe.tensor.unravel_index>`"
+msgstr ""
+
+#: ../../source/reference/tensor/indexing.rst:20:<autosummary>:1
+msgid ""
+"Converts a flat index or tensor of flat indices into a tuple of "
+"coordinate tensors."
+msgstr "将平面索引或平面索引张量转换为坐标张量元组。"
+
+#: ../../source/reference/tensor/indexing.rst:22
+msgid "Indexing-like operations"
+msgstr "类似索引的操作"
+
+#: ../../source/reference/tensor/indexing.rst:32:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.take <maxframe.tensor.take>`"
+msgstr ""
+
+#: ../../source/reference/tensor/indexing.rst:32:<autosummary>:1
+msgid "Take elements from a tensor along an axis."
+msgstr "沿指定轴从张量中取出元素。"
+
+#: ../../source/reference/tensor/indexing.rst:32:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.choose <maxframe.tensor.choose>`"
+msgstr ""
+
+#: ../../source/reference/tensor/indexing.rst:32:<autosummary>:1
+msgid ""
+"Construct a tensor from an index tensor and a set of tensors to choose "
+"from."
+msgstr "从索引张量和一组张量中构造一个张量。"
+
+#: ../../source/reference/tensor/indexing.rst:32:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.compress <maxframe.tensor.compress>`"
+msgstr ""
+
+#: ../../source/reference/tensor/indexing.rst:32:<autosummary>:1
+msgid "Return selected slices of a tensor along given axis."
+msgstr "返回沿给定轴选择的张量切片。"
+
+#: ../../source/reference/tensor/indexing.rst:32:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.diag <maxframe.tensor.diag>`"
+msgstr ""
+
+#: ../../source/reference/tensor/indexing.rst:32:<autosummary>:1
+msgid "Extract a diagonal or construct a diagonal tensor."
+msgstr "提取对角线或构造对角线张量。"
+
+#: ../../source/reference/tensor/indexing.rst:34
+msgid "Inserting data into arrays"
+msgstr "向数组中插入数据"
+
+#: ../../source/reference/tensor/indexing.rst:40:<autosummary>:1
+msgid ":py:obj:`maxframe.tensor.fill_diagonal <maxframe.tensor.fill_diagonal>`"
+msgstr ""
+
+#: ../../source/reference/tensor/indexing.rst:40:<autosummary>:1
+msgid "Fill the main diagonal of the given tensor of any dimensionality."
+msgstr "填充任意维度张量的主对角线。"
+

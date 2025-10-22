@@ -1,0 +1,137 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.metrics.log_loss.rst:2
+msgid "maxframe.learn.metrics.log\\_loss"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.log_loss:1 of
+msgid "Log loss, aka logistic loss or cross-entropy loss."
+msgstr "对数损失，也称为逻辑损失或交叉熵损失。"
+
+#: maxframe.learn.metrics._classification.log_loss:3 of
+#, python-brace-format
+msgid ""
+"This is the loss function used in (multinomial) logistic regression and "
+"extensions of it such as neural networks, defined as the negative log-"
+"likelihood of a logistic model that returns ``y_pred`` probabilities for "
+"its training data ``y_true``. The log loss is only defined for two or "
+"more labels. For a single sample with true label :math:`y \\in \\{0,1\\}`"
+" and and a probability estimate :math:`p = \\operatorname{Pr}(y = 1)`, "
+"the log loss is:"
+msgstr ""
+"这是（多项式）逻辑回归及其扩展（如神经网络）中使用的损失函数，定义为返回 "
+"``y_pred`` 概率的逻辑模型对其训练数据 ``y_true`` 的负对数似然。对数损失仅"
+"对两个或更多标签有定义。对于一个真实标签为 :math:`y \\in \\{0,1\\}` 且"
+"概率估计为 :math:`p = \\operatorname{Pr}(y = 1)` 的样本，对数损失为："
+
+#: maxframe.learn.metrics._classification.log_loss:12 of
+#, python-brace-format
+msgid ""
+"L_{\\log}(y, p) = -(y \\log (p) + (1 - y) \\log (1 - p))\n"
+"\n"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.log_loss:15 of
+msgid "Read more in the :ref:`User Guide <log_loss>`."
+msgstr "更多内容请参见 :ref:`用户指南 <log_loss>`。"
+
+#: maxframe.learn.metrics._classification.log_loss of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.log_loss:17 of
+msgid "Ground truth (correct) labels for n_samples samples."
+msgstr "n_samples 个样本的真实（正确）标签。"
+
+#: maxframe.learn.metrics._classification.log_loss:19 of
+msgid ""
+"Predicted probabilities, as returned by a classifier's predict_proba "
+"method. If ``y_pred.shape = (n_samples,)`` the probabilities provided are"
+" assumed to be that of the positive class. The labels in ``y_pred`` are "
+"assumed to be ordered alphabetically, as done by "
+":class:`preprocessing.LabelBinarizer`."
+msgstr ""
+"由分类器的 predict_proba 方法返回的预测概率。如果 ``y_pred.shape = (n_"
+"samples,)``，则假定所提供的概率为正类的概率。``y_pred`` 中的标签被假定为"
+"按字母顺序排列，与 :class:`preprocessing.LabelBinarizer` 的处理方式一致。"
+
+#: maxframe.learn.metrics._classification.log_loss:26 of
+msgid ""
+"Log loss is undefined for p=0 or p=1, so probabilities are clipped to "
+"max(eps, min(1 - eps, p))."
+msgstr ""
+"当 p=0 或 p=1 时，对数损失未定义，因此概率被截断为 max(eps, min(1 - eps, "
+"p))。"
+
+#: maxframe.learn.metrics._classification.log_loss:29 of
+msgid ""
+"If true, return the mean loss per sample. Otherwise, return the sum of "
+"the per-sample losses."
+msgstr "如果为 true，则返回每个样本的平均损失。否则，返回所有样本损失的总和。"
+
+#: maxframe.learn.metrics._classification.log_loss:32 of
+msgid "Sample weights."
+msgstr "样本权重。"
+
+#: maxframe.learn.metrics._classification.log_loss:34 of
+msgid ""
+"If not provided, labels will be inferred from y_true. If ``labels`` is "
+"``None`` and ``y_pred`` has shape (n_samples,) the labels are assumed to "
+"be binary and are inferred from ``y_true``."
+msgstr ""
+"如果未提供，则会从 y_true 推断标签。如果 ``labels`` 为 ``None`` 且 ``y_"
+"pred`` 的形状为 (n_samples,)，则假定标签为二分类，并从 ``y_true`` 推断。"
+
+#: maxframe.learn.metrics._classification.log_loss of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.log_loss:39 of
+msgid "**loss**"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.log_loss of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.log_loss:43 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.log_loss:44 of
+msgid "The logarithm used is the natural logarithm (base-e)."
+msgstr "所使用的对数是自然对数（以 e 为底）。"
+
+#: maxframe.learn.metrics._classification.log_loss:47 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.log_loss:54 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.learn.metrics._classification.log_loss:55 of
+msgid ""
+"C.M. Bishop (2006). Pattern Recognition and Machine Learning. Springer, "
+"p. 209."
+msgstr ""
+

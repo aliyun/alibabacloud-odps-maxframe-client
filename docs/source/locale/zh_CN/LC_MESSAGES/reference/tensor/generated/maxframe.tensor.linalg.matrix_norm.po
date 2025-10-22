@@ -1,0 +1,69 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.linalg.matrix_norm.rst:2
+msgid "maxframe.tensor.linalg.matrix\\_norm"
+msgstr ""
+
+#: maxframe.tensor.linalg.matrix_norm.matrix_norm:1 of
+msgid "Computes the matrix norm of a matrix (or a stack of matrices) ``x``."
+msgstr "计算矩阵（或矩阵堆栈）``x`` 的矩阵范数。"
+
+#: maxframe.tensor.linalg.matrix_norm.matrix_norm:3 of
+msgid "This function is Array API compatible."
+msgstr "此函数与 Array API 兼容。"
+
+#: maxframe.tensor.linalg.matrix_norm.matrix_norm of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.linalg.matrix_norm.matrix_norm:5 of
+msgid ""
+"Input array having shape (..., M, N) and whose two innermost dimensions "
+"form ``MxN`` matrices."
+msgstr "输入数组，其形状为 (..., M, N)，且最内两维构成 ``MxN`` 矩阵。"
+
+#: maxframe.tensor.linalg.matrix_norm.matrix_norm:8 of
+msgid ""
+"If this is set to True, the axes which are normed over are left in the "
+"result as dimensions with size one. Default: False."
+msgstr ""
+"如果设置为 True，则在结果中保留用于计算范数的轴，并将其大小设为一。默认值"
+"：False。"
+
+#: maxframe.tensor.linalg.matrix_norm.matrix_norm:11 of
+msgid ""
+"The order of the norm. For details see the table under ``Notes`` in "
+"`numpy.linalg.norm`."
+msgstr "范数的阶数。详情请参见 `numpy.linalg.norm` 中 ``Notes`` 下的表格。"
+
+#: maxframe.tensor.linalg.matrix_norm.matrix_norm:17 of
+msgid ":py:obj:`numpy.linalg.norm`"
+msgstr ""
+
+#: maxframe.tensor.linalg.matrix_norm.matrix_norm:18 of
+msgid "Generic norm function"
+msgstr "通用范数函数"
+
+#: maxframe.tensor.linalg.matrix_norm.matrix_norm:21 of
+msgid "示例"
+msgstr ""
+

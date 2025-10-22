@@ -1,0 +1,73 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.mf.flatjson.rst:2
+msgid "maxframe.dataframe.Series.mf.flatjson"
+msgstr ""
+
+#: maxframe.dataframe.extensions.flatjson.series_flatjson:1 of
+msgid "Flat JSON object in the series to a dataframe according to JSON query."
+msgstr "将 Series 中的 JSON 对象根据 JSON 查询展平为 DataFrame。"
+
+#: maxframe.dataframe.extensions.flatjson.series_flatjson of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.extensions.flatjson.series_flatjson:3 of
+msgid "The series of json strings."
+msgstr "JSON 字符串的 Series。"
+
+#: maxframe.dataframe.extensions.flatjson.series_flatjson:5 of
+msgid ""
+"The JSON query paths for each generated column. The path format should "
+"follow [RFC9535](https://datatracker.ietf.org/doc/rfc9535/)."
+msgstr ""
+"每个生成列的 JSON 查询路径。路径格式应遵循 [RFC9535](https://datatracker."
+"ietf.org/doc/rfc9535/)。"
+
+#: maxframe.dataframe.extensions.flatjson.series_flatjson:8 of
+msgid "Specify dtypes of returned DataFrame. Can't work with dtype."
+msgstr "指定返回 DataFrame 的数据类型。不能与 dtype 同时使用。"
+
+#: maxframe.dataframe.extensions.flatjson.series_flatjson:10 of
+msgid "Specify dtype of returned Series. Can't work with dtypes."
+msgstr "指定返回 Series 的数据类型。不能与 dtypes 同时使用。"
+
+#: maxframe.dataframe.extensions.flatjson.series_flatjson:12 of
+msgid "Specify name of the returned Series."
+msgstr "指定返回 Series 的名称。"
+
+#: maxframe.dataframe.extensions.flatjson.series_flatjson of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.extensions.flatjson.series_flatjson:15 of
+msgid "Result of DataFrame when dtypes specified, else Series."
+msgstr "当指定 dtypes 时返回 DataFrame，否则返回 Series。"
+
+#: maxframe.dataframe.extensions.flatjson.series_flatjson of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.extensions.flatjson.series_flatjson:19 of
+msgid "示例"
+msgstr ""
+

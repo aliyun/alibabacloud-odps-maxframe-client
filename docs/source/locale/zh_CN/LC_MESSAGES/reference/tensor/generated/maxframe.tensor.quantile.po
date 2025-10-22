@@ -1,0 +1,185 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.quantile.rst:2
+msgid "maxframe.tensor.quantile"
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:1 of
+msgid "Compute the q-th quantile of the data along the specified axis."
+msgstr "计算沿指定轴的数据的第 q 分位数。"
+
+#: maxframe.tensor.statistics.quantile.quantile of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:3 of
+msgid "Input tensor or object that can be converted to a tensor."
+msgstr "输入张量或可以转换为张量的对象。"
+
+#: maxframe.tensor.statistics.quantile.quantile:5 of
+msgid ""
+"Quantile or sequence of quantiles to compute, which must be between 0 and"
+" 1 inclusive."
+msgstr "要计算的分位数或分位数序列，必须在 0 到 1 之间（包含 0 和 1）。"
+
+#: maxframe.tensor.statistics.quantile.quantile:8 of
+msgid ""
+"Axis or axes along which the quantiles are computed. The default is to "
+"compute the quantile(s) along a flattened version of the tensor."
+msgstr "计算分位数的轴。默认情况下，沿张量的扁平化版本计算分位数。"
+
+#: maxframe.tensor.statistics.quantile.quantile:12 of
+msgid ""
+"Alternative output tensor in which to place the result. It must have the "
+"same shape and buffer length as the expected output, but the type (of the"
+" output) will be cast if necessary."
+msgstr ""
+"用于放置结果的替代输出张量。它必须与预期输出具有相同的形状和缓冲区长度，"
+"但必要时会进行类型转换。"
+
+#: maxframe.tensor.statistics.quantile.quantile:16 of
+msgid "Just for compatibility with Numpy, would not take effect."
+msgstr "仅用于与 Numpy 兼容，不会生效。"
+
+#: maxframe.tensor.statistics.quantile.quantile:18 of
+msgid ""
+"This optional parameter specifies the interpolation method to use when "
+"the desired quantile lies between two data points ``i < j``:      * "
+"linear: ``i + (j - i) * fraction``, where ``fraction``       is the "
+"fractional part of the index surrounded by ``i``       and ``j``.     * "
+"lower: ``i``.     * higher: ``j``.     * nearest: ``i`` or ``j``, "
+"whichever is nearest.     * midpoint: ``(i + j) / 2``."
+msgstr ""
+"此可选参数指定当所需分位数位于两个数据点 ``i < j`` 之间时使用的插值方法："
+" * linear: ``i + (j - i) * fraction``，其中 ``fraction`` 是被 ``i`` 和 ``"
+"j`` 包围的索引的小数部分。 * lower: ``i``。 * higher: ``j``。 * nearest: "
+"``i`` 或 ``j``，取最近的一个。 * midpoint: ``(i + j) / 2``。"
+
+#: maxframe.tensor.statistics.quantile.quantile:18 of
+msgid ""
+"This optional parameter specifies the interpolation method to use when "
+"the desired quantile lies between two data points ``i < j``:"
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:22 of
+msgid ""
+"linear: ``i + (j - i) * fraction``, where ``fraction`` is the fractional "
+"part of the index surrounded by ``i`` and ``j``."
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:25 of
+msgid "lower: ``i``."
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:26 of
+msgid "higher: ``j``."
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:27 of
+msgid "nearest: ``i`` or ``j``, whichever is nearest."
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:28 of
+msgid "midpoint: ``(i + j) / 2``."
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:30 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the original tensor `a`."
+msgstr ""
+"如果设置为 True，则在结果中保留被缩减的轴作为大小为 1 的维度。使用此选项"
+"时，结果可以正确地与原始张量 `a` 广播。"
+
+#: maxframe.tensor.statistics.quantile.quantile of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:35 of
+msgid ""
+"**quantile** -- If `q` is a single quantile and `axis=None`, then the "
+"result is a scalar. If multiple quantiles are given, first axis of the "
+"result corresponds to the quantiles. The other axes are the axes that "
+"remain after the reduction of `a`. If the input contains integers or "
+"floats smaller than ``float64``, the output data-type is ``float64``. "
+"Otherwise, the output data-type is the same as that of the input. If "
+"`out` is specified, that tensor is returned instead."
+msgstr ""
+"**quantile** -- 如果 `q` 是单个分位数且 `axis=None`，则结果是一个标量。"
+"如果给出多个分位数，则结果的第一个轴对应于分位数。其余轴是 `a` 被缩减后"
+"保留的轴。如果输入包含小于 ``float64`` 的整数或浮点数，则输出数据类型为 `"
+"`float64``。否则，输出数据类型与输入相同。如果指定了 `out`，则返回该张量"
+"。"
+
+#: maxframe.tensor.statistics.quantile.quantile of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:47 of
+msgid ":py:obj:`mean`"
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:49 of
+msgid ":py:obj:`percentile`"
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:50 of
+msgid "equivalent to quantile, but with q in the range [0, 100]."
+msgstr "等价于 quantile，但 q 的范围是 [0, 100]。"
+
+#: maxframe.tensor.statistics.quantile.quantile:52 of
+msgid ":py:obj:`median`"
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:53 of
+msgid "equivalent to ``quantile(..., 0.5)``"
+msgstr "等价于 ``quantile(..., 0.5)``"
+
+#: maxframe.tensor.statistics.quantile.quantile:55 of
+msgid ":py:obj:`nanquantile`"
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:58 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.statistics.quantile.quantile:59 of
+msgid ""
+"Given a vector ``V`` of length ``N``, the q-th quantile of ``V`` is the "
+"value ``q`` of the way from the minimum to the maximum in a sorted copy "
+"of ``V``. The values and distances of the two nearest neighbors as well "
+"as the `interpolation` parameter will determine the quantile if the "
+"normalized ranking does not match the location of ``q`` exactly. This "
+"function is the same as the median if ``q=0.5``, the same as the minimum "
+"if ``q=0.0`` and the same as the maximum if ``q=1.0``."
+msgstr ""
+"给定一个长度为 ``N`` 的向量 ``V``，``V`` 的第 q 分位数是在 ``V`` 的排序"
+"副本中从最小值到最大值按 ``q`` 比例的距离值。如果标准化排名不完全匹配 ``q"
+"`` 的位置，则两个最近邻的值和距离以及 `interpolation` 参数将决定分位数。"
+"如果 ``q=0.5``，此函数与中位数相同；如果 ``q=0.0``，与最小值相同；如果 ``"
+"q=1.0``，与最大值相同。"
+
+#: maxframe.tensor.statistics.quantile.quantile:69 of
+msgid "示例"
+msgstr ""
+

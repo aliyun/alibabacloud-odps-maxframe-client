@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.betaln.rst:2
+msgid "maxframe.tensor.special.betaln"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaln:1 of
+msgid "Natural logarithm of absolute value of beta function."
+msgstr "贝塔函数绝对值的自然对数。"
+
+#: maxframe.tensor.special.gamma_funcs.betaln:3 of
+msgid "Computes ``ln(abs(beta(a, b)))``."
+msgstr "计算 ``ln(abs(beta(a, b)))``。"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.betaln.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaln:5
+#: maxframe.tensor.special.gamma_funcs.betaln:7 of
+msgid "Positive, real-valued parameters"
+msgstr "正实数参数"
+
+#: maxframe.tensor.special.gamma_funcs.betaln:9 of
+msgid "Optional output array for function values"
+msgstr "可选的函数值输出数组"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.betaln.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaln:12 of
+msgid "Value of the betaln function"
+msgstr "betaln 函数的值"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.special.betaln.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaln:17 of
+msgid ":py:obj:`gamma`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaln:18 of
+msgid "the gamma function"
+msgstr "伽马函数"
+
+#: maxframe.tensor.special.gamma_funcs.betaln:20 of
+msgid ":py:obj:`betainc`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaln:21 of
+msgid "the regularized incomplete beta function"
+msgstr "正则化不完全贝塔函数"
+
+#: maxframe.tensor.special.gamma_funcs.betaln:23 of
+msgid ":py:obj:`beta`"
+msgstr ""
+
+#: maxframe.tensor.special.gamma_funcs.betaln:24 of
+msgid "the beta function"
+msgstr "贝塔函数"
+

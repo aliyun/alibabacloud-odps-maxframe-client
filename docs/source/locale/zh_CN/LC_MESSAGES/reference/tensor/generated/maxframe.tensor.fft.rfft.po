@@ -1,0 +1,186 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.fft.rfft.rst:2
+msgid "maxframe.tensor.fft.rfft"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft.rfft:1 of
+msgid "Compute the one-dimensional discrete Fourier Transform for real input."
+msgstr "计算实数输入的一维离散傅里叶变换。"
+
+#: maxframe.tensor.fft.rfft.rfft:3 of
+msgid ""
+"This function computes the one-dimensional *n*-point discrete Fourier "
+"Transform (DFT) of a real-valued array by means of an efficient algorithm"
+" called the Fast Fourier Transform (FFT)."
+msgstr ""
+"此函数通过一种称为快速傅里叶变换 (FFT) 的高效算法计算实数数组的一维 *n* "
+"点离散傅里叶变换 (DFT)。"
+
+#: maxframe.tensor.fft.rfft.rfft of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft.rfft:7 of
+msgid "Input tensor"
+msgstr "输入张量"
+
+#: maxframe.tensor.fft.rfft.rfft:9 of
+msgid ""
+"Number of points along transformation axis in the input to use. If `n` is"
+" smaller than the length of the input, the input is cropped. If it is "
+"larger, the input is padded with zeros. If `n` is not given, the length "
+"of the input along the axis specified by `axis` is used."
+msgstr ""
+"沿变换轴使用的输入点数。如果 `n` 小于输入的长度，则输入会被裁剪。如果更大"
+"，则输入会用零填充。如果未给出 `n`，则使用由 `axis` 指定的轴上的输入长度"
+"。"
+
+#: maxframe.tensor.fft.rfft.rfft:14 of
+msgid "Axis over which to compute the FFT. If not given, the last axis is used."
+msgstr "计算 FFT 的轴。如果未给出，则使用最后一个轴。"
+
+#: maxframe.tensor.fft.rfft.rfft:17 of
+msgid "Normalization mode (see `mt.fft`). Default is None."
+msgstr "归一化模式（参见 `mt.fft`）。默认值为 None。"
+
+#: maxframe.tensor.fft.rfft.rfft of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft.rfft:20 of
+msgid ""
+"**out** -- The truncated or zero-padded input, transformed along the axis"
+" indicated by `axis`, or the last one if `axis` is not specified. If `n` "
+"is even, the length of the transformed axis is ``(n/2)+1``. If `n` is "
+"odd, the length is ``(n+1)/2``."
+msgstr ""
+"**out** -- 被截断或零填充的输入，沿着由 `axis` 指示的轴进行变换，如果"
+"未指定 `axis` 则使用最后一个轴。如果 `n` 为偶数，变换轴的长度为 ``(n/2)+1"
+"``；如果 `n` 为奇数，长度为 ``(n+1)/2``。"
+
+#: maxframe.tensor.fft.rfft.rfft of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft.rfft of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft.rfft:26 of
+msgid "If `axis` is larger than the last axis of `a`."
+msgstr "如果 `axis` 大于 `a` 的最后一个轴。"
+
+#: maxframe.tensor.fft.rfft.rfft:30 of
+msgid ":py:obj:`mt.fft`"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft.rfft:31 of
+msgid "For definition of the DFT and conventions used."
+msgstr "用于定义 DFT 和所用的约定。"
+
+#: maxframe.tensor.fft.rfft.rfft:33 of
+msgid ":py:obj:`irfft`"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft.rfft:34 of
+msgid "The inverse of `rfft`."
+msgstr "`rfft` 的逆变换。"
+
+#: maxframe.tensor.fft.rfft.rfft:36 of
+msgid ":py:obj:`fft`"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft.rfft:37 of
+msgid "The one-dimensional FFT of general (complex) input."
+msgstr "通用（复数）输入的一维 FFT。"
+
+#: maxframe.tensor.fft.rfft.rfft:39 of
+msgid ":py:obj:`fftn`"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft.rfft:40 of
+msgid "The *n*-dimensional FFT."
+msgstr "*n* 维 FFT。"
+
+#: maxframe.tensor.fft.rfft.rfft:42 of
+msgid ":py:obj:`rfftn`"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft.rfft:43 of
+msgid "The *n*-dimensional FFT of real input."
+msgstr "实数输入的 *n* 维 FFT。"
+
+#: maxframe.tensor.fft.rfft.rfft:46 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft.rfft:47 of
+msgid ""
+"When the DFT is computed for purely real input, the output is Hermitian-"
+"symmetric, i.e. the negative frequency terms are just the complex "
+"conjugates of the corresponding positive-frequency terms, and the "
+"negative-frequency terms are therefore redundant.  This function does not"
+" compute the negative frequency terms, and the length of the transformed "
+"axis of the output is therefore ``n//2 + 1``."
+msgstr ""
+"当对纯实数输入计算 DFT 时，输出是 Hermitian 对称的，即负频率项只是相应正"
+"频率项的复共轭，因此负频率项是冗余的。此函数不计算负频率项，因此输出的"
+"变换轴长度为 ``n//2 + 1``。"
+
+#: maxframe.tensor.fft.rfft.rfft:54 of
+msgid ""
+"When ``A = rfft(a)`` and fs is the sampling frequency, ``A[0]`` contains "
+"the zero-frequency term 0*fs, which is real due to Hermitian symmetry."
+msgstr ""
+"当 ``A = rfft(a)`` 且 fs 为采样频率时，``A[0]`` 包含零频率项 0*fs，由于 "
+"Hermitian 对称性，该项为实数。"
+
+#: maxframe.tensor.fft.rfft.rfft:57 of
+msgid ""
+"If `n` is even, ``A[-1]`` contains the term representing both positive "
+"and negative Nyquist frequency (+fs/2 and -fs/2), and must also be purely"
+" real. If `n` is odd, there is no term at fs/2; ``A[-1]`` contains the "
+"largest positive frequency (fs/2*(n-1)/n), and is complex in the general "
+"case."
+msgstr ""
+"如果 `n` 为偶数，则 ``A[-1]`` 包含表示正负奈奎斯特频率 (+fs/2 和 -fs/2) "
+"的项，也必须为纯实数。如果 `n` 为奇数，则在 fs/2 处没有项；``A[-1]`` 包含"
+"最大的正频率 (fs/2*(n-1)/n)，在一般情况下为复数。"
+
+#: maxframe.tensor.fft.rfft.rfft:63 of
+msgid "If the input `a` contains an imaginary part, it is silently discarded."
+msgstr "如果输入 `a` 包含虚部，则会被静默丢弃。"
+
+#: maxframe.tensor.fft.rfft.rfft:66 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.fft.rfft.rfft:74 of
+msgid ""
+"Notice how the final element of the `fft` output is the complex conjugate"
+" of the second element, for real input. For `rfft`, this symmetry is "
+"exploited to compute only the non-negative frequency terms."
+msgstr ""
+"注意对于实数输入，`fft` 输出的最后一个元素是第二个元素的复共轭。对于 `"
+"rfft`，利用这种对称性只计算非负频率项。"
+

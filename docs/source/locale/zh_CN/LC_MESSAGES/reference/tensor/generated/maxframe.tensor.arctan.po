@@ -1,0 +1,154 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.arctan.rst:2
+msgid "maxframe.tensor.arctan"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan.arctan:1 of
+msgid "Trigonometric inverse tangent, element-wise."
+msgstr "三角反正切函数，逐元素计算。"
+
+#: maxframe.tensor.arithmetic.arctan.arctan:3 of
+msgid "The inverse of tan, so that if ``y = tan(x)`` then ``x = arctan(y)``."
+msgstr "tan 的反函数，即如果 ``y = tan(x)``，那么 ``x = arctan(y)``。"
+
+#: maxframe.tensor.arithmetic.arctan.arctan of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan.arctan:7 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供了该参数，则其形状必须可以广播到输入的形状。"
+"如果未提供或为 `None`，则返回一个新分配的张量。一个元组（只能作为关键字"
+"参数）必须长度等于输出的数量。"
+
+#: maxframe.tensor.arithmetic.arctan.arctan:12 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的值不变。"
+
+#: maxframe.tensor.arithmetic.arctan.arctan of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan.arctan:17 of
+msgid ""
+"**out** -- Out has the same shape as `x`.  Its real part is in ``[-pi/2, "
+"pi/2]`` (``arctan(+/-inf)`` returns ``+/-pi/2``). It is a scalar if `x` "
+"is a scalar."
+msgstr ""
+"**out** -- 输出与 `x` 具有相同的形状。其实部在 ``[-pi/2, pi/2]`` 范围内（"
+"``arctan(+/-inf)`` 返回 ``+/-pi/2``）。如果 `x` 是标量，则输出也为标量。"
+
+#: maxframe.tensor.arithmetic.arctan.arctan of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan.arctan:24 of
+msgid ":py:obj:`arctan2`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan.arctan:25 of
+msgid ""
+"The \"four quadrant\" arctan of the angle formed by (`x`, `y`) and the "
+"positive `x`-axis."
+msgstr "由 (`x`, `y`) 和正 `x` 轴所形成角度的“四象限”反正切值。"
+
+#: maxframe.tensor.arithmetic.arctan.arctan:27 of
+msgid ":py:obj:`angle`"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan.arctan:28 of
+msgid "Argument of complex values."
+msgstr "复数值的幅角。"
+
+#: maxframe.tensor.arithmetic.arctan.arctan:31 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan.arctan:32 of
+msgid ""
+"`arctan` is a multi-valued function: for each `x` there are infinitely "
+"many numbers `z` such that tan(`z`) = `x`.  The convention is to return "
+"the angle `z` whose real part lies in [-pi/2, pi/2]."
+msgstr ""
+"`arctan` 是一个多值函数：对于每个 `x`，有无穷多个数字 `z` 使得 tan(`z`) ="
+" `x`。约定返回其实部位于 [-pi/2, pi/2] 范围内的角度 `z`。"
+
+#: maxframe.tensor.arithmetic.arctan.arctan:36 of
+msgid ""
+"For real-valued input data types, `arctan` always returns real output. "
+"For each value that cannot be expressed as a real number or infinity, it "
+"yields ``nan`` and sets the `invalid` floating point error flag."
+msgstr ""
+"对于实数输入数据类型，`arctan` 总是返回实数输出。对于无法表示为实数或"
+"无穷大的值，它会返回 ``nan`` 并设置 `invalid` 浮点数错误标志。"
+
+#: maxframe.tensor.arithmetic.arctan.arctan:40 of
+msgid ""
+"For complex-valued input, `arctan` is a complex analytic function that "
+"has [`1j, infj`] and [`-1j, -infj`] as branch cuts, and is continuous "
+"from the left on the former and from the right on the latter."
+msgstr ""
+"对于复数输入，`arctan` 是一个复解析函数，其分支切割为 [`1j, infj`] 和 [`-"
+"1j, -infj`]，并在前者的左侧和后者的右侧连续。"
+
+#: maxframe.tensor.arithmetic.arctan.arctan:44 of
+#, python-brace-format
+msgid "The inverse tangent is also known as `atan` or tan^{-1}."
+msgstr "反正切函数也称为 `atan` 或 tan^{-1}。"
+
+#: maxframe.tensor.arithmetic.arctan.arctan:47 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan.arctan:48 of
+msgid ""
+"Abramowitz, M. and Stegun, I. A., *Handbook of Mathematical Functions*, "
+"10th printing, New York: Dover, 1964, pp. 79. "
+"http://www.math.sfu.ca/~cbm/aands/"
+msgstr ""
+"Abramowitz, M. 和 Stegun, I. A.，《数学函数手册》，第10版，纽约：Dover，"
+"1964年，第79页。http://www.math.sfu.ca/~cbm/aands/"
+
+#: maxframe.tensor.arithmetic.arctan.arctan:53 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctan.arctan:54 of
+msgid ""
+"We expect the arctan of 0 to be 0, and of 1 to be pi/4: >>> import "
+"maxframe.tensor as mt"
+msgstr ""
+"我们期望 0 的反正切值为 0，1 的反切值为 pi/4：>>> import maxframe.tensor "
+"as mt"
+
+#: maxframe.tensor.arithmetic.arctan.arctan:63 of
+msgid "Plot arctan:"
+msgstr "绘制反正切函数："
+

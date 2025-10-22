@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.arctanh.rst:2
+msgid "maxframe.tensor.arctanh"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:1 of
+msgid "Inverse hyperbolic tangent element-wise."
+msgstr "逐元素计算反双曲正切值。"
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:3 of
+msgid "Input tensor."
+msgstr "输入张量。"
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:5 of
+msgid ""
+"A location into which the result is stored. If provided, it must have a "
+"shape that the inputs broadcast to. If not provided or `None`, a freshly-"
+"allocated tensor is returned. A tuple (possible only as a keyword "
+"argument) must have length equal to the number of outputs."
+msgstr ""
+"用于存储结果的位置。如果提供，其形状必须可以广播至输入形状。如果未提供或"
+"为 `None`，则返回一个新分配的张量。元组（只能作为关键字参数）的长度必须"
+"等于输出数量。"
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:10 of
+msgid ""
+"Values of True indicate to calculate the ufunc at that position, values "
+"of False indicate to leave the value in the output alone."
+msgstr "值为 True 表示在该位置计算 ufunc，值为 False 表示保留输出中的原始值。"
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:15 of
+msgid "**out** -- Array of the same shape as `x`."
+msgstr "**out** -- 与 `x` 形状相同的数组。"
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:19 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:20 of
+msgid ""
+"`arctanh` is a multivalued function: for each `x` there are infinitely "
+"many numbers `z` such that `tanh(z) = x`. The convention is to return the"
+" `z` whose imaginary part lies in `[-pi/2, pi/2]`."
+msgstr ""
+"`arctanh` 是多值函数：对于每个 `x`，存在无穷多个数 `z` 满足 `tanh(z) = x`"
+"。约定返回虚部位于 `[-pi/2, pi/2]` 范围内的 `z`。"
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:24 of
+msgid ""
+"For real-valued input data types, `arctanh` always returns real output. "
+"For each value that cannot be expressed as a real number or infinity, it "
+"yields ``nan`` and sets the `invalid` floating point error flag."
+msgstr ""
+"对于实数输入数据类型，`arctanh` 始终返回实数输出。对于无法表示为实数或"
+"无穷大的值，它返回 ``nan`` 并设置 `invalid` 浮点数错误标志。"
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:28 of
+msgid ""
+"For complex-valued input, `arctanh` is a complex analytical function that"
+" has branch cuts `[-1, -inf]` and `[1, inf]` and is continuous from above"
+" on the former and from below on the latter."
+msgstr ""
+"对于复数输入，`arctanh` 是一个复解析函数，其分支切割为 `[-1, -inf]` 和 `["
+"1, inf]`，在前者上从上方连续，在后者上从下方连续。"
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:32 of
+msgid "The inverse hyperbolic tangent is also known as `atanh` or ``tanh^-1``."
+msgstr "反双曲正切也称为 `atanh` 或 ``tanh^-1``。"
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:35 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:36 of
+msgid ""
+"M. Abramowitz and I.A. Stegun, \"Handbook of Mathematical Functions\", "
+"10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/"
+msgstr ""
+"M. Abramowitz 和 I.A. Stegun，《数学函数手册》，第10版，1964年，第86页。"
+"http://www.math.sfu.ca/~cbm/aands/"
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:38 of
+msgid ""
+"Wikipedia, \"Inverse hyperbolic function\", "
+"http://en.wikipedia.org/wiki/Arctanh"
+msgstr "维基百科，“反双曲函数”，http://en.wikipedia.org/wiki/Arctanh"
+
+#: maxframe.tensor.arithmetic.arctanh.arctanh:42 of
+msgid "示例"
+msgstr ""
+

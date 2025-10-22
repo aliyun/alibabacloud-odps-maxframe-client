@@ -1,0 +1,108 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/tensor/generated/maxframe.tensor.ptp.rst:2
+msgid "maxframe.tensor.ptp"
+msgstr ""
+
+#: maxframe.tensor.statistics.ptp.ptp:1 of
+msgid "Range of values (maximum - minimum) along an axis."
+msgstr "沿轴的值范围（最大值 - 最小值）。"
+
+#: maxframe.tensor.statistics.ptp.ptp:3 of
+msgid "The name of the function comes from the acronym for 'peak to peak'."
+msgstr "函数名称来源于“peak to peak”（峰到峰）的缩写。"
+
+#: maxframe.tensor.statistics.ptp.ptp of
+msgid "参数"
+msgstr ""
+
+#: maxframe.tensor.statistics.ptp.ptp:5 of
+msgid "Input values."
+msgstr "输入值。"
+
+#: maxframe.tensor.statistics.ptp.ptp:7 of
+msgid "Axis along which to find the peaks.  By default, flatten the array."
+msgstr "用于查找峰的轴。默认将数组展平。"
+
+#: maxframe.tensor.statistics.ptp.ptp:10 of
+msgid ""
+"Alternative output tensor in which to place the result. It must have the "
+"same shape and buffer length as the expected output, but the type of the "
+"output values will be cast if necessary."
+msgstr ""
+"用于放置结果的替代输出 Tensor。它必须具有与预期输出相同的形状和缓冲区长度"
+"，但必要时将强制转换输出值的类型。"
+
+#: maxframe.tensor.statistics.ptp.ptp:14 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the input array.  If the default value is passed, then"
+" `keepdims` will not be passed through to the `ptp` method of sub-classes"
+" of `Tensor`, however any non-default value will be.  If the sub-class' "
+"method does not implement `keepdims` any exceptions will be raised."
+msgstr ""
+"如果设置为 True，则被规约的轴将保留在结果中，其大小为 1。使用此选项时，"
+"结果将正确地与输入数组广播。如果传入默认值，则 `keepdims` 不会被传递给 `"
+"Tensor` 子类的 `ptp` 方法；但若传入非默认值，则会被传递。如果子类方法未"
+"实现 `keepdims`，则会引发异常。"
+
+#: maxframe.tensor.statistics.ptp.ptp:14 of
+msgid ""
+"If this is set to True, the axes which are reduced are left in the result"
+" as dimensions with size one. With this option, the result will broadcast"
+" correctly against the input array."
+msgstr ""
+
+#: maxframe.tensor.statistics.ptp.ptp:18 of
+#, fuzzy
+msgid ""
+"If the default value is passed, then `keepdims` will not be passed "
+"through to the `ptp` method of sub-classes of `Tensor`, however any non-"
+"default value will be.  If the sub-class' method does not implement "
+"`keepdims` any exceptions will be raised."
+msgstr ""
+"如果设置为 True，则被规约的轴将保留在结果中，其大小为 1。使用此选项时，"
+"结果将正确地与输入数组广播。如果传入默认值，则 `keepdims` 不会被传递给 `"
+"Tensor` 子类的 `ptp` 方法；但若传入非默认值，则会被传递。如果子类方法未"
+"实现 `keepdims`，则会引发异常。"
+
+#: maxframe.tensor.statistics.ptp.ptp of
+msgid "返回"
+msgstr ""
+
+#: maxframe.tensor.statistics.ptp.ptp:25 of
+msgid ""
+"**ptp** -- A new tensor holding the result, unless `out` was specified, "
+"in which case a reference to `out` is returned."
+msgstr ""
+"**ptp** -- 一个保存结果的新 tensor，除非指定了 `out`，在这种情况下将返回"
+"对 `out` 的引用。"
+
+#: maxframe.tensor.statistics.ptp.ptp of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.tensor.statistics.ptp.ptp:30 of
+msgid "示例"
+msgstr ""
+
