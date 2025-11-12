@@ -29,15 +29,19 @@ def test_dataframe_type_annotation():
     assert len(meta.dtypes) == 1
     assert meta.dtypes[0] == np.dtype(int)
 
-    def func() -> pd.DataFrame[{"col1": int, "col2": float}]:  # noqa: F821
+    def func1() -> pd.DataFrame[{"col1": int, "col2": float}]:  # noqa: F821
         pass
 
-    meta = get_function_output_meta(func)
-    assert meta is not None
-    assert meta.output_type.name == "dataframe"
-    assert len(meta.dtypes) == 2
-    assert meta.dtypes[0] == np.dtype(int)
-    assert meta.dtypes[1] == np.dtype(float)
+    def func2() -> pd.DataFrame["col1":int, "col2":float]:  # noqa: F821
+        pass
+
+    for func in [func1, func2]:
+        meta = get_function_output_meta(func)
+        assert meta is not None
+        assert meta.output_type.name == "dataframe"
+        assert len(meta.dtypes) == 2
+        assert meta.dtypes[0] == np.dtype(int)
+        assert meta.dtypes[1] == np.dtype(float)
 
     def func() -> pd.DataFrame[str, {"col1": int, "col2": float}]:  # noqa: F821
         pass
@@ -73,21 +77,32 @@ def test_series_type_annotation():
 
 
 def test_index_type_annotation():
-    def func() -> pd.Index[np.int64]:
+    def func1() -> pd.Index[np.int64]:
         pass
 
-    meta = get_function_output_meta(func)
-    assert meta is not None
-    assert meta.output_type == OutputType.index
-
-    def func() -> pd.Index[[("ix1", str), ("ix2", np.int64)]]:  # noqa: F821
+    def func2() -> pd.Index["ix" : np.int64]:  # noqa: F821
         pass
 
-    meta = get_function_output_meta(func)
-    assert meta is not None
-    assert meta.output_type == OutputType.index
-    assert meta.index_value.value.names == ["ix1", "ix2"]
-    assert list(meta.index_value.value.dtypes) == [np.dtype("O"), np.dtype("int64")]
+    for func in [func1, func2]:
+        meta = get_function_output_meta(func)
+        assert meta is not None
+        assert meta.output_type == OutputType.index
+        assert meta.index_value.value.dtype == np.dtype("int64")
+        if func is func2:
+            assert meta.index_value.value._name == "ix"
+
+    def func3() -> pd.Index["ix1":str, "ix2" : np.int64]:  # noqa: F821
+        pass
+
+    def func4() -> pd.Index[[("ix1", str), ("ix2", np.int64)]]:  # noqa: F821
+        pass
+
+    for func in [func3, func4]:
+        meta = get_function_output_meta(func)
+        assert meta is not None
+        assert meta.output_type == OutputType.index
+        assert meta.index_value.value.names == ["ix1", "ix2"]
+        assert list(meta.index_value.value.dtypes) == [np.dtype("O"), np.dtype("int64")]
 
 
 def test_function_output_meta_corner_cases():
