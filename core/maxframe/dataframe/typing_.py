@@ -38,6 +38,9 @@ def _item_to_field_def(item_):
     if isinstance(item_, tuple):
         tp = make_dtype(item_[1])
         return _FieldDef(name=item_[0], dtype=tp)
+    elif isinstance(item_, slice):
+        assert item_.step is None, "Should not specify step when specifying type hints"
+        return _FieldDef(name=item_.start, dtype=item_.stop)
     else:
         tp = make_dtype(item_)
         return _FieldDef(name=None, dtype=tp)
@@ -55,7 +58,9 @@ class IndexType:
         if isinstance(item, (dict, pd.Series)):
             item = list(item.items())
 
-        if isinstance(item, list):
+        if isinstance(item, list) or (
+            item and isinstance(item, tuple) and isinstance(item[0], slice)
+        ):
             return IndexType([_item_to_field_def(tp) for tp in item])
         else:
             return IndexType([_item_to_field_def(item)])
@@ -101,8 +106,14 @@ class DataFrameType:
     def from_getitem_args(cls, item) -> "DataFrameType":
         if not isinstance(item, tuple):
             item = (item,)
-        fields = IndexType.from_getitem_args(item[-1]).index_fields
-        if len(item) == 1:
+        if isinstance(item[0], slice):
+            value_defs = item
+            idx_defs = None
+        else:
+            value_defs = item[-1]
+            idx_defs = item[0] if len(item) > 1 else None
+        fields = IndexType.from_getitem_args(value_defs).index_fields
+        if idx_defs is None:
             return DataFrameType(None, fields)
         else:
             idx_fields = IndexType.from_getitem_args(item[0]).index_fields
