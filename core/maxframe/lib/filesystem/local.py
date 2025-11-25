@@ -24,6 +24,10 @@ from .base import FileSystem, path_type
 class LocalFileSystem(FileSystem):
     _instance = None
 
+    @property
+    def protocol(self) -> str:
+        return "file"
+
     @classmethod
     def get_instance(cls):
         if cls._instance is None:
@@ -49,6 +53,10 @@ class LocalFileSystem(FileSystem):
         else:
             shutil.rmtree(path)
 
+    @implements(FileSystem.cp)
+    def cp(self, path, new_path):
+        shutil.copy(path, new_path)
+
     @implements(FileSystem.rename)
     def rename(self, path: path_type, new_path: path_type):
         os.rename(path, new_path)
@@ -69,7 +77,7 @@ class LocalFileSystem(FileSystem):
     def mkdir(self, path: path_type, create_parents: bool = True):
         path = stringify_path(path)
         if create_parents:
-            os.makedirs(path)
+            os.makedirs(path, exist_ok=True)
         else:
             os.mkdir(path)
 

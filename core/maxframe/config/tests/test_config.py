@@ -71,7 +71,7 @@ def test_multi_thread_config():
                 self.condition.notify()
             else:
                 self.condition.wait()
-                assert options.a.b.c == 1
+                assert options.a.b.c == 2
             self.condition.release()
 
     try:

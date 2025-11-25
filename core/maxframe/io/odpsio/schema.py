@@ -66,11 +66,44 @@ _odps_type_to_arrow = {
     odps_types.timestamp_ntz: pa.timestamp("ns"),
 }
 
+_int_to_pd_dtype = {
+    np.dtype("int8"): pd.Int8Dtype(),
+    np.dtype("int16"): pd.Int16Dtype(),
+    np.dtype("int32"): pd.Int32Dtype(),
+    np.dtype("int64"): pd.Int64Dtype(),
+    np.dtype("uint8"): pd.UInt8Dtype(),
+    np.dtype("uint16"): pd.UInt16Dtype(),
+    np.dtype("uint32"): pd.UInt32Dtype(),
+    np.dtype("uint64"): pd.UInt64Dtype(),
+}
+
 if hasattr(odps_types, "blob"):
     _arrow_to_odps_types[ArrowBlobType()] = odps_types.blob
     _odps_type_to_arrow[odps_types.blob] = ArrowBlobType()
 
 _based_for_pandas_pa_types = (pa.ListType, pa.MapType, pa.StructType)
+
+
+def cast_df_with_possible_nans(
+    df_obj: pd.DataFrame, dtypes: pd.Series, try_cast_back: bool = True
+) -> pd.DataFrame:
+    # align types to cast with existing dataframe
+    new_dtypes = df_obj.dtypes.copy()
+    new_dtypes.update(dtypes)
+    res = df_obj.astype(new_dtypes.replace(_int_to_pd_dtype))
+    if not try_cast_back:
+        return res
+
+    to_cast = {}
+    for idx, col_dtype in enumerate(new_dtypes):
+        if col_dtype in _int_to_pd_dtype and not res.iloc[:, idx].isna().any():
+            to_cast[idx] = col_dtype
+    if to_cast:
+        # in case there is duplications, only cast on integer indexes
+        res.columns, cols = range(len(res.columns)), res.columns
+        res = res.astype(to_cast)
+        res.columns = cols
+    return res
 
 
 def is_based_for_pandas_dtype(arrow_type: pa.DataType) -> bool:
@@ -92,10 +125,14 @@ def pandas_types_to_arrow_schema(df_obj: pd.DataFrame) -> pa.Schema:
     whether the ArrowDtype is supported.
     """
     schema = pa.Schema.from_pandas(df_obj, preserve_index=False)
-    for idx, col_dtype in enumerate(df_obj.dtypes.items()):
-        if ArrowDtype is not None and isinstance(col_dtype[1], ArrowDtype):
-            schema.set(idx, pa.field(col_dtype[0], col_dtype[1].pyarrow_dtype))
-    return schema
+    names, types = schema.names, schema.types
+    for idx, col_dtype in enumerate(df_obj.dtypes.tolist()):
+        if ArrowDtype is not None and isinstance(col_dtype, ArrowDtype):
+            types[idx] = col_dtype.pyarrow_dtype
+        elif isinstance(col_dtype, pd.StringDtype):
+            # as ODPS does not support large_string, we use string instead
+            types[idx] = pa.string()
+    return pa.schema([pa.field(name, typ) for name, typ in zip(names, types)])
 
 
 def arrow_type_to_odps_type(
@@ -239,7 +276,7 @@ def arrow_table_to_pandas_dataframe(
                 converted_column_dtypes[target_col] = target_dtype
 
     if converted_column_dtypes:
-        df = df.astype(converted_column_dtypes)
+        df = cast_df_with_possible_nans(df, converted_column_dtypes)
 
     return df
 

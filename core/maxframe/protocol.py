@@ -39,7 +39,7 @@ from .serialization.serializables import (
     SeriesField,
     StringField,
 )
-from .utils import combine_error_message_and_traceback
+from .utils import combine_error_message_and_traceback, no_default
 
 pickling_support.install()
 
@@ -98,6 +98,9 @@ class ExecutionStatus(enum.Enum):
             ExecutionStatus.SUCCEEDED,
             ExecutionStatus.FAILED,
         )
+
+    def is_successful(self):
+        return self == ExecutionStatus.SUCCEEDED
 
 
 # keep compatibility
@@ -166,7 +169,7 @@ ResultInfoType = TypeVar("ResultInfoType", bound=ResultInfo)
 class ConstantResultInfo(ResultInfo):
     _result_type = ResultType.CONSTANT
 
-    data: Any = AnyField("data", default=None)
+    data: Any = AnyField("data", default=no_default)
 
     def __init__(self, result_type: ResultType = None, **kw):
         result_type = result_type or ResultType.CONSTANT
@@ -177,7 +180,8 @@ class ConstantResultInfo(ResultInfo):
         ret["data"] = _base64_pickle(self.data)
         return ret
 
-    def _json_to_kwargs(self, serialized: dict) -> dict:
+    @classmethod
+    def _json_to_kwargs(cls, serialized: dict) -> dict:
         kw = super()._json_to_kwargs(serialized)
         kw["data"] = _base64_unpickle(kw["data"])
         return kw

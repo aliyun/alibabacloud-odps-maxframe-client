@@ -71,11 +71,14 @@ class DataFrameFromTensor(DataFrameOperator, DataFrameOperatorMixin):
         index: Union[TileableType, pd.Index],
         columns: pd.Index,
         dtypes: pd.Series,
+        check_index_size: bool = True,
     ):
         if isinstance(input_tensor, dict):
             return self._call_input_1d_tileables(input_tensor, index, columns, dtypes)
         elif input_tensor is not None:
-            return self._call_input_tensor(input_tensor, index, columns, dtypes)
+            return self._call_input_tensor(
+                input_tensor, index, columns, dtypes, check_index_size=check_index_size
+            )
         else:
             return self._call_tensor_none(index, columns, dtypes)
 
@@ -211,13 +214,14 @@ class DataFrameFromTensor(DataFrameOperator, DataFrameOperatorMixin):
         index: Union[TileableType, pd.Index],
         columns: pd.Index,
         dtypes: pd.Series,
+        check_index_size: bool = True,
     ):
         if input_tensor.ndim not in {1, 2}:
             raise ValueError("Must pass 1-d or 2-d input")
         inputs = [input_tensor]
 
         if index is not None:
-            if input_tensor.shape[0] != len(index):
+            if check_index_size and input_tensor.shape[0] != len(index):
                 raise ValueError(
                     f"index {index} should have the same shape with tensor: {input_tensor.shape[0]}"
                 )
@@ -314,6 +318,7 @@ def dataframe_from_tensor(
     columns: Union[pd.Index, list] = None,
     gpu: bool = None,
     sparse: bool = False,
+    check_index_size: bool = True,
 ):
     if isinstance(columns, list) and columns and isinstance(columns[0], tuple):
         columns = pd.MultiIndex.from_tuples(columns)
@@ -344,7 +349,7 @@ def dataframe_from_tensor(
     op = DataFrameFromTensor(
         input=tensor, index=index, columns=columns, gpu=gpu, sparse=sparse
     )
-    return op(tensor, index, columns, dtypes)
+    return op(tensor, index, columns, dtypes, check_index_size=check_index_size)
 
 
 def dataframe_from_1d_tileables(

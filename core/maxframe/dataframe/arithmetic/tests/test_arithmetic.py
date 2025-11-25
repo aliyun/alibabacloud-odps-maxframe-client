@@ -15,20 +15,22 @@
 import datetime
 import operator
 from dataclasses import dataclass
+from decimal import Decimal
 from math import isinf
 from typing import Callable
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 import pytest
 
+from .... import dataframe as md
 from ....core import OperatorType
 from ....core.operator import estimate_size
+from ....lib.dtypes_extension import ArrowDtype
 from ....tests.utils import assert_mf_index_dtype
 from ....utils import dataslots
 from ...core import IndexValue
-from ...datasource.dataframe import from_pandas
-from ...datasource.series import from_pandas as from_pandas_series
 from ...utils import split_monotonic_index_min_max
 from .. import (
     DataFrameAdd,
@@ -152,14 +154,14 @@ def test_without_shuffle(func_name, func_opts):
         np.random.rand(10, 10), index=np.arange(10), columns=np.arange(3, 13)
     )
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    df1 = from_pandas(data1, chunk_size=5)
+    df1 = md.DataFrame(data1, chunk_size=5)
     # data2 with index split into [6...11], [2, 5],
     # columns [4...9], [10, 13]
     data2 = pd.DataFrame(
         np.random.rand(10, 10), index=np.arange(11, 1, -1), columns=np.arange(4, 14)
     )
     data2 = to_boolean_if_needed(func_opts.func_name, data2)
-    df2 = from_pandas(data2, chunk_size=6)
+    df2 = md.DataFrame(data2, chunk_size=6)
 
     df3 = func_opts.func(df1, df2)
 
@@ -198,7 +200,7 @@ def test_dataframe_and_series_with_align_map(func_name, func_opts):
         np.random.rand(10, 10), index=np.arange(10), columns=np.arange(3, 13)
     )
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    df1 = from_pandas(data1, chunk_size=5)
+    df1 = md.DataFrame(data1, chunk_size=5)
     s1 = df1[3]
 
     df2 = func_opts.func(df1, s1)
@@ -213,8 +215,8 @@ def test_dataframe_and_series_identical(func_name, func_opts):
         np.random.rand(10, 10), index=np.arange(10), columns=np.arange(10)
     )
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    df1 = from_pandas(data1, chunk_size=5)
-    s1 = from_pandas_series(data1[3], chunk_size=5)
+    df1 = md.DataFrame(data1, chunk_size=5)
+    s1 = md.Series(data1[3], chunk_size=5)
 
     df2 = func_opts.func(df1, s1)
 
@@ -232,8 +234,8 @@ def test_dataframe_and_series_with_shuffle(func_name, func_opts):
         columns=[4, 1, 3, 2, 10, 5, 9, 8, 6, 7],
     )
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    df1 = from_pandas(data1, chunk_size=5)
-    s1 = from_pandas_series(data1[10], chunk_size=6)
+    df1 = md.DataFrame(data1, chunk_size=5)
+    s1 = md.Series(data1[10], chunk_size=6)
 
     df2 = func_opts.func(df1, s1)
 
@@ -256,8 +258,8 @@ def test_dataframe_and_series_with_multiindex(func_name, func_opts):
         columns=[4, 1, 3, 2, 10, 5, 9, 8, 6, 7],
     )
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    df1 = from_pandas(data1, chunk_size=5)
-    s1 = from_pandas_series(data1[10].reset_index(level=0, drop=True), chunk_size=6)
+    df1 = md.DataFrame(data1, chunk_size=5)
+    s1 = md.Series(data1[10].reset_index(level=0, drop=True), chunk_size=6)
 
     df2 = getattr(df1, func_opts.func_name)(s1, level=1, axis=0)
 
@@ -274,7 +276,7 @@ def test_series_and_series_with_align_map(func_name, func_opts):
         np.random.rand(10, 10), index=np.arange(10), columns=np.arange(3, 13)
     )
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    df1 = from_pandas(data1, chunk_size=5)
+    df1 = md.DataFrame(data1, chunk_size=5)
 
     s1 = df1.iloc[4]
     s2 = df1[3]
@@ -297,8 +299,8 @@ def test_series_and_series_identical(func_name, func_opts):
         np.random.rand(10, 10), index=np.arange(10), columns=np.arange(10)
     )
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    s1 = from_pandas_series(data1[1], chunk_size=5)
-    s2 = from_pandas_series(data1[3], chunk_size=5)
+    s1 = md.Series(data1[1], chunk_size=5)
+    s2 = md.Series(data1[3], chunk_size=5)
 
     s3 = func_opts.func(s1, s2)
 
@@ -315,8 +317,8 @@ def test_series_and_series_with_shuffle(func_name, func_opts):
         columns=[4, 1, 3, 2, 10, 5, 9, 8, 6, 7],
     )
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    s1 = from_pandas_series(data1.iloc[4], chunk_size=5)
-    s2 = from_pandas_series(data1[10], chunk_size=6)
+    s1 = md.Series(data1.iloc[4], chunk_size=5)
+    s2 = md.Series(data1[10], chunk_size=6)
 
     s3 = func_opts.func(s1, s2)
 
@@ -333,10 +335,10 @@ def test_series_and_series_with_shuffle(func_name, func_opts):
 def test_identical_index_and_columns(func_name, func_opts):
     data1 = pd.DataFrame(np.random.rand(10, 10), columns=np.arange(3, 13))
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    df1 = from_pandas(data1, chunk_size=5)
+    df1 = md.DataFrame(data1, chunk_size=5)
     data2 = pd.DataFrame(np.random.rand(10, 10), columns=np.arange(3, 13))
     data2 = to_boolean_if_needed(func_opts.func_name, data2)
-    df2 = from_pandas(data2, chunk_size=5)
+    df2 = md.DataFrame(data2, chunk_size=5)
 
     df3 = func_opts.func(df1, df2)
 
@@ -361,7 +363,7 @@ def test_with_one_shuffle(func_name, func_opts):
         columns=[4, 1, 3, 2, 10, 5, 9, 8, 6, 7],
     )
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    df1 = from_pandas(data1, chunk_size=5)
+    df1 = md.DataFrame(data1, chunk_size=5)
     # data2 with index split into [6...11], [2, 5],
     data2 = pd.DataFrame(
         np.random.rand(10, 10),
@@ -369,7 +371,7 @@ def test_with_one_shuffle(func_name, func_opts):
         columns=[5, 9, 12, 3, 11, 10, 6, 4, 1, 2],
     )
     data2 = to_boolean_if_needed(func_opts.func_name, data2)
-    df2 = from_pandas(data2, chunk_size=6)
+    df2 = md.DataFrame(data2, chunk_size=6)
 
     df3 = func_opts.func(df1, df2)
 
@@ -395,14 +397,14 @@ def test_with_all_shuffle(func_name, func_opts):
         columns=[4, 1, 3, 2, 10, 5, 9, 8, 6, 7],
     )
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    df1 = from_pandas(data1, chunk_size=5)
+    df1 = md.DataFrame(data1, chunk_size=5)
     data2 = pd.DataFrame(
         np.random.rand(10, 10),
         index=[11, 1, 2, 5, 7, 6, 8, 9, 10, 3],
         columns=[5, 9, 12, 3, 11, 10, 6, 4, 1, 2],
     )
     data2 = to_boolean_if_needed(func_opts.func_name, data2)
-    df2 = from_pandas(data2, chunk_size=6)
+    df2 = md.DataFrame(data2, chunk_size=6)
 
     df3 = func_opts.func(df1, df2)
 
@@ -424,7 +426,7 @@ def test_with_all_shuffle(func_name, func_opts):
         columns=[np.random.bytes(10) for _ in range(10)],
     )
     data4 = to_boolean_if_needed(func_opts.func_name, data4)
-    df4 = from_pandas(data4, chunk_size=3)
+    df4 = md.DataFrame(data4, chunk_size=3)
 
     data5 = pd.DataFrame(
         np.random.rand(10, 10),
@@ -432,7 +434,7 @@ def test_with_all_shuffle(func_name, func_opts):
         columns=[np.random.bytes(10) for _ in range(10)],
     )
     data5 = to_boolean_if_needed(func_opts.func_name, data5)
-    df5 = from_pandas(data5, chunk_size=3)
+    df5 = md.DataFrame(data5, chunk_size=3)
 
     df6 = func_opts.func(df4, df5)
 
@@ -459,7 +461,7 @@ def test_without_shuffle_and_with_one_chunk(func_name, func_opts):
         columns=[4, 1, 3, 2, 10, 5, 9, 8, 6, 7],
     )
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    df1 = from_pandas(data1, chunk_size=(5, 10))
+    df1 = md.DataFrame(data1, chunk_size=(5, 10))
     # data2 with index split into [6...11], [2, 5],
     data2 = pd.DataFrame(
         np.random.rand(10, 10),
@@ -467,7 +469,7 @@ def test_without_shuffle_and_with_one_chunk(func_name, func_opts):
         columns=[5, 9, 12, 3, 11, 10, 6, 4, 1, 2],
     )
     data2 = to_boolean_if_needed(func_opts.func_name, data2)
-    df2 = from_pandas(data2, chunk_size=(6, 10))
+    df2 = md.DataFrame(data2, chunk_size=(6, 10))
 
     df3 = func_opts.func(df1, df2)
 
@@ -493,14 +495,14 @@ def test_both_one_chunk(func_name, func_opts):
         columns=[4, 1, 3, 2, 10, 5, 9, 8, 6, 7],
     )
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    df1 = from_pandas(data1, chunk_size=10)
+    df1 = md.DataFrame(data1, chunk_size=10)
     data2 = pd.DataFrame(
         np.random.rand(10, 10),
         index=[11, 1, 2, 5, 7, 6, 8, 9, 10, 3],
         columns=[5, 9, 12, 3, 11, 10, 6, 4, 1, 2],
     )
     data2 = to_boolean_if_needed(func_opts.func_name, data2)
-    df2 = from_pandas(data2, chunk_size=10)
+    df2 = md.DataFrame(data2, chunk_size=10)
 
     df3 = func_opts.func(df1, df2)
 
@@ -526,14 +528,14 @@ def test_with_shuffle_and_one_chunk(func_name, func_opts):
         columns=[4, 1, 3, 2, 10, 5, 9, 8, 6, 7],
     )
     data1 = to_boolean_if_needed(func_opts.func_name, data1)
-    df1 = from_pandas(data1, chunk_size=(5, 10))
+    df1 = md.DataFrame(data1, chunk_size=(5, 10))
     data2 = pd.DataFrame(
         np.random.rand(10, 10),
         index=[11, 1, 2, 5, 7, 6, 8, 9, 10, 3],
         columns=[5, 9, 12, 3, 11, 10, 6, 4, 1, 2],
     )
     data2 = to_boolean_if_needed(func_opts.func_name, data2)
-    df2 = from_pandas(data2, chunk_size=(6, 10))
+    df2 = md.DataFrame(data2, chunk_size=(6, 10))
 
     df3 = func_opts.func(df1, df2)
 
@@ -558,7 +560,7 @@ def test_on_same_dataframe(func_name, func_opts):
         columns=[np.random.bytes(10) for _ in range(10)],
     )
     data = to_boolean_if_needed(func_opts.func_name, data)
-    df = from_pandas(data, chunk_size=3)
+    df = md.DataFrame(data, chunk_size=3)
     df2 = func_opts.func(df, df)
 
     # test df2's index and columns
@@ -583,7 +585,7 @@ def test_dataframe_and_scalar(func_name, func_opts):
     data = pd.DataFrame(
         np.random.rand(10, 10), index=np.arange(10), columns=np.arange(3, 13)
     )
-    df = from_pandas(data, chunk_size=5)
+    df = md.DataFrame(data, chunk_size=5)
     # test operator with scalar
     result = func_opts.func(df, 1)
     result2 = getattr(df, func_opts.func_name)(1)
@@ -632,7 +634,7 @@ def test_series_and_scalar(func_name, func_opts):
         return
 
     data = pd.Series(range(10), index=[1, 3, 4, 2, 9, 10, 33, 23, 999, 123])
-    s1 = from_pandas_series(data, chunk_size=3)
+    s1 = md.Series(data, chunk_size=3)
     r = getattr(s1, func_opts.func_name)(456)
 
     assert r.index_value.key == s1.index_value.key
@@ -642,7 +644,7 @@ def test_series_and_scalar(func_name, func_opts):
         # skip rfunc test for comparison function
         return
 
-    s1 = from_pandas_series(data, chunk_size=3)
+    s1 = md.Series(data, chunk_size=3)
     r = getattr(s1, func_opts.rfunc_name)(789)
     assert r.index_value.key == s1.index_value.key
 
@@ -651,7 +653,7 @@ def test_series_and_scalar(func_name, func_opts):
 def test_check_inputs(func_name, func_opts):
     data = pd.DataFrame(np.random.rand(10, 3))
     data = to_boolean_if_needed(func_opts.func_name, data)
-    df = from_pandas(data)
+    df = md.DataFrame(data)
 
     with pytest.raises(ValueError):
         _ = df + np.random.rand(5, 3)
@@ -663,7 +665,7 @@ def test_check_inputs(func_name, func_opts):
         _ = df + np.random.rand(10, 3, 2)
 
     data = pd.Series(np.random.rand(10))
-    series = from_pandas_series(data)
+    series = md.Series(data)
 
     with pytest.raises(ValueError):
         _ = series + np.random.rand(5, 3)
@@ -678,7 +680,7 @@ def test_abs():
         index=[0, 10, 2, 3, 4, 5, 6, 7, 8, 9],
         columns=[4, 1, 3, 2, 10, 5, 9, 8, 6, 7],
     )
-    df1 = from_pandas(data1, chunk_size=(5, 10))
+    df1 = md.DataFrame(data1, chunk_size=(5, 10))
 
     df2 = df1.abs()
 
@@ -696,7 +698,7 @@ def test_not():
         index=[0, 10, 2, 3, 4, 5, 6, 7, 8, 9],
         columns=[4, 1, 3, 2, 10, 5, 9, 8, 6, 7],
     )
-    df1 = from_pandas(data1, chunk_size=(5, 10))
+    df1 = md.DataFrame(data1, chunk_size=(5, 10))
 
     df2 = ~df1
 
@@ -712,7 +714,7 @@ def test_datetime_arithmetic():
     data1 = (
         pd.Series([pd.Timedelta(days=d) for d in range(10)]) + datetime.datetime.now()
     )
-    s1 = from_pandas_series(data1)
+    s1 = md.Series(data1)
 
     assert (s1 + pd.Timedelta(days=10)).dtype == (data1 + pd.Timedelta(days=10)).dtype
     assert (s1 + datetime.timedelta(days=10)).dtype == (
@@ -722,3 +724,24 @@ def test_datetime_arithmetic():
     assert (s1 - datetime.datetime.now()).dtype == (
         data1 - datetime.datetime.now()
     ).dtype
+
+
+@pytest.mark.skipif(not hasattr(pd, "ArrowDtype"), reason="ArrowDtype not available")
+def test_decimal128_precision_arithmetic():
+    data1 = pd.Series([Decimal("1.23")], dtype=ArrowDtype(pa.decimal128(38, 2)))
+    data2 = pd.Series([Decimal("3.24")], dtype=ArrowDtype(pa.decimal128(38, 2)))
+    s1 = md.Series(data1)
+    s2 = md.Series(data2)
+    assert isinstance((s1 + s2).dtype.pyarrow_dtype, pa.Decimal256Type)
+
+    data1 = pd.DataFrame([[Decimal("1.23"), Decimal("2.34")]], columns=["a", "b"])
+    data2 = pd.DataFrame([[Decimal("3.24"), Decimal("4.35")]], columns=["a", "b"])
+    new_dtypes = {
+        "a": ArrowDtype(pa.decimal128(38, 2)),
+        "b": ArrowDtype(pa.decimal128(10, 2)),
+    }
+    df1 = md.DataFrame(data1).astype(new_dtypes)
+    df2 = md.DataFrame(data2).astype(new_dtypes)
+    ret_dtypes = (df1 + df2).dtypes
+    assert isinstance(ret_dtypes["a"].pyarrow_dtype, pa.Decimal256Type)
+    assert isinstance(ret_dtypes["b"].pyarrow_dtype, pa.Decimal128Type)

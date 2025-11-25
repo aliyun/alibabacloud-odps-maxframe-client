@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-29 19:01+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.text.summary.rst:2
+msgid "maxframe.learn.contrib.llm.text.summary"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.summary:1 of
+msgid "Generate summaries for text content in a series using a language model."
+msgstr "使用语言模型为 Series 中的文本内容生成摘要。"
+
+#: maxframe.learn.contrib.llm.text.summary of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.summary:3 of
+msgid ""
+"A maxframe Series containing text data to be summarized. Each element "
+"should be a text string."
+msgstr "一个包含待摘要文本数据的 maxframe Series。每个元素应为文本字符串。"
+
+#: maxframe.learn.contrib.llm.text.summary:6 of
+msgid "Language model instance used for text summarization."
+msgstr "用于文本摘要的语言模型实例。"
+
+#: maxframe.learn.contrib.llm.text.summary:8 of
+msgid "Index for the output series, by default None, will generate new index."
+msgstr "输出 Series 的索引，默认为 None，将生成新索引。"
+
+#: maxframe.learn.contrib.llm.text.summary of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.summary:11 of
+msgid ""
+"A DataFrame containing the generated summaries and success status. "
+"Columns include 'summary' (generated summary text) and 'success' (boolean"
+" status). If 'success' is False, the 'summary' column will contain error "
+"information instead of the expected output."
+msgstr ""
+"一个包含生成的摘要和成功状态的 DataFrame。列包括 'summary'（生成的摘要"
+"文本）和 'success'（布尔状态）。如果 'success' 为 False，'summary' 列将"
+"包含错误信息而非预期输出。"
+
+#: maxframe.learn.contrib.llm.text.summary of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.summary:17 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.summary:35 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.summary:36 of
+msgid ""
+"**Preview:** This API is in preview state and may be unstable. The "
+"interface may change in future releases."
+msgstr ""
+"**预览：** 此 API 处于预览状态，可能不稳定。接口在未来版本中可能会"
+"发生变化。"
+

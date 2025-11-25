@@ -25,7 +25,6 @@ from ...udf import (
     with_resources,
     with_running_options,
 )
-from ...utils import ARROW_DTYPE_NOT_SUPPORTED
 from ..utils import _generate_value, copy_func_scheduling_hints, pack_func_args
 
 try:
@@ -75,22 +74,25 @@ def test_pack_function(df1):
     assert f.pythonpacks[0].requirements == ("pandas",)
 
 
-@pytest.mark.skipif(ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported")
 @pytest.mark.parametrize(
     "dtype, fill_value, expected",
     [
         (
             ArrowDtype(pa.list_(pa.string())) if ArrowDtype else None,
             1,
-            ["1"],
+            [pa.scalar("1")],
         ),
-        (pa.list_(pa.string()), 1, ["1"]),
+        (pa.list_(pa.string()), 1, [pa.scalar("1")]),
         (
             ArrowDtype(pa.map_(pa.int32(), pa.string())) if ArrowDtype else None,
             1,
-            [(np.int32(1), "1")],
+            [(pa.scalar(1, pa.int32()), pa.scalar("1"))],
         ),
-        (pa.map_(pa.int32(), pa.string()), 1, [(np.int32(1), "1")]),
+        (
+            pa.map_(pa.int32(), pa.string()),
+            1,
+            [(pa.scalar(1, pa.int32()), pa.scalar("1"))],
+        ),
         (
             ArrowDtype(
                 pa.struct([pa.field("a", pa.int32()), pa.field("b", pa.string())])
@@ -98,14 +100,14 @@ def test_pack_function(df1):
             if ArrowDtype
             else None,
             1,
-            {"a": np.int32(1), "b": "1"},
+            {"a": pa.scalar(1, pa.int32()), "b": pa.scalar("1")},
         ),
         (
             pa.struct([pa.field("a", pa.int32()), pa.field("b", pa.string())]),
             1,
-            {"a": np.int32(1), "b": "1"},
+            {"a": pa.scalar(1, pa.int32()), "b": pa.scalar("1")},
         ),
-        (pa.int32(), 1, np.int32(1)),
+        (pa.int32(), 1, pa.scalar(1, pa.int32())),
         (np.datetime64, "2023-01-01", pd.Timestamp("2023-01-01")),
         (np.timedelta64, "1D", pd.Timedelta("1D")),
         (
@@ -118,6 +120,8 @@ def test_pack_function(df1):
     ],
 )
 def test_generate_value(dtype, fill_value, expected):
+    if dtype is None:
+        pytest.skip("Arrow Dtype is not supported")
     result = _generate_value(dtype, fill_value)
     assert result == expected
 

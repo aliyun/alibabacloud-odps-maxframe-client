@@ -48,6 +48,10 @@ class ArrowBasedFileSystem(FileSystem):
         # for open('rb'), open a sequential reading only or not
         self._sequential_read = sequential_read
 
+    @property
+    def protocol(self):
+        return self._arrow_fs.type_name.rsplit("+", 1)[-1]
+
     @staticmethod
     def _process_path(path):
         return stringify_path(path)

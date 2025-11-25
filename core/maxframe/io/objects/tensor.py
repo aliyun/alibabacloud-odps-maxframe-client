@@ -34,6 +34,7 @@ except ImportError:
     mf_version = None
 
 
+@register_object_io_handler(OutputType.scalar)
 @register_object_io_handler(OutputType.tensor)
 class TensorIOHandler(AbstractObjectIOHandler):
     def _prepare_meta_for_serial(self, tileable: TileableType) -> Dict[str, Any]:

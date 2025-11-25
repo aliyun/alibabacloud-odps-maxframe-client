@@ -14,7 +14,7 @@
 
 import shlex
 import sys
-from typing import Callable, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Union
 
 import numpy as np
 from odps.models import Function as ODPSFunctionObj
@@ -114,6 +114,7 @@ class MarkedFunction(Serializable):
         "expect_resources", FieldTypes.string, default_factory=dict
     )
     gpu = BoolField("gpu", default=False)
+    fs_mount = DictField("fs_mount", FieldTypes.string, default_factory=dict)
 
     def __init__(self, func: Optional[Callable] = None, **kw):
         super().__init__(func=func, **kw)
@@ -341,6 +342,84 @@ def with_running_options(
             expect_resources=resources,
             gpu=use_gpu,
         )
+
+    return func_wrapper
+
+
+StorageOptions = Optional[Dict[str, Any]]
+
+
+def extract_path_params(
+    path: str, storage_options: StorageOptions = None
+) -> Dict[str, Any]:
+    if not path or not isinstance(path, str):
+        raise ValueError("A valid url Path string is required.")
+
+    from .lib.filesystem._oss_lib.common import parse_osspath
+    from .lib.filesystem.oss import AuthMode
+
+    storage_options = storage_options or {}
+
+    # Parse OSS path using native method
+    parsed_oss = parse_osspath(path, check_errors=False)
+
+    # Generate base configuration
+    config = {
+        "protocol": parsed_oss.scheme or "oss",
+        "oss_endpoint": parsed_oss.endpoint,
+        "oss_bucket": parsed_oss.bucket,
+    }
+
+    # Add bucket prefix if exists
+    if parsed_oss.key:
+        config["oss_bucket_prefix"] = parsed_oss.key
+
+    role_arn = storage_options.get("role_arn")
+    access_key_id = storage_options.get("access_key_id") or parsed_oss.access_key_id
+    access_key_secret = (
+        storage_options.get("access_key_secret") or parsed_oss.access_key_secret
+    )
+
+    if role_arn:
+        config.update(
+            {
+                "role_arn": role_arn,
+                "auth_mode": AuthMode.ROLE_ARN.value,
+            }
+        )
+    elif access_key_id and access_key_secret:
+        config.update(
+            {
+                "access_key_id": access_key_id,
+                "access_key_secret": access_key_secret,
+                "auth_mode": AuthMode.AK_SK.value,
+            }
+        )
+    else:
+        raise ValueError(
+            "Authentication credentials required: either role_arn or access_key_id/access_key_secret must be provided."
+        )
+
+    return config
+
+
+def with_fs_mount(
+    path: str,
+    mount_path: str,
+    storage_options: StorageOptions = None,
+):
+    # Extract filesystem parameters using the static method
+    config = extract_path_params(path, storage_options)
+    config["mount_path"] = mount_path
+
+    def func_wrapper(func):
+        if isinstance(func, MarkedFunction):
+            func.fs_mount.update(config)
+            return func
+
+        marked_func = MarkedFunction(func)
+        marked_func.fs_mount = config
+        return marked_func
 
     return func_wrapper
 

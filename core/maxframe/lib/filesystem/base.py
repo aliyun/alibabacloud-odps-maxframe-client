@@ -14,7 +14,7 @@
 
 import os
 from abc import ABC, abstractmethod
-from typing import BinaryIO, Dict, Iterator, List, TextIO, Tuple, Union
+from typing import Any, BinaryIO, Dict, Iterator, List, TextIO, Tuple, Union
 from urllib.parse import urlparse
 
 from ...utils import stringify_path
@@ -26,6 +26,10 @@ class FileSystem(ABC):
     """
     Abstract filesystem interface
     """
+
+    @property
+    def protocol(self) -> str:
+        raise NotImplementedError
 
     @abstractmethod
     def cat(self, path: path_type) -> bytes:
@@ -135,7 +139,18 @@ class FileSystem(ABC):
         """
         return self.rename(path, new_path)
 
-    @abstractmethod
+    def cp(self, path, new_path):
+        """
+        Copy file, like UNIX cp command
+
+        Parameters
+        ----------
+        path : string
+            Path to copy from
+        new_path : string
+            Path to copy to
+        """
+
     def rename(self, path: path_type, new_path: path_type):
         """
         Rename file, like UNIX mv command
@@ -239,9 +254,58 @@ class FileSystem(ABC):
         paths : List
         """
 
+    def init_multipart_upload(self, path: path_type) -> Any:
+        """
+        Initialize multipart upload session and returns an upload id for tracking.
+
+        If the file system does not support this feature, a NotImplementedError
+        will be raised
+        """
+        raise NotImplementedError
+
+    def open_part_writer(self, path: path_type, upload_id: Any, part_num: int) -> Any:
+        """
+        Upload one part of data with the upload id from `init_multipart_upload`
+        method and a `part_num` providing the number of partition to write.
+
+        If the file system does not support this feature, a NotImplementedError
+        will be raised
+        """
+        raise NotImplementedError
+
+    def complete_multipart_upload(
+        self, path: path_type, upload_id: Any, parts: List[Any]
+    ):
+        """
+        Complete upload with the upload id from `init_multipart_upload`
+        method and a list of partition infos from writers created from
+        `open_part_writer`.
+
+        If the file system does not support this feature, a NotImplementedError
+        will be raised
+        """
+        raise NotImplementedError
+
+    def abort_multipart_upload(self, path: path_type, upload_id: Any):
+        """
+        Abort upload with the upload id from `init_multipart_upload` method.
+
+        If the file system does not support this feature, a NotImplementedError
+        will be raised
+        """
+        raise NotImplementedError
+
     @property
     def pathsep(self) -> str:
         return "/"
+
+    @property
+    def supports_partial_overwrite(self) -> bool:
+        return True
+
+    @property
+    def supports_multipart_upload(self) -> bool:
+        return False
 
     @staticmethod
     def parse_from_path(uri: str):

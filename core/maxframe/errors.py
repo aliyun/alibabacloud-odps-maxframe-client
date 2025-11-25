@@ -42,6 +42,11 @@ class SessionAlreadyClosedError(MaxFrameError):
         super().__init__(f"Session {session_id} is already closed")
 
 
+class SessionNotFoundError(MaxFrameIntentionalError):
+    def __init__(self, session_id: str):
+        super().__init__(f"Session {session_id} not found")
+
+
 class EngineUnavailableError(MaxFrameIntentionalError):
     def __init__(self, msg: str):
         super().__init__(msg)

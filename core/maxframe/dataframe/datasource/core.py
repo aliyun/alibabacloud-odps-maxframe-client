@@ -15,7 +15,13 @@
 import asyncio
 from typing import List, MutableMapping, Optional, Union
 
-from ...serialization.serializables import Int64Field, StringField
+from ...serialization.serializables import (
+    AnyField,
+    BoolField,
+    DictField,
+    Int64Field,
+    StringField,
+)
 from ...utils import estimate_pandas_size
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import validate_dtype_backend
@@ -87,6 +93,18 @@ class PandasDataSourceOperator(DataFrameOperator):
         cls, ctx: MutableMapping[str, Union[int, float]], op: "PandasDataSourceOperator"
     ):
         ctx[op.outputs[0].key] = estimate_pandas_size(op.get_data())
+
+
+class LakeDataSource(IncrementalIndexDatasource):
+    path = AnyField("path")
+    storage_options = DictField("storage_options", default=None)
+    is_partitioned = BoolField("is_partitioned", default=None)
+    incremental_index = BoolField("incremental_index", default=None)
+    use_nullable_dtypes = BoolField("use_nullable_dtypes", default=None)
+    dtype_backend = StringField("dtype_backend", default=None)
+    read_stage = StringField("read_stage", default=None)
+    merge_small_files = BoolField("merge_small_files", default=None)
+    merge_small_file_options = DictField("merge_small_file_options", default=None)
 
 
 class DtypeBackendCompatibleMixin:

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-19 21:19+0800\n"
+"POT-Creation-Date: 2025-10-29 19:01+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -52,12 +52,14 @@ msgstr "DashScope 文本大语言模型。"
 #: ../../source/reference/learn/llm.rst:19:<autosummary>:1
 msgid ""
 ":py:obj:`managed.ManagedTextLLM "
-"<maxframe.learn.contrib.llm.models.managed.ManagedTextLLM>`\\ \\(name\\)"
+"<maxframe.learn.contrib.llm.models.managed.ManagedTextLLM>`\\"
 msgstr ""
 
 #: ../../source/reference/learn/llm.rst:19:<autosummary>:1
-msgid "Managed text LLM by MaxFrame."
-msgstr "由 MaxFrame 管理的文本大语言模型。"
+msgid ""
+":py:class:`~maxframe.learn.contrib.llm.models.managed.ManagedTextGenLLM` "
+"的别名"
+msgstr ""
 
 #: ../../source/reference/learn/llm.rst:21
 msgid "Custom Model Configuration"
@@ -85,81 +87,52 @@ msgstr ""
 msgid "Text Generate Functions"
 msgstr "文本生成函数"
 
-#: ../../source/reference/learn/llm.rst:55:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
 msgid ""
 ":py:obj:`multi_modal.generate "
 "<maxframe.learn.contrib.llm.multi_modal.generate>`\\ \\(data\\, model\\, "
 "...\\[\\, params\\]\\)"
 msgstr ""
 
-#: ../../source/reference/learn/llm.rst:55:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
 msgid ""
 "Generate text with multi model llm based on given data and prompt "
 "template."
 msgstr "基于给定数据和提示模板，使用多模型大语言模型生成文本。"
 
-#: ../../source/reference/learn/llm.rst:55:<autosummary>:1
-msgid ""
-":py:obj:`text.classify <maxframe.learn.contrib.llm.text.classify>`\\ "
-"\\(series\\, model\\, labels\\[\\, ...\\]\\)"
-msgstr ""
-
-#: ../../source/reference/learn/llm.rst:55:<autosummary>:1
-#, fuzzy
-msgid ""
-"Classify text content in a series with given labels using a language "
-"model."
-msgstr "使用给定标签对 Series 中的文本内容进行分类。"
-
-#: ../../source/reference/learn/llm.rst:55:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
 msgid ""
 ":py:obj:`text.extract <maxframe.learn.contrib.llm.text.extract>`\\ "
 "\\(series\\, model\\, schema\\[\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/learn/llm.rst:55:<autosummary>:1
-#, fuzzy
+#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
 msgid ""
 "Extract structured information from text content in a series using a "
 "language model."
-msgstr "使用语言模型为 Series 中的文本内容生成摘要。"
+msgstr "使用语言模型为 Series 中的文本内容生成结构化信息。"
 
-#: ../../source/reference/learn/llm.rst:55:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
 msgid ""
 ":py:obj:`text.generate <maxframe.learn.contrib.llm.text.generate>`\\ "
 "\\(data\\, model\\, prompt\\_template\\)"
 msgstr ""
 
-#: ../../source/reference/learn/llm.rst:55:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
 msgid ""
 "Generate text using a text language model based on given data and prompt "
 "template."
 msgstr "基于给定数据和提示模板，使用文本语言模型生成文本。"
 
-#: ../../source/reference/learn/llm.rst:55:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
 msgid ""
 ":py:obj:`text.translate <maxframe.learn.contrib.llm.text.translate>`\\ "
 "\\(series\\, model\\, ...\\[\\, index\\]\\)"
 msgstr ""
 
-#: ../../source/reference/learn/llm.rst:55:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
 msgid ""
 "Translate text content in a series using a language model from source "
 "language to target language."
 msgstr "使用语言模型将 Series 中的文本内容从源语言翻译为目标语言。"
-
-#~ msgid ""
-#~ ":py:obj:`managed.ManagedTextLLM "
-#~ "<maxframe.learn.contrib.llm.models.managed.ManagedTextLLM>`\\ "
-#~ "\\(name\\)"
-#~ msgstr ""
-
-#~ msgid "Managed text LLM by MaxFrame."
-#~ msgstr "由 MaxFrame 管理的文本大语言模型。"
-
-#~ msgid ""
-#~ ":py:obj:`text.summary "
-#~ "<maxframe.learn.contrib.llm.text.summary>`\\ \\(series\\, "
-#~ "model\\[\\, index\\]\\)"
-#~ msgstr ""
 

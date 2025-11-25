@@ -17,6 +17,7 @@ import asyncio
 import contextvars
 import copy
 import datetime
+import decimal
 import hashlib
 import importlib
 import os
@@ -102,6 +103,7 @@ cdef:
     int NO_DEFAULT_SERIALIZER = 15
     int ARROW_BUFFER_SERIALIZER = 16
     int RANGE_SERIALIZER = 17
+    int PY_DECIMAL_SERIALIZER = 18
     int PLACEHOLDER_SERIALIZER = 4096
 
 
@@ -861,7 +863,11 @@ cdef class DtypeSerializer(Serializer):
         elif ser_type == _TYPE_CHAR_DTYPE_PANDAS_EXTENSION:
             if serialized[1] == "StringDtype":  # for legacy pandas version
                 return pd.StringDtype()
-            return pandas_dtype(serialized[1])
+            try:
+                return pandas_dtype(serialized[1])
+            except TypeError:
+                if serialized[1].endswith("Dtype()"):
+                    return pandas_dtype(serialized[1][:-7])
         else:
             raise NotImplementedError(f"Unknown serialization type {ser_type}")
 
@@ -917,6 +923,16 @@ cdef class RegexSerializer(Serializer):
 
     cpdef deserial(self, list serialized, dict context, list subs):
         return re.compile((<bytes>(subs[0])).decode(), serialized[0])
+
+
+cdef class PyDecimalSerializer(Serializer):
+    serializer_id = PY_DECIMAL_SERIALIZER
+
+    cpdef serial(self, object obj: decimal.Decimal, dict context):
+        return [str(obj)], [], True
+
+    cpdef deserial(self, list serialized, dict context, list subs):
+        return decimal.Decimal(serialized[0])
 
 
 cdef class NoDefaultSerializer(Serializer):
@@ -996,6 +1012,7 @@ ComplexSerializer.register(complex)
 SliceSerializer.register(slice)
 RangeSerializer.register(range)
 RegexSerializer.register(re.Pattern)
+PyDecimalSerializer.register(decimal.Decimal)
 NoDefaultSerializer.register(NoDefault)
 if pa is not None:
     ArrowBufferSerializer.register(pa.Buffer)

@@ -12,4 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import datetime_, dict_, list_, plotting, string_, struct_
+from . import plotting
+from .datetime_ import SeriesDatetimeMethod
+from .dict_ import SeriesDictMethod
+from .list_ import SeriesListMethod
+from .string_ import SeriesStringMethod
+from .struct_ import SeriesStructMethod

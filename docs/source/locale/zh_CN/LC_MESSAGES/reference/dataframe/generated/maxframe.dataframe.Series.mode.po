@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"POT-Creation-Date: 2025-10-31 17:39+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -24,25 +24,48 @@ msgid "maxframe.dataframe.Series.mode"
 msgstr ""
 
 #: maxframe.dataframe.reduction.mode.mode_series:1 of
-msgid ""
-"Return the mode(s) of the Series. The mode is the value that appears most"
-" often. There can be multiple modes. Always returns Series even if only "
-"one value is returned. :param dropna: Don't consider counts of NaN/NaT. "
-":type dropna: bool, default True"
-msgstr ""
-"返回 Series 的众数。众数是出现频率最高的值。可以有多个众数。即使只返回"
-"一个值，也始终返回 Series。:param dropna: 不考虑 NaN/NaT 的计数。:type "
-"dropna: bool，默认为 True"
+msgid "Return the mode(s) of the Series."
+msgstr "返回 Series 的众数。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.mode.rst
-msgid "返回"
+#: maxframe.dataframe.reduction.mode.mode_series:3 of
+msgid ""
+"The mode is the value that appears most often. There can be multiple "
+"modes."
+msgstr "返回 Series 的众数。众数是出现频率最高的值。可以有多个众数。"
+
+#: maxframe.dataframe.reduction.mode.mode_series:5 of
+msgid "Always returns Series even if only one value is returned."
+msgstr "即使只返回一个值，也始终返回 Series。"
+
+#: maxframe.dataframe.reduction.mode.mode_series of
+msgid "参数"
 msgstr ""
 
 #: maxframe.dataframe.reduction.mode.mode_series:7 of
+msgid "Don't consider counts of NaN/NaT."
+msgstr "不考虑 NaN/NaT 的计数。"
+
+#: maxframe.dataframe.reduction.mode.mode_series of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.reduction.mode.mode_series:10 of
 msgid "Modes of the Series in sorted order."
 msgstr "按排序顺序返回 Series 的众数。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.mode.rst
+#: maxframe.dataframe.reduction.mode.mode_series of
 msgid "返回类型"
 msgstr ""
+
+#: maxframe.dataframe.reduction.mode.mode_series:14 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.reduction.mode.mode_series:21 of
+msgid "More than one mode:"
+msgstr "多于一个众数："
+
+#: maxframe.dataframe.reduction.mode.mode_series:29 of
+msgid "With and without considering null value:"
+msgstr "考虑和不考虑空值："
 

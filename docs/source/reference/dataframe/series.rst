@@ -115,6 +115,7 @@ Computations / descriptive stats
    Series.count
    Series.cov
    Series.describe
+   Series.factorize
    Series.is_monotonic_increasing
    Series.is_monotonic_decreasing
    Series.is_unique

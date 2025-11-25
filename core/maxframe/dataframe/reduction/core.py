@@ -429,6 +429,22 @@ class CustomReduction:
         return cloudpickle.dumps(self)
 
 
+class BuiltinReduction(Serializable, CustomReduction):
+    name: Optional[str] = StringField("name", default=None)
+    output_limit: Optional[int] = Int32Field("output_limit", default=1)
+    kwds: Dict = DictField("kwds", default_factory=dict)
+    _is_gpu: bool = BoolField("is_gpu", default=False)
+
+    def __init__(self, name=None, is_gpu=None, **kw):
+        output_limit = kw.pop("output_limit", 1)
+        Serializable.__init__(
+            self, name=name, output_limit=output_limit, _is_gpu=is_gpu, **kw
+        )
+
+    def __maxframe_tokenize__(self):
+        return type(self), self.name, self.kwds, self._is_gpu
+
+
 class ReductionPreStep(NamedTuple):
     input_key: str
     output_key: str

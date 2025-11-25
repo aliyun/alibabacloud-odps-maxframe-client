@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev817+g0d9b3d99d.d20251019\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-19 21:58+0800\n"
+"POT-Creation-Date: 2025-10-29 19:01+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -102,8 +102,8 @@ msgid "The tags of the model."
 msgstr "模型的标签。"
 
 #: maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig:38 of
-msgid "Notes"
-msgstr "备注"
+msgid "备注"
+msgstr ""
 
 #: maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig:39 of
 msgid ""
@@ -147,6 +147,14 @@ msgstr "理解所选模型的计算行为和特性"
 #: maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig:52 of
 msgid "示例"
 msgstr ""
+
+#: maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig:91 of
+msgid ""
+"To make this model config working with the ManagedTextGenLLM, you need to"
+" provide a custom image with the required dependencies and model files."
+msgstr ""
+"为了让这个模型配置能够与 ManagedTextGenLLM 配合使用，你需要提供一个包含所"
+"需依赖项和模型文件的自定义镜像。"
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:13
 msgid "Methods"
@@ -193,32 +201,8 @@ msgstr "属性"
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
 msgid ""
-":py:obj:`load_params "
-"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.load_params>`\\"
-msgstr ""
-
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
-msgid ""
-":py:obj:`model_file "
-"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.model_file>`\\"
-msgstr ""
-
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
-msgid ""
 ":py:obj:`tags "
 "<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.tags>`\\"
-msgstr ""
-
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
-msgid ""
-":py:obj:`required_cpu "
-"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.required_cpu>`\\"
-msgstr ""
-
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
-msgid ""
-":py:obj:`required_gu "
-"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.required_gu>`\\"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
@@ -235,8 +219,8 @@ msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
 msgid ""
-":py:obj:`required_memory "
-"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.required_memory>`\\"
+":py:obj:`model_name "
+"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.model_name>`\\"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
@@ -247,19 +231,43 @@ msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
 msgid ""
-":py:obj:`inference_framework_type "
-"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.inference_framework_type>`\\"
+":py:obj:`required_memory "
+"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.required_memory>`\\"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
 msgid ""
-":py:obj:`model_name "
-"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.model_name>`\\"
+":py:obj:`required_gu "
+"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.required_gu>`\\"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
 msgid ""
 ":py:obj:`required_resource_files "
 "<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.required_resource_files>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
+msgid ""
+":py:obj:`model_file "
+"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.model_file>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
+msgid ""
+":py:obj:`load_params "
+"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.load_params>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
+msgid ""
+":py:obj:`required_cpu "
+"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.required_cpu>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.rst:41:<autosummary>:1
+msgid ""
+":py:obj:`inference_framework_type "
+"<maxframe.learn.contrib.llm.deploy.config.ModelDeploymentConfig.inference_framework_type>`\\"
 msgstr ""
 

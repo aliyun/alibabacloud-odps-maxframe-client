@@ -147,9 +147,14 @@ class FakeArrowExtensionArray(ExtensionArray, NDArrayBacked):
             if len(scalars) == 0:
                 # special case where pyarrow raises on empty numpy arrays
                 scalars = []
+            scalars = [x.as_py() if isinstance(x, pa.Scalar) else x for x in scalars]
             pa_array = pa.array(scalars, type=pa_type)
         arr = cls(pa_array)
         return arr
+
+    @classmethod
+    def _from_factorized(cls, values, original):
+        return cls._from_sequence(values, dtype=original.dtype)
 
     @classmethod
     def _from_sequence_of_strings(
@@ -302,7 +307,7 @@ class FakeArrowExtensionArray(ExtensionArray, NDArrayBacked):
         chunks = [array for ea in to_concat for array in ea._pa_array.iterchunks()]
         if to_concat[0].dtype == "string":
             # StringDtype has no attribute pyarrow_dtype
-            pa_dtype = pa.large_string()
+            pa_dtype = pa.string()
         else:
             pa_dtype = to_concat[0].dtype.pyarrow_dtype
         arr = pa.chunked_array(chunks, type=pa_dtype)

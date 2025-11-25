@@ -27,7 +27,7 @@ msgstr ""
 msgid ""
 "Concatenate dataframe objects along a particular axis with optional set "
 "logic along the other axes."
-msgstr "沿着特定轴连接 dataframe 对象，并可选择在其他轴上应用集合逻辑。"
+msgstr "沿着特定轴连接 DataFrame 对象，并可选择在其他轴上应用集合逻辑。"
 
 #: maxframe.dataframe.merge.concat.concat:4 of
 msgid ""

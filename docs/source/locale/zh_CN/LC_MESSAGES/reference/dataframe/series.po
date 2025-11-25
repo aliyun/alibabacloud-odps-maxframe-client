@@ -150,7 +150,7 @@ msgstr "索引，迭代"
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
 msgid ":py:obj:`Series.at <maxframe.dataframe.Series.at>`\\"
-msgstr "通过行/列标签对访问单个值。"
+msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
 msgid "Access a single value for a row/column label pair."
@@ -197,7 +197,7 @@ msgstr "通过行/列标签对访问单个值。"
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
 msgid "Return item and drops from series."
-msgstr ""
+msgstr "返回项目并从 Series 中删除。"
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
 msgid ""
@@ -774,7 +774,7 @@ msgstr "通过行/列标签对访问单个值。"
 
 #: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
 msgid "Compute numerical data ranks (1 through n) along axis."
-msgstr ""
+msgstr "沿轴计算数值数据的排名（从1到n）。"
 
 #: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
 msgid ""
@@ -873,18 +873,17 @@ msgstr "通过行/列标签对访问单个值。"
 
 #: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
 msgid "Select values at particular time of day (e.g., 9:30AM)."
-msgstr ""
+msgstr "选择一天中特定时间的值（例如，上午9:30）。"
 
 #: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
-#, fuzzy
 msgid ""
 ":py:obj:`Series.between_time <maxframe.dataframe.Series.between_time>`\\ "
 "\\(start\\_time\\, end\\_time\\[\\, ...\\]\\)"
-msgstr "通过行/列标签对访问单个值。"
+msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
 msgid "Select values between particular times of the day (e.g., 9:00-9:30 AM)."
-msgstr ""
+msgstr "选择一天中特定时间之间的值（例如，上午9:00-9:30）。"
 
 #: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
 msgid ""
@@ -1153,9 +1152,8 @@ msgid ""
 msgstr "通过行/列标签对访问单个值。"
 
 #: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
-#, fuzzy
 msgid "Repeat elements of a Series."
-msgstr "返回序列的内存使用情况。"
+msgstr "重复 Series 的元素。"
 
 #: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
 msgid ""

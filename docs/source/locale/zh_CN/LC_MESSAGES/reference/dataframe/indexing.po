@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"POT-Creation-Date: 2025-10-23 14:19+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -40,6 +40,14 @@ msgid ":py:obj:`Index.has_duplicates <maxframe.dataframe.Index.has_duplicates>`\
 msgstr ""
 
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
+msgid ":py:obj:`Index.hasnans <maxframe.dataframe.Index.hasnans>`\\"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
+msgid "Return True if there are any NaNs."
+msgstr "如果包含任何 NaN，返回 True。"
+
+#: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
 msgid ""
 ":py:obj:`Index.is_monotonic_decreasing "
 "<maxframe.dataframe.Index.is_monotonic_decreasing>`\\"
@@ -66,7 +74,7 @@ msgstr ""
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
 #, fuzzy
 msgid "Return boolean if values in the index are unique."
-msgstr "如果对象中的值是单调递增的，则返回布尔标量。"
+msgstr "如果索引中的值是唯一的，则返回布尔值。"
 
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
 msgid ":py:obj:`Index.name <maxframe.dataframe.Index.name>`\\"
@@ -140,7 +148,7 @@ msgstr ""
 
 #: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
 msgid "Make new Index inserting new item at location."
-msgstr ""
+msgstr "在指定位置插入新项目来创建新的 Index。"
 
 #: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
 msgid ""
@@ -172,7 +180,7 @@ msgstr ""
 
 #: ../../source/reference/dataframe/indexing.rst:47:<autosummary>:1
 msgid "Repeat elements of an Index."
-msgstr ""
+msgstr "重复 Index 的元素。"
 
 #: ../../source/reference/dataframe/indexing.rst:49
 msgid "Compatibility with MultiIndex"
@@ -249,6 +257,26 @@ msgstr ""
 #: ../../source/reference/dataframe/indexing.rst:77:<autosummary>:1
 msgid "Create an Index with values cast to dtypes."
 msgstr "创建一个将值转换为指定数据类型的 Index。"
+
+#: ../../source/reference/dataframe/indexing.rst:77:<autosummary>:1
+msgid ""
+":py:obj:`Index.to_frame <maxframe.dataframe.Index.to_frame>`\\ "
+"\\(\\[index\\, name\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:77:<autosummary>:1
+msgid "Create a DataFrame with a column containing the Index."
+msgstr "创建一个 DataFrame，其中包含一个含有该 Index 的列。"
+
+#: ../../source/reference/dataframe/indexing.rst:77:<autosummary>:1
+msgid ""
+":py:obj:`Index.to_series <maxframe.dataframe.Index.to_series>`\\ "
+"\\(\\[index\\, name\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:77:<autosummary>:1
+msgid "Create a Series with both index and values equal to the index keys."
+msgstr "创建一个 Series，其索引和值都等于索引键。"
 
 #: ../../source/reference/dataframe/indexing.rst:79
 msgid "Sorting"

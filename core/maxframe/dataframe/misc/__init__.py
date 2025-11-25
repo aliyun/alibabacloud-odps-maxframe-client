@@ -35,6 +35,7 @@ from .drop_duplicates import (
 from .duplicated import df_duplicated, index_duplicated, series_duplicated
 from .eval import df_eval, df_query
 from .explode import df_explode, series_explode
+from .factorize import factorize
 from .infer_dtypes import convert_dtypes, infer_objects
 from .isin import df_isin, series_isin
 from .map import df_map, index_map, series_map
@@ -100,6 +101,7 @@ def _install():
         setattr(t, "drop_duplicates", series_drop_duplicates)
         setattr(t, "duplicated", series_duplicated)
         setattr(t, "explode", series_explode)
+        setattr(t, "factorize", factorize)
         setattr(t, "first_valid_index", first_valid_index)
         setattr(t, "infer_objects", infer_objects)
         setattr(t, "is_monotonic", property(fget=is_monotonic))
@@ -126,6 +128,7 @@ def _install():
         setattr(t, "drop", index_drop)
         setattr(t, "drop_duplicates", index_drop_duplicates)
         setattr(t, "duplicated", index_duplicated)
+        setattr(t, "factorize", factorize)
         setattr(t, "has_duplicates", property(fget=lambda x: not index_is_unique(x)))
         setattr(t, "is_monotonic", property(fget=is_monotonic))
         setattr(t, "is_monotonic_increasing", property(fget=is_monotonic_increasing))

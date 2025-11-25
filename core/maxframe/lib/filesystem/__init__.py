@@ -14,6 +14,7 @@
 
 from .base import FileSystem
 from .core import file_size, get_fs, glob, open_file, register_filesystem
+from .fshandler import MFFileSystemHandler, to_arrow_file_system
 from .fsmap import FSMap
 
 # noinspection PyUnresolvedReferences

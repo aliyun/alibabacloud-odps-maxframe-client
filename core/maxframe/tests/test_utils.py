@@ -32,6 +32,7 @@ import pytest
 
 from .. import utils
 from ..lib.dtypes_extension import ArrowDtype
+from ..lib.wrapped_pickle import is_unpickle_forbidden, switch_unpickle
 from ..serialization import PickleContainer
 from ..utils import parse_size_to_megabytes, validate_and_adjust_resource_ratio
 
@@ -454,9 +455,17 @@ async def test_call_with_retry(use_async):
 
 def test_debug_to_thread():
     class MixinTestCls(utils.ToThreadMixin):
+        @switch_unpickle
         async def run_in_coro(self):
             await self.to_thread(time.sleep, 0.5)
             await self.to_thread(functools.partial(time.sleep), 0.5)
+            await self.to_thread(check_unpickle_forbidden)
+
+    def check_unpickle_forbidden():
+        assert is_unpickle_forbidden()
+        with switch_unpickle():
+            pass
+        assert is_unpickle_forbidden()
 
     def thread_body():
         loop = asyncio.new_event_loop()

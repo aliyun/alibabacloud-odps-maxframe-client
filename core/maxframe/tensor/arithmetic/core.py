@@ -44,12 +44,6 @@ class TensorElementWiseWithInputs(TensorElementWise):
         return super()._new_tileables(inputs, kws=kws, **kw)
 
 
-def _handle_out_dtype(val, dtype):
-    if val.dtype != dtype:
-        return val.astype(dtype)
-    return val
-
-
 class TensorBinOpMixin(TensorElementWiseWithInputs):
     __slots__ = ()
 

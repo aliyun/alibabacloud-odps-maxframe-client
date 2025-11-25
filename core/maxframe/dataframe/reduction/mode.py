@@ -49,26 +49,33 @@ class DataFrameMode(DataFrameOperator, DataFrameOperatorMixin):
 def mode_dataframe(df, axis=0, numeric_only=False, dropna=True, combine_size=None):
     """
     Get the mode(s) of each element along the selected axis.
+
     The mode of a set of values is the value that appears most often.
     It can be multiple values.
+
     Parameters
     ----------
     axis : {0 or 'index', 1 or 'columns'}, default 0
         The axis to iterate over while searching for the mode:
+
         * 0 or 'index' : get mode of each column
         * 1 or 'columns' : get mode of each row.
+
     numeric_only : bool, default False
         If True, only apply to numeric columns.
     dropna : bool, default True
         Don't consider counts of NaN/NaT.
+
     Returns
     -------
     DataFrame
         The modes of each column or row.
+
     See Also
     --------
     Series.mode : Return the highest frequency value in a Series.
     Series.value_counts : Return the counts of values in a Series.
+
     Examples
     --------
     >>> import maxframe.tensor as mt
@@ -85,25 +92,33 @@ def mode_dataframe(df, axis=0, numeric_only=False, dropna=True, combine_size=Non
     horse       mammal     4    NaN
     spider   arthropod     8    0.0
     ostrich       bird     2    NaN
+
     By default, missing values are not considered, and the mode of wings
     are both 0 and 2. Because the resulting DataFrame has two rows,
     the second row of ``species`` and ``legs`` contains ``NaN``.
+
     >>> df.mode().execute()
       species  legs  wings
     0    bird   2.0    0.0
     1     NaN   NaN    2.0
+
     Setting ``dropna=False`` ``NaN`` values are considered and they can be
     the mode (like for wings).
+
     >>> df.mode(dropna=False).execute()
       species  legs  wings
     0    bird     2    NaN
+
     Setting ``numeric_only=True``, only the mode of numeric columns is
     computed, and columns of other types are ignored.
+
     >>> df.mode(numeric_only=True).execute()
        legs  wings
     0   2.0    0.0
     1   NaN    2.0
+
     To compute the mode over columns and not rows, use the axis parameter:
+
     >>> df.mode(axis='columns', numeric_only=True).execute()
                0    1
     falcon   2.0  NaN
@@ -124,16 +139,47 @@ def mode_dataframe(df, axis=0, numeric_only=False, dropna=True, combine_size=Non
 def mode_series(series, dropna=True, combine_size=None):
     """
     Return the mode(s) of the Series.
+
     The mode is the value that appears most often. There can be multiple modes.
+
     Always returns Series even if only one value is returned.
+
     Parameters
     ----------
     dropna : bool, default True
         Don't consider counts of NaN/NaT.
+
     Returns
     -------
     Series
         Modes of the Series in sorted order.
+
+    Examples
+    --------
+    >>> import maxframe.dataframe as md
+    >>> s = md.Series([2, 4, 2, 2, 4, None])
+    >>> s.mode().execute()
+    0    2.0
+    dtype: float64
+
+    More than one mode:
+
+    >>> s = md.Series([2, 4, 8, 2, 4, None])
+    >>> s.mode().execute()
+    0    2.0
+    1    4.0
+    dtype: float64
+
+    With and without considering null value:
+
+    >>> s = md.Series([2, 4, None, None, 4, None])
+    >>> s.mode(dropna=False).execute()
+    0   NaN
+    dtype: float64
+    >>> s = md.Series([2, 4, None, None, 4, None])
+    >>> s.mode().execute()
+    0    4.0
+    dtype: float64
     """
     op = DataFrameMode(
         axis=0,

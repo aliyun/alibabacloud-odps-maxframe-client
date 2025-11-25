@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"POT-Creation-Date: 2025-10-29 19:01+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -47,6 +47,37 @@ msgstr ""
 "可以转义以数字开头或Python关键字的名称。基本上当它不是有效的Python标识符"
 "时。有关更多详细信息，请参见下面的备注。例如，如果您的某一列名为``a a``，"
 "并且您想将其与``b``相加，则查询应为```a a` + b``。"
+
+#: maxframe.dataframe.misc.eval.df_query:3 of
+msgid "The query string to evaluate."
+msgstr "需要计算的查询字符串"
+
+#: maxframe.dataframe.misc.eval.df_query:5 of
+msgid ""
+"You can refer to variables in the environment by prefixing them with an "
+"'@' character like ``@a + b``."
+msgstr "你可以通过在环境中的变量前加上 '@' 字符来引用它们，例如 ``@a + b``。"
+
+#: maxframe.dataframe.misc.eval.df_query:9 of
+msgid ""
+"You can refer to column names that contain spaces or operators by "
+"surrounding them in backticks. This way you can also escape names that "
+"start with a digit, or those that  are a Python keyword. Basically when "
+"it is not valid Python identifier. See notes down for more details."
+msgstr ""
+"要计算的查询字符串。您可以通过在环境变量前加上'@'字符来引用它们，如``@a +"
+" b``。您可以通过用反引号包围包含空格或运算符的列名来引用它们。这样您也"
+"可以转义以数字开头或Python关键字的名称。基本上当它不是有效的Python标识符"
+"时。有关更多详细信息，请参见下面的备注。例如，如果您的某一列名为``a a``，"
+"并且您想将其与``b``相加，则查询应为```a a` + b``。"
+
+#: maxframe.dataframe.misc.eval.df_query:15 of
+msgid ""
+"For example, if one of your columns is called ``a a`` and you want to sum"
+" it with ``b``, your query should be ```a a` + b``."
+msgstr ""
+"例如，如果你的一个列名为``a``，并且你想将其与 ``b`` 相加，你的查询应该是 "
+"```a a` + b``。"
 
 #: maxframe.dataframe.misc.eval.df_query:18 of
 msgid ""

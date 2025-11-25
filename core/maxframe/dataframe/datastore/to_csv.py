@@ -17,38 +17,27 @@ from ...serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
-    Int32Field,
     Int64Field,
     ListField,
     StringField,
 )
 from ..utils import parse_index
-from .core import DataFrameDataStore
+from .core import LakeDataStore
 
 
-class DataFrameToCSV(DataFrameDataStore):
+class DataFrameToCSV(LakeDataStore):
     _op_type_ = opcodes.TO_CSV
 
-    path = AnyField("path", default=None)
     sep = StringField("sep", default=None)
     na_rep = StringField("na_rep", default=None)
-    float_format = StringField("float_format", default=None)
     columns = ListField("columns", default=None)
     header = AnyField("header", default=None)
     index = BoolField("index", default=None)
     index_label = AnyField("index_label", default=None)
     mode = StringField("mode", default=None)
     encoding = StringField("encoding", default=None)
-    compression = AnyField("compression", default=None)
-    quoting = Int32Field("quoting", default=None)
-    quotechar = StringField("quotechar", default=None)
-    line_terminator = StringField("line_terminator", default=None)
     chunksize = Int64Field("chunksize", default=None)
-    date_format = StringField("date_format", default=None)
-    doublequote = BoolField("doublequote", default=None)
-    escapechar = StringField("escapechar", default=None)
-    decimal = StringField("decimal", default=None)
-    storage_options = DictField("storage_options", default=None)
+    csv_kwargs = DictField("csv_kwargs", default=None)
 
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
@@ -56,7 +45,7 @@ class DataFrameToCSV(DataFrameDataStore):
     @property
     def one_file(self):
         # if wildcard in path, write csv into multiple files
-        return "*" not in self.path
+        return "*" not in self.path and not self.partition_cols
 
     def __call__(self, df):
         index_value = parse_index(df.index_value.to_pandas()[:0], df)
@@ -98,6 +87,7 @@ def to_csv(
     doublequote=True,
     escapechar=None,
     decimal=".",
+    partition_cols=None,
     storage_options=None,
     **kw,
 ):
@@ -168,6 +158,9 @@ def to_csv(
     decimal : str, default '.'
         Character recognized as decimal separator. E.g. use ',' for
         European data.
+    partition_cols : list, optional, default None
+        Column names by which to partition the dataset.
+        Columns are partitioned in the order they are given.
     Returns
     -------
     None or str
@@ -185,6 +178,8 @@ def to_csv(
     ...                    'mask': ['red', 'purple'],
     ...                    'weapon': ['sai', 'bo staff']})
     >>> df.to_csv('out.csv', index=False).execute()
+    >>> # Write partitioned dataset
+    >>> df.to_csv('dataset', partition_cols=['mask']).execute()  # doctest: +SKIP
     """
     lineterminator = lineterminator or kw.pop("line_terminator", None)
     if kw:
@@ -194,11 +189,21 @@ def to_csv(
 
     if mode != "w":  # pragma: no cover
         raise NotImplementedError("only support to_csv with mode 'w' for now")
+
+    csv_kwargs = dict(
+        float_format=float_format,
+        quoting=quoting,
+        quotechar=quotechar,
+        line_terminator=lineterminator,
+        date_format=date_format,
+        doublequote=doublequote,
+        escapechar=escapechar,
+        decimal=decimal,
+    )
     op = DataFrameToCSV(
         path=path,
         sep=sep,
         na_rep=na_rep,
-        float_format=float_format,
         columns=columns,
         header=header,
         index=index,
@@ -206,14 +211,9 @@ def to_csv(
         mode=mode,
         encoding=encoding,
         compression=compression,
-        quoting=quoting,
-        quotechar=quotechar,
-        line_terminator=lineterminator,
         chunksize=chunksize,
-        date_format=date_format,
-        doublequote=doublequote,
-        escapechar=escapechar,
-        decimal=decimal,
         storage_options=storage_options,
+        partition_cols=partition_cols,
+        csv_kwargs=csv_kwargs,
     )
     return op(df)

@@ -29,7 +29,7 @@ from ...utils import lazy_import
 from ..core import DATAFRAME_TYPE
 from ..initializer import Series as asseries
 from .core import (
-    CustomReduction,
+    BuiltinReduction,
     DataFrameReduction,
     DataFrameReductionMixin,
     ReductionCallable,
@@ -38,7 +38,7 @@ from .core import (
 cudf = lazy_import("cudf")
 
 
-class UniqueReduction(CustomReduction):
+class UniqueReduction(BuiltinReduction):
     _func_name = "unique"
 
     def agg(self, data):  # noqa: W0221  # pylint: disable=arguments-differ

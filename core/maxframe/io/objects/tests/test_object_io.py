@@ -18,7 +18,7 @@ from odps import ODPS
 
 from ....core import OutputType
 from ....core.operator import ObjectOperatorMixin, Operator
-from ....tensor.datasource import ArrayDataSource
+from ....tensor.datasource import ArrayDataSource, scalar
 from ....tests.utils import create_test_volume, get_test_unique_name, tn
 from ...odpsio import ODPSVolumeReader, ODPSVolumeWriter
 from ..core import get_object_io_handler
@@ -38,9 +38,15 @@ def create_volume(oss_config):
         yield test_vol_name
 
 
-def test_simple_object_io(create_volume):
-    obj = TestObjectOp()()
-    data = "abcdefg"
+@pytest.mark.parametrize(
+    "obj_creator, data",
+    [
+        (lambda: TestObjectOp()(), "abcdefg"),
+        (lambda: scalar(123), 123),
+    ],
+)
+def test_object_and_scalar_io(create_volume, obj_creator, data):
+    obj = obj_creator()
 
     odps_entry = ODPS.from_environments()
 

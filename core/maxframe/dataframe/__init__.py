@@ -45,6 +45,7 @@ from .initializer import DataFrame, Index, Series, read_pandas
 from .merge import concat, merge
 from .misc.cut import cut
 from .misc.eval import maxframe_eval as eval  # pylint: disable=redefined-builtin
+from .misc.factorize import factorize
 from .misc.get_dummies import get_dummies
 from .misc.qcut import qcut
 from .misc.to_numeric import to_numeric

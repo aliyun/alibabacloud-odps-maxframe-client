@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from abc import ABCMeta, abstractmethod
+from collections import defaultdict
 from typing import Dict, Iterable, List
 
 from ...core import Tileable
@@ -101,6 +102,28 @@ class TileableGraph(EntityGraph, Iterable[Tileable]):
                 )
             self._logic_key = tokenize(*token_keys)
         return self._logic_key
+
+    def _deduplicate(self):
+        key_to_tileable = {}
+        key_to_orig_tileables = defaultdict(list)
+        for t in self.topological_iter():
+            key_to_orig_tileables[t.key].append(t)
+            key_to_tileable[t.key] = t
+
+        new_obj = type(self)()
+        for t in key_to_tileable.values():
+            t.op.inputs = [key_to_tileable[inp.key] for inp in t.op.inputs]
+            new_obj.add_node(key_to_tileable[t.key])
+            for ot in key_to_orig_tileables[t.key]:
+                for succ in self.iter_successors(ot):
+                    new_obj.add_node(key_to_tileable[succ.key])
+                    new_obj.add_edge(key_to_tileable[t.key], key_to_tileable[succ.key])
+        results = [key_to_tileable[t.key] for t in self._result_tileables]
+        new_obj._result_tileables = results
+        return new_obj, key_to_tileable
+
+    def deduplicate(self):
+        return self._deduplicate()[0]
 
 
 class SerializableGraph(Serializable):

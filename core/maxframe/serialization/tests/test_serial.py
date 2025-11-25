@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import decimal
 import re
 import threading
 from collections import OrderedDict, defaultdict
@@ -92,9 +93,11 @@ class CustomNamedTuple(NamedTuple):
         datetime.datetime.now().astimezone(datetime.timezone.utc),
         datetime.date.today(),
         datetime.timedelta(1000, 10, 100, 10),
+        decimal.Decimal("123.456"),
         re.compile(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}", re.M | re.DOTALL),
         np.dtype(int),
         pd.StringDtype(),
+        pd.Int64Dtype(),
         pd.Timestamp("2023-10-12 11:22:54.134561231"),
         pd.Timestamp("2023-10-12 11:22:54.134561231", tzinfo=datetime.timezone.utc),
         pd.Timedelta(102.234154131),
@@ -205,11 +208,18 @@ def test_pandas():
             "int_col": np.random.randint(0, 100, size=(1000,)),
             "str_array_col": pd.array(np.random.choice(list("abcd"), size=(1000,))),
             "cat_col": pd.Categorical(np.random.choice(list("abcd"), size=(1000,))),
+            "dec_col": [
+                decimal.Decimal("%.02f" % np.random.rand()) for _ in range(1000)
+            ],
         }
     )
     if _arrow_dtype_supported:
         val["arrow_col"] = pd.Series(
             np.random.rand(1000), dtype=pd.ArrowDtype(pa.float64())
+        )
+        val["arrow_map_col"] = pd.Series(
+            [[("a", np.random.rand()), ("b", np.random.rand())] for _ in range(1000)],
+            dtype=pd.ArrowDtype(pa.map_(pa.string(), pa.float64())),
         )
     pd.testing.assert_frame_equal(val, deserialize(*serialize(val)))
 
@@ -362,6 +372,25 @@ def test_pickle_hook():
     assert 1234 == deser_obj()
 
 
+class PickleWithError:
+    def __init__(self, val):
+        self.val = val
+
+    def __getstate__(self):
+        raise ValueError
+
+    def __str__(self):
+        return f"PickleWithError({self.val})"
+
+
+class UnpickleWithError:
+    def __getstate__(self):
+        return (None,)
+
+    def __setstate__(self, state):
+        raise ValueError
+
+
 def test_exceptions():
     try:
         raise ValueError("val")
@@ -384,6 +413,14 @@ def test_exceptions():
         deserial2 = deserialize(*serialize(deserial))
         assert isinstance(deserial2, ValueError)
         assert deserial2.args[0] == exc.args[0]
+
+    # test deserial with unserializable data
+    exc_data = PickleWithError("data")
+    exc = ValueError(exc_data)
+    with switch_unpickle(forbidden=False):
+        deserial = deserialize(*serialize(exc))
+        assert isinstance(deserial, ValueError)
+        assert deserial.args[0] == str(exc_data)
 
 
 class MockSerializerForErrors(ListSerializer):
@@ -409,14 +446,6 @@ class MockSerializerForErrors(ListSerializer):
         if len(subs) == 2 and self.raises:
             raise TypeError
         return super().deserial(serialized, context, subs)
-
-
-class UnpickleWithError:
-    def __getstate__(self):
-        return (None,)
-
-    def __setstate__(self, state):
-        raise ValueError
 
 
 def test_deserial_errors():

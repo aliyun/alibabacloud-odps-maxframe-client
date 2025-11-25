@@ -10,6 +10,7 @@ Data manipulations
    :toctree: generated/
 
    concat
+   factorize
    get_dummies
    merge
 

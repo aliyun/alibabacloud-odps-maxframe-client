@@ -16,6 +16,7 @@ from .arrow import arrow_to_pandas, pandas_to_arrow
 from .schema import (
     arrow_schema_to_odps_schema,
     build_dataframe_table_meta,
+    cast_df_with_possible_nans,
     odps_schema_to_pandas_dtypes,
     pandas_to_odps_schema,
 )

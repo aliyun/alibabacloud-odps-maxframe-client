@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-23 14:19+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_parquet.rst:2
+msgid "maxframe.dataframe.read\\_parquet"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:1 of
+msgid "Load a parquet object from the file path, returning a DataFrame."
+msgstr "从文件路径加载一个 parquet 对象，返回一个 DataFrame。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_parquet.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:3 of
+msgid ""
+"Any valid string path is acceptable. The string could be a URL. For file "
+"URLs, a host is expected. A local file could be: "
+"``file://localhost/path/to/table.parquet``. A file URL can also be a path"
+" to a directory that contains multiple partitioned parquet files. Both "
+"pyarrow and fastparquet support paths to directories as well as file "
+"URLs. A directory path could be: ``file://localhost/path/to/tables``. By "
+"file-like object, we refer to objects with a ``read()`` method, such as a"
+" file handler (e.g. via builtin ``open`` function) or ``StringIO``."
+msgstr ""
+"任何有效的字符串路径都可以接受。该字符串可以是一个 URL。对于文件 URL，"
+"需要指定主机。一个本地文件可以是：``file://localhost/path/to/table."
+"parquet``。一个文件 URL 也可以是指向包含多个分区 parquet 文件的目录的路径"
+"。pyarrow 和 fastparquet 都支持目录路径和文件 URL。一个目录路径可以是：``"
+"file://localhost/path/to/tables``。所谓类文件对象，我们指的是具有 ``read("
+")`` 方法的对象，例如文件句柄（例如通过内置的 ``open`` 函数）或 ``StringIO"
+"``。"
+
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:14 of
+msgid "Parquet library to use. The default behavior is to try 'pyarrow',"
+msgstr "使用的 Parquet 库。默认行为是尝试使用 'pyarrow'，"
+
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:16
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:29 of
+msgid "Options for storage connection."
+msgstr "存储连接的选项。"
+
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:18 of
+msgid "If not None, only these columns will be read from the file."
+msgstr "如果非 None，则只从文件中读取这些列。"
+
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:20 of
+msgid ""
+"if True, each row group correspond to a chunk. if False, each file "
+"correspond to a chunk. Only available for 'pyarrow' engine."
+msgstr ""
+"如果为 True，则每个行组对应一个 chunk；如果为 False，则每个文件对应一个 "
+"chunk。仅适用于 'pyarrow' 引擎。"
+
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:24 of
+msgid ""
+"If index_col not specified, ensure range index incremental, gain a "
+"slightly better performance if setting False."
+msgstr ""
+"如果未指定 index_col，则确保范围索引递增，设置为 False 时可获得稍好的性能"
+"。"
+
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:27 of
+msgid ""
+"Back-end data type applied to the resultant DataFrame (still "
+"experimental)."
+msgstr "应用于结果 DataFrame 的后端数据类型（仍处于实验阶段）。"
+
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:31 of
+msgid "Scale that real memory occupation divided with raw file size."
+msgstr "实际内存占用与原始文件大小的比例。"
+
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:33 of
+msgid "Merge small files whose size is small."
+msgstr "合并尺寸较小的小文件。"
+
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:35 of
+msgid "Any additional kwargs are passed to the engine."
+msgstr "任何额外的 kwargs 都会传递给引擎。"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_parquet.rst
+msgid "返回类型"
+msgstr ""
+
