@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from io import IOBase
+import io
+from typing import Any, Optional
 
 from ....utils import lazy_import
 from .common import get_oss_bucket, oss_stat, parse_osspath
@@ -20,8 +21,14 @@ from .common import get_oss_bucket, oss_stat, parse_osspath
 oss2 = lazy_import("oss2", placeholder=True)
 
 
-class OSSIOBase(IOBase):
-    def __init__(self, path, mode):
+class OSSIOBase(io.IOBase):
+    def __init__(
+        self,
+        path,
+        mode,
+        multipart_upload_id: Any = None,
+        part_num: Optional[int] = None,
+    ):
         self._path = path
         self._parsed_path = parse_osspath(self._path)
         self._bucket = get_oss_bucket(self._parsed_path)
@@ -30,6 +37,11 @@ class OSSIOBase(IOBase):
         self._buffer = b""
         self._buffer_size = 1 * 1024
         self._mode = mode
+
+        self._multipart_upload_id = multipart_upload_id
+        self._part_num = part_num
+        self._multipart_buf = io.BytesIO() if multipart_upload_id is not None else None
+        self._part_upload_result = None
 
         if mode and mode.startswith("w"):
             try:
@@ -136,10 +148,17 @@ class OSSIOBase(IOBase):
         return bytes(res)
 
     def write(self, block):
-        append_result = self._bucket.append_object(
-            self._parsed_path.key, self._current_pos, block
-        )
-        self._current_pos = append_result.next_position
+        if self._multipart_upload_id is None:
+            append_result = self._bucket.append_object(
+                self._parsed_path.key, self._current_pos, block
+            )
+            self._current_pos = append_result.next_position
+        else:
+            self._multipart_buf.write(block)
+
+    @property
+    def part_upload_result(self):
+        return self._part_upload_result
 
     def readable(self):
         return "r" in self._mode
@@ -148,5 +167,14 @@ class OSSIOBase(IOBase):
         return "w" in self._mode or "a" in self._mode
 
     def close(self):
-        # already closed by oss
-        pass
+        if self._multipart_buf is not None:
+            self._multipart_buf.seek(0)
+            result = self._bucket.upload_part(
+                self._parsed_path.key,
+                self._multipart_upload_id,
+                self._part_num,
+                self._multipart_buf,
+            )
+            self._part_upload_result = dict(
+                part_number=self._part_num, etag=result.etag
+            )

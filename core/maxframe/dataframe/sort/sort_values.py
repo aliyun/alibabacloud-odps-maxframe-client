@@ -169,6 +169,13 @@ def dataframe_sort_values(
         elif not any(ascending):
             # all are False, convert to False
             ascending = False
+
+    columns_set = set(df.dtypes.keys())
+    if axis == 0:
+        for col_name in by:
+            if col_name not in columns_set:
+                raise KeyError(f"{col_name} not in columns")
+
     op = DataFrameSortValues(
         by=by,
         axis=axis,

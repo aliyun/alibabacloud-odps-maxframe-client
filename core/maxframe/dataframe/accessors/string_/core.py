@@ -25,7 +25,7 @@ from ....tensor.core import TENSOR_TYPE
 from ...core import SERIES_TYPE
 from ...initializer import Series as asseries
 from ...operators import DataFrameOperator, DataFrameOperatorMixin
-from ...utils import build_empty_series, infer_index_value, parse_index
+from ...utils import build_empty_series, build_series, infer_index_value, parse_index
 
 
 class SeriesStringMethod(DataFrameOperator, DataFrameOperatorMixin):
@@ -90,17 +90,21 @@ class SeriesStringSplitHandler(SeriesStringMethodBaseHandler):
         if method_kwargs.get("expand", False) is False:
             return super().call(op, inp)
         n = method_kwargs.get("n", -1)
-        # does not support if expand and n == -1
-        if n == -1:  # pragma: no cover
-            raise NotImplementedError("`n` needs to be specified when expand=True")
 
         op.output_types = [OutputType.dataframe]
-        columns = pd.RangeIndex(n + 1)
-        columns_value = parse_index(columns, store_data=True)
-        dtypes = pd.Series([inp.dtype] * len(columns), index=columns)
+
+        if n >= 0:
+            columns = pd.RangeIndex(n + 1)
+            n_cols = n + 1
+            columns_value = parse_index(columns, store_data=True)
+            dtypes = pd.Series([inp.dtype] * len(columns), index=columns)
+        else:
+            dtypes = columns_value = None
+            n_cols = np.nan
+
         return op.new_dataframe(
             [inp],
-            shape=(inp.shape[0], len(columns)),
+            shape=(inp.shape[0], n_cols),
             dtypes=dtypes,
             columns_value=columns_value,
             index_value=inp.index_value,
@@ -173,10 +177,8 @@ class SeriesStringCatHandler(SeriesStringMethodBaseHandler):
 class SeriesStringExtractHandler(SeriesStringMethodBaseHandler):
     @classmethod
     def call(cls, op, inp):
-        empty_series = build_empty_series(
-            inp.dtype, index=inp.index_value.to_pandas()[:0]
-        )
-        test_df = getattr(empty_series.str, op.method)(
+        mock_series = build_series(inp)
+        test_df = getattr(mock_series.str, op.method)(
             *op.method_args, **op.method_kwargs
         )
         if test_df.ndim == 1:

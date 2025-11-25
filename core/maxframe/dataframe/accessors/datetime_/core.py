@@ -26,7 +26,7 @@ from ....serialization.serializables import (
     TupleField,
 )
 from ...operators import DataFrameOperator, DataFrameOperatorMixin
-from ...utils import build_empty_series
+from ...utils import build_empty_series, parse_index
 
 
 class SeriesDatetimeMethod(DataFrameOperator, DataFrameOperatorMixin):
@@ -76,7 +76,31 @@ class SeriesDatetimeMethodBaseHandler:
         )
 
 
-datetime_method_to_handlers = {}
+class SeriesDatetimeIsoCalendarHandler:
+    @classmethod
+    def call(cls, op, inp):
+        empty_series = build_empty_series(inp.dtype)
+        if op.is_property:
+            test_obj = getattr(empty_series.dt, op.method)
+        else:
+            test_obj = getattr(empty_series.dt, op.method)(
+                *op.method_args, **op.method_kwargs
+            )
+        dtypes = test_obj.dtypes
+        return op.new_dataframe(
+            [inp],
+            shape=(inp.shape[0], len(dtypes)),
+            dtypes=dtypes,
+            index_value=inp.index_value,
+            columns_value=parse_index(dtypes.index, store_data=True),
+        )
+
+
+datetime_method_to_handlers = {
+    "isocalendar": SeriesDatetimeIsoCalendarHandler,
+}
 for method in dir(pd.Series.dt):
+    if method in datetime_method_to_handlers:
+        continue
     if not method.startswith("_"):
         datetime_method_to_handlers[method] = SeriesDatetimeMethodBaseHandler

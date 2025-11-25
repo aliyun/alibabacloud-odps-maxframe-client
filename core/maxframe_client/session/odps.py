@@ -18,6 +18,7 @@ import copy
 import logging
 import time
 import weakref
+from collections import deque
 from numbers import Integral
 from typing import Any, Callable, Dict, List, Mapping, Optional, Tuple, Union
 from urllib.parse import urlparse
@@ -311,6 +312,11 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         if isinstance(read_tileable, DATAFRAME_TYPE):
             if list(read_tileable.dtypes.index) != list(t.dtypes.index):
                 read_tileable.columns = list(t.dtypes.index)
+            if any(t.index_value.to_pandas().names) or any(t.dtypes.index.names):
+                read_tileable = read_tileable.rename_axis(
+                    columns=list(t.dtypes.index.names),
+                    index=list(t.index_value.to_pandas().names),
+                )
         elif isinstance(read_tileable, SERIES_TYPE):
             if read_tileable.name != t.name:
                 read_tileable.name = t.name
@@ -377,10 +383,15 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         for src, replaced in replacements.items():
             successors = list(graph.successors(src))
             graph.remove_node(src)
-            graph.add_node(replaced)
-            for pred in replaced.inputs or ():
-                graph.add_node(pred)
-                graph.add_edge(pred, replaced)
+
+            expand_queue = deque([replaced])
+            while expand_queue:
+                to_insert = expand_queue.popleft()
+                graph.add_node(to_insert)
+                for pred in to_insert.inputs or ():
+                    expand_queue.append(pred)
+                    graph.add_node(pred)
+                    graph.add_edge(pred, to_insert)
 
             for succ in successors:
                 graph.add_edge(replaced, succ)

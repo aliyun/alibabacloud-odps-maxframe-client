@@ -14,6 +14,7 @@
 
 import functools
 import operator
+from decimal import Decimal
 from functools import reduce
 from typing import NamedTuple
 
@@ -28,8 +29,6 @@ from ....tensor import Tensor
 from ....tests.utils import assert_mf_index_dtype
 from ....udf import ODPSFunction
 from ...core import DataFrame, IndexValue, OutputType, Series
-from ...datasource.dataframe import from_pandas as from_pandas_df
-from ...datasource.series import from_pandas as from_pandas_series
 from .. import (
     CustomReduction,
     DataFrameAggregate,
@@ -84,7 +83,7 @@ reduction_functions = [
 @pytest.mark.parametrize("func_name,op,func_opts", reduction_functions)
 def test_series_reduction(func_name, op, func_opts: FunctionOptions):
     data = pd.Series(range(20), index=[str(i) for i in range(20)])
-    series = getattr(from_pandas_series(data, chunk_size=3), func_name)()
+    series = getattr(md.Series(data, chunk_size=3), func_name)()
 
     assert isinstance(series, Tensor)
     assert isinstance(series.op, op)
@@ -95,7 +94,7 @@ def test_series_reduction(func_name, op, func_opts: FunctionOptions):
         kwargs = dict(axis="index", skipna=False)
     else:
         kwargs = dict()
-    series = getattr(from_pandas_series(data, chunk_size=7), func_name)(**kwargs)
+    series = getattr(md.Series(data, chunk_size=7), func_name)(**kwargs)
 
     assert isinstance(series, Tensor)
     assert series.shape == ()
@@ -107,7 +106,7 @@ def test_dataframe_reduction(func_name, op, func_opts: FunctionOptions):
         {"a": list(range(20)), "b": list(range(20, 0, -1))},
         index=[str(i) for i in range(20)],
     )
-    reduction_df = getattr(from_pandas_df(data, chunk_size=3), func_name)()
+    reduction_df = getattr(md.DataFrame(data, chunk_size=3), func_name)()
 
     assert isinstance(reduction_df, Series)
     assert isinstance(reduction_df.op, op)
@@ -115,21 +114,19 @@ def test_dataframe_reduction(func_name, op, func_opts: FunctionOptions):
     assert reduction_df.shape == (2,)
 
     data = pd.DataFrame(np.random.rand(20, 10))
-    reduction_df = getattr(from_pandas_df(data, chunk_size=3), func_name)()
+    reduction_df = getattr(md.DataFrame(data, chunk_size=3), func_name)()
 
     assert isinstance(reduction_df, Series)
     assert_mf_index_dtype(reduction_df.index_value._index_value, np.int64)
     assert reduction_df.shape == (10,)
 
     data = pd.DataFrame(np.random.rand(20, 20), index=[str(i) for i in range(20)])
-    reduction_df = getattr(from_pandas_df(data, chunk_size=4), func_name)(
-        axis="columns"
-    )
+    reduction_df = getattr(md.DataFrame(data, chunk_size=4), func_name)(axis="columns")
 
     assert reduction_df.shape == (20,)
 
     with pytest.raises(NotImplementedError):
-        getattr(from_pandas_df(data, chunk_size=3), func_name)(level=0, axis=1)
+        getattr(md.DataFrame(data, chunk_size=3), func_name)(level=0, axis=1)
 
 
 cum_reduction_functions = [
@@ -143,7 +140,7 @@ cum_reduction_functions = [
 @pytest.mark.parametrize("func_name,op,func_opts", cum_reduction_functions)
 def test_cum_series_reduction(func_name, op, func_opts: FunctionOptions):
     data = pd.Series({"a": list(range(20))}, index=[str(i) for i in range(20)])
-    series = getattr(from_pandas_series(data, chunk_size=3), func_name)()
+    series = getattr(md.Series(data, chunk_size=3), func_name)()
 
     assert isinstance(series, Series)
     assert series.shape == (20,)
@@ -153,7 +150,7 @@ def test_cum_series_reduction(func_name, op, func_opts: FunctionOptions):
         kwargs = dict(axis="index", skipna=False)
     else:
         kwargs = dict()
-    series = getattr(from_pandas_series(data, chunk_size=7), func_name)(**kwargs)
+    series = getattr(md.Series(data, chunk_size=7), func_name)(**kwargs)
 
     assert isinstance(series, Series)
     assert series.shape == (25,)
@@ -165,14 +162,14 @@ def test_cum_dataframe_reduction(func_name, op, func_opts: FunctionOptions):
         {"a": list(range(20)), "b": list(range(20, 0, -1))},
         index=[str(i) for i in range(20)],
     )
-    reduction_df = getattr(from_pandas_df(data, chunk_size=3), func_name)()
+    reduction_df = getattr(md.DataFrame(data, chunk_size=3), func_name)()
 
     assert isinstance(reduction_df, DataFrame)
     assert isinstance(reduction_df.index_value._index_value, IndexValue.Index)
     assert reduction_df.shape == (20, 2)
 
     data = pd.DataFrame(np.random.rand(20, 10))
-    reduction_df = getattr(from_pandas_df(data, chunk_size=3), func_name)()
+    reduction_df = getattr(md.DataFrame(data, chunk_size=3), func_name)()
 
     assert isinstance(reduction_df, DataFrame)
     assert isinstance(reduction_df.index_value._index_value, IndexValue.RangeIndex)
@@ -184,7 +181,7 @@ def test_nunique():
         np.random.randint(0, 6, size=(20, 10)),
         columns=["c" + str(i) for i in range(10)],
     )
-    df = from_pandas_df(data, chunk_size=3)
+    df = md.DataFrame(data, chunk_size=3)
     result = df.nunique()
 
     assert result.shape == (10,)
@@ -192,7 +189,7 @@ def test_nunique():
     assert isinstance(result.op, DataFrameNunique)
 
     data2 = data.copy()
-    df2 = from_pandas_df(data2, chunk_size=3)
+    df2 = md.DataFrame(data2, chunk_size=3)
     result2 = df2.nunique(axis=1)
 
     assert result2.shape == (20,)
@@ -207,7 +204,7 @@ def test_unique():
             "col2": pd.Series(np.random.choice([0, 1, 2, 3], 100)),
         }
     )
-    df = from_pandas_df(pd_df, chunk_size=3)
+    df = md.DataFrame(pd_df, chunk_size=3)
     result = df.agg(["unique"])
 
     assert result.shape == (1, 2)
@@ -222,7 +219,7 @@ def test_unique():
     )
 
     pd_s = pd.Series(np.random.choice(["a", "b", "c", "d"], 100))
-    ms = from_pandas_series(pd_s, chunk_size=3)
+    ms = md.Series(pd_s, chunk_size=3)
     result = ms.agg(["unique"])
     assert result.shape == (1,)
     assert result.op.output_types[0] == OutputType.series
@@ -247,7 +244,7 @@ def test_dataframe_aggregate():
         "median",
     ]
 
-    df = from_pandas_df(data)
+    df = md.DataFrame(data)
     result = df.agg(agg_funcs)
     assert result.shape == (len(agg_funcs), data.shape[1])
     assert list(result.columns_value.to_pandas()) == list(range(19))
@@ -255,7 +252,7 @@ def test_dataframe_aggregate():
     assert result.op.output_types[0] == OutputType.dataframe
     assert result.op.func == agg_funcs
 
-    df = from_pandas_df(data, chunk_size=(3, 4))
+    df = md.DataFrame(data, chunk_size=(3, 4))
 
     result = df.agg("sum")
     assert result.shape == (data.shape[1],)
@@ -325,7 +322,7 @@ def test_series_aggregate():
         "median",
     ]
 
-    series = from_pandas_series(data)
+    series = md.Series(data)
 
     result = series.agg(agg_funcs)
     assert result.shape == (len(agg_funcs),)
@@ -333,7 +330,7 @@ def test_series_aggregate():
     assert result.op.output_types[0] == OutputType.series
     assert result.op.func == agg_funcs
 
-    series = from_pandas_series(data, chunk_size=3)
+    series = md.Series(data, chunk_size=3)
 
     result = series.agg("sum")
     assert result.shape == ()
@@ -539,3 +536,63 @@ def test_aggregation_with_odps_function():
         assert result.agg_funcs[0].map_func_name == "custom_reduction"
         assert result.agg_funcs[0].agg_func_name == "custom_reduction"
         assert isinstance(result.agg_funcs[0].custom_reduction, ODPSFunction)
+
+
+@pytest.mark.skipif(not hasattr(pd, "ArrowDtype"), reason="ArrowDtype not available")
+def test_reduction_with_decimal():
+    raw = pd.DataFrame({"idx": [1, 2, 3, 4], "int_col": [7, 9, 6, 8]})
+    raw["dec_col"] = pd.Series(
+        [Decimal(x) for x in ["1.1", "2.2", "3.3", "4.4"]],
+        dtype=ArrowDtype(pa.decimal128(5, 2)),
+    )
+    df = md.DataFrame(raw)
+
+    # aggregate frames
+    sum_df = df.groupby("idx").sum()
+    col_dt = sum_df.dtypes["dec_col"]
+    assert (
+        isinstance(col_dt, ArrowDtype)
+        and isinstance(col_dt.pyarrow_dtype, pa.Decimal128Type)
+        and col_dt.pyarrow_dtype.precision == 38
+    )
+
+    sum_df = df.groupby("idx").agg(["sum", "mean"])
+    col_dt = sum_df.dtypes[("dec_col", "sum")]
+    assert (
+        isinstance(col_dt, ArrowDtype)
+        and isinstance(col_dt.pyarrow_dtype, pa.Decimal128Type)
+        and col_dt.pyarrow_dtype.precision == 38
+    )
+
+    sum_df = df.groupby("idx").agg({"dec_col": "sum"})
+    col_dt = sum_df.dtypes["dec_col"]
+    assert (
+        isinstance(col_dt, ArrowDtype)
+        and isinstance(col_dt.pyarrow_dtype, pa.Decimal128Type)
+        and col_dt.pyarrow_dtype.precision == 38
+    )
+
+    sum_df = df.groupby("idx").agg(agg_dec_col=("dec_col", "sum"))
+    col_dt = sum_df.dtypes["agg_dec_col"]
+    assert (
+        isinstance(col_dt, ArrowDtype)
+        and isinstance(col_dt.pyarrow_dtype, pa.Decimal128Type)
+        and col_dt.pyarrow_dtype.precision == 38
+    )
+
+    # aggregate series
+    sum_series = df.groupby("idx")["dec_col"].agg("sum")
+    col_dt = sum_series.dtype
+    assert (
+        isinstance(col_dt, ArrowDtype)
+        and isinstance(col_dt.pyarrow_dtype, pa.Decimal128Type)
+        and col_dt.pyarrow_dtype.precision == 38
+    )
+
+    sum_df = df.groupby("idx")["dec_col"].agg(["sum", "mean"])
+    col_dt = sum_df.dtypes["sum"]
+    assert (
+        isinstance(col_dt, ArrowDtype)
+        and isinstance(col_dt.pyarrow_dtype, pa.Decimal128Type)
+        and col_dt.pyarrow_dtype.precision == 38
+    )

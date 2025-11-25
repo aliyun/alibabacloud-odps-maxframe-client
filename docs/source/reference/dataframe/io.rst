@@ -28,3 +28,12 @@ Native pandas
 
    read_pandas
    DataFrame.to_pandas
+
+
+Parquet
+~~~~~~~
+.. autosummary::
+   :toctree: generated/
+
+   read_parquet
+   DataFrame.to_parquet

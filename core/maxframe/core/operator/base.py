@@ -89,6 +89,7 @@ class SchedulingHint(Serializable):
     priority = Int32Field("priority", default=None)
     expect_engine = StringField("expect_engine", default=None)
     expect_resources = DictField("expect_resources", FieldTypes.string, default=None)
+    fs_mount = DictField("fs_mount", FieldTypes.string, default_factory=dict)
     # id of gang scheduling for machine learning trainings
     gang_scheduling_id = StringField("gang_scheduling_id", default=None)
 

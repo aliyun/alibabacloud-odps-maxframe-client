@@ -14,16 +14,20 @@
 
 import itertools
 import logging
-from typing import Any, List, Optional, Union
+from collections import OrderedDict
+from typing import Any, Dict, List, Optional, Union
 
+import pandas as pd
 from odps import ODPS
 from odps.models import Table as ODPSTable
-from odps.types import PartitionSpec
+from odps.types import OdpsSchema, PartitionSpec
 
 from ... import opcodes
 from ...config import options
 from ...core import OutputType
 from ...io.odpsio import build_dataframe_table_meta
+from ...io.odpsio.schema import odps_schema_to_arrow_schema
+from ...lib.dtypes_extension import ArrowDtype
 from ...serialization.serializables import (
     BoolField,
     DictField,
@@ -113,6 +117,7 @@ def to_odps_table(
     lifecycle: Optional[int] = None,
     table_properties: Optional[dict] = None,
     primary_key: Union[None, str, List[str]] = None,
+    odps_types: Optional[Dict[str, str]] = None,
 ):
     """
     Write DataFrame object into a MaxCompute (ODPS) table.
@@ -173,9 +178,12 @@ def to_odps_table(
 
     """
     odps_entry = ODPS.from_global() or ODPS.from_environments()
+    is_schema_enabled = (
+        options.session.enable_schema or odps_entry.is_schema_namespace_enabled()
+    )
     if isinstance(table, ODPSTable):
         table = table.full_table_name
-    elif options.session.enable_schema and "." not in table:
+    elif is_schema_enabled and "." not in table:
         default_schema = (
             options.session.default_schema or odps_entry.schema or "default"
         )
@@ -248,8 +256,21 @@ def to_odps_table(
     if primary_key and not isinstance(primary_key, (list, tuple)):
         primary_key = [primary_key]
 
+    if odps_types is None:
+        target_dtypes = df.dtypes
+    else:
+        odps_schema = OdpsSchema.from_dict(odps_types)
+        arrow_schema = odps_schema_to_arrow_schema(odps_schema)
+        pd_col_to_dtype = {
+            nm: ArrowDtype(tp) for nm, tp in zip(arrow_schema.names, arrow_schema.types)
+        }
+        target_dtypes_dict = OrderedDict(
+            [(col, pd_col_to_dtype.get(col, dt)) for col, dt in df.dtypes.items()]
+        )
+        target_dtypes = pd.Series(target_dtypes_dict)
+
     op = DataFrameToODPSTable(
-        dtypes=df.dtypes,
+        dtypes=target_dtypes,
         table_name=table,
         unknown_as_string=unknown_as_string,
         partition_spec=partition,

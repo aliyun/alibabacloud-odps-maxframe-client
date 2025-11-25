@@ -47,19 +47,6 @@ class ArrowArraySerializer(Serializer):
         if not isinstance(obj, (pa.Array, pa.ChunkedArray)):
             raise NotImplementedError(f"Array type {type(obj)} not supported")
 
-        if obj.type.num_fields == 0:
-            # use legacy serialization in case arrow changes deserializer method
-            data_type = str(obj.type)
-            if isinstance(obj, pa.Array):
-                array_type = _TYPE_CHAR_ARROW_ARRAY
-                buffers = obj.buffers()
-                sizes = len(obj)
-            else:  # ChunkedArray
-                array_type = _TYPE_CHAR_ARROW_CHUNKED_ARRAY
-                buffers = [c.buffers() for c in obj.chunks]
-                sizes = [len(c) for c in obj.chunks]
-            return [array_type, data_type, sizes], buffers, False
-
         meth, extracted = obj.__reduce__()
         meth_name = extract_class_name(meth)
         return [_TYPE_CHAR_ARROW_REDUCED, meth_name, None], list(extracted), False

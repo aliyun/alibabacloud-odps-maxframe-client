@@ -89,10 +89,13 @@ def get_output_types(*objs, unknown_as=None):
             continue
 
         try:
-            output_types.append(_get_output_type_by_cls(type(obj)))
+            res = _get_output_type_by_cls(type(obj))
         except TypeError:
             if unknown_as is not None:
-                output_types.append(unknown_as)
+                res = unknown_as
             else:  # pragma: no cover
                 raise
+        if res == OutputType.tensor and obj.shape == ():
+            res = OutputType.scalar
+        output_types.append(res)
     return output_types

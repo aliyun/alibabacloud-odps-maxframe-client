@@ -25,7 +25,7 @@ except ImportError:
     MultiOutputMixin = type("MultiOutputMixin", (object,), {})
 
 
-class LinearRegression(MultiOutputMixin, RegressorMixin, LinearModel):
+class LinearRegression(LinearModel, RegressorMixin, MultiOutputMixin):
     """
     Ordinary least squares Linear Regression.
 

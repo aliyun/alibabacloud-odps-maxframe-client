@@ -14,6 +14,7 @@
 
 import numpy as np
 import pandas as pd
+import pytest
 
 from ...initializer import DataFrame
 from ..sort_index import DataFrameSortIndex, sort_index
@@ -33,6 +34,9 @@ def test_sort_values():
     )
     df = DataFrame(raw)
     sorted_df = dataframe_sort_values(df, by="c")
+
+    with pytest.raises(KeyError):
+        dataframe_sort_values(df, by="non_exist")
 
     assert sorted_df.shape == raw.shape
     assert isinstance(sorted_df.op, DataFrameSortValues)

@@ -14,7 +14,7 @@
 
 import enum
 import re
-from typing import Dict, Iterator, List, Tuple, Union
+from typing import Any, Dict, Iterator, List, Tuple, Union
 from urllib.parse import urlencode
 
 from ...utils import implements, lazy_import
@@ -33,6 +33,12 @@ class HostEnforceType(enum.Enum):
     no_enforce = 0
     force_internal = 1
     force_external = 2
+
+
+class AuthMode(enum.Enum):
+    AK_SK = "ak_sk"
+    ROLE_ARN = "role_arn"
+    STS_TOKEN = "sts_token"
 
 
 class OSSFileSystem(FileSystem):
@@ -62,6 +68,10 @@ class OSSFileSystem(FileSystem):
             host_enforce_type=self._host_enforce_type,
         )
 
+    @property
+    def protocol(self) -> str:
+        return "oss"
+
     @implements(FileSystem.cat)
     def cat(self, path: path_type):
         raise NotImplementedError
@@ -69,6 +79,7 @@ class OSSFileSystem(FileSystem):
     @implements(FileSystem.ls)
     def ls(self, path: path_type) -> List[path_type]:
         file_list = []
+        path = self._rewrite_path(path)
         file_entry = oc.OSSFileEntry(path)
         if not file_entry.is_dir():
             raise OSError("ls for file is not supported")
@@ -93,6 +104,10 @@ class OSSFileSystem(FileSystem):
     @implements(FileSystem.delete)
     def delete(self, path: path_type, recursive: bool = False):
         return oc.oss_delete(self._rewrite_path(path))
+
+    @implements(FileSystem.cp)
+    def cp(self, path: path_type, new_path: path_type):
+        oc.oss_copy_file(self._rewrite_path(path), self._rewrite_path(new_path))
 
     @implements(FileSystem.rename)
     def rename(self, path: path_type, new_path: path_type):
@@ -140,6 +155,48 @@ class OSSFileSystem(FileSystem):
     @implements(FileSystem.glob)
     def glob(self, path: path_type, recursive: bool = False) -> List[path_type]:
         return glob(self._rewrite_path(path), recursive=recursive)
+
+    @implements(FileSystem.init_multipart_upload)
+    def init_multipart_upload(self, path: path_type) -> str:
+        path = self._rewrite_path(path)
+        parsed_path = oc.parse_osspath(path)
+        oss_bucket = oc.get_oss_bucket(parsed_path)
+        return oss_bucket.init_multipart_upload(parsed_path.key).upload_id
+
+    @implements(FileSystem.open_part_writer)
+    def open_part_writer(
+        self, path: path_type, upload_id: str, part_num: int
+    ) -> OSSIOBase:
+        path = self._rewrite_path(path)
+        return OSSIOBase(path, "wb", upload_id, part_num)
+
+    @implements(FileSystem.complete_multipart_upload)
+    def complete_multipart_upload(
+        self, path: path_type, upload_id: str, parts: List[Any]
+    ) -> None:
+        path = self._rewrite_path(path)
+        parsed_path = oc.parse_osspath(path)
+        oss_bucket = oc.get_oss_bucket(parsed_path)
+        parts = [oss2.models.PartInfo(**info) for info in parts]
+        oss_bucket.complete_multipart_upload(parsed_path.key, upload_id, parts)
+
+    @implements(FileSystem.abort_multipart_upload)
+    def abort_multipart_upload(self, path: path_type, upload_id: str) -> None:
+        path = self._rewrite_path(path)
+        parsed_path = oc.parse_osspath(path)
+        oss_bucket = oc.get_oss_bucket(parsed_path)
+        try:
+            oss_bucket.abort_multipart_upload(parsed_path.key, upload_id)
+        except oss2.exceptions.NoSuchUpload:
+            pass
+
+    @property
+    def supports_partial_overwrite(self) -> bool:
+        return False
+
+    @property
+    def supports_multipart_upload(self) -> bool:
+        return True
 
 
 def _rewrite_internal_endpoint(

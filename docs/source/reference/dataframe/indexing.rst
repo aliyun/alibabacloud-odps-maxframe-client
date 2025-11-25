@@ -38,6 +38,7 @@ Modifying and computations
    Index.argmin
    Index.drop
    Index.drop_duplicates
+   Index.factorize
    Index.insert
    Index.max
    Index.min

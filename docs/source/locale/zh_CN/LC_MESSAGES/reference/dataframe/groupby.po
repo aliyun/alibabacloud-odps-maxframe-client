@@ -243,6 +243,9 @@ msgid ""
 "axis argument, and often an argument indicating whether to restrict "
 "application to columns of a specific data type."
 msgstr ""
+"以下方法在 ``SeriesGroupBy`` 和 ``DataFrameGroupBy`` 对象中都可用，但可能"
+"略有不同，通常 ``DataFrameGroupBy`` 版本允许指定 axis 参数，并且通常有"
+"一个参数用于指示是否限制应用于特定数据类型的列。"
 
 #: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
 msgid ""
@@ -300,15 +303,15 @@ msgstr ""
 
 #: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
 msgid "Return a random sample of items from each group."
-msgstr ""
+msgstr "从每个组中返回随机样本项。"
 
 #: ../../source/reference/dataframe/groupby.rst:78
 msgid "The following methods are available only for ``SeriesGroupBy`` objects."
-msgstr ""
+msgstr "以下方法仅适用于 ``SeriesGroupBy`` 对象。"
 
 #: ../../source/reference/dataframe/groupby.rst:84
 msgid "The following methods are available only for ``DataFrameGroupBy`` objects."
-msgstr ""
+msgstr "以下方法仅适用于 ``DataFrameGroupBy`` 对象。"
 
 #: ../../source/reference/dataframe/groupby.rst:93:<autosummary>:1
 msgid ""

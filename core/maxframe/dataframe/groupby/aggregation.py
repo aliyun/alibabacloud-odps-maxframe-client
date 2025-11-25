@@ -14,14 +14,16 @@
 
 import functools
 import logging
-from typing import Callable, Dict, List
+from typing import Dict, List
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 
 from ... import opcodes
 from ...config import options
 from ...core import ENTITY_TYPE, EntityData, OutputType, enter_mode
+from ...lib.dtypes_extension import ArrowDtype
 from ...serialization import PickleContainer
 from ...serialization.serializables import (
     AnyField,
@@ -42,7 +44,8 @@ from ..reduction.aggregation import (
     is_funcs_aggregate,
     normalize_reduction_funcs,
 )
-from ..utils import is_cudf, parse_index
+from ..reduction.core import BuiltinReduction
+from ..utils import is_cudf, is_decimal128_dtype, parse_index
 
 cp = lazy_import("cupy", rename="cp")
 cudf = lazy_import("cudf")
@@ -50,6 +53,7 @@ cudf = lazy_import("cudf")
 logger = logging.getLogger(__name__)
 CV_THRESHOLD = 0.2
 MEAN_RATIO_THRESHOLD = 2 / 3
+MAX_DECIMAL128_PRECISION = 38
 _support_get_group_without_as_index = pd_release_version[:2] > (1, 0)
 _support_multi_index_as_index = pd_release_version[:2] > (2, 0)
 
@@ -109,10 +113,47 @@ _patch_groupby_kurt()
 del _patch_groupby_kurt
 
 
+def _fix_decimal_dtype(agg_result, raw_func, **raw_func_kw):
+    if agg_result.ndim == 2 and not any(
+        is_decimal128_dtype(dt) for dt in agg_result.dtypes
+    ):
+        return agg_result
+    elif agg_result.ndim == 1 and not is_decimal128_dtype(agg_result.dtype):
+        return agg_result
+
+    if agg_result.ndim == 2:
+        astype_dict = {}
+        for col, dt in agg_result.dtypes.items():
+            if not is_decimal128_dtype(dt):
+                continue
+            pa_dt = dt.pyarrow_dtype
+
+            has_col_decimal = raw_func in ("sum", "prod")
+            if not has_col_decimal and isinstance(raw_func, dict):
+                has_col_decimal = raw_func.get(col) in ("sum", "prod")
+            elif not has_col_decimal and raw_func_kw:
+                agg_def = raw_func_kw.get(col)
+                agg_def = (agg_def,) if not isinstance(agg_def, tuple) else agg_def
+                if agg_def:
+                    has_col_decimal = agg_def[-1] in ("sum", "prod")
+            if has_col_decimal or col in ("sum", "prod") or col[-1] in ("sum", "prod"):
+                astype_dict[col] = ArrowDtype(
+                    pa.decimal128(MAX_DECIMAL128_PRECISION, pa_dt.scale)
+                )
+        return agg_result.astype(astype_dict) if astype_dict else agg_result
+    else:
+        if not is_decimal128_dtype(agg_result.dtype) or raw_func not in ("sum", "prod"):
+            return agg_result
+        pa_dt = agg_result.dtype.pyarrow_dtype
+        return agg_result.astype(
+            ArrowDtype(pa.decimal128(MAX_DECIMAL128_PRECISION, pa_dt.scale))
+        )
+
+
 def build_mock_agg_result(
     groupby: GROUPBY_TYPE,
     groupby_params: Dict,
-    raw_func: Callable,
+    raw_func,
     **raw_func_kw,
 ):
     try:
@@ -131,7 +172,7 @@ def build_mock_agg_result(
             .to_frame()
         )
         agg_result.index.names = [None] * agg_result.index.nlevels
-    return agg_result
+    return _fix_decimal_dtype(agg_result, raw_func, **raw_func_kw)
 
 
 class DataFrameGroupByAgg(DataFrameOperator, DataFrameOperatorMixin):
@@ -165,13 +206,16 @@ class DataFrameGroupByAgg(DataFrameOperator, DataFrameOperatorMixin):
             self.groupby_params.get("by"), types=PickleContainer, checker=callable
         )
         if callable_bys and any(
-            not isinstance(fun, BuiltinFunction) for fun in callable_bys
+            not isinstance(fun, (BuiltinFunction, BuiltinReduction))
+            for fun in callable_bys
         ):
             return True
 
         return any(
             fun.custom_reduction
-            and not isinstance(fun.custom_reduction, BuiltinFunction)
+            and not isinstance(
+                fun.custom_reduction, (BuiltinFunction, BuiltinReduction)
+            )
             for fun in self.agg_funcs or ()
         )
 

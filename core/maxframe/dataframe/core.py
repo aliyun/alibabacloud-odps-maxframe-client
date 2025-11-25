@@ -743,6 +743,7 @@ class IndexData(HasShapeTileableData, _ToPandasMixin):
             self._to_maxframe_tensor(extract_multi_index=True),
             index=index_,
             columns=columns,
+            check_index_size=False,
         )
 
     def to_series(self, index=None, name=None):

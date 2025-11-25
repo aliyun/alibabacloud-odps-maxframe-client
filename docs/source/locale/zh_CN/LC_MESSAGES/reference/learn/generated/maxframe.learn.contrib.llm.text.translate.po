@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-19 21:19+0800\n"
+"POT-Creation-Date: 2025-10-29 19:01+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -30,8 +30,8 @@ msgid ""
 msgstr "使用语言模型将 Series 中的文本内容从源语言翻译为目标语言。"
 
 #: maxframe.learn.contrib.llm.text.translate of
-msgid "Parameters"
-msgstr "参数"
+msgid "参数"
+msgstr ""
 
 #: maxframe.learn.contrib.llm.text.translate:3 of
 msgid ""
@@ -56,8 +56,8 @@ msgid "Index for the output series, by default None, will generate new index."
 msgstr "输出 Series 的索引，默认为 None，将生成新索引。"
 
 #: maxframe.learn.contrib.llm.text.translate of
-msgid "Returns"
-msgstr "返回"
+msgid "返回"
+msgstr ""
 
 #: maxframe.learn.contrib.llm.text.translate:15 of
 msgid ""
@@ -75,12 +75,12 @@ msgid "返回类型"
 msgstr ""
 
 #: maxframe.learn.contrib.llm.text.translate:21 of
-msgid "Examples"
-msgstr "示例"
+msgid "示例"
+msgstr ""
 
 #: maxframe.learn.contrib.llm.text.translate:39 of
-msgid "Notes"
-msgstr "备注"
+msgid "备注"
+msgstr ""
 
 #: maxframe.learn.contrib.llm.text.translate:40 of
 msgid ""

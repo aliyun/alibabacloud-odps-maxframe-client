@@ -49,7 +49,26 @@ class LLMTaskOperator(Operator, DataFrameOperatorMixin):
     def __init__(self, output_types=None, **kw):
         if output_types is None:
             output_types = [OutputType.dataframe]
-        super().__init__(_output_types=output_types, **kw)
+
+        running_options = kw.pop("running_options", {})
+        self._setup_default_gu_quota(running_options)
+
+        super().__init__(
+            _output_types=output_types, running_options=running_options, **kw
+        )
+
+    @staticmethod
+    def _setup_default_gu_quota(running_options):
+        from .... import options
+
+        running_options["gu_quota"] = running_options.get(
+            "gu_quota", options.session.gu_quota_name
+        )
+        if running_options["gu_quota"] is not None and not isinstance(
+            running_options["gu_quota"], str
+        ):
+            raise TypeError("gu_quota must be a string")
+        return running_options
 
     def get_output_dtypes(self) -> Dict[str, np.dtype]:
         raise NotImplementedError

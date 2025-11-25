@@ -37,8 +37,14 @@ class RemoteException(MaxFrameError):
         try:
             buffers = pickle_buffers(exc)
         except:
-            logger.exception("Cannot pickle exception %s", exc)
-            buffers = []
+            if isinstance(exc, (IndexError, KeyError, ValueError)):
+                new_exc = type(exc)(*(str(a) for a in exc.args)).with_traceback(
+                    exc.__traceback__
+                )
+                buffers = pickle_buffers(new_exc)
+            else:
+                logger.exception("Cannot pickle exception %s", exc)
+                buffers = []
 
         messages, tracebacks = [], []
         while exc is not None:

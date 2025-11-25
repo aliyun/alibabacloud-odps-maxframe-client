@@ -268,6 +268,9 @@ def infer_dtype(np_func, multi_outputs=False, empty=True, reverse=False, check=T
                 except:  # noqa: E722
                     dtype = None
 
+            if any(is_arg(t) and t.dtype == "O" for t in tensors):
+                dtype = np.dtype("O")
+
             if usr_dtype and dtype:
                 can_cast_kwargs = {}
                 if kw.get("casting") is not None:

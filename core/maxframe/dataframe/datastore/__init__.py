@@ -14,7 +14,9 @@
 
 from .direct import df_to_dict, series_to_dict, series_to_list, to_clipboard
 from .to_csv import to_csv
+from .to_json import to_json
 from .to_odps import to_odps_table
+from .to_parquet import to_parquet
 
 
 def _install():
@@ -24,11 +26,14 @@ def _install():
         t.to_clipboard = to_clipboard
         t.to_csv = to_csv
         t.to_dict = df_to_dict
+        t.to_json = to_json
         t.to_odps_table = to_odps_table
+        t.to_parquet = to_parquet
     for t in SERIES_TYPE:
         t.to_clipboard = to_clipboard
         t.to_csv = to_csv
         t.to_dict = series_to_dict
+        t.to_json = to_json
         t.to_list = series_to_list
 
 

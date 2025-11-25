@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-10 10:10+0800\n"
+"POT-Creation-Date: 2025-10-23 14:19+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -87,19 +87,48 @@ msgstr "将 DataFrame 对象写入 MaxCompute (ODPS) 表。"
 msgid "Native pandas"
 msgstr "原生 pandas"
 
-#: ../../source/reference/dataframe/io.rst:30:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:32:<autosummary>:1
 msgid ""
 ":py:obj:`read_pandas <maxframe.dataframe.read_pandas>`\\ \\(data\\, "
 "\\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/io.rst:30:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:32:<autosummary>:1
 msgid "Create MaxFrame objects from pandas."
 msgstr "从 pandas 创建 MaxFrame 对象。"
 
-#: ../../source/reference/dataframe/io.rst:30:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:32:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.to_pandas <maxframe.dataframe.DataFrame.to_pandas>`\\ "
 "\\(\\[session\\]\\)"
 msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:34
+msgid "Parquet"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:38:<autosummary>:1
+msgid ""
+":py:obj:`read_parquet <maxframe.dataframe.read_parquet>`\\ \\(path\\[\\, "
+"engine\\, columns\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:38:<autosummary>:1
+msgid "Load a parquet object from the file path, returning a DataFrame."
+msgstr "从文件路径加载 parquet 对象，返回一个 DataFrame。"
+
+#: ../../source/reference/dataframe/io.rst:47:<autosummary>:1
+msgid ""
+":py:obj:`DataFrame.to_parquet "
+"<maxframe.dataframe.DataFrame.to_parquet>`\\ \\(path\\[\\, engine\\, "
+"...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:47:<autosummary>:1
+msgid ""
+"Write a DataFrame to the binary parquet format, each chunk will be "
+"written to a Parquet file."
+msgstr ""
+"将 DataFrame 以二进制 parquet 格式写入，每个数据块将被写入一个 Parquet "
+"文件。"
 

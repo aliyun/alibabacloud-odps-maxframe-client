@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev817+g0d9b3d99d.d20251019\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-19 21:19+0800\n"
+"POT-Creation-Date: 2025-10-29 19:01+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -30,8 +30,8 @@ msgid ""
 msgstr "使用语言模型从系列中的文本内容提取结构化信息。"
 
 #: maxframe.learn.contrib.llm.text.extract of
-msgid "Parameters"
-msgstr "参数"
+msgid "参数"
+msgstr ""
 
 #: maxframe.learn.contrib.llm.text.extract:3 of
 msgid ""
@@ -71,8 +71,8 @@ msgid "Index for the output series, by default None, will generate new index."
 msgstr "输出序列的索引，默认为 None，将生成新索引。"
 
 #: maxframe.learn.contrib.llm.text.extract of
-msgid "Returns"
-msgstr "返回"
+msgid "返回"
+msgstr ""
 
 #: maxframe.learn.contrib.llm.text.extract:19 of
 msgid ""
@@ -85,13 +85,17 @@ msgstr ""
 "）和 'success'（布尔状态）。如果 'success' 为 False，则 'output' 列将包含"
 "错误信息而非预期输出。"
 
+#: maxframe.learn.contrib.llm.text.extract of
+msgid "返回类型"
+msgstr ""
+
 #: maxframe.learn.contrib.llm.text.extract:25 of
-msgid "Examples"
-msgstr "示例"
+msgid "示例"
+msgstr ""
 
 #: maxframe.learn.contrib.llm.text.extract:55 of
-msgid "Notes"
-msgstr "备注"
+msgid "备注"
+msgstr ""
 
 #: maxframe.learn.contrib.llm.text.extract:56 of
 msgid ""

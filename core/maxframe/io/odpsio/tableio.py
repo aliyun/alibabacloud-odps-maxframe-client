@@ -118,7 +118,9 @@ class TunnelMultiPartitionReader:
         partition_to_download_ids: Dict[str, str] = None,
     ):
         self._odps_entry = odps_entry
-        self._table = odps_entry.get_table(table_name)
+        with sync_pyodps_options():
+            self._table = odps_entry.get_table(table_name)
+
         self._columns = columns
 
         odps_schema = ODPSTableIO._get_reader_schema(
@@ -262,7 +264,8 @@ class TunnelTableIO(ODPSTableIO):
 
     @classmethod
     def _get_modified_time(cls, odps_entry: ODPS, full_table_name, partition):
-        data_src = odps_entry.get_table(full_table_name)
+        with sync_pyodps_options():
+            data_src = odps_entry.get_table(full_table_name)
         if partition is not None:
             data_src = data_src.partitions[partition]
         return data_src.last_data_modified_time
@@ -276,7 +279,8 @@ class TunnelTableIO(ODPSTableIO):
         reopen: bool = False,
         timeout: Optional[float] = None,
     ) -> Dict[Optional[str], TableDownloadSession]:
-        table = odps_entry.get_table(full_table_name)
+        with sync_pyodps_options():
+            table = odps_entry.get_table(full_table_name)
         tunnel = TableTunnel(odps_entry, quota_name=options.tunnel_quota_name)
         parts = (
             [partitions]
@@ -388,8 +392,9 @@ class TunnelTableIO(ODPSTableIO):
         partition: Optional[str] = None,
         overwrite: bool = True,
     ):
-        table = self._odps.get_table(full_table_name)
         with sync_pyodps_options():
+            table = self._odps.get_table(full_table_name)
+
             with table.open_writer(
                 partition=partition,
                 arrow=True,
@@ -616,7 +621,9 @@ class HaloTableIO(ODPSTableIO):
             TableBatchScanRequest,
         )
 
-        table = self._odps.get_table(full_table_name)
+        with sync_pyodps_options():
+            table = self._odps.get_table(full_table_name)
+
         client = StorageApiArrowClient(
             self._odps,
             table,
@@ -695,7 +702,9 @@ class HaloTableIO(ODPSTableIO):
             TableBatchWriteRequest,
         )
 
-        table = self._odps.get_table(full_table_name)
+        with sync_pyodps_options():
+            table = self._odps.get_table(full_table_name)
+
         client = StorageApiArrowClient(
             self._odps,
             table,

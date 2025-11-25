@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"POT-Creation-Date: 2025-10-29 19:01+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -27,7 +27,7 @@ msgstr ""
 msgid "DashScope text LLM."
 msgstr "DashScope 文本大语言模型。"
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:28:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:29:<autosummary>:1
 #: maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.__init__:1 of
 msgid "Initialize a DashScope text LLM."
 msgstr "初始化 DashScope 文本大语言模型。"
@@ -52,73 +52,80 @@ msgstr "包含 DashScope API 密钥的 MaxCompute 资源文件名。"
 msgid "Methods"
 msgstr "方法"
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:28:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:29:<autosummary>:1
 msgid ""
 ":py:obj:`__init__ "
 "<maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.__init__>`\\"
 " \\(name\\, api\\_key\\_resource\\)"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:28:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:29:<autosummary>:1
 msgid ""
 ":py:obj:`classify "
 "<maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.classify>`\\"
 " \\(series\\, labels\\[\\, description\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:28:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:29:<autosummary>:1
 msgid ""
 ":py:obj:`copy "
 "<maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.copy>`\\ "
 "\\(\\)"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:28:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:29:<autosummary>:1
 msgid ""
 ":py:obj:`copy_to "
 "<maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.copy_to>`\\"
 " \\(target\\)"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:28:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`extract "
+"<maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.extract>`\\"
+" \\(series\\, schema\\[\\, description\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:29:<autosummary>:1
 msgid ""
 ":py:obj:`generate "
 "<maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.generate>`\\"
 " \\(data\\, prompt\\_template\\[\\, params\\]\\)"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:28:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:29:<autosummary>:1
 msgid ""
 ":py:obj:`summarize "
 "<maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.summarize>`\\"
 " \\(series\\[\\, index\\]\\)"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:28:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:29:<autosummary>:1
 msgid ""
 ":py:obj:`translate "
 "<maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.translate>`\\"
 " \\(series\\, target\\_language\\[\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:28:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:29:<autosummary>:1
 msgid ""
 ":py:obj:`validate_params "
 "<maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.validate_params>`\\"
 " \\(params\\)"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:30
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:31
 msgid "Attributes"
 msgstr "属性"
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:34:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:35:<autosummary>:1
 msgid ""
 ":py:obj:`api_key_resource "
 "<maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.api_key_resource>`\\"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:34:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.rst:35:<autosummary>:1
 msgid ""
 ":py:obj:`name "
 "<maxframe.learn.contrib.llm.models.dashscope.DashScopeTextLLM.name>`\\"

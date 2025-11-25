@@ -12,8 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from ...serialization.serializables import AnyField, DictField, ListField, StringField
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 
 
 class DataFrameDataStore(DataFrameOperator, DataFrameOperatorMixin):
     pass
+
+
+class LakeDataStore(DataFrameDataStore):
+    path = AnyField("path")
+    compression = AnyField("compression", default=None)
+    partition_cols = ListField("partition_cols", default=None)
+    storage_options = DictField("storage_options", default=None)
+    write_stage = StringField("write_stage", default=None)

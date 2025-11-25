@@ -31,7 +31,6 @@ from ...lib.filesystem import get_fs, glob, open_file
 from ...serialization.serializables import (
     AnyField,
     BoolField,
-    DictField,
     Int32Field,
     Int64Field,
     ListField,
@@ -42,7 +41,7 @@ from ..utils import parse_index, to_arrow_dtypes, validate_dtype_backend
 from .core import (
     ColumnPruneSupportedDataSourceMixin,
     DtypeBackendCompatibleMixin,
-    IncrementalIndexDatasource,
+    LakeDataSource,
 )
 
 cudf = lazy_import("cudf")
@@ -90,13 +89,12 @@ def _find_chunk_start_end(f, offset, size):
 
 
 class DataFrameReadCSV(
-    IncrementalIndexDatasource,
+    LakeDataSource,
     ColumnPruneSupportedDataSourceMixin,
     DtypeBackendCompatibleMixin,
 ):
     _op_type_ = opcodes.READ_CSV
 
-    path = AnyField("path")
     names = ListField("names")
     sep = StringField("sep")
     header = AnyField("header")
@@ -105,12 +103,7 @@ class DataFrameReadCSV(
     usecols = AnyField("usecols")
     offset = Int64Field("offset")
     size = Int64Field("size")
-    incremental_index = BoolField("incremental_index")
-    dtype_backend = StringField("dtype_backend", default=None)
     keep_usecols_order = BoolField("keep_usecols_order", default=None)
-    storage_options = DictField("storage_options")
-    merge_small_files = BoolField("merge_small_files")
-    merge_small_file_options = DictField("merge_small_file_options")
 
     def get_columns(self):
         return self.usecols

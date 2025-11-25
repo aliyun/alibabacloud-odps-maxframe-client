@@ -548,12 +548,14 @@ def test_pandas_types_to_arrow_schema():
             "int8": pd.Series([], dtype=np.int8),
             "map": pd.Series([], dtype=dict_(pa.string(), pa.string())),
             "list": pd.Series([], dtype=list_(pa.string())),
+            "str": pd.Series([], dtype=pd.StringDtype("pyarrow")),
         },
     )
     schema = pandas_types_to_arrow_schema(pd_data)
     assert schema.field("int8").type == pa.int8()
     assert schema.field("map").type == pa.map_(pa.string(), pa.string())
     assert schema.field("list").type == pa.list_(pa.string())
+    assert schema.field("str").type == pa.string()
 
 
 @pytest.mark.skipif(

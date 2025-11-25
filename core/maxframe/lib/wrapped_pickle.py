@@ -32,18 +32,21 @@ else:
     import pickle as pickle_mod  # nosec  # pylint: disable=import_pickle
 
 __all__ = [
-    "Pickler",
-    "Unpickler",
-    "dump",
-    "dumps",
-    "load",
-    "loads",
-    "PickleError",
-    "PicklingError",
-    "UnpicklingError",
     "DEFAULT_PROTOCOL",
     "HIGHEST_PROTOCOL",
+    "dump",
+    "dumps",
+    "enforce_unpickle_forbidden",
+    "is_unpickle_forbidden",
+    "load",
+    "loads",
+    "reset_unpickle_forbidden",
     "switch_unpickle",
+    "PickleError",
+    "Pickler",
+    "PicklingError",
+    "Unpickler",
+    "UnpicklingError",
 ]
 
 Pickler = cloudpickle.Pickler
@@ -58,20 +61,44 @@ DEFAULT_PROTOCOL = pickle_mod.DEFAULT_PROTOCOL
 HIGHEST_PROTOCOL = pickle_mod.HIGHEST_PROTOCOL
 
 
-_default_forbidden_val = bool(int(os.getenv("MAXFRAME_FORBIDDEN_PICKLE", "0")))
-_unpickle_forbidden_var = contextvars.ContextVar(
-    "unpickle_forbidden", default=_default_forbidden_val
-)
+_PICKLE_FORBIDDEN_ENV = "MAXFRAME_FORBIDDEN_PICKLE"
+
+_default_forbidden_val = False
+_unpickle_forbidden_var = contextvars.ContextVar("unpickle_forbidden", default=None)
+
+
+def _reload_context_vars():
+    global _default_forbidden_val, _unpickle_forbidden_var
+    _default_forbidden_val = bool(int(os.getenv(_PICKLE_FORBIDDEN_ENV, "0")))
+    _unpickle_forbidden_var.set(_default_forbidden_val)
+
+
+_reload_context_vars()
+
+
+def enforce_unpickle_forbidden():
+    os.environ[_PICKLE_FORBIDDEN_ENV] = "1"
+    _reload_context_vars()
+    if not is_unpickle_forbidden():
+        raise SystemError("Pickle forbid not enforced")
+
+
+def reset_unpickle_forbidden():
+    os.environ[_PICKLE_FORBIDDEN_ENV] = "0"
+    _reload_context_vars()
 
 
 def is_unpickle_forbidden():
+    var_val = _unpickle_forbidden_var.get(None)
+    if var_val is None:
+        _unpickle_forbidden_var.set(_default_forbidden_val)
     return _unpickle_forbidden_var.get(False)
 
 
 class Unpickler(pickle_mod.Unpickler):
     @functools.wraps(pickle_mod.Unpickler.load)
     def load(self):
-        if _unpickle_forbidden_var.get(False):
+        if is_unpickle_forbidden():
             raise ValueError("Unpickle is forbidden here")
         return super().load()
 

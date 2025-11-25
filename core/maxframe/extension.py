@@ -14,7 +14,7 @@
 
 import abc
 import itertools
-from typing import TYPE_CHECKING, Iterable, Tuple, Type
+from typing import TYPE_CHECKING, Iterable, Optional, Tuple, Type
 
 if TYPE_CHECKING:
     from .codegen import DAGCodeGenerator
@@ -84,6 +84,30 @@ class MaxFrameExtension(metaclass=abc.ABCMeta):
         """
         Destroy the services of the extension before the app is actually stopped and
         will be called only once.
+        """
+        pass
+
+    @classmethod
+    def get_logview_collector_class(cls) -> Optional[Type]:
+        """
+        Get the logview collector class for this engine.
+
+        Returns
+        -------
+        Optional[Type]
+            The collector class, or None if this engine doesn't provide logview support.
+        """
+        pass
+
+    @classmethod
+    def get_logview_data_field_name(cls) -> Optional[str]:
+        """
+        Get the field name to store engine-specific logview data in LogviewSessionDetail.
+
+        Returns
+        -------
+        Optional[str]
+            Field name (e.g., 'dpes'), or None if no logview support.
         """
         pass
 

@@ -153,14 +153,16 @@ def oss_isdir(path: path_type):
     it is considered as a directory.
     """
     dirname = stringify_path(path)
-    if not dirname.endswith("/"):
-        dirname = dirname + "/"
     logger.info("Checking isdir for path %s", dirname)
+
     parsed_path = parse_osspath(dirname)
+    key = parsed_path.key
+    if not key.endswith("/"):
+        key += "/"
     oss_bucket = get_oss_bucket(parsed_path)
     isdir = False
-    for obj in oss2.ObjectIteratorV2(oss_bucket, prefix=parsed_path.key, max_keys=2):
-        if obj.key == parsed_path.key:
+    for obj in oss2.ObjectIteratorV2(oss_bucket, prefix=key, max_keys=2):
+        if obj.key == key:
             continue
         isdir = True
         break

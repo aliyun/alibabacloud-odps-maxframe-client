@@ -14,7 +14,7 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) $(SOURCEDIR)
 I18NSPHINXLANGS = -l zh_CN
 
 # make maxframe code available for sphinx builder
-export PYTHONPATH := ../
+export PYTHONPATH := ../core
 
 # Put it first so that "make" without argument is like "make help".
 help:

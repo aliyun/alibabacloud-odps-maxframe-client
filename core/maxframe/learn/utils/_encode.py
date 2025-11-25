@@ -16,6 +16,7 @@ from typing import NamedTuple
 
 import numpy as np
 
+from maxframe import dataframe as md
 from maxframe import tensor as mt
 
 from ...udf import builtin_function
@@ -61,14 +62,11 @@ def _unique(values, *, return_inverse=False):
         Only provided if `return_inverse` is True.
     """
     if values.dtype == object:
-        # FIXME workaround for LabelEncoder
-        #  remove if-block below when Series.unique implemented
-        # series_unique = md.Series(md.Series(values).unique()).sort_values().values
-        # if return_inverse:
-        #     return series_unique, _map_to_integer(values, series_unique)
-        # else:
-        #     return series_unique
-        return mt.unique(values, return_inverse=return_inverse)
+        series_unique = md.Series(md.Series(values).unique()).sort_values().values
+        if return_inverse:
+            return series_unique, _map_to_integer(values, series_unique)
+        else:
+            return series_unique
 
     out = mt.unique(values, return_inverse=return_inverse)
 

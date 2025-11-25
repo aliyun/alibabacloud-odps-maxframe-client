@@ -462,26 +462,24 @@ def _generate_value(dtype, fill_value):
 
     if isinstance(dtype, pa.ListType):
         return [_generate_value(dtype.value_type, fill_value)]
-
-    if isinstance(dtype, pa.MapType):
+    elif isinstance(dtype, pa.MapType):
         return [
             (
                 _generate_value(dtype.key_type, fill_value),
                 _generate_value(dtype.item_type, fill_value),
             )
         ]
-
-    if isinstance(dtype, pa.StructType):
+    elif isinstance(dtype, pa.StructType):
         result = {}
         for i in range(dtype.num_fields):
             field = dtype[i]
             result[field.name] = _generate_value(field.type, fill_value)
         return result
-
-    if isinstance(dtype, pa.DataType):
-        return _generate_value(dtype.to_pandas_dtype(), fill_value)
-
-    if isinstance(dtype, ExternalBlobDtype):
+    elif isinstance(dtype, pa.DataType):
+        return pa.array([_generate_value(dtype.to_pandas_dtype(), fill_value)]).cast(
+            dtype
+        )[0]
+    elif isinstance(dtype, ExternalBlobDtype):
         return SolidBlob(str(fill_value).encode())
 
     # special handle for datetime64 and timedelta64
@@ -507,16 +505,14 @@ def build_empty_df(dtypes, index=None):
     # duplicate column may exist,
     # so use RangeIndex first
     df = pd.DataFrame(record, columns=range(len(dtypes)), index=index)
-    for i, dtype in enumerate(dtypes):
-        s = df.iloc[:, i]
-        if not pd.api.types.is_dtype_equal(s.dtype, dtype):
-            df.iloc[:, i] = s.astype(dtype)
-
+    df = df.astype({i: dt for i, dt in enumerate(dtypes)})
     df.columns = columns
     return df[:length] if len(df) > length else df
 
 
 def build_df(df_obj, fill_value=1, size=1, ensure_string=False):
+    from .core import INDEX_TYPE, SERIES_TYPE
+
     dfs = []
     if not isinstance(size, (list, tuple)):
         sizes = [size]
@@ -528,8 +524,6 @@ def build_df(df_obj, fill_value=1, size=1, ensure_string=False):
     else:
         fill_values = fill_value
 
-    from .core import INDEX_TYPE, SERIES_TYPE
-
     dtypes = (
         pd.Series([df_obj.dtype], index=[df_obj.name])
         if isinstance(df_obj, (INDEX_TYPE, SERIES_TYPE))
@@ -537,11 +531,17 @@ def build_df(df_obj, fill_value=1, size=1, ensure_string=False):
     )
     for size, fill_value in zip(sizes, fill_values):
         record = [[_generate_value(dtype, fill_value) for dtype in dtypes]] * size
-        df = pd.DataFrame(record)
-        df.columns = dtypes.index
-
-        if len(record) != 0:  # columns is empty in some cases
-            target_index = df_obj.index_value.to_pandas()
+        df = (
+            pd.DataFrame(record)
+            .astype(dtypes.reset_index(drop=True))
+            .set_axis(dtypes.index, axis=1)
+        )
+        if len(record) != 0:  # `columns` is empty in some cases
+            target_index = (
+                df_obj.index_value.to_pandas()
+                if hasattr(df_obj, "index_value")
+                else df_obj.index
+            )
             if isinstance(target_index, pd.MultiIndex):
                 index_val = tuple(
                     _generate_value(level.dtype, fill_value)
@@ -552,7 +552,9 @@ def build_df(df_obj, fill_value=1, size=1, ensure_string=False):
                 )
             else:
                 index_val = _generate_value(target_index.dtype, fill_value)
-                df.index = pd.Index([index_val] * size, name=target_index.name)
+                df.index = pd.Index([index_val] * size, name=target_index.name).astype(
+                    target_index.dtype
+                )
 
         # make sure dtypes correct
         for i, dtype in enumerate(dtypes):
@@ -765,17 +767,74 @@ def merge_index_value(to_merge_index_values: dict, store_data: bool = False):
     return index_value
 
 
-def infer_dtypes(left_dtypes, right_dtypes, operator):
+def is_decimal128_dtype(dtype):
+    return isinstance(dtype, ArrowDtype) and isinstance(
+        dtype.pyarrow_dtype, pa.Decimal128Type
+    )
+
+
+def is_decimal256_dtype(dtype):
+    return isinstance(dtype, ArrowDtype) and isinstance(
+        dtype.pyarrow_dtype, pa.Decimal256Type
+    )
+
+
+def decimal_128_to_256_dtype(dtype):
+    if not is_decimal128_dtype(dtype):
+        return dtype
+    return ArrowDtype(
+        pa.decimal256(dtype.pyarrow_dtype.precision, dtype.pyarrow_dtype.scale)
+    )
+
+
+def safe_decimal_256_to_128_dtype(dtype):
+    if not is_decimal256_dtype(dtype) or dtype.pyarrow_dtype.precision > 38:
+        return dtype
+    return ArrowDtype(
+        pa.decimal128(dtype.pyarrow_dtype.precision, dtype.pyarrow_dtype.scale)
+    )
+
+
+def _infer_dtypes(left_dtypes, right_dtypes, operator):
     left = build_empty_df(left_dtypes)
     right = build_empty_df(right_dtypes)
     return operator(left, right).dtypes
 
 
-@functools.lru_cache(100)
-def infer_dtype(left_dtype, right_dtype, operator):
+def infer_dtypes(left_dtypes, right_dtypes, operator):
+    try:
+        return _infer_dtypes(left_dtypes, right_dtypes, operator)
+    except pa.ArrowInvalid as exc:
+        if "Decimal precision" not in str(exc):
+            raise
+        # automatic upgrade to decimal256 type and downgrade
+        #  to decimal128 type where possible
+        left_dtypes = left_dtypes.map(decimal_128_to_256_dtype)
+        right_dtypes = right_dtypes.map(decimal_128_to_256_dtype)
+        return _infer_dtypes(left_dtypes, right_dtypes, operator).map(
+            safe_decimal_256_to_128_dtype
+        )
+
+
+def _infer_dtype(left_dtype, right_dtype, operator):
     left = build_empty_series(left_dtype)
     right = build_empty_series(right_dtype)
     return operator(left, right).dtype
+
+
+@functools.lru_cache(100)
+def infer_dtype(left_dtype, right_dtype, operator):
+    try:
+        return _infer_dtype(left_dtype, right_dtype, operator)
+    except pa.ArrowInvalid as exc:
+        if "Decimal precision" not in str(exc):
+            raise
+        # automatic upgrade to decimal256 type
+        return _infer_dtype(
+            decimal_128_to_256_dtype(left_dtype),
+            decimal_128_to_256_dtype(right_dtype),
+            operator,
+        )
 
 
 def filter_dtypes(dtypes, column_min_max):
@@ -1023,10 +1082,20 @@ def create_sa_connection(con, **kwargs):
             engine.dispose()
 
 
+def wrap_arrow_type(arrow_type):
+    if arrow_type == pa.string():
+        return pd.StringDtype("pyarrow")
+    return ArrowDtype(arrow_type)
+
+
 def to_arrow_dtypes(dtypes):
     from ..io.odpsio.schema import pandas_dtypes_to_arrow_schema
 
-    arrow_schema = pandas_dtypes_to_arrow_schema(dtypes)
+    if isinstance(dtypes, pa.Schema):
+        arrow_schema = dtypes
+        dtypes = arrow_schema.empty_table().to_pandas().dtypes
+    else:
+        arrow_schema = pandas_dtypes_to_arrow_schema(dtypes)
     new_dtypes = dtypes.copy()
     for i in range(len(dtypes)):
         arrow_type = arrow_schema.types[i]
@@ -1034,10 +1103,8 @@ def to_arrow_dtypes(dtypes):
         if isinstance(dt, pd.api.extensions.ExtensionDtype):
             # make existing extension dtype consistent
             new_dtypes.iloc[i] = dt
-        elif arrow_type == pa.string():
-            new_dtypes.iloc[i] = pd.StringDtype("pyarrow")
         else:
-            new_dtypes.iloc[i] = ArrowDtype(arrow_type)
+            new_dtypes.iloc[i] = wrap_arrow_type(arrow_type)
     return new_dtypes
 
 
@@ -1570,6 +1637,7 @@ def copy_func_scheduling_hints(func, op: "DataFrameOperator") -> None:
 
     expect_engine = None
     expect_gpu = None
+    fs_mount = None
     default_options = options.function.default_running_options or {}
 
     if isinstance(func, MarkedFunction):
@@ -1577,6 +1645,7 @@ def copy_func_scheduling_hints(func, op: "DataFrameOperator") -> None:
         expect_engine = func.expect_engine
         expect_resources = func.expect_resources or {}
         expect_gpu = func.gpu
+        fs_mount = func.fs_mount
 
         # merge default options if not set
         for key, value in default_options.items():
@@ -1593,12 +1662,20 @@ def copy_func_scheduling_hints(func, op: "DataFrameOperator") -> None:
         adjust=True,
     )
 
+    # If GPU is required but gu_quota not set, inherit from global setting
+    if expect_resources.get("gpu"):
+        expect_resources["gu_quota"] = expect_resources.get(
+            "gu_quota", [options.session.gu_quota_name]
+        )
+
     if expect_engine:
         op.expect_engine = expect_engine
     if expect_resources:
         op.expect_resources = expect_resources
     if expect_gpu:
         op.gpu = expect_gpu
+    if fs_mount:
+        op.fs_mount = fs_mount
 
 
 def make_column_list(col, dtypes_or_columns, level=None):

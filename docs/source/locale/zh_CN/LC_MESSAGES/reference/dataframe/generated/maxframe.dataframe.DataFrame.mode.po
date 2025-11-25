@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"POT-Creation-Date: 2025-10-31 17:39+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -24,32 +24,42 @@ msgid "maxframe.dataframe.DataFrame.mode"
 msgstr ""
 
 #: maxframe.dataframe.reduction.mode.mode_dataframe:1 of
+msgid "Get the mode(s) of each element along the selected axis."
+msgstr "获取沿选定轴的每个元素的众数。"
+
+#: maxframe.dataframe.reduction.mode.mode_dataframe:3 of
 msgid ""
-"Get the mode(s) of each element along the selected axis. The mode of a "
-"set of values is the value that appears most often. It can be multiple "
-"values. :param axis: The axis to iterate over while searching for the "
-"mode:"
-msgstr ""
-"获取沿选定轴的每个元素的众数。一组值的众数是出现频率最高的值。可能有多个"
-"值。:param axis: 在搜索众数时遍历的轴："
-
-#: maxframe.dataframe.reduction.mode.mode_dataframe:5 of
-msgid "0 or 'index' : get mode of each column"
-msgstr "0 或 'index'：获取每列的众数"
-
-#: maxframe.dataframe.reduction.mode.mode_dataframe:6 of
-msgid "1 or 'columns' : get mode of each row."
-msgstr "1 或 'columns'：获取每行的众数。"
+"The mode of a set of values is the value that appears most often. It can "
+"be multiple values."
+msgstr "一组值的众数是出现频率最高的值。可能有多个值。"
 
 #: maxframe.dataframe.reduction.mode.mode_dataframe of
 msgid "参数"
 msgstr ""
 
+#: maxframe.dataframe.reduction.mode.mode_dataframe:6 of
+msgid ""
+"The axis to iterate over while searching for the mode:  * 0 or 'index' : "
+"get mode of each column * 1 or 'columns' : get mode of each row."
+msgstr ""
+
+#: maxframe.dataframe.reduction.mode.mode_dataframe:6 of
+msgid "The axis to iterate over while searching for the mode:"
+msgstr "在搜索众数时遍历的轴："
+
 #: maxframe.dataframe.reduction.mode.mode_dataframe:8 of
+msgid "0 or 'index' : get mode of each column"
+msgstr "0 或 'index'：获取每列的众数"
+
+#: maxframe.dataframe.reduction.mode.mode_dataframe:9 of
+msgid "1 or 'columns' : get mode of each row."
+msgstr "1 或 'columns'：获取每行的众数。"
+
+#: maxframe.dataframe.reduction.mode.mode_dataframe:11 of
 msgid "If True, only apply to numeric columns."
 msgstr "如果为 True，则仅应用于数值列。"
 
-#: maxframe.dataframe.reduction.mode.mode_dataframe:10 of
+#: maxframe.dataframe.reduction.mode.mode_dataframe:13 of
 msgid "Don't consider counts of NaN/NaT."
 msgstr "不考虑 NaN/NaT 的计数。"
 
@@ -57,7 +67,7 @@ msgstr "不考虑 NaN/NaT 的计数。"
 msgid "返回"
 msgstr ""
 
-#: maxframe.dataframe.reduction.mode.mode_dataframe:13 of
+#: maxframe.dataframe.reduction.mode.mode_dataframe:16 of
 msgid "The modes of each column or row."
 msgstr "每列或每行的众数。"
 
@@ -65,23 +75,50 @@ msgstr "每列或每行的众数。"
 msgid "返回类型"
 msgstr ""
 
-#: maxframe.dataframe.reduction.mode.mode_dataframe:18 of
+#: maxframe.dataframe.reduction.mode.mode_dataframe:21 of
 msgid ":py:obj:`Series.mode`"
 msgstr ""
 
-#: maxframe.dataframe.reduction.mode.mode_dataframe:19 of
+#: maxframe.dataframe.reduction.mode.mode_dataframe:22 of
 msgid "Return the highest frequency value in a Series."
 msgstr "返回 Series 中出现频率最高的值。"
 
-#: maxframe.dataframe.reduction.mode.mode_dataframe:21 of
+#: maxframe.dataframe.reduction.mode.mode_dataframe:24 of
 msgid ":py:obj:`Series.value_counts`"
 msgstr ""
 
-#: maxframe.dataframe.reduction.mode.mode_dataframe:22 of
+#: maxframe.dataframe.reduction.mode.mode_dataframe:25 of
 msgid "Return the counts of values in a Series."
 msgstr "返回 Series 中值的计数。"
 
-#: maxframe.dataframe.reduction.mode.mode_dataframe:25 of
+#: maxframe.dataframe.reduction.mode.mode_dataframe:28 of
 msgid "示例"
 msgstr ""
+
+#: maxframe.dataframe.reduction.mode.mode_dataframe:44 of
+msgid ""
+"By default, missing values are not considered, and the mode of wings are "
+"both 0 and 2. Because the resulting DataFrame has two rows, the second "
+"row of ``species`` and ``legs`` contains ``NaN``."
+msgstr ""
+"默认情况下，不考虑缺失值，翅膀的众数为 0 和 2。由于结果 DataFrame 有两行"
+"，因此 ``species`` 和 ``legs`` 的第二行包含 ``NaN``。"
+
+#: maxframe.dataframe.reduction.mode.mode_dataframe:53 of
+msgid ""
+"Setting ``dropna=False`` ``NaN`` values are considered and they can be "
+"the mode (like for wings)."
+msgstr ""
+"设置 ``dropna=False`` 时，会考虑 ``NaN`` 值并且它们可以成为众数（例如对于"
+" wings）。"
+
+#: maxframe.dataframe.reduction.mode.mode_dataframe:60 of
+msgid ""
+"Setting ``numeric_only=True``, only the mode of numeric columns is "
+"computed, and columns of other types are ignored."
+msgstr "设置 ``numeric_only=True`` 时，仅计算数值列的众数，其他类型的列会被忽略。"
+
+#: maxframe.dataframe.reduction.mode.mode_dataframe:68 of
+msgid "To compute the mode over columns and not rows, use the axis parameter:"
+msgstr "要按列而不是按行计算众数，请使用 axis 参数："
 

@@ -56,7 +56,7 @@ async def test_fetch_table_data(switch_table_io):
         }
     )
 
-    table_name = tn("mf_test_groupby_table_" + str(uuid.uuid4().hex))
+    table_name = tn("mf_test_fetch_table_data_" + str(uuid.uuid4().hex))
     odps_entry.delete_table(table_name, if_exists=True)
 
     odps_entry.create_table(
@@ -107,6 +107,41 @@ async def test_fetch_table_data(switch_table_io):
     pd.testing.assert_frame_equal(raw_data.iloc[-1:-6:-1, :1], fetched)
 
     odps_entry.delete_table(table_name, if_exists=True)
+
+
+@pytest.mark.parametrize("switch_table_io", [False, True], indirect=True)
+async def test_fetch_int_cols_with_nones(switch_table_io):
+    odps_entry = ODPS.from_environments()
+    table_io = ODPSTableIO(odps_entry)
+    fetcher = ODPSTableFetcher(odps_entry)
+
+    data = pd.DataFrame(
+        {
+            "_idx_0": np.arange(1000),
+            "a": np.random.randint(0, 10, 1000),
+            "b": np.random.choice(list("ABC"), 1000),
+        }
+    )
+
+    table_name = tn("mf_test_fetch_int_cols_with_nones_" + str(uuid.uuid4().hex))
+    odps_entry.delete_table(table_name, if_exists=True)
+
+    odps_entry.create_table(
+        table_name, "_idx_0 bigint, a bigint, b string", lifecycle=1
+    )
+    new_data = data.copy()
+    new_data.iloc[10, 1] = None
+    new_data = new_data.astype({"a": pd.Int64Dtype()})
+    with table_io.open_writer(table_name) as writer:
+        writer.write(pa.Table.from_pandas(new_data, preserve_index=False))
+
+    tileable = md.DataFrame(data[list("ab")])
+    result_info = ODPSTableResultInfo(ResultType.ODPS_TABLE, full_table_name=table_name)
+    fetched = await fetcher.fetch(tileable, result_info, [None, None])
+    assert len(fetched) == 1000
+    pd.testing.assert_frame_equal(
+        new_data.drop("_idx_0", axis=1), fetched, check_dtype=False
+    )
 
 
 async def test_fetch_data_shape():

@@ -42,6 +42,7 @@ from ...utils import get_pd_option, lazy_import, pd_release_version
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_df, build_empty_df, build_series, parse_index, validate_axis
 from .core import (
+    BuiltinReduction,
     CustomReduction,
     ReductionAggStep,
     ReductionCompiler,
@@ -108,7 +109,9 @@ class DataFrameAggregate(DataFrameOperator, DataFrameOperatorMixin):
     def has_custom_code(self) -> bool:
         return any(
             fun.custom_reduction
-            and not isinstance(fun.custom_reduction, BuiltinFunction)
+            and not isinstance(
+                fun.custom_reduction, (BuiltinFunction, BuiltinReduction)
+            )
             for fun in self.agg_funcs or ()
         )
 

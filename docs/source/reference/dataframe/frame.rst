@@ -266,6 +266,7 @@ Serialization / IO / conversion
    DataFrame.to_dict
    DataFrame.to_odps_table
    DataFrame.to_pandas
+   DataFrame.to_parquet
 
 .. _generated.dataframe.mf:
 

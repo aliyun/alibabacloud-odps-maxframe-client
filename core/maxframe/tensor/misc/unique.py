@@ -15,7 +15,12 @@
 import numpy as np
 
 from ... import opcodes
-from ...serialization.serializables import BoolField, Int32Field
+from ...serialization.serializables import (
+    BoolField,
+    Int32Field,
+    Int64Field,
+    StringField,
+)
 from ..core import TensorOrder
 from ..operators import TensorHasInput, TensorOperatorMixin
 from ..utils import validate_axis
@@ -28,6 +33,13 @@ class TensorUnique(TensorHasInput, TensorOperatorMixin):
     return_inverse = BoolField("return_inverse", default=False)
     return_counts = BoolField("return_counts", default=False)
     axis = Int32Field("axis", default=None)
+
+    method = StringField("method", default=None)
+    aggregate_size = Int32Field("aggregate_size", default=None)
+    start_pos = Int64Field("start_pos", default=None)
+    sort = BoolField("sort", default=True)
+    use_na_sentinel = BoolField("use_na_sentinel", default=True)
+    na_position = StringField("na_position", default=None)
 
     @property
     def output_limit(self):
@@ -109,6 +121,11 @@ def unique(
     return_inverse=False,
     return_counts=False,
     axis=None,
+    method="auto",
+    aggregate_size=None,
+    sort=True,
+    use_na_sentinel=False,
+    na_position=None,
 ):
     """
     Find the unique elements of a tensor.
@@ -201,5 +218,10 @@ def unique(
         return_inverse=return_inverse,
         return_counts=return_counts,
         axis=axis,
+        method=method,
+        aggregate_size=aggregate_size,
+        sort=sort,
+        use_na_sentinel=use_na_sentinel,
+        na_position=na_position,
     )
     return op(ar)

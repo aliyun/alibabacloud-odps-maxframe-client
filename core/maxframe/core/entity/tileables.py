@@ -71,7 +71,14 @@ class _ChunksIndexer:
 
             indexes = tuple(zip(*itertools.product(*slices)))
 
-            flat_index = np.ravel_multi_index(indexes, self._tileable.chunk_shape)
+            try:
+                flat_index = np.ravel_multi_index(indexes, self._tileable.chunk_shape)
+            except ValueError as ex:  # pragma: no cover
+                raise ValueError(
+                    f"Cannot get index {indexes} from chunk shape "
+                    f"{self._tileable.chunk_shape}: {ex}"
+                ) from None
+
             if singleton:
                 return self._tileable._chunks[flat_index[0]]
             else:

@@ -99,7 +99,7 @@ def irfft(a, n=None, axis=-1, norm=None):
 
     Examples
     --------
-    >>> import mars.tenosr as mt
+    >>> import maxframe.tenosr as mt
 
     >>> mt.fft.ifft([1, -1j, -1, 1j]).execute()
     array([ 0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j])

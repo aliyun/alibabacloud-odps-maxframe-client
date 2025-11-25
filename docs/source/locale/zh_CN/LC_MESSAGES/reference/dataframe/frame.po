@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-10 10:10+0800\n"
+"POT-Creation-Date: 2025-10-31 17:39+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -742,23 +742,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/dataframe/frame.rst:143:<autosummary>:1
-#, python-brace-format
-msgid ""
-"Get the mode(s) of each element along the selected axis. The mode of a "
-"set of values is the value that appears most often. It can be multiple "
-"values. :param axis: The axis to iterate over while searching for the "
-"mode:              * 0 or 'index' : get mode of each column              "
-"* 1 or 'columns' : get mode of each row. :type axis: {0 or 'index', 1 or "
-"'columns'}, default 0 :param numeric_only: If True, only apply to numeric"
-" columns. :type numeric_only: bool, default False :param dropna: Don't "
-"consider counts of NaN/NaT. :type dropna: bool, default True."
-msgstr ""
-"获取沿选定轴的每个元素的众数。一组值的众数是出现最频繁的值。可以有多个值"
-"。 :param axis: 搜索众数时要迭代的轴：              * 0 或 'index' : 获取"
-"每列的众数              * 1 或 'columns' : 获取每行的众数。 :type axis: {"
-"0 或 'index', 1 或 'columns'}，默认为 0 :param numeric_only: 如果为 True"
-"，则仅应用于数值列。 :type numeric_only: bool，默认为 False :param dropna"
-": 不考虑 NaN/NaT 的计数。 :type dropna: bool，默认为 True。"
+msgid "Get the mode(s) of each element along the selected axis."
+msgstr "获取沿选定轴的每个元素的众数。"
 
 #: ../../source/reference/dataframe/frame.rst:143:<autosummary>:1
 msgid ""
@@ -811,7 +796,7 @@ msgstr ""
 
 #: ../../source/reference/dataframe/frame.rst:143:<autosummary>:1
 msgid "Compute numerical data ranks (1 through n) along axis."
-msgstr ""
+msgstr "沿轴计算数值数据的排名（从1到n）。"
 
 #: ../../source/reference/dataframe/frame.rst:143:<autosummary>:1
 msgid ""
@@ -896,7 +881,7 @@ msgstr ""
 
 #: ../../source/reference/dataframe/frame.rst:172:<autosummary>:1
 msgid "Select values at particular time of day (e.g., 9:30AM)."
-msgstr ""
+msgstr "选择一天中特定时间的值（例如，上午9:30）。"
 
 #: ../../source/reference/dataframe/frame.rst:172:<autosummary>:1
 msgid ""
@@ -907,7 +892,7 @@ msgstr ""
 
 #: ../../source/reference/dataframe/frame.rst:172:<autosummary>:1
 msgid "Select values between particular times of the day (e.g., 9:00-9:30 AM)."
-msgstr ""
+msgstr "选择一天中特定时间之间的值（例如，上午9:00-9:30）。"
 
 #: ../../source/reference/dataframe/frame.rst:172:<autosummary>:1
 msgid ""
@@ -1502,161 +1487,176 @@ msgstr "创建具有不同标记点大小和颜色的散点图。"
 msgid "Serialization / IO / conversion"
 msgstr "序列化 / IO / 转换"
 
-#: ../../source/reference/dataframe/frame.rst:269:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.from_dict <maxframe.dataframe.DataFrame.from_dict>`\\ "
 "\\(data\\[\\, orient\\, dtype\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:269:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
 msgid "Construct DataFrame from dict of array-like or dicts."
 msgstr "从类似数组或字典的字典构造 DataFrame。"
 
-#: ../../source/reference/dataframe/frame.rst:269:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.from_records "
 "<maxframe.dataframe.DataFrame.from_records>`\\ \\(data\\[\\, index\\, "
 "...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:269:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
 msgid "Convert structured or record ndarray to DataFrame."
 msgstr "将结构化或记录型 ndarray 转换为 DataFrame。"
 
-#: ../../source/reference/dataframe/frame.rst:269:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.to_clipboard "
 "<maxframe.dataframe.DataFrame.to_clipboard>`\\ \\(\\*\\[\\, excel\\, "
 "sep\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:269:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
 msgid "Copy object to the system clipboard."
 msgstr "将对象复制到系统剪贴板。"
 
-#: ../../source/reference/dataframe/frame.rst:269:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.to_csv <maxframe.dataframe.DataFrame.to_csv>`\\ "
 "\\(path\\[\\, sep\\, na\\_rep\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:269:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
 msgid "Write object to a comma-separated values (csv) file."
-msgstr "将对象写入逗号分隔值 (csv) 文件。"
+msgstr "将对象写入逗号分隔值 (CSV) 文件。"
 
-#: ../../source/reference/dataframe/frame.rst:269:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.to_dict <maxframe.dataframe.DataFrame.to_dict>`\\ "
 "\\(\\[orient\\, into\\, index\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:269:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
 msgid "Convert the DataFrame to a dictionary."
 msgstr "将 DataFrame 转换为 Python dict"
 
-#: ../../source/reference/dataframe/frame.rst:269:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.to_odps_table "
 "<maxframe.dataframe.DataFrame.to_odps_table>`\\ \\(table\\[\\, "
 "partition\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:269:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
 msgid "Write DataFrame object into a MaxCompute (ODPS) table."
 msgstr "将 DataFrame 对象写入 MaxCompute (ODPS) 表。"
 
-#: ../../source/reference/dataframe/frame.rst:269:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.to_pandas <maxframe.dataframe.DataFrame.to_pandas>`\\ "
 "\\(\\[session\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:273
-msgid "MaxFrame Extensions"
-msgstr "MaxFrame 扩展"
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
+msgid ""
+":py:obj:`DataFrame.to_parquet "
+"<maxframe.dataframe.DataFrame.to_parquet>`\\ \\(path\\[\\, engine\\, "
+"...\\]\\)"
+msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:270:<autosummary>:1
+msgid ""
+"Write a DataFrame to the binary parquet format, each chunk will be "
+"written to a Parquet file."
+msgstr ""
+"将 DataFrame 写入二进制 parquet 格式，每个数据块都将被写入一个 Parquet "
+"文件。"
+
+#: ../../source/reference/dataframe/frame.rst:274
+msgid "MaxFrame Extensions"
+msgstr "MaxFrame 扩展方法"
+
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.apply_chunk "
 "<maxframe.dataframe.DataFrame.mf.apply_chunk>`\\ \\(func\\[\\, "
 "batch\\_rows\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid ""
 "Apply a function that takes pandas DataFrame and outputs pandas "
 "DataFrame/Series."
 msgstr "应用一个接受 pandas DataFrame 并输出 pandas DataFrame/Series 的函数。"
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.collect_kv "
 "<maxframe.dataframe.DataFrame.mf.collect_kv>`\\ \\(\\[columns\\, "
 "kv\\_delim\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid "Merge values in specified columns into a key-value represented column."
 msgstr "将指定列中的值合并为键值表示的列。"
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.extract_kv "
 "<maxframe.dataframe.DataFrame.mf.extract_kv>`\\ \\(\\[columns\\, "
 "kv\\_delim\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid "Extract values in key-value represented columns into standalone columns."
 msgstr "将键值表示的列中的值提取为独立列。"
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.flatmap "
 "<maxframe.dataframe.DataFrame.mf.flatmap>`\\ \\(func\\[\\, dtypes\\, "
 "raw\\, args\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid "Apply the given function to each row and then flatten results."
 msgstr "对每一行应用给定函数，然后展平结果。"
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.map_reduce "
 "<maxframe.dataframe.DataFrame.mf.map_reduce>`\\ \\(\\[mapper\\, "
 "reducer\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid "Map-reduce API over certain DataFrames."
 msgstr "某些 DataFrame 上的 Map-reduce API。"
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.rebalance "
 "<maxframe.dataframe.DataFrame.mf.rebalance>`\\ \\(\\[axis\\, factor\\, "
 "...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid "Make data more balanced across entire cluster."
 msgstr "使数据在整个集群中更加均衡。"
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.reshuffle "
 "<maxframe.dataframe.DataFrame.mf.reshuffle>`\\ \\(\\[group\\_by\\, "
 "sort\\_by\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:286:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:287:<autosummary>:1
 msgid ""
 "Shuffle data in DataFrame or Series to make data distribution more "
 "randomized."
 msgstr "对 DataFrame 或 Series 中的数据进行重排，使数据分布更加随机。"
 
-#: ../../source/reference/dataframe/frame.rst:287
+#: ../../source/reference/dataframe/frame.rst:288
 msgid ""
 "``DataFrame.mf`` provides methods unique to MaxFrame. These methods are "
 "collated from application scenarios in MaxCompute and these can be "
