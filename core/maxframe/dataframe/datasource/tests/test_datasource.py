@@ -438,7 +438,7 @@ def test_from_odps_query():
 
     # test query with join
     query2 = f"""
-    SELECT t1.col1, t1.col2, t1.col3 as c31, t2.col3 as c32
+    SELECT t1.col1, t1.col2, t1.col3 as c31, t2.col3 as C32
     FROM {table1_name} t1
     INNER JOIN {table2_name} t2
     ON t1.col1 = t2.col1 AND t1.col2 = t2.col2
@@ -455,9 +455,9 @@ def test_from_odps_query():
 
     # test query with multiple statements
     query3 = f"""
-    @val := SELECT t1.col1, t1.col2 as c1, t1.col3 as c31, t1.col3 as c32
+    @val := SELECT t1.col1, t1.col2 as c1, t1.col3 as c31, t1.col3 as C32
     FROM {table1_name} t1;
-    SELECT c1, c32 FROM @val;
+    SELECT c1, C32 FROM @val;
     """
     df = read_odps_query(query3, index_col=["c1"])
     assert df.op.query == query3

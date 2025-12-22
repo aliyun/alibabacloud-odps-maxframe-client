@@ -227,7 +227,9 @@ def _parse_full_explain(explain_string: str) -> OdpsSchema:
         raise ValueError("Only one final task is allowed in SQL statement")
     schema = list(schema_signatures.values())[0]
     cols = [
-        Column(c.column_alias or c.column_name, validate_data_type(c.column_type))
+        Column(
+            (c.column_alias or c.column_name).lower(), validate_data_type(c.column_type)
+        )
         for c in schema
     ]
     return OdpsSchema(cols)
@@ -241,7 +243,7 @@ def _parse_simple_explain(explain_string: str) -> OdpsSchema:
     fields_str = fields_match.group(1)
     cols = []
     for field, type_name in _SIMPLE_SCHEMA_COL_REGEX.findall(fields_str):
-        cols.append(Column(field, validate_data_type(type_name.rstrip(","))))
+        cols.append(Column(field.lower(), validate_data_type(type_name.rstrip(","))))
     return OdpsSchema(cols)
 
 
@@ -390,9 +392,13 @@ def _resolve_query_schema(
         )
     for idx, resolve_method in enumerate(methods):
         try:
-            return resolve_method(
+            schema = resolve_method(
                 odps_entry, query, no_split_sql=no_split_sql, hints=hints
             )
+            cols = []
+            for col in schema.columns:
+                cols.append(Column(col.name.lower(), col.type))
+            return OdpsSchema(cols)
         except ODPSError as ex:
             msg = (
                 f"Failed to obtain schema from SQL explain: {ex!r}\n"

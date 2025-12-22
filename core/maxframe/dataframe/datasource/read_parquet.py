@@ -112,6 +112,8 @@ class DataFrameReadParquet(
 
 
 def _resolve_dict_dtypes(dtypes_dict) -> pd.Series:
+    if isinstance(dtypes_dict, list):
+        dtypes_dict = OrderedDict([(d["key"], d["value"]) for d in dtypes_dict])
     names = list(dtypes_dict.keys())
     vals = [pd.api.types.pandas_dtype(dt) for dt in dtypes_dict.values()]
     return pd.Series(vals, index=names)
