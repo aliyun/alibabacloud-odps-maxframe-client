@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import importlib
 import inspect
 import io
 import itertools
+import json
 import logging
 import math
 import numbers
@@ -95,6 +96,7 @@ reset_id_random_seed = reset_id_random_seed
 new_random_id = new_random_id
 get_user_call_point = get_user_call_point
 _is_ci = (os.environ.get("CI") or "0").lower() in ("1", "true")
+np_release_version: Tuple[int] = parse_version(np.__version__).release
 pd_release_version: Tuple[int] = parse_version(pd.__version__).release
 
 logger = logging.getLogger(__name__)
@@ -260,8 +262,8 @@ def copy_tileables(tileables: List[TileableType], **kwargs):
     inputs = kwargs.pop("inputs", None)
     copy_key = kwargs.pop("copy_key", True)
     copy_id = kwargs.pop("copy_id", True)
-    if kwargs:
-        raise TypeError(f"got un unexpected keyword argument '{next(iter(kwargs))}'")
+    check_unexpected_kwargs(kwargs)
+
     if len(tileables) > 1:
         # cannot handle tileables with different operators here
         # try to copy separately if so
@@ -626,7 +628,7 @@ def estimate_pandas_size(
         if isinstance(dtype, np.dtype):
             return np.issubdtype(dtype, np.number)
         else:
-            return isinstance(dtype, ArrowDtype)
+            return isinstance(dtype, ArrowDtype) or dtype == pd.StringDtype("pyarrow")
 
     dtypes = []
     is_series = False
@@ -1276,52 +1278,57 @@ def arrow_type_from_str(type_str: str) -> pa.DataType:
             value_stack = value_stack[:-2]
         value_stack.append(tuple(values))
 
-    for token in token_iter:
-        if token.type == pytokenize.OP:
-            if token.string == ":":
-                op_stack.append(token.string)
-            elif token.string == ",":
-                # gather previous sub-types
-                if op_stack[-1] in ("<", ":"):
+    try:
+        for token in token_iter:
+            if token.type == pytokenize.OP:
+                if token.string == ":":
+                    op_stack.append(token.string)
+                elif token.string == ",":
+                    # gather previous sub-types
+                    if op_stack[-1] in ("<", ":"):
+                        _pop_make_type()
+                    if op_stack[-1] == ":":
+                        _pop_make_struct_field()
+
+                    # put generated item into the parameter list
+                    val = value_stack.pop(-1)
+                    value_stack[-1].append(val)
+                elif token.string in ("<", "[", "("):
+                    # pushes an empty parameter list for future use
+                    value_stack.append([])
+                    op_stack.append(token.string)
+                elif token.string in (")", "]"):
+                    # put generated item into the parameter list
+                    val = value_stack.pop(-1)
+                    value_stack[-1].append(val)
+                    # make DataType (i.e., fixed_size_binary / decimal) given args
+                    _pop_make_type(with_args=True, combined=False)
+                    op_stack.pop(-1)
+                elif token.string == ">":
                     _pop_make_type()
-                if op_stack[-1] == ":":
-                    _pop_make_struct_field()
+                    if op_stack[-1] == ":":
+                        _pop_make_struct_field()
 
-                # put generated item into the parameter list
-                val = value_stack.pop(-1)
-                value_stack[-1].append(val)
-            elif token.string in ("<", "[", "("):
-                # pushes an empty parameter list for future use
-                value_stack.append([])
-                op_stack.append(token.string)
-            elif token.string in (")", "]"):
-                # put generated item into the parameter list
-                val = value_stack.pop(-1)
-                value_stack[-1].append(val)
-                # make DataType (i.e., fixed_size_binary / decimal) given args
-                _pop_make_type(with_args=True, combined=False)
-                op_stack.pop(-1)
-            elif token.string == ">":
+                    # put generated item into the parameter list
+                    val = value_stack.pop(-1)
+                    value_stack[-1].append(val)
+                    # make DataType (i.e., list / map / struct) given args
+                    _pop_make_type(with_args=True)
+                    op_stack.pop(-1)
+            elif token.type == pytokenize.NAME:
+                if value_stack and value_stack[-1] == "not":
+                    value_stack[-1] += " " + token.string
+                else:
+                    value_stack.append(token.string)
+            elif token.type == pytokenize.NUMBER:
+                value_stack.append(int(token.string))
+            elif token.type == pytokenize.ENDMARKER:
+                # make final type
                 _pop_make_type()
-                if op_stack[-1] == ":":
-                    _pop_make_struct_field()
-
-                # put generated item into the parameter list
-                val = value_stack.pop(-1)
-                value_stack[-1].append(val)
-                # make DataType (i.e., list / map / struct) given args
-                _pop_make_type(with_args=True)
-                op_stack.pop(-1)
-        elif token.type == pytokenize.NAME:
-            if value_stack and value_stack[-1] == "not":
-                value_stack[-1] += " " + token.string
-            else:
-                value_stack.append(token.string)
-        elif token.type == pytokenize.NUMBER:
-            value_stack.append(int(token.string))
-        elif token.type == pytokenize.ENDMARKER:
-            # make final type
-            _pop_make_type()
+    except Exception as ex:
+        raise ValueError(
+            f"Unexpected error occurred when parsing type {type_str}: {ex}"
+        ) from None
     if len(value_stack) > 1:
         raise ValueError(f"Cannot parse type {type_str}")
     return value_stack[-1]
@@ -1625,6 +1632,7 @@ class ServiceLoggerAdapter(logging.LoggerAdapter):
     def process(self, msg, kwargs):
         merged_extra = (self.extra or {}).copy()
         merged_extra.update(kwargs)
+        merged_extra.pop("exc_info", None)
 
         prefix = " ".join(
             f"{self.extra_key_mapping.get(k) or k.capitalize()}={merged_extra[k]}"
@@ -1757,6 +1765,14 @@ def get_pd_option(option_name, default=no_default):
         return default
 
 
+def check_unexpected_kwargs(kwargs):
+    if kwargs:
+        caller_func = sys._getframe(1).f_code.co_name
+        raise TypeError(
+            f"{caller_func}() got an unexpected keyword argument '{next(iter(kwargs))}'"
+        )
+
+
 @contextlib.contextmanager
 def pd_option_context(*args):
     arg_kv = dict(zip(args[0::2], args[1::2]))
@@ -1772,3 +1788,129 @@ def pd_option_context(*args):
     else:
         with pd.option_context(*new_args):
             yield
+
+
+def wrap_arrow_dtype(arrow_type):
+    if arrow_type == pa.string():
+        return pd.StringDtype("pyarrow")
+    return ArrowDtype(arrow_type)
+
+
+def is_string_dtype(arr_or_dtype) -> bool:
+    if isinstance(arr_or_dtype, ArrowDtype):
+        return pa.types.is_string(arr_or_dtype.pyarrow_dtype)
+
+    return pd.api.types.is_string_dtype(arr_or_dtype)
+
+
+def is_bool_dtype(arr_or_dtype) -> bool:
+    if isinstance(arr_or_dtype, ArrowDtype):
+        return pa.types.is_boolean(arr_or_dtype.pyarrow_dtype)
+
+    return pd.api.types.is_bool_dtype(arr_or_dtype)
+
+
+def is_datetime64_dtype(arr_or_dtype) -> bool:
+    if isinstance(arr_or_dtype, ArrowDtype):
+        return pa.types.is_timestamp(arr_or_dtype.pyarrow_dtype)
+
+    return pd.api.types.is_datetime64_any_dtype(arr_or_dtype)
+
+
+def get_odps_dlf_table(
+    odps_entry,
+    table_name: str,
+    schema: Optional[str] = None,
+    project: Optional[str] = None,
+    sql_hints: Optional[Dict[str, str]] = None,
+    inst_logger: Optional[logging.Logger] = None,
+):
+    from odps.config import option_context as pyodps_option_context
+    from odps.models import Project, Table, TableSchema
+    from odps.models.schema import Schema
+
+    def adapt_dlf_schema(src_schema_list):
+        ret = []
+        for c in src_schema_list:
+            col_data = {}
+            for k, v in c.items():
+                k = k.lower()
+                if k == "nullable":
+                    k = "isNullable"
+                if v in ("true", "false"):
+                    v = v == "true"
+                col_data[k] = v
+            ret.append(col_data)
+        return ret
+
+    inst_logger = inst_logger or logger
+
+    if hasattr(odps_entry, "get_default_project_name"):
+        project = project or odps_entry.get_default_project_name()
+    else:
+        project = project or odps_entry.project
+
+    schema = schema or "default"
+    if "." in table_name:
+        full_table_name = table_name
+        name_parts = table_name.split(".")
+        if len(name_parts) == 2:
+            schema, table_name = name_parts
+        else:
+            assert len(name_parts) == 3
+            project, schema, table_name = name_parts
+        if table_name.startswith("`") and table_name.endswith("`"):
+            table_name = table_name[1:-1]
+    else:
+        full_table_name = ".".join([project, schema, f"`{table_name}`"])
+
+    ddl_sql_hints = (sql_hints or {}).copy()
+    ddl_sql_hints["odps.sql.submit.mode"] = ""
+    ddl_sql_hints["odps.sql.session.select.only"] = ""
+    ddl_sql_hints["odps.namespace.schema"] = "true"
+    ddl_sql_hints["odps.sql.select.output.format"] = "json"
+
+    run_sql_offline = getattr(odps_entry, "run_sql_offline", None) or getattr(
+        odps_entry, "run_sql", None
+    )
+    assert run_sql_offline
+    with pyodps_option_context() as pyodps_options:
+        pyodps_options.sql.settings = ddl_sql_hints
+        inst = run_sql_offline(f"DESC EXTENDED {full_table_name}", hints=ddl_sql_hints)
+
+    inst_logger.info(
+        "Resolving schema for table %s with instance %s",
+        full_table_name,
+        inst.id,
+    )
+    inst.wait_for_success()
+
+    schema_json = json.loads(inst.get_task_result())
+    inst_logger.info(
+        "Result of resolved schema of table %s: %s",
+        full_table_name,
+        schema_json,
+    )
+    if "NativeColumns" in schema_json:
+        schema_json["columns"] = adapt_dlf_schema(schema_json.pop("NativeColumns"))
+    if "PartitionColumns" in schema_json:
+        schema_json["partitionKeys"] = adapt_dlf_schema(
+            schema_json.pop("PartitionColumns")
+        )
+    else:
+        schema_json["partitionKeys"] = []
+
+    # generate mock parent objects
+    project_obj = Project(name=project)
+    schema_obj = Schema(name=schema, parent=project_obj)
+
+    table_obj = Table(name=table_name, parent=schema_obj)
+    tb_schema_obj = TableSchema(parent=table_obj)
+    tb_schema_obj = tb_schema_obj.parse(None, schema_json, obj=tb_schema_obj)
+    tb_schema_obj.load()
+
+    table_obj._project = Project(name=project)
+    table_obj.table_schema = tb_schema_obj
+    table_obj.type = Table.Type.EXTERNAL_TABLE
+    table_obj.last_data_modified_time = datetime.datetime.now()
+    return table_obj

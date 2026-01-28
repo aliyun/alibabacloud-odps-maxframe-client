@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,16 +21,18 @@ import operator
 import sys
 from contextlib import contextmanager
 from numbers import Integral
-from typing import TYPE_CHECKING, Any, Callable, List, Optional
+from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
 from pandas.core.dtypes.inference import is_dict_like, is_list_like
 
-from ..config.validators import dtype_backend_validator
+from ..config.config import options
+from ..config.validators import dtype_backend_validator, is_enum_value
 from ..core import ENTITY_TYPE, Entity, ExecutableTuple, OutputType, get_output_types
 from ..lib.dtypes_extension import ExternalBlobDtype, SolidBlob
 from ..lib.mmh3 import hash as mmh_hash
+from ..protocol import DefaultIndexType
 from ..udf import MarkedFunction
 from ..utils import (
     ModulePlaceholder,
@@ -41,6 +43,7 @@ from ..utils import (
     sbytes,
     tokenize,
     validate_and_adjust_resource_ratio,
+    wrap_arrow_dtype,
 )
 
 if TYPE_CHECKING:
@@ -53,6 +56,8 @@ except ImportError:  # pragma: no cover
 
 if TYPE_CHECKING:
     from .operators import DataFrameOperator
+
+MAX_DECIMAL128_PRECISION = 38
 
 cudf = lazy_import("cudf", rename="cudf")
 logger = logging.getLogger(__name__)
@@ -773,25 +778,19 @@ def is_decimal128_dtype(dtype):
     )
 
 
-def is_decimal256_dtype(dtype):
-    return isinstance(dtype, ArrowDtype) and isinstance(
-        dtype.pyarrow_dtype, pa.Decimal256Type
-    )
-
-
-def decimal_128_to_256_dtype(dtype):
+def _clear_decimal128_int_part(dtype):
     if not is_decimal128_dtype(dtype):
         return dtype
-    return ArrowDtype(
-        pa.decimal256(dtype.pyarrow_dtype.precision, dtype.pyarrow_dtype.scale)
+    return wrap_arrow_dtype(
+        pa.decimal128(dtype.pyarrow_dtype.scale + 1, dtype.pyarrow_dtype.scale)
     )
 
 
-def safe_decimal_256_to_128_dtype(dtype):
-    if not is_decimal256_dtype(dtype) or dtype.pyarrow_dtype.precision > 38:
+def _maximize_decimal128_precision(dtype):
+    if not is_decimal128_dtype(dtype):
         return dtype
-    return ArrowDtype(
-        pa.decimal128(dtype.pyarrow_dtype.precision, dtype.pyarrow_dtype.scale)
+    return wrap_arrow_dtype(
+        pa.decimal128(MAX_DECIMAL128_PRECISION, dtype.pyarrow_dtype.scale)
     )
 
 
@@ -807,12 +806,11 @@ def infer_dtypes(left_dtypes, right_dtypes, operator):
     except pa.ArrowInvalid as exc:
         if "Decimal precision" not in str(exc):
             raise
-        # automatic upgrade to decimal256 type and downgrade
-        #  to decimal128 type where possible
-        left_dtypes = left_dtypes.map(decimal_128_to_256_dtype)
-        right_dtypes = right_dtypes.map(decimal_128_to_256_dtype)
+        # infer scale part and use maximum precision
+        left_dtypes = left_dtypes.map(_clear_decimal128_int_part)
+        right_dtypes = right_dtypes.map(_clear_decimal128_int_part)
         return _infer_dtypes(left_dtypes, right_dtypes, operator).map(
-            safe_decimal_256_to_128_dtype
+            _maximize_decimal128_precision
         )
 
 
@@ -829,11 +827,13 @@ def infer_dtype(left_dtype, right_dtype, operator):
     except pa.ArrowInvalid as exc:
         if "Decimal precision" not in str(exc):
             raise
-        # automatic upgrade to decimal256 type
-        return _infer_dtype(
-            decimal_128_to_256_dtype(left_dtype),
-            decimal_128_to_256_dtype(right_dtype),
-            operator,
+        # infer scale part and use maximum precision
+        return _maximize_decimal128_precision(
+            _infer_dtype(
+                _clear_decimal128_int_part(left_dtype),
+                _clear_decimal128_int_part(right_dtype),
+                operator,
+            )
         )
 
 
@@ -988,6 +988,42 @@ def validate_output_types(**kwargs):
     )
 
 
+def validate_default_index_type(
+    index_type: Union[DefaultIndexType, bool, str, None], **kwargs
+) -> DefaultIndexType:
+    if "incremental_index" in kwargs:
+        incremental_index = kwargs.pop("incremental_index")
+        if index_type is not None and incremental_index is not None:
+            raise ValueError("Cannot specify both 'incremental_index' and 'index_type'")
+        index_type = incremental_index
+    # `incremental_index` might be a positional argument
+    if isinstance(index_type, bool):
+        index_type = DefaultIndexType.range if index_type else None
+
+    if index_type is None:
+        index_type = options.dataframe.default_index_type
+    if not is_enum_value(DefaultIndexType)(index_type):
+        raise ValueError(f"{index_type} is not a valid default index type")
+    if isinstance(index_type, str):
+        index_type = getattr(DefaultIndexType, index_type)
+    return index_type
+
+
+def get_index_value_by_default_index_type(
+    index_type: DefaultIndexType,
+    start: Optional[int] = None,
+    stop: Optional[int] = None,
+    step: Optional[int] = None,
+    args: Tuple[Any, ...] = None,
+):
+    if not pd.isna(start):
+        return parse_index(pd.RangeIndex(start, stop, step))
+    elif index_type != DefaultIndexType.range:
+        return parse_index(pd.Index([], dtype="int64"), *args)
+    else:
+        return parse_index(pd.RangeIndex(-1), *args)
+
+
 def fetch_corner_data(df_or_series, session=None) -> pd.DataFrame:
     """
     Fetch corner DataFrame or Series for repr usage.
@@ -1082,12 +1118,6 @@ def create_sa_connection(con, **kwargs):
             engine.dispose()
 
 
-def wrap_arrow_type(arrow_type):
-    if arrow_type == pa.string():
-        return pd.StringDtype("pyarrow")
-    return ArrowDtype(arrow_type)
-
-
 def to_arrow_dtypes(dtypes):
     from ..io.odpsio.schema import pandas_dtypes_to_arrow_schema
 
@@ -1104,7 +1134,7 @@ def to_arrow_dtypes(dtypes):
             # make existing extension dtype consistent
             new_dtypes.iloc[i] = dt
         else:
-            new_dtypes.iloc[i] = wrap_arrow_type(arrow_type)
+            new_dtypes.iloc[i] = wrap_arrow_dtype(arrow_type)
     return new_dtypes
 
 

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,11 +25,6 @@ from urllib.parse import urlparse
 
 import numpy as np
 import pandas as pd
-from odps import ODPS
-from odps import options as odps_options
-from odps.config import option_context as odps_option_context
-from odps.console import in_ipython_frontend
-
 from maxframe.codegen import CodeGenResult
 from maxframe.codegen.spe import SPECodeGenerator
 from maxframe.config import options
@@ -81,10 +76,19 @@ from maxframe.utils import (
     str_to_bool,
     sync_pyodps_options,
 )
+from odps import ODPS
+from odps import options as odps_options
+from odps.config import option_context as odps_option_context
+from odps.console import in_ipython_frontend
 
 from ..clients.framedriver import FrameDriverClient
 from ..fetcher import get_fetcher_cls
-from .consts import RESTFUL_SESSION_INSECURE_SCHEME, RESTFUL_SESSION_SECURE_SCHEME
+from .consts import (
+    DEBUG_MODE_LOCAL,
+    EMPTY_RESPONSE_RETRY_COUNT,
+    RESTFUL_SESSION_INSECURE_SCHEME,
+    RESTFUL_SESSION_SECURE_SCHEME,
+)
 from .graph import gen_submit_tileable_graph
 
 logger = logging.getLogger(__name__)
@@ -198,7 +202,7 @@ class LocalSPEDagRunner(SPEDagRunner):
         super().__init__(session_id, subdag_id, subdag, generated, settings)
         self._odps = self._odps or odps_entry
         self._tileable_key_to_info = {
-            t.key: v for t, v in ({} or tileable_to_info).items()
+            t.key: v for t, v in (tileable_to_info or {}).items()
         }
         self._data_tileable_getter = data_tileable_getter or (lambda x: (x, None))
         self._loop = loop
@@ -227,12 +231,19 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         backend: str = None,
         odps_entry: Optional[ODPS] = None,
         timeout: Optional[float] = None,
+        debug: Union[bool, str] = False,
         **kwargs,
     ) -> "AbstractSession":
         session_obj = cls(
-            address, session_id, odps_entry=odps_entry, timeout=timeout, **kwargs
+            address,
+            session_id,
+            odps_entry=odps_entry,
+            timeout=timeout,
+            debug=debug,
+            **kwargs,
         )
-        await session_obj._init(address)
+        if not session_obj._debug_mode:
+            await session_obj._init(address)
         return session_obj
 
     def __init__(
@@ -241,14 +252,22 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         session_id: str,
         odps_entry: Optional[ODPS] = None,
         timeout: Optional[float] = None,
+        debug: Union[bool, str] = False,
         **kwargs,
     ):
         super().__init__(address, session_id)
         self.timeout = timeout
+
+        self._debug_mode = (
+            DEBUG_MODE_LOCAL if debug in (True, DEBUG_MODE_LOCAL) else None
+        )
+
         self._odps_entry = odps_entry or ODPS.from_global() or ODPS.from_environments()
         self._tileable_to_infos = weakref.WeakKeyDictionary()
-
-        self._caller = self._create_caller(odps_entry, address, **kwargs)
+        if self._debug_mode == DEBUG_MODE_LOCAL:
+            self._caller = None
+        else:
+            self._caller = self._create_caller(odps_entry, address, **kwargs)
         self._last_settings = None
         self._pull_interval = 1 if in_ipython_frontend() else 3
         self._replace_internal_host = kwargs.get("replace_internal_host", True)
@@ -294,7 +313,9 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
 
         if len(data):
             table_client = ODPSTableIO(self._odps_entry)
-            with table_client.open_writer(table_obj.full_table_name) as writer:
+            with table_client.open_writer(
+                table_obj.full_table_name, overwrite=True
+            ) as writer:
                 for batch_start in range(0, len(data), batch_size):
                     if isinstance(data, pd.Index):
                         batch = data[batch_start : batch_start + batch_size]
@@ -421,6 +442,8 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         return infos
 
     def _get_diff_settings(self) -> Dict[str, Any]:
+        if self._caller is None:
+            return {}
         new_settings = self._caller.get_settings_to_upload()
         if not self._last_settings:  # pragma: no cover
             self._last_settings = copy.deepcopy(new_settings)
@@ -481,7 +504,10 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             self, tileables, tileable_to_copied
         )
 
-        if self._is_local_executable(tileable_graph):
+        # In debug mode, always use local execution
+        if self._debug_mode == DEBUG_MODE_LOCAL or self._is_local_executable(
+            tileable_graph
+        ):
             return await self._execute_locally(tileable_graph, to_execute_tileables)
         else:
             return await self._execute_in_service(
@@ -532,6 +558,8 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         session_id = dag_info.session_id
         dag_id = dag_info.dag_id
         server_no_response_time = None
+        # For retrying get_dag_info when None is returned continuously.
+        empty_response_times = 0
         with enter_mode(build=True, kernel=True):
             key_to_tileables = {t.key: t for t in tileables}
             timeout_val = 0.1
@@ -575,22 +603,29 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
                         continue
 
                     if dag_info is None:
-                        raise SystemError(
-                            f"Cannot find DAG with ID {dag_id} in session {session_id}"
-                        )
-                    progress.value = dag_info.progress
-                    if dag_info.status != ExecutionStatus.RUNNING:
-                        break
+                        if empty_response_times > EMPTY_RESPONSE_RETRY_COUNT:
+                            raise SystemError(
+                                f"Cannot find DAG with ID {dag_id} in session {session_id}"
+                            )
+                        else:
+                            empty_response_times += 1
+                    else:
+                        # Reset counter if we get a valid response
+                        empty_response_times = 0
+                        progress.value = dag_info.progress
+                        if dag_info.status != ExecutionStatus.RUNNING:
+                            break
                     await asyncio.sleep(timeout_val)
             except asyncio.CancelledError:
                 dag_info = await self.ensure_async_call(self._caller.cancel_dag, dag_id)
                 if dag_info.status != ExecutionStatus.CANCELLED:  # pragma: no cover
                     raise
             finally:
-                if dag_info.status == ExecutionStatus.SUCCEEDED:
-                    progress.value = 1.0
-                elif dag_info.status == ExecutionStatus.FAILED:
-                    dag_info.error_info.reraise()
+                if dag_info is not None:
+                    if dag_info.status == ExecutionStatus.SUCCEEDED:
+                        progress.value = 1.0
+                    elif dag_info.status == ExecutionStatus.FAILED:
+                        dag_info.error_info.reraise()
 
             if dag_info.status in (ExecutionStatus.RUNNING, ExecutionStatus.CANCELLED):
                 return
@@ -622,6 +657,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
                 tileable_to_info=self._tileable_to_infos,
                 loop=cur_loop,
             )
+
             with odps_option_context():
                 self._odps_entry.to_global()
                 key_to_info = runner.run()
@@ -684,10 +720,14 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         return results
 
     async def decref(self, *tileable_keys):
-        return await self.ensure_async_call(self._caller.decref, list(tileable_keys))
+        if self._caller is not None:
+            return await self.ensure_async_call(
+                self._caller.decref, list(tileable_keys)
+            )
 
     async def destroy(self):
-        await self.ensure_async_call(self._caller.delete_session)
+        if self._caller is not None:
+            await self.ensure_async_call(self._caller.delete_session)
         await super().destroy()
 
     async def _get_ref_counts(self) -> Dict[str, int]:
@@ -727,6 +767,8 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         return await self.get_dag_logview_address(None, hours)
 
     async def get_dag_logview_address(self, dag_id=None, hours=None) -> Optional[str]:
+        if self._caller is None:
+            return None
         return await self.ensure_async_call(
             self._caller.get_logview_address, dag_id, hours
         )

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import inspect
+
 import numpy as np
 import pandas as pd
 
 from ..core import OutputType
 from ..core.operator import Operator, ShuffleProxy, TileableOperatorMixin
+from ..core.operator.base import CallPoint
 from ..tensor.core import TENSOR_TYPE
 from ..tensor.datasource import tensor as astensor
 from .core import DATAFRAME_TYPE, SERIES_TYPE
@@ -228,4 +231,7 @@ DataFrameOperator = Operator
 
 class DataFrameShuffleProxy(ShuffleProxy, DataFrameOperatorMixin):
     def __init__(self, sparse=None, output_types=None, **kwargs):
+        kwargs["call_points"] = kwargs.pop("call_points", None) or [
+            CallPoint.from_frame(inspect.currentframe().f_back)
+        ]
         super().__init__(sparse=sparse, _output_types=output_types, **kwargs)

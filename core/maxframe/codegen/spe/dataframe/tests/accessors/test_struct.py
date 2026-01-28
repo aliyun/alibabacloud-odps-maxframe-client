@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ import pyarrow as pa
 import pytest
 
 from ...... import dataframe as md
-from ......utils import ARROW_DTYPE_NOT_SUPPORTED
+from ......utils import ARROW_DTYPE_NOT_SUPPORTED, wrap_arrow_dtype
 from ....core import SPECodeContext
 from ...accessors.struct_ import SeriesStructMethodAdapter
 
@@ -50,7 +50,7 @@ def series():
             {"version": {"major": 2, "minor": 1}, "project": "pandas"},
             {"version": {"major": 1, "minor": 26}, "project": "numpy"},
         ],
-        dtype=pd.ArrowDtype(
+        dtype=wrap_arrow_dtype(
             pa.struct([("version", version_type), ("project", pa.string())])
         ),
     )
@@ -70,6 +70,6 @@ var_1 = var_0.struct.field(['version', 'minor'])
     assert results == expected_results
     local_vars = _run_generated_code(results[0], context, series.op.data)
     expected_series = pd.Series(
-        [5, 1, 26], dtype=pd.ArrowDtype(pa.int64()), name="minor"
+        [5, 1, 26], dtype=wrap_arrow_dtype(pa.int64()), name="minor"
     )
     pd.testing.assert_series_equal(expected_series, local_vars["var_1"])

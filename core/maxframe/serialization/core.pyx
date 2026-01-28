@@ -18,6 +18,7 @@ import contextvars
 import copy
 import datetime
 import decimal
+import enum
 import hashlib
 import importlib
 import os
@@ -39,10 +40,17 @@ from pandas.api.types import pandas_dtype
 from .._utils import NamedType
 
 from .._utils cimport TypeDispatcher
+from ..utils import wrap_arrow_dtype
 
 from ..lib import wrapped_pickle as pickle
 from ..lib.dtypes_extension import ArrowDtype
-from ..utils import NoDefault, arrow_type_from_str, no_default, str_to_bool
+from ..utils import (
+    NoDefault,
+    arrow_type_from_str,
+    extract_class_name,
+    no_default,
+    str_to_bool,
+)
 
 # resolve pandas pickle compatibility between <1.2 and >=1.3
 try:
@@ -104,6 +112,7 @@ cdef:
     int ARROW_BUFFER_SERIALIZER = 16
     int RANGE_SERIALIZER = 17
     int PY_DECIMAL_SERIALIZER = 18
+    int ENUM_SERIALIZER = 19
     int PLACEHOLDER_SERIALIZER = 4096
 
 
@@ -855,7 +864,7 @@ cdef class DtypeSerializer(Serializer):
         elif ser_type == _TYPE_CHAR_DTYPE_PANDAS_ARROW:
             if _ARROW_DTYPE_NOT_SUPPORTED:
                 raise ImportError("ArrowDtype is not supported in current environment")
-            return ArrowDtype(arrow_type_from_str(serialized[1]))
+            return wrap_arrow_dtype(arrow_type_from_str(serialized[1]))
         elif ser_type == _TYPE_CHAR_DTYPE_PANDAS_CATEGORICAL:
             return pd.CategoricalDtype(subs[0], serialized[1])
         elif ser_type == _TYPE_CHAR_DTYPE_PANDAS_INTERVAL:
@@ -957,6 +966,17 @@ cdef class ArrowBufferSerializer(Serializer):
         return subs[0]
 
 
+cdef class EnumSerializer(Serializer):
+    serializer_id = ENUM_SERIALIZER
+
+    cpdef serial(self, object obj: enum.Enum, dict context):
+        return [extract_class_name(type(obj)), obj.value], [], True
+
+    cpdef deserial(self, list serialized, dict context, list subs):
+        enum_class = load_type(serialized[0], enum.Enum)
+        return enum_class(serialized[1])
+
+
 cdef class Placeholder:
     """
     Placeholder object to reduce duplicated serialization
@@ -1013,6 +1033,7 @@ SliceSerializer.register(slice)
 RangeSerializer.register(range)
 RegexSerializer.register(re.Pattern)
 PyDecimalSerializer.register(decimal.Decimal)
+EnumSerializer.register(enum.Enum)
 NoDefaultSerializer.register(NoDefault)
 if pa is not None:
     ArrowBufferSerializer.register(pa.Buffer)

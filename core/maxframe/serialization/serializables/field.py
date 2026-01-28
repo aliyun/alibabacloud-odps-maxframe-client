@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -376,7 +376,7 @@ class IntervalArrayField(Field):
 
 
 class EnumField(Field):
-    __slots__ = ("_enum_type", "_field_type")
+    __slots__ = ("_enum_type", "_field_type", "_primitive")
 
     def __init__(
         self,
@@ -387,6 +387,7 @@ class EnumField(Field):
         default_factory: Optional[Callable] = None,
         on_serialize: Callable[[Any], Any] = None,
         on_deserialize: Callable[[Any], Any] = None,
+        primitive: bool = False,
     ):
         def _on_serialize(val):
             if on_serialize is not None:
@@ -408,6 +409,7 @@ class EnumField(Field):
         )
         self._enum_type = enum_type
         self._field_type = field_type or FieldTypes.any
+        self._primitive = primitive
 
     @property
     def field_type(self) -> Type[AbstractFieldType]:

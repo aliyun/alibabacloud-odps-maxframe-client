@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ from ...serialization.serializables import (
     StringField,
 )
 from ...typing_ import EntityType
+from ...utils import check_unexpected_kwargs
 from ..core import TENSOR_TYPE, TensorOrder
 from ..datasource import tensor as astensor
 from ..operators import TensorOperator, TensorOperatorMixin
@@ -123,10 +124,7 @@ def _validate_partition_arguments(a, kth, axis, kind, order, kw):
     # if a is structure type and order is not None
     order = validate_order(a.dtype, order)
     need_align = kw.pop("need_align", None)
-    if len(kw) > 0:
-        raise TypeError(
-            f"partition() got an unexpected keyword argument '{next(iter(kw))}'"
-        )
+    check_unexpected_kwargs(kw)
 
     return a, kth, axis, kind, order, need_align
 

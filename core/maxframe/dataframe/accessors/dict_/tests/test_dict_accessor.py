@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ from .....utils import (
     ARROW_DTYPE_NOT_SUPPORTED,
     deserialize_serializable,
     serialize_serializable,
+    wrap_arrow_dtype,
 )
 from ..core import SeriesDictMethod
 from ..getitem import SeriesDictGetItemOperator
@@ -56,7 +57,7 @@ def test_getitem(df):
     s1 = df["A"].dict["k1"]
     assert isinstance(s1, md.Series)
     assert s1.name == "k1"
-    assert s1.dtype == pd.ArrowDtype(pa.string())
+    assert s1.dtype == wrap_arrow_dtype(pa.string())
     assert s1.shape == (1,)
     assert s1.index_value == df.index_value
     op = s1.op
@@ -71,7 +72,7 @@ def test_getitem_with_default_value(df):
     s1 = df["B"].dict.get("k1", 1)
     assert isinstance(s1, md.Series)
     assert s1.name == "k1"
-    assert s1.dtype == pd.ArrowDtype(pa.int64())
+    assert s1.dtype == wrap_arrow_dtype(pa.int64())
     assert s1.shape == (1,)
     assert s1.index_value == df.index_value
     op = s1.op
@@ -101,7 +102,7 @@ def test_length(df):
     s1 = df["A"].dict.len()
     assert isinstance(s1, md.Series)
     assert s1.name is None
-    assert s1.dtype == pd.ArrowDtype(pa.int64())
+    assert s1.dtype == wrap_arrow_dtype(pa.int64())
     assert s1.shape == (1,)
     assert s1.index_value == df.index_value
     op = s1.op
@@ -127,7 +128,7 @@ def test_contains(df):
     s1 = df["A"].dict.contains("k1")
     assert isinstance(s1, md.Series)
     assert s1.name is None
-    assert s1.dtype == pd.ArrowDtype(pa.bool_())
+    assert s1.dtype == wrap_arrow_dtype(pa.bool_())
     assert s1.index_value == df.index_value
     assert s1.shape == (1,)
     op = s1.op
@@ -149,7 +150,7 @@ def test_legacy_compatibility(df):
         shape=in_series.shape,
         index_value=in_series.index_value,
         name="k1",
-        dtype=pd.ArrowDtype(pa.int64()),
+        dtype=wrap_arrow_dtype(pa.int64()),
     )
     fetch_node = build_fetch(in_series).data
     out.op.inputs = [fetch_node]

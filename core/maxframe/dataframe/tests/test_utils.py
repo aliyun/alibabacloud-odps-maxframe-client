@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import itertools
+import operator
+
 import numpy as np
 import pandas as pd
 import pyarrow as pa
@@ -21,11 +24,20 @@ from ...config import option_context
 from ...core.operator import Operator
 from ...udf import (
     MarkedFunction,
+    with_network_options,
     with_python_requirements,
     with_resources,
     with_running_options,
 )
-from ..utils import _generate_value, copy_func_scheduling_hints, pack_func_args
+from ...utils import wrap_arrow_dtype
+from ..utils import (
+    MAX_DECIMAL128_PRECISION,
+    _generate_value,
+    copy_func_scheduling_hints,
+    infer_dtype,
+    infer_dtypes,
+    pack_func_args,
+)
 
 try:
     from pandas import ArrowDtype
@@ -48,6 +60,9 @@ def test_pack_function(df1):
     assert f(df1).equals(df1)
     assert isinstance(f, MarkedFunction)
     assert f.resources == ["a.zip"]
+    assert f.vpc_network_link is None
+    assert isinstance(f.internal_network_whitelist, list)
+    assert isinstance(f.public_network_whitelist, list)
 
     # pack with args
     @with_python_requirements("numpy")
@@ -58,6 +73,9 @@ def test_pack_function(df1):
     assert f(df1).equals(df1 + 1)
     assert isinstance(f, MarkedFunction)
     assert f.pythonpacks[0].requirements == ("numpy",)
+    assert f.vpc_network_link is None
+    assert isinstance(f.internal_network_whitelist, list)
+    assert isinstance(f.public_network_whitelist, list)
 
     f = pack_func_args(df1, np.sum)
     assert f(df1).equals(np.sum(df1))
@@ -72,19 +90,22 @@ def test_pack_function(df1):
     assert isinstance(f, MarkedFunction)
     assert f.resources == ["a.txt"]
     assert f.pythonpacks[0].requirements == ("pandas",)
+    assert f.vpc_network_link is None
+    assert isinstance(f.internal_network_whitelist, list)
+    assert isinstance(f.public_network_whitelist, list)
 
 
 @pytest.mark.parametrize(
     "dtype, fill_value, expected",
     [
         (
-            ArrowDtype(pa.list_(pa.string())) if ArrowDtype else None,
+            wrap_arrow_dtype(pa.list_(pa.string())) if ArrowDtype else None,
             1,
             [pa.scalar("1")],
         ),
         (pa.list_(pa.string()), 1, [pa.scalar("1")]),
         (
-            ArrowDtype(pa.map_(pa.int32(), pa.string())) if ArrowDtype else None,
+            wrap_arrow_dtype(pa.map_(pa.int32(), pa.string())) if ArrowDtype else None,
             1,
             [(pa.scalar(1, pa.int32()), pa.scalar("1"))],
         ),
@@ -94,7 +115,7 @@ def test_pack_function(df1):
             [(pa.scalar(1, pa.int32()), pa.scalar("1"))],
         ),
         (
-            ArrowDtype(
+            wrap_arrow_dtype(
                 pa.struct([pa.field("a", pa.int32()), pa.field("b", pa.string())])
             )
             if ArrowDtype
@@ -167,3 +188,62 @@ def test_copy_func_scheduling_hints():
     # The with_running_options decorator will override the gpu value with the gu value
     expected_resources = {"gpu": 2, "gu_quota": None, "cpu": 1, "memory": "4GiB"}
     assert op3.expect_resources == expected_resources
+
+
+@pytest.mark.skipif(not hasattr(pd, "ArrowDtype"), reason="ArrowDtype not available")
+def test_decimal_type_inference():
+    dtype1 = pd.ArrowDtype(pa.decimal128(MAX_DECIMAL128_PRECISION, 10))
+    dtype2 = pd.ArrowDtype(pa.decimal128(MAX_DECIMAL128_PRECISION, 7))
+    inferred = infer_dtype(dtype1, dtype2, operator.truediv)
+    assert inferred.pyarrow_dtype.precision == MAX_DECIMAL128_PRECISION
+    assert inferred.pyarrow_dtype.scale == 12
+
+    dtypes1 = pd.Series(
+        [np.dtype("int64"), pd.ArrowDtype(pa.decimal128(MAX_DECIMAL128_PRECISION, 10))]
+    )
+    dtypes2 = pd.Series(
+        [np.dtype("int64"), pd.ArrowDtype(pa.decimal128(MAX_DECIMAL128_PRECISION, 7))]
+    )
+    inferred = infer_dtypes(dtypes1, dtypes2, operator.truediv)
+    assert inferred.iloc[1].pyarrow_dtype.precision == MAX_DECIMAL128_PRECISION
+    assert inferred.iloc[1].pyarrow_dtype.scale == 12
+
+
+@pytest.mark.parametrize(
+    "with_network_link, with_public_whitelist, with_internal_whitelist",
+    [
+        (use_link, use_public, use_internal)
+        for use_link, use_public, use_internal in itertools.product(
+            [True, False], repeat=3
+        )
+    ],
+)
+def test_with_network_options(
+    with_network_link, with_public_whitelist, with_internal_whitelist
+):
+    kwargs = dict()
+    if with_network_link:
+        kwargs["vpc_network_link"] = "abc"
+    if with_public_whitelist:
+        kwargs["public_whitelist"] = ["a", "b"]
+    if with_internal_whitelist:
+        kwargs["internal_whitelist"] = ["e", "f"]
+
+    @with_network_options(**kwargs)
+    def test_func(x):
+        return x + 1
+
+    if with_network_link:
+        assert test_func.vpc_network_link == "abc"
+    else:
+        assert test_func.vpc_network_link is None
+
+    if with_public_whitelist:
+        assert test_func.public_network_whitelist == ["a", "b"]
+    else:
+        assert not test_func.public_network_whitelist
+
+    if with_internal_whitelist:
+        assert test_func.internal_network_whitelist == ["e", "f"]
+    else:
+        assert not test_func.internal_network_whitelist

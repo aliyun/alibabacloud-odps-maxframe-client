@@ -12,9 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from gzip import GzipFile
 from typing import BinaryIO
 
+try:
+    from compression.bz2 import BZ2File
+    from compression.gzip import GzipFile
+    from compression.lzma import LZMAFile
+    from compression.zstd import ZstdFile
+except ImportError:  # pragma: no cover
+    from bz2 import BZ2File
+    from gzip import GzipFile
+    from lzma import LZMAFile
+
+    try:
+        from zstandard import open as ZstdFile
+    except ImportError:  # pragma: no cover
+        ZstdFile = None
 try:
     import lz4
     import lz4.frame
@@ -22,8 +35,13 @@ except ImportError:  # pragma: no cover
     lz4 = None
 
 
-_compressions = {"gzip": lambda f: GzipFile(fileobj=f)}
-
+_compressions = {
+    "bz2": BZ2File,
+    "gzip": lambda f: GzipFile(fileobj=f),
+    "xz": LZMAFile,
+}
+if ZstdFile:
+    _compressions["zstd"] = ZstdFile
 if lz4:
     _compressions["lz4"] = lz4.frame.open
 

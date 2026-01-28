@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ from typing import List, MutableMapping, Optional, Union
 import numpy as np
 import pandas as pd
 from odps import ODPS
+from odps.errors import NoSuchObject
 from odps.models import Table
 from odps.utils import to_timestamp
 
@@ -25,18 +26,25 @@ from ... import opcodes
 from ...config import option_context, options
 from ...core import OutputType
 from ...io.odpsio import odps_schema_to_pandas_dtypes
+from ...protocol import DefaultIndexType
 from ...serialization.serializables import (
     AnyField,
     BoolField,
+    EnumField,
     FieldTypes,
     Int64Field,
     ListField,
     SeriesField,
     StringField,
 )
-from ...utils import estimate_table_size, is_empty
+from ...utils import estimate_table_size, get_odps_dlf_table, is_empty, str_to_bool
 from ..core import DataFrame  # noqa: F401
-from ..utils import parse_index, validate_dtype_backend
+from ..utils import (
+    get_index_value_by_default_index_type,
+    parse_index,
+    validate_default_index_type,
+    validate_dtype_backend,
+)
 from .core import (
     ColumnPruneSupportedDataSourceMixin,
     DtypeBackendCompatibleMixin,
@@ -65,6 +73,9 @@ class DataFrameReadODPSTable(
     last_modified_time = Int64Field("last_modified_time", default=None)
     index_columns = ListField("index_columns", FieldTypes.string, default=None)
     index_dtypes = SeriesField("index_dtypes", default=None)
+    default_index_type = EnumField(
+        "default_index_type", DefaultIndexType, FieldTypes.int8, default=None
+    )
 
     def __init__(self, memory_scale=None, dtype_backend=None, **kw):
         output_type = kw.pop("output_type", OutputType.dataframe)
@@ -89,10 +100,9 @@ class DataFrameReadODPSTable(
 
     def __call__(self, shape, chunk_bytes=None, chunk_size=None):
         if is_empty(self.index_columns):
-            if np.isnan(shape[0]):
-                index_value = parse_index(pd.RangeIndex(0))
-            else:
-                index_value = parse_index(pd.RangeIndex(shape[0]))
+            index_value = get_index_value_by_default_index_type(
+                self.default_index_type, shape[0], args=(type(self), self.table_name)
+            )
         elif len(self.index_columns) == 1:
             index_value = parse_index(
                 pd.Index([], name=self.index_columns[0]).astype(
@@ -163,6 +173,7 @@ def read_odps_table(
     string_as_binary: bool = None,
     append_partitions: bool = False,
     dtype_backend: str = None,
+    default_index_type: DefaultIndexType = None,
     **kw,
 ):
     """
@@ -194,6 +205,7 @@ def read_odps_table(
     result: DataFrame
         DataFrame read from MaxCompute (ODPS) table
     """
+    default_index_type = validate_default_index_type(default_index_type, **kw)
     odps_entry = odps_entry or ODPS.from_global() or ODPS.from_environments()
     schema = options.session.default_schema or odps_entry.schema
     if odps_entry is None:
@@ -201,7 +213,14 @@ def read_odps_table(
     if isinstance(table_name, Table):
         table = table_name
     else:
-        table = odps_entry.get_table(table_name, schema=schema)
+        try:
+            table = odps_entry.get_table(table_name, schema=schema)
+            table.reload()
+        except NoSuchObject:
+            sql_hints = options.sql.settings or {}
+            if not str_to_bool(sql_hints.get("odps.maxframe.resolve_dlf_tables")):
+                raise
+            table = get_odps_dlf_table(odps_entry, table_name, schema=schema)
 
     if not table.table_schema.partitions and (
         partitions is not None or append_partitions
@@ -290,6 +309,7 @@ def read_odps_table(
         index_columns=index_col,
         index_dtypes=index_dtypes,
         odps_entry=odps_entry,
+        default_index_type=default_index_type,
         **kw,
     )
     return op(shape, chunk_bytes=chunk_bytes, chunk_size=chunk_size)

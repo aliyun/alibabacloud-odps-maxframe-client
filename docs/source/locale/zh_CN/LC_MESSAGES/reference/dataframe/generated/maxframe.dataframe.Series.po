@@ -202,11 +202,10 @@ msgid "Return boolean Series equivalent to left <= series <= right."
 msgstr "返回一个布尔 Series，表示数据是否满足 left <= series <= right。"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.rst:173:<autosummary>:1
-#, fuzzy
 msgid ""
 ":py:obj:`between_time <maxframe.dataframe.Series.between_time>`\\ "
 "\\(start\\_time\\, end\\_time\\[\\, ...\\]\\)"
-msgstr "根据给定的*位置*索引沿轴返回元素。"
+msgstr ""
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.rst:173:<autosummary>:1
 msgid "Select values between particular times of the day (e.g., 9:00-9:30 AM)."
@@ -920,11 +919,10 @@ msgid ""
 msgstr "返回序列与另一个对象的逐元素加法结果（二元运算符 `radd`）。"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.rst:173:<autosummary>:1
-#, fuzzy
 msgid ""
 ":py:obj:`rank <maxframe.dataframe.Series.rank>`\\ \\(\\[axis\\, method\\,"
 " numeric\\_only\\, ...\\]\\)"
-msgstr "使用指定方法填充 NA/NaN 值。"
+msgstr ""
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.rst:173:<autosummary>:1
 msgid "Compute numerical data ranks (1 through n) along axis."
@@ -999,11 +997,10 @@ msgid "Rearrange index levels using input order."
 msgstr "使用输入顺序重新排列索引层级。"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.rst:173:<autosummary>:1
-#, fuzzy
 msgid ""
 ":py:obj:`repeat <maxframe.dataframe.Series.repeat>`\\ \\(repeats\\[\\, "
 "axis\\]\\)"
-msgstr "根据给定的*位置*索引沿轴返回元素。"
+msgstr ""
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.rst:173:<autosummary>:1
 msgid "Repeat elements of a Series."
@@ -1261,7 +1258,6 @@ msgid "Convert Series to DataFrame."
 msgstr "将 Series 转换为 DataFrame。"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.rst:173:<autosummary>:1
-#, fuzzy
 msgid ""
 ":py:obj:`to_list <maxframe.dataframe.Series.to_list>`\\ "
 "\\(\\[batch\\_size\\, session\\]\\)"
@@ -1504,4 +1500,3 @@ msgstr ""
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.rst:195:<autosummary>:1
 msgid ":py:obj:`values <maxframe.dataframe.Series.values>`\\"
 msgstr ""
-

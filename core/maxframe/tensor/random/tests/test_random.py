@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import pytest
 from ....serialization import deserialize, serialize
 from ....serialization.serializables import Serializable
 from ...datasource import tensor as from_ndarray
+from ...utils import AxisError
 from .. import (
     RandomState,
     TensorPermutation,
@@ -147,7 +148,7 @@ def test_permutation():
     assert x.shape == (3, 3)
     assert isinstance(x.op, TensorPermutation)
 
-    with pytest.raises(np.AxisError):
+    with pytest.raises(AxisError):
         pytest.raises(permutation("abc"))
 
 

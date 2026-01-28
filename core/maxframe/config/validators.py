@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import enum
 import os
 from typing import Callable
 from urllib.parse import urlparse
@@ -106,6 +107,24 @@ def is_great_than_or_equal_to(lower_bound):
     )
 
 
+def is_enum_value(enum_tp):
+    enum_cls = None
+    if isinstance(enum_tp, type):
+        enum_cls = enum_tp
+
+    def validate(x):
+        nonlocal enum_cls
+        if enum_cls is None:
+            from ..serialization import load_type
+
+            enum_cls = load_type(enum_tp, enum.Enum)
+        if x is None:
+            return True
+        return hasattr(enum_cls, x) if isinstance(x, str) else x in enum_cls
+
+    return Validator(validate)
+
+
 def _is_valid_cache_path(path: str) -> bool:
     """
     path should look like oss://oss_endpoint/oss_bucket/path
@@ -131,11 +150,11 @@ def simple_yaml_str_validator(name: str) -> bool:
 
 
 def dtype_backend_validator(name: str) -> bool:
-    from ..utils import pd_release_version
+    from ..utils import no_default, pd_release_version
 
     check_pd_version = not str_to_bool(os.getenv(env.MAXFRAME_INSIDE_TASK))
     name = "pyarrow" if name == "arrow" else name
-    if name not in (None, "numpy", "pyarrow"):
+    if name not in (None, no_default, "numpy", "pyarrow"):
         return False
     if check_pd_version and name == "pyarrow" and pd_release_version[:2] < (1, 5):
         raise ValueError("Need pandas>=1.5 to use pyarrow backend")

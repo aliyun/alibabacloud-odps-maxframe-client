@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ from ... import opcodes
 from ... import tensor as maxframe_tensor
 from ...core import ENTITY_TYPE, OutputType, enter_mode
 from ...io.odpsio.schema import pandas_dtype_to_arrow_type
-from ...lib.dtypes_extension import ArrowDtype
 from ...serialization.serializables import (
     AnyField,
     BoolField,
@@ -38,7 +37,7 @@ from ...serialization.serializables import (
 )
 from ...typing_ import TileableType
 from ...udf import BuiltinFunction
-from ...utils import get_pd_option, lazy_import, pd_release_version
+from ...utils import get_pd_option, lazy_import, pd_release_version, wrap_arrow_dtype
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_df, build_empty_df, build_series, parse_index, validate_axis
 from .core import (
@@ -145,7 +144,7 @@ class DataFrameAggregate(DataFrameOperator, DataFrameOperatorMixin):
                 if in_dt == np.dtype("O"):
                     in_dt = pd.StringDtype()
                 arrow_dt = pandas_dtype_to_arrow_type(in_dt)
-                new_dt[out_col_name] = ArrowDtype(pa.list_(arrow_dt))
+                new_dt[out_col_name] = wrap_arrow_dtype(pa.list_(arrow_dt))
             else:
                 # do nothing as the result might be string
                 new_dt[out_col_name] = dt
@@ -160,7 +159,7 @@ class DataFrameAggregate(DataFrameOperator, DataFrameOperatorMixin):
             if in_dt == np.dtype("O"):
                 in_dt = pd.StringDtype()
             arrow_dt = pandas_dtype_to_arrow_type(in_dt)
-            return ArrowDtype(pa.list_(arrow_dt))
+            return wrap_arrow_dtype(pa.list_(arrow_dt))
         else:
             return dtype
 

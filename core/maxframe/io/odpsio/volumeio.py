@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,6 +51,12 @@ class ODPSVolumeReader:
             )
         ]
 
+    def get_location(self) -> Optional[str]:
+        try:
+            return self._volume.location
+        except AttributeError:
+            return None
+
     def read_file(self, file_name: str) -> bytes:
         kw = {}
         if _has_replace_internal_host and self._replace_internal_host:
@@ -74,6 +80,12 @@ class ODPSVolumeWriter:
         self._volume = odps_entry.get_volume(volume_name, schema=schema_name)
         self._volume_dir = volume_dir
         self._replace_internal_host = replace_internal_host
+
+    def get_location(self) -> Optional[str]:
+        try:
+            return self._volume.location
+        except AttributeError:
+            return None
 
     def write_file(self, file_name: str, data: Union[bytes, Iterator[bytes]]):
         sign_url = self._volume.get_sign_url(

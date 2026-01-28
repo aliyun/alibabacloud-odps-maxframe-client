@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ from ....core import EntityData
 from ....serialization import PickleContainer
 from ....serialization.serializables import AnyField, Float16Field, KeyField
 from ....udf import BuiltinFunction
+from ....utils import check_unexpected_kwargs
 from ...core import TensorOrder
 from ...datasource import tensor as astensor
 from ...operators import TensorOperator, TensorOperatorMixin
@@ -405,10 +406,7 @@ def cdist(XA, XB, metric="euclidean", **kwargs):
     if vi is not None:
         vi = astensor(vi)
 
-    if len(kwargs) > 0:
-        raise TypeError(
-            f"`cdist` got an unexpected keyword argument '{next(iter(kwargs))}'"
-        )
+    check_unexpected_kwargs(kwargs)
 
     op = TensorCDist(metric=metric, p=p, w=w, v=v, vi=vi, dtype=np.dtype(float))
     shape = (XA.shape[0], XB.shape[0])

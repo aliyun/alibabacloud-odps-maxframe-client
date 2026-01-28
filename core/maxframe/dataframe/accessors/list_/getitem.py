@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas as pd
-
 from .... import opcodes
 from ....serialization.serializables.field import AnyField, BoolField
+from ....utils import wrap_arrow_dtype
 from .core import LegacySeriesListOperator, SeriesListMethod
 
 
@@ -69,7 +68,7 @@ def series_list_getitem(series, query_index):
     kw = dict(query_index=query_index, ignore_index_error=True)
     arrow_list_type = series.dtype.pyarrow_dtype
     return SeriesListMethod(method="getitem", method_kwargs=kw)(
-        series, dtype=pd.ArrowDtype(arrow_list_type.value_type)
+        series, dtype=wrap_arrow_dtype(arrow_list_type.value_type)
     )
 
 
@@ -124,5 +123,5 @@ def series_list_getitem_with_index_error(series, query_index):
     kw = dict(query_index=query_index, ignore_index_error=False)
     arrow_list_type = series.dtype.pyarrow_dtype
     return SeriesListMethod(method="getitem", method_kwargs=kw)(
-        series, dtype=pd.ArrowDtype(arrow_list_type.value_type)
+        series, dtype=wrap_arrow_dtype(arrow_list_type.value_type)
     )

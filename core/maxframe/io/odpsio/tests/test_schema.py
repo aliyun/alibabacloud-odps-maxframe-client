@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ from .... import env
 from .... import tensor as mt
 from ....config import option_context, options
 from ....core import OutputType
-from ....lib.dtypes_extension import ArrowBlobType, ArrowDtype, dict_, list_
-from ....utils import pd_release_version
+from ....lib.dtypes_extension import ArrowBlobType, dict_, list_
+from ....utils import pd_release_version, wrap_arrow_dtype
 from ..schema import (
     arrow_schema_to_odps_schema,
     build_dataframe_table_meta,
@@ -386,9 +386,9 @@ def test_odps_pandas_schema_conversion_with_numpy(set_dtype_backend):
                 "datetime64[ms]" if pd_release_version[0] >= 2 else "datetime64[ns]"
             ),
             np.dtype("datetime64[ns]"),
-            ArrowDtype(pa.list_(pa.string())),
-            ArrowDtype(pa.map_(pa.string(), pa.int64())),
-            ArrowDtype(
+            wrap_arrow_dtype(pa.list_(pa.string())),
+            wrap_arrow_dtype(pa.map_(pa.string(), pa.int64())),
+            wrap_arrow_dtype(
                 pa.struct(
                     [
                         pa.field("a1", pa.string()),
@@ -423,22 +423,22 @@ def test_odps_pandas_schema_conversion_with_pyarrow(set_dtype_backend):
     # When dtype_backend is pyarrow, complex types should be ArrowDtype
     expected_series = pd.Series(
         [
-            ArrowDtype(pa.string()),
-            ArrowDtype(pa.binary()),
-            ArrowDtype(pa.int8()),
-            ArrowDtype(pa.int16()),
-            ArrowDtype(pa.int32()),
-            ArrowDtype(pa.int64()),
-            ArrowDtype(pa.bool_()),
-            ArrowDtype(pa.float32()),
-            ArrowDtype(pa.float64()),
-            ArrowDtype(pa.date32()),
-            ArrowDtype(pa.timestamp("ms")),
-            ArrowDtype(pa.timestamp("ns")),
-            ArrowDtype(pa.decimal128(10, 2)),
-            ArrowDtype(pa.list_(pa.string())),
-            ArrowDtype(pa.map_(pa.string(), pa.int64())),
-            ArrowDtype(
+            wrap_arrow_dtype(pa.string()),
+            wrap_arrow_dtype(pa.binary()),
+            wrap_arrow_dtype(pa.int8()),
+            wrap_arrow_dtype(pa.int16()),
+            wrap_arrow_dtype(pa.int32()),
+            wrap_arrow_dtype(pa.int64()),
+            wrap_arrow_dtype(pa.bool_()),
+            wrap_arrow_dtype(pa.float32()),
+            wrap_arrow_dtype(pa.float64()),
+            wrap_arrow_dtype(pa.date32()),
+            wrap_arrow_dtype(pa.timestamp("ms")),
+            wrap_arrow_dtype(pa.timestamp("ns")),
+            wrap_arrow_dtype(pa.decimal128(10, 2)),
+            wrap_arrow_dtype(pa.list_(pa.string())),
+            wrap_arrow_dtype(pa.map_(pa.string(), pa.int64())),
+            wrap_arrow_dtype(
                 pa.struct(
                     [
                         pa.field("a1", pa.string()),
@@ -446,8 +446,8 @@ def test_odps_pandas_schema_conversion_with_pyarrow(set_dtype_backend):
                     ]
                 )
             ),
-            ArrowDtype(pa.string()),
-            ArrowDtype(pa.string()),
+            wrap_arrow_dtype(pa.string()),
+            wrap_arrow_dtype(pa.string()),
         ],
         index=[c.name for c in odps_schema.columns],
     )
@@ -460,6 +460,20 @@ def test_odps_pandas_schema_conversion_with_pyarrow(set_dtype_backend):
         pandas_dtypes_to_arrow_schema(pd_dtypes, unknown_as_string=True)
     )
     _assert_odps_schema_equal(expected_odps_schema, odps_schema2)
+
+
+def test_uint_type_conversion():
+    pd_dtypes = pd.Series(
+        [np.dtype("uint8"), np.dtype("uint16"), np.dtype("uint32"), np.dtype("uint64")]
+    )
+    arrow_schema = pandas_dtypes_to_arrow_schema(pd_dtypes)
+    odps_schema = arrow_schema_to_odps_schema(arrow_schema)
+    assert odps_schema.types == [
+        odps_types.smallint,
+        odps_types.int_,
+        odps_types.bigint,
+        odps_types.bigint,
+    ]
 
 
 def test_build_column_name():

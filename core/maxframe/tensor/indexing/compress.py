@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ import numpy as np
 
 from ..core import Tensor
 from ..datasource import tensor as astensor
-from ..utils import validate_axis
+from ..utils import AxisError, validate_axis
 
 
 def compress(condition, a, axis=None, out=None):
@@ -95,7 +95,7 @@ def compress(condition, a, axis=None, out=None):
     try:
         axis = validate_axis(a.ndim, axis)
     except ValueError:
-        raise np.AxisError(
+        raise AxisError(
             f"axis {axis} is out of bounds for tensor of dimension {a.ndim}"
         )
 
@@ -117,6 +117,6 @@ def compress(condition, a, axis=None, out=None):
         out.data = t.astype(out.dtype, order=out.order.value).data
         return out
     except IndexError:
-        raise np.AxisError(
+        raise AxisError(
             f"axis {len(condition)} is out of bounds for tensor of dimension 1"
         )

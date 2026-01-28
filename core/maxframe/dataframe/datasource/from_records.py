@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ def from_records(
     nrows=None,
     gpu=None,
     sparse=False,
-    **kw
+    **kw,
 ):
     """
     Convert structured or record ndarray to DataFrame.
@@ -154,7 +154,7 @@ def from_records(
     2      1     c
     3      0     d
     """
-    if isinstance(data, np.ndarray):
+    if isinstance(data, (np.ndarray, list)):
         from .dataframe import from_pandas
 
         return from_pandas(
@@ -166,15 +166,13 @@ def from_records(
                 coerce_float=coerce_float,
                 nrows=nrows,
             ),
-            **kw
+            **kw,
         )
     elif isinstance(data, TENSOR_TYPE):
         if data.dtype.names is None:
-            raise TypeError("Not a tensor with structured dtype {0}", data.dtype)
+            raise TypeError(f"Not a tensor with structured dtype {data.dtype}")
         if data.ndim != 1:
-            raise ValueError(
-                "Not a tensor with non 1-D structured dtype {0}", data.shape
-            )
+            raise ValueError(f"Not a tensor with non 1-D structured dtype {data.shape}")
 
         op = DataFrameFromRecords(
             index=None,
@@ -184,7 +182,7 @@ def from_records(
             nrows=nrows,
             gpu=gpu,
             sparse=sparse,
-            **kw
+            **kw,
         )
         return op(data)
     else:

@@ -14,6 +14,7 @@
 
 import enum
 import re
+from collections import defaultdict
 from typing import Any, Dict, Iterator, List, Tuple, Union
 from urllib.parse import urlencode
 
@@ -150,7 +151,28 @@ class OSSFileSystem(FileSystem):
 
     @implements(FileSystem.walk)
     def walk(self, path: path_type) -> Iterator[Tuple[str, List[str], List[str]]]:
-        raise NotImplementedError
+        if not self.isdir(path):
+            return
+        path = path.rstrip("/") + "/"
+        all_subfiles = sorted(self.ls(path))
+        prefixes_to_contents = defaultdict(lambda: (set(), set()))
+        for file_path in all_subfiles:
+            if path == file_path:
+                continue
+            rel_path = file_path[len(path) :].lstrip("/")
+            if "/" not in rel_path:
+                prefixes_to_contents[path][1].add(rel_path)
+            else:
+                rel_root, fn = rel_path.split("/", 1)
+                cur_root = path + rel_root.strip("/") + "/"
+                prefixes_to_contents[cur_root][1].add(fn)
+                rel_prefix = ""
+                for part in rel_root.split("/"):
+                    cur_root = (path + rel_prefix.lstrip("/")).rstrip("/") + "/"
+                    prefixes_to_contents[cur_root][0].add(part)
+                    rel_prefix += "/" + part
+        for root, (dirs, files) in sorted(prefixes_to_contents.items()):
+            yield root, sorted(dirs), sorted(files)
 
     @implements(FileSystem.glob)
     def glob(self, path: path_type, recursive: bool = False) -> List[path_type]:

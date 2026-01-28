@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import numpy as np
-
-from ..utils import validate_axis
+from ..utils import AxisError, validate_axis
 
 
 def rollaxis(tensor, axis, start=0):
@@ -65,7 +63,7 @@ def rollaxis(tensor, axis, start=0):
         start += n
     msg = "'%s' arg requires %d <= %s < %d, but %d was passed in"
     if not (0 <= start < n + 1):
-        raise np.AxisError(msg % ("start", -n, "start", n + 1, start))
+        raise AxisError(msg % ("start", -n, "start", n + 1, start))
     if axis < start:
         # it's been removed
         start -= 1

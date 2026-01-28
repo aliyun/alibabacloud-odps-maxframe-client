@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,16 +19,15 @@ import time
 from typing import Any, Dict, List, Optional, Type, Union
 
 import msgpack
-from odps import ODPS
-from odps import options as odps_options
-from odps.errors import EmptyTaskInfoError, parse_instance_error
-from odps.models import Instance, MaxFrameTask
-
 from maxframe.config import options
 from maxframe.core import TileableGraph
 from maxframe.errors import NoTaskServerResponseError, SessionAlreadyClosedError
 from maxframe.protocol import DagInfo, JsonSerializable, ResultInfo, SessionInfo
 from maxframe.utils import deserialize_serializable, serialize_serializable, to_str
+from odps import ODPS
+from odps import options as odps_options
+from odps.errors import EmptyTaskInfoError, RequestTimeTooSkewed, parse_instance_error
+from odps.models import Instance, MaxFrameTask
 
 try:
     from maxframe import __version__ as mf_version
@@ -165,6 +164,22 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
             )
             return self._deserial_task_info_result(result, SessionInfo)
 
+    @classmethod
+    def _collect_explain_instances(
+        cls, dag: TileableGraph, new_settings: Dict[str, Any] = None
+    ) -> Dict[str, Any]:
+        inst_ids = []
+        for t in dag:
+            if "explain_instance" in t.op.extra_params:
+                inst_ids.append(t.op.extra_params.pop("explain_instance"))
+        if inst_ids:
+            new_settings = new_settings or {}
+            dag_settings = new_settings["dag.settings"] = (
+                new_settings.get("dag.settings") or {}
+            )
+            dag_settings["client.explain_instances"] = ",".join(inst_ids)
+        return new_settings
+
     def _parse_instance_result_error(self):
         result_data = self._instance.get_task_result(self._task_name)
         try:
@@ -211,6 +226,10 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
                         f"Request ID: {ex.request_id}"
                     ) from None
                 time.sleep(0.5)
+            except RequestTimeTooSkewed:
+                if trial >= EMPTY_RESPONSE_RETRY_COUNT - 1:
+                    raise
+                time.sleep(0.5)
 
     def get_session(self) -> SessionInfo:
         req_data = {"output_format": self._output_format}
@@ -233,6 +252,7 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
         managed_input_infos: Optional[Dict[str, ResultInfo]] = None,
         new_settings: Dict[str, Any] = None,
     ) -> DagInfo:
+        new_settings = self._collect_explain_instances(dag, new_settings)
         new_settings_value = {
             "odps.maxframe.settings": json.dumps(new_settings),
         }

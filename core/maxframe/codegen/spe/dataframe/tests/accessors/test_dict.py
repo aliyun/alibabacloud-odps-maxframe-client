@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import pytest
 
 from ...... import dataframe as md
 from ......lib.dtypes_extension import dict_
-from ......utils import ARROW_DTYPE_NOT_SUPPORTED
+from ......utils import ARROW_DTYPE_NOT_SUPPORTED, wrap_arrow_dtype
 from ....core import SPECodeContext
 from ...accessors.dict_ import SeriesDictMethodAdapter
 
@@ -87,7 +87,7 @@ var_1.name = 'k1'
         [1, 11, None],
         index=[1, 2, 3],
         name="k1",
-        dtype=pd.ArrowDtype(pa.int32()),
+        dtype=wrap_arrow_dtype(pa.int32()),
     )
     pd.testing.assert_series_equal(expected_series, local_vars["var_1"])
 
@@ -123,7 +123,7 @@ var_1.name = 'k2'
         [2, 9, None],
         index=[1, 2, 3],
         name="k2",
-        dtype=pd.ArrowDtype(pa.int32()),
+        dtype=wrap_arrow_dtype(pa.int32()),
     )
     pd.testing.assert_series_equal(expected_series, local_vars["var_1"])
 
@@ -192,7 +192,7 @@ var_1 = var_0.map(_inner_set, na_action="ignore").astype(const_0)
         ],
         index=[1, 2, 3],
         name="A",
-        dtype=pd.ArrowDtype(pa.map_(pa.string(), pa.int32())),
+        dtype=wrap_arrow_dtype(pa.map_(pa.string(), pa.int32())),
     )
     pd.testing.assert_series_equal(expected_series, local_vars["var_1"])
 
@@ -213,7 +213,7 @@ var_1.name = None
     assert results == expected_results
     local_vars = _run_generated_code(results[0], context, pd_df_1["A"])
     expected_series = pd.Series(
-        [2, 1, pd.NA], index=[1, 2, 3], name=None, dtype=pd.ArrowDtype(pa.int64())
+        [2, 1, pd.NA], index=[1, 2, 3], name=None, dtype=wrap_arrow_dtype(pa.int64())
     )
     pd.testing.assert_series_equal(expected_series, local_vars["var_1"])
 
@@ -247,7 +247,7 @@ var_1 = var_0.map(_inner_remove, na_action="ignore").astype(const_0)
         [[("k1", 1)], [("k1", 11)], None],
         index=[1, 2, 3],
         name="A",
-        dtype=pd.ArrowDtype(pa.map_(pa.string(), pa.int32())),
+        dtype=wrap_arrow_dtype(pa.map_(pa.string(), pa.int32())),
     )
     pd.testing.assert_series_equal(expected_series, local_vars["var_1"])
 
@@ -299,6 +299,6 @@ var_1.name = None
         [True, False, None],
         index=[1, 2, 3],
         name=None,
-        dtype=pd.ArrowDtype(pa.bool_()),
+        dtype=wrap_arrow_dtype(pa.bool_()),
     )
     pd.testing.assert_series_equal(expected_series, local_vars["var_1"])

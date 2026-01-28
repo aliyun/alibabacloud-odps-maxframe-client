@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,12 @@
 import numpy as np
 
 from ... import opcodes
+from ...utils import np_release_version
 from ..datasource import tensor as astensor
 from .core import TensorReduction, TensorReductionMixin
+
+# since numpy 2.0 `all` returns bool type (numpy-25712)
+_all_return_bool = np_release_version[0] >= 2
 
 
 class TensorAll(TensorReduction, TensorReductionMixin):
@@ -98,4 +102,6 @@ def all(a, axis=None, out=None, keepdims=None):
     else:
         dtype = np.dtype(bool)
     op = TensorAll(axis=axis, dtype=dtype, keepdims=keepdims)
+    if _all_return_bool:
+        op.extra_params["return_bool"] = True
     return op(a, out=out)

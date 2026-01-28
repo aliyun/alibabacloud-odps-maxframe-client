@@ -145,6 +145,9 @@ def case_when(
 def patch_pandas():
     if not hasattr(pd.Series, "case_when"):
         pd.Series.case_when = case_when
+    if hasattr(pd, "StringDtype") and not hasattr(pd.StringDtype, "itemsize"):
+        # Make it compatible with pd.ArrowDtype(pa.string()).itemsize
+        pd.StringDtype.itemsize = property(fget=lambda self: 0)
 
 
 class cached_property:

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,10 +22,9 @@ from ...io.odpsio.schema import (
     pandas_dtype_to_arrow_type,
     pandas_dtypes_to_arrow_schema,
 )
-from ...lib.dtypes_extension import ArrowDtype
 from ...serialization.serializables import BoolField
 from ...tensor.core import TensorOrder
-from ...utils import lazy_import
+from ...utils import lazy_import, wrap_arrow_dtype
 from ..core import DATAFRAME_TYPE
 from ..initializer import Series as asseries
 from .core import (
@@ -82,7 +81,7 @@ class DataFrameUnique(DataFrameReduction, DataFrameReductionMixin):
             assert self.output_list_scalar and self.axis == 0
             pa_schema = pandas_dtypes_to_arrow_schema(a.dtypes, unknown_as_string=True)
             if len(set(pa_schema.types)) == 1:
-                out_dtype = ArrowDtype(pa.list_(pa_schema.types[0]))
+                out_dtype = wrap_arrow_dtype(pa.list_(pa_schema.types[0]))
             else:
                 out_dtype = np.dtype("O")
             kw = {
@@ -98,7 +97,7 @@ class DataFrameUnique(DataFrameReduction, DataFrameReductionMixin):
                     pandas_dtype_to_arrow_type(a.dtype, unknown_as_string=True)
                 )
                 kw = {
-                    "dtype": ArrowDtype(arrow_type),
+                    "dtype": wrap_arrow_dtype(arrow_type),
                     "shape": (),
                 }
                 self.output_types = [OutputType.scalar]

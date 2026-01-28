@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 
 import datetime
 import decimal
+import enum
 import re
 import threading
 from collections import OrderedDict, defaultdict
@@ -23,6 +24,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from ...utils import wrap_arrow_dtype
 from .. import PickleHookOptions
 
 try:
@@ -71,6 +73,11 @@ class CustomNamedTuple(NamedTuple):
     idx: int
 
 
+class EnumForTest(enum.Enum):
+    key1 = "val1"
+    key2 = "val2"
+
+
 @pytest.mark.parametrize(
     "val",
     [
@@ -88,6 +95,7 @@ class CustomNamedTuple(NamedTuple):
         range(2, 10),
         range(2, 10, 3),
         ["uvw", ("mno", "sdaf"), 4, 6.7],
+        EnumForTest.key1,
         CustomNamedTuple("abcd", 13451),
         datetime.datetime.now(),
         datetime.datetime.now().astimezone(datetime.timezone.utc),
@@ -215,11 +223,11 @@ def test_pandas():
     )
     if _arrow_dtype_supported:
         val["arrow_col"] = pd.Series(
-            np.random.rand(1000), dtype=pd.ArrowDtype(pa.float64())
+            np.random.rand(1000), dtype=wrap_arrow_dtype(pa.float64())
         )
         val["arrow_map_col"] = pd.Series(
             [[("a", np.random.rand()), ("b", np.random.rand())] for _ in range(1000)],
-            dtype=pd.ArrowDtype(pa.map_(pa.string(), pa.float64())),
+            dtype=wrap_arrow_dtype(pa.map_(pa.string(), pa.float64())),
         )
     pd.testing.assert_frame_equal(val, deserialize(*serialize(val)))
 
@@ -282,6 +290,7 @@ def test_arrow():
         pa.chunked_array([test_cplx_array, test_cplx_array]),
         pa.RecordBatch.from_pandas(test_df),
         pa.Table.from_pandas(test_df),
+        pa.Table.from_pandas(test_df).schema,
     ]
     for val in test_vals:
         deserialized = deserialize(*serialize(val))

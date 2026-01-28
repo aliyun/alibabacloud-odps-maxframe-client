@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas as pd
-
 from ... import opcodes
 from ...core import OutputType
 from ...serialization.serializables import BoolField, ListField
 from ..operators import DATAFRAME_TYPE, DataFrameOperatorMixin
-from ..utils import parse_index, validate_axis
+from ..utils import (
+    get_index_value_by_default_index_type,
+    parse_index,
+    validate_axis,
+    validate_default_index_type,
+)
 from .core import DataFrameSortOperator
 
 
@@ -30,7 +33,9 @@ class DataFrameSortIndex(DataFrameSortOperator, DataFrameOperatorMixin):
 
     def _call_dataframe(self, df):
         if self.ignore_index:
-            index_value = parse_index(pd.RangeIndex(df.shape[0]))
+            index_value = get_index_value_by_default_index_type(
+                self.default_index_type, df.shape[0], args=(type(self), df)
+            )
         else:
             index_value = df.index_value
         if self.axis == 0:
@@ -56,7 +61,9 @@ class DataFrameSortIndex(DataFrameSortOperator, DataFrameOperatorMixin):
         if self.axis != 0:  # pragma: no cover
             raise TypeError(f"Invalid axis: {self.axis}")
         if self.ignore_index:
-            index_value = parse_index(pd.RangeIndex(series.shape[0]))
+            index_value = get_index_value_by_default_index_type(
+                self.default_index_type, series.shape[0], args=(type(self), series)
+            )
         else:
             index_value = series.index_value
 
@@ -89,6 +96,7 @@ def sort_index(
     ignore_index: bool = False,
     parallel_kind="PSRS",
     psrs_kinds=None,
+    default_index_type=None,
 ):
     """
     Sort object by labels (along an axis).
@@ -133,6 +141,7 @@ def sort_index(
     # psrs_kinds = _validate_sort_psrs_kinds(psrs_kinds)
     axis = validate_axis(axis, a)
     level = level if isinstance(level, (list, tuple)) or level is None else [level]
+    default_index_type = validate_default_index_type(default_index_type)
     op = DataFrameSortIndex(
         level=level,
         axis=axis,
@@ -144,6 +153,7 @@ def sort_index(
         ignore_index=ignore_index,
         parallel_kind=parallel_kind,
         psrs_kinds=psrs_kinds,
+        default_index_type=default_index_type,
         gpu=a.op.is_gpu(),
     )
     sorted_a = op(a)

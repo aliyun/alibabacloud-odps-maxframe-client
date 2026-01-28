@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,11 +27,10 @@ import pytest
 from .... import dataframe as md
 from ....core import OperatorType
 from ....core.operator import estimate_size
-from ....lib.dtypes_extension import ArrowDtype
 from ....tests.utils import assert_mf_index_dtype
-from ....utils import dataslots
+from ....utils import dataslots, wrap_arrow_dtype
 from ...core import IndexValue
-from ...utils import split_monotonic_index_min_max
+from ...utils import MAX_DECIMAL128_PRECISION, split_monotonic_index_min_max
 from .. import (
     DataFrameAdd,
     DataFrameAnd,
@@ -728,20 +727,26 @@ def test_datetime_arithmetic():
 
 @pytest.mark.skipif(not hasattr(pd, "ArrowDtype"), reason="ArrowDtype not available")
 def test_decimal128_precision_arithmetic():
-    data1 = pd.Series([Decimal("1.23")], dtype=ArrowDtype(pa.decimal128(38, 2)))
-    data2 = pd.Series([Decimal("3.24")], dtype=ArrowDtype(pa.decimal128(38, 2)))
+    data1 = pd.Series(
+        [Decimal("1.23")],
+        dtype=wrap_arrow_dtype(pa.decimal128(MAX_DECIMAL128_PRECISION, 2)),
+    )
+    data2 = pd.Series(
+        [Decimal("3.24")],
+        dtype=wrap_arrow_dtype(pa.decimal128(MAX_DECIMAL128_PRECISION, 2)),
+    )
     s1 = md.Series(data1)
     s2 = md.Series(data2)
-    assert isinstance((s1 + s2).dtype.pyarrow_dtype, pa.Decimal256Type)
+    assert isinstance((s1 + s2).dtype.pyarrow_dtype, pa.Decimal128Type)
 
     data1 = pd.DataFrame([[Decimal("1.23"), Decimal("2.34")]], columns=["a", "b"])
     data2 = pd.DataFrame([[Decimal("3.24"), Decimal("4.35")]], columns=["a", "b"])
     new_dtypes = {
-        "a": ArrowDtype(pa.decimal128(38, 2)),
-        "b": ArrowDtype(pa.decimal128(10, 2)),
+        "a": wrap_arrow_dtype(pa.decimal128(MAX_DECIMAL128_PRECISION, 2)),
+        "b": wrap_arrow_dtype(pa.decimal128(10, 2)),
     }
     df1 = md.DataFrame(data1).astype(new_dtypes)
     df2 = md.DataFrame(data2).astype(new_dtypes)
     ret_dtypes = (df1 + df2).dtypes
-    assert isinstance(ret_dtypes["a"].pyarrow_dtype, pa.Decimal256Type)
+    assert isinstance(ret_dtypes["a"].pyarrow_dtype, pa.Decimal128Type)
     assert isinstance(ret_dtypes["b"].pyarrow_dtype, pa.Decimal128Type)

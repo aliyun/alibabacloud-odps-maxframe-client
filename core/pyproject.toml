@@ -4,7 +4,7 @@ description = "MaxFrame operator-based data analyze framework"
 dynamic = ["readme", "version"]
 dependencies = [
     "numpy>=1.19.0,<2.0.0",
-    "pandas>=1.0.0",
+    "pandas>=1.0.0,<3.0.0",
     "pyodps>=0.12.0",
     "scipy>=1.0",
     "pyarrow>=1.0.0",
@@ -50,9 +50,9 @@ test = [
     "pytest-asyncio>=0.21.0",
     "pytest-timeout>=2.1.0",
     "matplotlib>=2.0.0",
-    "lightgbm>=3.0.0,<4.0.0",
+    "lightgbm>=3.0.0",
     "scikit-learn>=1.0",
-    "xgboost>=1.6.2,<2.1.0",  # workaround for recent change of xgboost
+    "xgboost>=1.6.2",
 ]
 
 [tool.setuptools]

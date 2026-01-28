@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -178,7 +178,7 @@ class CallPoint(Serializable):
     name = StringField("name", default=None)
 
     @staticmethod
-    def from_current_user_call() -> Optional["CallPoint"]:
+    def from_frame(frame=None) -> Optional["CallPoint"]:
         """
         Get the call information of user code stack.
 
@@ -189,17 +189,20 @@ class CallPoint(Serializable):
             the first maxframe frame). If it returns None, the whole call frames are all
             in maxframe codes.
         """
-        frame = get_user_call_point()
+        frame = frame or get_user_call_point()
         if not frame:
             return None
         return CallPoint(
             filename=frame.f_code.co_filename,
-            lineno=frame.f_lineno,
+            lineno=str(frame.f_lineno),
             name=frame.f_code.co_name,
         )
 
     def format_output(self) -> List[str]:
         return [f'  File "{self.filename}", line {self.lineno}, in {self.name}']
+
+    def __repr__(self):
+        return "\n".join(self.format_output())
 
 
 @_install_scheduling_hint_properties
@@ -252,9 +255,7 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
 
     def __init__(self: OperatorType, *args, **kwargs):
         self._parse_kwargs(kwargs)
-        call_points = kwargs.pop("call_points", None) or [
-            CallPoint.from_current_user_call()
-        ]
+        call_points = kwargs.pop("call_points", None) or [CallPoint.from_frame()]
         super().__init__(call_points=call_points, *args, **kwargs)
 
     @classmethod

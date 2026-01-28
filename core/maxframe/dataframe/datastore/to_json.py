@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ from typing import Any, Dict, Optional, Union
 
 from ... import opcodes
 from ...serialization.serializables import AnyField, BoolField, DictField, StringField
+from ...utils import check_unexpected_kwargs
 from ..utils import parse_index
 from .core import LakeDataStore
 
@@ -186,10 +187,7 @@ def to_json(
     >>> df.to_json('dataset', partition_cols=['col 1'])  # doctest: +SKIP
     """
 
-    if kwargs:
-        raise TypeError(
-            f"to_json() got an unexpected keyword argument '{next(iter(kwargs))}'"
-        )
+    check_unexpected_kwargs(kwargs)
 
     if path is None:
         raise NotImplementedError("Currently only support to_json with path specified")

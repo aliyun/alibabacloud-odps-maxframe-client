@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,6 +36,8 @@ _deprecate_log_key = "_SER_DEPRECATE_LOGGED"
 
 
 def _is_field_primitive_compound(field: Field):
+    if getattr(field, "_primitive", False):
+        return True
     if field.on_serialize is not None or field.on_deserialize is not None:
         return False
 

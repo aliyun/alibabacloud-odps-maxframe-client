@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import numpy as np
 import pytest
 
-from ...datasource import empty, ones
+from ...datasource import ones
+from ...utils import AxisError
 from .. import concatenate, stack
 
 
@@ -66,14 +66,11 @@ def test_stack():
         raw_arrs2 = [ones((3, 4), chunk_size=2), ones((4, 3), chunk_size=2)]
         stack(raw_arrs2)
 
-    with pytest.raises(np.AxisError):
+    with pytest.raises(AxisError):
         stack(raw_arrs, axis=3)
 
-    with pytest.raises(np.AxisError):
+    with pytest.raises(AxisError):
         stack(raw_arrs, axis=-4)
 
     with pytest.raises(TypeError):
         stack(raw_arrs, out=1)
-
-    with pytest.raises(ValueError):
-        stack(raw_arrs, empty((1, 10, 3, 4)))

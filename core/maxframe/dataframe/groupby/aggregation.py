@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import pyarrow as pa
 from ... import opcodes
 from ...config import options
 from ...core import ENTITY_TYPE, EntityData, OutputType, enter_mode
-from ...lib.dtypes_extension import ArrowDtype
 from ...serialization import PickleContainer
 from ...serialization.serializables import (
     AnyField,
@@ -36,7 +35,13 @@ from ...serialization.serializables import (
     StringField,
 )
 from ...udf import BuiltinFunction
-from ...utils import find_objects, get_pd_option, lazy_import, pd_release_version
+from ...utils import (
+    find_objects,
+    get_pd_option,
+    lazy_import,
+    pd_release_version,
+    wrap_arrow_dtype,
+)
 from ..core import GROUPBY_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..reduction.aggregation import (
@@ -45,7 +50,7 @@ from ..reduction.aggregation import (
     normalize_reduction_funcs,
 )
 from ..reduction.core import BuiltinReduction
-from ..utils import is_cudf, is_decimal128_dtype, parse_index
+from ..utils import MAX_DECIMAL128_PRECISION, is_cudf, is_decimal128_dtype, parse_index
 
 cp = lazy_import("cupy", rename="cp")
 cudf = lazy_import("cudf")
@@ -53,7 +58,6 @@ cudf = lazy_import("cudf")
 logger = logging.getLogger(__name__)
 CV_THRESHOLD = 0.2
 MEAN_RATIO_THRESHOLD = 2 / 3
-MAX_DECIMAL128_PRECISION = 38
 _support_get_group_without_as_index = pd_release_version[:2] > (1, 0)
 _support_multi_index_as_index = pd_release_version[:2] > (2, 0)
 
@@ -137,7 +141,7 @@ def _fix_decimal_dtype(agg_result, raw_func, **raw_func_kw):
                 if agg_def:
                     has_col_decimal = agg_def[-1] in ("sum", "prod")
             if has_col_decimal or col in ("sum", "prod") or col[-1] in ("sum", "prod"):
-                astype_dict[col] = ArrowDtype(
+                astype_dict[col] = wrap_arrow_dtype(
                     pa.decimal128(MAX_DECIMAL128_PRECISION, pa_dt.scale)
                 )
         return agg_result.astype(astype_dict) if astype_dict else agg_result
@@ -146,7 +150,7 @@ def _fix_decimal_dtype(agg_result, raw_func, **raw_func_kw):
             return agg_result
         pa_dt = agg_result.dtype.pyarrow_dtype
         return agg_result.astype(
-            ArrowDtype(pa.decimal128(MAX_DECIMAL128_PRECISION, pa_dt.scale))
+            wrap_arrow_dtype(pa.decimal128(MAX_DECIMAL128_PRECISION, pa_dt.scale))
         )
 
 
@@ -224,6 +228,7 @@ class DataFrameGroupByAgg(DataFrameOperator, DataFrameOperatorMixin):
         super()._set_inputs(op, inputs)
         inputs_iter = iter(op._inputs[1:])
         if len(op._inputs) > 1:
+            op.groupby_params = op.groupby_params.copy()
             by = []
             for v in op.groupby_params["by"]:
                 if isinstance(v, ENTITY_TYPE):

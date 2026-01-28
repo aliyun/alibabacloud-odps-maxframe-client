@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,14 +15,18 @@
 import asyncio
 from typing import List, MutableMapping, Optional, Union
 
+from ...protocol import DefaultIndexType
 from ...serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
+    EnumField,
+    FieldTypes,
     Int64Field,
     StringField,
 )
 from ...utils import estimate_pandas_size
+from ..core import DataFrameIndexTypeMixin
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import validate_dtype_backend
 
@@ -78,10 +82,12 @@ class _IncrementalIndexRecorder:
         self._done[i].set()
 
 
-class IncrementalIndexDatasource(HeadOptimizedDataSource):
+class IncrementalIndexDatasource(DataFrameIndexTypeMixin, HeadOptimizedDataSource):
     __slots__ = ()
 
-    incremental_index_recorder_name = StringField("incremental_index_recorder_name")
+    incremental_index_recorder_name = StringField(
+        "incremental_index_recorder_name", default=None
+    )
 
 
 class PandasDataSourceOperator(DataFrameOperator):
@@ -99,7 +105,13 @@ class LakeDataSource(IncrementalIndexDatasource):
     path = AnyField("path")
     storage_options = DictField("storage_options", default=None)
     is_partitioned = BoolField("is_partitioned", default=None)
-    incremental_index = BoolField("incremental_index", default=None)
+    default_index_type = EnumField(
+        "default_index_type",
+        DefaultIndexType,
+        FieldTypes.int8,
+        default=None,
+        primitive=True,
+    )
     use_nullable_dtypes = BoolField("use_nullable_dtypes", default=None)
     dtype_backend = StringField("dtype_backend", default=None)
     read_stage = StringField("read_stage", default=None)
@@ -109,4 +121,5 @@ class LakeDataSource(IncrementalIndexDatasource):
 
 class DtypeBackendCompatibleMixin:
     def __on_deserialize__(self):
+        super().__on_deserialize__()
         self.dtype_backend = validate_dtype_backend(self.dtype_backend)

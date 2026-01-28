@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ from .validators import (
     is_all_dict_keys_in,
     is_bool,
     is_dict,
+    is_enum_value,
     is_float,
     is_great_than,
     is_in,
@@ -471,6 +472,9 @@ default_options.register_option(
     remote=True,
 )
 default_options.register_option(
+    "session.recycle_delay_seconds", 120, validator=is_integer, remote=True
+)
+default_options.register_option(
     "session.auto_purge_temp_tables",
     False,
     validator=is_bool,
@@ -499,6 +503,13 @@ default_options.redirect_option(
 default_options.register_option(
     "dataframe.arrow_array.pandas_only", True, validator=is_bool
 )
+default_options.register_option(
+    "dataframe.default_index_type",
+    "range",
+    validator=is_enum_value("maxframe.protocol#DefaultIndexType"),
+    remote=True,
+)
+
 default_options.register_option(
     "optimize.head_optimize_threshold", 1000, validator=is_integer
 )

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ import pyarrow as pa
 import pytest
 
 from ..... import dataframe as md
-from .....utils import ARROW_DTYPE_NOT_SUPPORTED
+from .....utils import ARROW_DTYPE_NOT_SUPPORTED, wrap_arrow_dtype
 from ..core import SeriesStructMethod
 
 pytestmark = pytest.mark.skipif(
@@ -39,7 +39,7 @@ def series():
             {"version": {"major": 2, "minor": 1}, "project": "pandas"},
             {"version": {"major": 1, "minor": 26}, "project": "numpy"},
         ],
-        dtype=pd.ArrowDtype(
+        dtype=wrap_arrow_dtype(
             pa.struct([("version", version_type), ("project", pa.string())])
         ),
     )
@@ -50,10 +50,10 @@ def test_dtypes(series):
         series.struct.dtypes,
         pd.Series(
             [
-                pd.ArrowDtype(
+                wrap_arrow_dtype(
                     pa.struct([("major", pa.int64()), ("minor", pa.int64())])
                 ),
-                pd.ArrowDtype(pa.string()),
+                wrap_arrow_dtype(pa.string()),
             ],
             index=["version", "project"],
         ),
@@ -71,7 +71,7 @@ def test_field(series):
     s1 = series.struct.field("version")
     assert isinstance(s1, md.Series)
     assert s1.name == "version"
-    assert s1.dtype == pd.ArrowDtype(version_type)
+    assert s1.dtype == wrap_arrow_dtype(version_type)
     assert s1.shape == (3,)
     assert s1.index_value == series.index_value
     op = s1.op
@@ -82,7 +82,7 @@ def test_field(series):
     s2 = series.struct.field(["version", "major"])
     assert isinstance(s1, md.Series)
     assert s2.name == "major"
-    assert s2.dtype == pd.ArrowDtype(pa.int64())
+    assert s2.dtype == wrap_arrow_dtype(pa.int64())
     assert s2.shape == (3,)
     assert s2.index_value == series.index_value
     op = s2.op

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from ...core import ExecutableTuple
+from ...utils import check_unexpected_kwargs
 from ..datasource import tensor as astensor
 from ..utils import broadcast_shape
 from .broadcast_to import broadcast_to
@@ -45,11 +46,7 @@ def broadcast_arrays(*args, **kwargs):
            [3, 3, 3]])]
 
     """
-    if kwargs:
-        raise TypeError(
-            "broadcast_arrays() got an unexpected keyword "
-            f"argument {next(iter(kwargs.keys()))!r}"
-        )
+    check_unexpected_kwargs(kwargs)
 
     args = [astensor(arg) for arg in args]
 

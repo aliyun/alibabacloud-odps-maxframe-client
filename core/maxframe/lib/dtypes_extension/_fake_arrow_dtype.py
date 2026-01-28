@@ -148,6 +148,11 @@ class FakeArrowExtensionArray(ExtensionArray, NDArrayBacked):
                 # special case where pyarrow raises on empty numpy arrays
                 scalars = []
             scalars = [x.as_py() if isinstance(x, pa.Scalar) else x for x in scalars]
+            # avoid pd.NA and np.nan to interfere type conversion
+            scalars = [
+                x if not pd.api.types.is_scalar(x) or pd.notna(x) else None
+                for x in scalars
+            ]
             pa_array = pa.array(scalars, type=pa_type)
         arr = cls(pa_array)
         return arr

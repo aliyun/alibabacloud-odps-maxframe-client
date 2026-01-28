@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -115,6 +115,13 @@ class MarkedFunction(Serializable):
     )
     gpu = BoolField("gpu", default=False)
     fs_mount = DictField("fs_mount", FieldTypes.string, default_factory=dict)
+    public_network_whitelist = ListField(
+        "public_network_whitelist", FieldTypes.string, default_factory=list
+    )
+    internal_network_whitelist = ListField(
+        "internal_network_whitelist", FieldTypes.string, default_factory=list
+    )
+    vpc_network_link = StringField("vpc_network_link", default=None)
 
     def __init__(self, func: Optional[Callable] = None, **kw):
         super().__init__(func=func, **kw)
@@ -342,6 +349,85 @@ def with_running_options(
             expect_resources=resources,
             gpu=use_gpu,
         )
+
+    return func_wrapper
+
+
+def with_network_options(
+    *,
+    vpc_network_link: Optional[str] = None,
+    public_whitelist: Optional[List[str]] = None,
+    internal_whitelist: Optional[List[str]] = None,
+):
+    """
+    Decorator function to add network whitelist options to UDF functions.
+
+    This function is used to specify a list of network addresses that are
+    allowed for the UDF function to access.
+
+    Parameters
+    ----------
+    vpc_network_link: Optional[str]
+        When accessing services under Alibaba Cloud VPC network, such as RDS or self-built services, please refer to
+        [https://help.aliyun.com/zh/maxcompute/user-guide/access-vpc-solution-direct-connection](The Access VPC Solution)
+        to create network link, and set the network link id to this parameter.
+
+    public_whitelist : List[str]
+        Variable number of public network address strings, which can be IP addresses, domains, etc.
+
+    internal_whitelist : List[str]
+        Variable number of private network address strings, which can be IP addresses, domains, etc.
+        It should be noted that these internal network addresses refer to the internal addresses of
+        Alibaba Cloud products, which need to be queried in the product manuals.
+        For example, OSS internal address oss-cn-hangzhou-internal.aliyuncs.com.
+
+    Returns
+    -------
+    func_wrapper : Callable
+        Returns a decorator function that wraps the target function and
+        adds network whitelist configuration.
+    """
+
+    def func_wrapper(func):
+        if isinstance(func, MarkedFunction):
+            pre_public_whitelist_set = (
+                set(func.public_network_whitelist)
+                if func.public_network_whitelist
+                else set()
+            )
+            curr_public_whitelisted_set = (
+                set(public_whitelist) if public_whitelist else set()
+            )
+            func.public_network_whitelist = list(
+                pre_public_whitelist_set | curr_public_whitelisted_set
+            )
+
+            pre_internal_whitelist_set = (
+                set(func.internal_network_whitelist)
+                if func.internal_network_whitelist
+                else set()
+            )
+            curr_internal_whitelist_set = (
+                set(internal_whitelist) if internal_whitelist else set()
+            )
+            func.internal_network_whitelist = list(
+                pre_internal_whitelist_set | curr_internal_whitelist_set
+            )
+
+            if vpc_network_link:
+                if func.vpc_network_link and func.vpc_network_link != vpc_network_link:
+                    raise ValueError(
+                        "multiple VPC network connections are not supported"
+                    )
+                func.vpc_network_link = vpc_network_link
+
+            return func
+
+        marked_func = MarkedFunction(func)
+        marked_func.public_network_whitelist = public_whitelist
+        marked_func.internal_network_whitelist = internal_whitelist
+        marked_func.vpc_network_link = vpc_network_link
+        return marked_func
 
     return func_wrapper
 

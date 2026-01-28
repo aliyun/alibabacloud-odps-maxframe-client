@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,20 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Union
+
 import numpy as np
 import pandas as pd
 
 from ... import opcodes
 from ...core import OutputType
-from ...serialization.serializables import AnyField, BoolField
-from ...utils import no_default, pd_release_version
+from ...protocol import DefaultIndexType
+from ...serialization.serializables import AnyField, BoolField, EnumField, FieldTypes
+from ...utils import check_unexpected_kwargs, no_default, pd_release_version
+from ..core import DataFrameIndexTypeMixin
 from ..operators import DATAFRAME_TYPE, DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_empty_df, build_empty_series, parse_index
+from ..utils import (
+    build_empty_df,
+    build_empty_series,
+    get_index_value_by_default_index_type,
+    parse_index,
+    validate_default_index_type,
+)
 
 _reset_index_has_names = pd_release_version >= (1, 5)
 
 
-class DataFrameResetIndex(DataFrameOperator, DataFrameOperatorMixin):
+class DataFrameResetIndex(
+    DataFrameOperator, DataFrameOperatorMixin, DataFrameIndexTypeMixin
+):
     _op_type_ = opcodes.RESET_INDEX
 
     level = AnyField("level", default=None)
@@ -33,7 +45,9 @@ class DataFrameResetIndex(DataFrameOperator, DataFrameOperatorMixin):
     name = AnyField("name", default=None)
     col_level = AnyField("col_level", default=None)
     col_fill = AnyField("col_fill", default=None)
-    incremental_index = BoolField("incremental_index", default=False)
+    default_index_type = EnumField(
+        "default_index_type", DefaultIndexType, FieldTypes.int8, default=None
+    )
     names = AnyField("names", default=None)
 
     def __init__(self, output_types=None, **kwargs):
@@ -51,7 +65,9 @@ class DataFrameResetIndex(DataFrameOperator, DataFrameOperatorMixin):
     def _call_series(self, a):
         if self.drop:
             range_value = -1 if np.isnan(a.shape[0]) else a.shape[0]
-            index_value = parse_index(pd.RangeIndex(range_value))
+            index_value = get_index_value_by_default_index_type(
+                self.default_index_type, range_value, args=(type(self), a)
+            )
             return self.new_series(
                 [a], shape=a.shape, dtype=a.dtype, name=a.name, index_value=index_value
             )
@@ -66,7 +82,7 @@ class DataFrameResetIndex(DataFrameOperator, DataFrameOperatorMixin):
                 [a],
                 shape=shape,
                 index_value=index_value,
-                columns_value=parse_index(empty_df.columns),
+                columns_value=parse_index(empty_df.columns, store_data=True),
                 dtypes=empty_df.dtypes,
             )
 
@@ -76,7 +92,9 @@ class DataFrameResetIndex(DataFrameOperator, DataFrameOperatorMixin):
             columns_value = a.columns_value
             dtypes = a.dtypes
             range_value = -1 if np.isnan(a.shape[0]) else a.shape[0]
-            index_value = parse_index(pd.RangeIndex(range_value))
+            index_value = get_index_value_by_default_index_type(
+                self.default_index_type, range_value, args=(type(self), a)
+            )
         else:
             empty_df = build_empty_df(a.dtypes)
             empty_df.index = a.index_value.to_pandas()[:0]
@@ -127,7 +145,8 @@ def df_reset_index(
     col_level=0,
     col_fill="",
     names=None,
-    incremental_index=False,
+    default_index_type: Union[DefaultIndexType, str] = None,
+    **kwargs,
 ):
     """
     Reset the index, or a level of it.
@@ -273,13 +292,14 @@ def df_reset_index(
     lion           mammal   80.5     run
     monkey         mammal    NaN    jump
     """
+    default_index_type = validate_default_index_type(default_index_type, **kwargs)
     op = DataFrameResetIndex(
         level=level,
         drop=drop,
         col_level=col_level,
         col_fill=col_fill,
         names=names,
-        incremental_index=incremental_index,
+        default_index_type=default_index_type,
         output_types=[OutputType.dataframe],
     )
     ret = op(df)
@@ -295,7 +315,8 @@ def series_reset_index(
     drop=False,
     name=no_default,
     inplace=False,
-    incremental_index=False,
+    default_index_type: Union[DefaultIndexType, str] = None,
+    **kwargs,
 ):
     """
     Generate a new DataFrame or Series with the index reset.
@@ -410,12 +431,14 @@ def series_reset_index(
     """
     if name is no_default:
         name = series.name if series.name is not None else 0
+    default_index_type = validate_default_index_type(default_index_type, **kwargs)
+    check_unexpected_kwargs(kwargs)
 
     op = DataFrameResetIndex(
         level=level,
         drop=drop,
         name=name,
-        incremental_index=incremental_index,
+        default_index_type=default_index_type,
         output_types=[OutputType.series if drop else OutputType.dataframe],
     )
     ret = op(series)

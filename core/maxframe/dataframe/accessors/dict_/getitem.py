@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas as pd
-
 from .... import opcodes
 from ....serialization.serializables.field import AnyField, BoolField
+from ....utils import wrap_arrow_dtype
 from .core import LegacySeriesDictOperator, SeriesDictMethod
 
 
@@ -77,7 +76,7 @@ def series_dict_getitem(series, query_key, default_value=None):
         query_key=query_key, default_value=default_value, ignore_key_error=True
     )
     arrow_map_type = series.dtype.pyarrow_dtype
-    dtype = pd.ArrowDtype(arrow_map_type.item_type)
+    dtype = wrap_arrow_dtype(arrow_map_type.item_type)
     return SeriesDictMethod(method="getitem", method_kwargs=method_kw)(
         series, name=str(query_key), dtype=dtype
     )
@@ -134,7 +133,7 @@ def series_dict_getitem_with_key_error(series, query_key):
     """
     method_kw = dict(query_key=query_key, default_value=None, ignore_key_error=False)
     arrow_map_type = series.dtype.pyarrow_dtype
-    dtype = pd.ArrowDtype(arrow_map_type.item_type)
+    dtype = wrap_arrow_dtype(arrow_map_type.item_type)
     return SeriesDictMethod(method="getitem", method_kwargs=method_kw)(
         series, name=str(query_key), dtype=dtype
     )

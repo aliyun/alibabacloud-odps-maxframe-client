@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -615,11 +615,12 @@ class AsyncSession(AbstractAsyncSession):
         session_id: str,
         backend: str = "maxframe",
         new: bool = True,
+        debug: Union[bool, str] = False,
         **kwargs,
     ) -> "AbstractSession":
         isolation = ensure_isolation_created(kwargs)
         coro = _get_isolated_session_cls(address).init(
-            address, session_id, backend, new=new, **kwargs
+            address, session_id, backend, new=new, debug=debug, **kwargs
         )
         fut = asyncio.run_coroutine_threadsafe(coro, isolation.loop)
         isolated_session = await asyncio.wrap_future(fut)
@@ -763,11 +764,12 @@ class SyncSession(AbstractSyncSession):
         session_id: str,
         backend: str = "maxframe",
         new: bool = True,
+        debug: Union[bool, str] = False,
         **kwargs,
     ) -> "AbstractSession":
         isolation = ensure_isolation_created(kwargs)
         coro = _get_isolated_session_cls(address).init(
-            address, session_id, backend, new=new, **kwargs
+            address, session_id, backend, new=new, debug=debug, **kwargs
         )
         fut = asyncio.run_coroutine_threadsafe(coro, isolation.loop)
         isolated_session = fut.result()
@@ -1164,6 +1166,7 @@ def new_session(
     default: bool = True,
     new: bool = True,
     odps_entry: Optional[ODPS] = None,
+    debug: Union[bool, str] = False,
     **kwargs,
 ) -> AbstractSession:
     from maxframe_client.session import register_session_schemes
@@ -1191,6 +1194,7 @@ def new_session(
         backend=backend,
         new=new,
         odps_entry=odps_entry,
+        debug=debug,
         **kwargs,
     )
     if default:
@@ -1200,7 +1204,7 @@ def new_session(
 
 def get_default_session() -> Optional[SyncSession]:
     if AbstractSession.default is None:
-        return
+        return None
     return SyncSession.from_isolated_session(AbstractSession.default)
 
 

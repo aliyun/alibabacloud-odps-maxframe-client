@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,9 @@
 
 import itertools
 import logging
-from collections import OrderedDict
+import warnings
 from typing import Any, Dict, List, Optional, Union
 
-import pandas as pd
 from odps import ODPS
 from odps.models import Table as ODPSTable
 from odps.types import OdpsSchema, PartitionSpec
@@ -25,9 +24,7 @@ from odps.types import OdpsSchema, PartitionSpec
 from ... import opcodes
 from ...config import options
 from ...core import OutputType
-from ...io.odpsio import build_dataframe_table_meta
-from ...io.odpsio.schema import odps_schema_to_arrow_schema
-from ...lib.dtypes_extension import ArrowDtype
+from ...io.odpsio import build_dataframe_table_meta, odps_schema_to_pandas_dtypes
 from ...serialization.serializables import (
     BoolField,
     DictField,
@@ -214,17 +211,18 @@ def to_odps_table(
                 " Use 'partition_col' instead."
             )
 
-    if index:
-        index_cols = set(
-            DataFrameToODPSTable.get_index_mapping(index_label, df.index.names)
-        )
-        index_table_intersect = index_cols & table_cols
+    if not index:
+        index_cols = []
+    else:
+        index_cols = DataFrameToODPSTable.get_index_mapping(index_label, df.index.names)
+        index_col_set = set(index_cols)
+        index_table_intersect = index_col_set & table_cols
         if index_table_intersect:
             raise ValueError(
                 f"Index column(s) {index_table_intersect} conflict with "
                 f"column(s) of the input dataframe."
             )
-        index_partition_intersect = index_cols & partition_col_set
+        index_partition_intersect = index_col_set & partition_col_set
         if index_partition_intersect:
             raise ValueError(
                 f"Index column(s) {index_partition_intersect} conflict "
@@ -240,10 +238,29 @@ def to_odps_table(
             )
 
     table_properties = table_properties or {}
+    existing_odps_schema = None
     if primary_key is not None:
         table_properties["transactional"] = "true"
     if odps_entry.exist_table(table):
         table_obj = odps_entry.get_table(table)
+
+        exist_col_set = set(c.name for c in table_obj.table_schema.columns)
+        rmv_cols = set(df.dtypes.index) - exist_col_set
+        rmv_idx_cols = set(index_cols) - exist_col_set
+        if rmv_cols:
+            cols_str = ", ".join(f"`{c}`" for c in sorted(rmv_cols))
+            warnings.warn(
+                f"Columns {cols_str} does not exist in target table and will be ignored",
+                UserWarning,
+            )
+        if rmv_idx_cols:
+            cols_str = ", ".join(f"`{c}`" for c in sorted(rmv_idx_cols))
+            warnings.warn(
+                f"Index columns {cols_str} does not exist in target table"
+                " and will be ignored",
+                UserWarning,
+            )
+
         if table_obj.is_transactional:
             table_properties = table_properties or {}
             table_properties["transactional"] = "true"
@@ -257,17 +274,18 @@ def to_odps_table(
         primary_key = [primary_key]
 
     if odps_types is None:
+        if existing_odps_schema is not None:
+            target_dtypes = odps_schema_to_pandas_dtypes(
+                existing_odps_schema, dtype_backend="pyarrow", with_partitions=True
+            )
+            if partition_col_set:
+                target_dtypes = target_dtypes.drop(list(partition_col_set))
         target_dtypes = df.dtypes
     else:
         odps_schema = OdpsSchema.from_dict(odps_types)
-        arrow_schema = odps_schema_to_arrow_schema(odps_schema)
-        pd_col_to_dtype = {
-            nm: ArrowDtype(tp) for nm, tp in zip(arrow_schema.names, arrow_schema.types)
-        }
-        target_dtypes_dict = OrderedDict(
-            [(col, pd_col_to_dtype.get(col, dt)) for col, dt in df.dtypes.items()]
+        target_dtypes = odps_schema_to_pandas_dtypes(
+            odps_schema, dtype_backend="pyarrow"
         )
-        target_dtypes = pd.Series(target_dtypes_dict)
 
     op = DataFrameToODPSTable(
         dtypes=target_dtypes,

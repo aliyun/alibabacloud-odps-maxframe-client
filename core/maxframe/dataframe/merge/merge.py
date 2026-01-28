@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -323,7 +323,7 @@ class DataFrameMerge(DataFrameOperator, DataFrameOperatorMixin):
             [left, right],
             shape=(np.nan, merged.shape[1]),
             dtypes=merged.dtypes,
-            index_value=parse_index(merged.index, *index_tokenize_objects),
+            index_value=parse_index(merged.index[:0], *index_tokenize_objects),
             columns_value=parse_index(merged.columns, store_data=True),
         )
 

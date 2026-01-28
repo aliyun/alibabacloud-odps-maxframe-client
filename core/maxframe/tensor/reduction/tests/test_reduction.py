@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import numpy as np
 import pytest
 
 from ....utils import collect_leaf_operators
 from ...datasource import ones, tensor
+from ...utils import AxisError
 from .. import *  # noqa: F401
 from ..core import TensorReduction
 
@@ -43,13 +43,13 @@ def test_base_reduction():
         res = f(ones((10, 8), chunk_size=3), axis=1)
         assert res.shape == (10,)
 
-        with pytest.raises(np.AxisError):
+        with pytest.raises(AxisError):
             f(ones((10, 8), chunk_size=3), axis=2)
 
         res = f(ones((10, 8), chunk_size=3), axis=-1)
         assert res.shape == (10,)
 
-        with pytest.raises(np.AxisError):
+        with pytest.raises(AxisError):
             f(ones((10, 8), chunk_size=3), axis=-3)
 
         res = f(ones((10, 8), chunk_size=3), keepdims=True)
@@ -90,13 +90,13 @@ def test_mean_reduction():
     res = mean(ones((10, 8), chunk_size=3), axis=1)
     assert res.shape == (10,)
 
-    with pytest.raises(np.AxisError):
+    with pytest.raises(AxisError):
         mean(ones((10, 8), chunk_size=3), axis=2)
 
     res = mean(ones((10, 8), chunk_size=3), axis=-1)
     assert res.shape == (10,)
 
-    with pytest.raises(np.AxisError):
+    with pytest.raises(AxisError):
         mean(ones((10, 8), chunk_size=3), axis=-3)
 
     res = mean(ones((10, 8), chunk_size=3), keepdims=True)
@@ -130,10 +130,8 @@ def test_arg_reduction():
     pytest.raises(
         TypeError, lambda: argmin(ones((10, 8, 10), chunk_size=3), axis=(0, 1))
     )
-    pytest.raises(np.AxisError, lambda: argmin(ones((10, 8, 10), chunk_size=3), axis=3))
-    pytest.raises(
-        np.AxisError, lambda: argmin(ones((10, 8, 10), chunk_size=3), axis=-4)
-    )
+    pytest.raises(AxisError, lambda: argmin(ones((10, 8, 10), chunk_size=3), axis=3))
+    pytest.raises(AxisError, lambda: argmin(ones((10, 8, 10), chunk_size=3), axis=-4))
 
 
 def test_cum_reduction():
@@ -157,9 +155,9 @@ def test_cum_reduction():
     assert res1.shape == (10, 8, 8)
     assert res2.shape == (10, 8, 8)
 
-    with pytest.raises(np.AxisError):
+    with pytest.raises(AxisError):
         cumsum(ones((10, 8), chunk_size=3), axis=2)
-    with pytest.raises(np.AxisError):
+    with pytest.raises(AxisError):
         cumsum(ones((10, 8), chunk_size=3), axis=-3)
 
 

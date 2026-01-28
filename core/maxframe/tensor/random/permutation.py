@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ from ...core import EntityData
 from ...serialization.serializables import Int32Field, KeyField
 from ..datasource import tensor as astensor
 from ..operators import TensorOperatorMixin
-from ..utils import gen_random_seeds, validate_axis
+from ..utils import AxisError, gen_random_seeds, validate_axis
 from .core import TensorRandomMapReduceOperator
 
 
@@ -99,7 +99,7 @@ def permutation(random_state, x, axis=0, chunk_size=None):
     else:
         x = astensor(x, chunk_size=chunk_size)
         if x.ndim < 1:
-            raise np.AxisError("x must be an integer or at least 1-dimensional")
+            raise AxisError("x must be an integer or at least 1-dimensional")
 
     axis = validate_axis(x.ndim, axis)
     seed = gen_random_seeds(1, random_state.to_numpy())[0]

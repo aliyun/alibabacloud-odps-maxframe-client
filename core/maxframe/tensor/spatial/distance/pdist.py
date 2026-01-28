@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ from ....serialization.serializables import (
     TupleField,
 )
 from ....udf import BuiltinFunction
+from ....utils import check_unexpected_kwargs
 from ...core import TensorOrder
 from ...datasource.array import tensor as astensor
 from ...operators import TensorMapReduceOperator, TensorOperatorMixin
@@ -374,10 +375,7 @@ def pdist(X, metric="euclidean", **kwargs):
         vi = astensor(vi)
     aggregate_size = kwargs.pop("aggregate_size", None)
 
-    if len(kwargs) > 0:
-        raise TypeError(
-            f"`pdist` got an unexpected keyword argument '{next(iter(kwargs))}'"
-        )
+    check_unexpected_kwargs(kwargs)
 
     op = TensorPDist(
         metric=metric,
