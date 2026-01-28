@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ from ...serialization.serializables import Int32Field
 from ..core import Tensor, TensorOrder
 from ..datasource import tensor as astensor
 from ..operators import TensorOperator, TensorOperatorMixin
-from ..utils import check_out_param
+from ..utils import AxisError, check_out_param
 
 
 class TensorStack(TensorOperator, TensorOperatorMixin):
@@ -119,7 +119,7 @@ def stack(tensors, axis=0, out=None):
     if axis < 0:
         axis = ndim + axis + 1
     if axis > ndim or axis < 0:
-        raise np.AxisError(
+        raise AxisError(
             f"axis {raw_axis} is out of bounds for tensor of dimension {ndim}"
         )
 

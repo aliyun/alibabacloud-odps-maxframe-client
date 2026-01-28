@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,15 +13,27 @@
 # limitations under the License.
 
 import numpy as np
-import pandas as pd
 
 from ... import opcodes
-from ...serialization.serializables import AnyField, BoolField, StringField
+from ...protocol import DefaultIndexType
+from ...serialization.serializables import (
+    AnyField,
+    BoolField,
+    EnumField,
+    FieldTypes,
+    StringField,
+)
+from ..core import DataFrameIndexTypeMixin
 from ..operators import DataFrameOperator, DataFrameOperatorMixin, OutputType
-from ..utils import build_empty_df, parse_index
+from ..utils import (
+    build_empty_df,
+    get_index_value_by_default_index_type,
+    parse_index,
+    validate_default_index_type,
+)
 
 
-class DataFrameMelt(DataFrameOperator, DataFrameOperatorMixin):
+class DataFrameMelt(DataFrameOperator, DataFrameOperatorMixin, DataFrameIndexTypeMixin):
     _op_type_ = opcodes.MELT
 
     id_vars = AnyField("id_vars", default=None)
@@ -30,6 +42,9 @@ class DataFrameMelt(DataFrameOperator, DataFrameOperatorMixin):
     value_name = StringField("value_name", default=None)
     col_level = AnyField("col_level", default=None)
     ignore_index = BoolField("ignore_index", default=False)
+    default_index_type = EnumField(
+        "default_index_type", DefaultIndexType, FieldTypes.int8, default=None
+    )
 
     def __call__(self, df):
         empty_result = build_empty_df(df.dtypes).melt(
@@ -45,7 +60,9 @@ class DataFrameMelt(DataFrameOperator, DataFrameOperatorMixin):
             [df],
             shape=(np.nan, len(empty_result.columns)),
             dtypes=empty_result.dtypes,
-            index_value=parse_index(pd.RangeIndex(-1), df.key, df.index_value.key),
+            index_value=get_index_value_by_default_index_type(
+                self.default_index_type, args=(df.key, df.index_value.key)
+            ),
             columns_value=parse_index(empty_result.columns, store_data=True),
         )
 
@@ -58,6 +75,7 @@ def melt(
     value_name="value",
     col_level=None,
     ignore_index=False,
+    default_index_type=None,
 ):
     """
     Unpivot a DataFrame from wide to long format, optionally leaving identifiers set.
@@ -158,6 +176,7 @@ def melt(
     1      b          B          E      3
     2      c          B          E      5
     """
+    default_index_type = validate_default_index_type(default_index_type)
     op = DataFrameMelt(
         id_vars=id_vars,
         value_vars=value_vars,
@@ -165,5 +184,6 @@ def melt(
         value_name=value_name,
         col_level=col_level,
         ignore_index=ignore_index,
+        default_index_type=default_index_type,
     )
     return op(frame)

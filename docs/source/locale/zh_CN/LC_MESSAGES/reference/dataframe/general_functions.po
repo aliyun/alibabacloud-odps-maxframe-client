@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"POT-Creation-Date: 2025-11-13 11:34+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -27,115 +27,124 @@ msgstr "通用函数"
 msgid "Data manipulations"
 msgstr "数据操作"
 
-#: ../../source/reference/dataframe/general_functions.rst:15:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:16:<autosummary>:1
 msgid ""
 ":py:obj:`concat <maxframe.dataframe.concat>`\\ \\(objs\\[\\, axis\\, "
 "join\\, ignore\\_index\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/general_functions.rst:15:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:16:<autosummary>:1
 msgid ""
 "Concatenate dataframe objects along a particular axis with optional set "
 "logic along the other axes."
 msgstr "沿着指定轴连接 DataFrame 对象，可选择在其他轴上应用集合逻辑。"
 
-#: ../../source/reference/dataframe/general_functions.rst:15:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:16:<autosummary>:1
+msgid ""
+":py:obj:`factorize <maxframe.dataframe.factorize>`\\ \\(values\\[\\, "
+"sort\\, use\\_na\\_sentinel\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/general_functions.rst:16:<autosummary>:1
+msgid "Encode the object as an enumerated type or categorical variable."
+msgstr "将对象编码为枚举类型或分类变量。"
+
+#: ../../source/reference/dataframe/general_functions.rst:16:<autosummary>:1
 msgid ""
 ":py:obj:`get_dummies <maxframe.dataframe.get_dummies>`\\ \\(data\\[\\, "
 "prefix\\, prefix\\_sep\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/general_functions.rst:15:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:16:<autosummary>:1
 msgid "Convert categorical variable into dummy/indicator variables."
 msgstr "将分类变量转换为虚拟/指示变量。"
 
-#: ../../source/reference/dataframe/general_functions.rst:15:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:16:<autosummary>:1
 msgid ""
 ":py:obj:`merge <maxframe.dataframe.merge>`\\ \\(df\\, right\\[\\, how\\, "
 "on\\, left\\_on\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/general_functions.rst:15:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:16:<autosummary>:1
 msgid "Merge DataFrame or named Series objects with a database-style join."
 msgstr "使用数据库风格的连接合并 DataFrame 或命名 Series 对象。"
 
-#: ../../source/reference/dataframe/general_functions.rst:17
+#: ../../source/reference/dataframe/general_functions.rst:18
 msgid "Top-level missing data"
 msgstr "顶层缺失数据处理"
 
-#: ../../source/reference/dataframe/general_functions.rst:25:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:26:<autosummary>:1
 msgid ":py:obj:`isna <maxframe.dataframe.isna>`\\ \\(obj\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/general_functions.rst:25:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:26:<autosummary>:1
 msgid "Detect missing values."
 msgstr "检测缺失值。"
 
-#: ../../source/reference/dataframe/general_functions.rst:25:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:26:<autosummary>:1
 msgid ":py:obj:`isnull <maxframe.dataframe.isnull>`\\ \\(obj\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/general_functions.rst:25:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:26:<autosummary>:1
 msgid ":py:obj:`notna <maxframe.dataframe.notna>`\\ \\(obj\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/general_functions.rst:25:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:26:<autosummary>:1
 msgid "Detect existing (non-missing) values."
 msgstr "检测存在的（非缺失）值。"
 
-#: ../../source/reference/dataframe/general_functions.rst:25:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:26:<autosummary>:1
 msgid ":py:obj:`notnull <maxframe.dataframe.notnull>`\\ \\(obj\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/general_functions.rst:27
+#: ../../source/reference/dataframe/general_functions.rst:28
 msgid "Top-level dealing with numeric data"
 msgstr "顶层数值数据处理"
 
-#: ../../source/reference/dataframe/general_functions.rst:32:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:33:<autosummary>:1
 msgid ""
 ":py:obj:`to_numeric <maxframe.dataframe.to_numeric>`\\ \\(arg\\[\\, "
 "errors\\, downcast\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/general_functions.rst:32:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:33:<autosummary>:1
 msgid "Convert argument to a numeric type."
 msgstr "将参数转换为数值类型。"
 
-#: ../../source/reference/dataframe/general_functions.rst:34
+#: ../../source/reference/dataframe/general_functions.rst:35
 msgid "Top-level dealing with datetimelike"
 msgstr "顶层时间序列数据处理"
 
-#: ../../source/reference/dataframe/general_functions.rst:40:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:41:<autosummary>:1
 msgid ""
 ":py:obj:`to_datetime <maxframe.dataframe.to_datetime>`\\ \\(arg\\[\\, "
 "errors\\, dayfirst\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/general_functions.rst:40:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:41:<autosummary>:1
 msgid "Convert argument to datetime."
 msgstr "将参数转换为 datetime 类型。"
 
-#: ../../source/reference/dataframe/general_functions.rst:40:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:41:<autosummary>:1
 msgid ""
 ":py:obj:`date_range <maxframe.dataframe.date_range>`\\ \\(\\[start\\, "
 "end\\, periods\\, freq\\, tz\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/general_functions.rst:40:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:41:<autosummary>:1
 msgid "Return a fixed frequency DatetimeIndex."
 msgstr "返回一个固定频率的 DatetimeIndex。"
 
-#: ../../source/reference/dataframe/general_functions.rst:42
+#: ../../source/reference/dataframe/general_functions.rst:43
 msgid "Top-level evaluation"
 msgstr "顶层表达式求值"
 
-#: ../../source/reference/dataframe/general_functions.rst:46:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:47:<autosummary>:1
 msgid ""
 ":py:obj:`eval <maxframe.dataframe.eval>`\\ \\(expr\\[\\, parser\\, "
 "engine\\, local\\_dict\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/general_functions.rst:46:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:47:<autosummary>:1
 msgid "Evaluate a Python expression as a string using various backends."
 msgstr "使用各种后端将 Python 表达式作为字符串进行求值。"
-

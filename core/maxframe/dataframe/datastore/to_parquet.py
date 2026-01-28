@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,6 +32,12 @@ class DataFrameToParquet(LakeDataStore):
             return path
         return path.replace("*", str(i))
 
+    @property
+    def one_file(self):
+        # if wildcard in path, write parquet into multiple files
+        # if partition_cols is specified, always write to directory
+        return "*" not in self.path and not self.partition_cols
+
     def __call__(self, df):
         index_value = parse_index(df.index_value.to_pandas()[:0], df)
         columns_value = parse_index(df.columns_value.to_pandas()[:0], store_data=True)
@@ -64,7 +70,10 @@ def to_parquet(
         If path is a string with wildcard e.g. '/to/path/out-*.parquet',
         `to_parquet` will try to write multiple files, for instance,
         chunk (0, 0) will write data into '/to/path/out-0.parquet'.
-        If path is a string without wildcard, we will treat it as a directory.
+        If path is a string without wildcard and partition_cols is None,
+        all data will be written into a single file.
+        If path is a string without wildcard or partition_cols is not None,
+        we will treat it as a directory.
 
     engine : {'auto', 'pyarrow', 'fastparquet'}, default 'auto'
         Parquet library to use. The default behavior is to try 'pyarrow',

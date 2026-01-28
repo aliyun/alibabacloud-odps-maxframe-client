@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ from .datasource.from_index import series_from_index
 from .datasource.from_records import from_records
 from .datasource.from_tensor import dataframe_from_tensor, series_from_tensor
 from .datasource.read_csv import read_csv
+from .datasource.read_json import read_json
 from .datasource.read_odps_query import read_odps_query
 from .datasource.read_odps_table import read_odps_table
 from .datasource.read_parquet import read_parquet
@@ -84,7 +85,10 @@ del (
 from_pandas = read_pandas
 
 # isort: off
+from ..lib.compat import patch_pandas
 from .typing_ import register_pandas_typing_funcs
 
 register_pandas_typing_funcs()
 del register_pandas_typing_funcs
+patch_pandas()
+del patch_pandas

@@ -12,6 +12,22 @@ Clipboard
    read_clipboard
    DataFrame.to_clipboard
 
+Flat file
+~~~~~~~~~
+.. autosummary::
+   :toctree: generated/
+
+   read_csv
+   DataFrame.to_csv
+
+JSON
+~~~~
+.. autosummary::
+   :toctree: generated/
+
+   read_json
+   DataFrame.to_json
+
 MaxCompute
 ~~~~~~~~~~
 .. autosummary::

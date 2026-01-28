@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,10 +31,13 @@ import pyarrow as pa
 import pytest
 
 from .. import utils
-from ..lib.dtypes_extension import ArrowDtype
 from ..lib.wrapped_pickle import is_unpickle_forbidden, switch_unpickle
 from ..serialization import PickleContainer
-from ..utils import parse_size_to_megabytes, validate_and_adjust_resource_ratio
+from ..utils import (
+    parse_size_to_megabytes,
+    validate_and_adjust_resource_ratio,
+    wrap_arrow_dtype,
+)
 
 
 def test_string_conversion():
@@ -302,7 +305,7 @@ def test_estimate_pandas_size():
 
     if hasattr(pd, "ArrowDtype"):
         arrow_array = pa.array(np.random.choice(["abcd", "def", "gh"], size=(1000,)))
-        array = pd.array(arrow_array, dtype=ArrowDtype(arrow_array.type))
+        array = pd.array(arrow_array, dtype=wrap_arrow_dtype(arrow_array.type))
         s2 = pd.Series(array)
         assert utils.estimate_pandas_size(s2) == sys.getsizeof(s2)
 
@@ -625,3 +628,56 @@ def test_validate_and_adjust_resource_ratio(
     if should_warn:
         # check warning
         assert len(recwarn) == 1
+
+
+def test_check_unexpected_kwargs():
+    with pytest.raises(TypeError) as excinfo:
+        utils.check_unexpected_kwargs({"a": 1, "b": 2, "c": 3})
+    assert (
+        excinfo.value.args[0]
+        == "test_check_unexpected_kwargs() got an unexpected keyword argument 'a'"
+    )
+
+
+@pytest.mark.parametrize(
+    "input_dtype, expected",
+    [
+        (wrap_arrow_dtype(pa.int64()), False),
+        (wrap_arrow_dtype(pa.string()), True),
+        (np.dtype("O"), True),
+        (np.dtype("float32"), False),
+        (pd.Int64Dtype(), False),
+        (pd.StringDtype(), True),
+    ],
+)
+def test_is_string_dtype(input_dtype, expected):
+    assert utils.is_string_dtype(input_dtype) is expected
+
+
+@pytest.mark.parametrize(
+    "input_dtype, expected",
+    [
+        (wrap_arrow_dtype(pa.int64()), False),
+        (wrap_arrow_dtype(pa.bool_()), True),
+        (np.dtype("bool"), True),
+        (np.dtype("float32"), False),
+        (pd.Int64Dtype(), False),
+        (pd.BooleanDtype(), True),
+    ],
+)
+def test_is_bool_dtype(input_dtype, expected):
+    assert utils.is_bool_dtype(input_dtype) is expected
+
+
+@pytest.mark.parametrize(
+    "input_dtype, expected",
+    [
+        (wrap_arrow_dtype(pa.int64()), False),
+        (wrap_arrow_dtype(pa.timestamp("ms")), True),
+        (np.dtype("bool"), False),
+        (np.dtype("datetime64[ms]"), True),
+        (pd.Int64Dtype(), False),
+    ],
+)
+def test_is_datetime64_dtype(input_dtype, expected):
+    assert utils.is_datetime64_dtype(input_dtype) is expected

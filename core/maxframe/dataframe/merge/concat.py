@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,22 +18,33 @@ import pandas as pd
 
 from ... import opcodes
 from ...core import ENTITY_TYPE, EntityData, OutputType
+from ...protocol import DefaultIndexType
 from ...serialization.serializables import (
     AnyField,
     BoolField,
+    EnumField,
     FieldTypes,
     ListField,
     StringField,
 )
 from ...utils import lazy_import
-from ..core import DataFrame, Series
+from ..core import DataFrame, DataFrameIndexTypeMixin, Series
 from ..operators import SERIES_TYPE, DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_empty_df, build_empty_series, parse_index, validate_axis
+from ..utils import (
+    build_empty_df,
+    build_empty_series,
+    get_index_value_by_default_index_type,
+    parse_index,
+    validate_axis,
+    validate_default_index_type,
+)
 
 cudf = lazy_import("cudf")
 
 
-class DataFrameConcat(DataFrameOperator, DataFrameOperatorMixin):
+class DataFrameConcat(
+    DataFrameOperator, DataFrameOperatorMixin, DataFrameIndexTypeMixin
+):
     _op_type_ = opcodes.CONCATENATE
 
     axis = AnyField("axis", default=None)
@@ -45,6 +56,9 @@ class DataFrameConcat(DataFrameOperator, DataFrameOperatorMixin):
     verify_integrity = BoolField("verify_integrity", default=None)
     sort = BoolField("sort", default=None)
     copy_ = BoolField("copy", default=None)
+    default_index_type = EnumField(
+        "default_index_type", DefaultIndexType, FieldTypes.int8, default=None
+    )
 
     def __init__(self, copy=None, output_types=None, **kw):
         super().__init__(copy_=copy, _output_types=output_types, **kw)
@@ -103,7 +117,9 @@ class DataFrameConcat(DataFrameOperator, DataFrameOperatorMixin):
                 row_length += series.shape[0]
             if self.ignore_index:
                 idx_length = 0 if pd.isna(row_length) else row_length
-                index_value = parse_index(pd.RangeIndex(idx_length))
+                index_value = get_index_value_by_default_index_type(
+                    self.default_index_type, idx_length, args=(type(self), objs)
+                )
             else:
                 index = self._concat_index(objs)
                 index_value = parse_index(index, objs)
@@ -163,7 +179,9 @@ class DataFrameConcat(DataFrameOperator, DataFrameOperatorMixin):
 
             if self.ignore_index:
                 idx_length = 0 if pd.isna(row_length) else row_length
-                index_value = parse_index(pd.RangeIndex(idx_length))
+                index_value = get_index_value_by_default_index_type(
+                    self.default_index_type, idx_length, args=(type(self), objs)
+                )
             else:
                 index = self._concat_index(objs)
                 index_value = parse_index(index, objs)
@@ -287,6 +305,7 @@ def concat(
     verify_integrity=False,
     sort=False,
     copy=True,
+    default_index_type=None,
 ):
     """
     Concatenate dataframe objects along a particular axis with optional set logic
@@ -485,6 +504,7 @@ def concat(
         raise NotImplementedError(
             "verify_integrity, sort, keys arguments are not supported now"
         )
+    default_index_type = validate_default_index_type(default_index_type)
     op = DataFrameConcat(
         axis=axis,
         join=join,
@@ -495,6 +515,7 @@ def concat(
         verify_integrity=verify_integrity,
         sort=sort,
         copy=copy,
+        default_index_type=default_index_type,
     )
 
     return op(objs)

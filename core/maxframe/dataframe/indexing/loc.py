@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ def process_loc_indexes(inp, indexes, fetch_index: bool = True, axis=None):
 
     if not isinstance(indexes, tuple):
         indexes = (indexes,)
-    if axis is not None and inp.axes[axis].nlevels > 1:
+    if inp.axes[axis or 0].nlevels > 1:
         indexes = (indexes,)
     if len(indexes) < ndim:
         if axis == 0 or axis is None:
@@ -354,13 +354,18 @@ class DataFrameLocGetItem(DataFrameOperator, DataFrameOperatorMixin):
                     or (hasattr(i, "dtype") and index.ndim == 1)
                     for i in index
                 )
-                if has_ranges:
+                if has_ranges or (
+                    isinstance(pd_index, pd.MultiIndex)
+                    and len(index) < pd_index.nlevels
+                ):
                     param["shape"] = np.nan
                     param["index_value"] = parse_index(pd_index, inp, index)
                 else:
                     param["shape"] = None
             else:
-                param["shape"] = None
+                param["shape"] = (
+                    None if not isinstance(pd_index, pd.MultiIndex) else np.nan
+                )
             return param
 
     def __call__(self, inp):

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-10 10:10+0800\n"
+"POT-Creation-Date: 2025-11-13 11:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -191,9 +191,8 @@ msgid "Replace values where the condition is True."
 msgstr "在条件为 True 的地方替换值。"
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
-#, fuzzy
 msgid ":py:obj:`Series.pop <maxframe.dataframe.Series.pop>`\\ \\(item\\)"
-msgstr "通过行/列标签对访问单个值。"
+msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
 msgid "Return item and drops from series."
@@ -579,703 +578,710 @@ msgstr "在自身上调用 ``func``，生成一个具有转换值的 Series。"
 msgid "Computations / descriptive stats"
 msgstr "计算 / 描述性统计"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ":py:obj:`Series.abs <maxframe.dataframe.Series.abs>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.all <maxframe.dataframe.Series.all>`\\ \\(\\[axis\\, "
 "bool\\_only\\, skipna\\, level\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.any <maxframe.dataframe.Series.any>`\\ \\(\\[axis\\, "
 "bool\\_only\\, skipna\\, level\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.between <maxframe.dataframe.Series.between>`\\ \\(left\\,"
 " right\\[\\, inclusive\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Return boolean Series equivalent to left <= series <= right."
 msgstr "返回等效于 left <= series <= right 的布尔 Series。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.clip <maxframe.dataframe.Series.clip>`\\ \\(\\[lower\\, "
 "upper\\, axis\\, inplace\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Trim values at input threshold(s)."
 msgstr "在输入阈值处修剪值。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.corr <maxframe.dataframe.Series.corr>`\\ \\(other\\[\\, "
 "method\\, min\\_periods\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Compute correlation with `other` Series, excluding missing values."
 msgstr "计算与 `other` Series 的相关性，排除缺失值。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.count <maxframe.dataframe.Series.count>`\\ "
 "\\(\\[level\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.cov <maxframe.dataframe.Series.cov>`\\ \\(other\\[\\, "
 "min\\_periods\\, ddof\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Compute covariance with Series, excluding missing values."
 msgstr "计算与 Series 的协方差，排除缺失值。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.describe <maxframe.dataframe.Series.describe>`\\ "
 "\\(\\[percentiles\\, include\\, exclude\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Generate descriptive statistics."
 msgstr "生成描述性统计信息。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
+msgid ""
+":py:obj:`Series.factorize <maxframe.dataframe.Series.factorize>`\\ "
+"\\(\\[sort\\, use\\_na\\_sentinel\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
+msgid "Encode the object as an enumerated type or categorical variable."
+msgstr "将对象编码为枚举类型或分类变量。"
+
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.is_monotonic_increasing "
 "<maxframe.dataframe.Series.is_monotonic_increasing>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Return boolean scalar if values in the object are monotonic_increasing."
 msgstr "如果对象中的值是单调递增的，则返回布尔标量。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.is_monotonic_decreasing "
 "<maxframe.dataframe.Series.is_monotonic_decreasing>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Return boolean scalar if values in the object are monotonic_decreasing."
 msgstr "如果对象中的值是单调递减的，则返回布尔标量。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ":py:obj:`Series.is_unique <maxframe.dataframe.Series.is_unique>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Return boolean if values in the object are unique."
 msgstr "如果对象中的值是唯一的，则返回布尔值。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.max <maxframe.dataframe.Series.max>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.mean <maxframe.dataframe.Series.mean>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.median <maxframe.dataframe.Series.median>`\\ "
 "\\(\\[axis\\, skipna\\, level\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.min <maxframe.dataframe.Series.min>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.mode <maxframe.dataframe.Series.mode>`\\ \\(\\[dropna\\, "
 "combine\\_size\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Return the mode(s) of the Series."
 msgstr "返回 Series 的众数。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.nlargest <maxframe.dataframe.Series.nlargest>`\\ "
 "\\(n\\[\\, keep\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Return the largest `n` elements."
 msgstr "返回最大的 `n` 个元素。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.nsmallest <maxframe.dataframe.Series.nsmallest>`\\ "
 "\\(n\\[\\, keep\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Return the smallest `n` elements."
 msgstr "返回最小的 `n` 个元素。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.nunique <maxframe.dataframe.Series.nunique>`\\ "
 "\\(\\[dropna\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Return number of unique elements in the object."
 msgstr "返回对象中唯一元素的数量。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.prod <maxframe.dataframe.Series.prod>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.product <maxframe.dataframe.Series.product>`\\ "
 "\\(\\[axis\\, skipna\\, level\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.quantile <maxframe.dataframe.Series.quantile>`\\ "
 "\\(\\[q\\, interpolation\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Return value at the given quantile."
 msgstr "返回给定分位数处的值。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
-#, fuzzy
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.rank <maxframe.dataframe.Series.rank>`\\ \\(\\[axis\\, "
 "method\\, numeric\\_only\\, ...\\]\\)"
-msgstr "通过行/列标签对访问单个值。"
+msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Compute numerical data ranks (1 through n) along axis."
 msgstr "沿轴计算数值数据的排名（从1到n）。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.round <maxframe.dataframe.Series.round>`\\ "
 "\\(\\[decimals\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Round each value in a Series to the given number of decimals."
 msgstr "将 Series 中的每个值四舍五入到指定的小数位数。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.sem <maxframe.dataframe.Series.sem>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, ddof\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.std <maxframe.dataframe.Series.std>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, ddof\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.sum <maxframe.dataframe.Series.sum>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, min\\_count\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.unique <maxframe.dataframe.Series.unique>`\\ "
 "\\(\\[method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Uniques are returned in order of appearance."
 msgstr "唯一值按出现顺序返回。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.value_counts <maxframe.dataframe.Series.value_counts>`\\ "
 "\\(\\[normalize\\, sort\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid "Return a Series containing counts of unique values."
 msgstr "返回包含唯一值计数的 Series。"
 
-#: ../../source/reference/dataframe/series.rst:140:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.var <maxframe.dataframe.Series.var>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, ddof\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:142
+#: ../../source/reference/dataframe/series.rst:143
 msgid "Reindexing / selection / label manipulation"
 msgstr "重新索引 / 选择 / 标签操作"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.add_prefix <maxframe.dataframe.Series.add_prefix>`\\ "
 "\\(prefix\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Prefix labels with string `prefix`."
 msgstr "使用字符串 `prefix` 为标签添加前缀。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.add_suffix <maxframe.dataframe.Series.add_suffix>`\\ "
 "\\(suffix\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Suffix labels with string `suffix`."
 msgstr "使用字符串 `suffix` 为标签添加后缀。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.align <maxframe.dataframe.Series.align>`\\ \\(other\\[\\,"
 " join\\, axis\\, level\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Align two objects on their axes with the specified join method."
 msgstr "根据指定的连接方法对齐两个对象。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
-#, fuzzy
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.at_time <maxframe.dataframe.Series.at_time>`\\ "
 "\\(time\\[\\, axis\\]\\)"
-msgstr "通过行/列标签对访问单个值。"
+msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Select values at particular time of day (e.g., 9:30AM)."
 msgstr "选择一天中特定时间的值（例如，上午9:30）。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.between_time <maxframe.dataframe.Series.between_time>`\\ "
 "\\(start\\_time\\, end\\_time\\[\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Select values between particular times of the day (e.g., 9:00-9:30 AM)."
 msgstr "选择一天中特定时间之间的值（例如，上午9:00-9:30）。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.case_when <maxframe.dataframe.Series.case_when>`\\ "
 "\\(caselist\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Replace values where the conditions are True."
 msgstr "替换条件为 True 的值。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.drop <maxframe.dataframe.Series.drop>`\\ \\(\\[labels\\, "
 "axis\\, index\\, columns\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Return Series with specified index labels removed."
 msgstr "返回删除了指定索引标签的 Series。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.drop_duplicates "
 "<maxframe.dataframe.Series.drop_duplicates>`\\ \\(\\[keep\\, inplace\\, "
 "...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Return Series with duplicate values removed."
 msgstr "返回删除重复值后的 Series。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.droplevel <maxframe.dataframe.Series.droplevel>`\\ "
 "\\(level\\[\\, axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Return Series/DataFrame with requested index / column level(s) removed."
 msgstr "返回删除请求的索引/列级别的 Series 或 DataFrame。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.filter <maxframe.dataframe.Series.filter>`\\ "
 "\\(\\[items\\, like\\, regex\\, axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 "Subset the dataframe rows or columns according to the specified index "
 "labels."
 msgstr "根据指定的索引标签子集选择行或列。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ":py:obj:`Series.head <maxframe.dataframe.Series.head>`\\ \\(\\[n\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Return the first `n` rows."
 msgstr "返回前 n 行。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.idxmax <maxframe.dataframe.Series.idxmax>`\\ "
 "\\(\\[axis\\, skipna\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Return the row label of the maximum value."
 msgstr "返回最大值的行标签。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.idxmin <maxframe.dataframe.Series.idxmin>`\\ "
 "\\(\\[axis\\, skipna\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Return the row label of the minimum value."
 msgstr "返回最小值的行标签。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ":py:obj:`Series.isin <maxframe.dataframe.Series.isin>`\\ \\(values\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Whether elements in Series are contained in `values`."
 msgstr "Series 中的元素是否包含在 `values` 中。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.reindex <maxframe.dataframe.Series.reindex>`\\ "
 "\\(\\[labels\\, index\\, columns\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Conform Series/DataFrame to new index with optional filling logic."
 msgstr "根据新的索引调整 Series/DataFrame，并可选择填充逻辑。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.reindex_like <maxframe.dataframe.Series.reindex_like>`\\ "
 "\\(other\\[\\, method\\, copy\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Return an object with matching indices as other object."
 msgstr "返回一个与另一个对象索引匹配的对象。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.rename <maxframe.dataframe.Series.rename>`\\ "
 "\\(\\[index\\, axis\\, copy\\, inplace\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Alter Series index labels or name."
 msgstr "修改 Series 的索引标签或名称。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.reset_index <maxframe.dataframe.Series.reset_index>`\\ "
 "\\(\\[level\\, drop\\, name\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Generate a new DataFrame or Series with the index reset."
 msgstr "生成一个新的 DataFrame 或 Series，其索引被重置。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.sample <maxframe.dataframe.Series.sample>`\\ \\(\\[n\\, "
 "frac\\, replace\\, weights\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Return a random sample of items from an axis of object."
 msgstr "从对象的某个轴中返回一个随机样本。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.set_axis <maxframe.dataframe.Series.set_axis>`\\ "
 "\\(labels\\[\\, axis\\, inplace\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Assign desired index to given axis."
 msgstr "为给定轴分配所需的索引。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.take <maxframe.dataframe.Series.take>`\\ \\(indices\\[\\,"
 " axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Return the elements in the given *positional* indices along an axis."
 msgstr "沿某个轴返回给定*位置*索引的元素。"
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.truncate <maxframe.dataframe.Series.truncate>`\\ "
 "\\(\\[before\\, after\\, axis\\, copy\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:168:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid "Truncate a Series or DataFrame before and after some index value."
 msgstr "在某个索引值之前和之后截断 Series 或 DataFrame。"
 
-#: ../../source/reference/dataframe/series.rst:170
+#: ../../source/reference/dataframe/series.rst:171
 msgid "Missing data handling"
 msgstr "缺失数据处理"
 
-#: ../../source/reference/dataframe/series.rst:180:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:181:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dropna <maxframe.dataframe.Series.dropna>`\\ "
 "\\(\\[axis\\, inplace\\, how\\, ignore\\_index\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:180:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:181:<autosummary>:1
 msgid "Return a new Series with missing values removed."
 msgstr "返回一个新的 Series，其中缺失值已被移除。"
 
-#: ../../source/reference/dataframe/series.rst:180:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:181:<autosummary>:1
 msgid ""
 ":py:obj:`Series.fillna <maxframe.dataframe.Series.fillna>`\\ "
 "\\(\\[value\\, method\\, axis\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:180:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:181:<autosummary>:1
 msgid "Fill NA/NaN values using the specified method."
 msgstr "使用指定的方法填充 NA/NaN 值。"
 
-#: ../../source/reference/dataframe/series.rst:180:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:181:<autosummary>:1
 msgid ":py:obj:`Series.isna <maxframe.dataframe.Series.isna>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:180:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:181:<autosummary>:1
 msgid "Detect missing values."
 msgstr "检测缺失值。"
 
-#: ../../source/reference/dataframe/series.rst:180:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:181:<autosummary>:1
 msgid ":py:obj:`Series.notna <maxframe.dataframe.Series.notna>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:180:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:181:<autosummary>:1
 msgid "Detect existing (non-missing) values."
 msgstr "检测存在的（非缺失）值。"
 
-#: ../../source/reference/dataframe/series.rst:182
+#: ../../source/reference/dataframe/series.rst:183
 msgid "Reshaping, sorting"
 msgstr "重塑、排序"
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid ""
 ":py:obj:`Series.argmax <maxframe.dataframe.Series.argmax>`\\ "
 "\\(\\[axis\\, skipna\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid "Return int position of the smallest value in the Series."
 msgstr "返回 Series 中最小值的整数位置。"
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid ""
 ":py:obj:`Series.argmin <maxframe.dataframe.Series.argmin>`\\ "
 "\\(\\[axis\\, skipna\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid ""
 ":py:obj:`Series.argsort <maxframe.dataframe.Series.argsort>`\\ "
 "\\(\\[axis\\, kind\\, order\\, stable\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid "Return the integer indices that would sort the Series values."
 msgstr "返回能够对 Series 值进行排序的整数索引。"
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid ""
 ":py:obj:`Series.explode <maxframe.dataframe.Series.explode>`\\ "
 "\\(\\[ignore\\_index\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid "Transform each element of a list-like to a row."
 msgstr "将每个类列表元素转换为一行。"
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid ""
 ":py:obj:`Series.reorder_levels "
 "<maxframe.dataframe.Series.reorder_levels>`\\ \\(order\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid "Rearrange index levels using input order."
 msgstr "使用输入顺序重新排列索引层级。"
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
-#, fuzzy
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid ""
 ":py:obj:`Series.repeat <maxframe.dataframe.Series.repeat>`\\ "
 "\\(repeats\\[\\, axis\\]\\)"
-msgstr "通过行/列标签对访问单个值。"
+msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid "Repeat elements of a Series."
 msgstr "重复 Series 的元素。"
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid ""
 ":py:obj:`Series.sort_values <maxframe.dataframe.Series.sort_values>`\\ "
 "\\(\\[axis\\, ascending\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid "Sort by the values."
 msgstr "按值排序。"
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid ""
 ":py:obj:`Series.sort_index <maxframe.dataframe.Series.sort_index>`\\ "
 "\\(\\[axis\\, level\\, ascending\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid "Sort object by labels (along an axis)."
 msgstr "按标签（沿轴）对对象进行排序。"
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid ""
 ":py:obj:`Series.swaplevel <maxframe.dataframe.Series.swaplevel>`\\ "
 "\\(\\[i\\, j\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid "Swap levels i and j in a :class:`MultiIndex`."
 msgstr "在 :class:`MultiIndex` 中交换层级 i 和 j。"
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid ""
 ":py:obj:`Series.unstack <maxframe.dataframe.Series.unstack>`\\ "
 "\\(\\[level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:196:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid "Unstack, also known as pivot, Series with MultiIndex to produce DataFrame."
 msgstr "解堆叠，也称为透视，将具有 MultiIndex 的 Series 转换为 DataFrame。"
 
-#: ../../source/reference/dataframe/series.rst:198
+#: ../../source/reference/dataframe/series.rst:199
 msgid "Combining / comparing / joining / merging"
 msgstr "组合 / 比较 / 连接 / 合并"
 
-#: ../../source/reference/dataframe/series.rst:205:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:206:<autosummary>:1
 msgid ""
 ":py:obj:`Series.append <maxframe.dataframe.Series.append>`\\ "
 "\\(other\\[\\, ignore\\_index\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:205:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:206:<autosummary>:1
 msgid "Append rows of `other` to the end of caller, returning a new object."
 msgstr "将 `other` 的行追加到调用者的末尾，返回一个新对象。"
 
-#: ../../source/reference/dataframe/series.rst:205:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:206:<autosummary>:1
 msgid ""
 ":py:obj:`Series.compare <maxframe.dataframe.Series.compare>`\\ "
 "\\(other\\[\\, align\\_axis\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:205:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:206:<autosummary>:1
 msgid "Compare to another Series and show the differences."
 msgstr "与另一个 Series 进行比较并显示差异。"
 
-#: ../../source/reference/dataframe/series.rst:205:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:206:<autosummary>:1
 msgid ":py:obj:`Series.update <maxframe.dataframe.Series.update>`\\ \\(other\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:205:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:206:<autosummary>:1
 msgid "Modify Series in place using values from passed Series."
 msgstr "使用传入的 Series 的值就地修改 Series。"
 
-#: ../../source/reference/dataframe/series.rst:207
+#: ../../source/reference/dataframe/series.rst:208
 msgid "Time Series-related"
 msgstr "时间序列相关"
 
-#: ../../source/reference/dataframe/series.rst:215:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:216:<autosummary>:1
 msgid ""
 ":py:obj:`Series.first_valid_index "
 "<maxframe.dataframe.Series.first_valid_index>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:215:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:216:<autosummary>:1
 msgid "Return index for first non-NA value or None, if no non-NA value is found."
 msgstr "返回第一个非 NA 值的索引，如果没有找到非 NA 值则返回 None。"
 
-#: ../../source/reference/dataframe/series.rst:215:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:216:<autosummary>:1
 msgid ""
 ":py:obj:`Series.last_valid_index "
 "<maxframe.dataframe.Series.last_valid_index>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:215:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:216:<autosummary>:1
 msgid "Return index for last non-NA value or None, if no non-NA value is found."
 msgstr "返回最后一个非 NA 值的索引，如果没有找到非 NA 值则返回 None。"
 
-#: ../../source/reference/dataframe/series.rst:215:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:216:<autosummary>:1
 msgid ""
 ":py:obj:`Series.shift <maxframe.dataframe.Series.shift>`\\ "
 "\\(\\[periods\\, freq\\, axis\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:215:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:216:<autosummary>:1
 msgid "Shift index by desired number of periods with an optional time `freq`."
 msgstr "根据给定的时间周期数（可选的时间频率 `freq`）移动索引。"
 
-#: ../../source/reference/dataframe/series.rst:215:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:216:<autosummary>:1
 msgid ""
 ":py:obj:`Series.tshift <maxframe.dataframe.Series.tshift>`\\ "
 "\\(\\[periods\\, freq\\, axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:215:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:216:<autosummary>:1
 msgid "Shift the time index, using the index's frequency if available."
 msgstr "移动时间索引，如果可用则使用索引的频率。"
 
-#: ../../source/reference/dataframe/series.rst:217
+#: ../../source/reference/dataframe/series.rst:218
 msgid "Accessors"
 msgstr "访问器"
 
-#: ../../source/reference/dataframe/series.rst:219
+#: ../../source/reference/dataframe/series.rst:220
 msgid ""
 "Pandas provides dtype-specific methods under various accessors. These are"
 " separate namespaces within :class:`Series` that only apply to specific "
@@ -1284,43 +1290,43 @@ msgstr ""
 "Pandas 在各种访问器下提供了特定于数据类型的方法。这些是 :class:`Series` "
 "内部仅适用于特定数据类型的独立命名空间。"
 
-#: ../../source/reference/dataframe/series.rst:224
+#: ../../source/reference/dataframe/series.rst:225
 msgid "Data Type"
 msgstr "数据类型"
 
-#: ../../source/reference/dataframe/series.rst:224
+#: ../../source/reference/dataframe/series.rst:225
 msgid "Accessor"
 msgstr "访问器"
 
-#: ../../source/reference/dataframe/series.rst:226
+#: ../../source/reference/dataframe/series.rst:227
 msgid "Datetime, Timedelta, Period"
 msgstr "日期时间、时间差、时期"
 
-#: ../../source/reference/dataframe/series.rst:226
+#: ../../source/reference/dataframe/series.rst:227
 msgid ":ref:`dt <generated.series.dt>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:227
+#: ../../source/reference/dataframe/series.rst:228
 msgid "String"
 msgstr "字符串"
 
-#: ../../source/reference/dataframe/series.rst:227
+#: ../../source/reference/dataframe/series.rst:228
 msgid ":ref:`str <generated.series.str>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:228
+#: ../../source/reference/dataframe/series.rst:229
 msgid "Dict"
 msgstr "字典"
 
-#: ../../source/reference/dataframe/series.rst:228
+#: ../../source/reference/dataframe/series.rst:229
 msgid ":ref:`dict <generated.series.dict>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:234
+#: ../../source/reference/dataframe/series.rst:235
 msgid "Datetimelike properties"
 msgstr "类似日期时间的属性"
 
-#: ../../source/reference/dataframe/series.rst:236
+#: ../../source/reference/dataframe/series.rst:237
 msgid ""
 "``Series.dt`` can be used to access the values of the series as "
 "datetimelike and return several properties. These can be accessed like "
@@ -1329,350 +1335,350 @@ msgstr ""
 "``Series.dt`` 可用于将 Series 的值作为类似日期时间的值访问，并返回多个"
 "属性。这些可以通过 ``Series.dt.<property>`` 的形式访问。"
 
-#: ../../source/reference/dataframe/series.rst:241
+#: ../../source/reference/dataframe/series.rst:242
 msgid "Datetime properties"
 msgstr "日期时间属性"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.date <maxframe.dataframe.Series.dt.date>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "Returns numpy array of python :class:`datetime.date` objects."
 msgstr "返回 Python :class:`datetime.date` 对象的 numpy 数组。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.time <maxframe.dataframe.Series.dt.time>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "Returns numpy array of :class:`datetime.time` objects."
 msgstr "返回 :class:`datetime.time` 对象的 numpy 数组。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.timetz <maxframe.dataframe.Series.dt.timetz>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "Returns numpy array of :class:`datetime.time` objects with timezones."
 msgstr "返回包含时区信息的 :class:`datetime.time` 对象的 numpy 数组。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.year <maxframe.dataframe.Series.dt.year>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "The year of the datetime."
 msgstr "日期时间的年份。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.month <maxframe.dataframe.Series.dt.month>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "The month as January=1, December=12."
 msgstr "月份，一月为1，十二月为12。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.day <maxframe.dataframe.Series.dt.day>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "The day of the datetime."
 msgstr "日期时间的日期部分。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.hour <maxframe.dataframe.Series.dt.hour>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "The hours of the datetime."
 msgstr "日期时间的小时部分。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.minute <maxframe.dataframe.Series.dt.minute>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "The minutes of the datetime."
 msgstr "日期时间的分钟部分。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.second <maxframe.dataframe.Series.dt.second>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "The seconds of the datetime."
 msgstr "日期时间的秒数。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.microsecond "
 "<maxframe.dataframe.Series.dt.microsecond>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "The microseconds of the datetime."
 msgstr "日期时间的微秒数。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.nanosecond <maxframe.dataframe.Series.dt.nanosecond>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "The nanoseconds of the datetime."
 msgstr "日期时间的纳秒数。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.week <maxframe.dataframe.Series.dt.week>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "The week ordinal of the year."
 msgstr "一年中的第几周。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.weekofyear <maxframe.dataframe.Series.dt.weekofyear>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.dayofweek <maxframe.dataframe.Series.dt.dayofweek>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "The day of the week with Monday=0, Sunday=6."
 msgstr "星期几，周一为0，周日为6。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.weekday <maxframe.dataframe.Series.dt.weekday>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.dayofyear <maxframe.dataframe.Series.dt.dayofyear>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "The ordinal day of the year."
 msgstr "一年中的第几天。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ":py:obj:`Series.dt.quarter <maxframe.dataframe.Series.dt.quarter>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "The quarter of the date."
 msgstr "日期所在的季度。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.is_month_start "
 "<maxframe.dataframe.Series.dt.is_month_start>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "Indicates whether the date is the first day of the month."
 msgstr "指示日期是否为该月的第一天。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.is_month_end "
 "<maxframe.dataframe.Series.dt.is_month_end>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "Indicates whether the date is the last day of the month."
 msgstr "指示日期是否为该月的最后一天。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.is_quarter_start "
 "<maxframe.dataframe.Series.dt.is_quarter_start>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "Indicator for whether the date is the first day of a quarter."
 msgstr "指示日期是否为季度的第一天。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.is_quarter_end "
 "<maxframe.dataframe.Series.dt.is_quarter_end>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "Indicator for whether the date is the last day of a quarter."
 msgstr "指示日期是否为季度的最后一天。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.is_year_start "
 "<maxframe.dataframe.Series.dt.is_year_start>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "Indicate whether the date is the first day of a year."
 msgstr "指示日期是否为一年的第一天。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.is_year_end "
 "<maxframe.dataframe.Series.dt.is_year_end>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "Indicate whether the date is the last day of the year."
 msgstr "指示日期是否为一年的最后一天。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.is_leap_year "
 "<maxframe.dataframe.Series.dt.is_leap_year>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "Boolean indicator if the date belongs to a leap year."
 msgstr "布尔值，指示日期是否属于闰年。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.daysinmonth "
 "<maxframe.dataframe.Series.dt.daysinmonth>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid "The number of days in the month."
 msgstr "该月的天数。"
 
-#: ../../source/reference/dataframe/series.rst:273:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.days_in_month "
 "<maxframe.dataframe.Series.dt.days_in_month>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:275
+#: ../../source/reference/dataframe/series.rst:276
 msgid "Datetime methods"
 msgstr "日期时间方法"
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.to_period <maxframe.dataframe.Series.dt.to_period>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid "Cast to PeriodArray/PeriodIndex at a particular frequency."
 msgstr "以特定频率转换为 PeriodArray/PeriodIndex。"
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.to_pydatetime "
 "<maxframe.dataframe.Series.dt.to_pydatetime>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid "Return the data as an array of :class:`datetime.datetime` objects."
 msgstr "将数据作为 :class:`datetime.datetime` 对象的数组返回。"
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.tz_localize "
 "<maxframe.dataframe.Series.dt.tz_localize>`\\ \\(\\*args\\, "
 "\\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid "Localize tz-naive Datetime Array/Index to tz-aware Datetime Array/Index."
 msgstr ""
 "将无时区信息的 Datetime Array/Index 转换为有时区信息的 Datetime Array/"
 "Index。"
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.tz_convert "
 "<maxframe.dataframe.Series.dt.tz_convert>`\\ \\(\\*args\\, "
 "\\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid "Convert tz-aware Datetime Array/Index from one time zone to another."
 msgstr "将有时区信息的 Datetime Array/Index 从一个时区转换为另一个时区。"
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.normalize <maxframe.dataframe.Series.dt.normalize>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid "Convert times to midnight."
 msgstr "将时间转换为午夜。"
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.strftime <maxframe.dataframe.Series.dt.strftime>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid "Convert to Index using specified date_format."
 msgstr "使用指定的日期格式转换为 Index。"
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.round <maxframe.dataframe.Series.dt.round>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid "Perform round operation on the data to the specified `freq`."
 msgstr "对数据执行舍入操作到指定的 `freq`。"
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.floor <maxframe.dataframe.Series.dt.floor>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid "Perform floor operation on the data to the specified `freq`."
 msgstr "对数据执行向下取整操作到指定的 `freq`。"
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.ceil <maxframe.dataframe.Series.dt.ceil>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid "Perform ceil operation on the data to the specified `freq`."
 msgstr "对数据执行向上取整操作到指定的 `freq`。"
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.month_name "
 "<maxframe.dataframe.Series.dt.month_name>`\\ \\(\\*args\\, "
 "\\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid "Return the month names with specified locale."
 msgstr "返回指定语言环境下的月份名称。"
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.day_name <maxframe.dataframe.Series.dt.day_name>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:293:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:294:<autosummary>:1
 msgid "Return the day names with specified locale."
 msgstr "返回指定语言环境下的星期名称。"
 
-#: ../../source/reference/dataframe/series.rst:297
+#: ../../source/reference/dataframe/series.rst:298
 msgid "String handling"
 msgstr "字符串处理"
 
-#: ../../source/reference/dataframe/series.rst:299
+#: ../../source/reference/dataframe/series.rst:300
 msgid ""
 "``Series.str`` can be used to access the values of the series as strings "
 "and apply several methods to it. These can be accessed like "
@@ -1681,325 +1687,325 @@ msgstr ""
 "``Series.str`` 可用于将 Series 的值作为字符串访问并应用多种方法。这些方法"
 "可通过 ``Series.str.<function/property>`` 的方式进行访问。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.capitalize "
 "<maxframe.dataframe.Series.str.capitalize>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Convert strings in the Series/Index to be capitalized."
 msgstr "将 Series/Index 中的字符串首字母大写。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.contains <maxframe.dataframe.Series.str.contains>`\\ "
 "\\(pat\\[\\, case\\, flags\\, na\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 "Test if pattern or regex is contained within a string of a Series or "
 "Index."
 msgstr "测试 Series 或 Index 的字符串中是否包含模式或正则表达式。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.count <maxframe.dataframe.Series.str.count>`\\ "
 "\\(pat\\[\\, flags\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Count occurrences of pattern in each string of the Series/Index."
 msgstr "计算 Series/Index 中每个字符串中模式的出现次数。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.endswith <maxframe.dataframe.Series.str.endswith>`\\ "
 "\\(pat\\[\\, na\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Test if the end of each string element matches a pattern."
 msgstr "测试每个字符串元素的末尾是否与模式匹配。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.find <maxframe.dataframe.Series.str.find>`\\ "
 "\\(sub\\[\\, start\\, end\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Return lowest indexes in each strings in the Series/Index."
 msgstr "返回 Series/Index 中每个字符串的最低索引。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ":py:obj:`Series.str.len <maxframe.dataframe.Series.str.len>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Compute the length of each element in the Series/Index."
 msgstr "计算 Series/Index 中每个元素的长度。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.ljust <maxframe.dataframe.Series.str.ljust>`\\ "
 "\\(width\\[\\, fillchar\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Pad right side of strings in the Series/Index."
 msgstr "在 Series/Index 的字符串右侧填充。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ":py:obj:`Series.str.lower <maxframe.dataframe.Series.str.lower>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Convert strings in the Series/Index to lowercase."
 msgstr "将 Series/Index 中的字符串转换为小写。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.lstrip <maxframe.dataframe.Series.str.lstrip>`\\ "
 "\\(\\[to\\_strip\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Remove leading characters."
 msgstr "移除前导字符。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.pad <maxframe.dataframe.Series.str.pad>`\\ "
 "\\(width\\[\\, side\\, fillchar\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Pad strings in the Series/Index up to width."
 msgstr "将 Series/Index 中的字符串填充到指定宽度。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.repeat <maxframe.dataframe.Series.str.repeat>`\\ "
 "\\(repeats\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Duplicate each string in the Series or Index."
 msgstr "复制 Series 或 Index 中的每个字符串。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.replace <maxframe.dataframe.Series.str.replace>`\\ "
 "\\(pat\\, repl\\[\\, n\\, case\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Replace each occurrence of pattern/regex in the Series/Index."
 msgstr "替换 Series/Index 中模式/正则表达式的每次出现。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.rfind <maxframe.dataframe.Series.str.rfind>`\\ "
 "\\(sub\\[\\, start\\, end\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Return highest indexes in each strings in the Series/Index."
 msgstr "返回 Series/Index 中每个字符串的最高索引。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.rjust <maxframe.dataframe.Series.str.rjust>`\\ "
 "\\(width\\[\\, fillchar\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Pad left side of strings in the Series/Index."
 msgstr "在 Series/Index 的字符串左侧填充。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.rstrip <maxframe.dataframe.Series.str.rstrip>`\\ "
 "\\(\\[to\\_strip\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Remove trailing characters."
 msgstr "移除尾随字符。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.slice <maxframe.dataframe.Series.str.slice>`\\ "
 "\\(\\[start\\, stop\\, step\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Slice substrings from each element in the Series or Index."
 msgstr "从 Series 或 Index 的每个元素中切片出子字符串。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.startswith "
 "<maxframe.dataframe.Series.str.startswith>`\\ \\(pat\\[\\, na\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Test if the start of each string element matches a pattern."
 msgstr "测试每个字符串元素的开头是否匹配某个模式。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.strip <maxframe.dataframe.Series.str.strip>`\\ "
 "\\(\\[to\\_strip\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Remove leading and trailing characters."
 msgstr "移除开头和结尾的字符。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.swapcase <maxframe.dataframe.Series.str.swapcase>`\\ "
 "\\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Convert strings in the Series/Index to be swapcased."
 msgstr "将 Series/Index 中的字符串转换为大小写互换的形式。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ":py:obj:`Series.str.title <maxframe.dataframe.Series.str.title>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Convert strings in the Series/Index to titlecase."
 msgstr "将 Series/Index 中的字符串转换为标题格式。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.translate "
 "<maxframe.dataframe.Series.str.translate>`\\ \\(table\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Map all characters in the string through the given mapping table."
 msgstr "通过给定的映射表映射字符串中的所有字符。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ":py:obj:`Series.str.upper <maxframe.dataframe.Series.str.upper>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Convert strings in the Series/Index to uppercase."
 msgstr "将 Series/Index 中的字符串转换为大写。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.zfill <maxframe.dataframe.Series.str.zfill>`\\ "
 "\\(width\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Pad strings in the Series/Index by prepending '0' characters."
 msgstr "通过在字符串前面添加 '0' 字符来填充 Series/Index 中的字符串。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.isalnum <maxframe.dataframe.Series.str.isalnum>`\\ "
 "\\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Check whether all characters in each string are alphanumeric."
 msgstr "检查每个字符串中的所有字符是否为字母或数字。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.isalpha <maxframe.dataframe.Series.str.isalpha>`\\ "
 "\\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Check whether all characters in each string are alphabetic."
 msgstr "检查每个字符串中的所有字符是否为字母。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.isdigit <maxframe.dataframe.Series.str.isdigit>`\\ "
 "\\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Check whether all characters in each string are digits."
 msgstr "检查每个字符串中的所有字符是否为数字。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.isspace <maxframe.dataframe.Series.str.isspace>`\\ "
 "\\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Check whether all characters in each string are whitespace."
 msgstr "检查每个字符串中的所有字符是否为空白字符。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.islower <maxframe.dataframe.Series.str.islower>`\\ "
 "\\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Check whether all characters in each string are lowercase."
 msgstr "检查每个字符串中的所有字符是否为小写。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.isupper <maxframe.dataframe.Series.str.isupper>`\\ "
 "\\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Check whether all characters in each string are uppercase."
 msgstr "检查每个字符串中的所有字符是否为大写。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.istitle <maxframe.dataframe.Series.str.istitle>`\\ "
 "\\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Check whether all characters in each string are titlecase."
 msgstr "检查每个字符串中的所有字符是否为标题格式。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.isnumeric "
 "<maxframe.dataframe.Series.str.isnumeric>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Check whether all characters in each string are numeric."
 msgstr "检查每个字符串中的所有字符是否为数值字符。"
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.isdecimal "
 "<maxframe.dataframe.Series.str.isdecimal>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:339:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid "Check whether all characters in each string are decimal."
 msgstr "检查每个字符串中的所有字符是否为十进制数字。"
 
-#: ../../source/reference/dataframe/series.rst:355
+#: ../../source/reference/dataframe/series.rst:356
 msgid "Dict properties"
 msgstr "字典属性"
 
-#: ../../source/reference/dataframe/series.rst:357
+#: ../../source/reference/dataframe/series.rst:358
 msgid ""
 "``Series.dict`` can be used to access the methods of the series with dict"
 " values. These can be accessed like ``Series.dict.<method>``."
@@ -2007,70 +2013,70 @@ msgstr ""
 "``Series.dict`` 可用于访问具有字典值的 Series 的方法。这些方法可以通过 ``"
 "Series.dict.<method>`` 的方式访问。"
 
-#: ../../source/reference/dataframe/series.rst:362
+#: ../../source/reference/dataframe/series.rst:363
 msgid "Dict methods"
 msgstr "字典方法"
 
-#: ../../source/reference/dataframe/series.rst:374:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:375:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dict.__getitem__ "
 "<maxframe.dataframe.Series.dict.__getitem__>`\\ \\(query\\_key\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:374:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:375:<autosummary>:1
 msgid "Get the value by the key of each dict in the Series."
 msgstr "根据 Series 中每个字典的键获取值。"
 
-#: ../../source/reference/dataframe/series.rst:374:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:375:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dict.__setitem__ "
 "<maxframe.dataframe.Series.dict.__setitem__>`\\ \\(query\\_key\\, "
 "value\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:374:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:375:<autosummary>:1
 msgid "Set the value with the key to each dict of the Series."
 msgstr "为 Series 中的每个字典设置键对应的值。"
 
-#: ../../source/reference/dataframe/series.rst:374:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:375:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dict.contains "
 "<maxframe.dataframe.Series.dict.contains>`\\ \\(query\\_key\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:374:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:375:<autosummary>:1
 msgid "Check whether the key is in each dict of the Series."
 msgstr "检查键是否存在于 Series 的每个字典中。"
 
-#: ../../source/reference/dataframe/series.rst:374:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:375:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dict.get <maxframe.dataframe.Series.dict.get>`\\ "
 "\\(query\\_key\\[\\, default\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:374:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:375:<autosummary>:1
 msgid ":py:obj:`Series.dict.len <maxframe.dataframe.Series.dict.len>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:374:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:375:<autosummary>:1
 msgid "Get the length of each dict of the Series."
 msgstr "获取 Series 中每个字典的长度。"
 
-#: ../../source/reference/dataframe/series.rst:374:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:375:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dict.remove <maxframe.dataframe.Series.dict.remove>`\\ "
 "\\(query\\_key\\[\\, ignore\\_key\\_error\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:374:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:375:<autosummary>:1
 msgid "Remove the item by the key from each dict of the Series."
 msgstr "从 Series 的每个字典中根据键移除项。"
 
-#: ../../source/reference/dataframe/series.rst:378
+#: ../../source/reference/dataframe/series.rst:379
 msgid "List properties"
 msgstr "列表属性"
 
-#: ../../source/reference/dataframe/series.rst:380
+#: ../../source/reference/dataframe/series.rst:381
 msgid ""
 "``Series.list`` can be used to access the methods of the series with list"
 " values. These can be accessed like ``Series.list.<method>``."
@@ -2078,33 +2084,33 @@ msgstr ""
 "``Series.list`` 可用于访问具有列表值的 Series 的方法。这些方法可以通过 ``"
 "Series.list.<method>`` 的方式访问。"
 
-#: ../../source/reference/dataframe/series.rst:385
+#: ../../source/reference/dataframe/series.rst:386
 msgid "List methods"
 msgstr "列表方法"
 
-#: ../../source/reference/dataframe/series.rst:393:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:394:<autosummary>:1
 msgid ""
 ":py:obj:`Series.list.__getitem__ "
 "<maxframe.dataframe.Series.list.__getitem__>`\\ \\(query\\_index\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:393:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:394:<autosummary>:1
 msgid "Get the value by the index of each list in the Series."
 msgstr "根据 Series 中每个列表的索引获取值。"
 
-#: ../../source/reference/dataframe/series.rst:393:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:394:<autosummary>:1
 msgid ":py:obj:`Series.list.len <maxframe.dataframe.Series.list.len>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:393:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:394:<autosummary>:1
 msgid "Get the length of each list of the Series."
 msgstr "获取 Series 中每个列表的长度。"
 
-#: ../../source/reference/dataframe/series.rst:395
+#: ../../source/reference/dataframe/series.rst:396
 msgid "Struct properties"
 msgstr "结构体属性"
 
-#: ../../source/reference/dataframe/series.rst:397
+#: ../../source/reference/dataframe/series.rst:398
 msgid ""
 "``Series.struct`` can be used to access the methods of the series with "
 "struct values. These can be accessed like ``Series.struct.<method>``."
@@ -2112,33 +2118,33 @@ msgstr ""
 "``Series.struct`` 可用于访问具有结构体值的 Series 的方法。这些方法可以"
 "通过 ``Series.struct.<method>`` 的方式访问。"
 
-#: ../../source/reference/dataframe/series.rst:402
+#: ../../source/reference/dataframe/series.rst:403
 msgid "Struct methods"
 msgstr "结构体方法"
 
-#: ../../source/reference/dataframe/series.rst:411:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:412:<autosummary>:1
 msgid ":py:obj:`Series.struct.dtypes <maxframe.dataframe.Series.struct.dtypes>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:411:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:412:<autosummary>:1
 msgid "Return the dtype object of each child field of the struct."
 msgstr "返回结构体中每个子字段的 dtype 对象。"
 
-#: ../../source/reference/dataframe/series.rst:411:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:412:<autosummary>:1
 msgid ""
 ":py:obj:`Series.struct.field <maxframe.dataframe.Series.struct.field>`\\ "
 "\\(name\\_or\\_index\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:411:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:412:<autosummary>:1
 msgid "Extract a child field of a struct as a Series."
 msgstr "将结构体的一个子字段提取为 Series。"
 
-#: ../../source/reference/dataframe/series.rst:413
+#: ../../source/reference/dataframe/series.rst:414
 msgid "Plotting"
 msgstr "绘图"
 
-#: ../../source/reference/dataframe/series.rst:414
+#: ../../source/reference/dataframe/series.rst:415
 msgid ""
 "``Series.plot`` is both a callable method and a namespace attribute for "
 "specific plotting methods of the form ``Series.plot.<kind>``."
@@ -2146,182 +2152,185 @@ msgstr ""
 "``Series.plot`` 既是可调用的方法，也是特定绘图方法的命名空间属性，这些"
 "方法的形式为 ``Series.plot.<kind>``。"
 
-#: ../../source/reference/dataframe/series.rst:422:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:423:<autosummary>:1
 msgid ":py:obj:`Series.plot <maxframe.dataframe.Series.plot>`\\"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:422:<autosummary>:1
-#, fuzzy
+#: ../../source/reference/dataframe/series.rst:423:<autosummary>:1
 msgid ""
 ":py:class:`~maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor"
 "` 的别名"
 msgstr ""
-":py:class:`~maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor"
-"` 的简称"
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid ""
 ":py:obj:`Series.plot.area <maxframe.dataframe.Series.plot.area>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid "Draw a stacked area plot."
 msgstr "绘制堆叠面积图。"
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid ""
 ":py:obj:`Series.plot.bar <maxframe.dataframe.Series.plot.bar>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid "Vertical bar plot."
 msgstr "垂直条形图。"
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid ""
 ":py:obj:`Series.plot.barh <maxframe.dataframe.Series.plot.barh>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid "Make a horizontal bar plot."
 msgstr "制作水平条形图。"
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid ""
 ":py:obj:`Series.plot.box <maxframe.dataframe.Series.plot.box>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid "Make a box plot of the DataFrame columns."
 msgstr "制作 DataFrame 列的箱线图。"
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid ""
 ":py:obj:`Series.plot.density <maxframe.dataframe.Series.plot.density>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid "Generate Kernel Density Estimate plot using Gaussian kernels."
 msgstr "使用高斯核生成核密度估计图。"
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid ""
 ":py:obj:`Series.plot.hist <maxframe.dataframe.Series.plot.hist>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid "Draw one histogram of the DataFrame's columns."
 msgstr "绘制 DataFrame 列的一个直方图。"
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid ""
 ":py:obj:`Series.plot.kde <maxframe.dataframe.Series.plot.kde>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid ""
 ":py:obj:`Series.plot.line <maxframe.dataframe.Series.plot.line>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid "Plot Series or DataFrame as lines."
 msgstr "将 Series 或 DataFrame 绘制为线图。"
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid ""
 ":py:obj:`Series.plot.pie <maxframe.dataframe.Series.plot.pie>`\\ "
 "\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:436:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
 msgid "Generate a pie plot."
 msgstr "生成饼图。"
 
-#: ../../source/reference/dataframe/series.rst:438
+#: ../../source/reference/dataframe/series.rst:439
 msgid "Serialization / IO / conversion"
 msgstr "序列化 / IO / 转换"
 
-#: ../../source/reference/dataframe/series.rst:445:<autosummary>:1
-#, fuzzy
+#: ../../source/reference/dataframe/series.rst:447:<autosummary>:1
 msgid ""
 ":py:obj:`Series.to_csv <maxframe.dataframe.Series.to_csv>`\\ "
 "\\(path\\[\\, sep\\, na\\_rep\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:445:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:447:<autosummary>:1
 msgid "Write object to a comma-separated values (csv) file."
 msgstr "将对象写入 CSV 文件。"
 
-#: ../../source/reference/dataframe/series.rst:445:<autosummary>:1
-#, fuzzy
+#: ../../source/reference/dataframe/series.rst:447:<autosummary>:1
 msgid ""
 ":py:obj:`Series.to_dict <maxframe.dataframe.Series.to_dict>`\\ "
 "\\(\\[into\\, batch\\_size\\, session\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:445:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:447:<autosummary>:1
 #, python-brace-format
 msgid "Convert Series to {label -> value} dict or dict-like object."
 msgstr "将 Series 转换为 {标签 -> 值} 形式的 Python dict 或者类似 dict 的对象。"
 
-#: ../../source/reference/dataframe/series.rst:445:<autosummary>:1
-#, fuzzy
+#: ../../source/reference/dataframe/series.rst:447:<autosummary>:1
+msgid ""
+":py:obj:`Series.to_json <maxframe.dataframe.Series.to_json>`\\ "
+"\\(\\[path\\, orient\\, date\\_format\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/series.rst:447:<autosummary>:1
+msgid "Convert the object to a JSON string."
+msgstr "将对象转换为 JSON 字符串。"
+
+#: ../../source/reference/dataframe/series.rst:447:<autosummary>:1
 msgid ""
 ":py:obj:`Series.to_list <maxframe.dataframe.Series.to_list>`\\ "
 "\\(\\[batch\\_size\\, session\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:445:<autosummary>:1
-#, fuzzy
+#: ../../source/reference/dataframe/series.rst:447:<autosummary>:1
 msgid "Return a list of the values."
 msgstr "返回最小值的行标签。"
 
-#: ../../source/reference/dataframe/series.rst:449
+#: ../../source/reference/dataframe/series.rst:451
 msgid "MaxFrame Extensions"
 msgstr "MaxFrame 扩展"
 
-#: ../../source/reference/dataframe/series.rst:458:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:460:<autosummary>:1
 msgid ""
 ":py:obj:`Series.mf.apply_chunk "
 "<maxframe.dataframe.Series.mf.apply_chunk>`\\ \\(func\\[\\, "
 "batch\\_rows\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:458:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:460:<autosummary>:1
 msgid ""
 "Apply a function that takes pandas Series and outputs pandas "
 "DataFrame/Series."
 msgstr "应用一个接受 pandas Series 并输出 pandas DataFrame/Series 的函数。"
 
-#: ../../source/reference/dataframe/series.rst:458:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:460:<autosummary>:1
 msgid ""
 ":py:obj:`Series.mf.flatmap <maxframe.dataframe.Series.mf.flatmap>`\\ "
 "\\(func\\[\\, dtypes\\, dtype\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:458:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:460:<autosummary>:1
 msgid "Apply the given function to each row and then flatten results."
 msgstr "对每一行应用给定函数，然后展平结果。"
 
-#: ../../source/reference/dataframe/series.rst:458:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:460:<autosummary>:1
 msgid ""
 ":py:obj:`Series.mf.flatjson <maxframe.dataframe.Series.mf.flatjson>`\\ "
 "\\(query\\_paths\\[\\, dtypes\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:458:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:460:<autosummary>:1
 msgid "Flat JSON object in the series to a dataframe according to JSON query."
 msgstr "根据 JSON 查询将序列中的 JSON 对象展平为数据框。"
 
-#: ../../source/reference/dataframe/series.rst:459
+#: ../../source/reference/dataframe/series.rst:461
 msgid ""
 "``Series.mf`` The Series.mf provides methods unique to MaxFrame. These "
 "methods are collated from application scenarios in MaxCompute and these "
@@ -2329,4 +2338,3 @@ msgid ""
 msgstr ""
 "``Series.mf`` 提供 MaxFrame 独有的方法。这些方法是从 MaxCompute 的应用"
 "场景中整理而来，可以通过 ``Series.mf.<function/property>`` 的方式访问。"
-

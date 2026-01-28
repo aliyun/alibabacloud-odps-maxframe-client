@@ -1,0 +1,660 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-29 19:01+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_csv.rst:2
+msgid "maxframe.dataframe.read\\_csv"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:1 of
+msgid ""
+"Read a comma-separated values (csv) file into DataFrame. Also supports "
+"optionally iterating or breaking of the file into chunks."
+msgstr "将逗号分隔值（CSV）文件读入 DataFrame。也支持可选地迭代或分块读取文件。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:5 of
+msgid ""
+"Any valid string path is acceptable. The string could be a URL. Valid URL"
+" schemes include http, ftp, s3, and file. For file URLs, a host is "
+"expected. A local file could be: file://localhost/path/to/table.csv, you "
+"can also read from external resources using a URL like: "
+"hdfs://localhost:8020/test.csv. If you want to pass in a path object, "
+"pandas accepts any ``os.PathLike``. By file-like object, we refer to "
+"objects with a ``read()`` method, such as a file handler (e.g. via "
+"builtin ``open`` function) or ``StringIO``."
+msgstr ""
+"接受任何有效的字符串路径。该字符串可以是 URL。有效的 URL 协议包括 http、"
+"ftp、s3 和 file。对于文件 URL，需要指定主机。本地文件可以是：file://"
+"localhost/path/to/table.csv，您也可以通过 URL 从外部资源读取，例如：hdfs:"
+"//localhost:8020/test.csv。如果要传入路径对象，pandas 接受任何 ``os."
+"PathLike``。所谓文件类对象，是指具有 ``read()`` 方法的对象，例如文件句柄"
+"（如通过内置 ``open`` 函数）或 ``StringIO``。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:14 of
+msgid ""
+"Delimiter to use. If sep is None, the C engine cannot automatically "
+"detect the separator, but the Python parsing engine can, meaning the "
+"latter will be used and automatically detect the separator by Python's "
+"builtin sniffer tool, ``csv.Sniffer``. In addition, separators longer "
+"than 1 character and different from ``'\\s+'`` will be interpreted as "
+"regular expressions and will also force the use of the Python parsing "
+"engine. Note that regex delimiters are prone to ignoring quoted data. "
+"Regex example: ``'\\r\\t'``."
+msgstr ""
+"要使用的分隔符。如果 sep 为 None，C 引擎无法自动检测分隔符，但 Python "
+"解析引擎可以，这意味着将使用后者并通过 Python 内置的嗅探工具 ``csv."
+"Sniffer`` 自动检测分隔符。此外，长度大于 1 个字符且不同于 ``'\\s+'`` 的"
+"分隔符将被解释为正则表达式，并强制使用 Python 解析引擎。请注意，"
+"正则表达式分隔符容易忽略引号中的数据。正则表达式示例：``'\\r\\t'``。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:22 of
+msgid "Alias for sep."
+msgstr "sep 的别名。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:24 of
+msgid ""
+"Row number(s) to use as the column names, and the start of the data.  "
+"Default behavior is to infer the column names: if no names are passed the"
+" behavior is identical to ``header=0`` and column names are inferred from"
+" the first line of the file, if column names are passed explicitly then "
+"the behavior is identical to ``header=None``. Explicitly pass "
+"``header=0`` to be able to replace existing names. The header can be a "
+"list of integers that specify row locations for a multi-index on the "
+"columns e.g. [0,1,3]. Intervening rows that are not specified will be "
+"skipped (e.g. 2 in this example is skipped). Note that this parameter "
+"ignores commented lines and empty lines if ``skip_blank_lines=True``, so "
+"``header=0`` denotes the first line of data rather than the first line of"
+" the file."
+msgstr ""
+"用作列名的行号，并作为数据的起始行。默认行为是推断列名：如果未传递名称，"
+"则行为与 ``header=0`` 相同，列名将从文件第一行推断；如果显式传递了列名，"
+"则行为与 ``header=None`` 相同。显式传递 ``header=0`` 可以替换现有名称。"
+"header 可以是整数列表，用于指定列的多级索引的行位置，例如 [0,1,3]。未指定"
+"的中间行将被跳过（例如本例中跳过第 2 行）。请注意，如果 ``skip_blank_"
+"lines=True``，此参数将忽略注释行和空行，因此 ``header=0`` 表示数据的"
+"第一行，而不是文件的第一行。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:38 of
+msgid ""
+"List of column names to use. If the file contains a header row, then you "
+"should explicitly pass ``header=0`` to override the column names. "
+"Duplicates in this list are not allowed."
+msgstr ""
+"要使用的列名列表。如果文件包含标题行，则应显式传递 ``header=0`` 以覆盖"
+"列名。此列表中不允许重复。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:42 of
+msgid ""
+"Column(s) to use as the row labels of the ``DataFrame``, either given as "
+"string name or column index. If a sequence of int / str is given, a "
+"MultiIndex is used. Note: ``index_col=False`` can be used to force pandas"
+" to *not* use the first column as the index, e.g. when you have a "
+"malformed file with delimiters at the end of each line."
+msgstr ""
+"用作 ``DataFrame`` 行标签的列，可以是字符串名称或列索引。如果传入 int / "
+"str 序列，则使用 MultiIndex。注意：``index_col=False`` 可用于强制 pandas "
+"*不* 将第一列作为索引，例如当您有一个格式错误的文件，其每行末尾包含分隔符"
+"时。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:49 of
+msgid ""
+"Return a subset of the columns. If list-like, all elements must either be"
+" positional (i.e. integer indices into the document columns) or strings "
+"that correspond to column names provided either by the user in `names` or"
+" inferred from the document header row(s). For example, a valid list-like"
+" `usecols` parameter would be ``[0, 1, 2]`` or ``['foo', 'bar', 'baz']``."
+" Element order is ignored, so ``usecols=[0, 1]`` is the same as ``[1, "
+"0]``. To instantiate a DataFrame from ``data`` with element order "
+"preserved use ``pd.read_csv(data, usecols=['foo', 'bar'])[['foo', "
+"'bar']]`` for columns in ``['foo', 'bar']`` order or ``pd.read_csv(data, "
+"usecols=['foo', 'bar'])[['bar', 'foo']]`` for ``['bar', 'foo']`` order. "
+"If callable, the callable function will be evaluated against the column "
+"names, returning names where the callable function evaluates to True. An "
+"example of a valid callable argument would be ``lambda x: x.upper() in "
+"['AAA', 'BBB', 'DDD']``. Using this parameter results in much faster "
+"parsing time and lower memory usage."
+msgstr ""
+"返回列的子集。如果为类列表对象，则所有元素必须是位置型（即文档列的整数"
+"索引）或字符串（与用户在 `names` 中提供的或从文档标题行推断出的列名相对应"
+"）。例如，一个有效的类列表 `usecols` 参数可以是 ``[0, 1, 2]`` 或 ``['foo'"
+", 'bar', 'baz']``。元素顺序被忽略，因此 ``usecols=[0, 1]`` 与 ``[1, 0]`` "
+"相同。要以保留元素顺序的方式从 ``data`` 实例化 DataFrame，请使用 ``pd."
+"read_csv(data, usecols=['foo', 'bar'])[['foo', 'bar']]`` 按 ``['foo', '"
+"bar']`` 顺序或 ``pd.read_csv(data, usecols=['foo', 'bar'])[['bar', 'foo']"
+"]`` 按 ``['bar', 'foo']`` 顺序。如果为可调用对象，则将根据列名评估该函数"
+"，并返回函数值为 True 的名称。一个有效的可调用参数示例是 ``lambda x: x."
+"upper() in ['AAA', 'BBB', 'DDD']``。使用此参数可以显著加快解析速度并降低"
+"内存使用量。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:66 of
+msgid "Prefix to add to column numbers when no header, e.g. 'X' for X0, X1, ..."
+msgstr "当没有标题行时，为列号添加前缀，例如 'X' 表示 X0、X1 等。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:68 of
+msgid ""
+"Duplicate columns will be specified as 'X', 'X.1', ...'X.N', rather than "
+"'X'...'X'. Passing in False will cause data to be overwritten if there "
+"are duplicate names in the columns."
+msgstr ""
+"重复列将被指定为 'X'、'X.1'、...'X.N'，而不是 'X'...'X'。如果传入 False，"
+"在列名重复时会导致数据被覆盖。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:72 of
+#, python-brace-format
+msgid ""
+"Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32, 'c':"
+" 'Int64'} Use `str` or `object` together with suitable `na_values` "
+"settings to preserve and not interpret dtype. If converters are "
+"specified, they will be applied INSTEAD of dtype conversion."
+msgstr ""
+"用于数据或列的数据类型。例如 {'a': np.float64, 'b': np.int32, 'c': 'Int64"
+"'}。使用 `str` 或 `object` 配合适当的 `na_values` 设置可以保留而不解释 "
+"dtype。如果指定了转换器，则将在 dtype 转换前应用它们。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:79 of
+msgid ""
+"Parser engine to use. The C engine is faster while the python engine is "
+"currently more feature-complete."
+msgstr "要使用的解析引擎。C 引擎更快，而 Python 引擎目前功能更完整。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:82 of
+msgid ""
+"Dict of functions for converting values in certain columns. Keys can "
+"either be integers or column labels."
+msgstr "用于转换某些列中值的函数字典。键可以是整数或列标签。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:85 of
+msgid "Values to consider as True."
+msgstr "视为 True 的值。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:87 of
+msgid "Values to consider as False."
+msgstr "视为 False 的值。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:89 of
+msgid "Skip spaces after delimiter."
+msgstr "跳过分隔符后的空格。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:91 of
+msgid ""
+"Line numbers to skip (0-indexed) or number of lines to skip (int) at the "
+"start of the file. If callable, the callable function will be evaluated "
+"against the row indices, returning True if the row should be skipped and "
+"False otherwise. An example of a valid callable argument would be "
+"``lambda x: x in [0, 2]``."
+msgstr ""
+"要跳过的行号（从 0 开始）或跳过的行数（整数）。如果为可调用对象，则将根据"
+"行索引评估该函数，如果应跳过该行则返回 True，否则返回 False。一个有效的可"
+"调用参数示例是 ``lambda x: x in [0, 2]``。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:97 of
+msgid "Number of lines at bottom of file to skip (Unsupported with engine='c')."
+msgstr "跳过文件底部的行数（不支持 engine='c'）。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:99 of
+msgid "Number of rows of file to read. Useful for reading pieces of large files."
+msgstr "要读取的文件行数。对于读取大文件的部分内容非常有用。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:101 of
+msgid ""
+"Additional strings to recognize as NA/NaN. If dict passed, specific per-"
+"column NA values.  By default the following values are interpreted as "
+"NaN: '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', "
+"'-nan', '1.#IND', '1.#QNAN', '<NA>', 'N/A', 'NA', 'NULL', 'NaN', 'n/a', "
+"'nan', 'null'."
+msgstr ""
+"识别为 NA/NaN 的附加字符串。如果传入字典，则为特定列的 NA 值。默认情况下"
+"，以下值被解释为 NaN：'', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN"
+"', '-NaN', '-nan', '1.#IND', '1.#QNAN', '<NA>', 'N/A', 'NA', 'NULL', 'NaN"
+"', 'n/a', 'nan', 'null'。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:107 of
+msgid ""
+"Whether or not to include the default NaN values when parsing the data. "
+"Depending on whether `na_values` is passed in, the behavior is as "
+"follows: * If `keep_default_na` is True, and `na_values` are specified, "
+"`na_values`   is appended to the default NaN values used for parsing. * "
+"If `keep_default_na` is True, and `na_values` are not specified, only   "
+"the default NaN values are used for parsing. * If `keep_default_na` is "
+"False, and `na_values` are specified, only   the NaN values specified "
+"`na_values` are used for parsing. * If `keep_default_na` is False, and "
+"`na_values` are not specified, no   strings will be parsed as NaN. Note "
+"that if `na_filter` is passed in as False, the `keep_default_na` and "
+"`na_values` parameters will be ignored."
+msgstr ""
+"解析数据时是否包含默认的 NaN 值。根据是否传递了 `na_values`，行为如下：* "
+"如果 `keep_default_na` 为 True 且指定了 `na_values`，则将 `na_values` "
+"附加到用于解析的默认 NaN 值。* 如果 `keep_default_na` 为 True 且未指定 `"
+"na_values`，则仅使用默认 NaN 值进行解析。* 如果 `keep_default_na` 为 "
+"False 且指定了 `na_values`，则仅使用指定的 `na_values` 中的 NaN 值进行"
+"解析。* 如果 `keep_default_na` 为 False 且未指定 `na_values`，则不会将"
+"任何字符串解析为 NaN。请注意，如果 `na_filter` 传入 False，则将忽略 `keep"
+"_default_na` 和 `na_values` 参数。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:107 of
+msgid ""
+"Whether or not to include the default NaN values when parsing the data. "
+"Depending on whether `na_values` is passed in, the behavior is as "
+"follows: * If `keep_default_na` is True, and `na_values` are specified, "
+"`na_values`"
+msgstr ""
+"解析数据时是否包含默认的 NaN 值。根据是否传递了 `na_values`，行为如下：* "
+"如果 `keep_default_na` 为 True 且指定了 `na_values`，则将 `na_values`"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:110 of
+msgid "is appended to the default NaN values used for parsing."
+msgstr "附加到用于解析的默认 NaN 值。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:111 of
+msgid ""
+"If `keep_default_na` is True, and `na_values` are not specified, only the"
+" default NaN values are used for parsing."
+msgstr ""
+"如果 `keep_default_na` 为 True 且未指定 `na_values`，则仅使用默认 NaN 值"
+"进行解析。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:113 of
+msgid ""
+"If `keep_default_na` is False, and `na_values` are specified, only the "
+"NaN values specified `na_values` are used for parsing."
+msgstr ""
+"如果 `keep_default_na` 为 False 且指定了 `na_values`，则仅使用指定的 `na_"
+"values` 中的 NaN 值进行解析。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:115 of
+msgid ""
+"If `keep_default_na` is False, and `na_values` are not specified, no "
+"strings will be parsed as NaN."
+msgstr ""
+"如果 `keep_default_na` 为 False 且未指定 `na_values`，则不会将任何字符串"
+"解析为 NaN。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:117 of
+msgid ""
+"Note that if `na_filter` is passed in as False, the `keep_default_na` and"
+" `na_values` parameters will be ignored."
+msgstr ""
+"请注意，如果 `na_filter` 传入 False，则将忽略 `keep_default_na` 和 `na_"
+"values` 参数。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:120 of
+msgid ""
+"Detect missing value markers (empty strings and the value of na_values). "
+"In data without any NAs, passing na_filter=False can improve the "
+"performance of reading a large file."
+msgstr ""
+"检测缺失值标记（空字符串和 na_values 的值）。在没有任何 NA 的数据中，传递"
+" na_filter=False 可以提高读取大文件的性能。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:124 of
+msgid "Indicate number of NA values placed in non-numeric columns."
+msgstr "指示放置在非数值列中的 NA 值数量。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:126 of
+msgid "If True, skip over blank lines rather than interpreting as NaN values."
+msgstr "如果为 True，则跳过空行而不是将其解释为 NaN 值。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:128 of
+#, python-brace-format
+msgid ""
+"The behavior is as follows: * boolean. If True -> try parsing the index. "
+"* list of int or names. e.g. If [1, 2, 3] -> try parsing columns 1, 2, 3"
+"   each as a separate date column. * list of lists. e.g.  If [[1, 3]] -> "
+"combine columns 1 and 3 and parse as   a single date column. * dict, e.g."
+" {'foo' : [1, 3]} -> parse columns 1, 3 as date and call   result 'foo' "
+"If a column or index cannot be represented as an array of datetimes, say "
+"because of an unparsable value or a mixture of timezones, the column or "
+"index will be returned unaltered as an object data type. For non-standard"
+" datetime parsing, use ``pd.to_datetime`` after ``pd.read_csv``. To parse"
+" an index or column with a mixture of timezones, specify ``date_parser`` "
+"to be a partially-applied :func:`pandas.to_datetime` with ``utc=True``. "
+"See :ref:`io.csv.mixed_timezones` for more. Note: A fast-path exists for "
+"iso8601-formatted dates."
+msgstr ""
+"行为如下：* 布尔值。如果为 True -> 尝试解析索引。* int 或名称列表。例如，"
+"如果 [1, 2, 3] -> 尝试将列 1、2、3 分别解析为单独的日期列。* 列表的列表。"
+"例如，如果 [[1, 3]] -> 合并列 1 和 3 并解析为单个日期列。* 字典，例如 {'"
+"foo' : [1, 3]} -> 将列 1、3 解析为日期并调用结果 'foo'。如果列或索引无法"
+"表示为日期时间数组，例如由于无法解析的值或时区混合，则该列或索引将以对象"
+"数据类型不加修改地返回。对于非标准的日期时间解析，请在 ``pd.read_csv`` "
+"之后使用 ``pd.to_datetime``。要解析具有时区混合的索引或列，请将 ``date_"
+"parser`` 指定为应用了 ``utc=True`` 的 :func:`pandas.to_datetime`。更多"
+"信息请参见 :ref:`io.csv.mixed_timezones`。注意：对于 iso8601 格式的日期"
+"存在快速路径。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:128 of
+msgid ""
+"The behavior is as follows: * boolean. If True -> try parsing the index. "
+"* list of int or names. e.g. If [1, 2, 3] -> try parsing columns 1, 2, 3"
+msgstr ""
+"行为如下：* 布尔值。如果为 True -> 尝试解析索引。* int 或名称列表。例如，"
+"如果 [1, 2, 3] -> 尝试解析列 1、2、3"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:131 of
+msgid "each as a separate date column."
+msgstr "每个都作为单独的日期列解析。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:132 of
+msgid ""
+"list of lists. e.g.  If [[1, 3]] -> combine columns 1 and 3 and parse as "
+"a single date column."
+msgstr "列表的列表。例如，如果 [[1, 3]] -> 合并列 1 和 3 并解析为单个日期列。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:134 of
+#, python-brace-format
+msgid ""
+"dict, e.g. {'foo' : [1, 3]} -> parse columns 1, 3 as date and call result"
+" 'foo'"
+msgstr "字典，例如 {'foo' : [1, 3]} -> 将列 1、3 解析为日期并将结果命名为 'foo'"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:136 of
+msgid ""
+"If a column or index cannot be represented as an array of datetimes, say "
+"because of an unparsable value or a mixture of timezones, the column or "
+"index will be returned unaltered as an object data type. For non-standard"
+" datetime parsing, use ``pd.to_datetime`` after ``pd.read_csv``. To parse"
+" an index or column with a mixture of timezones, specify ``date_parser`` "
+"to be a partially-applied :func:`pandas.to_datetime` with ``utc=True``. "
+"See :ref:`io.csv.mixed_timezones` for more. Note: A fast-path exists for "
+"iso8601-formatted dates."
+msgstr ""
+"如果列或索引无法表示为日期时间数组，例如由于无法解析的值或时区混合，则该"
+"列或索引将以对象数据类型不加修改地返回。对于非标准的日期时间解析，请在 ``"
+"pd.read_csv`` 之后使用 ``pd.to_datetime``。要解析具有时区混合的索引或列，"
+"请将 ``date_parser`` 指定为应用了 ``utc=True`` 的 :func:`pandas.to_"
+"datetime`。更多信息请参见 :ref:`io.csv.mixed_timezones`。注意：对于 "
+"iso8601 格式的日期存在快速路径。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:146 of
+msgid ""
+"If True and `parse_dates` is enabled, pandas will attempt to infer the "
+"format of the datetime strings in the columns, and if it can be inferred,"
+" switch to a faster method of parsing them. In some cases this can "
+"increase the parsing speed by 5-10x."
+msgstr ""
+"如果为 True 且启用了 `parse_dates`，pandas 将尝试推断列中日期时间字符串的"
+"格式，如果可以推断出来，则切换到更快的解析方法。在某些情况下，这可以将"
+"解析速度提高 5-10 倍。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:151 of
+msgid ""
+"If True and `parse_dates` specifies combining multiple columns then keep "
+"the original columns."
+msgstr "如果为 True 且 `parse_dates` 指定合并多个列，则保留原始列。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:154 of
+msgid ""
+"Function to use for converting a sequence of string columns to an array "
+"of datetime instances. The default uses ``dateutil.parser.parser`` to do "
+"the conversion. Pandas will try to call `date_parser` in three different "
+"ways, advancing to the next if an exception occurs: 1) Pass one or more "
+"arrays (as defined by `parse_dates`) as arguments; 2) concatenate (row-"
+"wise) the string values from the columns defined by `parse_dates` into a "
+"single array and pass that; and 3) call `date_parser` once for each row "
+"using one or more strings (corresponding to the columns defined by "
+"`parse_dates`) as arguments."
+msgstr ""
+"用于将字符串列序列转换为日期时间实例数组的函数。默认使用 ``dateutil."
+"parser.parser`` 进行转换。Pandas 将尝试以三种不同的方式调用 `date_parser`"
+"，如果出现异常则继续尝试下一种方式：1) 将一个或多个数组（由 `parse_dates`"
+" 定义）作为参数传递；2) 将 `parse_dates` 定义的列中的字符串值按行连接成"
+"单个数组并传递；3) 对每一行使用一个或多个字符串（对应于 `parse_dates` "
+"定义的列）作为参数调用 `date_parser`。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:164 of
+msgid "DD/MM format dates, international and European format."
+msgstr "DD/MM 格式的日期，国际和欧洲格式。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:166 of
+msgid ""
+"If True, use a cache of unique, converted dates to apply the datetime "
+"conversion. May produce significant speed-up when parsing duplicate date "
+"strings, especially ones with timezone offsets. .. versionadded:: 0.25.0"
+msgstr ""
+"如果为 True，则使用唯一转换日期的缓存来应用日期时间转换。在解析重复日期"
+"字符串时，尤其是带有时区偏移的日期字符串时，可能会显著提高速度。.. "
+"versionadded:: 0.25.0"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:171 of
+msgid ""
+"Return TextFileReader object for iteration or getting chunks with "
+"``get_chunk()``."
+msgstr "返回 TextFileReader 对象用于迭代或通过 ``get_chunk()`` 获取块。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:174 of
+msgid ""
+"Return TextFileReader object for iteration. See the `IO Tools docs "
+"<https://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ for "
+"more information on ``iterator`` and ``chunksize``."
+msgstr ""
+"返回用于迭代的 TextFileReader 对象。有关 ``iterator`` 和 ``chunksize`` 的"
+"更多信息，请参见 `IO Tools 文档 <https://pandas.pydata.org/pandas-docs/"
+"stable/io.html#io-chunking>`_。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:179 of
+msgid ""
+"For on-the-fly decompression of on-disk data. If 'infer' and "
+"`filepath_or_buffer` is path-like, then detect compression from the "
+"following extensions: '.gz', '.bz2', '.zip', or '.xz' (otherwise no "
+"decompression). If using 'zip', the ZIP file must contain only one data "
+"file to be read in. Set to None for no decompression."
+msgstr ""
+"用于磁盘数据的即时解压缩。如果为 'infer' 且 `filepath_or_buffer` 是路径类"
+"对象，则从以下扩展名检测压缩格式：'.gz'、'.bz2'、'.zip' 或 '.xz'（否则不"
+"解压缩）。如果使用 'zip'，ZIP 文件必须只包含一个要读取的数据文件。设置为 "
+"None 表示不解压缩。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:185 of
+msgid "Thousands separator."
+msgstr "千位分隔符。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:187 of
+msgid "Character to recognize as decimal point (e.g. use ',' for European data)."
+msgstr "识别为小数点的字符（例如，对欧洲数据使用 ','）。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:189 of
+msgid "Character to break file into lines. Only valid with C parser."
+msgstr "将文件分割成行的字符。仅在使用 C 解析器时有效。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:191 of
+msgid ""
+"The character used to denote the start and end of a quoted item. Quoted "
+"items can include the delimiter and it will be ignored."
+msgstr "用于表示引用项开始和结束的字符。引用项可以包含分隔符，该分隔符将被忽略。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:194 of
+msgid ""
+"Control field quoting behavior per ``csv.QUOTE_*`` constants. Use one of "
+"QUOTE_MINIMAL (0), QUOTE_ALL (1), QUOTE_NONNUMERIC (2) or QUOTE_NONE (3)."
+msgstr ""
+"根据 ``csv.QUOTE_*`` 常量控制字段引用行为。使用 QUOTE_MINIMAL (0)、QUOTE_"
+"ALL (1)、QUOTE_NONNUMERIC (2) 或 QUOTE_NONE (3) 中的一个。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:197 of
+msgid ""
+"When quotechar is specified and quoting is not ``QUOTE_NONE``, indicate "
+"whether or not to interpret two consecutive quotechar elements INSIDE a "
+"field as a single ``quotechar`` element."
+msgstr ""
+"当指定了 quotechar 且引用不是 ``QUOTE_NONE`` 时，指示是否将字段内的两个"
+"连续 quotechar 元素解释为单个 ``quotechar`` 元素。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:201 of
+msgid "One-character string used to escape other characters."
+msgstr "用于转义其他字符的单字符字符串。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:203 of
+msgid ""
+"Indicates remainder of line should not be parsed. If found at the "
+"beginning of a line, the line will be ignored altogether. This parameter "
+"must be a single character. Like empty lines (as long as "
+"``skip_blank_lines=True``), fully commented lines are ignored by the "
+"parameter `header` but not by `skiprows`. For example, if "
+"``comment='#'``, parsing ``#empty\\na,b,c\\n1,2,3`` with ``header=0`` "
+"will result in 'a,b,c' being treated as the header."
+msgstr ""
+"指示行的其余部分不应被解析。如果在行的开头发现该字符，则整行将被完全忽略"
+"。此参数必须是单个字符。与空行（只要 ``skip_blank_lines=True``）一样，"
+"完全被注释的行会被参数 `header` 忽略，但不会被 `skiprows` 忽略。例如，"
+"如果 ``comment='#'``，解析 ``#empty\\na,b,c\\n1,2,3`` 并设置 ``header=0``"
+" 时，'a,b,c' 将被视为表头。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:211 of
+msgid ""
+"Encoding to use for UTF when reading/writing (ex. 'utf-8'). `List of "
+"Python standard encodings <https://docs.python.org/3/library/codecs.html"
+"#standard-encodings>`_ ."
+msgstr ""
+"读取/写入时用于 UTF 的编码（例如 'utf-8'）。`Python 标准编码列表 <https:/"
+"/docs.python.org/3/library/codecs.html#standard-encodings>`_ 。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:215 of
+msgid ""
+"If provided, this parameter will override values (default or not) for the"
+" following parameters: `delimiter`, `doublequote`, `escapechar`, "
+"`skipinitialspace`, `quotechar`, and `quoting`. If it is necessary to "
+"override values, a ParserWarning will be issued. See csv.Dialect "
+"documentation for more details."
+msgstr ""
+"如果提供此参数，它将覆盖以下参数的值（默认值或非默认值）：`delimiter`、`"
+"doublequote`、`escapechar`、`skipinitialspace`、`quotechar` 和 `quoting`"
+"。如果需要覆盖值，将发出 ParserWarning。有关更多详细信息，请参见 csv."
+"Dialect 文档。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:221 of
+msgid ""
+"Lines with too many fields (e.g. a csv line with too many commas) will by"
+" default cause an exception to be raised, and no DataFrame will be "
+"returned. If False, then these \"bad lines\" will dropped from the "
+"DataFrame that is returned."
+msgstr ""
+"字段过多的行（例如逗号过多的 csv 行）默认情况下会导致引发异常，并且不会"
+"返回 DataFrame。如果为 False，则这些\"坏行\"将从返回的 DataFrame 中删除。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:226 of
+msgid ""
+"If error_bad_lines is False, and warn_bad_lines is True, a warning for "
+"each \"bad line\" will be output."
+msgstr ""
+"如果 error_bad_lines 为 False，且 warn_bad_lines 为 True，则会为每个\""
+"坏行\"输出警告。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:229 of
+msgid ""
+"Specifies whether or not whitespace (e.g. ``' '`` or ``'    '``) will be "
+"used as the sep. Equivalent to setting ``sep='\\s+'``. If this option is "
+"set to True, nothing should be passed in for the ``delimiter`` parameter."
+msgstr ""
+"指定是否使用空白字符（例如 ``' '`` 或 ``'    '``）作为分隔符。等效于设置 "
+"``sep='\\s+'``。如果此选项设置为 True，则不应为 ``delimiter`` 参数传递"
+"任何值。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:234 of
+msgid ""
+"Internally process the file in chunks, resulting in lower memory use "
+"while parsing, but possibly mixed type inference.  To ensure no mixed "
+"types either set False, or specify the type with the `dtype` parameter. "
+"Note that the entire file is read into a single DataFrame regardless, use"
+" the `chunksize` or `iterator` parameter to return the data in chunks. "
+"(Only valid with C parser)."
+msgstr ""
+"在内部以分块方式处理文件，从而在解析时降低内存使用，但可能导致混合类型"
+"推断。要确保没有混合类型，可以设置为 False，或使用 `dtype` 参数指定类型。"
+"请注意，无论怎样整个文件都会被读入一个 DataFrame，使用 `chunksize` 或 `"
+"iterator` 参数以分块返回数据。（仅对 C 解析器有效）。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:241 of
+msgid ""
+"Specifies which converter the C engine should use for floating-point "
+"values. The options are `None` for the ordinary converter, `high` for the"
+" high-precision converter, and `round_trip` for the round-trip converter."
+msgstr ""
+"指定 C 引擎用于浮点数的转换器。选项包括：`None` 表示普通转换器，`high` "
+"表示高精度转换器，`round_trip` 表示往返转换器。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:246 of
+msgid "Number of chunk bytes."
+msgstr "每个分块的字节数。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:248 of
+msgid "If read into cudf DataFrame."
+msgstr "是否读取到 cudf DataFrame。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:250 of
+msgid "Number of bytes to use in the head of file, mainly for data inference."
+msgstr "用于文件头部数据推断的字节数。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:252 of
+msgid "Number of lines to use in the head of file, mainly for data inference."
+msgstr "用于文件头部数据推断的行数。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:254 of
+msgid ""
+"If index_col not specified, ensure range index incremental, gain a "
+"slightly better performance if setting False."
+msgstr "如果未指定 index_col，则确保范围索引递增，设为 False 可获得稍好的性能。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:257 of
+msgid ""
+"Back-end data type applied to the resultant DataFrame (still "
+"experimental)."
+msgstr "应用于结果 DataFrame 的后端数据类型（仍为实验性功能）。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:259 of
+msgid "Options for storage connection."
+msgstr "存储连接的选项。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:261 of
+msgid "Merge small files whose size is small."
+msgstr "合并体积较小的小文件。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:263 of
+msgid "Options for merging small files"
+msgstr "合并小文件的选项"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:266 of
+msgid ""
+"A comma-separated values (csv) file is returned as two-dimensional data "
+"structure with labeled axes."
+msgstr "逗号分隔值 (csv) 文件被返回为带有标签轴的二维数据结构。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:272 of
+msgid ":py:obj:`to_csv`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:273 of
+msgid "Write DataFrame to a comma-separated values (csv) file."
+msgstr "将 DataFrame 写入逗号分隔值 (csv) 文件。"
+
+#: maxframe.dataframe.datasource.read_csv.read_csv:276 of
+msgid "示例"
+msgstr ""

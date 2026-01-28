@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -247,6 +247,7 @@ from .statistics import (
     quantile,
 )
 from .ufunc import ufunc
+from .utils import AxisError
 
 # isort: off
 # noinspection PyUnresolvedReferences
@@ -263,11 +264,6 @@ from numpy import (
     pi,
     seterr,
 )
-
-try:
-    from numpy.exceptions import AxisError
-except ImportError:
-    from numpy import AxisError
 
 NAN = nan
 NINF = -inf

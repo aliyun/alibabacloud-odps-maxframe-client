@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,15 +15,12 @@
 import time
 from typing import Any, Dict
 
+import maxframe.dataframe as md
+import maxframe.remote as mr
 import mock
 import numpy as np
 import pandas as pd
 import pytest
-from odps import ODPS
-from odps import options as odps_options
-
-import maxframe.dataframe as md
-import maxframe.remote as mr
 from maxframe.config import options
 from maxframe.config.config import option_context
 from maxframe.core import ExecutableTuple, TileableGraph
@@ -37,11 +34,24 @@ from maxframe.utils import build_temp_table_name
 from maxframe_framedriver.app.tests.test_framedriver_webapp import (  # noqa: F401
     framedriver_app,
 )
+from odps import ODPS
+from odps import options as odps_options
 
 from ..clients.framedriver import FrameDriverClient
-from ..session.odps import MaxFrameRestCaller
+from ..session.consts import DEBUG_MODE_LOCAL
+from ..session.odps import MaxFrameRestCaller, MaxFrameSession
 
 pytestmark = pytest.mark.maxframe_engine(["MCSQL", "SPE"])
+
+
+@pytest.fixture(autouse=True)
+def delete_without_delay():
+    old_delay = options.session.recycle_delay_seconds
+    try:
+        options.session.recycle_delay_seconds = 0
+        yield
+    finally:
+        options.session.recycle_delay_seconds = old_delay
 
 
 @pytest.fixture
@@ -407,3 +417,15 @@ def test_index_drop_duplicates(start_mock_session):
     pd.testing.assert_index_equal(
         executed.to_pandas().sort_values(), expected.sort_values()
     )
+
+
+def test_session_local_debug():
+    odps_entry = ODPS.from_environments()
+    session = new_session("mf://local-debug", odps_entry=odps_entry, debug="local")
+    try:
+        isolated = session._isolated_session
+        assert isinstance(isolated, MaxFrameSession)
+        assert isolated._debug_mode == DEBUG_MODE_LOCAL
+        assert isolated._caller is None
+    finally:
+        session.destroy()

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import pytest
 
 from ..... import dataframe as md
 from .....lib.dtypes_extension import list_
-from .....utils import ARROW_DTYPE_NOT_SUPPORTED
+from .....utils import ARROW_DTYPE_NOT_SUPPORTED, wrap_arrow_dtype
 from ..core import SeriesListMethod
 
 pytestmark = pytest.mark.skipif(
@@ -47,7 +47,7 @@ def test_invalid_dtype(df):
 def test_getitem(df):
     s1 = df["A"].list[1]
     assert isinstance(s1, md.Series)
-    assert s1.dtype == pd.ArrowDtype(pa.int32())
+    assert s1.dtype == wrap_arrow_dtype(pa.int32())
     assert s1.shape == (1,)
     assert s1.index_value == df.index_value
     op = s1.op
@@ -60,7 +60,7 @@ def test_getitem(df):
 def test_getitem_ignore_index_err(df):
     s1 = df["B"].list.get(1)
     assert isinstance(s1, md.Series)
-    assert s1.dtype == pd.ArrowDtype(pa.string())
+    assert s1.dtype == wrap_arrow_dtype(pa.string())
     assert s1.shape == (1,)
     assert s1.index_value == df.index_value
     op = s1.op
@@ -73,7 +73,7 @@ def test_getitem_ignore_index_err(df):
 def test_length(df):
     s1 = df["A"].list.len()
     assert isinstance(s1, md.Series)
-    assert s1.dtype == pd.ArrowDtype(pa.int64())
+    assert s1.dtype == wrap_arrow_dtype(pa.int64())
     assert s1.shape == (1,)
     assert s1.index_value == df.index_value
     op = s1.op

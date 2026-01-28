@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,6 +28,11 @@ import numpy as np
 from ..core import ExecutableTuple
 from ..lib.mmh3 import hash_from_buffer
 from ..utils import lazy_import
+
+try:
+    from numpy.exceptions import AxisError
+except ImportError:
+    from numpy import AxisError
 
 cp = lazy_import("cupy", rename="cp")
 
@@ -114,7 +119,7 @@ def gen_random_seeds(n, random_state):
 
 def validate_axis(ndim, axis, argname=None):
     if axis >= ndim or axis < -ndim:
-        raise np.AxisError(axis, ndim=ndim, msg_prefix=argname)
+        raise AxisError(axis, ndim=ndim, msg_prefix=argname)
 
     return axis if axis >= 0 else ndim + axis
 

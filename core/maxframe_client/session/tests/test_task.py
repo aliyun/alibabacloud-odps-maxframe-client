@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,11 +18,12 @@ import os
 import mock
 import pytest
 from defusedxml import ElementTree
-from odps import ODPS
-from odps import options as odps_options
-
+from maxframe import dataframe as md
 from maxframe import options
 from maxframe.config import option_context
+from maxframe.tests.utils import tn
+from odps import ODPS
+from odps import options as odps_options
 
 from ...session.consts import MAXFRAME_OUTPUT_JSON_FORMAT
 from ...session.task import MaxFrameInstanceCaller, MaxFrameTask, MaxFrameTaskSession
@@ -113,3 +114,17 @@ async def test_session_quota_flag_valid():
                 mf_task_session._get_diff_settings()
             options.sql.settings["odps.task.wlm.quota"] = "session_quota"
             mf_task_session._get_diff_settings()
+
+
+def test_collect_explain_instances():
+    odps_entry = ODPS.from_environments()
+    test_table = tn("test_collect_explain_table")
+    odps_entry.delete_table(test_table, if_exists=True)
+    tb = odps_entry.create_table(test_table, "col string", lifecycle=1)
+
+    t = md.read_odps_query(f"select * from {test_table}")
+    settings = MaxFrameInstanceCaller._collect_explain_instances(t.build_graph())
+    inst_id = settings["dag.settings"]["client.explain_instances"]
+    inst = odps_entry.get_instance(inst_id)
+    assert "explain" in inst.get_sql_query().lower()
+    tb.drop()

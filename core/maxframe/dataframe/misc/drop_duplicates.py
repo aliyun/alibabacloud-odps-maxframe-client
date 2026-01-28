@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +13,27 @@
 # limitations under the License.
 
 import numpy as np
-import pandas as pd
 
 from ... import opcodes
-from ...serialization.serializables import BoolField
+from ...protocol import DefaultIndexType
+from ...serialization.serializables import BoolField, EnumField, FieldTypes
+from ..core import DataFrameIndexTypeMixin
 from ..operators import OutputType
-from ..utils import gen_unknown_index_value, parse_index
+from ..utils import (
+    gen_unknown_index_value,
+    get_index_value_by_default_index_type,
+    validate_default_index_type,
+)
 from ._duplicate import BaseDuplicateOp, validate_subset
 
 
-class DataFrameDropDuplicates(BaseDuplicateOp):
+class DataFrameDropDuplicates(BaseDuplicateOp, DataFrameIndexTypeMixin):
     _op_type_ = opcodes.DROP_DUPLICATES
 
     ignore_index = BoolField("ignore_index", default=True)
+    default_index_type = EnumField(
+        "default_index_type", DefaultIndexType, FieldTypes.int8, default=None
+    )
 
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
@@ -40,7 +48,9 @@ class DataFrameDropDuplicates(BaseDuplicateOp):
     def _gen_tileable_params(self, op: "DataFrameDropDuplicates", input_params):
         params = input_params.copy()
         if op.ignore_index and self._output_types[0] != OutputType.index:
-            params["index_value"] = parse_index(pd.RangeIndex(-1))
+            params["index_value"] = get_index_value_by_default_index_type(
+                self.default_index_type, args=(type(self), input_params)
+            )
         else:
             params["index_value"] = gen_unknown_index_value(
                 input_params["index_value"],
@@ -63,7 +73,13 @@ class DataFrameDropDuplicates(BaseDuplicateOp):
 
 
 def df_drop_duplicates(
-    df, subset=None, keep="first", inplace=False, ignore_index=False, method="auto"
+    df,
+    subset=None,
+    keep="first",
+    inplace=False,
+    ignore_index=False,
+    method="auto",
+    default_index_type=None,
 ):
     """
     Return DataFrame with duplicate rows removed.
@@ -100,14 +116,24 @@ def df_drop_duplicates(
             "'auto', 'tree', 'subset_tree', 'shuffle' or None"
         )
     subset = validate_subset(df, subset)
+    default_index_type = validate_default_index_type(default_index_type)
     op = DataFrameDropDuplicates(
-        subset=subset, keep=keep, ignore_index=ignore_index, method=method
+        subset=subset,
+        keep=keep,
+        ignore_index=ignore_index,
+        method=method,
+        default_index_type=default_index_type,
     )
     return op(df, inplace=inplace)
 
 
 def series_drop_duplicates(
-    series, keep="first", inplace=False, ignore_index=False, method="auto"
+    series,
+    keep="first",
+    inplace=False,
+    ignore_index=False,
+    method="auto",
+    default_index_type=None,
 ):
     """
     Return Series with duplicate values removed.
@@ -188,7 +214,13 @@ def series_drop_duplicates(
         raise ValueError(
             "method could only be one of 'auto', 'tree', 'shuffle' or None"
         )
-    op = DataFrameDropDuplicates(keep=keep, ignore_index=ignore_index, method=method)
+    default_index_type = validate_default_index_type(default_index_type)
+    op = DataFrameDropDuplicates(
+        keep=keep,
+        ignore_index=ignore_index,
+        method=method,
+        default_index_type=default_index_type,
+    )
     return op(series, inplace=inplace)
 
 

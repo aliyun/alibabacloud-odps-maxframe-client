@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,10 +33,12 @@ from ...config import option_context, options
 from ...core import OutputType
 from ...core.graph import DAG
 from ...io.odpsio import odps_schema_to_pandas_dtypes
+from ...protocol import DefaultIndexType
 from ...serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
+    EnumField,
     FieldTypes,
     Int64Field,
     ListField,
@@ -285,6 +287,9 @@ class DataFrameReadODPSQuery(
     index_columns = ListField("index_columns", FieldTypes.string, default=None)
     index_dtypes = SeriesField("index_dtypes", default=None)
     column_renames = DictField("column_renames", default=None)
+    default_index_type = EnumField(
+        "default_index_type", DefaultIndexType, FieldTypes.int8, default=None
+    )
 
     def __init__(self, dtype_backend=None, **kw):
         dtype_backend = validate_dtype_backend(dtype_backend)
@@ -357,7 +362,7 @@ def _resolve_schema_by_explain(
     no_split_sql: bool = False,
     hints: Dict[str, str] = None,
     use_explain_output: bool = True,
-) -> OdpsSchema:
+) -> Tuple[OdpsSchema, str]:
     hints = (hints or dict()).copy()
     hints["odps.sql.select.output.format"] = "json"
     explain_stmt = _build_explain_sql(
@@ -369,9 +374,9 @@ def _resolve_schema_by_explain(
     if use_explain_output:
         if not explain_str or "nothing to explain" in explain_str:
             raise ValueError("The SQL statement should be an instant query")
-        return TableSchema.parse(None, explain_str)
+        return TableSchema.parse(None, explain_str), inst.id
     else:
-        return _parse_explained_schema(explain_str)
+        return _parse_explained_schema(explain_str), inst.id
 
 
 def _resolve_query_schema(
@@ -380,7 +385,7 @@ def _resolve_query_schema(
     no_split_sql: bool = False,
     hints: Dict[str, str] = None,
     use_explain_output: Optional[bool] = None,
-) -> OdpsSchema:
+) -> Tuple[OdpsSchema, str]:
     methods = []
     if use_explain_output is not False:
         # None or True
@@ -392,13 +397,13 @@ def _resolve_query_schema(
         )
     for idx, resolve_method in enumerate(methods):
         try:
-            schema = resolve_method(
+            schema, inst_id = resolve_method(
                 odps_entry, query, no_split_sql=no_split_sql, hints=hints
             )
             cols = []
             for col in schema.columns:
                 cols.append(Column(col.name.lower(), col.type))
-            return OdpsSchema(cols)
+            return OdpsSchema(cols), inst_id
         except ODPSError as ex:
             msg = (
                 f"Failed to obtain schema from SQL explain: {ex!r}\n"
@@ -486,8 +491,9 @@ def read_odps_query(
     )
 
     col_renames = {}
+    explain_inst_id = None
     if not skip_schema:
-        odps_schema = _resolve_query_schema(
+        odps_schema, explain_inst_id = _resolve_query_schema(
             odps_entry,
             query,
             no_split_sql=no_split_sql,
@@ -539,4 +545,6 @@ def read_odps_query(
         column_renames=col_renames,
         no_split_sql=no_split_sql,
     )
+    if explain_inst_id:
+        op.extra_params["explain_instance"] = explain_inst_id
     return op(chunk_bytes=chunk_bytes, chunk_size=chunk_size)

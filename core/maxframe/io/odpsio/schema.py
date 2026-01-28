@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ from ...dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
 from ...lib.dtypes_extension import ArrowBlobType, ArrowDtype
 from ...protocol import DataFrameTableMeta
 from ...tensor.core import TENSOR_TYPE
-from ...utils import build_temp_table_name
+from ...utils import build_temp_table_name, pd_release_version, wrap_arrow_dtype
 
 _TEMP_TABLE_PREFIX = "tmp_mf_"
 DEFAULT_SINGLE_INDEX_NAME = "_idx_0"
@@ -40,6 +40,10 @@ _arrow_to_odps_types = {
     pa.int16(): odps_types.smallint,
     pa.int32(): odps_types.int_,
     pa.int64(): odps_types.bigint,
+    pa.uint8(): odps_types.smallint,
+    pa.uint16(): odps_types.int_,
+    pa.uint32(): odps_types.bigint,
+    pa.uint64(): odps_types.bigint,
     pa.bool_(): odps_types.boolean,
     pa.float32(): odps_types.float_,
     pa.float64(): odps_types.double,
@@ -76,6 +80,18 @@ _int_to_pd_dtype = {
     np.dtype("uint32"): pd.UInt32Dtype(),
     np.dtype("uint64"): pd.UInt64Dtype(),
 }
+if pd_release_version[0] >= 2:
+    # we also need to convert float arrays to make sure NATypes
+    #  can be handled
+    _float_to_pd_dtype = {
+        np.dtype("float32"): pd.Float32Dtype(),
+        np.dtype("float64"): pd.Float64Dtype(),
+    }
+else:
+    _float_to_pd_dtype = {}
+
+_pd_dtype_replaces = _int_to_pd_dtype.copy()
+_pd_dtype_replaces.update(_float_to_pd_dtype)
 
 if hasattr(odps_types, "blob"):
     _arrow_to_odps_types[ArrowBlobType()] = odps_types.blob
@@ -90,13 +106,16 @@ def cast_df_with_possible_nans(
     # align types to cast with existing dataframe
     new_dtypes = df_obj.dtypes.copy()
     new_dtypes.update(dtypes)
-    res = df_obj.astype(new_dtypes.replace(_int_to_pd_dtype))
+    try:
+        res = df_obj.astype(new_dtypes.replace(_int_to_pd_dtype))
+    except TypeError:
+        res = df_obj.astype(new_dtypes.replace(_pd_dtype_replaces))
     if not try_cast_back:
         return res
 
     to_cast = {}
     for idx, col_dtype in enumerate(new_dtypes):
-        if col_dtype in _int_to_pd_dtype and not res.iloc[:, idx].isna().any():
+        if col_dtype in _pd_dtype_replaces and not res.iloc[:, idx].isna().any():
             to_cast[idx] = col_dtype
     if to_cast:
         # in case there is duplications, only cast on integer indexes
@@ -235,21 +254,28 @@ def odps_schema_to_arrow_schema(
 
 
 def odps_schema_to_pandas_dtypes(
-    odps_schema: odps_types.OdpsSchema, with_partitions: bool = False
+    odps_schema: odps_types.OdpsSchema,
+    with_partitions: bool = False,
+    dtype_backend=None,
 ) -> pd.Series:
     arrow_schema = odps_schema_to_arrow_schema(
         odps_schema, with_partitions=with_partitions
     )
-    return arrow_table_to_pandas_dataframe(arrow_schema.empty_table()).dtypes
+    return arrow_table_to_pandas_dataframe(
+        arrow_schema.empty_table(), dtype_backend=dtype_backend
+    ).dtypes
 
 
 def arrow_table_to_pandas_dataframe(
-    table: pa.Table, meta: DataFrameTableMeta = None
+    table: pa.Table, meta: DataFrameTableMeta = None, dtype_backend=None
 ) -> pd.DataFrame:
-    use_arrow_backend = options.dataframe.dtype_backend == "pyarrow"
+    dtype_backend = dtype_backend or options.dataframe.dtype_backend
+    use_arrow_backend = dtype_backend == "pyarrow"
     df = table.to_pandas(
         types_mapper=lambda x: (
-            ArrowDtype(x) if is_based_for_pandas_dtype(x) or use_arrow_backend else None
+            wrap_arrow_dtype(x)
+            if is_based_for_pandas_dtype(x) or use_arrow_backend
+            else None
         ),
         ignore_metadata=True,
     )

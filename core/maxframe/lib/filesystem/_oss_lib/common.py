@@ -205,7 +205,7 @@ def oss_copy_file(src_path: path_type, dest_path: path_type):
             raise NotImplementedError("Copying directories not implemented yet")
     except:
         # fixme currently we cannot handle error with iterating files with STS token
-        logger.exception("Failed to judge if src is a directory")
+        logger.exception("Failed to judge if src is a directory, ignored")
 
     oss_bucket = get_oss_bucket(parsed_dest_path)
     oss_bucket.copy_object(

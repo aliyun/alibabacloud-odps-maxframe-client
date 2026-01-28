@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,13 +17,12 @@ from typing import Iterable
 
 import pandas as pd
 from pandas.api.types import (
-    is_datetime64_dtype,
     is_datetime64tz_dtype,
     is_period_dtype,
     is_timedelta64_dtype,
 )
 
-from ....utils import adapt_docstring
+from ....utils import adapt_docstring, is_datetime64_dtype
 from .core import SeriesDatetimeMethod, datetime_method_to_handlers
 
 

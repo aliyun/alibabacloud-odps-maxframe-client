@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -123,14 +123,19 @@ def xs(df_or_series, key, axis=0, level=None, drop_level=True):
     elif not is_list_like(level):
         level = [level]
 
+    level_to_int = {
+        lv: i for i, lv in enumerate(df_or_series.axes[axis].names) if lv is not None
+    }
+
     slc = [slice(None)] * df_or_series.axes[axis].nlevels
     if not is_list_like(key):
         key = (key,)
 
     level_set = set()
     for k, level_ in zip(key, level):
-        slc[level_] = k
-        level_set.add(level_)
+        int_level = level_to_int.get(level_, level_)
+        slc[int_level] = k
+        level_set.add(int_level)
     left_levels = set(range(df_or_series.axes[axis].nlevels)) - level_set
 
     if len(slc) > 1:

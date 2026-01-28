@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from ...utils import check_unexpected_kwargs
 from .array import tensor
 
 
@@ -102,10 +103,7 @@ def meshgrid(*xi, **kwargs):
     indexing = kwargs.pop("indexing", "xy")
     sparse = kwargs.pop("sparse", False)
 
-    if kwargs:
-        raise TypeError(
-            f"meshgrid() got an unexpected keyword argument '{list(kwargs)[0]}'"
-        )
+    check_unexpected_kwargs(kwargs)
     if indexing not in ("xy", "ij"):
         raise ValueError("Valid values for `indexing` are 'xy' and 'ij'.")
 

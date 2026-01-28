@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ from ..core import (
     register_output_types,
 )
 from ..core.entity.utils import fill_chunk_slices, refresh_tileable_shape
-from ..protocol import DataFrameTableMeta
+from ..protocol import DataFrameTableMeta, DefaultIndexType
 from ..serialization.serializables import (
     AnyField,
     BoolField,
@@ -305,6 +305,10 @@ class IndexValue(Serializable):
         @property
         def names(self) -> list:
             return self._names
+
+        @property
+        def nlevels(self) -> int:
+            return len(self._names)
 
         @property
         def dtypes(self) -> pd.Series:
@@ -2363,6 +2367,17 @@ class DataFrameOrSeries(HasShapeTileable, _ToPandasMixin):
     __slots__ = ()
     _allow_data_type_ = (DataFrameOrSeriesData,)
     type_name = "DataFrameOrSeries"
+
+
+class DataFrameIndexTypeMixin:
+    def __on_deserialize__(self):
+        super().__on_deserialize__()
+        if getattr(self, "incremental_index", None):
+            self.default_index_type = DefaultIndexType.range
+        elif isinstance(self.default_index_type, bool):
+            self.default_index_type = (
+                DefaultIndexType.range if self.default_index_type else None
+            )
 
 
 INDEX_TYPE = (Index, IndexData)

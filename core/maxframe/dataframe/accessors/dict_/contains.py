@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas as pd
 import pyarrow as pa
 
 from .... import opcodes
 from ....serialization.serializables.field import AnyField
+from ....utils import wrap_arrow_dtype
 from .core import LegacySeriesDictOperator, SeriesDictMethod
 
 
@@ -68,5 +68,5 @@ def series_dict_contains(series, query_key):
     dtype: bool[pyarrow]
     """
     return SeriesDictMethod(method="contains", method_kwargs=dict(query_key=query_key))(
-        series, dtype=pd.ArrowDtype(pa.bool_()), name=None
+        series, dtype=wrap_arrow_dtype(pa.bool_()), name=None
     )

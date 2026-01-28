@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 import pandas as pd
 
-from ....lib.dtypes_extension import ArrowDtype
+from ....utils import wrap_arrow_dtype
 
 
 def struct_dtypes(series):
@@ -48,6 +48,6 @@ def struct_dtypes(series):
     """
     pa_type = series.dtype.pyarrow_dtype
     fields = [pa_type[idx] for idx in range(pa_type.num_fields)]
-    dtypes_list = [ArrowDtype(ft.type) for ft in fields]
+    dtypes_list = [wrap_arrow_dtype(ft.type) for ft in fields]
     dt_name = [ft.name for ft in fields]
     return pd.Series(dtypes_list, index=dt_name)

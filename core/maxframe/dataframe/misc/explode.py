@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,20 +13,30 @@
 # limitations under the License.
 
 import numpy as np
-import pandas as pd
 
 from ... import opcodes
 from ...core import OutputType
-from ...serialization.serializables import AnyField, BoolField
+from ...protocol import DefaultIndexType
+from ...serialization.serializables import AnyField, BoolField, EnumField, FieldTypes
+from ..core import DataFrameIndexTypeMixin
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from ..utils import (
+    get_index_value_by_default_index_type,
+    parse_index,
+    validate_default_index_type,
+)
 
 
-class DataFrameExplode(DataFrameOperator, DataFrameOperatorMixin):
+class DataFrameExplode(
+    DataFrameOperator, DataFrameOperatorMixin, DataFrameIndexTypeMixin
+):
     _op_type_ = opcodes.EXPLODE
 
     column = AnyField("column", default=None)
     ignore_index = BoolField("ignore_field", default=None)
+    default_index_type = EnumField(
+        "default_index_type", DefaultIndexType, FieldTypes.int8, default=None
+    )
 
     def __init__(self, output_types=None, **kw):
         super().__init__(_output_types=output_types, **kw)
@@ -38,8 +48,8 @@ class DataFrameExplode(DataFrameOperator, DataFrameOperatorMixin):
         params["shape"] = tuple(new_shape)
 
         if self.ignore_index:
-            params["index_value"] = parse_index(
-                pd.RangeIndex(-1), (in_obj.key, in_obj.index_value.key)
+            params["index_value"] = get_index_value_by_default_index_type(
+                self.default_index_type, args=(in_obj.key, in_obj.index_value.key)
             )
         else:
             params["index_value"] = parse_index(
@@ -51,7 +61,7 @@ class DataFrameExplode(DataFrameOperator, DataFrameOperatorMixin):
         return self.new_tileable([df_or_series], **self._rewrite_params(df_or_series))
 
 
-def df_explode(df, column, ignore_index=False):
+def df_explode(df, column, ignore_index=False, default_index_type=None):
     """
     Transform each element of a list-like to a row, replicating index values.
 
@@ -109,13 +119,17 @@ def df_explode(df, column, ignore_index=False):
     3    3  1
     3    4  1
     """
+    default_index_type = validate_default_index_type(default_index_type)
     op = DataFrameExplode(
-        column=column, ignore_index=ignore_index, output_types=[OutputType.dataframe]
+        column=column,
+        ignore_index=ignore_index,
+        default_index_type=default_index_type,
+        output_types=[OutputType.dataframe],
     )
     return op(df)
 
 
-def series_explode(series, ignore_index=False):
+def series_explode(series, ignore_index=False, default_index_type=None):
     """
     Transform each element of a list-like to a row.
 
@@ -167,5 +181,10 @@ def series_explode(series, ignore_index=False):
     3      4
     dtype: object
     """
-    op = DataFrameExplode(ignore_index=ignore_index, output_types=[OutputType.series])
+    default_index_type = validate_default_index_type(default_index_type)
+    op = DataFrameExplode(
+        ignore_index=ignore_index,
+        default_index_type=default_index_type,
+        output_types=[OutputType.series],
+    )
     return op(series)

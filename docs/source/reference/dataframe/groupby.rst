@@ -72,7 +72,10 @@ application to columns of a specific data type.
    DataFrameGroupBy.cumprod
    DataFrameGroupBy.cumsum
    DataFrameGroupBy.fillna
+   DataFrameGroupBy.idxmax
+   DataFrameGroupBy.idxmin
    DataFrameGroupBy.nunique
+   DataFrameGroupBy.rank
    DataFrameGroupBy.sample
 
 The following methods are available only for ``SeriesGroupBy`` objects.

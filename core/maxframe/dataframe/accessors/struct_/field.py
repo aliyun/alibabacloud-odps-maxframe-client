@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ....lib.dtypes_extension import ArrowDtype
+from ....utils import wrap_arrow_dtype
 from .core import SeriesStructMethod
 
 
@@ -120,4 +120,4 @@ def struct_field(series, name_or_index):
     for n in names:
         arrow_name = arrow_type[n].name
         arrow_type = arrow_type[n].type
-    return op(series, dtype=ArrowDtype(arrow_type), name=arrow_name)
+    return op(series, dtype=wrap_arrow_dtype(arrow_type), name=arrow_name)

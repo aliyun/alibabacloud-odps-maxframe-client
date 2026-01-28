@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,12 +29,18 @@ class GroupByRank(BaseGroupByWindowOp):
     pct = BoolField("pct", default=False)
 
     def _calc_mock_result_df(self, mock_groupby):
-        return mock_groupby.rank(
+        rank_kw = dict(
             method=self.method,
             ascending=self.ascending,
             na_option=self.na_option,
             pct=self.pct,
         )
+        try:
+            return mock_groupby.rank(**rank_kw)
+        except TypeError as ex:
+            if "not supported" not in str(ex):
+                raise
+            return mock_groupby.transform(lambda x: x.rank(**rank_kw))
 
     def get_sort_cols_to_asc(self) -> Dict[Any, bool]:
         if self.inputs[0].ndim == 1:

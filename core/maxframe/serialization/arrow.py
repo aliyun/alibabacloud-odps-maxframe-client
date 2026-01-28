@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -99,9 +99,20 @@ class ArrowBatchSerializer(Serializer):
             return reader.read_next_batch()
 
 
+class ArrowSchemaSerializer(Serializer):
+    def serial(self, obj: pa.Schema, context):
+        return [], [obj.names, obj.types, obj.metadata], False
+
+    def deserial(self, serialized, context, subs):
+        return pa.schema(
+            [(nm, tp) for nm, tp in zip(subs[0], subs[1])], metadata=subs[2]
+        )
+
+
 if pa is not None:  # pragma: no branch
     ArrowDataTypeSerializer.register(pa.DataType)
     ArrowArraySerializer.register(pa.Array)
     ArrowArraySerializer.register(pa.ChunkedArray)
     ArrowBatchSerializer.register(pa.Table)
     ArrowBatchSerializer.register(pa.RecordBatch)
+    ArrowSchemaSerializer.register(pa.Schema)

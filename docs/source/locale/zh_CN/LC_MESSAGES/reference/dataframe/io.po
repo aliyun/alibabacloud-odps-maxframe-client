@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-23 14:19+0800\n"
+"POT-Creation-Date: 2025-11-04 13:26+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -49,86 +49,133 @@ msgid "Copy object to the system clipboard."
 msgstr "将对象复制到系统剪贴板。"
 
 #: ../../source/reference/dataframe/io.rst:16
+msgid "Flat file"
+msgstr "平面文件"
+
+#: ../../source/reference/dataframe/io.rst:22:<autosummary>:1
+msgid ""
+":py:obj:`read_csv <maxframe.dataframe.read_csv>`\\ \\(path\\, \\*\\[\\, "
+"names\\, sep\\, index\\_col\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:22:<autosummary>:1
+msgid "Read a comma-separated values (csv) file into DataFrame."
+msgstr "从逗号分隔值（CSV）文件中读取数据到 DataFrame。"
+
+#: ../../source/reference/dataframe/io.rst:22:<autosummary>:1
+msgid ""
+":py:obj:`DataFrame.to_csv <maxframe.dataframe.DataFrame.to_csv>`\\ "
+"\\(path\\[\\, sep\\, na\\_rep\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:22:<autosummary>:1
+msgid "Write object to a comma-separated values (csv) file."
+msgstr "将 DataFrame 对象写入逗号分隔值（CSV）文件。"
+
+#: ../../source/reference/dataframe/io.rst:24
+msgid "JSON"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`read_json <maxframe.dataframe.read_json>`\\ \\(path\\, \\*\\[\\,"
+" orient\\, typ\\, dtype\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:30:<autosummary>:1
+msgid "Read a JSON file into a DataFrame."
+msgstr "从 JSON 文件中读取数据到 DataFrame。"
+
+#: ../../source/reference/dataframe/io.rst:30:<autosummary>:1
+msgid ""
+":py:obj:`DataFrame.to_json <maxframe.dataframe.DataFrame.to_json>`\\ "
+"\\(\\[path\\, orient\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:30:<autosummary>:1
+msgid "Convert the object to a JSON string."
+msgstr "将对象转换为 JSON 字符串。"
+
+#: ../../source/reference/dataframe/io.rst:32
 msgid "MaxCompute"
 msgstr ""
 
-#: ../../source/reference/dataframe/io.rst:23:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:39:<autosummary>:1
 msgid ""
 ":py:obj:`read_odps_query <maxframe.dataframe.read_odps_query>`\\ "
 "\\(query\\[\\, odps\\_entry\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/io.rst:23:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:39:<autosummary>:1
 msgid "Read data from a MaxCompute (ODPS) query into DataFrame."
 msgstr "从 MaxCompute (ODPS) 查询中读取数据到 DataFrame。"
 
-#: ../../source/reference/dataframe/io.rst:23:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:39:<autosummary>:1
 msgid ""
 ":py:obj:`read_odps_table <maxframe.dataframe.read_odps_table>`\\ "
 "\\(table\\_name\\[\\, partitions\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/io.rst:23:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:39:<autosummary>:1
 msgid "Read data from a MaxCompute (ODPS) table into DataFrame."
 msgstr "从 MaxCompute (ODPS) 表中读取数据到 DataFrame。"
 
-#: ../../source/reference/dataframe/io.rst:23:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:39:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.to_odps_table "
 "<maxframe.dataframe.DataFrame.to_odps_table>`\\ \\(table\\[\\, "
 "partition\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/io.rst:23:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:39:<autosummary>:1
 msgid "Write DataFrame object into a MaxCompute (ODPS) table."
 msgstr "将 DataFrame 对象写入 MaxCompute (ODPS) 表。"
 
-#: ../../source/reference/dataframe/io.rst:25
+#: ../../source/reference/dataframe/io.rst:41
 msgid "Native pandas"
 msgstr "原生 pandas"
 
-#: ../../source/reference/dataframe/io.rst:32:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:48:<autosummary>:1
 msgid ""
 ":py:obj:`read_pandas <maxframe.dataframe.read_pandas>`\\ \\(data\\, "
 "\\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/io.rst:32:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:48:<autosummary>:1
 msgid "Create MaxFrame objects from pandas."
 msgstr "从 pandas 创建 MaxFrame 对象。"
 
-#: ../../source/reference/dataframe/io.rst:32:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:48:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.to_pandas <maxframe.dataframe.DataFrame.to_pandas>`\\ "
 "\\(\\[session\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/io.rst:34
+#: ../../source/reference/dataframe/io.rst:50
 msgid "Parquet"
 msgstr ""
 
-#: ../../source/reference/dataframe/io.rst:38:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:55:<autosummary>:1
 msgid ""
 ":py:obj:`read_parquet <maxframe.dataframe.read_parquet>`\\ \\(path\\[\\, "
 "engine\\, columns\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/io.rst:38:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:55:<autosummary>:1
 msgid "Load a parquet object from the file path, returning a DataFrame."
 msgstr "从文件路径加载 parquet 对象，返回一个 DataFrame。"
 
-#: ../../source/reference/dataframe/io.rst:47:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:55:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.to_parquet "
 "<maxframe.dataframe.DataFrame.to_parquet>`\\ \\(path\\[\\, engine\\, "
 "...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/io.rst:47:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:55:<autosummary>:1
 msgid ""
 "Write a DataFrame to the binary parquet format, each chunk will be "
 "written to a Parquet file."
 msgstr ""
 "将 DataFrame 以二进制 parquet 格式写入，每个数据块将被写入一个 Parquet "
 "文件。"
-

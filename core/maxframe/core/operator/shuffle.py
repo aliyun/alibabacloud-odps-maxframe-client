@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import inspect
+
 from ... import opcodes
 from ...serialization.serializables import Int32Field, StringField
-from .base import Operator, OperatorStage, VirtualOperator
+from .base import CallPoint, Operator, OperatorStage, VirtualOperator
 from .core import TileableOperatorMixin
 
 
@@ -22,6 +24,12 @@ class ShuffleProxy(VirtualOperator, TileableOperatorMixin):
     _op_type_ = opcodes.SHUFFLE_PROXY
     n_mappers = Int32Field("n_mappers", default=0)
     n_reducers = Int32Field("n_reducers", default=0)
+
+    def __init__(self, *args, **kwargs):
+        kwargs["call_points"] = kwargs.pop("call_points", None) or [
+            CallPoint.from_frame(inspect.currentframe().f_back)
+        ]
+        super().__init__(*args, **kwargs)
 
 
 class MapReduceOperator(Operator):

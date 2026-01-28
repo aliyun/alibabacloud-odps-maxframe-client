@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import glob
-import json
-from collections import OrderedDict
 from typing import MutableMapping, Union
 from urllib.parse import urlparse
 
 import numpy as np
 import pandas as pd
 
-from ...utils import make_dtypes
+from ...protocol import DefaultIndexType
 
 try:
     import pyarrow as pa
@@ -39,14 +36,15 @@ from ...serialization.serializables import (
     ListField,
     StringField,
 )
-from ...utils import no_default
+from ...utils import make_dtypes, no_default
 from ..operators import OutputType
-from ..utils import parse_index, to_arrow_dtypes
+from ..utils import parse_index, to_arrow_dtypes, validate_default_index_type
 from .core import (
     ColumnPruneSupportedDataSourceMixin,
     DtypeBackendCompatibleMixin,
     LakeDataSource,
 )
+from .utils import get_lake_output_info, iter_local_files
 
 PARQUET_MEMORY_SCALE = 15
 STRING_FIELD_OVERHEAD = 50
@@ -111,21 +109,13 @@ class DataFrameReadParquet(
         ctx[op.outputs[0].key] = float("inf")
 
 
-def _resolve_dict_dtypes(dtypes_dict) -> pd.Series:
-    if isinstance(dtypes_dict, list):
-        dtypes_dict = OrderedDict([(d["key"], d["value"]) for d in dtypes_dict])
-    names = list(dtypes_dict.keys())
-    vals = [pd.api.types.pandas_dtype(dt) for dt in dtypes_dict.values()]
-    return pd.Series(vals, index=names)
-
-
 def read_parquet(
     path,
     engine: str = "auto",
     columns: list = None,
     groups_as_chunks: bool = False,
     dtype_backend: str = no_default,
-    incremental_index: bool = False,
+    default_index_type: Union[DefaultIndexType, str] = None,
     storage_options: dict = None,
     use_nullable_dtypes: bool = no_default,
     *,
@@ -164,9 +154,9 @@ def read_parquet(
         if True, each row group correspond to a chunk.
         if False, each file correspond to a chunk.
         Only available for 'pyarrow' engine.
-    incremental_index: bool, default False
-        If index_col not specified, ensure range index incremental,
-        gain a slightly better performance if setting False.
+    default_index_type: {None, 'range', 'incremental'}, default None
+        If index_col not specified, specify type of index to generate.
+        If not specified, `options.dataframe.default_index_type` will be used.
     dtype_backend: {'numpy', 'pyarrow'}, default 'numpy'
         Back-end data type applied to the resultant DataFrame (still experimental).
     storage_options: dict, optional
@@ -185,6 +175,7 @@ def read_parquet(
     from .dataframe import from_pandas
 
     engine_type = check_engine(engine)
+    default_index_type = validate_default_index_type(default_index_type, **kwargs)
 
     single_path = path[0] if isinstance(path, list) else path
     parsed_path = urlparse(single_path)
@@ -195,56 +186,50 @@ def read_parquet(
         # todo chunk with multiple files and / or row groups?
         # just read locally when path is not remote
         local_dfs = []
-        paths = path if isinstance(path, list) else [path]
-        real_paths = []
-        for path in paths:
-            if "*" in path or "?" in path:
-                real_paths.extend(glob.glob(path))
-            else:
-                real_paths.append(path)
-        for path in real_paths:
+        for path, part_keys in iter_local_files(path):
             kw = {}
             if use_nullable_dtypes is not no_default:
                 kw = {"use_nullable_dtypes": use_nullable_dtypes}
             if dtype_backend is not no_default:
                 kw = {"dtype_backend": dtype_backend}
-            local_dfs.append(
-                pd.read_parquet(path, engine=engine_type, columns=columns, **kw)
-            )
+            local_df = pd.read_parquet(path, engine=engine_type, columns=columns, **kw)
+            for k, v in part_keys or ():
+                local_df[k] = v
+            local_dfs.append(local_df)
         df = pd.concat(local_dfs) if len(local_dfs) > 1 else local_dfs[0]
         return from_pandas(df)
 
-    is_partitioned = None
+    common_kwargs = dict(
+        engine=engine_type,
+        columns=columns,
+        groups_as_chunks=groups_as_chunks,
+        dtype_backend=dtype_backend,
+        storage_options=storage_options,
+        read_kwargs=kwargs,
+    )
+    # Get dtypes, index_dtypes and index_value using the common utility function
+    result = get_lake_output_info(
+        DataFrameReadParquet,
+        path=path,
+        default_index_type=default_index_type,
+        dtype=dtypes,
+        index_dtypes=index_dtypes,
+        session=session,
+        run_kwargs=run_kwargs,
+        **common_kwargs,
+    )
+
+    dtypes = result.dtypes
+    index_value = result.index_value
+    index_dtypes = result.index_dtypes
+    is_partitioned = result.is_partitioned
+
+    # Ensure dtypes are properly formatted
     if dtypes is not None:
         dtypes = make_dtypes(dtypes)
-        if index_dtypes is not None:
-            index_dtypes = make_dtypes(index_dtypes)
-    else:
-        # need to submit a job to get dtypes
-        dt_op = DataFrameReadParquet(
-            path=path,
-            engine=engine_type,
-            columns=columns,
-            groups_as_chunks=groups_as_chunks,
-            dtype_backend=dtype_backend,
-            read_kwargs=kwargs,
-            incremental_index=incremental_index,
-            storage_options=storage_options,
-            memory_scale=memory_scale,
-            merge_small_files=merge_small_files,
-            read_stage="get_dtypes",
-        )
-        run_kwargs = run_kwargs or {}
-        dt_result = json.loads(
-            dt_op().execute(session=session, **run_kwargs).fetch(session=session),
-            object_pairs_hook=OrderedDict,
-        )
-        is_partitioned = dt_result["is_partitioned"]
-        dtypes = _resolve_dict_dtypes(dt_result["dtypes"])
-        if dt_result.get("index_dtypes"):
-            index_dtypes = _resolve_dict_dtypes(dt_result["index_dtypes"])
 
-    if columns:
+    # Apply column filtering if needed
+    if columns and dtypes is not None:
         dtypes = dtypes[columns]
 
     if dtype_backend is None:
@@ -252,29 +237,15 @@ def read_parquet(
     if dtype_backend == "pyarrow":
         dtypes = to_arrow_dtypes(dtypes)
 
-    if index_dtypes is None:
-        index_value = parse_index(pd.RangeIndex(-1))
-    else:
-        idx_df = pd.DataFrame([], columns=index_dtypes.index).astype(index_dtypes)
-        pd_idx = pd.MultiIndex.from_frame(idx_df)
-        if len(index_dtypes) == 1:
-            pd_idx = pd_idx.get_level_values(0)
-        index_value = parse_index(pd_idx, store_data=False)
-        incremental_index = False
-
     columns_value = parse_index(dtypes.index, store_data=True)
+    default_index_type = None if index_dtypes is not None else default_index_type
     op = DataFrameReadParquet(
         path=path,
-        engine=engine_type,
-        columns=columns,
-        groups_as_chunks=groups_as_chunks,
-        dtype_backend=dtype_backend,
-        read_kwargs=kwargs,
-        incremental_index=incremental_index,
-        storage_options=storage_options,
+        default_index_type=default_index_type,
         is_partitioned=is_partitioned,
         memory_scale=memory_scale,
         merge_small_files=merge_small_files,
         gpu=gpu,
+        **common_kwargs,
     )
     return op(index_value=index_value, columns_value=columns_value, dtypes=dtypes)

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,12 @@ from ...core import OutputType
 from ...serialization.serializables import ListField
 from ..core import IndexValue
 from ..operators import DataFrameOperatorMixin
-from ..utils import parse_index, validate_axis
+from ..utils import (
+    get_index_value_by_default_index_type,
+    parse_index,
+    validate_axis,
+    validate_default_index_type,
+)
 from .core import DataFrameSortOperator
 
 
@@ -35,7 +40,9 @@ class DataFrameSortValues(DataFrameSortOperator, DataFrameOperatorMixin):
     def __call__(self, a):
         assert self.axis == 0
         if self.ignore_index:
-            index_value = parse_index(pd.RangeIndex(a.shape[0]))
+            index_value = get_index_value_by_default_index_type(
+                self.default_index_type, a.shape[0], args=(type(self), a)
+            )
         else:
             if isinstance(a.index_value.value, IndexValue.RangeIndex):
                 index_value = parse_index(pd.Index([], dtype=np.int64))
@@ -66,6 +73,7 @@ def dataframe_sort_values(
     ignore_index=False,
     parallel_kind="PSRS",
     psrs_kinds=None,
+    default_index_type=None,
 ):
     # FIXME: https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/15
     """
@@ -176,6 +184,8 @@ def dataframe_sort_values(
             if col_name not in columns_set:
                 raise KeyError(f"{col_name} not in columns")
 
+    default_index_type = validate_default_index_type(default_index_type)
+
     op = DataFrameSortValues(
         by=by,
         axis=axis,
@@ -187,6 +197,7 @@ def dataframe_sort_values(
         parallel_kind=parallel_kind,
         psrs_kinds=psrs_kinds,
         gpu=df.op.is_gpu(),
+        default_index_type=default_index_type,
         output_types=[OutputType.dataframe],
     )
     sorted_df = op(df)

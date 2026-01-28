@@ -1,0 +1,339 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev789+gc47c8dae0.d20250915\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-31 22:55+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_json.rst:2
+msgid "maxframe.dataframe.read\\_json"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_json.read_json:1 of
+msgid "Read a JSON file into a DataFrame."
+msgstr "将 JSON 文件读取到 DataFrame 中。"
+
+#: maxframe.dataframe.datasource.read_json.read_json of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_json.read_json:3 of
+msgid ""
+"Any valid string path is acceptable. The string could be a URL. Valid URL"
+" schemes include http, ftp, s3, and file. For file URLs, a host is "
+"expected. A local file could be: file://localhost/path/to/table.json, you"
+" can also read from external resources using a URL like: "
+"hdfs://localhost:8020/test.json. If you want to pass in a path object, "
+"pandas accepts any ``os.PathLike``. By file-like object, we refer to "
+"objects with a ``read()`` method, such as a file handler (e.g. via "
+"builtin ``open`` function) or ``StringIO``."
+msgstr ""
+"接受任何有效的字符串路径。该字符串可以是 URL。有效的 URL 协议包括 http、"
+"ftp、s3 和 file。对于文件 URL，需要指定主机。本地文件可以是：file://"
+"localhost/path/to/table.json，您也可以使用类似 hdfs://localhost:8020/test"
+".json 的 URL 从外部资源读取。如果要传入路径对象，pandas 接受任何 ``os."
+"PathLike``。文件类对象是指具有 ``read()`` 方法的对象，例如文件句柄（通过"
+"内置 ``open`` 函数）或 ``StringIO``。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:12 of
+msgid ""
+"Indication of expected JSON string format. Compatible JSON strings can be"
+" produced by ``to_json()`` with a corresponding orient value. The set of "
+"possible orients is: - ``'split'`` : dict like ``{'index' -> [index], "
+"'columns' -> [columns], 'data' -> [values]}`` - ``'records'`` : list like"
+" ``[{column -> value}, ... , {column -> value}]`` - ``'index'`` : dict "
+"like ``{index -> {column -> value}}`` - ``'columns'`` : dict like "
+"``{column -> {index -> value}}`` - ``'values'`` : just the values array "
+"The allowed and default values depend on the value of the `typ` "
+"parameter. * when ``typ == 'series'``,   - allowed orients are "
+"``{'split','records','index'}``   - default is ``'index'``   - The Series"
+" index must be unique for orient ``'index'``. * when ``typ == 'frame'``,"
+"   - allowed orients are "
+"``{'split','records','index','columns','values'}``   - default is "
+"``'columns'``   - The DataFrame index must be unique for orients "
+"``'index'`` and ``'columns'``.   - The DataFrame columns must be unique "
+"for orients ``'index'``, ``'columns'``,     and ``'records'``."
+msgstr ""
+"预期 JSON 字符串格式的指示。兼容的 JSON 字符串可以通过 ``to_json()`` 生成"
+"，并带有相应的 orient 值。可能的 orient 集合是：- ``'split'`` : 类似字典 "
+"``{'index' -> [index], 'columns' -> [columns], 'data' -> [values]}`` - ``"
+"'records'`` : 类似列表 ``[{column -> value}, ... , {column -> value}]`` -"
+" ``'index'`` : 类似字典 ``{index -> {column -> value}}`` - ``'columns'`` "
+": 类似字典 ``{column -> {index -> value}}`` - ``'values'`` : 只是值数组 "
+"允许和默认值取决于 `typ` 参数的值。* 当 ``typ == 'series'`` 时，  - 允许"
+"的 orient 是 ``{'split','records','index'}``  - 默认是 ``'index'``  - "
+"Series 索引对于 orient ``'index'`` 必须是唯一的。* 当 ``typ == 'frame'`` "
+"时，  - 允许的 orient 是 ``{'split','records','index','columns','values'}"
+"``  - 默认是 ``'columns'``  - DataFrame 索引对于 orient ``'index'`` 和 ``"
+"'columns'`` 必须是唯一的。  - DataFrame 列对于 orient ``'index'``、``'"
+"columns'`` 和 ``'records'`` 必须是唯一的。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:12 of
+msgid ""
+"Indication of expected JSON string format. Compatible JSON strings can be"
+" produced by ``to_json()`` with a corresponding orient value. The set of "
+"possible orients is: - ``'split'`` : dict like ``{'index' -> [index], "
+"'columns' -> [columns], 'data' -> [values]}`` - ``'records'`` : list like"
+" ``[{column -> value}, ... , {column -> value}]`` - ``'index'`` : dict "
+"like ``{index -> {column -> value}}`` - ``'columns'`` : dict like "
+"``{column -> {index -> value}}`` - ``'values'`` : just the values array "
+"The allowed and default values depend on the value of the `typ` "
+"parameter. * when ``typ == 'series'``,"
+msgstr ""
+"预期 JSON 字符串格式的指示。兼容的 JSON 字符串可以通过 ``to_json()`` 生成"
+"，并带有相应的 orient 值。可能的 orient 集合是：- ``'split'`` : 类似字典 "
+"``{'index' -> [index], 'columns' -> [columns], 'data' -> [values]}`` - ``"
+"'records'`` : 类似列表 ``[{column -> value}, ... , {column -> value}]`` -"
+" ``'index'`` : 类似字典 ``{index -> {column -> value}}`` - ``'columns'`` "
+": 类似字典 ``{column -> {index -> value}}`` - ``'values'`` : 只是值数组 "
+"允许和默认值取决于 `typ` 参数的值。* 当 ``typ == 'series'`` 时，"
+
+#: maxframe.dataframe.datasource.read_json.read_json:23 of
+#, python-brace-format
+msgid "allowed orients are ``{'split','records','index'}``"
+msgstr "允许的 orient 是 ``{'split','records','index'}``"
+
+#: maxframe.dataframe.datasource.read_json.read_json:24 of
+msgid "default is ``'index'``"
+msgstr "默认是 ``'index'``"
+
+#: maxframe.dataframe.datasource.read_json.read_json:25 of
+msgid "The Series index must be unique for orient ``'index'``."
+msgstr "对于 orient ``'index'``，Series 索引必须是唯一的。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:26 of
+#, python-brace-format
+msgid ""
+"when ``typ == 'frame'``, - allowed orients are "
+"``{'split','records','index','columns','values'}`` - default is "
+"``'columns'`` - The DataFrame index must be unique for orients "
+"``'index'`` and ``'columns'``. - The DataFrame columns must be unique for"
+" orients ``'index'``, ``'columns'``,"
+msgstr ""
+"当 ``typ == 'frame'`` 时，- 允许的 orient 是 ``{'split','records','index'"
+",'columns','values'}`` - 默认是 ``'columns'`` - 对于 orient ``'index'`` "
+"和 ``'columns'``，DataFrame 索引必须是唯一的。- 对于 orient ``'index'``、"
+"``'columns'`` 和"
+
+#: maxframe.dataframe.datasource.read_json.read_json:31 of
+msgid "and ``'records'``."
+msgstr "``'records'``。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:33 of
+msgid "The type of object to recover."
+msgstr "要恢复的对象类型。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:35 of
+msgid ""
+"If True, infer dtypes; if a dict of column to dtype, then use those; if "
+"False, then don't infer dtypes at all, applies only to the data."
+msgstr ""
+"如果为 True，则推断 dtypes；如果为列到 dtype 的字典，则使用这些；如果为 "
+"False，则完全不推断 dtypes，仅适用于数据。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:38 of
+msgid "Try to convert the axes to the proper dtypes."
+msgstr "尝试将轴转换为适当的 dtypes。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:40 of
+msgid ""
+"List of columns to parse for dates. If True, then try to parse datelike "
+"columns. A column label is datelike if * it ends with ``'_at'``, * it "
+"ends with ``'_time'``, * it begins with ``'date'``, or * it is "
+"``'datetime'``, ``'timestamp'``, ``'modified'``, or ``'created'``."
+msgstr ""
+"要解析为日期的列列表。如果为 True，则尝试解析类似日期的列。如果列标签 * "
+"以 ``'_at'`` 结尾，* 以 ``'_time'`` 结尾，* 以 ``'date'`` 开头，或 * 是 `"
+"`'datetime'``、``'timestamp'``、``'modified'`` 或 ``'created'``，则该列"
+"标签是类似日期的。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:47 of
+msgid "If parsing dates, then parse the default datelike columns."
+msgstr "如果解析日期，则解析默认的类似日期的列。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:49 of
+msgid ""
+"Set to enable usage of higher precision (strtod) function when decoding "
+"string to double values. Default (False) is to use fast but less precise "
+"builtin functionality."
+msgstr ""
+"设置为启用在将字符串解码为双精度值时使用更高精度（strtod）函数。默认（"
+"False）是使用快速但精度较低的内置功能。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:53 of
+msgid ""
+"The timestamp unit to detect if converting dates. The default behaviour "
+"is to try and detect the correct precision, but if this is not desired "
+"then pass one of 's', 'ms', 'us' or 'ns' to force parsing only seconds, "
+"milliseconds, microseconds or nanoseconds respectively."
+msgstr ""
+"检测转换日期时的时间戳单位。默认行为是尝试检测正确的精度，但如果不需要此"
+"行为，则传递 's'、'ms'、'us' 或 'ns' 之一以强制仅解析秒、毫秒、微秒或纳秒"
+"。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:58 of
+msgid "The encoding to use to decode py3 bytes."
+msgstr "用于解码 py3 字节的编码。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:60 of
+msgid "Read the file as a json object per line."
+msgstr "逐行读取文件作为 json 对象。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:62 of
+msgid ""
+"Return JsonReader object for iteration. See the `IO Tools docs "
+"<https://pandas.pydata.org/pandas-docs/stable/io.html#io-jsonl>`_ for "
+"more information on ``chunksize``. This can only be passed if "
+"`lines=True`. If this is None, the file will be read into memory all at "
+"once."
+msgstr ""
+"返回 JsonReader 对象以进行迭代。有关 ``chunksize`` 的更多信息，请参见 `IO"
+" Tools docs <https://pandas.pydata.org/pandas-docs/stable/io.html#io-"
+"jsonl>`_。这只能在 `lines=True` 时传递。如果为 None，则将整个文件一次性"
+"读入内存。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:69 of
+msgid ""
+"For on-the-fly decompression of on-disk data. If 'infer' and "
+"`filepath_or_buffer` is path-like, then detect compression from the "
+"following extensions: '.gz', '.bz2', '.zip', or '.xz' (otherwise no "
+"decompression). If using 'zip', the ZIP file must contain only one data "
+"file to be read in. Set to None for no decompression."
+msgstr ""
+"用于对磁盘上数据进行即时解压缩。如果为 'infer' 且 `filepath_or_buffer` 是"
+"路径类，则从以下扩展名检测压缩：'.gz'、'.bz2'、'.zip' 或 '.xz'（否则不"
+"解压缩）。如果使用 'zip'，ZIP 文件必须只包含一个要读取的数据文件。设置为 "
+"None 表示不解压缩。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:75 of
+msgid ""
+"Column(s) to use as the row labels of the ``DataFrame``, either given as "
+"string name or column index. If a sequence of int / str is given, a "
+"MultiIndex is used. Note: ``index_col=False`` can be used to force pandas"
+" to *not* use the first column as the index, e.g. when you have a "
+"malformed file with delimiters at the end of each line."
+msgstr ""
+"用作 ``DataFrame`` 的行标签的列，可以是字符串名称或列索引。如果给定 int /"
+" str 序列，则使用 MultiIndex。注意：``index_col=False`` 可用于强制 pandas"
+" *不* 使用第一列作为索引，例如当您有一个在每行末尾有分隔符的格式错误的"
+"文件时。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:82 of
+msgid ""
+"Return a subset of the columns. If list-like, all elements must either be"
+" positional (i.e. integer indices into the document columns) or strings "
+"that correspond to column names provided either by the user in `names` or"
+" inferred from the document header row(s). For example, a valid list-like"
+" `usecols` parameter would be ``[0, 1, 2]`` or ``['foo', 'bar', 'baz']``."
+" Element order is ignored, so ``usecols=[0, 1]`` is the same as ``[1, "
+"0]``. To instantiate a DataFrame from ``data`` with element order "
+"preserved use ``pd.read_csv(data, usecols=['foo', 'bar'])[['foo', "
+"'bar']]`` for columns in ``['foo', 'bar']`` order or ``pd.read_csv(data, "
+"usecols=['foo', 'bar'])[['bar', 'foo']]`` for ``['bar', 'foo']`` order. "
+"If callable, the callable function will be evaluated against the column "
+"names, returning names where the callable function evaluates to True. An "
+"example of a valid callable argument would be ``lambda x: x.upper() in "
+"['AAA', 'BBB', 'DDD']``. Using this parameter results in much faster "
+"parsing time and lower memory usage."
+msgstr ""
+"返回列的子集。如果是列表类，则所有元素必须是位置性的（即文档列中的整数"
+"索引）或与用户在 `names` 中提供的列名或从文档标题行推断出的列名相对应的"
+"字符串。例如，有效的列表类 `usecols` 参数可以是 ``[0, 1, 2]`` 或 ``['foo'"
+", 'bar', 'baz']``。元素顺序被忽略，因此 ``usecols=[0, 1]`` 与 ``[1, 0]`` "
+"相同。要从 ``data`` 实例化 DataFrame 并保持元素顺序，请使用 ``pd.read_csv"
+"(data, usecols=['foo', 'bar'])[['foo', 'bar']]`` 以 ``['foo', 'bar']`` "
+"顺序或 ``pd.read_csv(data, usecols=['foo', 'bar'])[['bar', 'foo']]`` 以 `"
+"`['bar', 'foo']`` 顺序。如果是可调用的，则将针对列名评估可调用函数，返回"
+"可调用函数计算结果为 True 的名称。有效可调用参数的示例是 ``lambda x: x."
+"upper() in ['AAA', 'BBB', 'DDD']``。使用此参数可以显著加快解析时间和降低"
+"内存使用。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:99 of
+msgid "Number of chunk bytes."
+msgstr "块字节数。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:101 of
+msgid "If read into cudf DataFrame."
+msgstr "是否读取到 cudf DataFrame。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:103 of
+msgid "Number of bytes to use in the head of file, mainly for data inference."
+msgstr "用于文件头部的数据推理的字节数。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:105 of
+msgid "Number of lines to use in the head of file, mainly for data inference."
+msgstr "用于文件头部的数据推理的行数。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:107 of
+msgid ""
+"If index_col not specified, ensure range index incremental, gain a "
+"slightly better performance if setting False."
+msgstr ""
+"如果未指定 index_col，则确保范围索引递增，如果设置为 False 可以获得稍微"
+"更好的性能。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:110 of
+msgid ""
+"Back-end data type applied to the resultant DataFrame (still "
+"experimental)."
+msgstr "应用于结果 DataFrame 的后端数据类型（仍处于实验阶段）。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:112 of
+msgid "Options for storage connection."
+msgstr "存储连接的选项。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:114 of
+msgid "Merge small files whose size is small."
+msgstr "合并大小较小的文件。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:116 of
+msgid "Options for merging small files"
+msgstr "合并小文件的选项"
+
+#: maxframe.dataframe.datasource.read_json.read_json of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_json.read_json:119 of
+msgid ""
+"A JSON file is returned as two-dimensional data structure with labeled "
+"axes."
+msgstr "JSON 文件作为具有标记轴的二维数据结构返回。"
+
+#: maxframe.dataframe.datasource.read_json.read_json of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_json.read_json:124 of
+msgid ":py:obj:`to_json`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_json.read_json:125 of
+msgid "Convert DataFrame to JSON string."
+msgstr "将 DataFrame 转换为 JSON 字符串。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:127 of
+msgid ":py:obj:`json_normalize`"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_json.read_json:128 of
+msgid "Normalize semi-structured JSON data into a flat table."
+msgstr "将半结构化 JSON 数据规范化为平面表。"
+
+#: maxframe.dataframe.datasource.read_json.read_json:131 of
+msgid "示例"
+msgstr ""

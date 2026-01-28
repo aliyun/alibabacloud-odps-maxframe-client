@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,23 +47,25 @@ def _install():
         setattr(cls, "agg", agg)
         setattr(cls, "aggregate", agg)
 
-        setattr(cls, "sum", lambda groupby, **kw: agg(groupby, "sum", **kw))
-        setattr(cls, "prod", lambda groupby, **kw: agg(groupby, "prod", **kw))
-        setattr(cls, "max", lambda groupby, **kw: agg(groupby, "max", **kw))
-        setattr(cls, "min", lambda groupby, **kw: agg(groupby, "min", **kw))
-        setattr(cls, "count", lambda groupby, **kw: agg(groupby, "count", **kw))
-        setattr(cls, "size", lambda groupby, **kw: agg(groupby, "size", **kw))
-        setattr(cls, "mean", lambda groupby, **kw: agg(groupby, "mean", **kw))
-        setattr(cls, "var", lambda groupby, **kw: agg(groupby, "var", **kw))
-        setattr(cls, "std", lambda groupby, **kw: agg(groupby, "std", **kw))
         setattr(cls, "all", lambda groupby, **kw: agg(groupby, "all", **kw))
         setattr(cls, "any", lambda groupby, **kw: agg(groupby, "any", **kw))
-        setattr(cls, "skew", lambda groupby, **kw: agg(groupby, "skew", **kw))
+        setattr(cls, "count", lambda groupby, **kw: agg(groupby, "count", **kw))
         setattr(cls, "kurt", lambda groupby, **kw: agg(groupby, "kurt", **kw))
         setattr(cls, "kurtosis", lambda groupby, **kw: agg(groupby, "kurtosis", **kw))
-        setattr(cls, "sem", lambda groupby, **kw: agg(groupby, "sem", **kw))
-        setattr(cls, "nunique", lambda groupby, **kw: agg(groupby, "nunique", **kw))
+        setattr(cls, "idxmax", lambda groupby, **kw: agg(groupby, "idxmax", **kw))
+        setattr(cls, "idxmin", lambda groupby, **kw: agg(groupby, "idxmin", **kw))
+        setattr(cls, "max", lambda groupby, **kw: agg(groupby, "max", **kw))
+        setattr(cls, "mean", lambda groupby, **kw: agg(groupby, "mean", **kw))
         setattr(cls, "median", lambda groupby, **kw: agg(groupby, "median", **kw))
+        setattr(cls, "min", lambda groupby, **kw: agg(groupby, "min", **kw))
+        setattr(cls, "nunique", lambda groupby, **kw: agg(groupby, "nunique", **kw))
+        setattr(cls, "prod", lambda groupby, **kw: agg(groupby, "prod", **kw))
+        setattr(cls, "sem", lambda groupby, **kw: agg(groupby, "sem", **kw))
+        setattr(cls, "size", lambda groupby, **kw: agg(groupby, "size", **kw))
+        setattr(cls, "skew", lambda groupby, **kw: agg(groupby, "skew", **kw))
+        setattr(cls, "std", lambda groupby, **kw: agg(groupby, "std", **kw))
+        setattr(cls, "sum", lambda groupby, **kw: agg(groupby, "sum", **kw))
+        setattr(cls, "var", lambda groupby, **kw: agg(groupby, "var", **kw))
 
         setattr(cls, "apply", groupby_apply)
         setattr(cls, "transform", groupby_transform)

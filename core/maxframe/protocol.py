@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -122,6 +122,12 @@ class ResultType(enum.Enum):
 
 class DataSerializeType(enum.Enum):
     PICKLE = 0
+
+
+class DefaultIndexType(enum.Enum):
+    range = 0
+    incremental = 1
+    chunk_range = 2
 
 
 _result_type_to_info_cls: Dict[ResultType, Type["ResultInfo"]] = dict()

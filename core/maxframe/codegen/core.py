@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ from ..serialization import PickleContainer
 from ..serialization.serializables import Serializable, StringField
 from ..typing_ import PandasObjectTypes
 from ..udf import MarkedFunction, PythonPackOptions
+from ..utils import ServiceLoggerAdapter
 
 if TYPE_CHECKING:
     from odpsctx import ODPSSessionContext
@@ -433,6 +434,10 @@ class DAGCodeGenerator(metaclass=abc.ABCMeta):
         self._context = self._init_context(session_id, subdag_id)
         self._generate_comments_enabled = True
 
+        self._logger = ServiceLoggerAdapter(
+            logger, {"session_id": session_id, "subdag_id": subdag_id}
+        )
+
     @classmethod
     def _load_engine_extensions(cls):
         if cls._extension_loaded:
@@ -492,6 +497,7 @@ class DAGCodeGenerator(metaclass=abc.ABCMeta):
             visited_op_key.add(op.key)
 
             adapter = self.get_op_adapter(type(op))()
+            self._logger.info("Generating code with %s", type(op).__name__)
             code_lines.extend(adapter.generate_pre_op_code(op, self._context))
             if self._generate_comments_enabled:
                 code_lines.extend(adapter.generate_comment(op, self._context))
@@ -585,12 +591,12 @@ class DAGCodeGenerator(metaclass=abc.ABCMeta):
 
     def register_udfs(self, odps_ctx: "ODPSSessionContext"):
         for udf in self._context.get_udfs():
-            logger.info("[Session=%s] Registering UDF %s", self._session_id, udf.name)
+            self._logger.info("Registering UDF %s", udf.name)
             udf.register(odps_ctx, True)
 
     def unregister_udfs(self, odps_ctx: "ODPSSessionContext"):
         for udf in self._context.get_udfs():
-            logger.info("[Session=%s] Unregistering UDF %s", self._session_id, udf.name)
+            self._logger.info("Unregistering UDF %s", udf.name)
             udf.unregister(odps_ctx)
 
     def get_udfs(self) -> List[AbstractUDF]:

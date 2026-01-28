@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,47 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import numpy as np
 import pandas as pd
-from pandas.api.types import CategoricalDtype
+from pandas.api.types import CategoricalDtype, is_dict_like
 
 from ... import opcodes
+from ...config import options
+from ...io.odpsio.schema import pandas_dtype_to_arrow_type
 from ...serialization.serializables import AnyField, ListField, StringField
 from ...utils import make_dtypes, pd_release_version
 from ..core import DATAFRAME_TYPE, SERIES_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
 from ..utils import build_empty_df, build_empty_series, parse_index
 
+_simple_dtypes = {
+    np.dtype(t)
+    for t in (
+        "int8",
+        "int16",
+        "int32",
+        "int64",
+        "uint8",
+        "uint16",
+        "uint32",
+        "uint64",
+        "float16",
+        "float32",
+        "float64",
+        "bool",
+        "datetime64[ns]",
+        "timedelta64[ns]",
+    )
+}
 _need_astype_contiguous = pd_release_version == (1, 3, 0)
+
+
+def _convert_dtype_backend(dtype, dtype_backend):
+    if is_dict_like(dtype):
+        return {k: _convert_dtype_backend(v, dtype_backend) for k, v in dtype.items()}
+    elif dtype_backend != "pyarrow" or dtype not in _simple_dtypes:
+        return dtype
+    return pd.ArrowDtype(pandas_dtype_to_arrow_type(dtype))
 
 
 class DataFrameAstype(DataFrameOperator, DataFrameOperatorMixin):
@@ -184,7 +214,8 @@ def astype(df, dtype, copy=True, errors="raise"):
     1     2
     dtype: int64
     """
-    dtype = make_dtypes(dtype, make_series=False)
+    dtype_backend = options.dataframe.dtype_backend
+    dtype = _convert_dtype_backend(make_dtypes(dtype, make_series=False), dtype_backend)
     if isinstance(dtype, dict):
         keys = list(dtype.keys())
         if isinstance(df, SERIES_TYPE):
@@ -234,4 +265,6 @@ def index_astype(ix, dtype, copy=True):
     Index
         Index with values cast to specified dtype.
     """
-    return astype(ix, make_dtypes(dtype), copy=copy)
+    dtype_backend = options.dataframe.dtype_backend
+    dtype = _convert_dtype_backend(make_dtypes(dtype), dtype_backend)
+    return astype(ix, dtype, copy=copy)

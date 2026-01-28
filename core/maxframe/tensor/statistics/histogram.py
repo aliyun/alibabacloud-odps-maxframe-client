@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,10 +22,16 @@ from ... import opcodes
 from ...core import ENTITY_TYPE, ExecutableTuple
 from ...serialization.serializables import AnyField, BoolField, KeyField, TupleField
 from ...typing_ import EntityType
+from ...utils import np_release_version
 from ..core import TENSOR_TYPE, TensorOrder
 from ..datasource import tensor as astensor
 from ..operators import TensorOperator, TensorOperatorMixin
 from ..utils import is_asc_sorted
+
+# since numpy 2.3 `auto` bins limits bin count (numpy-28426)
+_np_histogram_limit_nbins = np_release_version[:2] >= (2, 3)
+# since numpy 2.1 bin size >=1 for int types (numpy-12150)
+_np_histogram_int_bin_for_int_type = np_release_version[:2] >= (2, 1)
 
 _hist_bin_selector_names = {
     "stone",
@@ -97,6 +103,13 @@ class TensorHistogramBinEdges(TensorOperator, TensorOperatorMixin):
     range = TupleField("range", default=None)
     weights = KeyField("weights", default=None)
     uniform_bins = TupleField("uniform_bins", default=None)
+
+    def __init__(self, *args, **kwargs):
+        if _np_histogram_limit_nbins:
+            kwargs["limit_nbins"] = _np_histogram_limit_nbins
+        if _np_histogram_int_bin_for_int_type:
+            kwargs["int_bin_for_int_type"] = _np_histogram_int_bin_for_int_type
+        super().__init__(*args, **kwargs)
 
     @classmethod
     def _set_inputs(cls, op: "TensorHistogramBinEdges", inputs: List[EntityType]):

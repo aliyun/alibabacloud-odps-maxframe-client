@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ from ...serialization.serializables import (
     ListField,
     StringField,
 )
+from ...utils import check_unexpected_kwargs
 from ..core import TensorOrder
 from ..datasource import tensor as astensor
 from ..operators import TensorOperator, TensorOperatorMixin
@@ -274,8 +275,7 @@ def sort(
           dtype=[('name', '|S10'), ('height', '<f8'), ('age', '<i4')])
     """
     need_align = kw.pop("need_align", None)
-    if len(kw) > 0:
-        raise TypeError(f"sort() got an unexpected keyword argument '{next(iter(kw))}'")
+    check_unexpected_kwargs(kw)
 
     a, axis, kind, parallel_kind, psrs_kinds, order = _validate_sort_arguments(
         a, axis, kind, parallel_kind, psrs_kinds, order, stable

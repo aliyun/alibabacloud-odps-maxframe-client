@@ -442,6 +442,7 @@ Serialization / IO / conversion
 
    Series.to_csv
    Series.to_dict
+   Series.to_json
    Series.to_list
 
 .. _generated.series.mf:

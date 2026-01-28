@@ -1,0 +1,261 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev789+gc47c8dae0.d20250915\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-04 13:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.to_json.rst:2
+msgid "maxframe.dataframe.Series.to\\_json"
+msgstr ""
+
+#: maxframe.dataframe.datastore.to_json.to_json:1 of
+msgid "Convert the object to a JSON string."
+msgstr "将对象转换为 JSON 字符串。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:3 of
+msgid ""
+"Note NaN's and None will be converted to null and datetime objects will "
+"be converted to UNIX timestamps."
+msgstr "注意 NaN 和 None 将被转换为 null，日期时间对象将被转换为 UNIX 时间戳。"
+
+#: maxframe.dataframe.datastore.to_json.to_json of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.datastore.to_json.to_json:6 of
+msgid ""
+"String, path object (implementing os.PathLike[str]), or file-like object "
+"implementing a write() function. If None, the result is returned as a "
+"string."
+msgstr ""
+"字符串、路径对象（实现 os.PathLike[str]）或实现 write() 函数的类文件对象"
+"。如果为 None，则结果以字符串形式返回。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:10 of
+msgid ""
+"Indication of expected JSON string format.  * Series:      - default is "
+"'index'     - allowed values are: {'split', 'records', 'index', 'table'}."
+"  * DataFrame:      - default is 'columns'     - allowed values are: "
+"{'split', 'records', 'index', 'columns',       'values', 'table'}.  * The"
+" format of the JSON string:      - 'split' : dict like {'index' -> "
+"[index], 'columns' -> [columns],       'data' -> [values]}     - "
+"'records' : list like [{column -> value}, ... , {column -> value}]     - "
+"'index' : dict like {index -> {column -> value}}     - 'columns' : dict "
+"like {column -> {index -> value}}     - 'values' : just the values array"
+"     - 'table' : dict like {'schema': {schema}, 'data': {data}}      "
+"Describing the data, where data component is like ``orient='records'``."
+msgstr ""
+"指示期望的 JSON 字符串格式。  * Series:      - 默认是 'index'     - 允许"
+"的值为：{'split', 'records', 'index', 'table'}。  * DataFrame:      - "
+"默认是 'columns'     - 允许的值为：{'split', 'records', 'index', 'columns"
+"',       'values', 'table'}。  * JSON 字符串的格式:      - 'split' : 类似"
+" {'index' -> [index], 'columns' -> [columns],       'data' -> [values]} "
+"的字典     - 'records' : 类似 [{column -> value}, ... , {column -> value}"
+"] 的列表     - 'index' : 类似 {index -> {column -> value}} 的字典     - '"
+"columns' : 类似 {column -> {index -> value}} 的字典     - 'values' : 仅值"
+"数组     - 'table' : 类似 {'schema': {schema}, 'data': {data}} 的字典    "
+"  描述数据，其中 data 部分类似 ``orient='records'``。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:10 of
+msgid "Indication of expected JSON string format."
+msgstr "指示期望的 JSON 字符串格式。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:12 of
+msgid "Series:"
+msgstr ""
+
+#: maxframe.dataframe.datastore.to_json.to_json:14 of
+msgid "default is 'index'"
+msgstr "默认为 'index'"
+
+#: maxframe.dataframe.datastore.to_json.to_json:15 of
+#, python-brace-format
+msgid "allowed values are: {'split', 'records', 'index', 'table'}."
+msgstr "允许的值为：{'split', 'records', 'index', 'table'}。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:17 of
+msgid "DataFrame:"
+msgstr ""
+
+#: maxframe.dataframe.datastore.to_json.to_json:19 of
+msgid "default is 'columns'"
+msgstr "默认为 'columns'"
+
+#: maxframe.dataframe.datastore.to_json.to_json:20 of
+#, python-brace-format
+msgid ""
+"allowed values are: {'split', 'records', 'index', 'columns', 'values', "
+"'table'}."
+msgstr "允许的值为：{'split', 'records', 'index', 'columns', 'values', 'table'}。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:23 of
+msgid "The format of the JSON string:"
+msgstr "JSON 字符串的格式："
+
+#: maxframe.dataframe.datastore.to_json.to_json:25 of
+#, python-brace-format
+msgid ""
+"'split' : dict like {'index' -> [index], 'columns' -> [columns], 'data' "
+"-> [values]}"
+msgstr ""
+"'split' : 类似 {'index' -> [index], 'columns' -> [columns], 'data' -> ["
+"values]} 的字典"
+
+#: maxframe.dataframe.datastore.to_json.to_json:27 of
+#, python-brace-format
+msgid "'records' : list like [{column -> value}, ... , {column -> value}]"
+msgstr "'records' : 类似 [{column -> value}, ... , {column -> value}] 的列表"
+
+#: maxframe.dataframe.datastore.to_json.to_json:28 of
+msgid "'index' : dict like {index -> {column -> value}}"
+msgstr "'index' : 类似 {index -> {column -> value}} 的字典"
+
+#: maxframe.dataframe.datastore.to_json.to_json:29 of
+msgid "'columns' : dict like {column -> {index -> value}}"
+msgstr "'columns' : 类似 {column -> {index -> value}} 的字典"
+
+#: maxframe.dataframe.datastore.to_json.to_json:30 of
+msgid "'values' : just the values array"
+msgstr "'values' : 仅值数组"
+
+#: maxframe.dataframe.datastore.to_json.to_json:31 of
+#, python-brace-format
+msgid "'table' : dict like {'schema': {schema}, 'data': {data}}"
+msgstr "'table' : 类似 {'schema': {schema}, 'data': {data}} 的字典"
+
+#: maxframe.dataframe.datastore.to_json.to_json:33 of
+msgid "Describing the data, where data component is like ``orient='records'``."
+msgstr "描述数据，其中 data 部分类似 ``orient='records'``。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:35 of
+msgid ""
+"Type of date conversion. 'epoch' = epoch milliseconds, 'iso' = ISO8601. "
+"The default depends on the `orient`. For ``orient='table'``, the default "
+"is 'iso'. For all other orients, the default is 'epoch'."
+msgstr ""
+"日期转换类型。'epoch' = 纪元毫秒，'iso' = ISO8601。默认值取决于 `orient`"
+"。对于 ``orient='table'``，默认值是 'iso'。对于所有其他 orient，默认值是 "
+"'epoch'。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:40 of
+msgid "The number of decimal places to use when encoding floating point numbers."
+msgstr "编码浮点数时使用的小数位数。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:43 of
+msgid "Force encoded string to be ASCII."
+msgstr "强制编码后的字符串为 ASCII 格式。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:45 of
+msgid ""
+"The time unit to encode to, governs timestamp and ISO8601 precision.  One"
+" of 's', 'ms', 'us', 'ns' for second, millisecond, microsecond, and "
+"nanosecond respectively."
+msgstr ""
+"编码的时间单位，控制时间戳和 ISO8601 精度。可选值为 's', 'ms', 'us', 'ns'"
+"，分别表示秒、毫秒、微秒和纳秒。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:49 of
+msgid ""
+"Handler to call if object cannot otherwise be converted to a suitable "
+"format for JSON. Should receive a single argument which is the object to "
+"convert and return a serializable object."
+msgstr ""
+"如果对象无法转换为适合 JSON 的格式时调用的处理程序。应接收一个参数，即要"
+"转换的对象，并返回一个可序列化的对象。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:53 of
+msgid ""
+"If 'orient' is 'records' write out line-delimited json format. Will throw"
+" ValueError if incorrect 'orient' is used."
+msgstr ""
+"如果 'orient' 是 'records'，则写出行分隔的 JSON 格式。如果使用了不正确的 "
+"'orient'，将抛出 ValueError。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:56 of
+#, python-brace-format
+msgid ""
+"For on-the-fly compression of the output data. If str, represents "
+"compression mode. If dict, value at 'method' is the compression mode. "
+"Compression mode may be any of the following possible values: {'infer', "
+"'gzip', 'bz2', 'zip', 'xz', None}. If compression mode is 'infer' and "
+"`path_or_buf` is path-like, then detect compression mode from the "
+"following extensions: '.gz', '.bz2', '.zip' or '.xz'. (otherwise no "
+"compression). If dict given and mode is one of {'zip', 'xz'}, other "
+"entries passed as additional compression options."
+msgstr ""
+"用于输出数据的即时压缩。如果是字符串，则表示压缩模式。如果是字典，则 '"
+"method' 处的值为压缩模式。压缩模式可以是以下可能值中的任意一个：{'infer',"
+" 'gzip', 'bz2', 'zip', 'xz', None}。如果压缩模式是 'infer' 且 `path_or_"
+"buf` 是路径类型，则从以下扩展名中检测压缩模式：'.gz', '.bz2', '.zip' 或 '"
+".xz'。（否则不压缩）。如果给出的是字典且模式是 {'zip', 'xz'} 之一，则其他"
+"条目作为附加压缩选项传递。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:66 of
+msgid ""
+"Whether to include the index values in the JSON string. Not including the"
+" index (``index=False``) is only supported when orient is 'split' or "
+"'table'."
+msgstr ""
+"是否在 JSON 字符串中包含索引值。不包含索引（``index=False``）仅在 orient "
+"为 'split' 或 'table' 时支持。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:70 of
+msgid "Length of whitespace used to indent each record."
+msgstr "用于缩进每条记录的空白字符长度。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:72 of
+msgid ""
+"Column names by which to partition the dataset. Columns are partitioned "
+"in the order they are given."
+msgstr "用于对数据集进行分区的列名。列按照给定的顺序进行分区。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:78 of
+msgid ":py:obj:`read_json`"
+msgstr ""
+
+#: maxframe.dataframe.datastore.to_json.to_json:79 of
+msgid "Convert a JSON string to pandas object."
+msgstr "将 JSON 字符串转换为 pandas 对象。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:82 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.dataframe.datastore.to_json.to_json:83 of
+msgid ""
+"The behavior of ``indent=0`` varies from the stdlib, which does not "
+"indent the output but does insert newlines. Currently, ``indent=0`` and "
+"the default ``indent=None`` are equivalent in pandas, though this may "
+"change in a future release."
+msgstr ""
+"``indent=0`` 的行为与标准库不同，标准库不会缩进输出但会插入换行符。目前在"
+" pandas 中，``indent=0`` 与默认值 ``indent=None`` 等效，尽管这在未来版本"
+"中可能会改变。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:88 of
+msgid ""
+"``orient='table'`` contains a 'pandas_version' field under 'schema'. This"
+" stores the version of `pandas` used in the latest revision of the "
+"schema."
+msgstr ""
+"``orient='table'`` 在 'schema' 下包含一个 'pandas_version' 字段。这存储了"
+"在 schema 最新修订版中使用的 `pandas` 版本。"
+
+#: maxframe.dataframe.datastore.to_json.to_json:93 of
+msgid "示例"
+msgstr ""

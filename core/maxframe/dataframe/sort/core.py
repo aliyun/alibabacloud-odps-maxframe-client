@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from ...protocol import DefaultIndexType
 from ...serialization.serializables import (
     AnyField,
     BoolField,
+    EnumField,
     FieldTypes,
     Int32Field,
     Int64Field,
@@ -35,3 +37,10 @@ class DataFrameSortOperator(DataFrameOperator):
     psrs_kinds = ListField("psrs_kinds", FieldTypes.string, default=None)
     nrows = Int64Field("nrows", default=None)
     keep_kind = StringField("keep_kind", default="head")
+    default_index_type = EnumField(
+        "default_index_type",
+        DefaultIndexType,
+        FieldTypes.int8,
+        default=None,
+        primitive=True,
+    )

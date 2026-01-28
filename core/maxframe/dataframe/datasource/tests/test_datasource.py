@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -653,7 +653,7 @@ def test_explain_use_explain_output(use_explain_output):
         assert exec_count == (2 if use_explain_output is None else 1)
 
         exec_count = 0
-        schema = _resolve_query_schema(
+        schema, _ = _resolve_query_schema(
             odps_entry,
             "select cast(1 as bigint) as a_bigint",
             use_explain_output=use_explain_output,

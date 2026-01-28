@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import pytest
 
 from ...... import dataframe as md
 from ......lib.dtypes_extension import list_
-from ......utils import ARROW_DTYPE_NOT_SUPPORTED
+from ......utils import ARROW_DTYPE_NOT_SUPPORTED, wrap_arrow_dtype
 from ....core import SPECodeContext
 from ...accessors.list_ import SeriesListMethodAdapter
 
@@ -83,7 +83,7 @@ var_1.name = None
     expected_series = pd.Series(
         [1, 4, None],
         index=[1, 2, 3],
-        dtype=pd.ArrowDtype(pa.int32()),
+        dtype=wrap_arrow_dtype(pa.int32()),
     )
     pd.testing.assert_series_equal(expected_series, local_vars["var_1"])
 
@@ -129,6 +129,6 @@ var_1.name = None
     assert results == expected_results
     local_vars = _run_generated_code(results[0], context, pd_df_1["A"])
     expected_series = pd.Series(
-        [3, 4, pd.NA], index=[1, 2, 3], name=None, dtype=pd.ArrowDtype(pa.int64())
+        [3, 4, pd.NA], index=[1, 2, 3], name=None, dtype=wrap_arrow_dtype(pa.int64())
     )
     pd.testing.assert_series_equal(expected_series, local_vars["var_1"])

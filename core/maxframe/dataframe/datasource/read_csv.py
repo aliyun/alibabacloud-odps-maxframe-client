@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from io import BytesIO
 from typing import MutableMapping, Union
 from urllib.parse import urlparse
 
 import numpy as np
 import pandas as pd
+
+from ...protocol import DefaultIndexType
 
 try:
     from pyarrow import NativeFile
@@ -27,65 +28,30 @@ except ImportError:  # pragma: no cover
 from ... import opcodes
 from ...config import options
 from ...core import OutputType
-from ...lib.filesystem import get_fs, glob, open_file
 from ...serialization.serializables import (
     AnyField,
     BoolField,
+    DictField,
     Int32Field,
     Int64Field,
     ListField,
     StringField,
 )
-from ...utils import lazy_import, parse_readable_size
-from ..utils import parse_index, to_arrow_dtypes, validate_dtype_backend
+from ...utils import lazy_import, no_default
+from ..utils import (
+    parse_index,
+    to_arrow_dtypes,
+    validate_default_index_type,
+    validate_dtype_backend,
+)
 from .core import (
     ColumnPruneSupportedDataSourceMixin,
     DtypeBackendCompatibleMixin,
     LakeDataSource,
 )
+from .utils import get_lake_output_info, iter_local_files
 
 cudf = lazy_import("cudf")
-
-
-def _find_delimiter(f, block_size=2**16):
-    delimiter = b"\n"
-    if f.tell() == 0:
-        return 0
-    while True:
-        b = f.read(block_size)
-        if not b:
-            return f.tell()
-        elif delimiter in b:
-            return f.tell() - len(b) + b.index(delimiter) + 1
-
-
-def _find_hdfs_start_end(f, offset, size):
-    # As pyarrow doesn't support `readline` operation (https://github.com/apache/arrow/issues/3838),
-    # we need to find the start and end of file block manually.
-
-    # Be careful with HdfsFile's seek, it doesn't allow seek beyond EOF.
-    loc = min(offset, f.size())
-    f.seek(loc)
-    start = _find_delimiter(f)
-    loc = min(offset + size, f.size())
-    f.seek(loc)
-    end = _find_delimiter(f)
-    return start, end
-
-
-def _find_chunk_start_end(f, offset, size):
-    if NativeFile is not None and isinstance(f, NativeFile):
-        return _find_hdfs_start_end(f, offset, size)
-    f.seek(offset)
-    if f.tell() == 0:
-        start = 0
-    else:
-        f.readline()
-        start = f.tell()
-    f.seek(offset + size)
-    f.readline()
-    end = f.tell()
-    return start, end
 
 
 class DataFrameReadCSV(
@@ -103,7 +69,12 @@ class DataFrameReadCSV(
     usecols = AnyField("usecols")
     offset = Int64Field("offset")
     size = Int64Field("size")
+    dtype = AnyField("dtype")
     keep_usecols_order = BoolField("keep_usecols_order", default=None)
+    chunk_bytes = StringField("chunk_bytes", default=None)
+    read_kwargs = DictField("read_kwargs", default=None)
+    head_bytes = StringField("head_bytes", default=None)
+    head_lines = Int64Field("head_lines", default=None)
 
     def get_columns(self):
         return self.usecols
@@ -115,6 +86,11 @@ class DataFrameReadCSV(
     def __call__(
         self, index_value=None, columns_value=None, dtypes=None, chunk_bytes=None
     ):
+        if self.read_stage is not None:
+            # output for planning or meta fetching
+            self._output_types = [OutputType.scalar]
+            return self.new_tileable(None, shape=(), dtype=np.dtype("O"))
+
         self._output_types = [OutputType.dataframe]
         shape = (np.nan, len(dtypes))
         return self.new_dataframe(
@@ -136,10 +112,11 @@ class DataFrameReadCSV(
 
 def read_csv(
     path,
+    *,
     names=None,
     sep: str = ",",
     index_col=None,
-    compression=None,
+    compression="infer",
     header="infer",
     dtype=None,
     usecols=None,
@@ -148,12 +125,15 @@ def read_csv(
     gpu=None,
     head_bytes="100k",
     head_lines=None,
-    incremental_index: bool = True,
-    dtype_backend: str = None,
+    default_index_type: Union[DefaultIndexType, str] = None,
+    use_nullable_dtypes: bool = no_default,
+    dtype_backend: str = no_default,
     storage_options: dict = None,
     memory_scale: int = None,
     merge_small_files: bool = True,
     merge_small_file_options: dict = None,
+    session=None,
+    run_kwargs: dict = None,
     **kwargs,
 ):
     r"""
@@ -224,8 +204,6 @@ def read_csv(
         example of a valid callable argument would be ``lambda x: x.upper() in
         ['AAA', 'BBB', 'DDD']``. Using this parameter results in much faster
         parsing time and lower memory usage.
-    squeeze : bool, default False
-        If the parsed data only contains one column then return a Series.
     prefix : str, optional
         Prefix to add to column numbers when no header, e.g. 'X' for X0, X1, ...
     mangle_dupe_cols : bool, default True
@@ -414,9 +392,9 @@ def read_csv(
         Number of bytes to use in the head of file, mainly for data inference.
     head_lines: int, optional
         Number of lines to use in the head of file, mainly for data inference.
-    incremental_index: bool, default True
-        If index_col not specified, ensure range index incremental,
-        gain a slightly better performance if setting False.
+    default_index_type: {None, 'range', 'incremental'}, default None
+        If index_col not specified, specify type of index to generate.
+        If not specified, `options.dataframe.default_index_type` will be used.
     dtype_backend: {'numpy', 'pyarrow'}, default 'numpy'
         Back-end data type applied to the resultant DataFrame (still experimental).
     storage_options: dict, optional
@@ -443,80 +421,96 @@ def read_csv(
     >>> # read from HDFS
     >>> md.read_csv('hdfs://localhost:8020/test.csv')  # doctest: +SKIP
     >>> # read from OSS
-    >>> md.read_csv('oss://oss-cn-hangzhou-internal.aliyuncs.com/bucket/test.csv',
+    >>> md.read_csv('oss://oss-cn-hangzhou.aliyuncs.com/bucket/test.csv',
     >>>             storage_options={'role_arn': 'acs:ram::xxxxxx:role/aliyunodpsdefaultrole'})
     """
-    # infer dtypes and columns
-    if isinstance(path, (list, tuple)):
-        file_path = path[0]
-    elif get_fs(path, storage_options).isdir(path):
-        parsed_path = urlparse(path)
-        if parsed_path.scheme.lower() == "hdfs":
-            path_prefix = f"{parsed_path.scheme}://{parsed_path.netloc}"
-            file_path = path_prefix + get_fs(path, storage_options).ls(path)[0]
-        else:
-            file_path = glob(path.rstrip("/") + "/*", storage_options)[0]
-    else:
-        file_path = glob(path, storage_options)[0]
+    from .dataframe import from_pandas
 
-    with open_file(
-        file_path, compression=compression, storage_options=storage_options
-    ) as f:
-        if head_lines is not None:
-            b = b"".join([f.readline() for _ in range(head_lines)])
-        else:
-            head_bytes = int(parse_readable_size(head_bytes)[0])
-            head_start, head_end = _find_chunk_start_end(f, 0, head_bytes)
-            f.seek(head_start)
-            b = f.read(head_end - head_start)
-        mini_df = pd.read_csv(
-            BytesIO(b),
-            sep=sep,
-            index_col=index_col,
-            dtype=dtype,
-            names=names,
-            header=header,
-        )
-        if header == "infer" and names is not None:
-            # ignore header as we always specify names
-            header = None
-        else:
-            # replace header if we specify names or header
-            header = 0
-        if names is None:
-            names = list(mini_df.columns)
-        if usecols:
-            usecols = usecols if isinstance(usecols, list) else [usecols]
-            col_index = sorted(mini_df.columns.get_indexer(usecols))
-            mini_df = mini_df.iloc[:, col_index]
+    default_index_type = validate_default_index_type(default_index_type, **kwargs)
+    local_test_mode = kwargs.pop("_local_test_mode", False)
+    single_path = path[0] if isinstance(path, list) else path
+    parsed_path = urlparse(single_path)
+    if not local_test_mode and (
+        not parsed_path.scheme or parsed_path.scheme.lower() == "file"
+    ):
+        # todo chunk with multiple files and / or row groups?
+        # just read locally when path is not remote
+        local_dfs = []
+        for path, part_keys in iter_local_files(path):
+            kw = {}
+            if use_nullable_dtypes is not no_default:
+                kw = {"use_nullable_dtypes": use_nullable_dtypes}
+            if dtype_backend is not no_default:
+                kw = {"dtype_backend": dtype_backend}
+            sub_df = pd.read_csv(
+                path,
+                names=names,
+                sep=sep,
+                index_col=index_col,
+                compression=compression,
+                header="infer",
+                dtype=dtype,
+                usecols=usecols,
+                nrows=nrows,
+                **kw,
+            )
+            for k, v in part_keys or ():
+                sub_df[k] = v
+            local_dfs.append(sub_df)
+        df = pd.concat(local_dfs) if len(local_dfs) > 1 else local_dfs[0]
+        return from_pandas(df)
 
-    if isinstance(mini_df.index, pd.RangeIndex):
-        index_value = parse_index(pd.RangeIndex(-1))
-    else:
-        index_value = parse_index(mini_df.index)
-    columns_value = parse_index(mini_df.columns, store_data=True)
-    if index_col and not isinstance(index_col, int):
-        index_col = list(mini_df.columns).index(index_col)
-    op = DataFrameReadCSV(
-        path=path,
+    common_kwargs = dict(
         names=names,
         sep=sep,
-        header=header,
         index_col=index_col,
-        usecols=usecols,
         compression=compression,
-        gpu=gpu,
-        incremental_index=incremental_index,
+        header=header,
+        usecols=usecols,
+        use_nullable_dtypes=use_nullable_dtypes,
         dtype_backend=dtype_backend,
         storage_options=storage_options,
+        read_kwargs=kwargs,
+    )
+    # Get dtypes, index_dtypes and index_value using the common utility function
+    result = get_lake_output_info(
+        DataFrameReadCSV,
+        dtype=dtype,
+        path=path,
+        nrows=nrows,
+        head_bytes=head_bytes,
+        head_lines=head_lines,
+        default_index_type=default_index_type,
+        memory_scale=memory_scale,
+        session=session,
+        run_kwargs=run_kwargs,
+        **common_kwargs,
+    )
+
+    dtypes = result.dtypes
+    index_dtypes = result.index_dtypes
+    index_value = result.index_value
+    is_partitioned = result.is_partitioned
+
+    # For CSV, we need to combine index_dtypes with dtypes for the full_dtypes
+    full_dtypes = (
+        pd.concat([index_dtypes, dtypes]) if index_dtypes is not None else dtypes
+    )
+    default_index_type = None if index_dtypes is not None else default_index_type
+    columns_value = parse_index(dtypes.index, store_data=True)
+    chunk_bytes = chunk_bytes or options.chunk_store_limit
+    op = DataFrameReadCSV(
+        path=path,
+        dtype=full_dtypes,
+        gpu=gpu,
+        default_index_type=default_index_type,
+        is_partitioned=is_partitioned,
         memory_scale=memory_scale,
         merge_small_files=merge_small_files,
         merge_small_file_options=merge_small_file_options,
-        **kwargs,
+        chunk_bytes=chunk_bytes,
+        **common_kwargs,
     )
-    chunk_bytes = chunk_bytes or options.chunk_store_limit
-    dtypes = mini_df.dtypes
-
     dtype_backend = validate_dtype_backend(
         dtype_backend or options.dataframe.dtype_backend
     )
@@ -527,7 +521,6 @@ def read_csv(
         index_value=index_value,
         columns_value=columns_value,
         dtypes=dtypes,
-        chunk_bytes=chunk_bytes,
     )
     if nrows is not None:
         return ret.head(nrows)

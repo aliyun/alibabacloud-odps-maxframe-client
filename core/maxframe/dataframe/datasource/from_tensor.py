@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -173,6 +173,11 @@ class DataFrameFromTensor(DataFrameOperator, DataFrameOperatorMixin):
                         f"with tensor: {tileable_size}"
                     )
                 index_value = self._process_index(index, tileables)
+            elif any(hasattr(t, "index_value") for t in tileables):
+                idx = next(
+                    t.index_value for t in tileables if hasattr(t, "index_value")
+                )
+                index_value = idx
             else:
                 if not tileables or np.isnan(tileables[0].shape[0]):
                     index = pd.RangeIndex(0)
@@ -326,7 +331,7 @@ def dataframe_from_tensor(
     if tensor is not None:
         if tensor.ndim > 2 or tensor.ndim <= 0:
             raise TypeError(
-                f"Not support create DataFrame from {tensor.ndim} dims tensor"
+                f"Not support creating DataFrame from {tensor.ndim} dims tensor"
             )
         try:
             col_num = tensor.shape[1]
@@ -493,7 +498,9 @@ def series_from_tensor(
 ):
     if tensor is not None:
         if tensor.ndim > 1 or tensor.ndim <= 0:
-            raise TypeError(f"Not support create Series from {tensor.ndim} dims tensor")
+            raise TypeError(
+                f"Not support creating Series from {tensor.ndim} dims tensor"
+            )
         gpu = tensor.op.gpu if gpu is None else gpu
         dtype = dtype or tensor.dtype
     else:

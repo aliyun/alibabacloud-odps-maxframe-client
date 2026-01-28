@@ -138,6 +138,11 @@ def test_oss_filesystem(fake_obj_iter, fake_oss_bucket):
     )
     fs = oss.OSSFileSystem()
 
+    assert list(fs.walk(fake_dir_path)) == [
+        (fake_dir_path, ["subdir"], ["file1.csv", "file2.csv"]),
+        (fake_dir_path + "subdir/", [], ["file3.csv", "file4.csv"]),
+    ]
+
     # Test OSSFileSystem.
     assert len(fs.ls(fake_dir_path)) == 4
     assert not fs.isfile(fake_dir_path)
