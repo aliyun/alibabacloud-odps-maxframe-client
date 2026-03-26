@@ -60,7 +60,3 @@ py-modules = []
 
 [tool.setuptools.packages.find]
 where = ["./"]
-
-[tool.setuptools_scm]
-root = ".."
-version_scheme = "release-branch-semver"

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,9 @@ from ...serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
+    FieldTypes,
     Int32Field,
+    ListField,
     StringField,
 )
 from ...utils import find_objects, replace_objects
@@ -45,19 +47,33 @@ class ReadODPSModel(ObjectOperator, LearnOperatorMixin):
     format = StringField("format", default=None)
     location = StringField("location", default=None)
     storage_options = DictField("storage_options", default=None)
+    source_type = StringField("source_type", default=None)
+    tasks = ListField("tasks", FieldTypes.string, default=None)
+    options = DictField(
+        "options",
+        key_type=FieldTypes.string,
+        value_type=FieldTypes.string,
+        default=None,
+    )
+    inference_parameters = DictField(
+        "inference_parameters",
+        key_type=FieldTypes.string,
+        value_type=FieldTypes.string,
+        default=None,
+    )
 
     def has_custom_code(self) -> bool:
         return True
 
     def __call__(self):
-        if not self.format.startswith("BOOSTED_TREE_"):
-            # todo support more model formats
-            raise ValueError("Only support boosted tree format")
         for model_cls in _odps_model_classes:
             ret = model_cls._build_odps_source_model(self)
             if ret is not None:
                 return ret
-        raise ValueError(f"Model {self.model_name} not supported")
+        raise ValueError(
+            f"Model '{self.model_name}' with format '{self.format}' is not supported. "
+            f"Supported formats include: BOOSTED_TREE_*, LLM, MLLM"
+        )
 
 
 class ToODPSModel(ObjectOperator, LearnOperatorMixin):
@@ -250,13 +266,21 @@ def read_odps_model(
     # check if model exists
     model_obj.reload()
 
-    full_model_name = _build_odps_model_name(model_name, schema, project)
+    full_model_name = _build_odps_model_name(
+        model_name, schema, project or odps_entry.project
+    )
     location = model_obj.path
-    format = model_obj.type.value
+    format_ = model_obj.type.value
+    source_type = model_obj.source_type.value
+
     op = ReadODPSModel(
         model_name=full_model_name,
         model_version=model_version,
         location=location,
-        format=format,
+        format=format_,
+        source_type=source_type,
+        options=getattr(model_obj, "options", None) or {},
+        tasks=getattr(model_obj, "tasks", None) or [],
+        inference_parameters=getattr(model_obj, "inference_parameters", None) or {},
     )
     return op()

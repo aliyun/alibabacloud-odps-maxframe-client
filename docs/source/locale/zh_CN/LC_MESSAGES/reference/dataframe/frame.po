@@ -1675,3 +1675,4 @@ msgstr ""
 "``DataFrame.mf`` 提供了 MaxFrame 特有的方法。这些方法是从 MaxCompute 的"
 "应用场景中整理而来，可以通过 ``DataFrame.mf.<function/property>`` 的方式"
 "进行访问。"
+

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ class InferenceFrameworkEnum(Enum):
     DASH_SCOPE_MULTIMODAL = "DASH_SCOPE:MULTIMODAL"
     VLLM_SERVE_TEXT = "VLLM_SERVE:TEXT"
     OPENAI_REMOTE_TEXT = "OPENAI_REMOTE:TEXT"
+    OPENAI_REMOTE_MULTIMODAL = "OPENAI_REMOTE:MULTIMODAL"
     OTHER = "OTHER"
 
     @classmethod

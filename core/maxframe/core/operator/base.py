@@ -92,6 +92,12 @@ class SchedulingHint(Serializable):
     fs_mount = DictField("fs_mount", FieldTypes.string, default_factory=dict)
     # id of gang scheduling for machine learning trainings
     gang_scheduling_id = StringField("gang_scheduling_id", default=None)
+    # Structure: {"name": "image_name"}
+    image_options = DictField("image_options", FieldTypes.string, default=None)
+    # Max concurrent in-flight executions for this operator type.
+    parallel_limit_num = Int32Field("parallel_limit_num", default=None)
+    # Group ID for parallel limit.
+    parallel_limit_group_id = StringField("parallel_limit_group_id", default=None)
 
     def __init__(self, *, pure_depends=None, **kwargs):
         kwargs["_pure_depends"] = pure_depends or kwargs.get("_pure_depends") or []

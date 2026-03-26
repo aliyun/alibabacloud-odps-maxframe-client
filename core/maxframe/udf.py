@@ -67,7 +67,7 @@ class BuiltinFunction(Serializable):
 
     __slots__ = ("_func",)
 
-    func_name = StringField("func_name")
+    func_name = StringField("func_name", default=None)
 
     def __init__(self, func: Optional[Callable] = None, **kw):
         self._func = func
@@ -106,7 +106,7 @@ def builtin_function(func: Callable) -> BuiltinFunction:
 
 
 class MarkedFunction(Serializable):
-    func = FunctionField("func")
+    func = FunctionField("func", default=None)
     resources = ListField("resources", FieldTypes.string, default_factory=list)
     pythonpacks = ListField("pythonpacks", FieldTypes.reference, default_factory=list)
     expect_engine = StringField("expect_engine", default=None)
@@ -139,7 +139,7 @@ class MarkedFunction(Serializable):
 class ODPSFunction(Serializable):
     __slots__ = ("_caller_type",)
 
-    full_function_name = StringField("full_function_name")
+    full_function_name = StringField("full_function_name", default=None)
     expect_engine = StringField("expect_engine", default=None)
     expect_resources = DictField(
         "expect_resources", FieldTypes.string, default_factory=dict

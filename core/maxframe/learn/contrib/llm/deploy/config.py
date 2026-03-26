@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ from .....serialization.serializables.field import (
 from .....serialization.serializables.field_type import FieldTypes
 from .framework import InferenceFrameworkEnum
 
+REASONING_MODEL_KEY = "reasoning_model"
+
 
 class ModelDeploymentConfig(Serializable):
     """
@@ -42,30 +44,38 @@ class ModelDeploymentConfig(Serializable):
 
     Parameters
     ----------
-    model_name: str
+    model_name : str
         The name of the model.
-    model_file: str
-        The file path of the model.
-    inference_framework_type: InferenceFrameworkEnum
+    model_file : str
+        The **local** file path of the model, e.g., ``"/mnt/models/qwen/"``.
+
+        Note: OSS paths (``oss://...``) are NOT supported directly.
+
+    inference_framework_type : InferenceFrameworkEnum
         The inference framework of the model.
-    required_resource_files: List[Union[str, Any]]
+    required_resource_files : List[Union[str, Any]]
         The required resource files of the model.
-    load_params: Dict[str, Any]
+    load_params : Dict[str, Any]
         The load params of the model.
-    required_cpu: int
+    required_cpu : int
         The required cpu of the model.
-    required_memory: int
+    required_memory : int
         The required memory of the model.
-    required_gu: int
+    required_gu : int
         The required gu of the model.
-    required_gpu_memory: int
+    required_gpu_memory : int
         The required gpu memory of the model.
-    device: str
-        The device of the model. One of "cpu" or "cuda".
-    properties: Dict[str, Any]
+    device : str, optional
+        The device of the model. One of "cpu" or "cuda". Defaults to None,
+        which allows the server to determine the device at runtime.
+    properties : Dict[str, Any]
         The properties of the model.
-    tags: List[str]
+    tags : List[str]
         The tags of the model.
+
+    envs : Dict[str, str]
+        Custom environment variables for the inference subprocess.
+        Example: ``{"CUDA_VISIBLE_DEVICES": "0", "HF_HOME": "/mnt/cache"}``
 
     Notes
     -----
@@ -81,55 +91,12 @@ class ModelDeploymentConfig(Serializable):
     * Validating that all dependencies and libraries are properly installed
     * Understanding the computational behavior and characteristics of your chosen model
 
-    Examples
-    --------
-    >>> from maxframe.learn.contrib.llm.deploy.config import ModelDeploymentConfig
-    >>> from maxframe.learn.contrib.llm.deploy.framework import InferenceFrameworkEnum
-    >>> from maxframe.learn.contrib.llm.models.managed import ManagedTextGenLLM
-
-    >>> # Configure model deployment with VLLM framework
-    >>> model_config = ModelDeploymentConfig(
-    ...     # Path to the model files (assumed to be available in container/mount)
-    ...     model_file="/models/Qwen3-4B-Instruct-2507-FP8",
-    ...     # Use VLLM serving framework for text generation
-    ...     inference_framework_type=InferenceFrameworkEnum.VLLM_SERVE_TEXT,
-    ...     # Framework-specific loading parameters
-    ...     load_params={
-    ...         "max_context_tokens": 4096,  # Maximum context length for the model
-    ...         "max_startup_wait_seconds": 600  # Max wait time for model startup
-    ...     },
-    ...     # Target device for inference
-    ...     device="cuda",
-    ...     # Resource requirements (2 GPU units)
-    ...     required_gu=2,
-    ...     # Model tags for capabilities
-    ...     tags=["text-generation"],
-    ... )
-
-    >>> # Create managed LLM instance with the deployment configuration
-    >>> llm = ManagedTextGenLLM(name="my-model", deploy_config=model_config)
-    >>> # Generate text using the deployed model.
-    >>> result_df = llm.generate(
-    ...     df,  # Input DataFrame containing prompts
-    ...     prompt_template=messages,  # Template for formatting prompts
-    ...     running_options={
-    ...         "max_context_tokens": 4096,  # Runtime context limit
-    ...     },
-    ...     params={
-    ...         "temperature": 0.7,  # Sampling temperature
-    ...         "max_tokens": 2048  # Maximum tokens to generate
-    ...     },
-    ... )
-
-    To make this model config working with the ManagedTextGenLLM,
-    you need to provide a custom image with the required dependencies and model files.
-
     """
 
     model_name: str = StringField("model_name")
     model_file: str = StringField("model_file")
     inference_framework_type: InferenceFrameworkEnum = EnumField(
-        "inference_framework_type", enum_type=InferenceFrameworkEnum
+        "inference_framework_type", enum_type=InferenceFrameworkEnum, default=None
     )
     required_resource_files: List[Union[str, Any]] = ListField(
         "required_resource_files", field_type=FieldTypes.any, default_factory=list
@@ -144,7 +111,7 @@ class ModelDeploymentConfig(Serializable):
     required_memory: Optional[int] = Int32Field("required_memory", default=None)
     required_gu: Optional[int] = Int32Field("required_gu", default=None)
     required_gpu_memory: Optional[int] = Int32Field("required_gpu_memory", default=None)
-    device: str = StringField("device")
+    device: str = StringField("device", default=None)
     properties: Dict[str, Any] = DictField(
         "properties",
         key_type=FieldTypes.string,
@@ -156,11 +123,31 @@ class ModelDeploymentConfig(Serializable):
         field_type=FieldTypes.string,
         default_factory=list,
     )
+    # Custom environment variables for inference subprocess
+    envs: Dict[str, str] = DictField(
+        "envs",
+        key_type=FieldTypes.string,
+        value_type=FieldTypes.string,
+        default_factory=dict,
+    )
+    image: Optional[Dict[str, Any]] = DictField(
+        "image",
+        key_type=FieldTypes.string,
+        value_type=FieldTypes.any,
+        default_factory=dict,
+    )
+    # Inference parameters from model metadata, merged into load_params at runtime
+    inference_parameters: Dict[str, Any] = DictField(
+        "inference_parameters",
+        key_type=FieldTypes.string,
+        value_type=FieldTypes.any,
+        default_factory=dict,
+    )
 
     def is_reasoning_model(self):
-        if self.properties is None:
+        if not self.properties:
             return False
-        return self.properties.get("reasoning_model", False)
+        return self.properties.get(REASONING_MODEL_KEY, False)
 
     def copy(self) -> "ModelDeploymentConfig":
         return deepcopy(self)
@@ -182,6 +169,9 @@ class ModelDeploymentConfig(Serializable):
             and self.device == other.device
             and self.properties == other.properties
             and self.tags == other.tags
+            and self.envs == other.envs
+            and self.image == other.image
+            and self.inference_parameters == other.inference_parameters
         )
 
     def __hash__(self):
@@ -190,32 +180,46 @@ class ModelDeploymentConfig(Serializable):
                 self.model_name,
                 self.model_file,
                 self.inference_framework_type,
-                self.required_resource_files,
-                self.load_params,
+                (
+                    tuple(self.required_resource_files)
+                    if self.required_resource_files
+                    else None
+                ),
+                tuple(sorted(self.load_params.items())) if self.load_params else None,
                 self.required_cpu,
                 self.required_memory,
                 self.required_gu,
                 self.required_gpu_memory,
                 self.device,
-                self.properties,
-                self.tags,
+                tuple(sorted(self.properties.items())) if self.properties else None,
+                tuple(self.tags) if self.tags else None,
+                tuple(sorted(self.envs.items())) if self.envs else None,
+                tuple(sorted(self.image.items())) if self.image else None,
+                (
+                    tuple(sorted(self.inference_parameters.items()))
+                    if self.inference_parameters
+                    else None
+                ),
             )
         )
 
     def check_validity(self):
+        """
+        Validate the configuration and raise ValueError if invalid.
+
+        This method performs client-side validation to catch configuration
+        errors early, before submission to the server.
+        """
         required_fields = [
             "model_name",
-            "model_file",
-            "inference_framework_type",
-            "device",
         ]
         for field in required_fields:
             if getattr(self, field) is None:
                 raise ValueError(f"{field} is required")
 
-        one_of_fields = ["required_cpu", "required_gu"]
-        if not any(getattr(self, field) is not None for field in one_of_fields):
-            raise ValueError(f"At least one of {one_of_fields} is required")
-
-        if not self.tags:
-            raise ValueError("tags is required")
+        required_cpu = self.required_cpu or 0
+        required_gu = self.required_gu or 0
+        if required_cpu <= 0 and required_gu <= 0:
+            raise ValueError(
+                "required_cpu or required_gu must be provided and greater than 0"
+            )

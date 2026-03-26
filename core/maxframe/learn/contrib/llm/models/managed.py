@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 from ..... import opcodes
 from .....serialization.serializables import BoolField, ReferenceField, StringField
-from ..core import LLMTextEmbeddingOp, LLMTextGenOperator
+from ..core import TASK_SENTENCE_EMBEDDING, LLMTextEmbeddingOp, LLMTextGenOperator
 from ..deploy.config import ModelDeploymentConfig
 from ..text import TextEmbeddingModel, TextGenLLM
 
@@ -39,7 +39,9 @@ class ManagedTextGenLLM(TextGenLLM):
         "deploy_config", reference_type=ModelDeploymentConfig, default=None
     )
 
-    def __init__(self, name: str, deploy_config: ModelDeploymentConfig = None):
+    def __init__(
+        self, name: str, deploy_config: Optional[ModelDeploymentConfig] = None
+    ):
         """
         Initialize a managed text LLM.
 
@@ -60,7 +62,7 @@ class ManagedTextGenLLM(TextGenLLM):
         data,
         prompt_template: Union[str, List[Dict[str, Any]]],
         simple_output: bool = False,
-        params: Dict[str, Any] = None,
+        params: Optional[Dict[str, Any]] = None,
         **kw
     ):
         return ManagedLLMTextGenOp(
@@ -86,23 +88,35 @@ class ManagedTextEmbeddingModel(TextEmbeddingModel):
     Managed text embedder by MaxFrame.
     """
 
-    def __init__(self, name: str):
+    deploy_config: ModelDeploymentConfig = ReferenceField(
+        "deploy_config", reference_type=ModelDeploymentConfig, default=None
+    )
+
+    def __init__(
+        self, name: str, deploy_config: Optional[ModelDeploymentConfig] = None
+    ):
         """
         Initialize a managed text embedder.
+
         Parameters
         ----------
         name : str
             The managed text embedder name to use.
+        deploy_config : ModelDeploymentConfig, optional
+            The model deployment config to use.
         """
-        super().__init__(name=name)
+        if deploy_config:
+            deploy_config.model_name = name
+            deploy_config.check_validity()
+        super().__init__(name=name, deploy_config=deploy_config)
 
     def embed(
         self,
         series,
-        dimensions: int = None,
-        encoding_format: str = None,
+        dimensions: Optional[int] = None,
+        encoding_format: Optional[str] = None,
         simple_output: bool = False,
-        params: Dict[str, Any] = None,
+        params: Optional[Dict[str, Any]] = None,
         **kw
     ):
         return ManagedLLMTextEmbeddingOp(
@@ -111,7 +125,7 @@ class ManagedTextEmbeddingModel(TextEmbeddingModel):
             encoding_format=encoding_format,
             simple_output=simple_output,
             params=params,
-            task="text-embedding",
+            task=TASK_SENTENCE_EMBEDDING,
             **kw,
         )(series)
 

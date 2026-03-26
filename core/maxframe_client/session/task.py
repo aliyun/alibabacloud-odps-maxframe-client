@@ -1,4 +1,4 @@
-# Copyright 1999-2026 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,15 +19,16 @@ import time
 from typing import Any, Dict, List, Optional, Type, Union
 
 import msgpack
+from odps import ODPS
+from odps import options as odps_options
+from odps.errors import EmptyTaskInfoError, RequestTimeTooSkewed, parse_instance_error
+from odps.models import Instance, MaxFrameTask
+
 from maxframe.config import options
 from maxframe.core import TileableGraph
 from maxframe.errors import NoTaskServerResponseError, SessionAlreadyClosedError
 from maxframe.protocol import DagInfo, JsonSerializable, ResultInfo, SessionInfo
 from maxframe.utils import deserialize_serializable, serialize_serializable, to_str
-from odps import ODPS
-from odps import options as odps_options
-from odps.errors import EmptyTaskInfoError, RequestTimeTooSkewed, parse_instance_error
-from odps.models import Instance, MaxFrameTask
 
 try:
     from maxframe import __version__ as mf_version

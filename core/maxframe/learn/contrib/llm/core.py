@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,6 +31,10 @@ from ....serialization.serializables.field import (
     StringField,
 )
 
+# Task type constants
+TASK_TEXT_GENERATION = "text-generation"
+TASK_SENTENCE_EMBEDDING = "sentence-embedding"
+
 
 class LLM(Serializable):
     name = StringField("name", default=None)
@@ -51,23 +55,28 @@ class LLMTaskOperator(Operator, DataFrameOperatorMixin):
             output_types = [OutputType.dataframe]
 
         running_options = kw.pop("running_options", {})
-        self._setup_default_gu_quota(running_options)
+        self._setup_default_quotas(running_options)
 
         super().__init__(
             _output_types=output_types, running_options=running_options, **kw
         )
 
     @staticmethod
-    def _setup_default_gu_quota(running_options):
+    def _setup_default_quotas(running_options):
+        """Setup default quota configurations."""
         from .... import options
 
-        running_options["gu_quota"] = running_options.get(
-            "gu_quota", options.session.gu_quota_name
-        )
-        if running_options["gu_quota"] is not None and not isinstance(
-            running_options["gu_quota"], str
-        ):
-            raise TypeError("gu_quota must be a string")
+        quota_names = ["gu_quota_name", "inference_quota_name"]
+
+        for quota_name in quota_names:
+            running_options[quota_name] = running_options.get(
+                quota_name, getattr(options.session, quota_name)
+            )
+            if running_options[quota_name] is not None and not isinstance(
+                running_options[quota_name], str
+            ):
+                raise TypeError(f"{quota_name} must be a string")
+
         return running_options
 
     def get_output_dtypes(self) -> Dict[str, np.dtype]:

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,11 +19,12 @@ from setuptools import Extension, setup
 
 pack_root = os.path.dirname(os.path.abspath(__file__))
 
-# load cythonize_all from _cythonize_all.py
-with open(os.path.join(pack_root, "_cythonize_all.py"), "r") as cy_src:
+# load cythonize_all and guess_version_by_tag_and_branch from _setup_utils.py
+with open(os.path.join(pack_root, "_setup_utils.py"), "r") as cy_src:
     _locals = locals()
     exec(cy_src.read(), globals(), _locals)
     cythonize_all_pyx = _locals["cythonize_all_pyx"]
+    make_scm_version = _locals["make_scm_version"]
 
 # The pyx with C sources.
 ext_include_source_map = {
@@ -60,6 +61,7 @@ for readme_file in readme_files:
 setup_options = dict(
     long_description=long_description or "",
     ext_modules=extensions,
+    use_scm_version=make_scm_version(".."),
 )
 try:
     if os.path.exists(f"{pack_root}/../README.rst"):

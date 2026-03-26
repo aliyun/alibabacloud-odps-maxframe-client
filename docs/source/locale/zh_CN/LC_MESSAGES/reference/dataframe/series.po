@@ -2338,3 +2338,4 @@ msgid ""
 msgstr ""
 "``Series.mf`` 提供 MaxFrame 独有的方法。这些方法是从 MaxCompute 的应用"
 "场景中整理而来，可以通过 ``Series.mf.<function/property>`` 的方式访问。"
+
