@@ -1,4 +1,4 @@
-# Copyright 1999-2026 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,6 +25,11 @@ from urllib.parse import urlparse
 
 import numpy as np
 import pandas as pd
+from odps import ODPS
+from odps import options as odps_options
+from odps.config import option_context as odps_option_context
+from odps.console import in_ipython_frontend
+
 from maxframe.codegen import CodeGenResult
 from maxframe.codegen.spe import SPECodeGenerator
 from maxframe.config import options
@@ -76,10 +81,6 @@ from maxframe.utils import (
     str_to_bool,
     sync_pyodps_options,
 )
-from odps import ODPS
-from odps import options as odps_options
-from odps.config import option_context as odps_option_context
-from odps.console import in_ipython_frontend
 
 from ..clients.framedriver import FrameDriverClient
 from ..fetcher import get_fetcher_cls

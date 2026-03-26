@@ -1,4 +1,4 @@
-# Copyright 1999-2026 Alibaba Group Holding Ltd.
+# Copyright 1999-2025 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +18,13 @@ import os
 import mock
 import pytest
 from defusedxml import ElementTree
+from odps import ODPS
+from odps import options as odps_options
+
 from maxframe import dataframe as md
 from maxframe import options
 from maxframe.config import option_context
 from maxframe.tests.utils import tn
-from odps import ODPS
-from odps import options as odps_options
 
 from ...session.consts import MAXFRAME_OUTPUT_JSON_FORMAT
 from ...session.task import MaxFrameInstanceCaller, MaxFrameTask, MaxFrameTaskSession

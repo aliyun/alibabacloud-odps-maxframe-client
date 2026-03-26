@@ -1909,7 +1909,6 @@ def get_odps_dlf_table(
     tb_schema_obj = tb_schema_obj.parse(None, schema_json, obj=tb_schema_obj)
     tb_schema_obj.load()
 
-    table_obj._project = Project(name=project)
     table_obj.table_schema = tb_schema_obj
     table_obj.type = Table.Type.EXTERNAL_TABLE
     table_obj.last_data_modified_time = datetime.datetime.now()

@@ -1500,3 +1500,4 @@ msgstr ""
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.rst:195:<autosummary>:1
 msgid ":py:obj:`values <maxframe.dataframe.Series.values>`\\"
 msgstr ""
+

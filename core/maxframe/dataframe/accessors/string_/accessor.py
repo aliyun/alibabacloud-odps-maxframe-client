@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -67,6 +67,8 @@ class StringAccessor:
 
     @classmethod
     def _register(cls, method):
+        if not hasattr(pd.Series.str, method):  # pragma: no cover
+            return
         setattr(cls, method, cls._gen_func(method))
 
     def split(self, pat=None, n=-1, expand=False):

@@ -54,7 +54,11 @@ class DatetimeAccessor:
 
     @classmethod
     def _register(cls, method):
-        is_property = not callable(getattr(pd.Series.dt, method))
+        try:
+            is_property = not callable(getattr(pd.Series.dt, method))
+        except AttributeError:  # pragma: no cover
+            return
+
         func = cls._gen_func(method, is_property)
         if is_property:
             func = property(func)

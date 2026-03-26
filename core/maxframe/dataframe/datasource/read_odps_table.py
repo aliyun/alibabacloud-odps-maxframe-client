@@ -220,6 +220,8 @@ def read_odps_table(
             sql_hints = options.sql.settings or {}
             if not str_to_bool(sql_hints.get("odps.maxframe.resolve_dlf_tables")):
                 raise
+            if isinstance(table_name, Table):
+                table_name = table_name.name
             table = get_odps_dlf_table(odps_entry, table_name, schema=schema)
 
     if not table.table_schema.partitions and (

@@ -337,3 +337,4 @@ msgstr "将半结构化 JSON 数据规范化为平面表。"
 #: maxframe.dataframe.datasource.read_json.read_json:131 of
 msgid "示例"
 msgstr ""
+

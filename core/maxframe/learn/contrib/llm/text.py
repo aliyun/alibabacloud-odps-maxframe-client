@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -92,7 +92,7 @@ class TextGenLLM(LLM):
         self,
         data,
         prompt_template: List[Dict[str, str]],
-        params: Dict[str, Any] = None,
+        params: Optional[Dict[str, Any]] = None,
     ):
         raise NotImplementedError
 
@@ -103,9 +103,9 @@ class TextGenLLM(LLM):
         self,
         series,
         target_language: str,
-        source_language: str = None,
-        description: str = None,
-        examples: List[Dict[str, str]] = None,
+        source_language: Optional[str] = None,
+        description: Optional[str] = None,
+        examples: Optional[List[Dict[str, str]]] = None,
         index=None,
         **kw
     ):
@@ -123,8 +123,8 @@ class TextGenLLM(LLM):
         self,
         series,
         labels: List[str],
-        description=None,
-        examples=None,
+        description: Optional[str] = None,
+        examples: Optional[List[Dict[str, str]]] = None,
         index=None,
         **kw
     ):
@@ -141,8 +141,8 @@ class TextGenLLM(LLM):
         self,
         series,
         schema: Any,
-        description: str = None,
-        examples: List[Tuple[str, str]] = None,
+        description: Optional[str] = None,
+        examples: Optional[List[Tuple[str, str]]] = None,
         index=None,
         **kw
     ):
@@ -170,10 +170,10 @@ class TextEmbeddingModel(LLM):
     def embed(
         self,
         data: Series,
-        dimensions: int,
-        encoding_format: str,
-        simple_output: bool,
-        params: Dict[str, Any],
+        dimensions: Optional[int] = None,
+        encoding_format: Optional[str] = None,
+        simple_output: bool = False,
+        params: Optional[Dict[str, Any]] = None,
         **kw
     ):
         raise NotImplementedError
@@ -183,7 +183,7 @@ def generate(
     data,
     model: TextGenLLM,
     prompt_template: List[Dict[str, Any]],
-    params: Dict[str, Any] = None,
+    params: Optional[Dict[str, Any]] = None,
 ):
     """
     Generate text using a text language model based on given data and prompt template.
@@ -360,8 +360,8 @@ def classify(
     series,
     model: TextGenLLM,
     labels: List[str],
-    description: str = None,
-    examples: List[Dict[str, str]] = None,
+    description: Optional[str] = None,
+    examples: Optional[List[Dict[str, str]]] = None,
     index=None,
 ):
     """
@@ -442,8 +442,8 @@ def extract(
     series,
     model: TextGenLLM,
     schema: Any,
-    description: str = None,
-    examples: List[Tuple[str, str]] = None,
+    description: Optional[str] = None,
+    examples: Optional[List[Tuple[str, str]]] = None,
     index=None,
 ):
     """
@@ -529,10 +529,10 @@ def extract(
 def embed(
     series,
     model: TextEmbeddingModel,
-    dimensions: int = None,
-    encoding_format: str = None,
+    dimensions: Optional[int] = None,
+    encoding_format: Optional[str] = None,
     simple_output: bool = False,
-    params: Dict[str, Any] = None,
+    params: Optional[Dict[str, Any]] = None,
     index=None,
 ):
     """

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -159,6 +159,32 @@ def odps_envs(test_config):
 
     with _enter_odps_envs(entry):
         yield
+
+
+@pytest.fixture
+def modelstudio_envs(test_config):
+    env_mappings = {
+        "ODPS_MODELSTUDIO_API_KEY": "api_key",
+        "ODPS_MODELSTUDIO_ENDPOINT": "endpoint",
+        "ODPS_MODELSTUDIO_RPM_DEFAULT_LIMIT_PER_JOB": "rpm_default_limit_per_job",
+    }
+    old_envs = {name: os.environ.get(name) for name in env_mappings}
+    for env_name, config_key in env_mappings.items():
+        value = test_config.get("modelstudio", config_key, fallback=None) or os.getenv(
+            env_name
+        )
+        if value is None:
+            os.environ.pop(env_name, None)
+        else:
+            os.environ[env_name] = value
+    try:
+        yield
+    finally:
+        for env_name, old_val in old_envs.items():
+            if old_val is None:
+                os.environ.pop(env_name, None)
+            else:
+                os.environ[env_name] = old_val
 
 
 @pytest.fixture(scope="session")
