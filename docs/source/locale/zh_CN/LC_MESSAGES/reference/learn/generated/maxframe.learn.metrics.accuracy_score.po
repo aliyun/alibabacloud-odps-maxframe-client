@@ -78,21 +78,21 @@ msgstr ""
 " 时为 1，当 ``normalize == False`` 时为样本数量。"
 
 #: maxframe.learn.metrics._classification.accuracy_score:19 of
-#, fuzzy
 msgid ""
 "**score** -- If ``normalize == True``, return the fraction of correctly "
 "classified samples (float), else returns the number of correctly "
 "classified samples (int)."
 msgstr ""
 "**score** -- 如果 ``normalize == True``，则返回正确分类样本的比例（float"
-"），否则返回正确分类样本的数量（int）。最佳性能是当 ``normalize == True``"
-" 时为 1，当 ``normalize == False`` 时为样本数量。"
+"），否则返回正确分类样本的数量（int）。"
 
 #: maxframe.learn.metrics._classification.accuracy_score:23 of
 msgid ""
 "The best performance is 1 with ``normalize == True`` and the number of "
 "samples with ``normalize == False``."
 msgstr ""
+"当 ``normalize == True`` 时，最佳性能为1；当 ``normalize == False`` 时，"
+"为样本数量。"
 
 #: maxframe.learn.metrics._classification.accuracy_score of
 msgid "返回类型"

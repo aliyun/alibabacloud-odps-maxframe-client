@@ -82,22 +82,22 @@ msgstr ""
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:12
 #: of
 msgid "The color for each of the DataFrame's columns. Possible values are:"
-msgstr ""
+msgstr "DataFrame 每一列的颜色。可能的值为："
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:14
 #: of
 msgid "A single color string referred to by name, RGB or RGBA code,"
-msgstr ""
+msgstr "通过名称、RGB 或 RGBA 代码引用的单个颜色字符串，"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:15
 #: of
 msgid "for instance 'red' or '#a98d19'."
-msgstr ""
+msgstr "例如 'red' 或 '#a98d19'。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:17
 #: of
 msgid "A sequence of color strings referred to by name, RGB or RGBA"
-msgstr ""
+msgstr "通过名称、RGB 或 RGBA 代码引用的颜色字符串序列，"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:18
 #: of
@@ -107,16 +107,18 @@ msgid ""
 "alternatively. If there is only a single column to be plotted, then only "
 "the first color from the color list will be used."
 msgstr ""
+"代码，将递归地用于每一列。例如 ['green','yellow']，每一列的线条将交替填充"
+"绿色和黄色。如果只有一列需要绘制，则只使用颜色列表中的第一个颜色。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:24
 #: of
 msgid "A dict of the form {column name"
-msgstr ""
+msgstr "形式为 {列名"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:-1
 #: of
 msgid "color}, so that each column will be"
-msgstr ""
+msgstr "颜色} 的字典，以便每列都将被"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:25
 #: of
@@ -126,6 +128,8 @@ msgid ""
 " then passing {'a': 'green', 'b': 'red'} will color lines for column `a` "
 "in green and lines for column `b` in red."
 msgstr ""
+"相应地着色。例如，如果您的列名为 `a` 和 `b`，则传递 {'a': 'green', 'b': '"
+"red'} 将使列 `a` 的线条为绿色，列 `b` 的线条为红色。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:29
 #: of
@@ -189,11 +193,13 @@ msgid ""
 "An ndarray is returned with one :class:`matplotlib.axes.Axes` per column "
 "when ``subplots=True``."
 msgstr ""
+"当 ``subplots=True`` 时，返回一个 ndarray，其中每个列对应一个 :class:`"
+"matplotlib.axes.Axes`。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:37
 #: of
 msgid "matplotlib.pyplot.plot : Plot y versus x as lines and/or markers."
-msgstr ""
+msgstr "matplotlib.pyplot.plot : 将 y 对 x 绘制为线条和/或标记。"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.plot.line.rst:7
 msgid ""

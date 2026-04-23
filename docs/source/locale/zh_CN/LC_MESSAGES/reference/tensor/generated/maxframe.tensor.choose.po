@@ -139,19 +139,19 @@ msgstr ""
 
 #: maxframe.tensor.indexing.choose.choose:47 of
 msgid "Specifies how indices outside `[0, n-1]` will be treated:"
-msgstr ""
+msgstr "指定如何处理超出 `[0, n-1]` 范围的索引："
 
 #: maxframe.tensor.indexing.choose.choose:49 of
 msgid "'raise' : an exception is raised"
-msgstr ""
+msgstr "'raise' : 抛出异常"
 
 #: maxframe.tensor.indexing.choose.choose:50 of
 msgid "'wrap' : value becomes value mod `n`"
-msgstr ""
+msgstr "'wrap' : 值变为值模 `n`"
 
 #: maxframe.tensor.indexing.choose.choose:51 of
 msgid "'clip' : values < 0 are mapped to 0, values > n-1 are mapped to n-1"
-msgstr ""
+msgstr "'clip' : 小于 0 的值被映射到 0，大于 n-1 的值被映射到 n-1"
 
 #: maxframe.tensor.indexing.choose.choose of
 msgid "返回"

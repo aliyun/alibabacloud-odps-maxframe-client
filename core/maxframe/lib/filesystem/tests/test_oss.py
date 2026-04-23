@@ -21,8 +21,14 @@ import pytest
 
 from .. import oss
 from .._oss_lib import glob as og
-from .._oss_lib.common import OSSFileEntry
-from ..oss import HostEnforceType, _rewrite_internal_endpoint, build_oss_path
+from .._oss_lib.common import (
+    OSSFileEntry,
+    _rewrite_internal_endpoint,
+    build_oss_path,
+    oss_path_join,
+    parse_osspath,
+)
+from ..oss import HostEnforceType
 
 
 class OSSObjInfo:
@@ -103,7 +109,7 @@ class SideEffectObjIter:
 
     def __iter__(self):
         for name, content in self.bucket.obj_dict.items():
-            if name.startswith(self.prefix):
+            if not self.prefix or name.startswith(self.prefix):
                 yield OSSObjInfo(name, content)
 
 
@@ -112,6 +118,7 @@ class SideEffectObjIter:
 def test_oss_filesystem(fake_obj_iter, fake_oss_bucket):
     access_key_id = "your_access_key_id"
     access_key_secret = "your_access_key_secret"
+    sec_token = "your_security_token"
     end_point = "your_endpoint"
 
     file_path = f"oss://your_endpoint/bucket/file.csv"
@@ -128,10 +135,10 @@ def test_oss_filesystem(fake_obj_iter, fake_oss_bucket):
         new_file_path, end_point, access_key_id, access_key_secret
     )
     fake_dir_path = build_oss_path(
-        dir_path, end_point, access_key_id, access_key_secret
+        dir_path, end_point, access_key_id, access_key_secret, sec_token
     )
     fake_dir_path_contains_magic = build_oss_path(
-        dir_path_content_magic, end_point, access_key_id, access_key_secret
+        dir_path_content_magic, end_point, access_key_id, access_key_secret, sec_token
     )
     fake_not_exist_file_path = build_oss_path(
         not_exist_file_path, end_point, access_key_id, access_key_secret
@@ -140,7 +147,7 @@ def test_oss_filesystem(fake_obj_iter, fake_oss_bucket):
 
     assert list(fs.walk(fake_dir_path)) == [
         (fake_dir_path, ["subdir"], ["file1.csv", "file2.csv"]),
-        (fake_dir_path + "subdir/", [], ["file3.csv", "file4.csv"]),
+        (oss_path_join(fake_dir_path, "subdir/"), [], ["file3.csv", "file4.csv"]),
     ]
 
     # Test OSSFileSystem.
@@ -166,7 +173,10 @@ def test_oss_filesystem(fake_obj_iter, fake_oss_bucket):
         fs.ls(fake_file_path)
 
     assert len(fs.glob(fake_file_path)) == 1
-    assert len(fs.glob(fake_dir_path + "*", recursive=True)) == 4
+
+    parsed_dir_path = parse_osspath(fake_dir_path)
+    asteroid_path = parsed_dir_path._replace(key=parsed_dir_path.key + "*")
+    assert len(fs.glob(str(asteroid_path), recursive=True)) == 4
     assert len(fs.glob(fake_dir_path_contains_magic)) == 2
 
     # Test the specific functions of glob.

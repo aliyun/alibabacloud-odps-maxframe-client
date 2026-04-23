@@ -67,21 +67,21 @@ msgstr ""
 
 #: maxframe.dataframe.sort.nsmallest.df_nsmallest:15 of
 msgid "Where there are duplicate values:"
-msgstr ""
+msgstr "当存在重复值时："
 
 #: maxframe.dataframe.sort.nsmallest.df_nsmallest:17 of
 msgid "``first`` : take the first occurrence."
-msgstr ""
+msgstr "``first`` : 取第一次出现的值。"
 
 #: maxframe.dataframe.sort.nsmallest.df_nsmallest:18 of
 msgid "``last`` : take the last occurrence."
-msgstr ""
+msgstr "``last`` : 取最后一次出现的值。"
 
 #: maxframe.dataframe.sort.nsmallest.df_nsmallest:19 of
 msgid ""
 "``all`` : do not drop any duplicates, even it means selecting more than "
 "`n` items."
-msgstr ""
+msgstr "``all`` : 不删除任何重复项，即使这意味着选择超过 `n` 个项。"
 
 #: maxframe.dataframe.sort.nsmallest.df_nsmallest of
 msgid "返回类型"

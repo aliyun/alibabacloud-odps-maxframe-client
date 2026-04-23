@@ -63,7 +63,7 @@ msgstr ""
 
 #: maxframe.dataframe.misc.drop_duplicates.index_drop_duplicates:10 of
 msgid "**deduplicated**"
-msgstr ""
+msgstr "**去重后的**"
 
 #: maxframe.dataframe.misc.drop_duplicates.index_drop_duplicates of
 msgid "返回类型"

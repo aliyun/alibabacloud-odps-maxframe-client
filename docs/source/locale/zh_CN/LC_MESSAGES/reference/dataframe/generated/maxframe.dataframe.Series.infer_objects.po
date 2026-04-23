@@ -40,7 +40,7 @@ msgstr ""
 
 #: maxframe.dataframe.misc.infer_dtypes.infer_objects:8 of
 msgid "**converted**"
-msgstr ""
+msgstr "**已转换**"
 
 #: maxframe.dataframe.misc.infer_dtypes.infer_objects of
 msgid "返回类型"

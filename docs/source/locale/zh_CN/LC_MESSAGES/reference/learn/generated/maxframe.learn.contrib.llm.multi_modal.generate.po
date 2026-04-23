@@ -74,14 +74,16 @@ msgid ""
 "a role and content. Content is a list of dict, each dict contains a text "
 "or image, the value can reference column data from input."
 msgstr ""
+"包含列名作为占位符的消息列表。每条消息包含一个角色和内容。内容是字典列表"
+"，每个字典包含文本或图像，值可以引用输入中的列数据。"
 
 #: maxframe.learn.contrib.llm.multi_modal.generate:9 of
 msgid "Here is an example of prompt template."
-msgstr ""
+msgstr "以下是提示模板的示例。"
 
 #: maxframe.learn.contrib.llm.multi_modal.generate:27 of
 msgid "Where:"
-msgstr ""
+msgstr "其中："
 
 #: maxframe.learn.contrib.llm.multi_modal.generate:29 of
 #, python-brace-format
@@ -89,16 +91,20 @@ msgid ""
 "``text`` can be a Python format string using column names from input data"
 " as parameters (e.g. ``\"{column_name}\"``)"
 msgstr ""
+"``text`` 可以是使用输入数据中的列名作为参数的 Python 格式字符串（例如 ``"
+"\"{column_name}\"``）"
 
 #: maxframe.learn.contrib.llm.multi_modal.generate:30 of
 msgid ""
 "``image`` should be a DataURL string following `RFC2397 "
 "<https://en.wikipedia.org/wiki/Data_URI_scheme>`_ standard with format."
 msgstr ""
+"``image`` 应该是遵循 `RFC2397 <https://en.wikipedia.org/wiki/Data_URI_"
+"scheme>`_ 标准的 DataURL 字符串。"
 
 #: maxframe.learn.contrib.llm.multi_modal.generate:37 of
 msgid "params"
-msgstr ""
+msgstr "参数"
 
 #: maxframe.learn.contrib.llm.multi_modal.generate:-1 of
 msgid "Dict[str, Any], optional"

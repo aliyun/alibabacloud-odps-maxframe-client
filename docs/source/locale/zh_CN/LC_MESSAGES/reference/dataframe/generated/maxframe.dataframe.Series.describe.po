@@ -80,14 +80,13 @@ msgstr ""
 msgid ""
 "A white list of data types to include in the result. Ignored for "
 "``Series``. Here are the options:"
-msgstr ""
+msgstr "要包含在结果中的数据类型的白名单。对 ``Series`` 忽略。以下是选项："
 
 #: maxframe.dataframe.misc.describe.describe:20 of
 msgid "'all' : All columns of the input will be included in the output."
-msgstr ""
+msgstr "'all' : 输入的所有列将包含在输出中。"
 
 #: maxframe.dataframe.misc.describe.describe:21 of
-#, fuzzy
 msgid ""
 "A list-like of dtypes : Limits the results to the provided data types. To"
 " limit the result to numeric types submit ``numpy.number``. To limit it "
@@ -95,16 +94,14 @@ msgid ""
 "can also be used in the style of ``select_dtypes`` (e.g. "
 "``df.describe(include=['O'])``)."
 msgstr ""
-"结果中要包含的数据类型白名单。对 ``Series`` 忽略。选项如下：  - 'all' : "
-"输入的所有列都会包含在输出中。 - 类似列表的 dtypes : 将结果限制为指定的"
-"数据类型。   要限制为数值类型，请传入 ``numpy.number``。要限制为对象列，"
-"请传入 ``numpy.object`` 数据类型。也可以使用 ``select_dtypes`` 风格的"
-"字符串（例如 ``df.describe(include=['O'])``）。 - None（默认） : 结果将"
-"包含所有数值列。"
+"类似列表的 dtypes : 将结果限制为提供的数据类型。要将结果限制为数值类型，"
+"请提交 ``numpy.number``。要将其限制为对象列，请提交 ``numpy.object`` "
+"数据类型。字符串也可以在 ``select_dtypes`` 风格中使用（例如 ``df.describe"
+"(include=['O'])``）。"
 
 #: maxframe.dataframe.misc.describe.describe:28 of
 msgid "None (default) : The result will include all numeric columns."
-msgstr ""
+msgstr "None（默认）：结果将包含所有数值列。"
 
 #: maxframe.dataframe.misc.describe.describe:30 of
 msgid ""
@@ -126,25 +123,23 @@ msgstr ""
 msgid ""
 "A black list of data types to omit from the result. Ignored for "
 "``Series``. Here are the options:"
-msgstr ""
+msgstr "要从结果中排除的数据类型的黑名单。对 ``Series`` 忽略。以下是选项："
 
 #: maxframe.dataframe.misc.describe.describe:33 of
-#, fuzzy
 msgid ""
 "A list-like of dtypes : Excludes the provided data types from the result."
 " To exclude numeric types submit ``numpy.number``. To exclude object "
 "columns submit the data type ``numpy.object``. Strings can also be used "
 "in the style of ``select_dtypes`` (e.g. ``df.describe(exclude=['O'])``)."
 msgstr ""
-"结果中要排除的数据类型黑名单。对 ``Series`` 忽略。选项如下：  - 类似列表"
-"的 dtypes : 从结果中排除指定的数据类型。   要排除数值类型，请传入 ``numpy"
-".number``。要排除对象列，请传入数据类型 ``numpy.object``。也可以使用 ``"
-"select_dtypes`` 风格的字符串（例如 ``df.describe(exclude=['O'])``）。 - "
-"None（默认） : 结果将不排除任何内容。"
+"类似列表的 dtypes : 从结果中排除提供的数据类型。要排除数值类型，请提交 ``"
+"numpy.number``。要排除对象列，请提交 ``numpy.object`` 数据类型。字符串也"
+"可以在 ``select_dtypes`` 风格中使用（例如 ``df.describe(exclude=['O'])``"
+"）。"
 
 #: maxframe.dataframe.misc.describe.describe:38 of
 msgid "None (default) : The result will exclude nothing."
-msgstr ""
+msgstr "None（默认）：结果将不排除任何内容。"
 
 #: maxframe.dataframe.misc.describe.describe of
 msgid "返回"

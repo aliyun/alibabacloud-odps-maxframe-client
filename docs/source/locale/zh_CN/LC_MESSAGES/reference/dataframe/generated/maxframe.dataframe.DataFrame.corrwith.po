@@ -69,31 +69,31 @@ msgstr ""
 
 #: maxframe.dataframe.statistics.corr.df_corrwith:15 of
 msgid "Method of correlation:"
-msgstr ""
+msgstr "相关性方法："
 
 #: maxframe.dataframe.statistics.corr.df_corrwith:17 of
 msgid "pearson : standard correlation coefficient"
-msgstr ""
+msgstr "pearson : 标准相关系数"
 
 #: maxframe.dataframe.statistics.corr.df_corrwith:18 of
 msgid "kendall : Kendall Tau correlation coefficient"
-msgstr ""
+msgstr "kendall : Kendall Tau 相关系数"
 
 #: maxframe.dataframe.statistics.corr.df_corrwith:19 of
 msgid "spearman : Spearman rank correlation"
-msgstr ""
+msgstr "spearman : Spearman 秩相关"
 
 #: maxframe.dataframe.statistics.corr.df_corrwith:20 of
 msgid "callable: callable with input two 1d ndarrays"
-msgstr ""
+msgstr "callable: 接收两个一维 ndarray 作为输入的可调用对象"
 
 #: maxframe.dataframe.statistics.corr.df_corrwith:21 of
 msgid "and returning a float."
-msgstr ""
+msgstr "并返回一个浮点数。"
 
 #: maxframe.dataframe.statistics.corr.df_corrwith:24 of
 msgid "kendall, spearman and callables not supported on multiple chunks yet."
-msgstr ""
+msgstr "kendall、spearman 和可调用对象目前还不支持多个分块。"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.corrwith.rst
 msgid "返回"

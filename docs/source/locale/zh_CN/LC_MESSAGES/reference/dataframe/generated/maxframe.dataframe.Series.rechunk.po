@@ -1,0 +1,117 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.5.0.dev924+br.g1188c6954.d20260107\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-11 15:50+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.rechunk.rst:2
+msgid "maxframe.dataframe.Series.rechunk"
+msgstr ""
+
+#: maxframe.dataframe.misc.rechunk.rechunk:1 of
+msgid "Rechunk DataFrame, Series or Index data."
+msgstr "重新分块 DataFrame、Series 或 Index 数据。"
+
+#: maxframe.dataframe.misc.rechunk.rechunk:3 of
+msgid ""
+"This function is used to reorganize the chunk structure of data, which "
+"can change how data is distributed in distributed computing. By adjusting"
+" chunk sizes, memory usage and computational performance can be "
+"optimized. Note that this function is only effective in DPE for now."
+msgstr ""
+"此函数用于重新组织数据的分块结构，可以改变数据在分布式计算中的分布方式。"
+"通过调整分块大小，可以优化内存使用和计算性能。请注意，此函数目前仅在 DPE "
+"中有效。"
+
+#: maxframe.dataframe.misc.rechunk.rechunk of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.misc.rechunk.rechunk:8 of
+#, python-brace-format
+msgid ""
+"New chunk size configuration. Can be one of the following forms: - "
+"Integer: Same chunk size for all dimensions - Tuple: Different chunk "
+"sizes for each dimension. For instance, (100, 100)   rechunks dimension 0"
+" and 1 into chunks with size 100 respectively, and   ((100, 100, 100), "
+"(100,)) rechunks dimension 0 into 3 chunks with size   100 for each "
+"chunk, and rechunks dimension 1 into one single chunk with   size 100. - "
+"Dictionary: Chunk sizes for specific dimensions, for instance,   `{0: "
+"100}` rechunks dimension 0 into 100 elements per chunk, and   `{0: (100, "
+"100, 100)}` rechunks dimension 0 into 3 chunks where each   chunk has "
+"size 100."
+msgstr ""
+"新的分块大小配置。可以是以下形式之一：- 整数：所有维度使用相同的分块大小 "
+"- 元组：每个维度使用不同的分块大小。例如，(100, 100) 分别将维度 0 和 1 "
+"重新分块为大小为 100 的块，而 ((100, 100, 100), (100,)) 将维度 0 重新分块"
+"为 3 个大小为 100 的块，将维度 1 重新分块为一个大小为 100 的单一块。- "
+"字典：特定维度的分块大小，例如，`{0: 100}` 将维度 0 重新分块为每个块 100 "
+"个元素，而 `{0: (100, 100, 100)}` 将维度 0 重新分块为 3 个块，每个块大小"
+"为 100。"
+
+#: maxframe.dataframe.misc.rechunk.rechunk:8 of
+msgid ""
+"New chunk size configuration. Can be one of the following forms: - "
+"Integer: Same chunk size for all dimensions - Tuple: Different chunk "
+"sizes for each dimension. For instance, (100, 100)"
+msgstr ""
+"新的分块大小配置。可以是以下形式之一：- 整数：所有维度使用相同的分块大小 "
+"- 元组：每个维度使用不同的分块大小。例如，(100, 100)"
+
+#: maxframe.dataframe.misc.rechunk.rechunk:11 of
+msgid ""
+"rechunks dimension 0 and 1 into chunks with size 100 respectively, and "
+"((100, 100, 100), (100,)) rechunks dimension 0 into 3 chunks with size "
+"100 for each chunk, and rechunks dimension 1 into one single chunk with "
+"size 100."
+msgstr ""
+"分别将维度 0 和 1 重新分块为大小为 100 的块，而 ((100, 100, 100), (100,))"
+" 将维度 0 重新分块为 3 个大小为 100 的块，将维度 1 重新分块为一个大小为 "
+"100 的单一块。"
+
+#: maxframe.dataframe.misc.rechunk.rechunk:15 of
+#, python-brace-format
+msgid ""
+"Dictionary: Chunk sizes for specific dimensions, for instance, `{0: 100}`"
+" rechunks dimension 0 into 100 elements per chunk, and `{0: (100, 100, "
+"100)}` rechunks dimension 0 into 3 chunks where each chunk has size 100."
+msgstr ""
+"字典：特定维度的分块大小，例如，`{0: 100}` 将维度 0 重新分块为每个块 100 "
+"个元素，而 `{0: (100, 100, 100)}` 将维度 0 重新分块为 3 个块，每个块大小"
+"为 100。"
+
+#: maxframe.dataframe.misc.rechunk.rechunk:20 of
+msgid "Reserved for future use."
+msgstr "预留供将来使用。"
+
+#: maxframe.dataframe.misc.rechunk.rechunk of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.misc.rechunk.rechunk:23 of
+msgid "The rechunked DataFrame, Series or Index object."
+msgstr "重新分块后的 DataFrame、Series 或 Index 对象。"
+
+#: maxframe.dataframe.misc.rechunk.rechunk of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.misc.rechunk.rechunk:27 of
+msgid "示例"
+msgstr ""
+

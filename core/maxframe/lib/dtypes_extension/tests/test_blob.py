@@ -76,6 +76,7 @@ def test_blob_arrow_conversion():
     pd_ser = pd.Series([SolidBlob(b"abcd"), SolidBlob(b"efgh")], dtype="blob")
     pa_arr = pa.Array.from_pandas(pd_ser)
     assert pa_arr.type == ArrowBlobType()
+    assert pa_arr.type == deserialize_serializable(serialize_serializable(pa_arr.type))
     try:
         assert pa_arr.tolist() == [b"abcd", b"efgh"]
     except NotImplementedError:

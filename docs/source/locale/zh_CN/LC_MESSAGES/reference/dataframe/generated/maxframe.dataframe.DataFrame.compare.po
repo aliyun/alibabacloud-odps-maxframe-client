@@ -49,31 +49,31 @@ msgstr ""
 
 #: maxframe.dataframe.merge.compare.df_compare:5 of
 msgid "Determine which axis to align the comparison on."
-msgstr ""
+msgstr "确定比较对齐的轴。"
 
 #: maxframe.dataframe.merge.compare.df_compare:7 of
 msgid "0, or 'index'"
-msgstr ""
+msgstr "0 或 'index'"
 
 #: maxframe.dataframe.merge.compare.df_compare:-1 of
 msgid "Resulting differences are stacked vertically"
-msgstr ""
+msgstr "结果差异垂直堆叠"
 
 #: maxframe.dataframe.merge.compare.df_compare:8 of
 msgid "with rows drawn alternately from self and other."
-msgstr ""
+msgstr "行交替从 self 和 other 中提取。"
 
 #: maxframe.dataframe.merge.compare.df_compare:9 of
 msgid "1, or 'columns'"
-msgstr ""
+msgstr "1，或 'columns'"
 
 #: maxframe.dataframe.merge.compare.df_compare:-1 of
 msgid "Resulting differences are aligned horizontally"
-msgstr ""
+msgstr "结果差异水平对齐"
 
 #: maxframe.dataframe.merge.compare.df_compare:10 of
 msgid "with columns drawn alternately from self and other."
-msgstr ""
+msgstr "列交替从 self 和 other 中提取。"
 
 #: maxframe.dataframe.merge.compare.df_compare:12 of
 msgid ""
@@ -106,16 +106,13 @@ msgstr ""
 
 #: maxframe.dataframe.merge.compare.df_compare:21 of
 msgid "DataFrame that shows the differences stacked side by side."
-msgstr ""
+msgstr "显示差异并排堆叠的 DataFrame。"
 
 #: maxframe.dataframe.merge.compare.df_compare:23 of
-#, fuzzy
 msgid ""
 "The resulting index will be a MultiIndex with 'self' and 'other' stacked "
 "alternately at the inner level."
-msgstr ""
-"显示差异并排堆叠的 DataFrame。结果索引将是一个 MultiIndex，其中 'self' 和"
-" 'other' 在内层交替堆叠。"
+msgstr "结果索引将是一个 MultiIndex，其中 'self' 和 'other' 在内层交替堆叠。"
 
 #: maxframe.dataframe.merge.compare.df_compare of
 msgid "返回类型"

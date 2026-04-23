@@ -34,6 +34,7 @@ from ...serialization.serializables import (
 )
 from ...serialization.serializables.core import SerializableSerializer
 from ...typing_ import OperatorType
+from ...udf import FsMountOptions
 from ...utils import AttributeDict, classproperty, get_user_call_point, tokenize
 from ..base import Base
 from ..entity.core import ENTITY_TYPE, Entity, EntityData
@@ -58,6 +59,14 @@ class OperatorStage(Enum):
     reduce = 1
     combine = 2
     agg = 3
+
+
+def _deserialize_fs_mount(x):
+    if not x:
+        return []
+    if isinstance(x, dict):
+        return [FsMountOptions.from_legacy_dict(x)]
+    return x
 
 
 class SchedulingHint(Serializable):
@@ -89,7 +98,12 @@ class SchedulingHint(Serializable):
     priority = Int32Field("priority", default=None)
     expect_engine = StringField("expect_engine", default=None)
     expect_resources = DictField("expect_resources", FieldTypes.string, default=None)
-    fs_mount = DictField("fs_mount", FieldTypes.string, default_factory=dict)
+    fs_mount = ListField(
+        "fs_mount",
+        FieldTypes.reference,
+        on_deserialize=_deserialize_fs_mount,
+        default_factory=list,
+    )
     # id of gang scheduling for machine learning trainings
     gang_scheduling_id = StringField("gang_scheduling_id", default=None)
     # Structure: {"name": "image_name"}
@@ -382,6 +396,9 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
 
     def has_custom_code(self) -> bool:
         return False
+
+    def can_fuse_with_custom_code(self) -> bool:
+        return True
 
     @property
     def retryable(self) -> bool:

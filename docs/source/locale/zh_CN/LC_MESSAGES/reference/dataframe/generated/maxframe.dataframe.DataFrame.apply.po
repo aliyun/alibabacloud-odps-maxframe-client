@@ -57,15 +57,15 @@ msgstr ""
 
 #: maxframe.dataframe.misc.apply.df_apply:11 of
 msgid "Axis along which the function is applied:"
-msgstr ""
+msgstr "应用函数的轴："
 
 #: maxframe.dataframe.misc.apply.df_apply:13 of
 msgid "0 or 'index': apply function to each column."
-msgstr ""
+msgstr "0 或 'index'：对每列应用函数。"
 
 #: maxframe.dataframe.misc.apply.df_apply:14 of
 msgid "1 or 'columns': apply function to each row."
-msgstr ""
+msgstr "1 或 'columns'：对每行应用函数。"
 
 #: maxframe.dataframe.misc.apply.df_apply:16 of
 msgid ""
@@ -81,22 +81,20 @@ msgstr ""
 
 #: maxframe.dataframe.misc.apply.df_apply:16 of
 msgid "Determines if row or column is passed as a Series or ndarray object:"
-msgstr ""
+msgstr "确定行或列是以 Series 还是 ndarray 对象传递："
 
 #: maxframe.dataframe.misc.apply.df_apply:18 of
 msgid "``False`` : passes each row or column as a Series to the function."
-msgstr ""
+msgstr "``False`` : 将每行或每列作为 Series 传递给函数。"
 
 #: maxframe.dataframe.misc.apply.df_apply:20 of
-#, fuzzy
 msgid ""
 "``True`` : the passed function will receive ndarray objects instead. If "
 "you are just applying a NumPy reduction function this will achieve much "
 "better performance."
 msgstr ""
-"确定行或列是以 Series 还是 ndarray 对象传递：  * ``False`` ：将每行或每列"
-"作为 Series 传递给函数。 * ``True`` ：传递的函数将接收 ndarray 对象。   "
-"如果您只是应用 NumPy 归约函数，这将获得更好的性能。"
+"``True``：传递的函数将接收到 ndarray 对象。如果您只是应用 NumPy 约简函数"
+"，这将获得更好的性能。"
 
 #: maxframe.dataframe.misc.apply.df_apply:25 of
 msgid ""
@@ -118,23 +116,25 @@ msgstr ""
 
 #: maxframe.dataframe.misc.apply.df_apply:25 of
 msgid "These only act when ``axis=1`` (columns):"
-msgstr ""
+msgstr "这些仅在 ``axis=1``（列）时生效："
 
 #: maxframe.dataframe.misc.apply.df_apply:27 of
 msgid "'expand' : list-like results will be turned into columns."
-msgstr ""
+msgstr "'expand' : 类列表结果将转换为列。"
 
 #: maxframe.dataframe.misc.apply.df_apply:28 of
 msgid ""
 "'reduce' : returns a Series if possible rather than expanding list-like "
 "results. This is the opposite of 'expand'."
 msgstr ""
+"'reduce' : 如果可能则返回 Series 而不是展开类列表结果。这与 'expand' 相反"
+"。"
 
 #: maxframe.dataframe.misc.apply.df_apply:30 of
 msgid ""
 "'broadcast' : results will be broadcast to the original shape of the "
 "DataFrame, the original index and columns will be retained."
-msgstr ""
+msgstr "'broadcast' : 结果将广播到 DataFrame 的原始形状，原始索引和列将被保留。"
 
 #: maxframe.dataframe.misc.apply.df_apply:34 of
 msgid ""
@@ -143,6 +143,8 @@ msgid ""
 "However if the apply function returns a Series these are expanded to "
 "columns."
 msgstr ""
+"默认行为（None）取决于应用函数的返回值：类列表结果将作为相应的 Series "
+"返回。但是如果应用函数返回 Series，则这些将展开为列。"
 
 #: maxframe.dataframe.misc.apply.df_apply:39 of
 msgid "Specify type of returned object. See `Notes` for more details."
@@ -182,21 +184,18 @@ msgstr ""
 
 #: maxframe.dataframe.misc.apply.df_apply:49 of
 msgid "Specify whether ``func`` is an elementwise function:"
-msgstr ""
+msgstr "指定 ``func`` 是否为逐元素函数："
 
 #: maxframe.dataframe.misc.apply.df_apply:51 of
-#, fuzzy
 msgid ""
 "``False`` : The function is not elementwise. MaxFrame will try "
 "concatenating chunks in rows (when ``axis=0``) or in columns (when "
 "``axis=1``) and then apply ``func`` onto the concatenated chunk. The "
 "concatenation step can cause extra latency."
 msgstr ""
-"指定 ``func`` 是否为逐元素函数：  * ``False`` ：函数不是逐元素的。"
-"MaxFrame 将尝试按行（``axis=0``）或按列（``axis=1``）连接块，然后将 ``"
-"func`` 应用于连接后的块。连接步骤可能引起额外延迟。 * ``True`` ：函数是逐"
-"元素的。MaxFrame 将直接将 ``func`` 应用于原始块。这不会引入额外的连接步骤"
-"，减少了开销。"
+"``False``：函数不是元素级的。MaxFrame 将尝试按行连接块（当 ``axis=0`` 时"
+"）或按列连接块（当 ``axis=1`` 时），然后将 ``func`` 应用到连接后的块上。"
+"连接步骤可能会导致额外的延迟。"
 
 #: maxframe.dataframe.misc.apply.df_apply:55 of
 msgid ""
@@ -204,6 +203,8 @@ msgid ""
 "original chunks. This will not introduce extra concatenation step and "
 "reduce overhead."
 msgstr ""
+"``True`` : 函数是逐元素的。MaxFrame 将把 ``func`` 应用于原始块。这不会"
+"引入额外的连接步骤并减少开销。"
 
 #: maxframe.dataframe.misc.apply.df_apply:59 of
 msgid "Whether infer dtypes when dtypes or output_type is not specified."

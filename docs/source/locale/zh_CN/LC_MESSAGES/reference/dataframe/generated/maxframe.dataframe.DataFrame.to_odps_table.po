@@ -78,7 +78,6 @@ msgid "Overwrite data if the table / partition already exists."
 msgstr "如果表/分区已存在，则覆盖数据。"
 
 #: maxframe.dataframe.datastore.to_odps.to_odps_table:25 of
-#, fuzzy
 msgid ""
 "If True, object type in the DataFrame will be treated as strings. "
 "Otherwise errors might be raised."
@@ -89,7 +88,6 @@ msgid "If True, indexes will be stored. Otherwise they are ignored."
 msgstr "如果为 True，则将存储索引。否则将忽略索引。"
 
 #: maxframe.dataframe.datastore.to_odps.to_odps_table:30 of
-#, fuzzy
 msgid ""
 "Specify column names for index levels. If absent, level names or default "
 "names will be used."
@@ -104,7 +102,6 @@ msgid "Specify properties of the output table."
 msgstr "指定输出表的属性。"
 
 #: maxframe.dataframe.datastore.to_odps.to_odps_table:37 of
-#, fuzzy
 msgid ""
 "If provided and target table does not exist, target table will be a delta"
 " table with columns specified in this argument as primary key."

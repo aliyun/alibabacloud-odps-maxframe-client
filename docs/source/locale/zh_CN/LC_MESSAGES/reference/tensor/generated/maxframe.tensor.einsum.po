@@ -110,32 +110,34 @@ msgid ""
 "Controls what kind of data casting may occur.  Setting this to 'unsafe' "
 "is not recommended, as it can adversely affect accumulations."
 msgstr ""
+"控制可能发生的类型转换。不建议将其设置为'unstable'，因为它可能对累积产生"
+"不利影响。"
 
 #: maxframe.tensor.linalg.einsum.einsum:35 of
 msgid "'no' means the data types should not be cast at all."
-msgstr ""
+msgstr "'no'表示数据类型根本不应该被转换。"
 
 #: maxframe.tensor.linalg.einsum.einsum:36 of
 msgid "'equiv' means only byte-order changes are allowed."
-msgstr ""
+msgstr "'equiv'表示只允许字节顺序的改变。"
 
 #: maxframe.tensor.linalg.einsum.einsum:37 of
 msgid "'safe' means only casts which can preserve values are allowed."
-msgstr ""
+msgstr "'safe'表示只允许能够保持值不变的转换。"
 
 #: maxframe.tensor.linalg.einsum.einsum:38 of
 msgid ""
 "'same_kind' means only safe casts or casts within a kind, like float64 to"
 " float32, are allowed."
-msgstr ""
+msgstr "'same_kind'表示只允许安全转换或同类内的转换，如float64到float32。"
 
 #: maxframe.tensor.linalg.einsum.einsum:40 of
 msgid "'unsafe' means any data conversions may be done."
-msgstr ""
+msgstr "'unsafe'表示可以进行任何数据转换。"
 
 #: maxframe.tensor.linalg.einsum.einsum:42 of
 msgid "Default is 'safe'."
-msgstr ""
+msgstr "默认值是'safe'。"
 
 #: maxframe.tensor.linalg.einsum.einsum:44 of
 msgid ""

@@ -128,10 +128,12 @@ msgid ""
 "``None``, the scores for each class are returned. Otherwise, this "
 "determines the type of averaging performed on the data:"
 msgstr ""
+"此参数对于多类/多标签目标是必需的。如果为 ``None``，则返回每个类的分数。"
+"否则，这将确定在数据上执行的平均类型："
 
 #: maxframe.learn.metrics._classification.fbeta_score:36 of
 msgid "``'binary'``:"
-msgstr ""
+msgstr "``'binary'``："
 
 #: maxframe.learn.metrics._classification.fbeta_score:37 of
 #, python-brace-format
@@ -139,30 +141,32 @@ msgid ""
 "Only report results for the class specified by ``pos_label``. This is "
 "applicable only if targets (``y_{true,pred}``) are binary."
 msgstr ""
+"仅报告由 ``pos_label`` 指定的类的结果。这仅适用于目标（``y_{true,pred}``"
+"）为二进制的情况。"
 
 #: maxframe.learn.metrics._classification.fbeta_score:39 of
 msgid "``'micro'``:"
-msgstr ""
+msgstr "``'micro'``："
 
 #: maxframe.learn.metrics._classification.fbeta_score:40 of
 msgid ""
 "Calculate metrics globally by counting the total true positives, false "
 "negatives and false positives."
-msgstr ""
+msgstr "通过计算总的真正例、假负例和假正例来全局计算指标。"
 
 #: maxframe.learn.metrics._classification.fbeta_score:42 of
 msgid "``'macro'``:"
-msgstr ""
+msgstr "``'macro'``："
 
 #: maxframe.learn.metrics._classification.fbeta_score:43 of
 msgid ""
 "Calculate metrics for each label, and find their unweighted mean.  This "
 "does not take label imbalance into account."
-msgstr ""
+msgstr "计算每个标签的指标，并找到它们的未加权平均值。这不会考虑标签不平衡。"
 
 #: maxframe.learn.metrics._classification.fbeta_score:45 of
 msgid "``'weighted'``:"
-msgstr ""
+msgstr "``'weighted'``："
 
 #: maxframe.learn.metrics._classification.fbeta_score:46 of
 msgid ""
@@ -171,10 +175,13 @@ msgid ""
 "'macro' to account for label imbalance; it can result in an F-score that "
 "is not between precision and recall."
 msgstr ""
+"计算每个标签的指标，并根据支持度（每个标签的真实实例数量）进行加权平均。"
+"这会修改 'macro' 以考虑标签不平衡；可能会导致F分数不在精确率和召回率之间"
+"。"
 
 #: maxframe.learn.metrics._classification.fbeta_score:50 of
 msgid "``'samples'``:"
-msgstr ""
+msgstr "``'samples'``："
 
 #: maxframe.learn.metrics._classification.fbeta_score:51 of
 msgid ""
@@ -228,12 +235,14 @@ msgid ""
 "R. Baeza-Yates and B. Ribeiro-Neto (2011). Modern Information Retrieval. "
 "Addison Wesley, pp. 327-328."
 msgstr ""
+"R. Baeza-Yates 和 B. Ribeiro-Neto（2011）。现代信息检索。Addison Wesley，"
+"第 327-328 页。"
 
 #: maxframe.learn.metrics._classification.fbeta_score:73 of
 msgid ""
 "`Wikipedia entry for the F1-score "
 "<https://en.wikipedia.org/wiki/F1_score>`_"
-msgstr ""
+msgstr "`F1分数的维基百科条目 <https://en.wikipedia.org/wiki/F1_score>`_"
 
 #: maxframe.learn.metrics._classification.fbeta_score:77 of
 msgid "示例"

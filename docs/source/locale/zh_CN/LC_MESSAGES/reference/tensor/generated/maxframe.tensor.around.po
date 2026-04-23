@@ -70,21 +70,19 @@ msgstr ""
 "部分别进行舍入。浮点数舍入的结果是浮点数。"
 
 #: maxframe.tensor.arithmetic.around.around:14 of
-#, fuzzy
 msgid ""
 "**rounded_array** -- An tensor of the same type as `a`, containing the "
 "rounded values. Unless `out` was specified, a new tensor is created.  A "
 "reference to the result is returned."
 msgstr ""
-"**rounded_array** -- 一个与 `a` 类型相同的 tensor，包含舍入后的值。除非"
-"指定了 `out`，否则会创建一个新的 tensor。返回结果的引用。复数的实部和虚"
-"部分别进行舍入。浮点数舍入的结果是浮点数。"
+"**rounded_array** -- 与 `a` 类型相同的张量，包含舍入后的值。除非指定了 `"
+"out`，否则会创建一个新的张量。返回结果的引用。"
 
 #: maxframe.tensor.arithmetic.around.around:18 of
 msgid ""
 "The real and imaginary parts of complex numbers are rounded separately.  "
 "The result of rounding a float is a float."
-msgstr ""
+msgstr "复数的实部和虚部分别进行舍入。浮点数舍入的结果是浮点数。"
 
 #: maxframe.tensor.arithmetic.around.around of
 msgid "返回类型"

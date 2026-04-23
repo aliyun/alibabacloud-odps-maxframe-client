@@ -457,6 +457,7 @@ MaxFrame Extensions
    Series.mf.apply_chunk
    Series.mf.flatmap
    Series.mf.flatjson
+   Series.rechunk
 
 ``Series.mf`` The Series.mf provides methods unique to MaxFrame. These methods are collated from application
 scenarios in MaxCompute and these can be accessed like ``Series.mf.<function/property>``.

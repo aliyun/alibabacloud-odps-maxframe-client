@@ -57,6 +57,8 @@ msgid ""
 " N equal tensors along `axis`.  If such a split is not possible, an error"
 " is raised."
 msgstr ""
+"如果 `indices_or_sections` 是一个整数 N，则数组将沿 `axis` 轴分成 N 个"
+"相等的张量。如果无法进行这样的分割，则会引发错误。"
 
 #: maxframe.tensor.misc.split.split:9 of
 msgid ""
@@ -64,6 +66,8 @@ msgid ""
 "indicate where along `axis` the array is split.  For example, ``[2, 3]`` "
 "would, for ``axis=0``, result in"
 msgstr ""
+"如果 `indices_or_sections` 是一个已排序整数的一维张量，则条目表示数组沿 `"
+"axis` 轴的分割位置。例如，对于 ``axis=0``，``[2, 3]`` 将产生"
 
 #: maxframe.tensor.misc.split.split:13 of
 msgid "ary[:2]"
@@ -81,7 +85,7 @@ msgstr ""
 msgid ""
 "If an index exceeds the dimension of the tensor along `axis`, an empty "
 "sub-tensor is returned correspondingly."
-msgstr ""
+msgstr "如果索引超出了张量沿 `axis` 轴的维度，则会相应地返回一个空的子张量。"
 
 #: maxframe.tensor.misc.split.split:20 of
 msgid "The axis along which to split, default is 0."

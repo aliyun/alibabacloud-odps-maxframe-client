@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -229,6 +229,7 @@ SQUAREFORM = 233
 TREE_ADD = 251
 TREE_MULTIPLY = 252
 TREE_OR = 253
+TREE_AND = 254
 
 # reduction
 CUMSUM = 301
@@ -495,6 +496,8 @@ TO_ODPS_VOLUME = 20114
 READ_ODPS_QUERY = 20115
 READ_ODPS_MODEL = 20116
 TO_ODPS_MODEL = 20117
+READ_ODPS_RESOURCE = 20118
+TO_ODPS_RESOURCE = 20119
 
 # standardize range index
 STANDARDIZE_RANGE_INDEX = 2107
@@ -619,6 +622,10 @@ COLLECT_KV = 10014
 SERIES_DICT_METHOD = 10011
 SERIES_LIST_METHOD = 10012
 SERIES_STRUCT_METHOD = 10015
+
+# Multimodal operators
+SERIES_URL_METHODS = 10016
+SERIES_IMAGE_METHODS = 10024
 
 # placeholders for compatibility, DO NOT REMOVE
 SERIES_DICT_GETITEM = 10005

@@ -49,31 +49,31 @@ msgstr ""
 
 #: maxframe.dataframe.merge.compare.series_compare:5 of
 msgid "Determine which axis to align the comparison on."
-msgstr ""
+msgstr "确定在哪个轴上对齐比较。"
 
 #: maxframe.dataframe.merge.compare.series_compare:7 of
 msgid "0, or 'index'"
-msgstr ""
+msgstr "0，或 'index'"
 
 #: maxframe.dataframe.merge.compare.series_compare:-1 of
 msgid "Resulting differences are stacked vertically"
-msgstr ""
+msgstr "结果差异垂直堆叠"
 
 #: maxframe.dataframe.merge.compare.series_compare:8 of
 msgid "with rows drawn alternately from self and other."
-msgstr ""
+msgstr "行从自身和另一个对象交替提取。"
 
 #: maxframe.dataframe.merge.compare.series_compare:9 of
 msgid "1, or 'columns'"
-msgstr ""
+msgstr "1，或 'columns'"
 
 #: maxframe.dataframe.merge.compare.series_compare:-1 of
 msgid "Resulting differences are aligned horizontally"
-msgstr ""
+msgstr "结果差异水平对齐"
 
 #: maxframe.dataframe.merge.compare.series_compare:10 of
 msgid "with columns drawn alternately from self and other."
-msgstr ""
+msgstr "列从自身和另一个对象交替提取。"
 
 #: maxframe.dataframe.merge.compare.series_compare:12 of
 msgid ""
@@ -107,21 +107,21 @@ msgstr ""
 "一个 DataFrame，它将包含两个列，即 'self' 和 'other'。"
 
 #: maxframe.dataframe.merge.compare.series_compare:21 of
-#, fuzzy
 msgid ""
 "If axis is 0 or 'index' the result will be a Series. The resulting index "
 "will be a MultiIndex with 'self' and 'other' stacked alternately at the "
 "inner level."
 msgstr ""
 "如果 axis 为 0 或 'index'，结果将是一个 Series。其索引将是一个 MultiIndex"
-"，'self' 和 'other' 在内层交替堆叠。如果 axis 为 1 或 'columns'，结果将是"
-"一个 DataFrame，它将包含两个列，即 'self' 和 'other'。"
+"，'self' 和 'other' 在内层交替堆叠。"
 
 #: maxframe.dataframe.merge.compare.series_compare:25 of
 msgid ""
 "If axis is 1 or 'columns' the result will be a DataFrame. It will have "
 "two columns namely 'self' and 'other'."
 msgstr ""
+"如果 axis 是 1 或 'columns'，结果将是 DataFrame。它将有两列，分别是 'self"
+"' 和 'other'。"
 
 #: maxframe.dataframe.merge.compare.series_compare of
 msgid "返回类型"

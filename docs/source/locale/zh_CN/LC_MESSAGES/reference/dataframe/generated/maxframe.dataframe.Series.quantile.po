@@ -54,12 +54,16 @@ msgid ""
 "This optional parameter specifies the interpolation method to use, when "
 "the desired quantile lies between two data points `i` and `j`:"
 msgstr ""
+"此可选参数指定当所需分位数位于两个数据点 `i` 和 `j` 之间时要使用的插值"
+"方法："
 
 #: maxframe.dataframe.statistics.quantile.series_quantile:8 of
 msgid ""
 "linear: `i + (j - i) * fraction`, where `fraction` is the fractional part"
 " of the index surrounded by `i` and `j`."
 msgstr ""
+"linear: `i + (j - i) * fraction`，其中 `fraction` 是由 `i` 和 `j` 包围的"
+"索引的小数部分。"
 
 #: maxframe.dataframe.statistics.quantile.series_quantile:10 of
 msgid "lower: `i`."
@@ -71,7 +75,7 @@ msgstr ""
 
 #: maxframe.dataframe.statistics.quantile.series_quantile:12 of
 msgid "nearest: `i` or `j` whichever is nearest."
-msgstr ""
+msgstr "nearest: `i` 或 `j` 中最近的一个。"
 
 #: maxframe.dataframe.statistics.quantile.series_quantile:13 of
 msgid "midpoint: (`i` + `j`) / 2."

@@ -2,6 +2,7 @@
 #
 
 # You can set these variables from the command line.
+DEFAULT_LANG  = zh_CN
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 SPHINXINTL    = sphinx-intl
@@ -10,8 +11,8 @@ SOURCEDIR     = source
 BUILDDIR      = build
 
 # the i18n builder cannot share the environment and doctrees with the others
-I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) $(SOURCEDIR)
-I18NSPHINXLANGS = -l zh_CN
+I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) -D language=$(DEFAULT_LANG) $(SOURCEDIR)
+I18NSPHINXLANGS = -l $(DEFAULT_LANG)
 
 # make maxframe code available for sphinx builder
 export PYTHONPATH := ../core

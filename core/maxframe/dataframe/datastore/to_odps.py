@@ -35,7 +35,7 @@ from ...serialization.serializables import (
     StringField,
 )
 from ...typing_ import TileableType
-from ..core import DataFrame  # noqa: F401
+from ..core import DATAFRAME_TYPE, DataFrame  # noqa: F401
 from ..utils import parse_index
 from .core import DataFrameDataStore
 
@@ -62,6 +62,9 @@ class DataFrameToODPSTable(DataFrameDataStore):
 
     def __init__(self, **kw):
         super().__init__(_output_types=[OutputType.dataframe], **kw)
+
+    def can_fuse_with_custom_code(self) -> bool:
+        return False
 
     def check_inputs(self, inputs: List[TileableType]):
         if self.use_generated_table_meta:
@@ -174,10 +177,15 @@ def to_odps_table(
     --------
 
     """
+    from .. import DataFrame as MFDataFrame
+
     odps_entry = ODPS.from_global() or ODPS.from_environments()
     is_schema_enabled = (
         options.session.enable_schema or odps_entry.is_schema_namespace_enabled()
     )
+    if not isinstance(df, DATAFRAME_TYPE):
+        df = MFDataFrame(df)
+
     if isinstance(table, ODPSTable):
         table = table.full_table_name
     elif is_schema_enabled and "." not in table:

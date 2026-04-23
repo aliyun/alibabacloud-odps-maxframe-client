@@ -67,51 +67,51 @@ msgstr ""
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:13 of
 msgid "The kind of plot to produce:"
-msgstr ""
+msgstr "要生成的绘图类型："
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:15 of
 msgid "'line' : line plot (default)"
-msgstr ""
+msgstr "'line' : 折线图（默认）"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:16 of
 msgid "'bar' : vertical bar plot"
-msgstr ""
+msgstr "'bar' : 垂直条形图"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:17 of
 msgid "'barh' : horizontal bar plot"
-msgstr ""
+msgstr "'barh' : 水平条形图"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:18 of
 msgid "'hist' : histogram"
-msgstr ""
+msgstr "'hist' : 直方图"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:19 of
 msgid "'box' : boxplot"
-msgstr ""
+msgstr "'box' : 箱线图"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:20 of
 msgid "'kde' : Kernel Density Estimation plot"
-msgstr ""
+msgstr "'kde' : 核密度估计图"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:21 of
 msgid "'density' : same as 'kde'"
-msgstr ""
+msgstr "'density' : 与 'kde' 相同"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:22 of
 msgid "'area' : area plot"
-msgstr ""
+msgstr "'area' : 面积图"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:23 of
 msgid "'pie' : pie plot"
-msgstr ""
+msgstr "'pie' : 饼图"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:24 of
 msgid "'scatter' : scatter plot (DataFrame only)"
-msgstr ""
+msgstr "'scatter' : 散点图（仅 DataFrame）"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:25 of
 msgid "'hexbin' : hexbin plot (DataFrame only)"
-msgstr ""
+msgstr "'hexbin' : 六边形箱图（仅 DataFrame）"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:27 of
 msgid "An axes of the current figure."
@@ -135,18 +135,17 @@ msgstr ""
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:29 of
 msgid "Whether to group columns into subplots:"
-msgstr ""
+msgstr "是否将列分组到子图中："
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:31 of
 msgid "``False`` : No subplots will be used"
-msgstr ""
+msgstr "``False`` : 不会使用子图"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:32 of
 msgid "``True`` : Make separate subplots for each column."
-msgstr ""
+msgstr "``True`` : 为每列创建单独的子图。"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:33 of
-#, fuzzy
 msgid ""
 "sequence of iterables of column labels: Create a subplot for each group "
 "of columns. For example `[('a', 'c'), ('b', 'd')]` will create 2 "
@@ -248,7 +247,6 @@ msgstr ""
 "。.. versionchanged:: 2.0.0 现适用于直方图。"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:78 of
-#, fuzzy
 msgid ""
 "Name to use for the xlabel on x-axis. Default uses index name as xlabel, "
 "or the x-column name for planar plots."
@@ -259,7 +257,7 @@ msgstr ""
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:83
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:90 of
 msgid "Now applicable to histograms."
-msgstr ""
+msgstr "现在适用于直方图。"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:85 of
 msgid ""
@@ -271,7 +269,6 @@ msgstr ""
 "versionchanged:: 2.0.0 现适用于直方图。"
 
 #: maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor:85 of
-#, fuzzy
 msgid ""
 "Name to use for the ylabel on y-axis. Default will show no ylabel, or the"
 " y-column name for planar plots."

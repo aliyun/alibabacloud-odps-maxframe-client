@@ -49,29 +49,28 @@ msgstr ""
 "和可调用对象尚不支持多个 chunk。"
 
 #: maxframe.dataframe.statistics.corr.series_corr:5 of
-#, fuzzy
 msgid "Method used to compute correlation:"
-msgstr "用于计算相关性的 Series。"
+msgstr "用于计算相关性的方法："
 
 #: maxframe.dataframe.statistics.corr.series_corr:7 of
 msgid "pearson : Standard correlation coefficient"
-msgstr ""
+msgstr "pearson：标准相关系数"
 
 #: maxframe.dataframe.statistics.corr.series_corr:8 of
 msgid "kendall : Kendall Tau correlation coefficient"
-msgstr ""
+msgstr "kendall：Kendall Tau 相关系数"
 
 #: maxframe.dataframe.statistics.corr.series_corr:9 of
 msgid "spearman : Spearman rank correlation"
-msgstr ""
+msgstr "spearman：Spearman 秩相关"
 
 #: maxframe.dataframe.statistics.corr.series_corr:10 of
 msgid "callable: Callable with input two 1d ndarrays and returning a float."
-msgstr ""
+msgstr "callable：接受两个一维 ndarray 并返回浮点数的可调用对象。"
 
 #: maxframe.dataframe.statistics.corr.series_corr:13 of
 msgid "kendall, spearman and callables not supported on multiple chunks yet."
-msgstr ""
+msgstr "kendall、spearman 和可调用对象尚不支持多个分块。"
 
 #: maxframe.dataframe.statistics.corr.series_corr:15 of
 msgid "Minimum number of observations needed to have a valid result."

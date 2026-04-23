@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,6 +52,45 @@ class DataFrameRechunk(DataFrameOperator, DataFrameOperatorMixin):
 
 
 def rechunk(a: TileableType, chunk_size: chunk_size_type, reassign_worker=False):
+    """
+    Rechunk DataFrame, Series or Index data.
+
+    This function is used to reorganize the chunk structure of data, which can
+    change how data is distributed in distributed computing. By adjusting chunk
+    sizes, memory usage and computational performance can be optimized. Note that
+    this function is only effective in DPE for now.
+
+    Parameters
+    ----------
+    chunk_size : chunk_size_type
+        New chunk size configuration. Can be one of the following forms:
+        - Integer: Same chunk size for all dimensions
+        - Tuple: Different chunk sizes for each dimension. For instance, (100, 100)
+          rechunks dimension 0 and 1 into chunks with size 100 respectively, and
+          ((100, 100, 100), (100,)) rechunks dimension 0 into 3 chunks with size
+          100 for each chunk, and rechunks dimension 1 into one single chunk with
+          size 100.
+        - Dictionary: Chunk sizes for specific dimensions, for instance,
+          `{0: 100}` rechunks dimension 0 into 100 elements per chunk, and
+          `{0: (100, 100, 100)}` rechunks dimension 0 into 3 chunks where each
+          chunk has size 100.
+    reassign_worker : bool, default False
+        Reserved for future use.
+
+    Returns
+    -------
+    TileableType
+        The rechunked DataFrame, Series or Index object.
+
+    Examples
+    --------
+    >>> import maxframe.dataframe as md
+    >>> df = md.DataFrame({'A': range(1000), 'B': range(1000)})
+    >>> # Rechunk to 100 rows and columns per chunk
+    >>> df_rechunked = df.rechunk(100)
+    >>> # Specify different chunk sizes for different dimensions
+    >>> df_rechunked = df.rechunk((50, 2))
+    """
     op = DataFrameRechunk(
         chunk_size=chunk_size,
         reassign_worker=reassign_worker,

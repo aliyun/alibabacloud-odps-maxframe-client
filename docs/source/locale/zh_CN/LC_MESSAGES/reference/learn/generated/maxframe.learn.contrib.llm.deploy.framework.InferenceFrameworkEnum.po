@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev817+g0d9b3d99d.d20251019\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-19 21:54+0800\n"
+"POT-Creation-Date: 2026-02-10 19:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -41,42 +41,42 @@ msgstr "属性"
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
 msgid ""
 ":py:obj:`LLAMA_CPP_PYTHON_TEXT "
-"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.LLAMA_CPP_PYTHON_TEXT>`\\"
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.LLAMA_CPP_PYTHON_TEXT>`"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
 msgid ""
 ":py:obj:`LLAMA_CPP_SERVE_TEXT "
-"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.LLAMA_CPP_SERVE_TEXT>`\\"
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.LLAMA_CPP_SERVE_TEXT>`"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
 msgid ""
 ":py:obj:`DASH_SCOPE_TEXT "
-"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.DASH_SCOPE_TEXT>`\\"
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.DASH_SCOPE_TEXT>`"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
 msgid ""
 ":py:obj:`DASH_SCOPE_MULTIMODAL "
-"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.DASH_SCOPE_MULTIMODAL>`\\"
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.DASH_SCOPE_MULTIMODAL>`"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
 msgid ""
 ":py:obj:`VLLM_SERVE_TEXT "
-"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.VLLM_SERVE_TEXT>`\\"
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.VLLM_SERVE_TEXT>`"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
 msgid ""
 ":py:obj:`OPENAI_REMOTE_TEXT "
-"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.OPENAI_REMOTE_TEXT>`\\"
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.OPENAI_REMOTE_TEXT>`"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.rst:32:<autosummary>:1
 msgid ""
 ":py:obj:`OTHER "
-"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.OTHER>`\\"
+"<maxframe.learn.contrib.llm.deploy.framework.InferenceFrameworkEnum.OTHER>`"
 msgstr ""
 

@@ -67,19 +67,19 @@ msgstr ""
 
 #: maxframe.dataframe.reduction.aggregation.aggregate:11 of
 msgid "The return can be:"
-msgstr ""
+msgstr "返回值可以是："
 
 #: maxframe.dataframe.reduction.aggregation.aggregate:13 of
 msgid "scalar : when Series.agg is called with single function"
-msgstr ""
+msgstr "标量：当 Series.agg 用单个函数调用时"
 
 #: maxframe.dataframe.reduction.aggregation.aggregate:14 of
 msgid "Series : when DataFrame.agg is called with a single function"
-msgstr ""
+msgstr "Series：当 DataFrame.agg 用单个函数调用时"
 
 #: maxframe.dataframe.reduction.aggregation.aggregate:15 of
 msgid "DataFrame : when DataFrame.agg is called with several functions"
-msgstr ""
+msgstr "DataFrame：当 DataFrame.agg 用多个函数调用时"
 
 #: maxframe.dataframe.reduction.aggregation.aggregate of
 msgid "返回类型"

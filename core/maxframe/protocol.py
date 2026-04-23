@@ -14,6 +14,7 @@
 
 import base64
 import enum
+import logging
 import uuid
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar
 
@@ -246,6 +247,49 @@ class ErrorSource(enum.Enum):
     PYTHON = 0
 
 
+class DisplayMessageType(enum.Enum):
+    """
+    DisplayMessageType is used to specify the type of DisplayMessage.
+    """
+
+    STDOUT = 0  # Print to stdout directly
+    STDERR = 1  # Print to stderr directly
+    WARNING = 2  # System warning with special format
+    LOGGER = 3  # Print to logger in SDK and the user can mute it by setting log level
+
+
+class DisplayMessage(JsonSerializable):
+    """
+    DisplayMessage is used to display hint messages to client. So it may be varied in different
+    request. It SHOULD NOT be persisted.
+    """
+
+    # level is only used when type is LOGGER
+    level: int = Int32Field("level", default=logging.NOTSET)
+    type: DisplayMessageType = EnumField(
+        "type", DisplayMessageType, FieldTypes.int8, default=DisplayMessageType.STDOUT
+    )
+    message: str = StringField("message", default=None)
+
+    @classmethod
+    def from_json(cls, serialized: dict) -> "DisplayMessage":
+        kw = serialized.copy()
+        kw["type"] = DisplayMessageType(serialized["type"])
+        return DisplayMessage(**kw)
+
+    def to_json(self) -> dict:
+        return {"message": self.message, "level": self.level, "type": self.type.value}
+
+    def __eq__(self, other):
+        if not isinstance(other, DisplayMessage):
+            return False
+        return (
+            self.level == other.level
+            and self.message == other.message
+            and self.type == other.type
+        )
+
+
 class ErrorInfo(JsonSerializable):
     error_messages: Optional[List[str]] = ListField("error_messages", FieldTypes.string)
     error_tracebacks: Optional[List[List[str]]] = ListField(
@@ -344,6 +388,9 @@ class DagInfo(JsonSerializable):
         value_type=FieldTypes.reference,
         default_factory=dict,
     )
+    display_messages: Optional[List[DisplayMessage]] = ListField(
+        "display_messages", field_type=FieldTypes.reference, default=None
+    )
 
     @classmethod
     def from_json(cls, serialized: dict) -> Optional["DagInfo"]:
@@ -362,6 +409,10 @@ class DagInfo(JsonSerializable):
             kw["subdag_infos"] = {
                 k: SubDagInfo.from_json(v) for k, v in kw["subdag_infos"].items()
             }
+        if kw.get("display_messages"):
+            kw["display_messages"] = [
+                DisplayMessage.from_json(v) for v in kw["display_messages"]
+            ]
         return DagInfo(**kw)
 
     def to_json(self) -> dict:
@@ -382,6 +433,8 @@ class DagInfo(JsonSerializable):
             ret["error_info"] = self.error_info.to_json()
         if self.subdag_infos:
             ret["subdag_infos"] = {k: v.to_json() for k, v in self.subdag_infos.items()}
+        if self.display_messages:
+            ret["display_messages"] = [v.to_json() for v in self.display_messages]
         return ret
 
 
@@ -403,6 +456,9 @@ class SessionInfo(JsonSerializable):
         default=None,
     )
     error_info: Optional[ErrorInfo] = ReferenceField("error_info", default=None)
+    display_messages: Optional[List[DisplayMessage]] = ListField(
+        "display_messages", field_type=FieldTypes.reference, default_factory=list
+    )
 
     @classmethod
     def from_json(cls, serialized: dict) -> Optional["SessionInfo"]:
@@ -415,6 +471,10 @@ class SessionInfo(JsonSerializable):
             }
         if kw.get("error_info"):
             kw["error_info"] = ErrorInfo.from_json(kw["error_info"])
+        if kw.get("display_messages"):
+            kw["display_messages"] = [
+                DisplayMessage.from_json(v) for v in kw["display_messages"]
+            ]
         return SessionInfo(**kw)
 
     def to_json(self) -> dict:
@@ -431,6 +491,8 @@ class SessionInfo(JsonSerializable):
             }
         if self.error_info:
             ret["error_info"] = self.error_info.to_json()
+        if self.display_messages:
+            ret["display_messages"] = [v.to_json() for v in self.display_messages]
         return ret
 
 

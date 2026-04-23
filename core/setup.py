@@ -28,7 +28,7 @@ with open(os.path.join(pack_root, "_setup_utils.py"), "r") as cy_src:
 
 # The pyx with C sources.
 ext_include_source_map = {
-    "maxframe/_utils.pyx": [
+    "maxframe/utils/_utils_c.pyx": [
         ["maxframe/lib/mmh3_src"],
         ["maxframe/lib/mmh3_src/MurmurHash3.cpp"],
     ],

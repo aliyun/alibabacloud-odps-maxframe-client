@@ -102,5 +102,5 @@ msgstr ""
 
 #: maxframe.tensor.special.bessel.yn:34 of
 msgid "Cephes Mathematical Functions Library, http://www.netlib.org/cephes/"
-msgstr "Cephes 数学函数库，http://www.netlib.org/cephes/"
+msgstr ""
 

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,8 @@ import pandas as pd
 from ..core import OutputType
 from ..typing_ import PandasDType
 from ..utils import make_dtype
-from .utils import InferredDataFrameMeta, parse_index
+from .type_infer import InferredDataFrameMeta
+from .utils import parse_index
 
 # TypeVars
 T = TypeVar("T")
@@ -53,6 +54,11 @@ class IndexType:
     def __repr__(self):
         return f"IndexType({[f.dtype for f in self.index_fields]})"
 
+    def __reduce__(self):
+        # When picked to executors, detailed field types are not needed,
+        #  and we should not introduce MaxFrame itself as a dependency.
+        return getattr, (pd, "Index")
+
     @classmethod
     def from_getitem_args(cls, item) -> "IndexType":
         if isinstance(item, (dict, pd.Series)):
@@ -75,6 +81,11 @@ class SeriesType(Generic[T]):
 
     def __repr__(self) -> str:
         return "SeriesType[{}]".format(self.name_and_dtype.dtype)
+
+    def __reduce__(self):
+        # When picked to executors, detailed field types are not needed,
+        #  and we should not introduce MaxFrame itself as a dependency.
+        return getattr, (pd, "Series")
 
     @classmethod
     def from_getitem_args(cls, item) -> "SeriesType":
@@ -101,6 +112,11 @@ class DataFrameType:
     def __repr__(self) -> str:
         types = [field.dtype for field in self.data_fields]
         return f"DataFrameType[{types}]"
+
+    def __reduce__(self):
+        # When picked to executors, detailed field types are not needed,
+        #  and we should not introduce MaxFrame itself as a dependency.
+        return getattr, (pd, "DataFrame")
 
     @classmethod
     def from_getitem_args(cls, item) -> "DataFrameType":

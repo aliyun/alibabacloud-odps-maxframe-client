@@ -69,15 +69,15 @@ msgstr ""
 
 #: maxframe.dataframe.indexing.align.align:20 of
 msgid "Method to use for filling holes in reindexed Series:"
-msgstr ""
+msgstr "用于填充重新索引的 Series 中空洞的方法："
 
 #: maxframe.dataframe.indexing.align.align:22 of
 msgid "pad / ffill: propagate last valid observation forward to next valid."
-msgstr ""
+msgstr "pad / ffill：将最后一个有效观测值向前传播到下一个有效值。"
 
 #: maxframe.dataframe.indexing.align.align:23 of
 msgid "backfill / bfill: use NEXT valid observation to fill gap."
-msgstr ""
+msgstr "backfill / bfill：使用下一个有效观测值填充空缺。"
 
 #: maxframe.dataframe.indexing.align.align:25 of
 msgid ""

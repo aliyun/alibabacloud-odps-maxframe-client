@@ -31,8 +31,10 @@ from .dtypes import ArrowDtype
 
 
 class ArrowBlobType(pa.ExtensionType):
+    type_str = "maxframe.blob"
+
     def __init__(self):
-        super().__init__(pa.binary(), "maxframe.blob")
+        super().__init__(pa.binary(), self.type_str)
 
     def __arrow_ext_serialize__(self):
         return b""
@@ -47,8 +49,14 @@ class ArrowBlobType(pa.ExtensionType):
     def __hash__(self):
         return hash(str(self))
 
+    def __str__(self):
+        return self.type_str
+
     def to_pandas_dtype(self):
         return ExternalBlobDtype()
+
+
+pa.register_extension_type(ArrowBlobType())
 
 
 class AbstractExternalBlob(metaclass=abc.ABCMeta):

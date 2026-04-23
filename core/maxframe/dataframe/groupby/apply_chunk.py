@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import pandas as pd
 
 from ... import opcodes
 from ...core import OutputType
-from ...lib.version import parse as parse_version
 from ...serialization.serializables import (
     DictField,
     FieldTypes,
@@ -29,27 +28,36 @@ from ...serialization.serializables import (
     TupleField,
 )
 from ...udf import BuiltinFunction, MarkedFunction
-from ...utils import copy_if_possible, make_dtype, make_dtypes
+from ...utils import (
+    copy_if_possible,
+    deprecate_positional_args,
+    make_dtype,
+    make_dtypes,
+    pd_release_version,
+)
 from ..core import (
     DATAFRAME_GROUPBY_TYPE,
     GROUPBY_TYPE,
-    INDEX_TYPE,
     DataFrameGroupBy,
     IndexValue,
     SeriesGroupBy,
 )
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import (
+from ..type_infer import (
     InferredDataFrameMeta,
-    build_empty_df,
-    copy_func_scheduling_hints,
     infer_dataframe_return_value,
+    prepend_group_keys_as_index,
+)
+from ..utils import (
+    copy_func_scheduling_hints,
     make_column_list,
     parse_index,
     validate_output_types,
 )
+from .utils import warn_axis_argument, warn_prepend_index_group_keys
 
-_need_enforce_group_keys = parse_version(pd.__version__) < parse_version("1.5.0")
+_apply_without_group_keys = pd_release_version < (1, 5, 0)
+_has_include_groups = (2, 2, 0) <= pd_release_version < (3, 0, 0)
 
 
 class GroupByApplyChunk(DataFrameOperatorMixin, DataFrameOperator):
@@ -121,6 +129,8 @@ class GroupByApplyChunk(DataFrameOperatorMixin, DataFrameOperator):
         name: Any = None,
         output_type=None,
         index=None,
+        skip_infer: bool = False,
+        prepend_index_group_keys: bool = True,
     ):
         input_df = groupby.inputs[0]
         if isinstance(input_df, GROUPBY_TYPE):
@@ -138,6 +148,8 @@ class GroupByApplyChunk(DataFrameOperatorMixin, DataFrameOperator):
             dtype=dtype,
             name=name,
             index=index,
+            skip_infer=skip_infer,
+            prepend_index_group_keys=prepend_index_group_keys,
         )
 
         if inferred_meta.index_value is None:
@@ -174,6 +186,8 @@ class GroupByApplyChunk(DataFrameOperatorMixin, DataFrameOperator):
         name: Any = None,
         index: Union[pd.Index, IndexValue] = None,
         elementwise: bool = None,
+        skip_infer: bool = False,
+        prepend_index_group_keys: bool = True,
     ) -> InferredDataFrameMeta:
         def infer_func(groupby_obj):
             args = copy_if_possible(self.args or ())
@@ -183,45 +197,29 @@ class GroupByApplyChunk(DataFrameOperatorMixin, DataFrameOperator):
             while isinstance(in_obj, GROUPBY_TYPE):
                 in_obj = in_obj.inputs[0]
 
-            by_cols = make_column_list(groupby_params.get("by"), in_obj.dtypes) or []
-            if not groupby_params.get("selection"):
+            by_cols = (
+                make_column_list(self.groupby_params.get("by"), in_obj.dtypes) or []
+            )
+            if not self.groupby_params.get("selection"):
                 selection = [
                     c for c in input_groupby.inputs[0].dtypes.index if c not in by_cols
                 ]
                 groupby_obj = groupby_obj[selection]
+            if not _has_include_groups:
+                kwargs.pop("include_groups", None)
             res = groupby_obj.apply(self.func, *args, **kwargs)
-            if _need_enforce_group_keys and groupby_params.get("group_keys"):
-                by_levels = (
-                    make_column_list(groupby_params.get("level"), in_obj.index.names)
-                    or []
-                )
-
-                input_df = input_groupby
-                while isinstance(input_df, GROUPBY_TYPE):
-                    input_df = input_df.inputs[0]
-
-                idx_df = res.index.to_frame()
-                if by_cols:
-                    idx_names = by_cols + list(res.index.names)
-                    mock_idx_df = build_empty_df(
-                        input_df.dtypes[by_cols], index=idx_df.index
-                    )
-                else:
-                    idx_names = by_levels + list(res.index.names)
-                    if len(in_obj.index.names) > 1:
-                        idx_dtypes = in_obj.index_value.value.dtypes
-                    else:
-                        idx_dtypes = pd.Series(
-                            [in_obj.index.dtype], index=[in_obj.index.name]
-                        )
-                    mock_idx_df = build_empty_df(
-                        idx_dtypes[by_levels], index=idx_df.index
-                    )
-                idx_df = pd.concat([mock_idx_df, idx_df], axis=1)
-                res.index = pd.MultiIndex.from_frame(idx_df, names=idx_names)
+            if _apply_without_group_keys and not (
+                prepend_index_group_keys
+                or res.index.names != groupby_obj.obj.index.names
+            ):
+                # Need to patch group_index for legacy local pandas version
+                #  only when index names not changed
+                # FIXME here we add `not prepend_index_group_keys` to solely make
+                #  our behavior consistent with legacy implementations. It should
+                #  be removed once the argument is dropped
+                res.index = prepend_group_keys_as_index(res.index, input_groupby)
             return res
 
-        groupby_params = input_groupby.op.groupby_params
         inferred_meta = infer_dataframe_return_value(
             input_groupby,
             infer_func,
@@ -231,8 +229,9 @@ class GroupByApplyChunk(DataFrameOperatorMixin, DataFrameOperator):
             name=name,
             index=index,
             elementwise=elementwise,
+            skip_infer=skip_infer,
+            prepend_index_group_keys=prepend_index_group_keys,
         )
-
         # merge specified and inferred index, dtypes, output_type
         # elementwise used to decide shape
         self.output_types = (
@@ -243,14 +242,6 @@ class GroupByApplyChunk(DataFrameOperatorMixin, DataFrameOperator):
         if self.output_types:
             inferred_meta.output_type = self.output_types[0]
         inferred_meta.dtypes = dtypes if dtypes is not None else inferred_meta.dtypes
-        if isinstance(index, INDEX_TYPE):
-            index = index.index_value
-        if index is not None:
-            inferred_meta.index_value = (
-                parse_index(index)
-                if index is not input_groupby.index_value
-                else input_groupby.index_value
-            )
         inferred_meta.elementwise = elementwise or inferred_meta.elementwise
         return inferred_meta
 
@@ -265,10 +256,12 @@ class GroupByApplyChunk(DataFrameOperatorMixin, DataFrameOperator):
         super().estimate_size(ctx, op)
 
 
+@deprecate_positional_args
 def df_groupby_apply_chunk(
     dataframe_groupby,
     func: Union[str, Callable],
     batch_rows=None,
+    *,
     dtypes=None,
     dtype=None,
     name=None,
@@ -277,6 +270,7 @@ def df_groupby_apply_chunk(
     skip_infer=False,
     order_cols=None,
     ascending=True,
+    prepend_index_group_keys=False,
     args=(),
     **kwargs,
 ):
@@ -299,7 +293,7 @@ def df_groupby_apply_chunk(
     ----------
     func : callable
         A callable that takes a dataframe as its first argument, and
-        returns a dataframe, a series or a scalar. In addition the
+        returns a dataframe, a series or a scalar. In addition, the
         callable may take positional and keyword arguments.
 
     batch_rows : int
@@ -323,10 +317,25 @@ def df_groupby_apply_chunk(
         Specify index of returned object. See `Notes` for more details.
 
     skip_infer: bool, default False
-        Whether infer dtypes when dtypes or output_type is not specified.
+        Whether to infer dtypes when dtypes or output_type is not specified.
+
+    prepend_index_group_keys: bool, default False
+        If True, the index of returned dataframe or series will automatically
+        contain group keys if ``as_index=True``, or group indexes if
+        ``as_index=False``, when ``group_keys=True``. It will also exclude
+        group keys in user function inputs by default. See notes for more
+        details.
+
+        .. note::
+
+            ``prepend_index_group_keys`` will be set to True by default in
+            future releases, and a warning will be shown if the parameter
+            is set to False. To make sure your code works in future
+            releases, please set this to True and remove group indexes
+            in index parameter or type annotation of ``func``.
 
     args, kwargs : tuple and dict
-        Optional positional and keyword arguments to pass to `func`.
+        Optional positional and keyword arguments to pass to ``func``.
 
     Returns
     -------
@@ -346,17 +355,35 @@ def df_groupby_apply_chunk(
     call (DataFrame or Series) in output_type.
 
     * For DataFrame output, you need to specify a list or a pandas Series
-      as ``dtypes`` of output DataFrame. ``index`` of output can also be
-      specified.
+      as ``dtypes`` of output DataFrame.
     * For Series output, you need to specify ``dtype`` and ``name`` of
       output Series.
+    * ``index`` determines index of output DataFrame or Series. You may specify
+      a dummy pandas index indicating the names and types of index of the output
+      of ``func``, for instance, ``pd.MultiIndex.from_tuples([("a", 0)], names=["key1", "key2"])``.
+      If ``index`` is not supplied, index of the input DataFrame or Series will
+      be used. When `prepend_index_group_keys` is True, the index of the returning
+      object will be ``index`` prepended with group information given ``as_index``
+      and ``group_keys`` argument of the ``groupby`` function, which is consistent
+      with pandas 3.0. When ``prepend_index_group_keys`` is False, you must specify
+      a mock index with all fields, including group keys. As it is complicated to
+      pass full index definition, ``prepend_index_group_keys=False`` will be
+      deprecated in near future. Please supply ``prepend_index_group_keys=True``
+      where possible.
 
     MaxFrame adopts expected behavior of pandas>=3.0 by ignoring group columns
     in user function input. If you still need a group column for your function
     input, try selecting it right after `groupby` results, for instance,
-    ``df.groupby("A")[["A", "B", "C"]].mf.apply_batch(func)`` will pass data of
+    ``df.groupby("A")[["A", "B", "C"]].mf.apply_chunk(func)`` will pass data of
     column A into ``func``.
     """
+    if not prepend_index_group_keys:
+        warn_prepend_index_group_keys(dataframe_groupby)
+    else:
+        kwargs = kwargs.copy()
+        kwargs["include_groups"] = False
+    warn_axis_argument("mf.apply_chunk", kwargs)
+
     if not isinstance(func, Callable):
         raise TypeError("function must be a callable object")
 
@@ -376,7 +403,9 @@ def df_groupby_apply_chunk(
     )
     output_type = output_types[0] if output_types else None
     if skip_infer and output_type is None:
-        output_type = OutputType.df_or_series
+        output_type = (
+            OutputType.dataframe if dataframe_groupby.ndim == 2 else OutputType.series
+        )
 
     if order_cols and not isinstance(order_cols, list):
         order_cols = [order_cols]
@@ -394,7 +423,7 @@ def df_groupby_apply_chunk(
         kwargs=kwargs,
         order_cols=order_cols,
         ascending=ascending,
-        groupby_params=dataframe_groupby.op.groupby_params,
+        groupby_params=(dataframe_groupby.op.groupby_params or {}).copy(),
     )
 
     return op(
@@ -404,4 +433,5 @@ def df_groupby_apply_chunk(
         name=name,
         index=index,
         output_type=output_type,
+        prepend_index_group_keys=prepend_index_group_keys,
     )

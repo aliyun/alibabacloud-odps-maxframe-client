@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
 import shlex
 import sys
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 import numpy as np
 from odps.models import Function as ODPSFunctionObj
@@ -28,13 +29,12 @@ from .serialization.serializables import (
     BoolField,
     DictField,
     FieldTypes,
-    FunctionField,
     ListField,
     Serializable,
     StringField,
 )
 from .typing_ import PandasDType
-from .utils import extract_class_name, make_dtype, tokenize
+from .utils import extract_class_name, make_dtype, tokenize, unwrap_function
 
 
 class PythonPackOptions(Serializable):
@@ -57,6 +57,70 @@ class PythonPackOptions(Serializable):
     def __repr__(self):
         args_str = " ".join(f"{k}={getattr(self, k)}" for k in self._key_args)
         return f"<PythonPackOptions {self.requirements} {args_str}>"
+
+
+class FsMountOptions(Serializable):
+    path = StringField("path")
+    mount_path = StringField("mount_path")
+    storage_options = DictField(
+        "storage_options", FieldTypes.string, FieldTypes.any, default_factory=dict
+    )
+
+    def __repr__(self):
+        return f"<FsMountOptions {self.path} -> {self.mount_path}>"
+
+    def validate(self) -> None:
+        if not self.path or not isinstance(self.path, str):
+            raise ValueError("A valid path string is required.")
+        if not self.mount_path or not isinstance(self.mount_path, str):
+            raise ValueError("A valid mount_path string is required.")
+
+        # Check authentication: either role_arn or ak/sk must be provided
+        storage_opts = self.storage_options or {}
+        has_role_arn = bool(storage_opts.get("role_arn"))
+        has_ak_sk = bool(
+            storage_opts.get("access_key_id") and storage_opts.get("access_key_secret")
+        )
+        if not has_role_arn and not has_ak_sk:
+            raise ValueError(
+                "Authentication credentials required in storage_options: "
+                "either 'role_arn' or 'access_key_id'/'access_key_secret' must be provided."
+            )
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "path": self.path,
+            "mount_path": self.mount_path,
+            "storage_options": self.storage_options,
+        }
+
+    @classmethod
+    def from_legacy_dict(cls, config: Dict[str, Any]) -> "FsMountOptions":
+        # Reconstruct path: oss://{endpoint}/{bucket}/{prefix}
+        endpoint = config.get("oss_endpoint", "")
+        bucket = config.get("oss_bucket", "")
+        prefix = config.get("oss_bucket_prefix", "")
+        if endpoint and bucket:
+            path = f"oss://{endpoint}/{bucket}"
+            if prefix:
+                path = f"{path}/{prefix}"
+        else:
+            path = ""
+
+        # Collect storage_options from legacy fields
+        storage_options = {}
+        if config.get("role_arn"):
+            storage_options["role_arn"] = config["role_arn"]
+        if config.get("access_key_id"):
+            storage_options["access_key_id"] = config["access_key_id"]
+        if config.get("access_key_secret"):
+            storage_options["access_key_secret"] = config["access_key_secret"]
+
+        return cls(
+            path=path,
+            mount_path=config.get("mount_path", ""),
+            storage_options=storage_options,
+        )
 
 
 class BuiltinFunction(Serializable):
@@ -106,15 +170,15 @@ def builtin_function(func: Callable) -> BuiltinFunction:
 
 
 class MarkedFunction(Serializable):
-    func = FunctionField("func", default=None)
-    resources = ListField("resources", FieldTypes.string, default_factory=list)
+    func = AnyField("func", default=None)
+    file_resources = ListField("resources", FieldTypes.string, default_factory=list)
     pythonpacks = ListField("pythonpacks", FieldTypes.reference, default_factory=list)
     expect_engine = StringField("expect_engine", default=None)
     expect_resources = DictField(
         "expect_resources", FieldTypes.string, default_factory=dict
     )
     gpu = BoolField("gpu", default=False)
-    fs_mount = DictField("fs_mount", FieldTypes.string, default_factory=dict)
+    fs_mount = ListField("fs_mount", FieldTypes.reference, default_factory=list)
     public_network_whitelist = ListField(
         "public_network_whitelist", FieldTypes.string, default_factory=list
     )
@@ -122,6 +186,8 @@ class MarkedFunction(Serializable):
         "internal_network_whitelist", FieldTypes.string, default_factory=list
     )
     vpc_network_link = StringField("vpc_network_link", default=None)
+    # image_options configuration: {"name": "image_name"}
+    image_options = DictField("image_options", FieldTypes.string, default=None)
 
     def __init__(self, func: Optional[Callable] = None, **kw):
         super().__init__(func=func, **kw)
@@ -134,6 +200,10 @@ class MarkedFunction(Serializable):
 
     def __repr__(self):
         return f"<MarkedFunction {self.func!r}>"
+
+    @property
+    def __wrapped__(self):
+        return self.func
 
 
 class ODPSFunction(Serializable):
@@ -241,14 +311,14 @@ def with_resources(
     def func_wrapper(func):
         str_resources = [res_to_str(r) for r in resources]
         if not use_wrapper_class:
-            existing = getattr(func, "resources") or []
-            func.resources = existing + str_resources
+            existing = getattr(func, "file_resources") or []
+            func.file_resources = existing + str_resources
             return func
 
         if isinstance(func, MarkedFunction):
-            func.resources = func.resources + str_resources
+            func.file_resources = func.file_resources + str_resources
             return func
-        return MarkedFunction(func, resources=str_resources)
+        return MarkedFunction(func, file_resources=str_resources)
 
     return func_wrapper
 
@@ -305,6 +375,8 @@ def with_running_options(
         The GU number to run the UDF.
     gu_quota: Optional[Union[str, List[str]]]
         The GU quota nicknames to run the UDF. The order is the priority of the usage.
+    image_name: Optional[str]
+        The registered image name in MaxCompute to use for running the UDF.
     kwargs
         Other running options.
     """
@@ -331,23 +403,67 @@ def with_running_options(
     if isinstance(gu_quota, str):
         gu_quota = [gu_quota]
 
-    resources["gpu"] = gu
-    resources["gu_quota"] = gu_quota
+    # Only set gpu/gu_quota if they have values, avoid setting None
+    if gu is not None:
+        resources["gpu"] = gu
+    if gu_quota is not None:
+        resources["gu_quota"] = gu_quota
     use_gpu = is_positive_integer(gu)
 
     def func_wrapper(func):
-        if all(v is None for v in (engine, cpu, memory, gu, gu_quota)):
-            return func
+        if not all(v is None for v in (engine, cpu, memory, gu, gu_quota)):
+            if isinstance(func, MarkedFunction):
+                func.expect_engine = engine
+                func.expect_resources = resources
+                func.gpu = use_gpu
+            else:
+                func = MarkedFunction(
+                    func,
+                    expect_engine=engine,
+                    expect_resources=resources,
+                    gpu=use_gpu,
+                )
+        # Delegate other settings
+        if "image_name" in kwargs:
+            func = with_image_options(**kwargs)(func)
+        return func
+
+    return func_wrapper
+
+
+def with_image_options(
+    image_name: Optional[str] = None,
+    **kwargs,
+):
+    """
+    Set image options for the UDF.
+    The image must be registered in MaxCompute beforehand.
+
+    Parameters
+    ----------
+    image_name: Optional[str]
+        The registered image name in MaxCompute to use for running the UDF.
+    kwargs
+        Other image options.
+    """
+    if not image_name:
+        raise ValueError("image_name is required")
+
+    image_options_config = {"name": image_name, **kwargs}
+
+    def func_wrapper(func):
         if isinstance(func, MarkedFunction):
-            func.expect_engine = engine
-            func.expect_resources = resources
-            func.gpu = use_gpu
+            existing = func.image_options
+            if existing:
+                raise ValueError(
+                    f"Function image_options already set to '{existing.get('name')}', "
+                    f"cannot set to '{image_name}' again"
+                )
+            func.image_options = image_options_config
             return func
         return MarkedFunction(
             func,
-            expect_engine=engine,
-            expect_resources=resources,
-            gpu=use_gpu,
+            image_options=image_options_config,
         )
 
     return func_wrapper
@@ -435,87 +551,115 @@ def with_network_options(
 StorageOptions = Optional[Dict[str, Any]]
 
 
-def extract_path_params(
-    path: str, storage_options: StorageOptions = None
-) -> Dict[str, Any]:
-    if not path or not isinstance(path, str):
-        raise ValueError("A valid url Path string is required.")
-
-    from .lib.filesystem._oss_lib.common import parse_osspath
-    from .lib.filesystem.oss import AuthMode
-
-    storage_options = storage_options or {}
-
-    # Parse OSS path using native method
-    parsed_oss = parse_osspath(path, check_errors=False)
-
-    # Generate base configuration
-    config = {
-        "protocol": parsed_oss.scheme or "oss",
-        "oss_endpoint": parsed_oss.endpoint,
-        "oss_bucket": parsed_oss.bucket,
-    }
-
-    # Add bucket prefix if exists
-    if parsed_oss.key:
-        config["oss_bucket_prefix"] = parsed_oss.key
-
-    role_arn = storage_options.get("role_arn")
-    access_key_id = storage_options.get("access_key_id") or parsed_oss.access_key_id
-    access_key_secret = (
-        storage_options.get("access_key_secret") or parsed_oss.access_key_secret
-    )
-
-    if role_arn:
-        config.update(
-            {
-                "role_arn": role_arn,
-                "auth_mode": AuthMode.ROLE_ARN.value,
-            }
-        )
-    elif access_key_id and access_key_secret:
-        config.update(
-            {
-                "access_key_id": access_key_id,
-                "access_key_secret": access_key_secret,
-                "auth_mode": AuthMode.AK_SK.value,
-            }
-        )
-    else:
-        raise ValueError(
-            "Authentication credentials required: either role_arn or access_key_id/access_key_secret must be provided."
-        )
-
-    return config
-
-
 def with_fs_mount(
     path: str,
     mount_path: str,
     storage_options: StorageOptions = None,
 ):
-    # Extract filesystem parameters using the static method
-    config = extract_path_params(path, storage_options)
-    config["mount_path"] = mount_path
+    mount_options = FsMountOptions(
+        path=path,
+        mount_path=mount_path,
+        storage_options=storage_options or {},
+    )
+    mount_options.validate()
 
     def func_wrapper(func):
         if isinstance(func, MarkedFunction):
-            func.fs_mount.update(config)
+            # Validate that all mounts use identical storage_options
+            if func.fs_mount:
+                existing_opts = func.fs_mount[0].storage_options
+                new_opts = mount_options.storage_options
+                if existing_opts != new_opts:
+                    raise ValueError(
+                        f"All fs_mount decorators must use identical storage_options. "
+                        f"Existing: {existing_opts}, New: {new_opts}"
+                    )
+
+            func.fs_mount.append(mount_options)
             return func
 
-        marked_func = MarkedFunction(func)
-        marked_func.fs_mount = config
-        return marked_func
+        return MarkedFunction(func, fs_mount=[mount_options])
 
     return func_wrapper
+
+
+def get_udf_fs_mount(func: Callable) -> List[FsMountOptions]:
+    return getattr(func, "fs_mount", None) or []
 
 
 with_resource_libraries = with_resources
 
 
 def get_udf_resources(func: Callable) -> List[Union[ODPSResourceObj, str]]:
-    return getattr(func, "resources", None) or []
+    return getattr(func, "file_resources", None) or []
 
 
 def get_udf_pythonpacks(func: Callable) -> List[PythonPackOptions]:
     return getattr(func, "pythonpacks", None) or []
+
+
+def discover_marked_functions(func: Callable) -> List[MarkedFunction]:
+    """
+    Discover all MarkedFunction instances referenced in a function.
+    """
+    discovered: Set[MarkedFunction] = set()
+    visited: set = set()
+
+    def _discover(obj: Any) -> None:
+        """Recursively discover MarkedFunction instances in an object."""
+        # Avoid infinite recursion
+        obj_id = id(obj)
+        if obj_id in visited:
+            return
+        visited.add(obj_id)
+
+        # Handle functools.partial - check its func, args, and keywords
+        if isinstance(obj, functools.partial):
+            _discover(obj.func)
+            for arg in obj.args:
+                _discover(arg)
+            for kwarg in obj.keywords.values() if obj.keywords else []:
+                _discover(kwarg)
+            return
+
+        obj = unwrap_function(
+            obj, stop_predicate=lambda x: isinstance(x, MarkedFunction)
+        )
+
+        # Check if it's a MarkedFunction
+        if isinstance(obj, MarkedFunction):
+            if obj not in discovered:
+                discovered.add(obj)
+            # Also check the inner function of MarkedFunction
+            inner_func = obj.func
+            if inner_func is not None and inner_func is not obj:
+                _discover(inner_func)
+            return
+
+        # If it's a callable, inspect its closures and globals
+        if callable(obj) and hasattr(obj, "__code__"):
+            code = obj.__code__
+
+            # Inspect closure variables
+            if hasattr(obj, "__closure__") and obj.__closure__:
+                for cell in obj.__closure__:
+                    try:
+                        cell_contents = cell.cell_contents
+                        _discover(cell_contents)
+                    except ValueError:
+                        # Cell is empty
+                        pass
+
+            # Inspect global variables referenced by the function
+            if hasattr(obj, "__globals__"):
+                for name in code.co_names:
+                    if name in obj.__globals__:
+                        _discover(obj.__globals__[name])
+
+            # Also check co_consts for nested functions/lambdas
+            for const in code.co_consts:
+                if callable(const) and const is not obj:
+                    _discover(const)
+
+    _discover(func)
+    return list(discovered)

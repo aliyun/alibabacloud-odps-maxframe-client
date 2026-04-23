@@ -70,31 +70,31 @@ msgstr ""
 
 #: maxframe.dataframe.merge.merge.merge:13 of
 msgid "Type of merge to be performed."
-msgstr ""
+msgstr "要执行的合并类型。"
 
 #: maxframe.dataframe.merge.merge.merge:15 of
 msgid ""
 "left: use only keys from left frame, similar to a SQL left outer join; "
 "preserve key order."
-msgstr ""
+msgstr "left：仅使用左侧框架的键，类似于 SQL 左外连接；保持键的顺序。"
 
 #: maxframe.dataframe.merge.merge.merge:17 of
 msgid ""
 "right: use only keys from right frame, similar to a SQL right outer join;"
 " preserve key order."
-msgstr ""
+msgstr "right：仅使用右侧框架的键，类似于 SQL 右外连接；保持键的顺序。"
 
 #: maxframe.dataframe.merge.merge.merge:19 of
 msgid ""
 "outer: use union of keys from both frames, similar to a SQL full outer "
 "join; sort keys lexicographically."
-msgstr ""
+msgstr "outer：使用两个框架键的并集，类似于 SQL 全外连接；按字典序对键进行排序。"
 
 #: maxframe.dataframe.merge.merge.merge:21 of
 msgid ""
 "inner: use intersection of keys from both frames, similar to a SQL inner "
 "join; preserve the order of the left keys."
-msgstr ""
+msgstr "inner：使用两个框架键的交集，类似于 SQL 内连接；保持左侧键的顺序。"
 
 #: maxframe.dataframe.merge.merge.merge:24 of
 msgid ""
@@ -194,29 +194,29 @@ msgstr ""
 
 #: maxframe.dataframe.merge.merge.merge:63 of
 msgid "If specified, checks if merge is of specified type."
-msgstr ""
+msgstr "如果指定，则检查合并是否为指定类型。"
 
 #: maxframe.dataframe.merge.merge.merge:65 of
 msgid ""
 "\"one_to_one\" or \"1:1\": check if merge keys are unique in both left "
 "and right datasets."
-msgstr ""
+msgstr "\"one_to_one\" 或 \"1:1\"：检查合并键在左侧和右侧数据集中的唯一性。"
 
 #: maxframe.dataframe.merge.merge.merge:67 of
 msgid ""
 "\"one_to_many\" or \"1:m\": check if merge keys are unique in left "
 "dataset."
-msgstr ""
+msgstr "\"one_to_many\" 或 \"1:m\"：检查合并键在左侧数据集中的唯一性。"
 
 #: maxframe.dataframe.merge.merge.merge:69 of
 msgid ""
 "\"many_to_one\" or \"m:1\": check if merge keys are unique in right "
 "dataset."
-msgstr ""
+msgstr "\"many_to_one\" 或 \"m:1\"：检查合并键在右侧数据集中的唯一性。"
 
 #: maxframe.dataframe.merge.merge.merge:71 of
 msgid "\"many_to_many\" or \"m:m\": allowed, but does not result in checks."
-msgstr ""
+msgstr "\"many_to_many\" 或 \"m:m\"：允许，但不会进行检查。"
 
 #: maxframe.dataframe.merge.merge.merge:73 of
 msgid ""
@@ -240,23 +240,23 @@ msgstr ""
 
 #: maxframe.dataframe.merge.merge.merge:77 of
 msgid "Auto merge small chunks before or after merge"
-msgstr ""
+msgstr "在合并前后自动合并小块"
 
 #: maxframe.dataframe.merge.merge.merge:79 of
 msgid "\"both\": auto merge small chunks before and after,"
-msgstr ""
+msgstr "\"both\"：在合并前后自动合并小块，"
 
 #: maxframe.dataframe.merge.merge.merge:80 of
 msgid "\"none\": do not merge small chunks"
-msgstr ""
+msgstr "\"none\"：不合并小块"
 
 #: maxframe.dataframe.merge.merge.merge:81 of
 msgid "\"before\": only merge small chunks before merge"
-msgstr ""
+msgstr "\"before\"：仅在合并前合并小块"
 
 #: maxframe.dataframe.merge.merge.merge:82 of
 msgid "\"after\": only merge small chunks after merge"
-msgstr ""
+msgstr "\"after\"：仅在合并后合并小块"
 
 #: maxframe.dataframe.merge.merge.merge:84 of
 msgid ""

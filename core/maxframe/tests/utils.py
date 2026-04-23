@@ -29,7 +29,12 @@ from odps import ODPS
 from tornado import netutil
 
 from ..core import Tileable, TileableGraph
-from ..utils import create_sync_primitive, lazy_import, to_binary
+from ..utils import (
+    create_sync_primitive,
+    is_arrow_dtype_supported,
+    lazy_import,
+    to_binary,
+)
 
 try:
     from flaky import flaky
@@ -146,23 +151,27 @@ def assert_graph_equal(
 
 
 def require_cupy(func):
-    if pytest:
-        func = pytest.mark.cuda(func)
+    func = pytest.mark.cuda(func)
     func = pytest.mark.skipif(cupy is None, reason="cupy not installed")(func)
     return func
 
 
 def require_cudf(func):
-    if pytest:
-        func = pytest.mark.cuda(func)
+    func = pytest.mark.cuda(func)
     func = pytest.mark.skipif(cudf is None, reason="cudf not installed")(func)
     return func
 
 
 def require_ray(func):
-    if pytest:
-        func = pytest.mark.ray(func)
+    func = pytest.mark.ray(func)
     func = pytest.mark.skipif(ray is None, reason="ray not installed")(func)
+    return func
+
+
+def require_arrow_dtype(func):
+    func = pytest.mark.skipif(
+        not is_arrow_dtype_supported(), reason="ArrowDtype not supported"
+    )(func)
     return func
 
 

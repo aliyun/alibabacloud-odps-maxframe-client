@@ -26,12 +26,15 @@ from ...config import options
 from ...core import TILEABLE_TYPE, OutputType
 from ...dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
 from ...lib.dtypes_extension import ArrowBlobType, ArrowDtype
+from ...lib.version import parse as parse_version
 from ...protocol import DataFrameTableMeta
 from ...tensor.core import TENSOR_TYPE
 from ...utils import build_temp_table_name, pd_release_version, wrap_arrow_dtype
 
 _TEMP_TABLE_PREFIX = "tmp_mf_"
 DEFAULT_SINGLE_INDEX_NAME = "_idx_0"
+
+_pyarrow_version = parse_version(pa.__version__).release
 
 _arrow_to_odps_types = {
     pa.string(): odps_types.string,
@@ -271,14 +274,28 @@ def arrow_table_to_pandas_dataframe(
 ) -> pd.DataFrame:
     dtype_backend = dtype_backend or options.dataframe.dtype_backend
     use_arrow_backend = dtype_backend == "pyarrow"
-    df = table.to_pandas(
-        types_mapper=lambda x: (
-            wrap_arrow_dtype(x)
-            if is_based_for_pandas_dtype(x) or use_arrow_backend
-            else None
-        ),
-        ignore_metadata=True,
-    )
+    # when pandas>=2.x is installed with pyarrow<13.0, it cannot handle
+    #  datetime64[ms] correctly, and thus we need to fix it manually
+    need_cast_ms = pd_release_version[0] >= 2 and _pyarrow_version[0] < 13
+    has_ms_col = False
+
+    def _arrow_types_mapper(x):
+        nonlocal has_ms_col
+        if use_arrow_backend or is_based_for_pandas_dtype(x):
+            return wrap_arrow_dtype(x)
+        elif need_cast_ms and isinstance(x, pa.TimestampType) and x.unit == "ms":
+            has_ms_col = True
+        return None
+
+    df = table.to_pandas(types_mapper=_arrow_types_mapper, ignore_metadata=True)
+    if has_ms_col:
+        df = df.astype(
+            {
+                k: np.dtype("datetime64[ms]")
+                for k, v in zip(table.schema.names, table.schema.types)
+                if isinstance(v, pa.TimestampType) and v.unit == "ms"
+            }
+        )
     if not meta:
         return df
 

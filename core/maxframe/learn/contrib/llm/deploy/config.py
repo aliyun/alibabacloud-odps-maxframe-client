@@ -24,6 +24,7 @@ from .....serialization.serializables.field import (
     ListField,
 )
 from .....serialization.serializables.field_type import FieldTypes
+from .....udf import FsMountOptions
 from .framework import InferenceFrameworkEnum
 
 REASONING_MODEL_KEY = "reasoning_model"
@@ -48,8 +49,11 @@ class ModelDeploymentConfig(Serializable):
         The name of the model.
     model_file : str
         The **local** file path of the model, e.g., ``"/mnt/models/qwen/"``.
+        When using OSS models, this should match one of the ``mount_path`` values
+        in ``fs_mounts``.
 
-        Note: OSS paths (``oss://...``) are NOT supported directly.
+        Note: OSS paths (``oss://...``) are NOT supported directly. Use ``fs_mounts``
+        to mount OSS paths to local paths first.
 
     inference_framework_type : InferenceFrameworkEnum
         The inference framework of the model.
@@ -72,6 +76,13 @@ class ModelDeploymentConfig(Serializable):
         The properties of the model.
     tags : List[str]
         The tags of the model.
+    fs_mounts : List[FsMountOptions]
+        File system mount configurations for mounting OSS models to local paths.
+        Each FsMountOptions contains:
+
+        - ``path``: OSS source path, e.g., ``"oss://bucket/models/qwen/"``
+        - ``mount_path``: Local mount path, e.g., ``"/mnt/qwen"``
+        - ``storage_options``: Authentication config (role_arn)
 
     envs : Dict[str, str]
         Custom environment variables for the inference subprocess.
@@ -123,6 +134,13 @@ class ModelDeploymentConfig(Serializable):
         field_type=FieldTypes.string,
         default_factory=list,
     )
+    # File system mount configurations for OSS models
+    # Consistent with with_fs_mount() decorator pattern
+    fs_mounts: List[FsMountOptions] = ListField(
+        "fs_mounts",
+        field_type=FieldTypes.reference(FsMountOptions),
+        default_factory=list,
+    )
     # Custom environment variables for inference subprocess
     envs: Dict[str, str] = DictField(
         "envs",
@@ -169,12 +187,21 @@ class ModelDeploymentConfig(Serializable):
             and self.device == other.device
             and self.properties == other.properties
             and self.tags == other.tags
+            and self.fs_mounts == other.fs_mounts
             and self.envs == other.envs
             and self.image == other.image
             and self.inference_parameters == other.inference_parameters
         )
 
     def __hash__(self):
+        fs_mounts_tuple = tuple(
+            (
+                m.path,
+                m.mount_path,
+                tuple(sorted((m.storage_options or {}).items())),
+            )
+            for m in (self.fs_mounts or [])
+        )
         return hash(
             (
                 self.model_name,
@@ -193,6 +220,7 @@ class ModelDeploymentConfig(Serializable):
                 self.device,
                 tuple(sorted(self.properties.items())) if self.properties else None,
                 tuple(self.tags) if self.tags else None,
+                fs_mounts_tuple,
                 tuple(sorted(self.envs.items())) if self.envs else None,
                 tuple(sorted(self.image.items())) if self.image else None,
                 (
@@ -223,3 +251,32 @@ class ModelDeploymentConfig(Serializable):
             raise ValueError(
                 "required_cpu or required_gu must be provided and greater than 0"
             )
+
+        # Validate each fs_mount entry
+        if self.fs_mounts:
+            for i, mount in enumerate(self.fs_mounts):
+                try:
+                    mount.validate()
+                except ValueError as e:
+                    raise ValueError(f"fs_mounts[{i}]: {e}") from e
+
+            # Check for overlapping mount paths
+            self._validate_no_overlapping_mounts()
+
+    def _validate_no_overlapping_mounts(self):
+        """Validate that no two mounts have overlapping mount_path values."""
+        if not self.fs_mounts or len(self.fs_mounts) < 2:
+            return
+
+        paths = [m.mount_path.rstrip("/") for m in self.fs_mounts]
+        for i in range(len(paths)):
+            for j in range(i + 1, len(paths)):
+                if (
+                    paths[i] == paths[j]
+                    or paths[j].startswith(paths[i] + "/")
+                    or paths[i].startswith(paths[j] + "/")
+                ):
+                    raise ValueError(
+                        f"fs_mounts[{i}] mount_path '{self.fs_mounts[i].mount_path}' "
+                        f"overlaps with fs_mounts[{j}] mount_path '{self.fs_mounts[j].mount_path}'."
+                    )

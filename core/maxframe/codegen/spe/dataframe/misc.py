@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -188,18 +188,22 @@ class DataFrameApplyAdapter(SPEOperatorAdapter):
 
         apply_code = f"{applied_var} = {input_var}.apply({apply_args})"
 
-        if isinstance(op.outputs[0], SERIES_TYPE):
-            rename_arg = self.translate_var(context, op.outputs[0].name)
+        output = op.outputs[0]
+        if isinstance(output, SERIES_TYPE):
+            rename_arg = self.translate_var(context, output.name)
             rename_code = f"{renamed_var} = {applied_var}.rename({rename_arg})"
-            astype_arg = self.translate_var(context, op.outputs[0].dtype)
+            astype_arg = self.translate_var(context, output.dtype)
             astype_node = f"{output_var} = {renamed_var}.astype({astype_arg})"
-        else:
-            rename_arg = self.translate_var(context, list(op.outputs[0].dtypes.index))
+            return [apply_code, rename_code, astype_node]
+        elif hasattr(output, "dtypes") and output.dtypes is not None:
+            rename_arg = self.translate_var(context, list(output.dtypes.index))
             rename_code = f"{applied_var}.columns = {rename_arg}"
-            astype_arg = self.translate_var(context, dict(op.outputs[0].dtypes))
+            astype_arg = self.translate_var(context, dict(output.dtypes))
             astype_node = f"{output_var} = {applied_var}.astype({astype_arg})"
-
-        return [apply_code, rename_code, astype_node]
+            return [apply_code, rename_code, astype_node]
+        else:
+            # Fallback for schema-less (e.g., debug-mode degraded inference)
+            return [apply_code, f"{output_var} = {applied_var}"]
 
 
 @register_op_adapter(DataFrameDropDuplicates)

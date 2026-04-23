@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-04 13:26+0800\n"
+"POT-Creation-Date: 2026-02-11 15:50+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -42,15 +42,15 @@ msgid "**Axes**"
 msgstr "**轴**"
 
 #: ../../source/reference/dataframe/frame.rst:23:<autosummary>:1
-msgid ":py:obj:`DataFrame.index <maxframe.dataframe.DataFrame.index>`\\"
+msgid ":py:obj:`DataFrame.index <maxframe.dataframe.DataFrame.index>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/frame.rst:23:<autosummary>:1
-msgid ":py:obj:`DataFrame.columns <maxframe.dataframe.DataFrame.columns>`\\"
+msgid ":py:obj:`DataFrame.columns <maxframe.dataframe.DataFrame.columns>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/frame.rst:32:<autosummary>:1
-msgid ":py:obj:`DataFrame.dtypes <maxframe.dataframe.DataFrame.dtypes>`\\"
+msgid ":py:obj:`DataFrame.dtypes <maxframe.dataframe.DataFrame.dtypes>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/frame.rst:32:<autosummary>:1
@@ -68,7 +68,7 @@ msgid "Return the memory usage of each column in bytes."
 msgstr "返回每列的内存使用量（以字节为单位）。"
 
 #: ../../source/reference/dataframe/frame.rst:32:<autosummary>:1
-msgid ":py:obj:`DataFrame.ndim <maxframe.dataframe.DataFrame.ndim>`\\"
+msgid ":py:obj:`DataFrame.ndim <maxframe.dataframe.DataFrame.ndim>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/frame.rst:32:<autosummary>:1
@@ -87,7 +87,7 @@ msgid "Return a subset of the DataFrame's columns based on the column dtypes."
 msgstr "基于列的数据类型返回 DataFrame 列的一个子集。"
 
 #: ../../source/reference/dataframe/frame.rst:32:<autosummary>:1
-msgid ":py:obj:`DataFrame.shape <maxframe.dataframe.DataFrame.shape>`\\"
+msgid ":py:obj:`DataFrame.shape <maxframe.dataframe.DataFrame.shape>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/frame.rst:34
@@ -134,7 +134,7 @@ msgid "Indexing, iteration"
 msgstr "索引、迭代"
 
 #: ../../source/reference/dataframe/frame.rst:60:<autosummary>:1
-msgid ":py:obj:`DataFrame.at <maxframe.dataframe.DataFrame.at>`\\"
+msgid ":py:obj:`DataFrame.at <maxframe.dataframe.DataFrame.at>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/frame.rst:60:<autosummary>:1
@@ -154,7 +154,7 @@ msgid "Return the first `n` rows."
 msgstr "返回前 `n` 行。"
 
 #: ../../source/reference/dataframe/frame.rst:60:<autosummary>:1
-msgid ":py:obj:`DataFrame.iat <maxframe.dataframe.DataFrame.iat>`\\"
+msgid ":py:obj:`DataFrame.iat <maxframe.dataframe.DataFrame.iat>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/frame.rst:60:<autosummary>:1
@@ -162,7 +162,7 @@ msgid "Access a single value for a row/column pair by integer position."
 msgstr "通过整数位置访问单个行/列对的值。"
 
 #: ../../source/reference/dataframe/frame.rst:60:<autosummary>:1
-msgid ":py:obj:`DataFrame.iloc <maxframe.dataframe.DataFrame.iloc>`\\"
+msgid ":py:obj:`DataFrame.iloc <maxframe.dataframe.DataFrame.iloc>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/frame.rst:60:<autosummary>:1
@@ -180,7 +180,7 @@ msgid "Insert column into DataFrame at specified location."
 msgstr "在指定位置插入列到DataFrame。"
 
 #: ../../source/reference/dataframe/frame.rst:60:<autosummary>:1
-msgid ":py:obj:`DataFrame.loc <maxframe.dataframe.DataFrame.loc>`\\"
+msgid ":py:obj:`DataFrame.loc <maxframe.dataframe.DataFrame.loc>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/frame.rst:60:<autosummary>:1
@@ -1362,17 +1362,8 @@ msgstr ""
 "的绘图方法 ``DataFrame.plot.<kind>``。"
 
 #: ../../source/reference/dataframe/frame.rst:238:<autosummary>:1
-msgid ":py:obj:`DataFrame.plot <maxframe.dataframe.DataFrame.plot>`\\"
+msgid ":py:obj:`DataFrame.plot <maxframe.dataframe.DataFrame.plot>`"
 msgstr ""
-
-#: ../../source/reference/dataframe/frame.rst:238:<autosummary>:1
-#, fuzzy
-msgid ""
-":py:class:`~maxframe.dataframe.accessors.plotting.core."
-"DataFramePlotAccessor` 的别名"
-msgstr ""
-"是 :py:class:`~maxframe.dataframe.accessors.plotting.core."
-"DataFramePlotAccessor` 的别名"
 
 #: ../../source/reference/dataframe/frame.rst:254:<autosummary>:1
 msgid ""
@@ -1585,88 +1576,98 @@ msgstr ""
 msgid "MaxFrame Extensions"
 msgstr "MaxFrame 扩展方法"
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.apply_chunk "
 "<maxframe.dataframe.DataFrame.mf.apply_chunk>`\\ \\(func\\[\\, "
 "batch\\_rows\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid ""
 "Apply a function that takes pandas DataFrame and outputs pandas "
 "DataFrame/Series."
 msgstr "应用一个接受 pandas DataFrame 并输出 pandas DataFrame/Series 的函数。"
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.collect_kv "
 "<maxframe.dataframe.DataFrame.mf.collect_kv>`\\ \\(\\[columns\\, "
 "kv\\_delim\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid "Merge values in specified columns into a key-value represented column."
 msgstr "将指定列中的值合并为键值表示的列。"
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.extract_kv "
 "<maxframe.dataframe.DataFrame.mf.extract_kv>`\\ \\(\\[columns\\, "
 "kv\\_delim\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid "Extract values in key-value represented columns into standalone columns."
 msgstr "将键值表示的列中的值提取为独立列。"
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.flatmap "
 "<maxframe.dataframe.DataFrame.mf.flatmap>`\\ \\(func\\[\\, dtypes\\, "
 "raw\\, args\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid "Apply the given function to each row and then flatten results."
 msgstr "对每一行应用给定函数，然后展平结果。"
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.map_reduce "
 "<maxframe.dataframe.DataFrame.mf.map_reduce>`\\ \\(\\[mapper\\, "
 "reducer\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid "Map-reduce API over certain DataFrames."
 msgstr "某些 DataFrame 上的 Map-reduce API。"
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.rebalance "
 "<maxframe.dataframe.DataFrame.mf.rebalance>`\\ \\(\\[axis\\, factor\\, "
 "...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid "Make data more balanced across entire cluster."
 msgstr "使数据在整个集群中更加均衡。"
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.mf.reshuffle "
 "<maxframe.dataframe.DataFrame.mf.reshuffle>`\\ \\(\\[group\\_by\\, "
 "sort\\_by\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/frame.rst:288:<autosummary>:1
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
 msgid ""
 "Shuffle data in DataFrame or Series to make data distribution more "
 "randomized."
 msgstr "对 DataFrame 或 Series 中的数据进行重排，使数据分布更加随机。"
 
-#: ../../source/reference/dataframe/frame.rst:289
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
+msgid ""
+":py:obj:`DataFrame.rechunk <maxframe.dataframe.DataFrame.rechunk>`\\ "
+"\\(chunk\\_size\\[\\, reassign\\_worker\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/frame.rst:289:<autosummary>:1
+msgid "Rechunk DataFrame, Series or Index data."
+msgstr "重新分块 DataFrame、Series 或 Index 数据。"
+
+#: ../../source/reference/dataframe/frame.rst:290
 msgid ""
 "``DataFrame.mf`` provides methods unique to MaxFrame. These methods are "
 "collated from application scenarios in MaxCompute and these can be "

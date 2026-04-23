@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -567,7 +567,7 @@ class _BatchedFetcher:
     def iterbatch(self, batch_size=None, session=None, **kw):
         # stop triggering execution under build mode
         if is_build_mode():
-            raise ValueError("Cannot fetch data under build mode")
+            raise NotImplementedError("Cannot fetch data under build mode")
 
         # trigger execution
         self.execute(session=session, **kw)
@@ -1114,6 +1114,8 @@ class SeriesData(_BatchedFetcher, BaseSeriesData):
         return tensor.astype(dtype=dtype, order=order, copy=False)
 
     def iteritems(self, batch_size=10000, session=None):
+        if is_build_mode():
+            raise NotImplementedError("Cannot iterate data under build mode")
         method_name = "iteritems" if _df_with_iteritems else "items"
         for batch_data in self.iterbatch(batch_size=batch_size, session=session):
             yield from getattr(batch_data, method_name)()
@@ -1257,6 +1259,8 @@ class Series(HasShapeTileable, _ToPandasMixin):
             return super()._view()
 
     def __iter__(self):
+        if is_build_mode():
+            raise NotImplementedError("Cannot iterate data under build mode")
         # prevent being called by pandas to make sure `__eq__` works
         prevent_called_from_pandas()
         return (tp[1] for tp in self.items())
@@ -1657,6 +1661,8 @@ class DataFrameData(_BatchedFetcher, BaseDataFrameData):
         return buf.getvalue()
 
     def items(self):
+        if is_build_mode():
+            raise NotImplementedError("Cannot iterate data under build mode mode")
         for col_name in self.dtypes.index:
             yield col_name, self[col_name]
 
@@ -1707,6 +1713,8 @@ class DataFrame(HasShapeTileable, _ToPandasMixin):
         )
 
     def __iter__(self):
+        if is_build_mode():
+            raise NotImplementedError("Cannot iterate data under build mode mode")
         # prevent being called by pandas to make sure `__eq__` works
         prevent_called_from_pandas()
         return iter(self.dtypes.index)

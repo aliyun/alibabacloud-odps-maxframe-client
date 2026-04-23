@@ -21,8 +21,8 @@ from ..... import dataframe as md
 from .....core import OutputType, TileableGraph, build_fetch
 from .....lib.dtypes_extension import dict_
 from .....utils import (
-    ARROW_DTYPE_NOT_SUPPORTED,
     deserialize_serializable,
+    is_arrow_dtype_supported,
     serialize_serializable,
     wrap_arrow_dtype,
 )
@@ -30,7 +30,7 @@ from ..core import SeriesDictMethod
 from ..getitem import SeriesDictGetItemOperator
 
 pytestmark = pytest.mark.skipif(
-    ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported"
+    not is_arrow_dtype_supported(), reason="Arrow Dtype is not supported"
 )
 
 

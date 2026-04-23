@@ -51,7 +51,7 @@ msgstr ""
 
 #: maxframe.dataframe.misc.shift.tshift:11 of
 msgid "**shifted**"
-msgstr ""
+msgstr "**已移动**"
 
 #: maxframe.dataframe.misc.shift.tshift of
 msgid "返回类型"

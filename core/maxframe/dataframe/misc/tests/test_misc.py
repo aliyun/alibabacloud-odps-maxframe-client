@@ -573,7 +573,6 @@ def test_apply():
         "cpu": 4,
         "memory": "40GB",
         "gpu": 0,
-        "gu_quota": None,
     }
 
 

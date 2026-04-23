@@ -61,11 +61,11 @@ msgstr ""
 
 #: maxframe.tensor.linalg.qr.qr:8 of
 msgid "method to calculate qr factorization, tsqr as default"
-msgstr ""
+msgstr "计算 qr 分解的方法，默认为 tsqr"
 
 #: maxframe.tensor.linalg.qr.qr:10 of
 msgid "TSQR is presented in:"
-msgstr ""
+msgstr "TSQR 在以下文献中提出："
 
 #: maxframe.tensor.linalg.qr.qr:12 of
 msgid ""
@@ -76,7 +76,7 @@ msgstr ""
 
 #: maxframe.tensor.linalg.qr.qr:18 of
 msgid "FSQR is a QR decomposition for fat and short matrix:"
-msgstr ""
+msgstr "FSQR 是针对宽而矮矩阵的 QR 分解："
 
 #: maxframe.tensor.linalg.qr.qr:19 of
 msgid ""

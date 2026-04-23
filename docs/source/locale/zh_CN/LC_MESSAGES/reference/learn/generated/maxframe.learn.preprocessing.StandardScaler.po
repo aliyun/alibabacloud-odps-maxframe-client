@@ -404,5 +404,5 @@ msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.preprocessing.StandardScaler.rst:30:<autosummary>:1
 msgid "Perform standardization by centering and scaling."
-msgstr ""
+msgstr "通过中心化和缩放执行标准化。"
 

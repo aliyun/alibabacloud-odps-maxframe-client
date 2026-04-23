@@ -51,33 +51,31 @@ msgstr ""
 msgid ""
 "When there are duplicate values that cannot all fit in a Series of `n` "
 "elements:"
-msgstr ""
+msgstr "当有重复值无法全部放入 `n` 个元素的 Series 中时："
 
 #: maxframe.dataframe.sort.nsmallest.series_nsmallest:8 of
 msgid "``first`` : return the first `n` occurrences in order"
-msgstr ""
+msgstr "``first`` : 按顺序返回前 `n` 个出现的值"
 
 #: maxframe.dataframe.sort.nsmallest.series_nsmallest:-1 of
-#, fuzzy
 msgid "return the first"
-msgstr "返回前 `n` 行。"
+msgstr "返回第一个"
 
 #: maxframe.dataframe.sort.nsmallest.series_nsmallest:9 of
 msgid "of appearance."
-msgstr ""
+msgstr "出现的值。"
 
 #: maxframe.dataframe.sort.nsmallest.series_nsmallest:10 of
 msgid "``last`` : return the last `n` occurrences in reverse"
-msgstr ""
+msgstr "``last`` : 按相反顺序返回最后 `n` 个出现的值"
 
 #: maxframe.dataframe.sort.nsmallest.series_nsmallest:-1 of
-#, fuzzy
 msgid "return the last"
-msgstr "返回前 `n` 行。"
+msgstr "返回最后一个"
 
 #: maxframe.dataframe.sort.nsmallest.series_nsmallest:11 of
 msgid "order of appearance."
-msgstr ""
+msgstr "出现的顺序。"
 
 #: maxframe.dataframe.sort.nsmallest.series_nsmallest:12 of
 msgid "``all``"
@@ -85,11 +83,11 @@ msgstr ""
 
 #: maxframe.dataframe.sort.nsmallest.series_nsmallest:-1 of
 msgid "keep all occurrences. This can result in a Series of"
-msgstr ""
+msgstr "保留所有出现的值。这可能导致 Series 的"
 
 #: maxframe.dataframe.sort.nsmallest.series_nsmallest:13 of
 msgid "size larger than `n`."
-msgstr ""
+msgstr "大小大于 `n`。"
 
 #: maxframe.dataframe.sort.nsmallest.series_nsmallest of
 msgid "返回"

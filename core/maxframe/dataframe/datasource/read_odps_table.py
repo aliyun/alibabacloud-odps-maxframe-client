@@ -92,6 +92,9 @@ class DataFrameReadODPSTable(
     def partition(self):
         return getattr(self, "partition_spec", None)
 
+    def can_fuse_with_custom_code(self) -> bool:
+        return False
+
     def get_columns(self):
         return self.columns or list(self.dtypes.index)
 

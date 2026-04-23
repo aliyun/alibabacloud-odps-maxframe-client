@@ -97,6 +97,9 @@ class LLMTaskOperator(Operator, DataFrameOperatorMixin):
             dtypes=out_dtypes,
         )
 
+    def can_fuse_with_custom_code(self) -> bool:
+        return False
+
 
 class LLMTextGenOperator(LLMTaskOperator, TileableOperatorMixin):
     prompt_template = AnyField("prompt_template", default=None)

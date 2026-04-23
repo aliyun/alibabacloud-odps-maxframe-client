@@ -1,0 +1,9 @@
+# cython compiled files
+maxframe/*.c*
+maxframe/*.h*
+maxframe/core/**/*.c*
+maxframe/learn/cluster/*.c*
+maxframe/learn/utils/*.c*
+maxframe/lib/*.c*
+maxframe/serialization/*.c*
+maxframe/utils/**/*.c*

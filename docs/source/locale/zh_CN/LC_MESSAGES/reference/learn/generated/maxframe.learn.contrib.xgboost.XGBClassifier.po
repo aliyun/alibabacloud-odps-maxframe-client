@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-23 14:19+0800\n"
+"POT-Creation-Date: 2026-02-10 19:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -41,7 +41,7 @@ msgstr ""
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:42:<autosummary>:1
 msgid ""
 ":py:obj:`apply <maxframe.learn.contrib.xgboost.XGBClassifier.apply>`\\ "
-"\\(X\\[\\, ntree\\_limit\\, iteration\\_range\\]\\)"
+"\\(X\\[\\, iteration\\_range\\]\\)"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:42:<autosummary>:1
@@ -142,7 +142,7 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:42:<autosummary>:1
-msgid "Load the model from a file or bytearray."
+msgid "Load the model from a file or a bytearray."
 msgstr "从文件或字节数组加载模型。"
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:42:<autosummary>:1
@@ -261,91 +261,83 @@ msgstr "将训练好的模型保存到 MaxCompute。"
 msgid "Attributes"
 msgstr "属性"
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid ""
 ":py:obj:`best_iteration "
-"<maxframe.learn.contrib.xgboost.XGBClassifier.best_iteration>`\\"
+"<maxframe.learn.contrib.xgboost.XGBClassifier.best_iteration>`"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid "The best iteration obtained by early stopping."
 msgstr "通过早停获得的最佳迭代次数。"
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
-msgid ""
-":py:obj:`best_ntree_limit "
-"<maxframe.learn.contrib.xgboost.XGBClassifier.best_ntree_limit>`\\"
-msgstr ""
-
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid ""
 ":py:obj:`best_score "
-"<maxframe.learn.contrib.xgboost.XGBClassifier.best_score>`\\"
+"<maxframe.learn.contrib.xgboost.XGBClassifier.best_score>`"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid "The best score obtained by early stopping."
 msgstr "通过早停获得的最佳分数。"
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
-msgid ""
-":py:obj:`classes_ "
-"<maxframe.learn.contrib.xgboost.XGBClassifier.classes_>`\\"
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
+msgid ":py:obj:`classes_ <maxframe.learn.contrib.xgboost.XGBClassifier.classes_>`"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
-msgid ":py:obj:`coef_ <maxframe.learn.contrib.xgboost.XGBClassifier.coef_>`\\"
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
+msgid ":py:obj:`coef_ <maxframe.learn.contrib.xgboost.XGBClassifier.coef_>`"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid "Coefficients property"
 msgstr "系数属性"
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid ""
 ":py:obj:`feature_importances_ "
-"<maxframe.learn.contrib.xgboost.XGBClassifier.feature_importances_>`\\"
+"<maxframe.learn.contrib.xgboost.XGBClassifier.feature_importances_>`"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid ""
 "Feature importances property, return depends on `importance_type` "
 "parameter."
 msgstr "特征重要性属性，返回值取决于 `importance_type` 参数。"
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid ""
 ":py:obj:`feature_names_in_ "
-"<maxframe.learn.contrib.xgboost.XGBClassifier.feature_names_in_>`\\"
+"<maxframe.learn.contrib.xgboost.XGBClassifier.feature_names_in_>`"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid "Names of features seen during :py:meth:`fit`."
 msgstr "在 :py:meth:`fit` 期间看到的特征名称。"
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid ""
 ":py:obj:`intercept_ "
-"<maxframe.learn.contrib.xgboost.XGBClassifier.intercept_>`\\"
+"<maxframe.learn.contrib.xgboost.XGBClassifier.intercept_>`"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid "Intercept (bias) property"
 msgstr "截距（偏置）属性"
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid ""
 ":py:obj:`n_features_in_ "
-"<maxframe.learn.contrib.xgboost.XGBClassifier.n_features_in_>`\\"
+"<maxframe.learn.contrib.xgboost.XGBClassifier.n_features_in_>`"
 msgstr ""
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid "Number of features seen during :py:meth:`fit`."
 msgstr "在 :py:meth:`fit` 期间看到的特征数量。"
 
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:56:<autosummary>:1
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.XGBClassifier.rst:55:<autosummary>:1
 msgid ""
 ":py:obj:`training_info_ "
-"<maxframe.learn.contrib.xgboost.XGBClassifier.training_info_>`\\"
+"<maxframe.learn.contrib.xgboost.XGBClassifier.training_info_>`"
 msgstr ""
 

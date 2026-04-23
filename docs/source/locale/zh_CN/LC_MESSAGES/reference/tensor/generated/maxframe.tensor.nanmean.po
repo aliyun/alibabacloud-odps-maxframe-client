@@ -90,29 +90,23 @@ msgstr ""
 "引发异常。"
 
 #: maxframe.tensor.reduction.nanmean.nanmean:24 of
-#, fuzzy
 msgid ""
 "If this is set to True, the axes which are reduced are left in the result"
 " as dimensions with size one. With this option, the result will broadcast"
 " correctly against the original `a`."
 msgstr ""
-"如果设置为 True，则被压缩的轴将保留在结果中作为大小为一的维度。使用此选项"
-"，结果将能正确广播到原始 `a`。如果值不是默认值，则 `keepdims` 将传递给 `"
-"Tensor` 子类的 `mean` 或 `sum` 方法。如果子类方法未实现 `keepdims`，将"
-"引发异常。"
+"如果设置为 True，则被约简的轴将在结果中保留为大小为一的维度。使用此选项时"
+"，结果将能够正确地与原始 `a` 进行广播。"
 
 #: maxframe.tensor.reduction.nanmean.nanmean:28 of
-#, fuzzy
 msgid ""
 "If the value is anything but the default, then `keepdims` will be passed "
 "through to the `mean` or `sum` methods of sub-classes of `Tensor`.  If "
 "the sub-classes methods does not implement `keepdims` any exceptions will"
 " be raised."
 msgstr ""
-"如果设置为 True，则被压缩的轴将保留在结果中作为大小为一的维度。使用此选项"
-"，结果将能正确广播到原始 `a`。如果值不是默认值，则 `keepdims` 将传递给 `"
-"Tensor` 子类的 `mean` 或 `sum` 方法。如果子类方法未实现 `keepdims`，将"
-"引发异常。"
+"如果值不是默认值，则 `keepdims` 将传递给 `Tensor` 子类的 `mean` 或 `sum` "
+"方法。如果子类方法没有实现 `keepdims`，则会引发异常。"
 
 #: maxframe.tensor.reduction.nanmean.nanmean of
 msgid "返回"

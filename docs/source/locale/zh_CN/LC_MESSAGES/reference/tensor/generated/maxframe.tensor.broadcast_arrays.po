@@ -41,7 +41,7 @@ msgstr ""
 
 #: maxframe.tensor.misc.broadcast_arrays.broadcast_arrays:6 of
 msgid "**broadcasted**"
-msgstr ""
+msgstr "**广播的**"
 
 #: maxframe.tensor.misc.broadcast_arrays.broadcast_arrays of
 msgid "返回类型"

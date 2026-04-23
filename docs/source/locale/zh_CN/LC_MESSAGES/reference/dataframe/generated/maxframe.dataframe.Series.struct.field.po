@@ -39,12 +39,11 @@ msgstr "要提取的子字段的名称或索引。对于类列表输入，这将
 
 #: maxframe.dataframe.accessors.struct_.field.struct_field:3 of
 msgid "Name or index of the child field to extract."
-msgstr ""
+msgstr "要提取的子字段的名称或索引。"
 
 #: maxframe.dataframe.accessors.struct_.field.struct_field:5 of
-#, fuzzy
 msgid "For list-like inputs, this will index into a nested struct."
-msgstr "要提取的子字段的名称或索引。对于类列表输入，这将索引到嵌套结构体中。"
+msgstr "对于类列表输入，这将索引到嵌套结构中。"
 
 #: maxframe.dataframe.accessors.struct_.field.struct_field of
 msgid "返回"

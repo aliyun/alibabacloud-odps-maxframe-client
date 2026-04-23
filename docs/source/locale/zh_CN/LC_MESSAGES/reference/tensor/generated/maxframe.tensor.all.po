@@ -50,23 +50,23 @@ msgstr ""
 "单个轴或所有轴上执行。"
 
 #: maxframe.tensor.reduction.all.all:5 of
-#, fuzzy
 msgid ""
 "Axis or axes along which a logical AND reduction is performed. The "
 "default (`axis` = `None`) is to perform a logical AND over all the "
 "dimensions of the input array. `axis` may be negative, in which case it "
 "counts from the last to the first axis."
 msgstr ""
-"执行逻辑与归约操作的轴或轴的元组。默认值（`axis` = `None`）是对输入数组的"
-"所有维度执行逻辑与操作。`axis` 可以为负数，在这种情况下它从最后一个轴开始"
-"向前计数。如果这是一个整数元组，则在多个轴上执行归约，而不是像以前那样在"
-"单个轴或所有轴上执行。"
+"执行逻辑 AND 约简的轴或轴。默认值（`axis` = `None`）是在输入数组的所有"
+"维度上执行逻辑 AND。`axis` 可以是负数，在这种情况下它从最后一个轴向前计数"
+"。"
 
 #: maxframe.tensor.reduction.all.all:10 of
 msgid ""
 "If this is a tuple of ints, a reduction is performed on multiple axes, "
 "instead of a single axis or all the axes as before."
 msgstr ""
+"如果这是一个整数元组，则在多个轴上执行约简，而不是像以前那样在单个轴或"
+"所有轴上执行。"
 
 #: maxframe.tensor.reduction.all.all:13 of
 msgid ""
@@ -100,19 +100,19 @@ msgid ""
 " as dimensions with size one. With this option, the result will broadcast"
 " correctly against the input tensor."
 msgstr ""
+"如果设置为 True，则约简的轴将在结果中保留为大小为一的维度。使用此选项，"
+"结果将能够正确地与输入张量进行广播。"
 
 #: maxframe.tensor.reduction.all.all:23 of
-#, fuzzy
 msgid ""
 "If the default value is passed, then `keepdims` will not be passed "
 "through to the `all` method of sub-classes of `ndarray`, however any non-"
 "default value will be.  If the sub-classes `sum` method does not "
 "implement `keepdims` any exceptions will be raised."
 msgstr ""
-"如果设置为 True，则被归约的轴将保留在结果中，其大小为 1。使用此选项时，"
-"结果将能正确地与输入张量进行广播。如果传入默认值，则 `keepdims` 不会被"
-"传递给 `ndarray` 子类的 `all` 方法，但任何非默认值会被传递。如果子类的 `"
-"sum` 方法没有实现 `keepdims`，则会引发异常。"
+"如果传递默认值，则 `keepdims` 不会被传递给 `ndarray` 子类的 `all` 方法，"
+"但是任何非默认值都会被传递。如果子类的 `sum` 方法没有实现 `keepdims`，则"
+"会引发异常。"
 
 #: maxframe.tensor.reduction.all.all of
 msgid "返回"

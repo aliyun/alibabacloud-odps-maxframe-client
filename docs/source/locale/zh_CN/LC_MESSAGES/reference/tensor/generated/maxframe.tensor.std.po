@@ -56,7 +56,6 @@ msgstr ""
 "进行。"
 
 #: maxframe.tensor.reduction.std.std:9 of
-#, fuzzy
 msgid ""
 "Axis or axes along which the standard deviation is computed. The default "
 "is to compute the standard deviation of the flattened tensor."
@@ -66,14 +65,12 @@ msgstr ""
 "进行。"
 
 #: maxframe.tensor.reduction.std.std:12 of
-#, fuzzy
 msgid ""
 "If this is a tuple of ints, a standard deviation is performed over "
 "multiple axes, instead of a single axis or all the axes as before."
 msgstr ""
-"计算标准差所沿的轴或轴集。默认是对展平后的张量计算标准差。如果这是一个"
-"整数元组，则在多个轴上执行标准差计算，而不是像以前一样在单个轴或所有轴上"
-"进行。"
+"如果这是一个整数元组，则在多个轴上执行标准差计算，而不是像以前一样在单个"
+"轴或所有轴上进行。"
 
 #: maxframe.tensor.reduction.std.std:15 of
 msgid ""
@@ -123,9 +120,10 @@ msgid ""
 " as dimensions with size one. With this option, the result will broadcast"
 " correctly against the input tensor."
 msgstr ""
+"如果设置为 True，则被约简的轴将在结果中保留为大小为一的维度。使用此选项时"
+"，结果将能够正确地与输入张量进行广播。"
 
 #: maxframe.tensor.reduction.std.std:31 of
-#, fuzzy
 msgid ""
 "If the default value is passed, then `keepdims` will not be passed "
 "through to the `std` method of sub-classes of `Tensor`, however any non-"

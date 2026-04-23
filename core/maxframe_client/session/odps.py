@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ import abc
 import asyncio
 import copy
 import logging
+import sys
 import time
 import weakref
 from collections import deque
@@ -30,6 +31,7 @@ from odps import options as odps_options
 from odps.config import option_context as odps_option_context
 from odps.console import in_ipython_frontend
 
+import maxframe
 from maxframe.codegen import CodeGenResult
 from maxframe.codegen.spe import SPECodeGenerator
 from maxframe.config import options
@@ -55,6 +57,8 @@ from maxframe.io.odpsio import (
 from maxframe.protocol import (
     ConstantResultInfo,
     DagInfo,
+    DisplayMessage,
+    DisplayMessageType,
     ExecutionStatus,
     ODPSTableResultInfo,
     ODPSVolumeResultInfo,
@@ -284,15 +288,17 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         self._last_settings = copy.deepcopy(self._caller.get_settings_to_upload())
         self._session_id = session_info.session_id
         await self._show_logview_address()
+        self.display_messages(session_info.display_messages)
 
     def _upload_and_get_table_read_tileable(
         self, t: TileableType, data: Any
     ) -> Optional[TileableType]:
         table_schema, table_meta = pandas_to_odps_schema(t, unknown_as_string=True)
+        sql_hints = dict(options.sql.settings or dict())
+        sql_hints["odps.sql.type.system.odps2"] = True
+
         if self._odps_entry.exist_table(table_meta.table_name):
-            self._odps_entry.delete_table(
-                table_meta.table_name, hints=options.sql.settings
-            )
+            self._odps_entry.delete_table(table_meta.table_name, hints=sql_hints)
         table_name = build_temp_table_name(self.session_id, t.key)
         schema = (
             self._last_settings.get("session.default_schema", None)
@@ -304,7 +310,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             table_schema,
             schema=schema,
             lifecycle=options.session.temp_table_lifecycle,
-            hints=options.sql.settings,
+            hints=sql_hints,
             if_not_exists=True,
             table_properties=options.session.temp_table_properties
             or get_default_table_properties(),
@@ -538,6 +544,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         )
 
         await self._show_logview_address(dag_info.dag_id)
+        self.display_messages(dag_info.display_messages)
 
         progress = Progress()
         profiling = Profiling()
@@ -613,12 +620,14 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
                     else:
                         # Reset counter if we get a valid response
                         empty_response_times = 0
+                        self.display_messages(dag_info.display_messages)
                         progress.value = dag_info.progress
                         if dag_info.status != ExecutionStatus.RUNNING:
                             break
                     await asyncio.sleep(timeout_val)
             except asyncio.CancelledError:
                 dag_info = await self.ensure_async_call(self._caller.cancel_dag, dag_id)
+                self.display_messages(dag_info.display_messages)
                 if dag_info.status != ExecutionStatus.CANCELLED:  # pragma: no cover
                     raise
             finally:
@@ -785,6 +794,17 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         else:
             logger.info("%s, Logview address does not exist", identity)
 
+    def display_messages(self, display_messages: Optional[List[DisplayMessage]]):
+        for msg in display_messages or []:
+            if msg.type == DisplayMessageType.STDOUT:
+                print(msg.message, flush=True)
+            elif msg.type == DisplayMessageType.STDERR:
+                print(msg.message, file=sys.stderr, flush=True)
+            elif msg.type == DisplayMessageType.WARNING:
+                print("WARNING:", msg.message, file=sys.stderr, flush=True)
+            elif msg.type == DisplayMessageType.LOGGER:
+                logger.log(msg.level, msg.message)
+
 
 class MaxFrameRestCaller(MaxFrameServiceCaller):
     _client: FrameDriverClient
@@ -796,7 +816,9 @@ class MaxFrameRestCaller(MaxFrameServiceCaller):
         self._session_id = None
 
     async def create_session(self) -> SessionInfo:
-        info = await self._client.create_session(self.get_settings_to_upload())
+        settings = self.get_settings_to_upload()
+        settings["session.client_version"] = maxframe.__version__
+        info = await self._client.create_session(settings)
         self._session_id = info.session_id
         return info
 

@@ -16,7 +16,7 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from ....utils import ARROW_DTYPE_NOT_SUPPORTED
+from ....utils import is_arrow_dtype_supported
 from ..dtypes import dict_, is_list_dtype, is_map_dtype, is_struct_dtype, list_, struct_
 
 try:
@@ -25,8 +25,7 @@ except:
     ArrowDtype = None
 
 pytestmark = pytest.mark.skipif(
-    ARROW_DTYPE_NOT_SUPPORTED,
-    reason="pandas doesn't support ArrowDtype",
+    not is_arrow_dtype_supported(), reason="pandas doesn't support ArrowDtype"
 )
 
 

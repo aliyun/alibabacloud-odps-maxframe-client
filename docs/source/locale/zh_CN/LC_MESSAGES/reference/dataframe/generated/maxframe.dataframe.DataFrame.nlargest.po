@@ -69,27 +69,27 @@ msgstr ""
 
 #: maxframe.dataframe.sort.nlargest.df_nlargest:15 of
 msgid "Where there are duplicate values:"
-msgstr ""
+msgstr "当存在重复值时："
 
 #: maxframe.dataframe.sort.nlargest.df_nlargest:17 of
 msgid "`first` : prioritize the first occurrence(s)"
-msgstr ""
+msgstr "`first` : 优先考虑第一次出现的值"
 
 #: maxframe.dataframe.sort.nlargest.df_nlargest:18 of
 msgid "`last` : prioritize the last occurrence(s)"
-msgstr ""
+msgstr "`last` : 优先考虑最后一次出现的值"
 
 #: maxframe.dataframe.sort.nlargest.df_nlargest:19 of
 msgid "``all``"
-msgstr ""
+msgstr "全部"
 
 #: maxframe.dataframe.sort.nlargest.df_nlargest:-1 of
 msgid "do not drop any duplicates, even it means"
-msgstr ""
+msgstr "不删除任何重复项，即使这意味着"
 
 #: maxframe.dataframe.sort.nlargest.df_nlargest:20 of
 msgid "selecting more than `n` items."
-msgstr ""
+msgstr "选择超过 `n` 个项目。"
 
 #: maxframe.dataframe.sort.nlargest.df_nlargest of
 msgid "返回"

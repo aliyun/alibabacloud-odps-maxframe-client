@@ -51,28 +51,22 @@ msgstr ""
 "所有轴上进行。"
 
 #: maxframe.tensor.statistics.average.average:6 of
-#, fuzzy
 msgid ""
 "Axis or axes along which to average `a`.  The default, axis=None, will "
 "average over all of the elements of the input tensor. If axis is negative"
 " it counts from the last to the first axis."
 msgstr ""
-"沿指定轴或轴集对 `a` 求平均值。默认值 axis=None 表示对输入张量的所有元素"
-"求平均值。如果 axis 为负数，则从最后一个轴向第一个轴计数。如果 axis 是"
-"整数元组，则在元组中指定的所有轴上进行平均，而不是像以前那样在单个轴或"
-"所有轴上进行。"
+"用于对 `a` 进行平均的轴。默认情况下，axis=None 将对输入张量的所有元素进行"
+"平均。如果 axis 为负数，则从最后一个轴向前计数。"
 
 #: maxframe.tensor.statistics.average.average:10 of
-#, fuzzy
 msgid ""
 "If axis is a tuple of ints, averaging is performed on all of the axes "
 "specified in the tuple instead of a single axis or all the axes as "
 "before."
 msgstr ""
-"沿指定轴或轴集对 `a` 求平均值。默认值 axis=None 表示对输入张量的所有元素"
-"求平均值。如果 axis 为负数，则从最后一个轴向第一个轴计数。如果 axis 是"
-"整数元组，则在元组中指定的所有轴上进行平均，而不是像以前那样在单个轴或"
-"所有轴上进行。"
+"如果 axis 是一个整数元组，则对元组中指定的所有轴执行平均，而不是像之前"
+"那样对单个轴或所有轴进行平均。"
 
 #: maxframe.tensor.statistics.average.average:14 of
 msgid ""

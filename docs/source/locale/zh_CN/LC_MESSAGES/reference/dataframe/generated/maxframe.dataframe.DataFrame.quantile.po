@@ -59,36 +59,33 @@ msgstr ""
 "或 `j`。* midpoint: (`i` + `j`) / 2。"
 
 #: maxframe.dataframe.statistics.quantile.dataframe_quantile:10 of
-#, fuzzy
 msgid ""
 "This optional parameter specifies the interpolation method to use, when "
 "the desired quantile lies between two data points `i` and `j`: * linear: "
 "`i + (j - i) * fraction`, where `fraction` is the"
 msgstr ""
-"此可选参数指定当所需分位数位于两个数据点 `i` 和 `j` 之间时使用的插值方法"
-"：* linear: `i + (j - i) * fraction`，其中 `fraction` 是 `i` 和 `j` 之间"
-"的索引的小数部分。* lower: `i`。* higher: `j`。* nearest: 离得最近的 `i` "
-"或 `j`。* midpoint: (`i` + `j`) / 2。"
+"当所需的分位数位于两个数据点 `i` 和 `j` 之间时，此可选参数指定要使用的"
+"插值方法：* linear: `i + (j - i) * fraction`，其中 `fraction` 是"
 
 #: maxframe.dataframe.statistics.quantile.dataframe_quantile:13 of
 msgid "fractional part of the index surrounded by `i` and `j`."
-msgstr ""
+msgstr "由 `i` 和 `j` 包围的索引的小数部分。"
 
 #: maxframe.dataframe.statistics.quantile.dataframe_quantile:14 of
 msgid "lower: `i`."
-msgstr ""
+msgstr "lower: `i`。"
 
 #: maxframe.dataframe.statistics.quantile.dataframe_quantile:15 of
 msgid "higher: `j`."
-msgstr ""
+msgstr "higher: `j`。"
 
 #: maxframe.dataframe.statistics.quantile.dataframe_quantile:16 of
 msgid "nearest: `i` or `j` whichever is nearest."
-msgstr ""
+msgstr "nearest: `i` 或 `j` 中最近的一个。"
 
 #: maxframe.dataframe.statistics.quantile.dataframe_quantile:17 of
 msgid "midpoint: (`i` + `j`) / 2."
-msgstr ""
+msgstr "midpoint: (`i` + `j`) / 2。"
 
 #: maxframe.dataframe.statistics.quantile.dataframe_quantile of
 msgid "返回"
@@ -107,21 +104,21 @@ msgstr ""
 
 #: maxframe.dataframe.statistics.quantile.dataframe_quantile:22 of
 msgid "If ``q`` is an array or a tensor, a DataFrame will be returned where the"
-msgstr ""
+msgstr "如果 ``q`` 是一个数组或张量，将返回一个 DataFrame，其中"
 
 #: maxframe.dataframe.statistics.quantile.dataframe_quantile:23 of
 msgid ""
 "index is ``q``, the columns are the columns of self, and the values are "
 "the quantiles."
-msgstr ""
+msgstr "索引是 ``q``，列是自身的列，值是分位数。"
 
 #: maxframe.dataframe.statistics.quantile.dataframe_quantile:25 of
 msgid "If ``q`` is a float, a Series will be returned where the"
-msgstr ""
+msgstr "如果 ``q`` 是一个浮点数，将返回一个 Series，其中"
 
 #: maxframe.dataframe.statistics.quantile.dataframe_quantile:26 of
 msgid "index is the columns of self and the values are the quantiles."
-msgstr ""
+msgstr "索引是自身的列，值是分位数。"
 
 #: maxframe.dataframe.statistics.quantile.dataframe_quantile of
 msgid "返回类型"

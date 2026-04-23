@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-23 14:19+0800\n"
+"POT-Creation-Date: 2026-02-10 10:53+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -40,13 +40,17 @@ msgid ""
 "If path is a string with wildcard e.g. '/to/path/out-*.parquet', "
 "`to_parquet` will try to write multiple files, for instance, chunk (0, 0)"
 " will write data into '/to/path/out-0.parquet'. If path is a string "
-"without wildcard, we will treat it as a directory."
+"without wildcard and partition_cols is None, all data will be written "
+"into a single file. If path is a string without wildcard or "
+"partition_cols is not None, we will treat it as a directory."
 msgstr ""
 "如果 path 是带有通配符的字符串，例如 '/to/path/out-*.parquet'，`to_"
 "parquet` 会尝试写入多个文件，例如 chunk (0, 0) 会将数据写入 '/to/path/out"
-"-0.parquet'。如果 path 是不带通配符的字符串，我们将把它视为一个目录。"
+"-0.parquet'。如果 path 是不带通配符的字符串且 partition_cols 为 None，"
+"所有数据将被写入单个文件。如果 path 是不带通配符的字符串或 partition_cols"
+" 不为 None，我们将把它视为一个目录。"
 
-#: maxframe.dataframe.datastore.to_parquet.to_parquet:9 of
+#: maxframe.dataframe.datastore.to_parquet.to_parquet:12 of
 msgid ""
 "Parquet library to use. The default behavior is to try 'pyarrow', falling"
 " back to 'fastparquet' if 'pyarrow' is unavailable."
@@ -54,11 +58,11 @@ msgstr ""
 "使用的 Parquet 库。默认行为是尝试使用 'pyarrow'，如果 'pyarrow' 不可用则"
 "回退到 'fastparquet'。"
 
-#: maxframe.dataframe.datastore.to_parquet.to_parquet:12 of
+#: maxframe.dataframe.datastore.to_parquet.to_parquet:15 of
 msgid "Name of the compression to use. Use ``None`` for no compression."
 msgstr "要使用的压缩名称。使用 ``None`` 表示不压缩。"
 
-#: maxframe.dataframe.datastore.to_parquet.to_parquet:14 of
+#: maxframe.dataframe.datastore.to_parquet.to_parquet:17 of
 msgid ""
 "If ``True``, include the dataframe's index(es) in the file output. If "
 "``False``, they will not be written to the file. If ``None``, similar to "
@@ -72,7 +76,7 @@ msgstr ""
 "会被保存。但是，RangeIndex 不会作为值保存，而是作为元数据中的范围存储，"
 "因此不占用太多空间且速度更快。其他索引将作为列包含在文件输出中。"
 
-#: maxframe.dataframe.datastore.to_parquet.to_parquet:22 of
+#: maxframe.dataframe.datastore.to_parquet.to_parquet:25 of
 msgid ""
 "Column names by which to partition the dataset. Columns are partitioned "
 "in the order they are given. Must be None if path is not a string."
@@ -80,11 +84,11 @@ msgstr ""
 "用于对数据集进行分区的列名。列按给定顺序进行分区。如果 path 不是字符串，"
 "则必须为 None。"
 
-#: maxframe.dataframe.datastore.to_parquet.to_parquet:26 of
+#: maxframe.dataframe.datastore.to_parquet.to_parquet:29 of
 msgid "Additional arguments passed to the parquet library."
 msgstr "传递给 parquet 库的附加参数。"
 
-#: maxframe.dataframe.datastore.to_parquet.to_parquet:29 of
+#: maxframe.dataframe.datastore.to_parquet.to_parquet:32 of
 msgid "示例"
 msgstr ""
 

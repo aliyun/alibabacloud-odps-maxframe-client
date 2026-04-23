@@ -73,18 +73,12 @@ msgstr ""
 "字符串。"
 
 #: of pandas.core.strings.accessor.StringMethods.contains:17
-#, fuzzy
 msgid "If True, assumes the pat is a regular expression."
-msgstr ""
-"如果为 True，则假定 pat 是正则表达式。如果为 False，则将 pat 视为字面"
-"字符串。"
+msgstr "如果为 True，则假定 pat 是正则表达式。"
 
 #: of pandas.core.strings.accessor.StringMethods.contains:19
-#, fuzzy
 msgid "If False, treats the pat as a literal string."
-msgstr ""
-"如果为 True，则假定 pat 是正则表达式。如果为 False，则将 pat 视为字面"
-"字符串。"
+msgstr "如果为 False，则将 pat 视为字面字符串。"
 
 #: of pandas.core.strings.accessor.StringMethods.contains
 msgid "返回"

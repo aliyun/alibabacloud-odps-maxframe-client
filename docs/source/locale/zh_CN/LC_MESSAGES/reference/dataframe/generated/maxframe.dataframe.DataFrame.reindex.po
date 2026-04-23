@@ -77,22 +77,24 @@ msgid ""
 " is only applicable to DataFrames/Series with a monotonically "
 "increasing/decreasing index."
 msgstr ""
+"用于在重新索引的 DataFrame 中填充空洞的方法。请注意：这仅适用于具有单调"
+"递增/递减索引的 DataFrame/Series。"
 
 #: maxframe.dataframe.indexing.reindex.reindex:22 of
 msgid "None (default): don't fill gaps"
-msgstr ""
+msgstr "None（默认）：不填充空隙"
 
 #: maxframe.dataframe.indexing.reindex.reindex:23 of
 msgid "pad / ffill: Propagate last valid observation forward to next valid."
-msgstr ""
+msgstr "pad / ffill：将最后一个有效观测值向前传播到下一个有效值。"
 
 #: maxframe.dataframe.indexing.reindex.reindex:25 of
 msgid "backfill / bfill: Use next valid observation to fill gap."
-msgstr ""
+msgstr "backfill / bfill：使用下一个有效观测值填充空隙。"
 
 #: maxframe.dataframe.indexing.reindex.reindex:26 of
 msgid "nearest: Use nearest valid observations to fill gap."
-msgstr ""
+msgstr "nearest：使用最近的有效观测值填充空隙。"
 
 #: maxframe.dataframe.indexing.reindex.reindex:28 of
 msgid "Return a new object, even if the passed indexes are the same."
@@ -136,20 +138,19 @@ msgid ""
 " values of the index at the matching locations most satisfy the equation "
 "``abs(index[indexer] - target) <= tolerance``."
 msgstr ""
+"不精确匹配时原始和新标签之间的最大距离。在匹配位置的索引值必须满足方程 ``"
+"abs(index[indexer] - target) <= tolerance``。"
 
 #: maxframe.dataframe.indexing.reindex.reindex:42 of
-#, fuzzy
 msgid ""
 "Tolerance may be a scalar value, which applies the same tolerance to all "
 "values, or list-like, which applies variable tolerance per element. List-"
 "like includes list, tuple, array, Series, and must be the same size as "
 "the index and its dtype must exactly match the index's type."
 msgstr ""
-"不精确匹配时原始和新标签之间的最大距离。在匹配位置的索引值必须满足方程 ``"
-"abs(index[indexer] - target) <= tolerance``。 容差可以是一个标量值，适用"
-"于所有值；也可以是类列表，对每个元素应用不同的容差。 类列表包括 list、"
-"tuple、array、Series，且必须与索引大小相同，其数据类型必须与索引类型完全"
-"匹配。"
+"容差可以是一个标量值，对所有值应用相同的容差，或类列表，对每个元素应用可"
+"变容差。类列表包括 list、tuple、array、Series，且必须与索引大小相同，其"
+"数据类型必须与索引类型完全匹配。"
 
 #: maxframe.dataframe.indexing.reindex.reindex of
 msgid "返回类型"
@@ -272,8 +273,8 @@ msgid ""
 msgstr ""
 "请注意，原始 dataframe 中存在的 ``NaN`` 值（在索引值 2010-01-03 处）不会"
 "被任何值传播方案填充。这是因为重新索引时的填充并不查看 dataframe 的值，而"
-"只是比较原始索引和目标索引。如果你确实想要填充原始 dataframe 中的 ``NaN``"
-" 值，请使用 ``fillna()`` 方法。"
+"只是比较原始索引和目标索引。如果确实想要填充原始 dataframe 中的 ``NaN`` "
+"值，请使用 ``fillna()`` 方法。"
 
 #: maxframe.dataframe.indexing.reindex.reindex:204 of
 msgid "See the :ref:`user guide <basics.reindexing>` for more."

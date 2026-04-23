@@ -24,7 +24,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ...utils import wrap_arrow_dtype
+from ...utils import is_arrow_dtype_supported, wrap_arrow_dtype
 from .. import PickleHookOptions
 
 try:
@@ -44,6 +44,7 @@ try:
 except ImportError:
     zoneinfo = None
 
+from ...lib.dtypes_extension import ArrowDtype
 from ...lib.dtypes_extension._fake_arrow_dtype import FakeArrowDtype
 from ...lib.sparse import SparseMatrix
 from ...lib.wrapped_pickle import switch_unpickle
@@ -60,8 +61,6 @@ from ..core import DtypeSerializer, ListSerializer, Placeholder
 
 cupy = lazy_import("cupy")
 cudf = lazy_import("cudf")
-
-_arrow_dtype_supported = pa is not None and hasattr(pd, "ArrowDtype")
 
 
 class CustomList(list):
@@ -221,13 +220,17 @@ def test_pandas():
             ],
         }
     )
-    if _arrow_dtype_supported:
+    if is_arrow_dtype_supported():
         val["arrow_col"] = pd.Series(
             np.random.rand(1000), dtype=wrap_arrow_dtype(pa.float64())
         )
         val["arrow_map_col"] = pd.Series(
             [[("a", np.random.rand()), ("b", np.random.rand())] for _ in range(1000)],
             dtype=wrap_arrow_dtype(pa.map_(pa.string(), pa.float64())),
+        )
+        val["arrow_str_col"] = pd.Series(
+            ["测试str", "R\xF1SULT"] * 1000,
+            dtype=wrap_arrow_dtype(pa.string()),
         )
     pd.testing.assert_frame_equal(val, deserialize(*serialize(val)))
 
@@ -252,9 +255,12 @@ def test_pandas():
     val = pd.tseries.offsets.MonthEnd()
     assert val == deserialize(*serialize(val))
 
+    val = (pd.NA, pd.NaT)
+    assert val == deserialize(*serialize(val))
+
 
 @switch_unpickle
-@pytest.mark.skipif(_arrow_dtype_supported, reason="pandas doesn't support ArrowDtype")
+@pytest.mark.skipif(ArrowDtype is None, reason="ArrowDtype cannot be mocked")
 def test_fake_arrow_dtype_serde():
     serializer = DtypeSerializer()
     payload, data, is_leaf = serializer.serial(
@@ -265,7 +271,19 @@ def test_fake_arrow_dtype_serde():
     assert data == []
     assert payload == ["PA", "map<int64, string>"]
     new_dtype = serializer.deserial(payload, dict(), list())
-    assert type(new_dtype) == FakeArrowDtype
+    assert isinstance(new_dtype, (FakeArrowDtype, ArrowDtype))
+    assert new_dtype.pyarrow_dtype == pa.map_(pa.int64(), pa.string())
+
+    new_dtype = serializer.deserial(["PE", "Int64[pyarrow]"], dict(), list())
+    assert isinstance(new_dtype, (FakeArrowDtype, ArrowDtype))
+    assert new_dtype.pyarrow_dtype == pa.int64()
+
+    new_dtype = serializer.deserial(["PE", "string[pyarrow]"], dict(), list())
+    if isinstance(new_dtype, pd.StringDtype):
+        assert new_dtype.storage == "pyarrow"
+    else:
+        assert type(new_dtype) in (FakeArrowDtype, ArrowDtype)
+        assert new_dtype.pyarrow_dtype == pa.string()
 
 
 @pytest.mark.skipif(pa is None, reason="need pyarrow to run the cases")

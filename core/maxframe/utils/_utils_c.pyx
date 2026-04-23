@@ -1,5 +1,5 @@
 # distutils: language = c++
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,16 +38,16 @@ from cpython cimport PyBytes_FromStringAndSize
 from libc.stdint cimport uint8_t, uint32_t, uint_fast64_t
 from libc.stdlib cimport free, malloc
 
-from .lib.cython.libcpp cimport mt19937_64
+from ..lib.cython.libcpp cimport mt19937_64
+
+from ..lib.mmh3 import hash as mmh_hash
+from ..lib.mmh3 import hash_bytes as mmh_hash_bytes
+from ..lib.mmh3 import hash_from_buffer as mmh3_hash_from_buffer
 
 try:
     from pandas.tseries.offsets import Tick as PDTick
 except ImportError:
     PDTick = None
-
-from .lib.mmh3 import hash as mmh_hash
-from .lib.mmh3 import hash_bytes as mmh_hash_bytes
-from .lib.mmh3 import hash_from_buffer as mmh3_hash_from_buffer
 
 
 cdef bint _has_cupy = bool(pkgutil.find_loader('cupy'))
@@ -531,7 +531,7 @@ cpdef bytes new_random_id(int byte_len):
             free(res_ptr)
 
 
-cdef str _package_root = os.path.dirname(__file__)
+cdef str _package_root = os.path.dirname(os.path.dirname(__file__))
 
 
 def get_user_call_point():

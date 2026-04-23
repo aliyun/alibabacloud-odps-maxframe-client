@@ -50,19 +50,19 @@ msgstr ""
 
 #: maxframe.dataframe.indexing.droplevel.df_series_droplevel:7 of
 msgid "Axis along which the level(s) is removed:"
-msgstr ""
+msgstr "移除层级的轴："
 
 #: maxframe.dataframe.indexing.droplevel.df_series_droplevel:9 of
 msgid "0 or 'index': remove level(s) in column."
-msgstr ""
+msgstr "0 或 'index'：移除列中的层级。"
 
 #: maxframe.dataframe.indexing.droplevel.df_series_droplevel:10 of
 msgid "1 or 'columns': remove level(s) in row."
-msgstr ""
+msgstr "1 或 'columns'：移除行中的层级。"
 
 #: maxframe.dataframe.indexing.droplevel.df_series_droplevel:12 of
 msgid "For `Series` this parameter is unused and defaults to 0."
-msgstr ""
+msgstr "对于 `Series`，此参数未使用，默认为 0。"
 
 #: maxframe.dataframe.indexing.droplevel.df_series_droplevel of
 msgid "返回"

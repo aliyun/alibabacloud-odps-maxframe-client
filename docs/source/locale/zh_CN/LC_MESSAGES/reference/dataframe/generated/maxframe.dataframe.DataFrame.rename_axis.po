@@ -51,7 +51,6 @@ msgstr ""
 
 #: maxframe.dataframe.indexing.rename_axis.rename_axis:5
 #: maxframe.dataframe.indexing.rename_axis.rename_axis:15 of
-#, fuzzy
 msgid ""
 "A scalar, list-like, dict-like or functions transformations to apply to "
 "that axis' values. Note that the ``columns`` parameter is not allowed if "
@@ -59,9 +58,7 @@ msgid ""
 "objects."
 msgstr ""
 "应用于该轴值的标量、列表类、字典类或函数变换。注意，如果对象是 Series，则"
-"不允许使用 ``columns`` 参数。此参数仅适用于 DataFrame 类型对象。使用 ``"
-"mapper`` 和 ``axis`` 来指定要应用 ``mapper`` 的轴，或者使用 ``index`` 和/"
-"或 ``columns``。"
+"不允许使用 ``columns`` 参数。此参数仅适用于 DataFrame 类型对象。"
 
 #: maxframe.dataframe.indexing.rename_axis.rename_axis:11
 #: maxframe.dataframe.indexing.rename_axis.rename_axis:21 of
@@ -69,6 +66,8 @@ msgid ""
 "Use either ``mapper`` and ``axis`` to specify the axis to target with "
 "``mapper``, or ``index`` and/or ``columns``."
 msgstr ""
+"使用 ``mapper`` 和 ``axis`` 来指定要应用 ``mapper`` 的轴，或者使用 ``"
+"index`` 和/或 ``columns``。"
 
 #: maxframe.dataframe.indexing.rename_axis.rename_axis:25 of
 msgid "The axis to rename."

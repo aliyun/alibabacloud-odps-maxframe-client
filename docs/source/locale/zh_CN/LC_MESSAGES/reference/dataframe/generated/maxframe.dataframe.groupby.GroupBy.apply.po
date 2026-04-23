@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"POT-Creation-Date: 2026-02-10 10:41+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -57,7 +57,7 @@ msgstr ""
 #: maxframe.dataframe.groupby.apply.groupby_apply:15 of
 msgid ""
 "A callable that takes a dataframe as its first argument, and returns a "
-"dataframe, a series or a scalar. In addition the callable may take "
+"dataframe, a series or a scalar. In addition, the callable may take "
 "positional and keyword arguments."
 msgstr ""
 "一个可调用对象，其第一个参数为一个 DataFrame，并返回一个 DataFrame、"
@@ -84,11 +84,48 @@ msgid "Specify index of returned object. See `Notes` for more details."
 msgstr "指定返回对象的索引。详见 `Notes`。"
 
 #: maxframe.dataframe.groupby.apply.groupby_apply:29 of
-msgid "Whether infer dtypes when dtypes or output_type is not specified."
+msgid "Whether to infer dtypes when dtypes or output_type is not specified."
 msgstr "当未指定 dtypes 或 output_type 时是否推断数据类型。"
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:31
-#: maxframe.dataframe.groupby.apply.groupby_apply:33 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:31 of
+msgid ""
+"If True, the index of returned dataframe or series will automatically "
+"contain group keys if as_index=True, or group indexes if as_index=False, "
+"when group_keys=True.  .. note::     `prepend_index_group_keys` will be "
+"set to True by default in     future releases, and a warning will be "
+"shown if the parameter     is set to False. To make sure your code works "
+"in future     releases, please set this to True and remove group indexes"
+"     in index parameter or type annotation of `func`."
+msgstr ""
+"如果为 True，则当 group_keys=True 时，返回的 DataFrame 或 Series 的索引将"
+"自动包含组键（如果 as_index=True）或组索引（如果 as_index=False）。  .. "
+"注意::     在未来的版本中，`prepend_index_group_keys` 将默认设置为 True，"
+"     如果该参数被设置为 False，将会显示警告。为了确保您的代码在未来的版本"
+"中正常工作，     请将其设置为 True，并在索引参数或 `func` 的类型注解中"
+"移除组索引。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:31 of
+msgid ""
+"If True, the index of returned dataframe or series will automatically "
+"contain group keys if as_index=True, or group indexes if as_index=False, "
+"when group_keys=True."
+msgstr ""
+"如果为 True，则当 group_keys=True 时，返回的 DataFrame 或 Series 的索引将"
+"自动包含组键（如果 as_index=True）或组索引（如果 as_index=False）。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:36 of
+msgid ""
+"`prepend_index_group_keys` will be set to True by default in future "
+"releases, and a warning will be shown if the parameter is set to False. "
+"To make sure your code works in future releases, please set this to True "
+"and remove group indexes in index parameter or type annotation of `func`."
+msgstr ""
+"`prepend_index_group_keys` 在未来的版本中将默认设置为 True，如果该参数被"
+"设置为 False，将会显示警告。为了确保您的代码在未来的版本中正常工作，请将"
+"其设置为 True，并在索引参数或 `func` 的类型注解中移除组索引。"
+
+#: maxframe.dataframe.groupby.apply.groupby_apply:42
+#: maxframe.dataframe.groupby.apply.groupby_apply:44 of
 msgid "Optional positional and keyword arguments to pass to `func`."
 msgstr "传递给 `func` 的可选位置和关键字参数。"
 
@@ -96,59 +133,59 @@ msgstr "传递给 `func` 的可选位置和关键字参数。"
 msgid "返回"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:36 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:47 of
 msgid "**applied**"
-msgstr ""
+msgstr "**应用的**"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.GroupBy.apply.rst
 msgid "返回类型"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:41 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:52 of
 msgid ":py:obj:`pipe`"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:42 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:53 of
 msgid "Apply function to the full GroupBy object instead of to each group."
 msgstr "将函数应用于整个 GroupBy 对象，而不是每个组。"
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:44 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:55 of
 msgid ":py:obj:`aggregate`"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:45 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:56 of
 msgid "Apply aggregate function to the GroupBy object."
 msgstr "将聚合函数应用于 GroupBy 对象。"
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:47 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:58 of
 msgid ":py:obj:`transform`"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:48 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:59 of
 msgid "Apply function column-by-column to the GroupBy object."
 msgstr "将函数逐列应用于 GroupBy 对象。"
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:50 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:61 of
 msgid ":py:obj:`Series.apply`"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:51 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:62 of
 msgid "Apply a function to a Series."
 msgstr "将函数应用于 Series。"
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:53 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:64 of
 msgid ":py:obj:`DataFrame.apply`"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:54 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:65 of
 msgid "Apply a function to each row or column of a DataFrame."
 msgstr "将函数应用于 DataFrame 的每一行或每一列。"
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:57 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:68 of
 msgid "备注"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:58 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:69 of
 msgid ""
 "When deciding output dtypes and shape of the return value, MaxFrame will "
 "try applying ``func`` onto a mock grouped object, and the apply call may "
@@ -159,7 +196,7 @@ msgstr ""
 "模拟的分组对象，此时 apply 调用可能会失败。如果发生这种情况，你需要在 "
 "output_type 中指定 apply 调用的类型（DataFrame 或 Series）。"
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:63 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:74 of
 msgid ""
 "For DataFrame output, you need to specify a list or a pandas Series as "
 "``dtypes`` of output DataFrame. ``index`` of output can also be "
@@ -168,7 +205,7 @@ msgstr ""
 "对于 DataFrame 输出，需要指定一个列表或 pandas Series 作为输出 DataFrame "
 "的 ``dtypes``。输出的 ``index`` 也可以指定。"
 
-#: maxframe.dataframe.groupby.apply.groupby_apply:66 of
+#: maxframe.dataframe.groupby.apply.groupby_apply:77 of
 msgid ""
 "For Series output, you need to specify ``dtype`` and ``name`` of output "
 "Series."

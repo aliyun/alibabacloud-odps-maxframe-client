@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import pytest
 from .... import dataframe as md
 from .... import opcodes
 from ....core import OutputType
+from ....errors import TypeInferWarning
 from ...core import DataFrame, DataFrameGroupBy, SeriesGroupBy
 from ..aggregation import DataFrameGroupByAgg
 from ..core import DataFrameGroupByOp
@@ -143,28 +144,40 @@ def test_groupby_apply():
 
     # when dtype and output_type specified, apply function
     # shall not be called
-    applied = mdf.groupby("b").apply(
-        apply_call_with_err, output_type="series", dtype=int
-    )
+    with pytest.warns(FutureWarning, match="prepend_index_group_keys"):
+        applied = mdf.groupby("b").apply(
+            apply_call_with_err, output_type="series", dtype=int
+        )
     assert applied.dtype == int
     assert applied.op.output_types[0] == OutputType.series
 
     with pytest.raises(TypeError):
         mdf.groupby("b").apply(apply_df_with_error)
 
-    applied = mdf.groupby("b").apply(
-        apply_df_with_error, output_type="dataframe", dtypes=df1.dtypes
-    )
-    pd.testing.assert_series_equal(applied.dtypes, df1.dtypes)
-    assert applied.shape == (np.nan, 3)
-    assert applied.op._op_type_ == opcodes.APPLY
-    assert applied.op.output_types[0] == OutputType.dataframe
+    for prepend_idx in [True, False]:
+        applied = mdf.groupby("b").apply(
+            apply_df_with_error,
+            output_type="dataframe",
+            dtypes=df1.dtypes,
+            prepend_index_group_keys=prepend_idx,
+        )
+        pd.testing.assert_series_equal(applied.dtypes, df1.dtypes)
+        assert applied.shape == (np.nan, 3)
+        if not prepend_idx:
+            # fixme this should be unexpected. We test here only to
+            #  make it compatible with the legacy behavior.
+            assert list(applied.index_value.names) == [None]
+        else:
+            assert list(applied.index_value.names) == ["b", None]
+        assert applied.op._op_type_ == opcodes.APPLY
+        assert applied.op.output_types[0] == OutputType.dataframe
 
-    applied = mdf.groupby("b").apply(apply_df)
-    pd.testing.assert_series_equal(applied.dtypes, df1.dtypes)
-    assert applied.shape == (np.nan, 3)
-    assert applied.op._op_type_ == opcodes.APPLY
-    assert applied.op.output_types[0] == OutputType.dataframe
+        applied = mdf.groupby("b").apply(apply_df, prepend_index_group_keys=prepend_idx)
+        pd.testing.assert_series_equal(applied.dtypes, df1.dtypes)
+        assert applied.shape == (np.nan, 3)
+        assert list(applied.index_value.names) == ["b", None]
+        assert applied.op._op_type_ == opcodes.APPLY
+        assert applied.op.output_types[0] == OutputType.dataframe
 
     applied = mdf.groupby("b").apply(lambda df: df.a)
     assert applied.dtype == df1.a.dtype
@@ -189,6 +202,90 @@ def test_groupby_apply():
     assert applied.shape == (np.nan,)
     assert applied.op._op_type_ == opcodes.APPLY
     assert applied.op.output_types[0] == OutputType.series
+
+
+def test_groupby_apply_chunk_with_dtypes():
+    df1 = pd.DataFrame(
+        {
+            "a": [3, 4, 5, 3, 5, 4, 1, 2, 3],
+            "b": [1, 3, 4, 5, 6, 5, 4, 4, 4],
+            "c": list("aabaaddce"),
+        }
+    )
+
+    def apply_call_with_err(_):
+        raise ValueError
+
+    def apply_df_with_reorder(df):
+        return df.sort_index()
+
+    def apply_df_with_error(df):
+        assert len(df) > 2
+        return df.sort_index()
+
+    mdf = md.DataFrame(df1, chunk_size=3)
+
+    # when dtype and output_type specified, apply function
+    # shall not be called
+    with pytest.warns(FutureWarning, match="prepend_index_group_keys"):
+        applied = mdf.groupby("b").mf.apply_chunk(
+            apply_call_with_err, output_type="series", dtype=int
+        )
+    assert applied.dtype == int
+    assert applied.index_value.names == [None]
+    assert applied.op.output_types[0] == OutputType.series
+
+    applied = mdf.groupby("b").mf.apply_chunk(lambda x: x)
+    assert applied.shape == (np.nan, 2)
+    assert list(applied.index_value.names) == ["b", None]
+    assert applied.op._op_type_ == opcodes.APPLY_CHUNK
+    assert applied.op.output_types[0] == OutputType.dataframe
+
+    applied = mdf.groupby("b").mf.apply_chunk(apply_df_with_reorder)
+    assert applied.shape == (np.nan, 2)
+    assert list(applied.index_value.names) == ["b", None]
+    assert applied.op._op_type_ == opcodes.APPLY_CHUNK
+    assert applied.op.output_types[0] == OutputType.dataframe
+
+    with pytest.raises(TypeError):
+        mdf.groupby("b").mf.apply_chunk(apply_df_with_error)
+
+    with pytest.warns(TypeInferWarning, match="index from input"):
+        applied = mdf.groupby("b").mf.apply_chunk(
+            apply_df_with_error,
+            dtypes=mdf.dtypes,
+            prepend_index_group_keys=True,
+        )
+    pd.testing.assert_series_equal(applied.dtypes, df1.dtypes)
+    assert applied.shape == (np.nan, 3)
+    assert list(applied.index_value.names) == ["b", None]
+    assert applied.op._op_type_ == opcodes.APPLY_CHUNK
+    assert applied.op.output_types[0] == OutputType.dataframe
+
+    with pytest.warns(TypeInferWarning, match="index from input"):
+        applied = mdf.groupby("b", group_keys=False).mf.apply_chunk(
+            apply_df_with_error,
+            dtypes=mdf.dtypes,
+            prepend_index_group_keys=True,
+        )
+    pd.testing.assert_series_equal(applied.dtypes, df1.dtypes)
+    assert applied.shape == (np.nan, 3)
+    assert list(applied.index_value.names) == [None]
+    assert applied.op._op_type_ == opcodes.APPLY_CHUNK
+    assert applied.op.output_types[0] == OutputType.dataframe
+
+    # group_keys=True, as_index=False will create an extra integer index
+    with pytest.warns(TypeInferWarning, match="index from input"):
+        applied = mdf.groupby("b", group_keys=True, as_index=False).mf.apply_chunk(
+            apply_df_with_error,
+            dtypes=mdf.dtypes,
+            prepend_index_group_keys=True,
+        )
+    pd.testing.assert_series_equal(applied.dtypes, df1.dtypes)
+    assert applied.shape == (np.nan, 3)
+    assert list(applied.index_value.names) == [None, None]
+    assert applied.op._op_type_ == opcodes.APPLY_CHUNK
+    assert applied.op.output_types[0] == OutputType.dataframe
 
 
 def test_groupby_transform():

@@ -45,7 +45,7 @@ msgstr ""
 
 #: maxframe.tensor.misc.broadcast_to.broadcast_to:8 of
 msgid "**broadcast**"
-msgstr ""
+msgstr "**广播**"
 
 #: maxframe.tensor.misc.broadcast_to.broadcast_to of
 msgid "返回类型"

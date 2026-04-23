@@ -72,27 +72,23 @@ msgstr ""
 "Tensor` 子类的 `max` 方法。如果子类方法未实现 `keepdims`，则会引发异常。"
 
 #: maxframe.tensor.reduction.nanmax.nanmax:16 of
-#, fuzzy
 msgid ""
 "If this is set to True, the axes which are reduced are left in the result"
 " as dimensions with size one. With this option, the result will broadcast"
 " correctly against the original `a`."
 msgstr ""
-"如果设置为 True，则在结果中保留被规约的轴，其大小为 1。使用此选项时，结果"
-"可以正确地与原始 `a` 广播。如果该值不是默认值，则 `keepdims` 会被传递给 `"
-"Tensor` 子类的 `max` 方法。如果子类方法未实现 `keepdims`，则会引发异常。"
+"如果设置为 True，则被约简的轴将在结果中保留为大小为一的维度。使用此选项时"
+"，结果将能够正确地与原始 `a` 进行广播。"
 
 #: maxframe.tensor.reduction.nanmax.nanmax:20 of
-#, fuzzy
 msgid ""
 "If the value is anything but the default, then `keepdims` will be passed "
 "through to the `max` method of sub-classes of `Tensor`.  If the sub-"
 "classes methods does not implement `keepdims` any exceptions will be "
 "raised."
 msgstr ""
-"如果设置为 True，则在结果中保留被规约的轴，其大小为 1。使用此选项时，结果"
-"可以正确地与原始 `a` 广播。如果该值不是默认值，则 `keepdims` 会被传递给 `"
-"Tensor` 子类的 `max` 方法。如果子类方法未实现 `keepdims`，则会引发异常。"
+"如果值不是默认值，则 `keepdims` 将传递给 `Tensor` 子类的 `max` 方法。如果"
+"子类方法未实现 `keepdims`，则会引发异常。"
 
 #: maxframe.tensor.reduction.nanmax.nanmax of
 msgid "返回"

@@ -56,14 +56,13 @@ msgstr ""
 
 #: maxframe.dataframe.groupby.rolling.rolling:3 of
 msgid "Size of the moving window."
-msgstr ""
+msgstr "移动窗口的大小。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:5 of
 msgid "If an integer, the fixed number of observations used for each window."
-msgstr ""
+msgstr "如果为整数，则为每个窗口使用的固定观测数量。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:8 of
-#, fuzzy
 msgid ""
 "If a timedelta, str, or offset, the time period of each window. Each "
 "window will be a variable sized based on the observations included in the"
@@ -72,14 +71,10 @@ msgid ""
 "<https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html"
 "#offset-aliases>`__."
 msgstr ""
-"移动窗口的大小。如果为整数，则为每个窗口使用的固定观测数量。如果为 "
-"timedelta、str 或 offset，则为每个窗口的时间周期。每个窗口的大小将根据"
-"时间周期内包含的观测值而变化。这仅对类似日期时间的索引有效。如需了解更多"
-"关于偏移量和频率字符串的信息，请参见 `此链接 <https://pandas.pydata.org/"
-"pandas-docs/stable/user_guide/timeseries.html#offset-aliases>`__。如果为 "
-"BaseIndexer 子类，则窗口边界基于定义的 ``get_window_bounds`` 方法。其他"
-"滚动关键字参数，如 ``min_periods``、``center``、``closed`` 和 ``step`` 将"
-"传递给 ``get_window_bounds``。"
+"如果为 timedelta、str 或 offset，则为每个窗口的时间周期。每个窗口的大小将"
+"根据时间周期内包含的观测值而变化。这仅对类似日期时间的索引有效。如需了解"
+"更多关于偏移量和频率字符串的信息，请参见 `此链接 <https://pandas.pydata."
+"org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases>`__。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:14 of
 msgid ""
@@ -88,6 +83,9 @@ msgid ""
 "namely ``min_periods``, ``center``, ``closed`` and ``step`` will be "
 "passed to ``get_window_bounds``."
 msgstr ""
+"如果为 BaseIndexer 子类，则窗口边界基于定义的 ``get_window_bounds`` 方法"
+"。其他滚动关键字参数，如 ``min_periods``、``center``、``closed`` 和 ``"
+"step`` 将传递给 ``get_window_bounds``。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:19 of
 msgid ""
@@ -105,19 +103,19 @@ msgstr ""
 msgid ""
 "Minimum number of observations in window required to have a value; "
 "otherwise, result is ``np.nan``."
-msgstr ""
+msgstr "窗口中需要包含的最小观测数以产生值；否则结果为 ``np.nan``。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:22 of
 msgid ""
 "For a window that is specified by an offset, ``min_periods`` will default"
 " to 1."
-msgstr ""
+msgstr "对于由偏移量指定的窗口，``min_periods`` 默认为 1。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:25 of
 msgid ""
 "For a window that is specified by an integer, ``min_periods`` will "
 "default to the size of the window."
-msgstr ""
+msgstr "对于由整数指定的窗口，``min_periods`` 默认为窗口的大小。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:28 of
 msgid ""
@@ -128,18 +126,12 @@ msgstr ""
 "标签设置为窗口索引的中心。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:28 of
-#, fuzzy
 msgid "If False, set the window labels as the right edge of the window index."
-msgstr ""
-"如果为 False，则将窗口标签设置为窗口索引的右边缘。如果为 True，则将窗口"
-"标签设置为窗口索引的中心。"
+msgstr "如果为 False，则将窗口标签设置为窗口索引的右边缘。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:30 of
-#, fuzzy
 msgid "If True, set the window labels as the center of the window index."
-msgstr ""
-"如果为 False，则将窗口标签设置为窗口索引的右边缘。如果为 True，则将窗口"
-"标签设置为窗口索引的中心。"
+msgstr "如果为 True，则将窗口标签设置为窗口索引的中心。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:32 of
 msgid ""
@@ -159,7 +151,7 @@ msgstr ""
 
 #: maxframe.dataframe.groupby.rolling.rolling:32 of
 msgid "If ``None``, all points are evenly weighted."
-msgstr ""
+msgstr "如果为 ``None``，则所有点的权重相等。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:34 of
 msgid ""
@@ -167,19 +159,18 @@ msgid ""
 "<https://docs.scipy.org/doc/scipy/reference/signal.windows.html#module-"
 "scipy.signal.windows>`__."
 msgstr ""
+"如果为字符串，则必须是有效的 `scipy.signal 窗口函数 <https://docs.scipy."
+"org/doc/scipy/reference/signal.windows.html#module-scipy.signal.windows>`"
+"__。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:37 of
-#, fuzzy
 msgid ""
 "Certain Scipy window types require additional parameters to be passed in "
 "the aggregation function. The additional parameters must match the "
 "keywords specified in the Scipy window type method signature."
 msgstr ""
-"如果为 ``None``，则所有点的权重相等。如果为字符串，则必须是有效的 `scipy."
-"signal 窗口函数 <https://docs.scipy.org/doc/scipy/reference/signal."
-"windows.html#module-scipy.signal.windows>`__。某些 Scipy 窗口类型在聚合"
-"函数中需要传递额外参数。这些额外参数必须匹配 Scipy 窗口类型方法签名中指定"
-"的关键字。"
+"某些 Scipy 窗口类型在聚合函数中需要传递额外参数。这些额外参数必须匹配 "
+"Scipy 窗口类型方法签名中指定的关键字。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:41 of
 msgid ""
@@ -193,24 +184,18 @@ msgstr ""
 "排除。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:41 of
-#, fuzzy
 msgid ""
 "For a DataFrame, a column label or Index level on which to calculate the "
 "rolling window, rather than the DataFrame's index."
 msgstr ""
 "对于 DataFrame，指定用于计算滚动窗口的列标签或索引级别，而不是 DataFrame "
-"的索引。由于整数索引不用于计算滚动窗口，提供的整数列将被忽略并从结果中"
-"排除。"
+"的索引。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:44 of
-#, fuzzy
 msgid ""
 "Provided integer column is ignored and excluded from result since an "
 "integer index is not used to calculate the rolling window."
-msgstr ""
-"对于 DataFrame，指定用于计算滚动窗口的列标签或索引级别，而不是 DataFrame "
-"的索引。由于整数索引不用于计算滚动窗口，提供的整数列将被忽略并从结果中"
-"排除。"
+msgstr "由于整数索引不用于计算滚动窗口，提供的整数列将被忽略并从结果中排除。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:47 of
 msgid ""
@@ -223,15 +208,15 @@ msgstr ""
 
 #: maxframe.dataframe.groupby.rolling.rolling:47 of
 msgid "If ``0`` or ``'index'``, roll across the rows."
-msgstr ""
+msgstr "如果为 ``0`` 或 ``'index'``，则在行上滚动。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:49 of
 msgid "If ``1`` or ``'columns'``, roll across the columns."
-msgstr ""
+msgstr "如果为 ``1`` 或 ``'columns'``，则在列上滚动。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:51 of
 msgid "For `Series` this parameter is unused and defaults to 0."
-msgstr ""
+msgstr "对于 `Series`，此参数未使用，默认为 0。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:53 of
 msgid ""
@@ -250,25 +235,25 @@ msgstr ""
 msgid ""
 "If ``'right'``, the first point in the window is excluded from "
 "calculations."
-msgstr ""
+msgstr "如果为 ``'right'``，则窗口中的第一个点不参与计算。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:55 of
 msgid "If ``'left'``, the last point in the window is excluded from calculations."
-msgstr ""
+msgstr "如果为 ``'left'``，则窗口中的最后一个点不参与计算。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:57 of
 msgid "If ``'both'``, no points in the window are excluded from calculations."
-msgstr ""
+msgstr "如果为 ``'both'``，则窗口中的所有点都参与计算。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:59 of
 msgid ""
 "If ``'neither'``, the first and last points in the window are excluded "
 "from calculations."
-msgstr ""
+msgstr "如果为 ``'neither'``，则窗口中的第一个和最后一个点都不参与计算。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:62 of
 msgid "Default ``None`` (``'right'``)."
-msgstr ""
+msgstr "默认为 ``None``（即 ``'right'``）。"
 
 #: maxframe.dataframe.groupby.rolling.rolling:64 of
 msgid ""

@@ -32,6 +32,9 @@ msgid ""
 "Among flexible wrappers (`add`, `sub`, `mul`, `div`, `mod`, `pow`) to "
 "arithmetic operators: `+`, `-`, `*`, `/`, `//`, `%`, `**`."
 msgstr ""
+"获取 DataFrame 和其他对象的逐元素相加（二元运算符 `add`）。等价于 ``+``，"
+"但支持为其中一个输入中的缺失数据替换 fill_value。具有反向版本 `radd`。"
+"这些是算术运算符的灵活包装器：`+`, `-`, `*`, `/`, `//`, `%`, `**`。"
 
 #: maxframe.dataframe.arithmetic._install.<locals>._register_bin_method.<locals>.call_df_fill
 #: of

@@ -152,7 +152,7 @@ msgstr ""
 
 #: maxframe.tensor.special.ellip_func_integrals.ellipkinc:55 of
 msgid "Cephes Mathematical Functions Library, http://www.netlib.org/cephes/"
-msgstr "Cephes 数学函数库, http://www.netlib.org/cephes/"
+msgstr ""
 
 #: maxframe.tensor.special.ellip_func_integrals.ellipkinc:57 of
 msgid ""
@@ -160,8 +160,6 @@ msgid ""
 "Functions with Formulas, Graphs, and Mathematical Tables. New York: "
 "Dover, 1972."
 msgstr ""
-"Milton Abramowitz 和 Irene A. Stegun 编辑。数学函数手册：公式、图表和数学"
-"表格。纽约：Dover，1972年。"
 
 #: maxframe.tensor.special.ellip_func_integrals.ellipkinc:60 of
 msgid ""
@@ -169,6 +167,4 @@ msgid ""
 "Release 1.0.28 of 2020-09-15. See Sec. 19.25(i) "
 "https://dlmf.nist.gov/19.25#i"
 msgstr ""
-"NIST 数学函数数字图书馆。http://dlmf.nist.gov/，2020-09-15 发布的 1.0.28 "
-"版本。参见第 19.25(i) 节 https://dlmf.nist.gov/19.25#i"
 

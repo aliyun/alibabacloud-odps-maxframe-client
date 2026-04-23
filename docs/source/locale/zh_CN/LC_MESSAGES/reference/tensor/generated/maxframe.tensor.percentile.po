@@ -84,28 +84,32 @@ msgid ""
 "This optional parameter specifies the interpolation method to use when "
 "the desired percentile lies between two data points ``i < j``:"
 msgstr ""
+"此可选参数指定在所需百分位数位于两个数据点 ``i < j`` 之间时使用的插值方法"
+"："
 
 #: maxframe.tensor.statistics.percentile.percentile:24 of
 msgid ""
 "'linear': ``i + (j - i) * fraction``, where ``fraction`` is the "
 "fractional part of the index surrounded by ``i`` and ``j``."
 msgstr ""
+"'linear': ``i + (j - i) * fraction``，其中 ``fraction`` 是由 ``i`` 和 ``j"
+"`` 包围的索引的小数部分。"
 
 #: maxframe.tensor.statistics.percentile.percentile:27 of
 msgid "'lower': ``i``."
-msgstr ""
+msgstr "'lower': ``i``。"
 
 #: maxframe.tensor.statistics.percentile.percentile:28 of
 msgid "'higher': ``j``."
-msgstr ""
+msgstr "'higher': ``j``。"
 
 #: maxframe.tensor.statistics.percentile.percentile:29 of
 msgid "'nearest': ``i`` or ``j``, whichever is nearest."
-msgstr ""
+msgstr "'nearest': ``i`` 或 ``j``， whichever 最近。"
 
 #: maxframe.tensor.statistics.percentile.percentile:30 of
 msgid "'midpoint': ``(i + j) / 2``."
-msgstr ""
+msgstr "'midpoint': ``(i + j) / 2``。"
 
 #: maxframe.tensor.statistics.percentile.percentile:32 of
 msgid ""
@@ -198,4 +202,6 @@ msgid ""
 "<../../../../build/locale/plot_directive/reference/tensor/generated"
 "/maxframe-tensor-percentile-1.py>`)"
 msgstr ""
+"(:download:`源代码 <../../../../build/locale/plot_directive/reference/"
+"tensor/generated/maxframe-tensor-percentile-1.py>`)"
 

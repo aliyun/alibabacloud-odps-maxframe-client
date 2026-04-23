@@ -48,26 +48,22 @@ msgstr ""
 "的所有轴执行求和操作，而不是单个轴或所有轴。"
 
 #: maxframe.tensor.reduction.sum.sum:5 of
-#, fuzzy
 msgid ""
 "Axis or axes along which a sum is performed.  The default, axis=None, "
 "will sum all of the elements of the input tensor.  If axis is negative it"
 " counts from the last to the first axis."
 msgstr ""
 "执行求和操作的轴。默认值 axis=None 将对输入张量的所有元素求和。如果 axis "
-"是负数，则从最后一个轴开始计数。如果 axis 是一个整数元组，则对元组中指定"
-"的所有轴执行求和操作，而不是单个轴或所有轴。"
+"是负数，则从最后一个轴开始计数。"
 
 #: maxframe.tensor.reduction.sum.sum:9 of
-#, fuzzy
 msgid ""
 "If axis is a tuple of ints, a sum is performed on all of the axes "
 "specified in the tuple instead of a single axis or all the axes as "
 "before."
 msgstr ""
-"执行求和操作的轴。默认值 axis=None 将对输入张量的所有元素求和。如果 axis "
-"是负数，则从最后一个轴开始计数。如果 axis 是一个整数元组，则对元组中指定"
-"的所有轴执行求和操作，而不是单个轴或所有轴。"
+"如果 axis 是整数元组，则对元组中指定的所有轴执行求和操作，而不是像以前"
+"那样只对单个轴或所有轴求和。"
 
 #: maxframe.tensor.reduction.sum.sum:13 of
 msgid ""
@@ -113,19 +109,19 @@ msgid ""
 " as dimensions with size one. With this option, the result will broadcast"
 " correctly against the input tensor."
 msgstr ""
+"如果设置为 True，则在结果中保留被规约的轴，其大小为 1。使用此选项，结果将"
+"能够与输入张量正确广播。"
 
 #: maxframe.tensor.reduction.sum.sum:28 of
-#, fuzzy
 msgid ""
 "If the default value is passed, then `keepdims` will not be passed "
 "through to the `sum` method of sub-classes of `Tensor`, however any non-"
 "default value will be.  If the sub-classes `sum` method does not "
 "implement `keepdims` any exceptions will be raised."
 msgstr ""
-"如果设置为 True，则在结果中保留被规约的轴，其大小为 1。使用此选项，结果将"
-"能够与输入张量正确广播。如果传递的是默认值，则 `keepdims` 不会传递给 `"
-"Tensor` 子类的 `sum` 方法，但任何非默认值都会传递。如果子类的 `sum` 方法"
-"未实现 `keepdims`，则会引发异常。"
+"如果传递的是默认值，则 `keepdims` 不会传递给 `Tensor` 子类的 `sum` 方法，"
+"但任何非默认值都会传递。如果子类的 `sum` 方法未实现 `keepdims`，则会引发"
+"异常。"
 
 #: maxframe.tensor.reduction.sum.sum of
 msgid "返回"

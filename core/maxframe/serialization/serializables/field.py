@@ -390,14 +390,15 @@ class EnumField(Field):
         primitive: bool = False,
     ):
         def _on_serialize(val):
+            val = val.value if val is not None else None
             if on_serialize is not None:
                 val = on_serialize(val)
-            return val.value if val is not None else None
+            return val
 
         def _on_deserialize(val):
-            val = enum_type(val) if val is not None else None
             if on_deserialize is not None:
                 val = on_deserialize(val)
+            val = enum_type(val) if val is not None else None
             return val
 
         super().__init__(

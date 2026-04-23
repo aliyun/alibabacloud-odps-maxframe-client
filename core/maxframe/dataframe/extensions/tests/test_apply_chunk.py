@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ def test_apply_chunk_infer_dtypes_and_index(df1, df2, df3):
         np.sum, batch_rows=2, output_type="series", dtype=np.int64, name="sum"
     )
     assert isinstance(result, SERIES_TYPE)
-    assert isinstance(result.index_value.to_pandas(), pd.RangeIndex)
+    assert isinstance(result.index_value.to_pandas(), pd.MultiIndex)
 
     # general functions
     def process(data, param, k):
@@ -95,7 +95,6 @@ def test_apply_chunk_infer_dtypes_and_index(df1, df2, df3):
         return data * param * k
 
     result = df2.mf.apply_chunk(process, batch_rows=3, args=(4,), k=1)
-    assert result.index_value is df2.index_value
     assert result.dtypes.equals(df2.dtypes)
 
     # mark functions
@@ -107,11 +106,10 @@ def test_apply_chunk_infer_dtypes_and_index(df1, df2, df3):
         return data
 
     result = df1.mf.apply_chunk(process, batch_rows=3, k=1)
-    assert result.index_value is df1.index_value
     assert result.dtypes.equals(df1.dtypes)
     assert isinstance(result.op.func, MarkedFunction)
     assert result.op.func is process
-    assert result.op.func.resources is process.resources
+    assert result.op.func.file_resources is process.file_resources
     assert result.op.func.pythonpacks is process.pythonpacks
 
     def func_series_ret_series(data):
@@ -157,7 +155,6 @@ def test_apply_chunk(df1):
     result = df1.mf.apply_chunk(
         lambda x: x.a,
         output_type="series",
-        dtype="int64",
         batch_rows=5,
     )
     assert result.shape == (np.nan,)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-31 17:39+0800\n"
+"POT-Creation-Date: 2026-02-10 19:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -27,1352 +27,1362 @@ msgstr ""
 msgid "Methods"
 msgstr "方法"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`__init__ <maxframe.dataframe.DataFrame.__init__>`\\ "
 "\\(\\[data\\, index\\, columns\\, dtype\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`abs <maxframe.dataframe.DataFrame.abs>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`add <maxframe.dataframe.DataFrame.add>`\\ \\(other\\[\\, axis\\,"
 " level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Get Addition of dataframe and other, element-wise (binary operator `add`)."
 msgstr "获取 DataFrame 和 other 的加法，按元素计算（二元运算符 `add`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`add_prefix <maxframe.dataframe.DataFrame.add_prefix>`\\ "
 "\\(prefix\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Prefix labels with string `prefix`."
 msgstr "使用字符串 `prefix` 作为标签前缀。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`add_suffix <maxframe.dataframe.DataFrame.add_suffix>`\\ "
 "\\(suffix\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Suffix labels with string `suffix`."
 msgstr "使用字符串 suffix 作为标签后缀。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`agg <maxframe.dataframe.DataFrame.agg>`\\ \\(\\[func\\, "
 "axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Aggregate using one or more operations over the specified axis."
 msgstr "在指定轴上使用一个或多个操作进行聚合。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`aggregate <maxframe.dataframe.DataFrame.aggregate>`\\ "
 "\\(\\[func\\, axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`align <maxframe.dataframe.DataFrame.align>`\\ \\(other\\[\\, "
 "join\\, axis\\, level\\, copy\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Align two objects on their axes with the specified join method."
 msgstr "使用指定的连接方法在轴上对齐两个对象。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`all <maxframe.dataframe.DataFrame.all>`\\ \\(\\[axis\\, "
 "bool\\_only\\, skipna\\, level\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`any <maxframe.dataframe.DataFrame.any>`\\ \\(\\[axis\\, "
 "bool\\_only\\, skipna\\, level\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`append <maxframe.dataframe.DataFrame.append>`\\ \\(other\\[\\, "
 "ignore\\_index\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Append rows of `other` to the end of caller, returning a new object."
 msgstr "将 `other` 的行追加到调用者的末尾，返回一个新对象。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`apply <maxframe.dataframe.DataFrame.apply>`\\ \\(func\\[\\, "
 "axis\\, raw\\, result\\_type\\, args\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Apply a function along an axis of the DataFrame."
 msgstr "沿 DataFrame 的轴应用函数。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`applymap <maxframe.dataframe.DataFrame.applymap>`\\ "
 "\\(func\\[\\, na\\_action\\, dtypes\\, dtype\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Apply a function to a Dataframe elementwise."
 msgstr "对 DataFrame 的每个元素应用函数。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`around <maxframe.dataframe.DataFrame.around>`\\ "
 "\\(\\[decimals\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Round a DataFrame to a variable number of decimal places."
 msgstr "将 DataFrame 四舍五入到可变的小数位数。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`assign <maxframe.dataframe.DataFrame.assign>`\\ "
 "\\(\\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Assign new columns to a DataFrame."
 msgstr "为 DataFrame 分配新列。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`astype <maxframe.dataframe.DataFrame.astype>`\\ \\(dtype\\[\\, "
 "copy\\, errors\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Cast a pandas object to a specified dtype ``dtype``."
 msgstr "将 pandas 对象转换为指定的 dtype。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`at_time <maxframe.dataframe.DataFrame.at_time>`\\ \\(time\\[\\, "
 "axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Select values at particular time of day (e.g., 9:30AM)."
 msgstr "选择一天中特定时间的值（例如，上午9:30）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`backfill <maxframe.dataframe.DataFrame.backfill>`\\ "
 "\\(\\[axis\\, inplace\\, limit\\, downcast\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Synonym for :meth:`DataFrame.fillna` with ``method='bfill'``."
 msgstr ":meth:`DataFrame.fillna` 使用 ``method='bfill'`` 的同义词。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`between_time <maxframe.dataframe.DataFrame.between_time>`\\ "
 "\\(start\\_time\\, end\\_time\\[\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Select values between particular times of the day (e.g., 9:00-9:30 AM)."
 msgstr "选择一天中特定时间之间的值（例如，上午9:00-9:30）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`bfill <maxframe.dataframe.DataFrame.bfill>`\\ \\(\\[axis\\, "
 "inplace\\, limit\\, downcast\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`clip <maxframe.dataframe.DataFrame.clip>`\\ \\(\\[lower\\, "
 "upper\\, axis\\, inplace\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Trim values at input threshold(s)."
 msgstr "在输入阈值处修剪值。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`combine <maxframe.dataframe.DataFrame.combine>`\\ \\(other\\, "
 "func\\[\\, fill\\_value\\, overwrite\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Perform column-wise combine with another DataFrame."
 msgstr "与另一个 DataFrame 执行按列组合。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`combine_first <maxframe.dataframe.DataFrame.combine_first>`\\ "
 "\\(other\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Update null elements with value in the same location in `other`."
 msgstr "使用 `other` 中相同位置的值更新空元素。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`compare <maxframe.dataframe.DataFrame.compare>`\\ \\(other\\[\\,"
 " align\\_axis\\, keep\\_shape\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Compare to another DataFrame and show the differences."
 msgstr "与另一个 DataFrame 比较并显示差异。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`convert_dtypes <maxframe.dataframe.DataFrame.convert_dtypes>`\\ "
 "\\(\\[infer\\_objects\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Convert columns to best possible dtypes using dtypes supporting ``pd.NA``."
 msgstr "使用支持 ``pd.NA`` 的数据类型将列转换为最佳的可能数据类型。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`copy <maxframe.dataframe.DataFrame.copy>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`copy_from <maxframe.dataframe.DataFrame.copy_from>`\\ \\(obj\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`copy_to <maxframe.dataframe.DataFrame.copy_to>`\\ \\(target\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`corr <maxframe.dataframe.DataFrame.corr>`\\ \\(\\[method\\, "
 "min\\_periods\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Compute pairwise correlation of columns, excluding NA/null values."
 msgstr "计算列之间的成对相关性，排除 NA/null 值。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`corrwith <maxframe.dataframe.DataFrame.corrwith>`\\ "
 "\\(other\\[\\, axis\\, drop\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Compute pairwise correlation."
 msgstr "计算成对相关性。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`count <maxframe.dataframe.DataFrame.count>`\\ \\(\\[axis\\, "
 "level\\, numeric\\_only\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`cov <maxframe.dataframe.DataFrame.cov>`\\ \\(\\[min\\_periods\\,"
 " ddof\\, numeric\\_only\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Compute pairwise covariance of columns, excluding NA/null values."
 msgstr "计算列之间的成对协方差，排除 NA/null 值。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`cummax <maxframe.dataframe.DataFrame.cummax>`\\ \\(\\[axis\\, "
 "skipna\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`cummin <maxframe.dataframe.DataFrame.cummin>`\\ \\(\\[axis\\, "
 "skipna\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`cumprod <maxframe.dataframe.DataFrame.cumprod>`\\ \\(\\[axis\\, "
 "skipna\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`cumsum <maxframe.dataframe.DataFrame.cumsum>`\\ \\(\\[axis\\, "
 "skipna\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`describe <maxframe.dataframe.DataFrame.describe>`\\ "
 "\\(\\[percentiles\\, include\\, exclude\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Generate descriptive statistics."
 msgstr "生成描述性统计信息。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`diff <maxframe.dataframe.DataFrame.diff>`\\ \\(\\[periods\\, "
 "axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "First discrete difference of element."
 msgstr "元素的一阶离散差分。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`div <maxframe.dataframe.DataFrame.div>`\\ \\(other\\[\\, axis\\,"
 " level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Floating division of dataframe and other, element-wise (binary "
 "operator `truediv`)."
 msgstr "获取 DataFrame 和 other 的浮点除法，按元素计算（二元运算符 `truediv`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`dot <maxframe.dataframe.DataFrame.dot>`\\ \\(other\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Compute the matrix multiplication between the DataFrame and other."
 msgstr "计算 DataFrame 和 other 之间的矩阵乘法。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`drop <maxframe.dataframe.DataFrame.drop>`\\ \\(\\[labels\\, "
 "axis\\, index\\, columns\\, level\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Drop specified labels from rows or columns."
 msgstr "从行或列中删除指定的标签。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`drop_duplicates "
 "<maxframe.dataframe.DataFrame.drop_duplicates>`\\ \\(\\[subset\\, keep\\,"
 " inplace\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return DataFrame with duplicate rows removed."
 msgstr "返回删除了重复行的 DataFrame。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`droplevel <maxframe.dataframe.DataFrame.droplevel>`\\ "
 "\\(level\\[\\, axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return Series/DataFrame with requested index / column level(s) removed."
 msgstr "返回删除了请求的索引/列级别的 Series/DataFrame。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`dropna <maxframe.dataframe.DataFrame.dropna>`\\ \\(\\[axis\\, "
 "how\\, thresh\\, subset\\, inplace\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Remove missing values."
 msgstr "删除缺失值。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`duplicated <maxframe.dataframe.DataFrame.duplicated>`\\ "
 "\\(\\[subset\\, keep\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return boolean Series denoting duplicate rows."
 msgstr "返回表示重复行的布尔 Series。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`eq <maxframe.dataframe.DataFrame.eq>`\\ \\(other\\[\\, axis\\, "
 "level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Get Equal to of dataframe and other, element-wise (binary operator `eq`)."
 msgstr "获取 DataFrame 和 other 的等于比较，按元素计算（二元运算符 `eq`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`eval <maxframe.dataframe.DataFrame.eval>`\\ \\(expr\\[\\, "
 "inplace\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Evaluate a string describing operations on DataFrame columns."
 msgstr "评估描述 DataFrame 列操作的字符串。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`ewm <maxframe.dataframe.DataFrame.ewm>`\\ \\(\\[com\\, span\\, "
 "halflife\\, alpha\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Provide exponential weighted functions."
 msgstr "提供指数加权函数。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`execute <maxframe.dataframe.DataFrame.execute>`\\ "
 "\\(\\[session\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`expanding <maxframe.dataframe.DataFrame.expanding>`\\ "
 "\\(\\[min\\_periods\\, shift\\, reverse\\_range\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Provide expanding transformations."
 msgstr "提供扩展变换。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`explode <maxframe.dataframe.DataFrame.explode>`\\ "
-"\\(column\\[\\, ignore\\_index\\]\\)"
+"\\(column\\[\\, ignore\\_index\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Transform each element of a list-like to a row, replicating index values."
 msgstr "将类列表的每个元素转换为一行，复制索引值。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`ffill <maxframe.dataframe.DataFrame.ffill>`\\ \\(\\[axis\\, "
 "inplace\\, limit\\, downcast\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Synonym for :meth:`DataFrame.fillna` with ``method='ffill'``."
 msgstr ":meth:`DataFrame.fillna` 使用 [method='ffill'] 的同义词。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`fillna <maxframe.dataframe.DataFrame.fillna>`\\ \\(\\[value\\, "
 "method\\, axis\\, inplace\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Fill NA/NaN values using the specified method."
 msgstr "使用指定方法填充 NA/NaN 值。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`filter <maxframe.dataframe.DataFrame.filter>`\\ \\(\\[items\\, "
 "like\\, regex\\, axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Subset the dataframe rows or columns according to the specified index "
 "labels."
 msgstr "根据指定的索引标签对 DataFrame 的行或列进行子集选择。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`first_valid_index "
 "<maxframe.dataframe.DataFrame.first_valid_index>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return index for first non-NA value or None, if no non-NA value is found."
 msgstr "返回第一个非 NA 值的索引，如果未找到非 NA 值则返回 None。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`floordiv <maxframe.dataframe.DataFrame.floordiv>`\\ "
 "\\(other\\[\\, axis\\, level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Integer division of dataframe and other, element-wise (binary "
 "operator `floordiv`)."
 msgstr "获取 DataFrame 和 other 的整数除法，按元素计算（二元运算符 `floordiv`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`from_dict <maxframe.dataframe.DataFrame.from_dict>`\\ "
 "\\(data\\[\\, orient\\, dtype\\, columns\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Construct DataFrame from dict of array-like or dicts."
 msgstr "从数组类或字典的字典构造 DataFrame。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`from_records <maxframe.dataframe.DataFrame.from_records>`\\ "
 "\\(data\\[\\, index\\, exclude\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Convert structured or record ndarray to DataFrame."
 msgstr "将结构化或记录型 ndarray 转换为 DataFrame。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`from_tensor <maxframe.dataframe.DataFrame.from_tensor>`\\ "
 "\\(tensor\\[\\, index\\, columns\\, gpu\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`ge <maxframe.dataframe.DataFrame.ge>`\\ \\(other\\[\\, axis\\, "
 "level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Greater than or equal to of dataframe and other, element-wise (binary"
 " operator `ge`)."
 msgstr "获取 DataFrame 和 other 的大于等于比较，按元素计算（二元运算符 `ge`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`groupby <maxframe.dataframe.DataFrame.groupby>`\\ \\(\\[by\\, "
 "level\\, as\\_index\\, sort\\, group\\_keys\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Group DataFrame using a mapper or by a Series of columns."
 msgstr "使用映射器或 Series 列对 DataFrame 进行分组。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`gt <maxframe.dataframe.DataFrame.gt>`\\ \\(other\\[\\, axis\\, "
 "level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Greater than of dataframe and other, element-wise (binary operator "
 "`gt`)."
 msgstr "获取 DataFrame 和 other 的大于比较，按元素计算（二元运算符 `gt`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`head <maxframe.dataframe.DataFrame.head>`\\ \\(\\[n\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return the first `n` rows."
 msgstr "返回前 `n` 行。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`idxmax <maxframe.dataframe.DataFrame.idxmax>`\\ \\(\\[axis\\, "
 "skipna\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return index of first occurrence of maximum over requested axis."
 msgstr "返回在请求轴上首次出现最大值的索引。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`idxmin <maxframe.dataframe.DataFrame.idxmin>`\\ \\(\\[axis\\, "
 "skipna\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return index of first occurrence of minimum over requested axis."
 msgstr "返回在请求轴上首次出现最小值的索引。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`infer_objects <maxframe.dataframe.DataFrame.infer_objects>`\\ "
 "\\(\\[copy\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Attempt to infer better dtypes for object columns."
 msgstr "尝试为对象列推断更好的数据类型。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`insert <maxframe.dataframe.DataFrame.insert>`\\ \\(loc\\, "
 "column\\, value\\[\\, allow\\_duplicates\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Insert column into DataFrame at specified location."
 msgstr "在指定位置将列插入 DataFrame。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`isin <maxframe.dataframe.DataFrame.isin>`\\ \\(values\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Whether each element in the DataFrame is contained in values."
 msgstr "DataFrame 中的每个元素是否包含在值中。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`isna <maxframe.dataframe.DataFrame.isna>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Detect missing values."
 msgstr "检测缺失值。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`isnull <maxframe.dataframe.DataFrame.isnull>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`iterrows <maxframe.dataframe.DataFrame.iterrows>`\\ "
 "\\(\\[batch\\_size\\, session\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Iterate over DataFrame rows as (index, Series) pairs."
 msgstr "将 DataFrame 行作为 (index, Series) 对进行迭代。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`itertuples <maxframe.dataframe.DataFrame.itertuples>`\\ "
 "\\(\\[index\\, name\\, batch\\_size\\, session\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Iterate over DataFrame rows as namedtuples."
 msgstr "将 DataFrame 行作为 namedtuples 进行迭代。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`join <maxframe.dataframe.DataFrame.join>`\\ \\(other\\[\\, on\\,"
 " how\\, lsuffix\\, rsuffix\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Join columns of another DataFrame."
 msgstr "连接另一个 DataFrame 的列。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`keys <maxframe.dataframe.DataFrame.keys>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Get the 'info axis' (see Indexing for more)."
 msgstr "获取 'info axis'（更多信息请参见索引部分）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`kurt <maxframe.dataframe.DataFrame.kurt>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, numeric\\_only\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`kurtosis <maxframe.dataframe.DataFrame.kurtosis>`\\ "
 "\\(\\[axis\\, skipna\\, level\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`last_valid_index "
 "<maxframe.dataframe.DataFrame.last_valid_index>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return index for last non-NA value or None, if no non-NA value is found."
 msgstr "返回最后一个非 NA 值的索引，如果未找到非 NA 值则返回 None。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`le <maxframe.dataframe.DataFrame.le>`\\ \\(other\\[\\, axis\\, "
 "level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Less than or equal to of dataframe and other, element-wise (binary "
 "operator `le`)."
 msgstr "获取 DataFrame 和 other 的小于等于比较，按元素计算（二元运算符 `le`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`lt <maxframe.dataframe.DataFrame.lt>`\\ \\(other\\[\\, axis\\, "
 "level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Get Less than of dataframe and other, element-wise (binary operator `lt`)."
 msgstr "获取 DataFrame 和 other 的小于比较，按元素计算（二元运算符 `lt`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`map <maxframe.dataframe.DataFrame.map>`\\ \\(func\\[\\, "
 "na\\_action\\, dtypes\\, dtype\\, skip\\_infer\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`mask <maxframe.dataframe.DataFrame.mask>`\\ \\(cond\\[\\, "
 "other\\, inplace\\, axis\\, level\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Replace values where the condition is True."
 msgstr "替换条件为 True 的值。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`max <maxframe.dataframe.DataFrame.max>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, numeric\\_only\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`mean <maxframe.dataframe.DataFrame.mean>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, numeric\\_only\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`median <maxframe.dataframe.DataFrame.median>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, numeric\\_only\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`melt <maxframe.dataframe.DataFrame.melt>`\\ \\(\\[id\\_vars\\, "
 "value\\_vars\\, var\\_name\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Unpivot a DataFrame from wide to long format, optionally leaving "
 "identifiers set."
 msgstr "将 DataFrame 从宽格式转换为长格式，可选择保留标识符集。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`memory_usage <maxframe.dataframe.DataFrame.memory_usage>`\\ "
 "\\(\\[index\\, deep\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return the memory usage of each column in bytes."
 msgstr "返回每列的内存使用量（以字节为单位）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`merge <maxframe.dataframe.DataFrame.merge>`\\ \\(right\\[\\, "
 "how\\, on\\, left\\_on\\, right\\_on\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Merge DataFrame or named Series objects with a database-style join."
 msgstr "使用数据库风格的连接合并 DataFrame 或命名的 Series 对象。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`min <maxframe.dataframe.DataFrame.min>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, numeric\\_only\\, method\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`mod <maxframe.dataframe.DataFrame.mod>`\\ \\(other\\[\\, axis\\,"
 " level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Get Modulo of dataframe and other, element-wise (binary operator `mod`)."
 msgstr "获取 DataFrame 和 other 的模运算，按元素计算（二元运算符 `mod`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`mode <maxframe.dataframe.DataFrame.mode>`\\ \\(\\[axis\\, "
 "numeric\\_only\\, dropna\\, combine\\_size\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Get the mode(s) of each element along the selected axis."
 msgstr "获取沿选定轴的每个元素的众数。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`mul <maxframe.dataframe.DataFrame.mul>`\\ \\(other\\[\\, axis\\,"
 " level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Multiplication of dataframe and other, element-wise (binary operator "
 "`mul`)."
 msgstr "获取 DataFrame 和 other 的乘法，按元素计算（二元运算符 `mul`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`multiply <maxframe.dataframe.DataFrame.multiply>`\\ "
 "\\(other\\[\\, axis\\, level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`ne <maxframe.dataframe.DataFrame.ne>`\\ \\(other\\[\\, axis\\, "
 "level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Not equal to of dataframe and other, element-wise (binary operator "
 "`ne`)."
 msgstr "获取 DataFrame 和 other 的不等于比较，按元素计算（二元运算符 `ne`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`nlargest <maxframe.dataframe.DataFrame.nlargest>`\\ \\(n\\, "
 "columns\\[\\, keep\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return the first `n` rows ordered by `columns` in descending order."
 msgstr "返回按 `columns` 降序排列的前 `n` 行。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`notna <maxframe.dataframe.DataFrame.notna>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Detect existing (non-missing) values."
 msgstr "检测存在的（非缺失）值。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`notnull <maxframe.dataframe.DataFrame.notnull>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`nsmallest <maxframe.dataframe.DataFrame.nsmallest>`\\ \\(n\\, "
 "columns\\[\\, keep\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return the first `n` rows ordered by `columns` in ascending order."
 msgstr "返回按 `columns` 升序排列的前 `n` 行。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`nunique <maxframe.dataframe.DataFrame.nunique>`\\ \\(\\[axis\\, "
 "dropna\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Count distinct observations over requested axis."
 msgstr "计算请求轴上的不同观测值数量。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`pad <maxframe.dataframe.DataFrame.pad>`\\ \\(\\[axis\\, "
 "inplace\\, limit\\, downcast\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`pct_change <maxframe.dataframe.DataFrame.pct_change>`\\ "
 "\\(\\[periods\\, fill\\_method\\, limit\\, freq\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Percentage change between the current and a prior element."
 msgstr "当前元素与前一个元素之间的百分比变化。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`pivot <maxframe.dataframe.DataFrame.pivot>`\\ \\(columns\\[\\, "
 "index\\, values\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return reshaped DataFrame organized by given index / column values."
 msgstr "返回按给定索引/列值组织的重塑 DataFrame。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`pivot_table <maxframe.dataframe.DataFrame.pivot_table>`\\ "
 "\\(\\[values\\, index\\, columns\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Create a spreadsheet-style pivot table as a DataFrame."
 msgstr "创建一个电子表格风格的数据透视表作为 DataFrame。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`pop <maxframe.dataframe.DataFrame.pop>`\\ \\(item\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return item and drop from frame."
 msgstr "返回项目并从框架中删除。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`pow <maxframe.dataframe.DataFrame.pow>`\\ \\(other\\[\\, axis\\,"
 " level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Exponential power of dataframe and other, element-wise (binary "
 "operator `pow`)."
 msgstr "获取 DataFrame 和 other 的指数幂，按元素计算（二元运算符 `pow`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`prod <maxframe.dataframe.DataFrame.prod>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, min\\_count\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`product <maxframe.dataframe.DataFrame.product>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, min\\_count\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`quantile <maxframe.dataframe.DataFrame.quantile>`\\ \\(\\[q\\, "
 "axis\\, numeric\\_only\\, interpolation\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return values at the given quantile over requested axis."
 msgstr "返回在请求轴上给定分位数的值。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`query <maxframe.dataframe.DataFrame.query>`\\ \\(expr\\[\\, "
 "inplace\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Query the columns of a DataFrame with a boolean expression."
 msgstr "使用布尔表达式查询 DataFrame 的列。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`radd <maxframe.dataframe.DataFrame.radd>`\\ \\(other\\[\\, "
 "axis\\, level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Addition of dataframe and other, element-wise (binary operator "
 "`radd`)."
 msgstr "获取 DataFrame 和 other 的加法，按元素计算（二元运算符 `radd`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`rank <maxframe.dataframe.DataFrame.rank>`\\ \\(\\[axis\\, "
 "method\\, numeric\\_only\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Compute numerical data ranks (1 through n) along axis."
 msgstr "沿轴计算数值数据的排名（从1到n）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`rdiv <maxframe.dataframe.DataFrame.rdiv>`\\ \\(other\\[\\, "
 "axis\\, level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Floating division of dataframe and other, element-wise (binary "
 "operator `rtruediv`)."
 msgstr "获取 DataFrame 和 other 的浮点除法，按元素计算（二元运算符 `rtruediv`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`rechunk <maxframe.dataframe.DataFrame.rechunk>`\\ "
 "\\(chunk\\_size\\[\\, reassign\\_worker\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`reindex <maxframe.dataframe.DataFrame.reindex>`\\ "
 "\\(\\[labels\\, index\\, columns\\, axis\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Conform Series/DataFrame to new index with optional filling logic."
 msgstr "使 Series/DataFrame 符合带有可选填充逻辑的新索引。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`reindex_like <maxframe.dataframe.DataFrame.reindex_like>`\\ "
 "\\(other\\[\\, method\\, copy\\, limit\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return an object with matching indices as other object."
 msgstr "返回一个与另一个对象具有匹配索引的对象。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`rename <maxframe.dataframe.DataFrame.rename>`\\ \\(\\[mapper\\, "
 "index\\, columns\\, axis\\, copy\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Alter axes labels."
 msgstr "更改轴标签。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`rename_axis <maxframe.dataframe.DataFrame.rename_axis>`\\ "
 "\\(\\[mapper\\, index\\, columns\\, axis\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Set the name of the axis for the index or columns."
 msgstr "为索引或列设置轴的名称。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`reorder_levels <maxframe.dataframe.DataFrame.reorder_levels>`\\ "
 "\\(order\\[\\, axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Rearrange index levels using input order."
 msgstr "使用输入顺序重新排列索引级别。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`replace <maxframe.dataframe.DataFrame.replace>`\\ "
 "\\(\\[to\\_replace\\, value\\, inplace\\, limit\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Replace values given in `to_replace` with `value`."
 msgstr "将 `to_replace` 中给出的值替换为 `value`。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`reset_index <maxframe.dataframe.DataFrame.reset_index>`\\ "
 "\\(\\[level\\, drop\\, inplace\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Reset the index, or a level of it."
 msgstr "重置索引，或其一个级别。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`rfloordiv <maxframe.dataframe.DataFrame.rfloordiv>`\\ "
 "\\(other\\[\\, axis\\, level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Integer division of dataframe and other, element-wise (binary "
 "operator `rfloordiv`)."
 msgstr "获取 DataFrame 和 other 的整数除法，按元素计算（二元运算符 `rfloordiv`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`rmod <maxframe.dataframe.DataFrame.rmod>`\\ \\(other\\[\\, "
 "axis\\, level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Get Modulo of dataframe and other, element-wise (binary operator `rmod`)."
 msgstr "获取 DataFrame 和 other 的模运算，按元素计算（二元运算符 `rmod`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`rmul <maxframe.dataframe.DataFrame.rmul>`\\ \\(other\\[\\, "
 "axis\\, level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Multiplication of dataframe and other, element-wise (binary operator "
 "`rmul`)."
 msgstr "获取 DataFrame 和 other 的乘法，按元素计算（二元运算符 `rmul`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`rolling <maxframe.dataframe.DataFrame.rolling>`\\ "
 "\\(window\\[\\, min\\_periods\\, center\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Provide rolling window calculations."
 msgstr "提供滚动窗口计算。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`round <maxframe.dataframe.DataFrame.round>`\\ "
 "\\(\\[decimals\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`rpow <maxframe.dataframe.DataFrame.rpow>`\\ \\(other\\[\\, "
 "axis\\, level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Exponential power of dataframe and other, element-wise (binary "
 "operator `rpow`)."
 msgstr "获取 DataFrame 和 other 的指数幂，按元素计算（二元运算符 `rpow`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`rsub <maxframe.dataframe.DataFrame.rsub>`\\ \\(other\\[\\, "
 "axis\\, level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Subtraction of dataframe and other, element-wise (binary operator "
 "`rsubtract`)."
 msgstr "获取 DataFrame 和 other 的减法，按元素计算（二元运算符 `rsubtract`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`rtruediv <maxframe.dataframe.DataFrame.rtruediv>`\\ "
 "\\(other\\[\\, axis\\, level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`sample <maxframe.dataframe.DataFrame.sample>`\\ \\(\\[n\\, "
 "frac\\, replace\\, weights\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return a random sample of items from an axis of object."
 msgstr "从对象的轴返回随机样本项。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`select_dtypes <maxframe.dataframe.DataFrame.select_dtypes>`\\ "
 "\\(\\[include\\, exclude\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return a subset of the DataFrame's columns based on the column dtypes."
 msgstr "基于列的数据类型返回 DataFrame 列的子集。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`sem <maxframe.dataframe.DataFrame.sem>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, ddof\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`set_axis <maxframe.dataframe.DataFrame.set_axis>`\\ "
 "\\(labels\\[\\, axis\\, inplace\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Assign desired index to given axis."
 msgstr "将所需索引分配给给定轴。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`set_index <maxframe.dataframe.DataFrame.set_index>`\\ "
 "\\(keys\\[\\, drop\\, append\\, inplace\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Set the DataFrame index using existing columns."
 msgstr "使用现有列设置 DataFrame 索引。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`shift <maxframe.dataframe.DataFrame.shift>`\\ \\(\\[periods\\, "
 "freq\\, axis\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Shift index by desired number of periods with an optional time `freq`."
 msgstr "通过所需的周期数移动索引，并可选择时间 `freq`。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`skew <maxframe.dataframe.DataFrame.skew>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, numeric\\_only\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`sort_index <maxframe.dataframe.DataFrame.sort_index>`\\ "
 "\\(\\[axis\\, level\\, ascending\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Sort object by labels (along an axis)."
 msgstr "按标签（沿轴）对对象进行排序。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`sort_values <maxframe.dataframe.DataFrame.sort_values>`\\ "
 "\\(by\\[\\, axis\\, ascending\\, inplace\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Sort by the values along either axis."
 msgstr "沿任一轴按值排序。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`stack <maxframe.dataframe.DataFrame.stack>`\\ \\(\\[level\\, "
 "dropna\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Stack the prescribed level(s) from columns to index."
 msgstr "将指定级别从列堆叠到索引。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`std <maxframe.dataframe.DataFrame.std>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, ddof\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`sub <maxframe.dataframe.DataFrame.sub>`\\ \\(other\\[\\, axis\\,"
 " level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Get Subtraction of dataframe and other, element-wise (binary operator "
 "`subtract`)."
 msgstr "获取 DataFrame 和 other 的减法，按元素计算（二元运算符 `subtract`）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`sum <maxframe.dataframe.DataFrame.sum>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, min\\_count\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`swaplevel <maxframe.dataframe.DataFrame.swaplevel>`\\ \\(\\[i\\,"
 " j\\, axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Swap levels i and j in a :class:`MultiIndex`."
 msgstr "在 :class:`MultiIndex` 中交换级别 i 和 j。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`tail <maxframe.dataframe.DataFrame.tail>`\\ \\(\\[n\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return the last `n` rows."
 msgstr "返回最后 `n` 行。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`take <maxframe.dataframe.DataFrame.take>`\\ \\(indices\\[\\, "
 "axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return the elements in the given *positional* indices along an axis."
 msgstr "返回沿轴的给定*位置*索引中的元素。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`to_clipboard <maxframe.dataframe.DataFrame.to_clipboard>`\\ "
 "\\(\\*\\[\\, excel\\, sep\\, batch\\_size\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Copy object to the system clipboard."
 msgstr "将对象复制到系统剪贴板。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`to_csv <maxframe.dataframe.DataFrame.to_csv>`\\ \\(path\\[\\, "
 "sep\\, na\\_rep\\, float\\_format\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Write object to a comma-separated values (csv) file."
 msgstr "将对象写入逗号分隔值 (csv) 文件。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`to_dict <maxframe.dataframe.DataFrame.to_dict>`\\ "
 "\\(\\[orient\\, into\\, index\\, batch\\_size\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Convert the DataFrame to a dictionary."
 msgstr "将 DataFrame 转换为 Python dict"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
+msgid ""
+":py:obj:`to_json <maxframe.dataframe.DataFrame.to_json>`\\ \\(\\[path\\, "
+"orient\\, date\\_format\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
+msgid "Convert the object to a JSON string."
+msgstr "将对象转换为 JSON 字符串"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`to_odps_table <maxframe.dataframe.DataFrame.to_odps_table>`\\ "
 "\\(table\\[\\, partition\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Write DataFrame object into a MaxCompute (ODPS) table."
 msgstr "将 DataFrame 对象写入 MaxCompute (ODPS) 表。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`to_pandas <maxframe.dataframe.DataFrame.to_pandas>`\\ "
 "\\(\\[session\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`to_parquet <maxframe.dataframe.DataFrame.to_parquet>`\\ "
 "\\(path\\[\\, engine\\, compression\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 "Write a DataFrame to the binary parquet format, each chunk will be "
 "written to a Parquet file."
@@ -1380,187 +1390,187 @@ msgstr ""
 "将 DataFrame 以二进制 parquet 格式写入，每个数据块将被写入一个 Parquet "
 "文件。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`to_tensor <maxframe.dataframe.DataFrame.to_tensor>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`transform <maxframe.dataframe.DataFrame.transform>`\\ "
 "\\(func\\[\\, axis\\, dtypes\\, skip\\_infer\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Call ``func`` on self producing a DataFrame with transformed values."
 msgstr "在 self 上调用 `func` 产生一个具有转换值的 DataFrame。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ":py:obj:`transpose <maxframe.dataframe.DataFrame.transpose>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Transpose index and columns."
 msgstr "转置索引和列。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`truediv <maxframe.dataframe.DataFrame.truediv>`\\ \\(other\\[\\,"
 " axis\\, level\\, fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`truncate <maxframe.dataframe.DataFrame.truncate>`\\ "
 "\\(\\[before\\, after\\, axis\\, copy\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Truncate a Series or DataFrame before and after some index value."
 msgstr "在某个索引值之前和之后截断 Series 或 DataFrame。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`tshift <maxframe.dataframe.DataFrame.tshift>`\\ \\(\\[periods\\,"
 " freq\\, axis\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Shift the time index, using the index's frequency if available."
 msgstr "移动时间索引，如果可用则使用索引的频率。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`unstack <maxframe.dataframe.DataFrame.unstack>`\\ \\(\\[level\\,"
 " fill\\_value\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Unstack, also known as pivot, Series with MultiIndex to produce DataFrame."
 msgstr "取消堆叠，也称为数据透视，将具有 MultiIndex 的 Series 转换为 DataFrame。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`update <maxframe.dataframe.DataFrame.update>`\\ \\(other\\[\\, "
 "join\\, overwrite\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Modify in place using non-NA values from another DataFrame."
 msgstr "使用来自另一个 DataFrame 的非 NA 值就地修改。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`value_counts <maxframe.dataframe.DataFrame.value_counts>`\\ "
 "\\(\\[subset\\, normalize\\, sort\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`var <maxframe.dataframe.DataFrame.var>`\\ \\(\\[axis\\, "
 "skipna\\, level\\, ddof\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`where <maxframe.dataframe.DataFrame.where>`\\ \\(cond\\[\\, "
 "other\\, inplace\\, axis\\, level\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Replace values where the condition is False."
 msgstr "替换条件为 False 的值。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid ""
 ":py:obj:`xs <maxframe.dataframe.DataFrame.xs>`\\ \\(key\\[\\, axis\\, "
 "level\\, drop\\_level\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:181:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:182:<autosummary>:1
 msgid "Return cross-section from the Series/DataFrame."
 msgstr "从 Series/DataFrame 返回横截面。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:183
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:184
 msgid "Attributes"
 msgstr "属性"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`T <maxframe.dataframe.DataFrame.T>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`T <maxframe.dataframe.DataFrame.T>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`at <maxframe.dataframe.DataFrame.at>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`at <maxframe.dataframe.DataFrame.at>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
 msgid "Access a single value for a row/column label pair."
 msgstr "访问行/列标签对的单个值。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`columns <maxframe.dataframe.DataFrame.columns>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`columns <maxframe.dataframe.DataFrame.columns>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`data <maxframe.dataframe.DataFrame.data>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`data <maxframe.dataframe.DataFrame.data>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`dtypes <maxframe.dataframe.DataFrame.dtypes>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`dtypes <maxframe.dataframe.DataFrame.dtypes>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
 msgid "Return the dtypes in the DataFrame."
 msgstr "返回 DataFrame 中的数据类型。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`iat <maxframe.dataframe.DataFrame.iat>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`iat <maxframe.dataframe.DataFrame.iat>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
 msgid "Access a single value for a row/column pair by integer position."
 msgstr "通过整数位置访问行/列对的单个值。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`iloc <maxframe.dataframe.DataFrame.iloc>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`iloc <maxframe.dataframe.DataFrame.iloc>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
 msgid "Purely integer-location based indexing for selection by position."
 msgstr "基于纯整数位置的索引，用于按位置选择。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`index <maxframe.dataframe.DataFrame.index>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`index <maxframe.dataframe.DataFrame.index>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`loc <maxframe.dataframe.DataFrame.loc>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`loc <maxframe.dataframe.DataFrame.loc>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
 msgid "Access a group of rows and columns by label(s) or a boolean array."
 msgstr "通过标签或布尔数组访问一组行和列。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`ndim <maxframe.dataframe.DataFrame.ndim>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`ndim <maxframe.dataframe.DataFrame.ndim>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
 msgid "Return an int representing the number of axes / array dimensions."
 msgstr "返回一个表示轴数/数组维度的整数。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`shape <maxframe.dataframe.DataFrame.shape>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`shape <maxframe.dataframe.DataFrame.shape>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`size <maxframe.dataframe.DataFrame.size>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`size <maxframe.dataframe.DataFrame.size>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`type_name <maxframe.dataframe.DataFrame.type_name>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`type_name <maxframe.dataframe.DataFrame.type_name>`"
 msgstr ""
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:199:<autosummary>:1
-msgid ":py:obj:`values <maxframe.dataframe.DataFrame.values>`\\"
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.rst:200:<autosummary>:1
+msgid ":py:obj:`values <maxframe.dataframe.DataFrame.values>`"
 msgstr ""
 

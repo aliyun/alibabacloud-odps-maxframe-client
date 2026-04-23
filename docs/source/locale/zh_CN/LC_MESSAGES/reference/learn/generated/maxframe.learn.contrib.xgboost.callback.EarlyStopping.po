@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"POT-Creation-Date: 2026-02-11 14:42+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -81,37 +81,37 @@ msgstr "属性"
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.callback.EarlyStopping.rst:37:<autosummary>:1
 msgid ""
+":py:obj:`data_name "
+"<maxframe.learn.contrib.xgboost.callback.EarlyStopping.data_name>`"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.callback.EarlyStopping.rst:37:<autosummary>:1
+msgid ""
 ":py:obj:`metric_name "
-"<maxframe.learn.contrib.xgboost.callback.EarlyStopping.metric_name>`\\"
+"<maxframe.learn.contrib.xgboost.callback.EarlyStopping.metric_name>`"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.callback.EarlyStopping.rst:37:<autosummary>:1
 msgid ""
 ":py:obj:`save_best "
-"<maxframe.learn.contrib.xgboost.callback.EarlyStopping.save_best>`\\"
-msgstr ""
-
-#: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.callback.EarlyStopping.rst:37:<autosummary>:1
-msgid ""
-":py:obj:`rounds "
-"<maxframe.learn.contrib.xgboost.callback.EarlyStopping.rounds>`\\"
+"<maxframe.learn.contrib.xgboost.callback.EarlyStopping.save_best>`"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.callback.EarlyStopping.rst:37:<autosummary>:1
 msgid ""
 ":py:obj:`min_delta "
-"<maxframe.learn.contrib.xgboost.callback.EarlyStopping.min_delta>`\\"
+"<maxframe.learn.contrib.xgboost.callback.EarlyStopping.min_delta>`"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.callback.EarlyStopping.rst:37:<autosummary>:1
 msgid ""
 ":py:obj:`maximize "
-"<maxframe.learn.contrib.xgboost.callback.EarlyStopping.maximize>`\\"
+"<maxframe.learn.contrib.xgboost.callback.EarlyStopping.maximize>`"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.xgboost.callback.EarlyStopping.rst:37:<autosummary>:1
 msgid ""
-":py:obj:`data_name "
-"<maxframe.learn.contrib.xgboost.callback.EarlyStopping.data_name>`\\"
+":py:obj:`rounds "
+"<maxframe.learn.contrib.xgboost.callback.EarlyStopping.rounds>`"
 msgstr ""
 

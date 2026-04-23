@@ -27,7 +27,7 @@ import pytest
 from .... import dataframe as md
 from ....core import OperatorType
 from ....core.operator import estimate_size
-from ....tests.utils import assert_mf_index_dtype
+from ....tests.utils import assert_mf_index_dtype, require_arrow_dtype
 from ....utils import dataslots, wrap_arrow_dtype
 from ...core import IndexValue
 from ...utils import MAX_DECIMAL128_PRECISION, split_monotonic_index_min_max
@@ -725,7 +725,7 @@ def test_datetime_arithmetic():
     ).dtype
 
 
-@pytest.mark.skipif(not hasattr(pd, "ArrowDtype"), reason="ArrowDtype not available")
+@require_arrow_dtype
 def test_decimal128_precision_arithmetic():
     data1 = pd.Series(
         [Decimal("1.23")],

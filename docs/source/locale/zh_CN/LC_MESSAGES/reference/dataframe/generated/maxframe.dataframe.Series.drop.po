@@ -57,13 +57,10 @@ msgstr ""
 "versionadded:: 0.21.0"
 
 #: maxframe.dataframe.misc.drop.series_drop:11 of
-#, fuzzy
 msgid ""
 "Redundant for application on Series, but 'index' can be used instead of "
 "'labels'."
-msgstr ""
-"对 Series 应用是多余的，但可以使用 'index' 替代 'labels'。  .. "
-"versionadded:: 0.21.0"
+msgstr "对 Series 应用是多余的，但可以使用 'index' 替代 'labels'。"
 
 #: maxframe.dataframe.misc.drop.series_drop:16 of
 msgid ""
@@ -74,11 +71,8 @@ msgstr ""
 "0.21.0"
 
 #: maxframe.dataframe.misc.drop.series_drop:16 of
-#, fuzzy
 msgid "No change is made to the Series; use 'index' or 'labels' instead."
-msgstr ""
-"不会对 Series 造成更改；请改用 'index' 或 'labels'。  .. versionadded:: "
-"0.21.0"
+msgstr "不会对 Series 造成更改；请改用 'index' 或 'labels'。"
 
 #: maxframe.dataframe.misc.drop.series_drop:20 of
 msgid "For MultiIndex, level for which the labels will be removed."

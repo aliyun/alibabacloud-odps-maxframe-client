@@ -111,18 +111,20 @@ msgid ""
 " data to the smallest numerical dtype possible according to the following"
 " rules:"
 msgstr ""
+"如果不为 None，并且如果数据已成功转换为数值类型（或数据最初就是数值类型）"
+"，则根据以下规则将结果数据向下转换为最小的数值类型："
 
 #: maxframe.dataframe.misc.to_numeric.to_numeric:27 of
 msgid "'integer' or 'signed': smallest signed int dtype (min.: np.int8)"
-msgstr ""
+msgstr "'integer' 或 'signed'：最小的有符号整数类型（最小值：np.int8）"
 
 #: maxframe.dataframe.misc.to_numeric.to_numeric:28 of
 msgid "'unsigned': smallest unsigned int dtype (min.: np.uint8)"
-msgstr ""
+msgstr "'unsigned'：最小的无符号整数类型（最小值：np.uint8）"
 
 #: maxframe.dataframe.misc.to_numeric.to_numeric:29 of
 msgid "'float': smallest float dtype (min.: np.float32)"
-msgstr ""
+msgstr "'float'：最小的浮点类型（最小值：np.float32）"
 
 #: maxframe.dataframe.misc.to_numeric.to_numeric:31 of
 msgid ""
@@ -130,6 +132,8 @@ msgid ""
 " any errors raised during the downcasting will be surfaced regardless of "
 "the value of the 'errors' input."
 msgstr ""
+"由于此行为与核心的数值转换是分开的，因此在向下转换期间引发的任何错误都将"
+"被显示，而不管 'errors' 输入的值如何。"
 
 #: maxframe.dataframe.misc.to_numeric.to_numeric:35 of
 msgid ""
@@ -138,6 +142,8 @@ msgid ""
 " none of the dtypes checked satisfy that specification, no downcasting "
 "will be performed on the data."
 msgstr ""
+"此外，只有当结果数据类型的大小严格大于要转换的数据类型时，才会进行向下"
+"转换，因此如果不检查的任何数据类型满足该规范，则不会对数据执行向下转换。"
 
 #: maxframe.dataframe.misc.to_numeric.to_numeric of
 msgid "返回"

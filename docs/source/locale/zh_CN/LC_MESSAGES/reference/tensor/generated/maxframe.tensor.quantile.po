@@ -78,29 +78,31 @@ msgstr ""
 msgid ""
 "This optional parameter specifies the interpolation method to use when "
 "the desired quantile lies between two data points ``i < j``:"
-msgstr ""
+msgstr "此可选参数指定当所需分位数位于两个数据点 ``i < j`` 之间时使用的插值方法："
 
 #: maxframe.tensor.statistics.quantile.quantile:22 of
 msgid ""
 "linear: ``i + (j - i) * fraction``, where ``fraction`` is the fractional "
 "part of the index surrounded by ``i`` and ``j``."
 msgstr ""
+"linear: ``i + (j - i) * fraction``，其中 ``fraction`` 是被 ``i`` 和 ``j``"
+" 包围的索引的小数部分。"
 
 #: maxframe.tensor.statistics.quantile.quantile:25 of
 msgid "lower: ``i``."
-msgstr ""
+msgstr "lower: ``i``。"
 
 #: maxframe.tensor.statistics.quantile.quantile:26 of
 msgid "higher: ``j``."
-msgstr ""
+msgstr "higher: ``j``。"
 
 #: maxframe.tensor.statistics.quantile.quantile:27 of
 msgid "nearest: ``i`` or ``j``, whichever is nearest."
-msgstr ""
+msgstr "nearest: ``i`` 或 ``j``，以最近者为准。"
 
 #: maxframe.tensor.statistics.quantile.quantile:28 of
 msgid "midpoint: ``(i + j) / 2``."
-msgstr ""
+msgstr "midpoint: ``(i + j) / 2``。"
 
 #: maxframe.tensor.statistics.quantile.quantile:30 of
 msgid ""

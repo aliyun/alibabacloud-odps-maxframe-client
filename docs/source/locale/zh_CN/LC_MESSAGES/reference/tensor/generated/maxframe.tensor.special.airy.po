@@ -113,13 +113,11 @@ msgstr ""
 
 #: maxframe.tensor.special.airy.airy:43 of
 msgid "Cephes Mathematical Functions Library, http://www.netlib.org/cephes/"
-msgstr "Cephes 数学函数库，http://www.netlib.org/cephes/"
+msgstr ""
 
 #: maxframe.tensor.special.airy.airy:45 of
 msgid ""
 "Donald E. Amos, \"AMOS, A Portable Package for Bessel Functions of a "
 "Complex Argument and Nonnegative Order\", http://netlib.org/amos/"
 msgstr ""
-"Donald E. Amos, \"AMOS, 一个用于复数参数和非负阶贝塞尔函数的可移植程序包"
-"\", http://netlib.org/amos/"
 

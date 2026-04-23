@@ -50,15 +50,15 @@ msgstr ""
 
 #: maxframe.dataframe.missing.dropna.df_dropna:6 of
 msgid "Determine if rows or columns which contain missing values are removed."
-msgstr ""
+msgstr "确定是否删除包含缺失值的行或列。"
 
 #: maxframe.dataframe.missing.dropna.df_dropna:9 of
 msgid "0, or 'index' : Drop rows which contain missing values."
-msgstr ""
+msgstr "0 或 'index'：删除包含缺失值的行。"
 
 #: maxframe.dataframe.missing.dropna.df_dropna:10 of
 msgid "1, or 'columns' : Drop columns which contain missing value."
-msgstr ""
+msgstr "1 或 'columns'：删除包含缺失值的列。"
 
 #: maxframe.dataframe.missing.dropna.df_dropna:12 of
 msgid ""
@@ -72,22 +72,18 @@ msgstr ""
 "删除该行或列。"
 
 #: maxframe.dataframe.missing.dropna.df_dropna:12 of
-#, fuzzy
 msgid ""
 "Determine if row or column is removed from DataFrame, when we have at "
 "least one NA or all NA."
-msgstr ""
-"确定在至少有一个 NA 或全部为 NA 时是否从 DataFrame 中删除行或列。  * 'any"
-"'：如果存在任何 NA 值，则删除该行或列。 * 'all'：如果所有值都是 NA，则"
-"删除该行或列。"
+msgstr "当我们至少有一个 NA 或全部为 NA 时，确定是否从 DataFrame 中删除行或列。"
 
 #: maxframe.dataframe.missing.dropna.df_dropna:15 of
 msgid "'any' : If any NA values are present, drop that row or column."
-msgstr ""
+msgstr "'any'：如果存在任何 NA 值，则删除该行或列。"
 
 #: maxframe.dataframe.missing.dropna.df_dropna:16 of
 msgid "'all' : If all values are NA, drop that row or column."
-msgstr ""
+msgstr "'all'：如果所有值都是 NA，则删除该行或列。"
 
 #: maxframe.dataframe.missing.dropna.df_dropna:18 of
 msgid "Require that many non-NA values."

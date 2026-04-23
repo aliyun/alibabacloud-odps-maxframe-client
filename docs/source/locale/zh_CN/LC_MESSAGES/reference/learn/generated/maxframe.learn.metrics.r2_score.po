@@ -76,6 +76,8 @@ msgid ""
 "Defines aggregating of multiple output scores. Array-like value defines "
 "weights used to average scores. Default is \"uniform_average\"."
 msgstr ""
+"定义多个输出分数的聚合方式。类数组值定义用于平均分数的权重。默认为 \""
+"uniform_average\"。"
 
 #: maxframe.learn.metrics._regression.r2_score:20 of
 msgid "'raw_values' :"
@@ -83,7 +85,7 @@ msgstr ""
 
 #: maxframe.learn.metrics._regression.r2_score:21 of
 msgid "Returns a full set of scores in case of multioutput input."
-msgstr ""
+msgstr "在多输出输入的情况下返回完整的分数集。"
 
 #: maxframe.learn.metrics._regression.r2_score:23 of
 msgid "'uniform_average' :"
@@ -91,7 +93,7 @@ msgstr ""
 
 #: maxframe.learn.metrics._regression.r2_score:24 of
 msgid "Scores of all outputs are averaged with uniform weight."
-msgstr ""
+msgstr "所有输出的分数以均匀权重进行平均。"
 
 #: maxframe.learn.metrics._regression.r2_score:26 of
 msgid "'variance_weighted' :"
@@ -101,7 +103,7 @@ msgstr ""
 msgid ""
 "Scores of all outputs are averaged, weighted by the variances of each "
 "individual output."
-msgstr ""
+msgstr "所有输出的分数按每个单独输出的方差加权进行平均。"
 
 #: maxframe.learn.metrics._regression.r2_score of
 msgid "返回"

@@ -18,7 +18,7 @@ import pandas as pd
 import pyarrow as pa
 
 from ....core import BaseMaxFrameAccessor
-from ....utils import ARROW_DTYPE_NOT_SUPPORTED
+from ....utils import is_arrow_dtype_supported
 
 if TYPE_CHECKING:
     from ...core import Series
@@ -30,7 +30,7 @@ class StructAccessor(BaseMaxFrameAccessor):
 
     def __init__(self, series):
         super().__init__(series)
-        if ARROW_DTYPE_NOT_SUPPORTED:
+        if not is_arrow_dtype_supported():
             raise ImportError("pd.ArrowDtype is not supported in current environment")
 
         if not isinstance(series.dtype, pd.ArrowDtype) or not isinstance(

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"POT-Creation-Date: 2026-02-10 19:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -97,12 +97,12 @@ msgstr "属性"
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeMultiModalLLM.rst:31:<autosummary>:1
 msgid ""
 ":py:obj:`api_key_resource "
-"<maxframe.learn.contrib.llm.models.dashscope.DashScopeMultiModalLLM.api_key_resource>`\\"
+"<maxframe.learn.contrib.llm.models.dashscope.DashScopeMultiModalLLM.api_key_resource>`"
 msgstr ""
 
 #: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.models.dashscope.DashScopeMultiModalLLM.rst:31:<autosummary>:1
 msgid ""
 ":py:obj:`name "
-"<maxframe.learn.contrib.llm.models.dashscope.DashScopeMultiModalLLM.name>`\\"
+"<maxframe.learn.contrib.llm.models.dashscope.DashScopeMultiModalLLM.name>`"
 msgstr ""
 

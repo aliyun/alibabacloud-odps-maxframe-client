@@ -88,22 +88,22 @@ msgstr ""
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:15
 #: of
 msgid "The color for each of the DataFrame's columns. Possible values are:"
-msgstr ""
+msgstr "DataFrame各列的颜色。可能的值包括："
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:17
 #: of
 msgid "A single color string referred to by name, RGB or RGBA code,"
-msgstr ""
+msgstr "通过名称、RGB或RGBA代码引用的单个颜色字符串，"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:18
 #: of
 msgid "for instance 'red' or '#a98d19'."
-msgstr ""
+msgstr "例如 'red' 或 '#a98d19'。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:20
 #: of
 msgid "A sequence of color strings referred to by name, RGB or RGBA"
-msgstr ""
+msgstr "通过名称、RGB或RGBA"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:21
 #: of
@@ -113,16 +113,19 @@ msgid ""
 "alternatively. If there is only a single column to be plotted, then only "
 "the first color from the color list will be used."
 msgstr ""
+"代码引用的颜色字符串序列，将递归地用于每一列。例如 ['green','yellow']，"
+"每列的条形将交替地填充绿色或黄色。如果只有一列需要绘制，则只使用颜色列表"
+"中的第一种颜色。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:27
 #: of
 msgid "A dict of the form {column name"
-msgstr ""
+msgstr "形式为 {列名"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:-1
 #: of
 msgid "color}, so that each column will be"
-msgstr ""
+msgstr "颜色} 的字典，这样每一列将被"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:28
 #: of
@@ -132,6 +135,8 @@ msgid ""
 " then passing {'a': 'green', 'b': 'red'} will color bars for column `a` "
 "in green and bars for column `b` in red."
 msgstr ""
+"相应地着色。例如，如果您的列名为 `a` 和 `b`，则传递 {'a': 'green', 'b': '"
+"red'} 将使列 `a` 的条形为绿色，列 `b` 的条形为红色。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:32
 #: of
@@ -214,6 +219,8 @@ msgid ""
 "An ndarray is returned with one :class:`matplotlib.axes.Axes` per column "
 "when ``subplots=True``."
 msgstr ""
+"当 ``subplots=True`` 时，返回一个ndarray，每列对应一个 :class:`matplotlib"
+".axes.Axes`。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:40
 #: of
@@ -222,11 +229,13 @@ msgid ""
 "DataFrame using matplotlib. matplotlib.axes.Axes.bar : Plot a vertical "
 "bar plot using matplotlib."
 msgstr ""
+"DataFrame.plot.bar：垂直条形图。DataFrame.plot：使用matplotlib绘制"
+"DataFrame图形。matplotlib.axes.Axes.bar：使用matplotlib绘制垂直条形图。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:46
 #: of
 msgid "Basic example"
-msgstr ""
+msgstr "基本示例"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.plot.barh.rst:7
 msgid ""
@@ -237,9 +246,8 @@ msgstr ""
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:56
 #: of
-#, fuzzy
 msgid "Plot a whole DataFrame to a horizontal bar plot"
-msgstr "制作水平条形图。"
+msgstr "将整个 DataFrame 绘制成水平条形图"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.plot.barh.rst:7
 msgid ""
@@ -251,7 +259,7 @@ msgstr ""
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:69
 #: of
 msgid "Plot stacked barh charts for the DataFrame"
-msgstr ""
+msgstr "绘制DataFrame的堆叠水平条形图"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.plot.barh.rst:7
 msgid ""
@@ -263,7 +271,7 @@ msgstr ""
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:76
 #: of
 msgid "We can specify colors for each column"
-msgstr ""
+msgstr "我们可以为每列指定颜色"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.plot.barh.rst:7
 msgid ""
@@ -274,9 +282,8 @@ msgstr ""
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:83
 #: of
-#, fuzzy
 msgid "Plot a column of the DataFrame to a horizontal bar plot"
-msgstr "制作水平条形图。"
+msgstr "将 DataFrame 的某一列绘制成水平条形图"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.plot.barh.rst:7
 msgid ""
@@ -288,7 +295,7 @@ msgstr ""
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:96
 #: of
 msgid "Plot DataFrame versus the desired column"
-msgstr ""
+msgstr "绘制DataFrame与指定列的对比图"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Series.plot.barh.rst:7
 msgid ""

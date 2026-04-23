@@ -93,24 +93,18 @@ msgstr ""
 "。"
 
 #: maxframe.tensor.random.multinomial.multinomial:29 of
-#, fuzzy
 msgid ""
 "**out** -- The drawn samples, of shape *size*, if that was provided.  If "
 "not, the shape is ``(N,)``."
 msgstr ""
-"**out** -- 抽取的样本，形状为 *size*（如果提供了该参数）。否则，形状为 ``"
-"(N,)``。换句话说，每个条目 ``out[i,j,...,:]`` 是从分布中抽取的一个 N 维值"
-"。"
+"**out** -- 抽取的样本，如果提供了 *size* 参数，则形状为 *size*。如果没有"
+"提供，则形状为 ``(N,)``。"
 
 #: maxframe.tensor.random.multinomial.multinomial:32 of
-#, fuzzy
 msgid ""
 "In other words, each entry ``out[i,j,...,:]`` is an N-dimensional value "
 "drawn from the distribution."
-msgstr ""
-"**out** -- 抽取的样本，形状为 *size*（如果提供了该参数）。否则，形状为 ``"
-"(N,)``。换句话说，每个条目 ``out[i,j,...,:]`` 是从分布中抽取的一个 N 维值"
-"。"
+msgstr "换句话说，每个条目 ``out[i,j,...,:]`` 是从分布中抽取的 N 维值。"
 
 #: maxframe.tensor.random.multinomial.multinomial of
 msgid "返回类型"

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,13 +17,19 @@ import enum
 import numpy as np
 import pandas as pd
 
-from ....core import OutputType
+from ....core import ENTITY_TYPE, OutputType
 from ....dataframe import DataFrame as MFDataFrame
 from ....dataframe import Series as MFSeries
 from ....errors import TileableNotExecutedError
 from ....lib.version import parse as parse_version
 from ....tensor import tensor as mf_tensor
+from ....udf import builtin_function
 from ..models import ModelApplyChunk, ModelWithEval, ModelWithEvalData, to_remote_model
+
+try:
+    import lightgbm
+except ImportError:
+    lightgbm = None
 
 
 class LGBMModelType(enum.Enum):
@@ -36,8 +42,6 @@ _model_type_to_model = dict()
 
 
 def get_model_cls_from_type(model_type: LGBMModelType):
-    import lightgbm
-
     if not _model_type_to_model:
         _model_type_to_model.update(
             {
@@ -103,10 +107,22 @@ class Booster(ModelWithEval):
 class LGBMScikitLearnBase:
     _default_objective = None
 
-    def __init__(self, *args, **kwargs):
-        import lightgbm
+    @staticmethod
+    @builtin_function
+    def _extract_booster(model):
+        if isinstance(model, lightgbm.LGBMModel):
+            return model.booster_
+        return model
 
-        if args and isinstance(args[0], (lightgbm.LGBMModel, lightgbm.Booster)):
+    def __init__(self, *args, **kwargs):
+        if args and isinstance(args[0], ENTITY_TYPE):
+            if not hasattr(self, "_Booster"):
+                booster = args[0]
+                self._Booster = to_remote_model(
+                    booster, model_cls=Booster, extractor=self._extract_booster
+                )
+            self._objective = self._default_objective
+        elif args and isinstance(args[0], (lightgbm.LGBMModel, lightgbm.Booster)):
             if isinstance(args[0], lightgbm.LGBMModel):
                 booster = args[0].booster_
                 self._objective = args[0].objective
@@ -130,9 +146,6 @@ class LGBMScikitLearnBase:
     def _fix_verbose_args(cls, kwds, params):
         if "verbose" not in kwds:
             return
-
-        import lightgbm
-
         if parse_version(lightgbm.__version__).major >= 4:
             params["verbose"] = kwds.pop("verbose")
 

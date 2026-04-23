@@ -124,7 +124,7 @@ msgstr ""
 
 #: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:66 of
 msgid "int"
-msgstr ""
+msgstr "整数"
 
 #: maxframe.learn.preprocessing._data.min_max_scaler.MinMaxScaler:69 of
 msgid "示例"

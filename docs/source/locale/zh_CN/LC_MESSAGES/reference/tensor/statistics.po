@@ -67,7 +67,7 @@ msgstr ""
 msgid ""
 "Return the maximum of an array or maximum along an axis, ignoring any "
 "NaNs."
-msgstr ""
+msgstr "返回数组的最大值或沿轴的最大值，忽略任何 NaN。"
 
 #: ../../source/reference/tensor/statistics.rst:19
 msgid "Average and variances"

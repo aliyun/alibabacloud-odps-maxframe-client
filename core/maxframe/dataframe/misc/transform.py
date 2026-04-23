@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,12 +24,11 @@ from ...udf import BuiltinFunction, MarkedFunction
 from ...utils import copy_if_possible, pd_release_version
 from ..core import DATAFRAME_TYPE
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
+from ..type_infer import InferredDataFrameMeta, infer_dataframe_return_value
 from ..utils import (
-    InferredDataFrameMeta,
     build_df,
     build_series,
     copy_func_scheduling_hints,
-    infer_dataframe_return_value,
     pack_func_args,
     parse_index,
     validate_axis,

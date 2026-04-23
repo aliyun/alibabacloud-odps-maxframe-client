@@ -51,45 +51,43 @@ msgstr ""
 msgid ""
 "When there are duplicate values that cannot all fit in a Series of `n` "
 "elements:"
-msgstr ""
+msgstr "当存在重复值且无法全部放入包含 `n` 个元素的 Series 中时："
 
 #: maxframe.dataframe.sort.nlargest.series_nlargest:8 of
 msgid "``first`` : return the first `n` occurrences in order"
-msgstr ""
+msgstr "``first`` : 按出现顺序返回前 `n` 个出现值"
 
 #: maxframe.dataframe.sort.nlargest.series_nlargest:-1 of
-#, fuzzy
 msgid "return the first"
-msgstr "返回前 `n` 行。"
+msgstr "返回前 n 个。"
 
 #: maxframe.dataframe.sort.nlargest.series_nlargest:9 of
 msgid "of appearance."
-msgstr ""
+msgstr "的出现顺序。"
 
 #: maxframe.dataframe.sort.nlargest.series_nlargest:10 of
 msgid "``last`` : return the last `n` occurrences in reverse"
-msgstr ""
+msgstr "``last`` : 按相反的出现顺序返回最后 `n` 个出现值"
 
 #: maxframe.dataframe.sort.nlargest.series_nlargest:-1 of
-#, fuzzy
 msgid "return the last"
-msgstr "返回最大的 `n` 个元素。"
+msgstr "返回后 n 个。"
 
 #: maxframe.dataframe.sort.nlargest.series_nlargest:11 of
 msgid "order of appearance."
-msgstr ""
+msgstr "的出现顺序。"
 
 #: maxframe.dataframe.sort.nlargest.series_nlargest:12 of
 msgid "``all``"
-msgstr ""
+msgstr "全部"
 
 #: maxframe.dataframe.sort.nlargest.series_nlargest:-1 of
 msgid "keep all occurrences. This can result in a Series of"
-msgstr ""
+msgstr "保留所有出现值。这可能导致 Series 的"
 
 #: maxframe.dataframe.sort.nlargest.series_nlargest:13 of
 msgid "size larger than `n`."
-msgstr ""
+msgstr "大小大于 `n`。"
 
 #: maxframe.dataframe.sort.nlargest.series_nlargest of
 msgid "返回"
@@ -161,10 +159,14 @@ msgid ""
 "Brunei will be kept since it is the last with value 434000 based on the "
 "index order."
 msgstr ""
+"`n` 个最大元素，其中 ``n=3`` 并保留最后的重复值。Brunei 将被保留，因为"
+"根据索引顺序它是值为 434000 的最后一个。"
 
 #: maxframe.dataframe.sort.nlargest.series_nlargest:86 of
 msgid ""
 "The `n` largest elements where ``n=3`` with all duplicates kept. Note "
 "that the returned Series has five elements due to the three duplicates."
 msgstr ""
+"`n` 个最大元素，其中 ``n=3`` 并保留所有重复值。注意由于三个重复值，返回的"
+" Series 有五个元素。"
 

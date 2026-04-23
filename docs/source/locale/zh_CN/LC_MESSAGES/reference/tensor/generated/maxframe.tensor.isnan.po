@@ -73,17 +73,17 @@ msgid ""
 "**y** -- For scalar input, the result is a new boolean with value True if"
 " the input is NaN; otherwise the value is False."
 msgstr ""
+"**y** -- 对于标量输入，结果是一个新的布尔值，如果输入为 NaN 则值为 True；"
+"否则值为 False。"
 
 #: maxframe.tensor.arithmetic.isnan.isnan:18 of
-#, fuzzy
 msgid ""
 "For array input, the result is a boolean tensor of the same dimensions as"
 " the input and the values are True if the corresponding element of the "
 "input is NaN; otherwise the values are False."
 msgstr ""
-"**y** —— 对于标量输入，如果输入是 NaN，则结果是一个值为 True 的新布尔值；"
-"否则值为 False。对于数组输入，结果是一个与输入维度相同的布尔张量，如果"
-"输入的对应元素是 NaN，则值为 True；否则值为 False。"
+"对于数组输入，结果是一个与输入具有相同维度的布尔张量，如果输入的相应元素"
+"为 NaN 则值为 True；否则值为 False。"
 
 #: maxframe.tensor.arithmetic.isnan.isnan of
 msgid "返回类型"
