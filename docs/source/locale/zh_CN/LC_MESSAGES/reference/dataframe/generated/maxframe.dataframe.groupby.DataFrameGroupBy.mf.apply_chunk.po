@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"POT-Creation-Date: 2026-02-12 17:08+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -59,7 +59,7 @@ msgstr ""
 #: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:15 of
 msgid ""
 "A callable that takes a dataframe as its first argument, and returns a "
-"dataframe, a series or a scalar. In addition the callable may take "
+"dataframe, a series or a scalar. In addition, the callable may take "
 "positional and keyword arguments."
 msgstr ""
 "一个可调用对象，以 DataFrame 作为第一个参数，并返回一个 DataFrame、Series"
@@ -95,55 +95,99 @@ msgid "Specify index of returned object. See `Notes` for more details."
 msgstr "指定返回对象的索引。详见 `Notes`。"
 
 #: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:33 of
-msgid "Whether infer dtypes when dtypes or output_type is not specified."
+msgid "Whether to infer dtypes when dtypes or output_type is not specified."
 msgstr "当未指定 dtypes 或 output_type 时是否自动推断数据类型。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:35
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:37 of
-msgid "Optional positional and keyword arguments to pass to `func`."
-msgstr "传递给 `func` 的可选位置参数和关键字参数。"
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:35 of
+msgid ""
+"If True, the index of returned dataframe or series will automatically "
+"contain group keys if ``as_index=True``, or group indexes if "
+"``as_index=False``, when ``group_keys=True``. It will also exclude group "
+"keys in user function inputs by default. See notes for more details.  .. "
+"note::      ``prepend_index_group_keys`` will be set to True by default "
+"in     future releases, and a warning will be shown if the parameter     "
+"is set to False. To make sure your code works in future     releases, "
+"please set this to True and remove group indexes     in index parameter "
+"or type annotation of ``func``."
+msgstr ""
+"如果为 True，则当 ``group_keys=True`` 时，返回的 DataFrame 或 Series 的"
+"索引将自动包含组键（如果 ``as_index=True``）或组索引（如果 ``as_index="
+"False``）。该选项为 True 时也会默认将分组列排除在函数输入之外，参考"
+"注意事项以获得更多信息。  .. 注意::     在未来的版本中，``prepend_index_"
+"group_keys`` 将默认设置为 True，     如果该参数被设置为 False，将会显示"
+"警告。为了确保您的代码在未来的版本中正常工作，     请将其设置为 True，并"
+"在索引参数或 ``func`` 的类型注解中移除组索引。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:35 of
+msgid ""
+"If True, the index of returned dataframe or series will automatically "
+"contain group keys if ``as_index=True``, or group indexes if "
+"``as_index=False``, when ``group_keys=True``. It will also exclude group "
+"keys in user function inputs by default. See notes for more details."
+msgstr ""
+"如果为 True，则当 ``group_keys=True`` 时，返回的 DataFrame 或 Series 的"
+"索引将自动包含组键（如果 ``as_index=True``）或组索引（如果 ``as_index="
+"False``）。该选项为 True 时也会默认将分组列排除在函数输入之外，参考"
+"注意事项以获得更多信息。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:43 of
+msgid ""
+"``prepend_index_group_keys`` will be set to True by default in future "
+"releases, and a warning will be shown if the parameter is set to False. "
+"To make sure your code works in future releases, please set this to True "
+"and remove group indexes in index parameter or type annotation of "
+"``func``."
+msgstr ""
+"``prepend_index_group_keys`` 在未来的版本中将默认设置为 True，如果该参数"
+"被设置为 False，将会显示警告。为了确保您的代码在未来的版本中正常工作，请"
+"将其设置为 True，并在索引参数或 ``func`` 的类型注解中移除组索引。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:49
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:51 of
+msgid "Optional positional and keyword arguments to pass to ``func``."
+msgstr "传递给 ``func`` 的可选位置参数和关键字参数。"
 
 #: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk of
 msgid "返回"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:40 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:54 of
 msgid "**applied**"
-msgstr ""
+msgstr "**已应用**"
 
 #: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk of
 msgid "返回类型"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:45 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:59 of
 msgid ":py:obj:`Series.apply`"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:46 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:60 of
 msgid "Apply a function to a Series."
 msgstr "对 Series 应用一个函数。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:48 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:62 of
 msgid ":py:obj:`DataFrame.apply`"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:49 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:63 of
 msgid "Apply a function to each row or column of a DataFrame."
 msgstr "对 DataFrame 的每一行或每一列应用一个函数。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:51 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:65 of
 msgid ":py:obj:`DataFrame.mf.apply_chunk`"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:52 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:66 of
 msgid "Apply a function to row batches of a DataFrame."
 msgstr "对 DataFrame 的行批次应用一个函数。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:55 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:69 of
 msgid "备注"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:56 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:70 of
 msgid ""
 "When deciding output dtypes and shape of the return value, MaxFrame will "
 "try applying ``func`` onto a mock grouped object, and the apply call may "
@@ -154,31 +198,57 @@ msgstr ""
 "模拟的分组对象，此时 apply 调用可能会失败。如果发生这种情况，则需要在 "
 "output_type 中指定 apply 调用的类型（DataFrame 或 Series）。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:61 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:75 of
 msgid ""
 "For DataFrame output, you need to specify a list or a pandas Series as "
-"``dtypes`` of output DataFrame. ``index`` of output can also be "
-"specified."
+"``dtypes`` of output DataFrame."
 msgstr ""
 "对于 DataFrame 输出，你需要指定一个列表或 pandas Series 作为输出 "
-"DataFrame 的 ``dtypes``。也可以指定输出的 ``index``。"
+"DataFrame 的 ``dtypes``。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:64 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:77 of
 msgid ""
 "For Series output, you need to specify ``dtype`` and ``name`` of output "
 "Series."
 msgstr "对于 Series 输出，你需要指定输出 Series 的 ``dtype`` 和 ``name``。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:67 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:79 of
+msgid ""
+"``index`` determines index of output DataFrame or Series. You may specify"
+" a dummy pandas index indicating the names and types of index of the "
+"output of ``func``, for instance, ``pd.MultiIndex.from_tuples([(\"a\", "
+"0)], names=[\"key1\", \"key2\"])``. If ``index`` is not supplied, index "
+"of the input DataFrame or Series will be used. When "
+"`prepend_index_group_keys` is True, the index of the returning object "
+"will be ``index`` prepended with group information given ``as_index`` and"
+" ``group_keys`` argument of the ``groupby`` function, which is consistent"
+" with pandas 3.0. When ``prepend_index_group_keys`` is False, you must "
+"specify a mock index with all fields, including group keys. As it is "
+"complicated to pass full index definition, "
+"``prepend_index_group_keys=False`` will be deprecated in near future. "
+"Please supply ``prepend_index_group_keys=True`` where possible."
+msgstr ""
+"``index`` 确定输出 DataFrame 或 Series 的索引。您可以指定一个虚拟的 "
+"pandas 索引来表示 ``func`` 输出的索引名称和类型，例如 ``pd.MultiIndex."
+"from_tuples([(\"a\", 0)], names=[\"key1\", \"key2\"])``。如果未提供 ``"
+"index``，将使用输入 DataFrame 或 Series 的索引。当 ``prepend_index_group_"
+"keys`` 为 True 时，返回对象的索引将是 ``index`` 附加 ``groupby`` 带来的"
+"分组信息，这些信息随着 ``groupby`` 函数的 ``as_index`` 和 ``group_keys`` "
+"参数变化而有所不同，具体行为与 pandas 3.0 一致。当 ``prepend_index_group_"
+"keys`` 为 False 时，您必须指定包含所有字段（包括组键）的模拟索引。由于"
+"传递完整索引定义比较复杂，``prepend_index_group_keys=False`` 将在不久的"
+"将来被弃用。请尽可能提供 ``prepend_index_group_keys=True``。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:92 of
 msgid ""
 "MaxFrame adopts expected behavior of pandas>=3.0 by ignoring group "
 "columns in user function input. If you still need a group column for your"
 " function input, try selecting it right after `groupby` results, for "
 "instance, ``df.groupby(\"A\")[[\"A\", \"B\", "
-"\"C\"]].mf.apply_batch(func)`` will pass data of column A into ``func``."
+"\"C\"]].mf.apply_chunk(func)`` will pass data of column A into ``func``."
 msgstr ""
 "MaxFrame 采用 pandas>=3.0 的预期行为，在用户函数输入中忽略分组列。如果你"
 "仍需要将分组列传递给函数，可以在 `groupby` 结果后立即选择该列，例如 ``df."
-"groupby(\"A\")[[\"A\", \"B\", \"C\"]].mf.apply_batch(func)`` 会将列 A 的"
+"groupby(\"A\")[[\"A\", \"B\", \"C\"]].mf.apply_chunk(func)`` 会将列 A 的"
 "数据传递给 ``func``。"
 

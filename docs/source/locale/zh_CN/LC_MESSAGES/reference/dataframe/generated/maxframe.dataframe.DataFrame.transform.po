@@ -53,27 +53,28 @@ msgid ""
 "Function to use for transforming the data. If a function, must either "
 "work when passed a DataFrame or when passed to DataFrame.apply."
 msgstr ""
+"用于转换数据的函数。如果是函数，必须在传递 DataFrame 或传递给 DataFrame."
+"apply 时都能工作。"
 
 #: maxframe.dataframe.misc.transform.df_transform:8 of
 msgid "Accepted combinations are:"
-msgstr ""
+msgstr "接受的组合有："
 
 #: maxframe.dataframe.misc.transform.df_transform:10 of
 msgid "function"
-msgstr ""
+msgstr "函数"
 
 #: maxframe.dataframe.misc.transform.df_transform:11 of
-#, fuzzy
 msgid "string function name"
-msgstr "在 DataFrame 上调用函数。"
+msgstr "字符串形式的函数名"
 
 #: maxframe.dataframe.misc.transform.df_transform:12 of
 msgid "list of functions and/or function names, e.g. ``[np.exp. 'sqrt']``"
-msgstr ""
+msgstr "函数和/或函数名称的列表，例如 ``[np.exp. 'sqrt']``"
 
 #: maxframe.dataframe.misc.transform.df_transform:13 of
 msgid "dict of axis labels -> functions, function names or list of such."
-msgstr ""
+msgstr "轴标签 -> 函数、函数名称或此类列表的字典。"
 
 #: maxframe.dataframe.misc.transform.df_transform:15 of
 msgid ""

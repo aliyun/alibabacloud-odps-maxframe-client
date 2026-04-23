@@ -15,7 +15,7 @@ LLM Models
 
     dashscope.DashScopeMultiModalLLM
     dashscope.DashScopeTextLLM
-    managed.ManagedTextLLM
+    managed.ManagedTextGenLLM
 
 Custom Model Configuration
 ---------------------------

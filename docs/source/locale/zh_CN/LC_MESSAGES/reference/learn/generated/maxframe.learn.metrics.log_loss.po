@@ -107,7 +107,7 @@ msgstr ""
 
 #: maxframe.learn.metrics._classification.log_loss:39 of
 msgid "**loss**"
-msgstr ""
+msgstr "**损失**"
 
 #: maxframe.learn.metrics._classification.log_loss of
 msgid "返回类型"

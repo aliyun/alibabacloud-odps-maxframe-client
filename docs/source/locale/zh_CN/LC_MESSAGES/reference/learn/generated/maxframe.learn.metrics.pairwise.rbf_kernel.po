@@ -49,7 +49,7 @@ msgstr ""
 
 #: maxframe.learn.metrics.pairwise.rbf_kernel.rbf_kernel:16 of
 msgid "**kernel_matrix**"
-msgstr ""
+msgstr "**核矩阵**"
 
 #: ../../source/reference/learn/generated/maxframe.learn.metrics.pairwise.rbf_kernel.rst
 msgid "返回类型"

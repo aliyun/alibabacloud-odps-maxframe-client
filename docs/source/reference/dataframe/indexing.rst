@@ -90,3 +90,10 @@ Selecting
    :toctree: generated/
 
    Index.get_level_values
+
+MaxFrame Extensions
+-------------------
+.. autosummary::
+   :toctree: generated/
+
+   Index.rechunk

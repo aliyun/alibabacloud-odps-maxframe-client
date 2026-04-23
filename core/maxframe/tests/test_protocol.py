@@ -20,6 +20,7 @@ import pytest
 from ..lib import wrapped_pickle
 from ..protocol import (
     DagInfo,
+    DisplayMessage,
     ErrorInfo,
     ExecutionStatus,
     ODPSTableResultInfo,
@@ -133,6 +134,7 @@ def test_dag_info_json_serialize():
             "tileable_key": ODPSTableResultInfo(full_table_name="table_name")
         },
         error_info=err_info,
+        display_messages=[DisplayMessage(message="warning_message", level="warning")],
     )
     json_info = info.to_json()
     json_info["non_existing_field"] = "non_existing"
@@ -145,6 +147,7 @@ def test_dag_info_json_serialize():
         deserial_info.tileable_to_result_infos["tileable_key"].full_table_name
         == info.tileable_to_result_infos["tileable_key"].full_table_name
     )
+    assert deserial_info.display_messages == info.display_messages
     with pytest.raises(ValueError):
         deserial_info.error_info.reraise()
 
@@ -162,6 +165,7 @@ def test_session_info_json_serialize():
         start_timestamp=time.time(),
         idle_timestamp=None,
         dag_infos={"test_dag_id": dag_info},
+        display_messages=[DisplayMessage(message="warning_message", level="warning")],
     )
     deserial_info = SessionInfo.from_json(_json_round_trip(info.to_json()))
     assert deserial_info.session_id == info.session_id
@@ -176,3 +180,10 @@ def test_session_info_json_serialize():
         deserial_info.dag_infos["test_dag_id"].progress
         == info.dag_infos["test_dag_id"].progress
     )
+    assert deserial_info.display_messages == info.display_messages
+
+
+def test_displayed_info_json_serialize():
+    info = DisplayMessage(message="warning_message", level="warning")
+    deserial_info = DisplayMessage.from_json(_json_round_trip(info.to_json()))
+    assert deserial_info == info

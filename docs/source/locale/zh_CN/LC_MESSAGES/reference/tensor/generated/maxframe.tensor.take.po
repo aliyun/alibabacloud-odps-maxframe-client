@@ -61,14 +61,12 @@ msgid "The indices of the values to extract.  Also allow scalars for indices."
 msgstr "要提取的值的索引。也允许标量作为索引。"
 
 #: maxframe.tensor.indexing.take.take:22 of
-#, fuzzy
 msgid "The indices of the values to extract."
-msgstr "要提取的值的索引。也允许标量作为索引。"
+msgstr "要提取的值的索引。"
 
 #: maxframe.tensor.indexing.take.take:24 of
-#, fuzzy
 msgid "Also allow scalars for indices."
-msgstr "要提取的值的索引。也允许标量作为索引。"
+msgstr "也允许标量作为索引。"
 
 #: maxframe.tensor.indexing.take.take:26 of
 msgid ""
@@ -96,30 +94,28 @@ msgstr ""
 
 #: maxframe.tensor.indexing.take.take:32 of
 msgid "Specifies how out-of-bounds indices will behave."
-msgstr ""
+msgstr "指定越界索引的行为方式。"
 
 #: maxframe.tensor.indexing.take.take:34 of
 msgid "'raise' -- raise an error (default)"
-msgstr ""
+msgstr "'raise' -- 抛出错误（默认）"
 
 #: maxframe.tensor.indexing.take.take:35 of
 msgid "'wrap' -- wrap around"
-msgstr ""
+msgstr "'wrap' -- 循环环绕"
 
 #: maxframe.tensor.indexing.take.take:36 of
 msgid "'clip' -- clip to the range"
-msgstr ""
+msgstr "'clip' -- 截取到范围内"
 
 #: maxframe.tensor.indexing.take.take:38 of
-#, fuzzy
 msgid ""
 "'clip' mode means that all indices that are too large are replaced by the"
 " index that addresses the last element along that axis. Note that this "
 "disables indexing with negative numbers."
 msgstr ""
-"指定超出边界的索引的行为。  * 'raise' -- 抛出错误（默认） * 'wrap' -- "
-"循环处理 * 'clip' -- 裁剪到范围  'clip' 模式表示所有过大的索引都将被替换"
-"为指向该轴最后一个元素的索引。请注意，这会禁用负数索引。"
+"'clip' 模式意味着所有过大的索引都将被替换为该轴上指向最后一个元素的索引。"
+"请注意，这会禁用负数索引。"
 
 #: maxframe.tensor.indexing.take.take of
 msgid "返回"

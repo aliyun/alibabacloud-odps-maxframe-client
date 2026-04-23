@@ -68,15 +68,15 @@ msgstr ""
 
 #: maxframe.dataframe.extensions.flatmap.df_flatmap:12 of
 msgid "Determines if the row is passed as a Series or as a numpy array:"
-msgstr ""
+msgstr "确定行是以 Series 还是 numpy 数组的形式传递："
 
 #: maxframe.dataframe.extensions.flatmap.df_flatmap:14 of
 msgid "``False`` : passes each row as a Series to the function."
-msgstr ""
+msgstr "``False`` : 将每一行作为 Series 传递给函数。"
 
 #: maxframe.dataframe.extensions.flatmap.df_flatmap:15 of
 msgid "``True`` : the passed function will receive numpy array objects instead."
-msgstr ""
+msgstr "``True`` : 传递的函数将接收 numpy 数组对象。"
 
 #: maxframe.dataframe.extensions.flatmap.df_flatmap:17 of
 msgid "Positional arguments to pass to `func`."

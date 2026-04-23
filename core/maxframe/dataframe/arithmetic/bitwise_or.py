@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ import operator
 
 from ... import opcodes
 from ...utils import classproperty
-from .core import DataFrameArithmeticTreeMixin, DataFrameBinopUfunc
+from .core import DataFrameArithmeticTreeOp, DataFrameBinopUfunc
 
 
 class DataFrameOr(DataFrameBinopUfunc):
@@ -36,8 +36,12 @@ class DataFrameOr(DataFrameBinopUfunc):
         return TensorBitor
 
 
-class DataFrameTreeOr(DataFrameArithmeticTreeMixin, DataFrameOr):
+class DataFrameTreeOr(DataFrameArithmeticTreeOp):
     _op_type_ = opcodes.TREE_OR
+
+    @classproperty
+    def _operator(self):
+        return operator.or_
 
 
 def bitor(df, other, axis="columns", level=None, fill_value=None):

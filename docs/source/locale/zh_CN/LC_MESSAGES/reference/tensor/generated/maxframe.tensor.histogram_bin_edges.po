@@ -90,6 +90,9 @@ msgid ""
 " edges, including the rightmost edge, allowing for non-uniform bin "
 "widths."
 msgstr ""
+"如果 `bins` 是一个整数，则定义给定范围内等宽区间（默认为10）的数量。如果 "
+"`bins` 是一个序列，则定义区间的边界，包括最右边的边界，允许非均匀的区间"
+"宽度。"
 
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:11 of
 msgid ""
@@ -102,17 +105,21 @@ msgid ""
 "visualisation, using the 'auto' option is suggested. Weighted data is not"
 " supported for automated bin size selection."
 msgstr ""
+"如果 `bins` 是下面列表中的字符串，`histogram_bin_edges` 将使用所选择的"
+"方法来计算最优的区间宽度，从而计算出落入请求范围内的数据的区间数量（有关"
+"估计器的更多详细信息，请参见 `Notes`）。虽然区间宽度对于范围内的实际数据"
+"是最优的，但区间数量将被计算以填充整个范围，包括空的部分。对于可视化，"
+"建议使用 'auto' 选项。加权数据不支持自动区间大小选择。"
 
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:21 of
 msgid "'auto'"
 msgstr ""
 
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:22 of
-#, fuzzy
 msgid ""
 "Maximum of the 'sturges' and 'fd' estimators. Provides good all around "
 "performance."
-msgstr "'auto'（'sturges' 和 'fd' 估计器的最大值）"
+msgstr "'sturges' 和 'fd' 估计器的最大值。提供良好的全方位性能。"
 
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:25
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:94 of
@@ -123,7 +130,7 @@ msgstr "'fd' (Freedman Diaconis 估计器)"
 msgid ""
 "Robust (resilient to outliers) estimator that takes into account data "
 "variability and data size."
-msgstr ""
+msgstr "稳健（对异常值具有抗性）的估计器，考虑了数据的变异性数据大小。"
 
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:29
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:127 of
@@ -134,7 +141,7 @@ msgstr ""
 msgid ""
 "An improved version of Sturges' estimator that works better with non-"
 "normal datasets."
-msgstr ""
+msgstr "Sturges 估计器的改进版本，在非正态数据集上表现更好。"
 
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:33
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:102 of
@@ -142,11 +149,10 @@ msgid "'scott'"
 msgstr ""
 
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:34 of
-#, fuzzy
 msgid ""
 "Less robust estimator that that takes into account data variability and "
 "data size."
-msgstr "最简单且最快的估计器。仅考虑数据大小。"
+msgstr "稳健性较差的估计器，考虑了数据的变异性数据大小。"
 
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:37 of
 msgid "'stone'"
@@ -157,7 +163,7 @@ msgid ""
 "Estimator based on leave-one-out cross-validation estimate of the "
 "integrated squared error. Can be regarded as a generalization of Scott's "
 "rule."
-msgstr ""
+msgstr "基于留一交叉验证的积分平方误差估计器。可以看作是 Scott 规则的推广。"
 
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:42
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:112 of
@@ -168,7 +174,7 @@ msgstr ""
 msgid ""
 "Estimator does not take variability into account, only data size. "
 "Commonly overestimates number of bins required."
-msgstr ""
+msgstr "估计器不考虑变异性，只考虑数据大小。通常会高估所需的区间数量。"
 
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:46
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:119 of
@@ -181,6 +187,8 @@ msgid ""
 "gaussian data and underestimates number of bins for large non-gaussian "
 "datasets."
 msgstr ""
+"R 的默认方法，仅考虑数据大小。仅对高斯数据最优，对于大的非高斯数据集会"
+"低估区间数量。"
 
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:51
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:139 of
@@ -191,7 +199,7 @@ msgstr ""
 msgid ""
 "Square root (of data size) estimator, used by Excel and other programs "
 "for its speed and simplicity."
-msgstr ""
+msgstr "数据大小的平方根估计器，Excel 和其他程序因其速度和简单性而使用。"
 
 #: maxframe.tensor.statistics.histogram.histogram_bin_edges:55 of
 msgid ""

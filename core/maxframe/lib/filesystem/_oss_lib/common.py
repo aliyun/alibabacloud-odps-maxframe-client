@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import enum
 import logging
 import os
+import re
 from typing import NamedTuple, Optional
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlencode, urlparse
 
 from ....utils import lazy_import
 from ..base import path_type, stringify_path
@@ -26,6 +28,34 @@ logger = logging.getLogger(__name__)
 
 # OSS api time out
 _oss_time_out = 10
+
+_ip_regex = re.compile(r"^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})")
+
+
+class HostEnforceType(enum.Enum):
+    no_enforce = 0
+    force_internal = 1
+    force_external = 2
+
+
+def _rewrite_internal_endpoint(
+    endpoint: str, host_enforce_type: HostEnforceType = HostEnforceType.no_enforce
+) -> str:
+    if (
+        not endpoint
+        or host_enforce_type == HostEnforceType.no_enforce
+        or _ip_regex.match(endpoint)
+    ):
+        return endpoint
+
+    ep_first, ep_rest = endpoint.split(".", 1)
+    host_with_internal = ep_first.endswith("-internal")
+    if host_enforce_type == HostEnforceType.force_external and host_with_internal:
+        return ep_first.replace("-internal", "") + "." + ep_rest
+    elif host_enforce_type == HostEnforceType.force_internal and not host_with_internal:
+        return ep_first + "-internal." + ep_rest
+    else:
+        return endpoint
 
 
 class OSSFileEntry:
@@ -76,6 +106,92 @@ class ParsedOSSPath(NamedTuple):
     access_key_secret: Optional[str] = None
     security_token: Optional[str] = None
     scheme: str = None
+
+    def __str__(self):
+        return build_oss_path(
+            f"{self.bucket}/{self.key or ''}",
+            self.endpoint,
+            self.access_key_id,
+            self.access_key_secret,
+            self.security_token,
+            check_errors=False,
+        )
+
+
+def build_oss_path(
+    path: path_type,
+    endpoint: str = None,
+    access_key_id: str = None,
+    access_key_secret: str = None,
+    security_token: str = None,
+    host_enforce_type: HostEnforceType = HostEnforceType.no_enforce,
+    check_errors: bool = True,
+):
+    """
+    Returns a path with oss info.
+    Used to register the access_key_id, access_key_secret and
+    endpoint of OSS. The access_key_id and endpoint are put
+    into the url with url-safe-base64 encoding.
+
+    Parameters
+    ----------
+    path : path_type
+        The original OSS url.
+
+    endpoint : str
+        The endpoint of OSS.
+
+    access_key_id : str
+        The access key id of OSS.
+
+    access_key_secret : str
+        The access key secret of OSS.
+
+    security_token : str
+        The security token of OSS.
+
+    Returns
+    -------
+    path_type
+        Path include the encoded access key id, end point and
+        access key secret of oss.
+    """
+    if isinstance(path, (list, tuple)):
+        path = path[0]
+    parse_result = parse_osspath(path, check_errors=False)
+    access_key_id = parse_result.access_key_id or access_key_id
+    access_key_secret = parse_result.access_key_secret or access_key_secret
+    security_token = parse_result.security_token or security_token
+
+    scheme = parse_result.scheme or "oss"
+    endpoint = _rewrite_internal_endpoint(
+        parse_result.endpoint or endpoint, host_enforce_type
+    )
+
+    if access_key_id and access_key_secret:
+        creds = f"{access_key_id}:{access_key_secret}@"
+    else:
+        creds = ""
+
+    new_path = f"{scheme}://{creds}{endpoint}/{parse_result.bucket}"
+    if parse_result.key:
+        new_path += f"/{parse_result.key}"
+    if security_token:
+        new_path += f"?{urlencode(dict(security_token=security_token))}"
+    else:
+        new_path += "?"
+    # reparse to check errors
+    if check_errors:
+        parse_osspath(new_path)
+    return new_path
+
+
+def oss_path_join(*parts):
+    if not parts or "?" not in parts[0]:
+        return os.path.join(*parts)
+    prefix, suffix = parts[0].rsplit("?", 1)
+    ret = os.path.join(prefix, *parts[1:])
+    return f"{ret}?{suffix}"
 
 
 def parse_osspath(path: path_type, check_errors: bool = True) -> ParsedOSSPath:
@@ -153,8 +269,6 @@ def oss_isdir(path: path_type):
     it is considered as a directory.
     """
     dirname = stringify_path(path)
-    logger.info("Checking isdir for path %s", dirname)
-
     parsed_path = parse_osspath(dirname)
     key = parsed_path.key
     if not key.endswith("/"):
@@ -233,13 +347,13 @@ def oss_stat(path: path_type):
 
 def oss_scandir(dirname: path_type):
     dirname = stringify_path(dirname)
-    if not dirname.endswith("/"):
-        dirname = dirname + "/"
-    parsed_path = parse_osspath(dirname)
+    parsed_path = parse_osspath(dirname, check_errors=False)
+    if parsed_path.key and not parsed_path.key.endswith("/"):
+        parsed_path = parsed_path._replace(key=parsed_path.key + "/")
     oss_bucket = get_oss_bucket(parsed_path)
     dirname_set = set()
     for obj in oss2.ObjectIteratorV2(oss_bucket, prefix=parsed_path.key):
-        rel_path = obj.key[len(parsed_path.key) :]
+        rel_path = obj.key[len(parsed_path.key) :] if parsed_path.key else obj.key
         try:
             inside_dirname, inside_filename = rel_path.split("/", 1)
         except ValueError:

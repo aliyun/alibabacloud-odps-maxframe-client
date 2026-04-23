@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,12 @@ from maxframe.config import options
 from maxframe.core import TileableGraph
 from maxframe.errors import NoTaskServerResponseError, SessionAlreadyClosedError
 from maxframe.protocol import DagInfo, JsonSerializable, ResultInfo, SessionInfo
-from maxframe.utils import deserialize_serializable, serialize_serializable, to_str
+from maxframe.utils import (
+    deserialize_serializable,
+    serialize_serializable,
+    submit_survey_logs,
+    to_str,
+)
 
 try:
     from maxframe import __version__ as mf_version
@@ -101,9 +106,7 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
         self, content: Union[bytes, str, dict], target_cls: Type[JsonSerializable]
     ):
         if isinstance(content, (str, bytes)):
-            if len(content) == 0:
-                content = "{}"
-            json_data = json.loads(to_str(content))
+            json_data = json.loads(to_str(content or "{}"))
         else:
             json_data = content
         encoded_result = json_data.get("result")
@@ -115,21 +118,21 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
 
         try:
             result_data = base64.b64decode(encoded_result)
+
+            if self._output_format == MAXFRAME_OUTPUT_MAXFRAME_FORMAT:
+                return deserialize_serializable(result_data)
+            elif self._output_format == MAXFRAME_OUTPUT_JSON_FORMAT:
+                return target_cls.from_json(json.loads(result_data))
+            elif self._output_format == MAXFRAME_OUTPUT_MSGPACK_FORMAT:
+                return target_cls.from_json(msgpack.loads(result_data))
+            else:
+                raise ValueError(
+                    f"Serialization format {self._output_format} not supported"
+                )
         except:
             # todo change to a better logic when it is possible
             #  to judge if server side returns success or fail
             raise parse_instance_error(encoded_result)
-
-        if self._output_format == MAXFRAME_OUTPUT_MAXFRAME_FORMAT:
-            return deserialize_serializable(result_data)
-        elif self._output_format == MAXFRAME_OUTPUT_JSON_FORMAT:
-            return target_cls.from_json(json.loads(result_data))
-        elif self._output_format == MAXFRAME_OUTPUT_MSGPACK_FORMAT:
-            return target_cls.from_json(msgpack.loads(result_data))
-        else:
-            raise ValueError(
-                f"Serialization format {self._output_format} not supported"
-            )
 
     def _create_maxframe_task(self) -> MaxFrameTask:
         task = MaxFrameTask(name=self._task_name, major_version=self._major_version)
@@ -253,6 +256,8 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
         managed_input_infos: Optional[Dict[str, ResultInfo]] = None,
         new_settings: Dict[str, Any] = None,
     ) -> DagInfo:
+        submit_survey_logs(self._odps_entry)
+
         new_settings = self._collect_explain_instances(dag, new_settings)
         new_settings_value = {
             "odps.maxframe.settings": json.dumps(new_settings),

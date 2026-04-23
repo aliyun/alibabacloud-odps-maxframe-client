@@ -90,9 +90,10 @@ msgid ""
 " the input is positive or negative infinity; otherwise the value is "
 "False."
 msgstr ""
+"**y** -- 对于标量输入，结果是一个新的布尔值，如果输入是正无穷或负无穷，则"
+"值为 True；否则值为 False。"
 
 #: maxframe.tensor.arithmetic.isinf.isinf:22 of
-#, fuzzy
 msgid ""
 "For tensor input, the result is a boolean tensor with the same shape as "
 "the input and the values are True where the corresponding element of the "
@@ -102,12 +103,10 @@ msgid ""
 "and ones, if the type is boolean then as False and True, respectively.  "
 "The return value `y` is then a reference to that tensor."
 msgstr ""
-"**y** -- 对于标量输入，结果是一个新的布尔值，如果输入是正无穷或负无穷则为"
-"True；否则为False。对于tensor输入，结果是一个与输入形状相同的布尔tensor，"
-"其中输入元素为正无穷或负无穷的位置值为True，其他位置为False。如果提供了"
-"第二个参数，则结果存储在那里。如果该数组的类型是数值类型，则结果表示为0和"
-"1；如果类型是布尔类型，则分别表示为False和True。返回值`y`是该tensor的引用"
-"。"
+"对于张量输入，结果是一个布尔张量，其形状与输入相同，当输入的对应元素为正"
+"无穷或负无穷时值为 True；其他位置的值为 False。如果提供了第二个参数，则"
+"结果存储在那里。如果该数组的类型是数值类型，则结果表示为零和一，如果类型"
+"是布尔类型，则分别表示为 False 和 True。返回值 `y` 然后是对该张量的引用。"
 
 #: maxframe.tensor.arithmetic.isinf.isinf of
 msgid "返回类型"

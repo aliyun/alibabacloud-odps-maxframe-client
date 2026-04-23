@@ -74,9 +74,8 @@ class DataFrameReadParquet(
     # for chunk
     partitions = DictField("partitions", default=None)
     partition_keys = DictField("partition_keys", default=None)
+    # deprecated fields
     num_group_rows = Int64Field("num_group_rows", default=None)
-    # as read meta may be too time-consuming when number of files is large,
-    # thus we only read first file to get row number and raw file size
     first_chunk_row_num = Int64Field("first_chunk_row_num", default=None)
     first_chunk_raw_bytes = Int64Field("first_chunk_raw_bytes", default=None)
 
@@ -123,6 +122,7 @@ def read_parquet(
     index_dtypes: pd.Series = None,
     memory_scale: int = None,
     merge_small_files: bool = True,
+    merge_small_file_options: dict = None,
     gpu: bool = None,
     session=None,
     run_kwargs: dict = None,
@@ -245,6 +245,7 @@ def read_parquet(
         is_partitioned=is_partitioned,
         memory_scale=memory_scale,
         merge_small_files=merge_small_files,
+        merge_small_file_options=merge_small_file_options,
         gpu=gpu,
         **common_kwargs,
     )

@@ -138,6 +138,8 @@ msgid ""
 "Wikipedia, \"Gamma distribution\", "
 "http://en.wikipedia.org/wiki/Gamma_distribution"
 msgstr ""
+"Wikipedia，\"Gamma distribution\"，http://en.wikipedia.org/wiki/Gamma_"
+"distribution"
 
 #: maxframe.tensor.random.standard_gamma.standard_gamma:50 of
 msgid "示例"

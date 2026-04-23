@@ -81,7 +81,6 @@ msgstr ""
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:13
-#, fuzzy
 msgid ""
 "When clocks moved backward due to DST, ambiguous times may arise. For "
 "example in Central European Time (UTC+01), when going from 03:00 DST to "
@@ -89,18 +88,15 @@ msgid ""
 "01:30:00 UTC. In such a situation, the `ambiguous` parameter dictates how"
 " ambiguous times should be handled."
 msgstr ""
-"当时钟因夏令时（DST）回退时，可能会出现歧义时间。例如在中欧时间（UTC+01）"
-"中，从 03:00 DST 回退到 02:00 非 DST 时，02:30:00 的本地时间可能同时出现"
-"在 00:30:00 UTC 和 01:30:00 UTC。在这种情况下，`ambiguous` 参数决定如何"
-"处理歧义时间。  - 'infer' 将尝试根据顺序推断秋季 DST 转换小时  - bool-"
-"ndarray，其中 True 表示 DST 时间，False 表示非 DST 时间（注意该标志仅适用"
-"于歧义时间）  - 'NaT' 将在出现歧义时间处返回 NaT  - 'raise' 会在出现歧义"
-"时间时引发 AmbiguousTimeError"
+"当由于夏令时导致时钟向后移动时，可能会出现时间歧义。例如在中欧时间（UTC+"
+"01）中，从03:00夏令时转换到02:00非夏令时时，02:30:00本地时间会在00:30:00 "
+"UTC和01:30:00 UTC两个时刻都出现。在这种情况下，`ambiguous`参数决定了应该"
+"如何处理这些时间歧义。"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:20
 msgid "'infer' will attempt to infer fall dst-transition hours based on order"
-msgstr ""
+msgstr "'infer' 将尝试根据顺序推断秋季 dst-转换小时"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:22
@@ -108,16 +104,18 @@ msgid ""
 "bool-ndarray where True signifies a DST time, False signifies a non-DST "
 "time (note that this flag is only applicable for ambiguous times)"
 msgstr ""
+"bool-ndarray，其中 True 表示 DST 时间，False 表示非 DST 时间（注意该标志"
+"仅适用于歧义时间）"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:25
 msgid "'NaT' will return NaT where there are ambiguous times"
-msgstr ""
+msgstr "'NaT' 将在出现歧义时间处返回 NaT"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:26
 msgid "'raise' will raise an AmbiguousTimeError if there are ambiguous times."
-msgstr ""
+msgstr "'raise' 会在出现歧义时间时引发 AmbiguousTimeError。"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:29
@@ -141,36 +139,36 @@ msgstr ""
 msgid ""
 "A nonexistent time does not exist in a particular timezone where clocks "
 "moved forward due to DST."
-msgstr ""
+msgstr "不存在的时间在特定时区中不存在，当时钟因 DST 向前移动时。"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:32
 msgid ""
 "'shift_forward' will shift the nonexistent time forward to the closest "
 "existing time"
-msgstr ""
+msgstr "'shift_forward' 将不存在的时间向前移动到最接近的 存在时间"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:34
 msgid ""
 "'shift_backward' will shift the nonexistent time backward to the closest "
 "existing time"
-msgstr ""
+msgstr "'shift_backward' 将不存在的时间向后移动到最接近的 存在时间"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:36
 msgid "'NaT' will return NaT where there are nonexistent times"
-msgstr ""
+msgstr "'NaT' 将在存在不存在时间处返回 NaT"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:37
 msgid "timedelta objects will shift nonexistent times by the timedelta"
-msgstr ""
+msgstr "timedelta 对象将通过 timedelta 移动不存在的时间"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:38
 msgid "'raise' will raise an NonExistentTimeError if there are nonexistent times."
-msgstr ""
+msgstr "'raise' 会在存在不存在时间时引发 NonExistentTimeError。"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f

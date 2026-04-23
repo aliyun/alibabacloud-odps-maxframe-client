@@ -55,11 +55,11 @@ msgstr ""
 
 #: maxframe.learn.model_selection._split.KFold:9 of
 msgid "Number of folds. Must be at least 2."
-msgstr ""
+msgstr "折数。必须至少为2。"
 
 #: maxframe.learn.model_selection._split.KFold:11 of
 msgid "``n_splits`` default value changed from 3 to 5."
-msgstr ""
+msgstr "``n_splits`` 默认值从3改为5。"
 
 #: maxframe.learn.model_selection._split.KFold:14 of
 msgid ""

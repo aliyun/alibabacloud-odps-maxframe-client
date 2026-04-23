@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"POT-Creation-Date: 2026-02-10 19:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -25,31 +25,31 @@ msgstr "特殊函数"
 
 #: ../../source/reference/tensor/special.rst:5
 msgid "Airy functions"
-msgstr "Airy 函数"
+msgstr "艾里函数"
 
 #: ../../source/reference/tensor/special.rst:15:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.airy <maxframe.tensor.special.airy>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:15:<autosummary>:1
-msgid "airy(z, out=None)"
-msgstr ""
+msgid "Airy functions and their derivatives."
+msgstr "艾里函数及其导数。"
 
 #: ../../source/reference/tensor/special.rst:15:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.airye <maxframe.tensor.special.airye>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:15:<autosummary>:1
-msgid "airye(z, out=None)"
-msgstr ""
+msgid "Exponentially scaled Airy functions and their derivatives."
+msgstr "指数尺度艾里函数及其导数。"
 
 #: ../../source/reference/tensor/special.rst:15:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.itairy <maxframe.tensor.special.itairy>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:15:<autosummary>:1
-msgid "itairy(x, out=None)"
-msgstr ""
+msgid "Integrals of Airy functions"
+msgstr "艾里函数的积分"
 
 #: ../../source/reference/tensor/special.rst:17
 msgid "Information Theory functions"
@@ -82,16 +82,16 @@ msgid ":py:obj:`maxframe.tensor.special.jv <maxframe.tensor.special.jv>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
-msgid "jv(v, z, out=None)"
-msgstr ""
+msgid "Bessel function of the first kind of real order and complex argument."
+msgstr "第一类实数阶复变元贝塞尔函数。"
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.jve <maxframe.tensor.special.jve>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
-msgid "jve(v, z, out=None)"
-msgstr ""
+msgid "Exponentially scaled Bessel function of the first kind of order `v`."
+msgstr "指数缩放的第一类v阶贝塞尔函数。"
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.yn <maxframe.tensor.special.yn>`"
@@ -106,16 +106,16 @@ msgid ":py:obj:`maxframe.tensor.special.yv <maxframe.tensor.special.yv>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
-msgid "yv(v, z, out=None)"
-msgstr ""
+msgid "Bessel function of the second kind of real order and complex argument."
+msgstr "实数阶复变元第二类贝塞尔函数。"
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.yve <maxframe.tensor.special.yve>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
-msgid "yve(v, z, out=None)"
-msgstr ""
+msgid "Exponentially scaled Bessel function of the second kind of real order."
+msgstr "实数阶第二类指数缩放贝塞尔函数。"
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.kn <maxframe.tensor.special.kn>`"
@@ -130,31 +130,31 @@ msgid ":py:obj:`maxframe.tensor.special.kv <maxframe.tensor.special.kv>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
-msgid "kv(v, z, out=None)"
-msgstr ""
+msgid "Modified Bessel function of the second kind of real order `v`"
+msgstr "实数阶 `v` 的第二类修正贝塞尔函数"
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.kve <maxframe.tensor.special.kve>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
-msgid "kve(v, z, out=None)"
-msgstr "修正第二类贝塞尔函数，指数缩放版本。"
+msgid "Exponentially scaled modified Bessel function of the second kind."
+msgstr "指数缩放的第二类修正贝塞尔函数。"
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.iv <maxframe.tensor.special.iv>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
-msgid "iv(v, z, out=None)"
-msgstr "第一类修正贝塞尔函数。"
+msgid "Modified Bessel function of the first kind of real order."
+msgstr "实数阶的第一类修正贝塞尔函数。"
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.ive <maxframe.tensor.special.ive>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
-msgid "ive(v, z, out=None)"
+msgid "Exponentially scaled modified Bessel function of the first kind."
 msgstr "指数缩放的第一类修正贝塞尔函数。"
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
@@ -164,8 +164,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
-msgid "hankel1(v, z, out=None)"
-msgstr "第一类汉克尔函数（贝塞尔函数的线性组合）。"
+msgid "Hankel function of the first kind"
+msgstr "第一类汉克尔函数"
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
 msgid ""
@@ -174,8 +174,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
-msgid "hankel1e(v, z, out=None)"
-msgstr "指数缩放的第一类汉克尔函数。"
+msgid "Exponentially scaled Hankel function of the first kind"
+msgstr "第一类指数尺度汉克尔函数"
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
 msgid ""
@@ -184,8 +184,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
-msgid "hankel2(v, z, out=None)"
-msgstr "第二类汉克尔函数（贝塞尔函数的线性组合）。"
+msgid "Hankel function of the second kind"
+msgstr "第二类汉克尔函数"
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
 msgid ""
@@ -194,8 +194,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:49:<autosummary>:1
-msgid "hankel2e(v, z, out=None)"
-msgstr "指数缩放的第二类汉克尔函数。"
+msgid "Exponentially scaled Hankel function of the second kind"
+msgstr "第二类指数尺度汉克尔函数"
 
 #: ../../source/reference/tensor/special.rst:51
 msgid "Error functions and fresnel integrals"
@@ -222,16 +222,16 @@ msgid ":py:obj:`maxframe.tensor.special.erfcx <maxframe.tensor.special.erfcx>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:69:<autosummary>:1
-msgid "erfcx(x, out=None)"
-msgstr "指数缩放的互补误差函数。"
+msgid "Scaled complementary error function, ``exp(x**2) * erfc(x)``."
+msgstr "缩放互补误差函数，``exp(x**2) * erfc(x)``。"
 
 #: ../../source/reference/tensor/special.rst:69:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.erfi <maxframe.tensor.special.erfi>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:69:<autosummary>:1
-msgid "erfi(z, out=None)"
-msgstr "虚误差函数。"
+msgid "Imaginary error function, ``-i erf(i z)``."
+msgstr "虚误差函数，``-i erf(i z)``。"
 
 #: ../../source/reference/tensor/special.rst:69:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.erfinv <maxframe.tensor.special.erfinv>`"
@@ -256,16 +256,16 @@ msgid ":py:obj:`maxframe.tensor.special.wofz <maxframe.tensor.special.wofz>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:69:<autosummary>:1
-msgid "wofz(z, out=None)"
-msgstr "复数误差函数（Faddeeva函数）。"
+msgid "Faddeeva function"
+msgstr "法代耶娃函数"
 
 #: ../../source/reference/tensor/special.rst:69:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.dawsn <maxframe.tensor.special.dawsn>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:69:<autosummary>:1
-msgid "dawsn(x, out=None)"
-msgstr " Dawson 积分（指数缩放的虚误差函数）。"
+msgid "Dawson's integral."
+msgstr "道森积分。"
 
 #: ../../source/reference/tensor/special.rst:69:<autosummary>:1
 msgid ""
@@ -274,8 +274,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:69:<autosummary>:1
-msgid "fresnel(z, out=None)"
-msgstr "计算复数变量的菲涅耳积分"
+msgid "Fresnel integrals."
+msgstr "菲涅尔积分。"
 
 #: ../../source/reference/tensor/special.rst:69:<autosummary>:1
 msgid ""
@@ -284,8 +284,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:69:<autosummary>:1
-msgid "modfresnelp(x, out=None)"
-msgstr "计算修正的菲涅耳正弦和余弦积分（正部）"
+msgid "Modified Fresnel positive integrals"
+msgstr "修正菲涅耳正积分"
 
 #: ../../source/reference/tensor/special.rst:69:<autosummary>:1
 msgid ""
@@ -294,8 +294,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:69:<autosummary>:1
-msgid "modfresnelm(x, out=None)"
-msgstr "计算修正的菲涅耳正弦和余弦积分（负部）"
+msgid "Modified Fresnel negative integrals"
+msgstr "修正菲涅耳负积分"
 
 #: ../../source/reference/tensor/special.rst:71
 msgid "Ellipsoidal harmonics"
@@ -340,8 +340,8 @@ msgid ":py:obj:`maxframe.tensor.special.ellipk <maxframe.tensor.special.ellipk>`
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:99:<autosummary>:1
-msgid "ellipk(m, out=None)"
-msgstr ""
+msgid "Complete elliptic integral of the first kind."
+msgstr "第一类完全椭圆积分"
 
 #: ../../source/reference/tensor/special.rst:99:<autosummary>:1
 msgid ""
@@ -350,8 +350,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:99:<autosummary>:1
-msgid "ellipkm1(p, out=None)"
-msgstr ""
+msgid "Complete elliptic integral of the first kind around `m` = 1"
+msgstr "`m` = 1 附近的第一类完全椭圆积分"
 
 #: ../../source/reference/tensor/special.rst:99:<autosummary>:1
 msgid ""
@@ -360,16 +360,16 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:99:<autosummary>:1
-msgid "ellipkinc(phi, m, out=None)"
-msgstr ""
+msgid "Incomplete elliptic integral of the first kind"
+msgstr "第一类不完全椭圆积分"
 
 #: ../../source/reference/tensor/special.rst:99:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.ellipe <maxframe.tensor.special.ellipe>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:99:<autosummary>:1
-msgid "ellipe(m, out=None)"
-msgstr ""
+msgid "Complete elliptic integral of the second kind"
+msgstr "第二类完全椭圆积分"
 
 #: ../../source/reference/tensor/special.rst:99:<autosummary>:1
 msgid ""
@@ -378,8 +378,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:99:<autosummary>:1
-msgid "ellipeinc(phi, m, out=None)"
-msgstr ""
+msgid "Incomplete elliptic integral of the second kind"
+msgstr "第二类不完全椭圆积分"
 
 #: ../../source/reference/tensor/special.rst:99:<autosummary>:1
 msgid ""
@@ -430,8 +430,8 @@ msgid ":py:obj:`maxframe.tensor.special.gamma <maxframe.tensor.special.gamma>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
-msgid "gamma(z, out=None)"
-msgstr ""
+msgid "gamma function."
+msgstr "Gamma 函数。"
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
 msgid ""
@@ -450,8 +450,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
-msgid "loggamma(z, out=None)"
-msgstr ""
+msgid "Principal branch of the logarithm of the gamma function."
+msgstr "伽玛函数对数的主分支。"
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
 msgid ""
@@ -460,8 +460,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
-msgid "gammasgn(x, out=None)"
-msgstr ""
+msgid "Sign of the gamma function."
+msgstr "Gamma函数的符号函数。"
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
 msgid ""
@@ -480,8 +480,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
-msgid "gammaincinv(a, y, out=None)"
-msgstr ""
+msgid "Inverse to the regularized lower incomplete gamma function."
+msgstr "正则化下不完全 Gamma 函数的逆。"
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
 msgid ""
@@ -496,24 +496,24 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
-msgid "gammainccinv(a, y, out=None)"
-msgstr ""
+msgid "Inverse of the regularized upper incomplete gamma function."
+msgstr "正则化上不完全 Gamma 函数的逆。"
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.beta <maxframe.tensor.special.beta>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
-msgid "beta(a, b, out=None)"
-msgstr ""
+msgid "Beta function."
+msgstr "Beta 函数"
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.betaln <maxframe.tensor.special.betaln>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
-msgid "betaln(a, b, out=None)"
-msgstr ""
+msgid "Natural logarithm of absolute value of beta function."
+msgstr "Beta 函数绝对值的自然对数。"
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
 msgid ""
@@ -540,16 +540,16 @@ msgid ":py:obj:`maxframe.tensor.special.psi <maxframe.tensor.special.psi>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
-msgid "psi(z, out=None)"
-msgstr ""
+msgid "The digamma function."
+msgstr "双Gamma函数。"
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.rgamma <maxframe.tensor.special.rgamma>`"
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
-msgid "rgamma(z, out=None)"
-msgstr ""
+msgid "Reciprocal of the gamma function."
+msgstr "Gamma函数的倒数。"
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
 msgid ""
@@ -580,6 +580,10 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:125:<autosummary>:1
+msgid "psi(z, out=None)"
+msgstr ""
+
+#: ../../source/reference/tensor/special.rst:125:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.poch <maxframe.tensor.special.poch>`"
 msgstr ""
 
@@ -597,7 +601,7 @@ msgstr ""
 
 #: ../../source/reference/tensor/special.rst:137:<autosummary>:1
 msgid "Expit (a.k.a."
-msgstr ""
+msgstr "Expit 函数（又名"
 
 #: ../../source/reference/tensor/special.rst:137:<autosummary>:1
 msgid ""
@@ -606,8 +610,8 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/tensor/special.rst:137:<autosummary>:1
-msgid "log_expit(x, out=None)"
-msgstr ""
+msgid "Logarithm of the logistic sigmoid function."
+msgstr "逻辑sigmoid函数的对数。"
 
 #: ../../source/reference/tensor/special.rst:137:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.special.logit <maxframe.tensor.special.logit>`"

@@ -41,7 +41,7 @@ msgstr ""
 
 #: maxframe.dataframe.indexing.insert.index_insert:10 of
 msgid "**new_index**"
-msgstr ""
+msgstr "**新索引**"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.insert.rst
 msgid "返回类型"

@@ -19,11 +19,11 @@ import pytest
 
 from ..... import dataframe as md
 from .....lib.dtypes_extension import list_
-from .....utils import ARROW_DTYPE_NOT_SUPPORTED, wrap_arrow_dtype
+from .....utils import is_arrow_dtype_supported, wrap_arrow_dtype
 from ..core import SeriesListMethod
 
 pytestmark = pytest.mark.skipif(
-    ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported"
+    not is_arrow_dtype_supported(), reason="Arrow Dtype is not supported"
 )
 
 

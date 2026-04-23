@@ -285,6 +285,7 @@ MaxFrame Extensions
    DataFrame.mf.map_reduce
    DataFrame.mf.rebalance
    DataFrame.mf.reshuffle
+   DataFrame.rechunk
 
 ``DataFrame.mf`` provides methods unique to MaxFrame. These methods are collated from application
 scenarios in MaxCompute and these can be accessed like ``DataFrame.mf.<function/property>``.

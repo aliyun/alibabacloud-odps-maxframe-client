@@ -140,10 +140,11 @@ class UserCodeMixin:
                 else "set()"
             )
 
-        if isinstance(obj, PickleContainer):
+        # Fallback to pickle
+        try:
             return UserCodeMixin.generate_pickled_codes(obj, None)
-
-        raise ValueError(f"not support arg type {type(obj)}")
+        except:
+            raise ValueError(f"not support arg type {type(obj)}") from None
 
     @classmethod
     def generate_pickled_codes(

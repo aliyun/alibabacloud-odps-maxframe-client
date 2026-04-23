@@ -68,22 +68,24 @@ msgid ""
 " is only applicable to DataFrames/Series with a monotonically "
 "increasing/decreasing index."
 msgstr ""
+"用于填充重新索引的 DataFrame 中空洞的方法。请注意：这仅适用于具有单调递增"
+"/递减索引的 DataFrames/Series。"
 
 #: maxframe.dataframe.indexing.reindex.reindex_like:15 of
 msgid "None (default): don't fill gaps"
-msgstr ""
+msgstr "None (默认): 不填充空隙"
 
 #: maxframe.dataframe.indexing.reindex.reindex_like:16 of
 msgid "pad / ffill: propagate last valid observation forward to next valid"
-msgstr ""
+msgstr "pad / ffill: 将最后一个有效观测值向前传播到下一个有效值"
 
 #: maxframe.dataframe.indexing.reindex.reindex_like:18 of
 msgid "backfill / bfill: use next valid observation to fill gap"
-msgstr ""
+msgstr "backfill / bfill: 使用下一个有效观测值填充空隙"
 
 #: maxframe.dataframe.indexing.reindex.reindex_like:19 of
 msgid "nearest: use nearest valid observations to fill gap."
-msgstr ""
+msgstr "nearest: 使用最近的有效观测值填充空隙。"
 
 #: maxframe.dataframe.indexing.reindex.reindex_like:21 of
 msgid "Return a new object, even if the passed indexes are the same."
@@ -115,20 +117,19 @@ msgid ""
 " values of the index at the matching locations must satisfy the equation "
 "``abs(index[indexer] - target) <= tolerance``."
 msgstr ""
+"不精确匹配时原始标签与新标签之间的最大距离。索引在匹配位置的值必须满足"
+"方程 ``abs(index[indexer] - target) <= tolerance``。"
 
 #: maxframe.dataframe.indexing.reindex.reindex_like:29 of
-#, fuzzy
 msgid ""
 "Tolerance may be a scalar value, which applies the same tolerance to all "
 "values, or list-like, which applies variable tolerance per element. List-"
 "like includes list, tuple, array, Series, and must be the same size as "
 "the index and its dtype must exactly match the index's type."
 msgstr ""
-"不精确匹配时原始标签与新标签之间的最大距离。索引在匹配位置的值必须满足"
-"方程 ``abs(index[indexer] - target) <= tolerance``。容差可以是一个标量值"
-"，对所有值应用相同的容差，或者类似列表的形式，对每个元素应用不同的容差。"
-"类似列表的包括列表、元组、数组、Series，并且必须与索引大小相同，其"
-"数据类型必须与索引的类型完全匹配。"
+"容差可以是一个标量值，对所有值应用相同的容差，或者列表类，对每个元素应用"
+"不同的容差。列表类包括列表、元组、数组、Series，并且必须与索引大小相同，"
+"其数据类型必须与索引类型完全匹配。"
 
 #: maxframe.dataframe.indexing.reindex.reindex_like of
 msgid "返回"

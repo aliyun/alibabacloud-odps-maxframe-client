@@ -481,7 +481,7 @@ msgstr "逐元素相加参数。"
 
 #: ../../source/reference/tensor/math.rst:143:<autosummary>:1
 msgid "Add arguments element-wise."
-msgstr ""
+msgstr "逐元素相加参数。"
 
 #: ../../source/reference/tensor/math.rst:143:<autosummary>:1
 msgid ":py:obj:`maxframe.tensor.reciprocal <maxframe.tensor.reciprocal>`"

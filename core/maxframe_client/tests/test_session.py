@@ -32,7 +32,7 @@ from maxframe.lib.aio import stop_isolation
 from maxframe.protocol import ResultInfo
 from maxframe.serialization import RemoteException
 from maxframe.session import new_session
-from maxframe.tests.utils import ensure_table_deleted, tn
+from maxframe.tests.utils import ensure_table_deleted, require_arrow_dtype, tn
 from maxframe.utils import build_temp_table_name
 from maxframe_framedriver.app.tests.test_framedriver_webapp import (  # noqa: F401
     framedriver_app,
@@ -221,10 +221,8 @@ def test_run_empty_table(start_mock_session):
     empty_table.drop()
 
 
+@require_arrow_dtype
 def test_read_table_with_arrow_dtype(start_mock_session):
-    if not hasattr(pd, "ArrowDtype"):
-        pytest.skip("Need ArrowDtype in pandas to run the test")
-
     odps_entry = ODPS.from_environments()
     odps_options.sql.use_odps2_extension = True
 

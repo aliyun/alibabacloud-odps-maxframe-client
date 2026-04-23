@@ -108,15 +108,13 @@ msgid "**arange** -- Tensor of evenly spaced values."
 msgstr ""
 
 #: maxframe.tensor.datasource.arange.arange:32 of
-#, fuzzy
 msgid ""
 "For floating point arguments, the length of the result is ``ceil((stop - "
 "start)/step)``.  Because of floating point overflow, this rule may result"
 " in the last element of `out` being greater than `stop`."
 msgstr ""
-"**arange** -- 均匀间隔值的张量。对于浮点参数，结果的长度为 ``ceil((stop -"
-" start)/step)``。由于浮点溢出，此规则可能导致 `out` 的最后一个元素大于 `"
-"stop`。"
+"对于浮点数参数，结果的长度为 ``ceil((stop - start)/step)``。由于浮点数"
+"溢出，此规则可能导致 `out` 的最后一个元素大于 `stop`。"
 
 #: maxframe.tensor.datasource.arange.arange of
 msgid "返回类型"

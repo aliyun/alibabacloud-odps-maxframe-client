@@ -26,7 +26,7 @@ import pytest
 from .... import dataframe as md
 from ....lib.dtypes_extension import ArrowDtype
 from ....tensor import Tensor
-from ....tests.utils import assert_mf_index_dtype
+from ....tests.utils import assert_mf_index_dtype, require_arrow_dtype
 from ....udf import ODPSFunction
 from ....utils import wrap_arrow_dtype
 from ...core import DataFrame, IndexValue, OutputType, Series
@@ -543,7 +543,7 @@ def test_aggregation_with_odps_function():
         assert isinstance(result.agg_funcs[0].custom_reduction, ODPSFunction)
 
 
-@pytest.mark.skipif(not hasattr(pd, "ArrowDtype"), reason="ArrowDtype not available")
+@require_arrow_dtype
 def test_reduction_with_decimal():
     raw = pd.DataFrame({"idx": [1, 2, 3, 4], "int_col": [7, 9, 6, 8]})
     raw["dec_col"] = pd.Series(

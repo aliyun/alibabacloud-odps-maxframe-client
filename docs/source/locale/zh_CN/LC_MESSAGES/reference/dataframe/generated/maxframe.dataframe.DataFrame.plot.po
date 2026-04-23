@@ -67,51 +67,51 @@ msgstr ""
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:13 of
 msgid "The kind of plot to produce:"
-msgstr ""
+msgstr "要生成的图表类型："
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:15 of
 msgid "'line' : line plot (default)"
-msgstr ""
+msgstr "'line' : 折线图（默认）"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:16 of
 msgid "'bar' : vertical bar plot"
-msgstr ""
+msgstr "'bar' : 垂直柱状图"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:17 of
 msgid "'barh' : horizontal bar plot"
-msgstr ""
+msgstr "'barh' : 水平柱状图"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:18 of
 msgid "'hist' : histogram"
-msgstr ""
+msgstr "'hist' : 直方图"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:19 of
 msgid "'box' : boxplot"
-msgstr ""
+msgstr "'box' : 箱线图"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:20 of
 msgid "'kde' : Kernel Density Estimation plot"
-msgstr ""
+msgstr "'kde' : 核密度估计图"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:21 of
 msgid "'density' : same as 'kde'"
-msgstr ""
+msgstr "'density' : 与 'kde' 相同"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:22 of
 msgid "'area' : area plot"
-msgstr ""
+msgstr "'area' : 面积图"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:23 of
 msgid "'pie' : pie plot"
-msgstr ""
+msgstr "'pie' : 饼图"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:24 of
 msgid "'scatter' : scatter plot (DataFrame only)"
-msgstr ""
+msgstr "'scatter' : 散点图（仅DataFrame）"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:25 of
 msgid "'hexbin' : hexbin plot (DataFrame only)"
-msgstr ""
+msgstr "'hexbin' : 六边形箱图（仅DataFrame）"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:27 of
 msgid "An axes of the current figure."
@@ -135,18 +135,17 @@ msgstr ""
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:29 of
 msgid "Whether to group columns into subplots:"
-msgstr ""
+msgstr "是否将列分组到子图中："
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:31 of
 msgid "``False`` : No subplots will be used"
-msgstr ""
+msgstr "``False`` : 不使用子图"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:32 of
 msgid "``True`` : Make separate subplots for each column."
-msgstr ""
+msgstr "``True`` : 为每一列创建单独的子图。"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:33 of
-#, fuzzy
 msgid ""
 "sequence of iterables of column labels: Create a subplot for each group "
 "of columns. For example `[('a', 'c'), ('b', 'd')]` will create 2 "
@@ -154,11 +153,9 @@ msgid ""
 " Remaining columns that aren't specified will be plotted in additional "
 "subplots (one per column)."
 msgstr ""
-"是否将列分组到子图中：  - ``False`` : 不使用子图 - ``True`` : 为每列创建"
-"单独的子图 - 列标签的可迭代序列：为每组列创建一个子图。例如 `[('a', 'c'),"
-" ('b', 'd')]` 将创建 2 个子图：一个包含列 'a' 和 'c'，另一个包含列 'b' 和"
-" 'd'。未指定的其余列将在附加子图中绘制（每列一个子图）。    .. "
-"versionadded:: 1.5.0"
+"列标签的可迭代序列：为每组列创建一个子图。例如 `[('a', 'c'), ('b', 'd')]`"
+" 将创建 2 个子图：一个包含列 'a' 和 'c'，另一个包含列 'b' 和 'd'。未指定"
+"的其余列将在附加子图中绘制（每列一个子图）。"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:41 of
 msgid ""
@@ -248,18 +245,17 @@ msgstr ""
 "列名。 .. versionchanged:: 2.0.0      现在适用于直方图。"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:78 of
-#, fuzzy
 msgid ""
 "Name to use for the xlabel on x-axis. Default uses index name as xlabel, "
 "or the x-column name for planar plots."
 msgstr ""
 "x 轴上 xlabel 使用的名称。默认使用索引名作为 xlabel，或对于平面图使用 x "
-"列名。 .. versionchanged:: 2.0.0      现在适用于直方图。"
+"列名。"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:83
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:90 of
 msgid "Now applicable to histograms."
-msgstr ""
+msgstr "现在适用于直方图。"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:85 of
 msgid ""
@@ -271,13 +267,10 @@ msgstr ""
 " versionchanged:: 2.0.0      现在适用于直方图。"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:85 of
-#, fuzzy
 msgid ""
 "Name to use for the ylabel on y-axis. Default will show no ylabel, or the"
 " y-column name for planar plots."
-msgstr ""
-"y 轴上 ylabel 使用的名称。默认不显示 ylabel，或对于平面图使用 y 列名。 .."
-" versionchanged:: 2.0.0      现在适用于直方图。"
+msgstr "y 轴上 ylabel 使用的名称。默认不显示 ylabel，或对于平面图使用 y 列名。"
 
 #: maxframe.dataframe.accessors.plotting.core.DataFramePlotAccessor:92 of
 msgid "Rotation for ticks (xticks for vertical, yticks for horizontal plots)."

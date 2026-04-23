@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Type
+from typing import Callable, List, Optional, Tuple, Type, Union
 
 from ... import opcodes
-from ...core import ENTITY_TYPE, OutputType
+from ...core import ENTITY_TYPE, EntityData, OutputType
 from ...core.operator import ObjectOperator, ObjectOperatorMixin
 from ...serialization.serializables import (
     AnyField,
     DictField,
     FunctionField,
+    Int16Field,
     TupleField,
 )
 from ...udf import BuiltinFunction
@@ -56,10 +57,40 @@ class ModelDataSource(ObjectOperator, ObjectOperatorMixin):
     _op_type_ = opcodes.MODEL_DATA_SOURCE
 
     data = AnyField("data")
+    extractor = AnyField("extractor", default=None)
+    num_outputs = Int16Field("num_outputs", default=1)
 
-    def __call__(self, model_cls: Type[ModelWithEval]):
-        self._output_types = [OutputType.object]
-        return self.new_tileable(None, object_class=model_cls)
+    @property
+    def output_limit(self) -> int:
+        return self.num_outputs
+
+    @classmethod
+    def _set_inputs(cls, op: "ModelDataSource", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        if isinstance(op.data, ENTITY_TYPE):
+            op.data = op.inputs[0]
+
+    def has_custom_code(self) -> bool:
+        return not isinstance(self.extractor, BuiltinFunction)
+
+    def __call__(
+        self,
+        model_cls: Type[ModelWithEval],
+        extra_kws: Optional[list] = None,
+    ):
+        self.num_outputs = 1 + len(extra_kws or [])
+        self._output_types = [OutputType.object] * self.num_outputs
+        kws = [{} for _ in range(self.num_outputs)]
+        kws[0].update({"shape": (), "object_class": model_cls})
+        if extra_kws:
+            self.num_outputs = 1 + len(extra_kws)
+            for idx in range(1, self.num_outputs):
+                self._output_types[idx] = extra_kws[idx - 1].pop(
+                    "output_type", self._output_types[idx]
+                )
+                kws[idx].update(extra_kws[idx - 1])
+        inputs = [self.data] if isinstance(self.data, ENTITY_TYPE) else None
+        return self.new_tileables(inputs, kws=kws)
 
 
 class ModelApplyChunk(ObjectOperator, ObjectOperatorMixin):
@@ -104,6 +135,14 @@ class ModelApplyChunk(ObjectOperator, ObjectOperatorMixin):
         return self.new_tileables(inputs, kws=output_kws)
 
 
-def to_remote_model(model, model_cls: Type[ModelWithEval]) -> ModelWithEval:
-    op = ModelDataSource(data=model)
-    return op(model_cls)
+def to_remote_model(
+    model,
+    model_cls: Type[ModelWithEval],
+    extractor: Optional[Callable] = None,
+    extra_kws: Optional[list] = None,
+) -> Union[ModelWithEval, Tuple[ModelWithEval, ...]]:
+    op = ModelDataSource(data=model, extractor=extractor)
+    res = op(model_cls, extra_kws=extra_kws)
+    if not extra_kws:
+        return res[0]
+    return res

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-29 19:01+0800\n"
+"POT-Creation-Date: 2026-02-10 10:53+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -611,9 +611,11 @@ msgstr "用于文件头部数据推断的行数。"
 
 #: maxframe.dataframe.datasource.read_csv.read_csv:254 of
 msgid ""
-"If index_col not specified, ensure range index incremental, gain a "
-"slightly better performance if setting False."
-msgstr "如果未指定 index_col，则确保范围索引递增，设为 False 可获得稍好的性能。"
+"If index_col not specified, specify type of index to generate. If not "
+"specified, `options.dataframe.default_index_type` will be used."
+msgstr ""
+"如果未指定 index_col，则指定要生成的索引类型。如果未指定，将使用 `options"
+".dataframe.default_index_type`。"
 
 #: maxframe.dataframe.datasource.read_csv.read_csv:257 of
 msgid ""

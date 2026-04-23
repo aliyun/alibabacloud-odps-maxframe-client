@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-13 11:35+0800\n"
+"POT-Creation-Date: 2026-02-11 15:50+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -42,7 +42,7 @@ msgid "**Axes**"
 msgstr "**轴**"
 
 #: ../../source/reference/dataframe/series.rst:20:<autosummary>:1
-msgid ":py:obj:`Series.index <maxframe.dataframe.Series.index>`\\"
+msgid ":py:obj:`Series.index <maxframe.dataframe.Series.index>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:20:<autosummary>:1
@@ -50,7 +50,7 @@ msgid "The index (axis labels) of the Series."
 msgstr "序列的索引（轴标签）。"
 
 #: ../../source/reference/dataframe/series.rst:31:<autosummary>:1
-msgid ":py:obj:`Series.dtype <maxframe.dataframe.Series.dtype>`\\"
+msgid ":py:obj:`Series.dtype <maxframe.dataframe.Series.dtype>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:31:<autosummary>:1
@@ -68,7 +68,7 @@ msgid "Return the memory usage of the Series."
 msgstr "返回序列的内存使用情况。"
 
 #: ../../source/reference/dataframe/series.rst:31:<autosummary>:1
-msgid ":py:obj:`Series.ndim <maxframe.dataframe.Series.ndim>`\\"
+msgid ":py:obj:`Series.ndim <maxframe.dataframe.Series.ndim>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:31:<autosummary>:1
@@ -76,15 +76,15 @@ msgid "Return an int representing the number of axes / array dimensions."
 msgstr "返回一个整数，表示轴/数组维度的数量。"
 
 #: ../../source/reference/dataframe/series.rst:31:<autosummary>:1
-msgid ":py:obj:`Series.name <maxframe.dataframe.Series.name>`\\"
+msgid ":py:obj:`Series.name <maxframe.dataframe.Series.name>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:31:<autosummary>:1
-msgid ":py:obj:`Series.shape <maxframe.dataframe.Series.shape>`\\"
+msgid ":py:obj:`Series.shape <maxframe.dataframe.Series.shape>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:31:<autosummary>:1
-msgid ":py:obj:`Series.T <maxframe.dataframe.Series.T>`\\"
+msgid ":py:obj:`Series.T <maxframe.dataframe.Series.T>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:31:<autosummary>:1
@@ -149,7 +149,7 @@ msgid "Index, iteration"
 msgstr "索引，迭代"
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
-msgid ":py:obj:`Series.at <maxframe.dataframe.Series.at>`\\"
+msgid ":py:obj:`Series.at <maxframe.dataframe.Series.at>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
@@ -157,7 +157,7 @@ msgid "Access a single value for a row/column label pair."
 msgstr "通过行/列标签对访问单个值。"
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
-msgid ":py:obj:`Series.iat <maxframe.dataframe.Series.iat>`\\"
+msgid ":py:obj:`Series.iat <maxframe.dataframe.Series.iat>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
@@ -165,7 +165,7 @@ msgid "Access a single value for a row/column pair by integer position."
 msgstr "通过整数位置访问行/列对的单个值。"
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
-msgid ":py:obj:`Series.iloc <maxframe.dataframe.Series.iloc>`\\"
+msgid ":py:obj:`Series.iloc <maxframe.dataframe.Series.iloc>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
@@ -173,7 +173,7 @@ msgid "Purely integer-location based indexing for selection by position."
 msgstr "基于纯整数位置的索引，用于按位置选择。"
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
-msgid ":py:obj:`Series.loc <maxframe.dataframe.Series.loc>`\\"
+msgid ":py:obj:`Series.loc <maxframe.dataframe.Series.loc>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:56:<autosummary>:1
@@ -663,7 +663,7 @@ msgstr "将对象编码为枚举类型或分类变量。"
 #: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.is_monotonic_increasing "
-"<maxframe.dataframe.Series.is_monotonic_increasing>`\\"
+"<maxframe.dataframe.Series.is_monotonic_increasing>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
@@ -673,7 +673,7 @@ msgstr "如果对象中的值是单调递增的，则返回布尔标量。"
 #: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
 msgid ""
 ":py:obj:`Series.is_monotonic_decreasing "
-"<maxframe.dataframe.Series.is_monotonic_decreasing>`\\"
+"<maxframe.dataframe.Series.is_monotonic_decreasing>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
@@ -681,7 +681,7 @@ msgid "Return boolean scalar if values in the object are monotonic_decreasing."
 msgstr "如果对象中的值是单调递减的，则返回布尔标量。"
 
 #: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
-msgid ":py:obj:`Series.is_unique <maxframe.dataframe.Series.is_unique>`\\"
+msgid ":py:obj:`Series.is_unique <maxframe.dataframe.Series.is_unique>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:141:<autosummary>:1
@@ -1014,7 +1014,7 @@ msgstr "修改 Series 的索引标签或名称。"
 #: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
 msgid ""
 ":py:obj:`Series.reset_index <maxframe.dataframe.Series.reset_index>`\\ "
-"\\(\\[level\\, drop\\, name\\, ...\\]\\)"
+"\\(\\[level\\, drop\\, name\\, inplace\\]\\)"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:169:<autosummary>:1
@@ -1134,7 +1134,7 @@ msgstr "返回能够对 Series 值进行排序的整数索引。"
 #: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
 msgid ""
 ":py:obj:`Series.explode <maxframe.dataframe.Series.explode>`\\ "
-"\\(\\[ignore\\_index\\]\\)"
+"\\(\\[ignore\\_index\\, ...\\]\\)"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:197:<autosummary>:1
@@ -1340,7 +1340,7 @@ msgid "Datetime properties"
 msgstr "日期时间属性"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.date <maxframe.dataframe.Series.dt.date>`\\"
+msgid ":py:obj:`Series.dt.date <maxframe.dataframe.Series.dt.date>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1348,7 +1348,7 @@ msgid "Returns numpy array of python :class:`datetime.date` objects."
 msgstr "返回 Python :class:`datetime.date` 对象的 numpy 数组。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.time <maxframe.dataframe.Series.dt.time>`\\"
+msgid ":py:obj:`Series.dt.time <maxframe.dataframe.Series.dt.time>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1356,7 +1356,7 @@ msgid "Returns numpy array of :class:`datetime.time` objects."
 msgstr "返回 :class:`datetime.time` 对象的 numpy 数组。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.timetz <maxframe.dataframe.Series.dt.timetz>`\\"
+msgid ":py:obj:`Series.dt.timetz <maxframe.dataframe.Series.dt.timetz>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1364,7 +1364,7 @@ msgid "Returns numpy array of :class:`datetime.time` objects with timezones."
 msgstr "返回包含时区信息的 :class:`datetime.time` 对象的 numpy 数组。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.year <maxframe.dataframe.Series.dt.year>`\\"
+msgid ":py:obj:`Series.dt.year <maxframe.dataframe.Series.dt.year>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1372,7 +1372,7 @@ msgid "The year of the datetime."
 msgstr "日期时间的年份。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.month <maxframe.dataframe.Series.dt.month>`\\"
+msgid ":py:obj:`Series.dt.month <maxframe.dataframe.Series.dt.month>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1380,7 +1380,7 @@ msgid "The month as January=1, December=12."
 msgstr "月份，一月为1，十二月为12。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.day <maxframe.dataframe.Series.dt.day>`\\"
+msgid ":py:obj:`Series.dt.day <maxframe.dataframe.Series.dt.day>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1388,7 +1388,7 @@ msgid "The day of the datetime."
 msgstr "日期时间的日期部分。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.hour <maxframe.dataframe.Series.dt.hour>`\\"
+msgid ":py:obj:`Series.dt.hour <maxframe.dataframe.Series.dt.hour>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1396,7 +1396,7 @@ msgid "The hours of the datetime."
 msgstr "日期时间的小时部分。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.minute <maxframe.dataframe.Series.dt.minute>`\\"
+msgid ":py:obj:`Series.dt.minute <maxframe.dataframe.Series.dt.minute>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1404,7 +1404,7 @@ msgid "The minutes of the datetime."
 msgstr "日期时间的分钟部分。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.second <maxframe.dataframe.Series.dt.second>`\\"
+msgid ":py:obj:`Series.dt.second <maxframe.dataframe.Series.dt.second>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1412,9 +1412,7 @@ msgid "The seconds of the datetime."
 msgstr "日期时间的秒数。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ""
-":py:obj:`Series.dt.microsecond "
-"<maxframe.dataframe.Series.dt.microsecond>`\\"
+msgid ":py:obj:`Series.dt.microsecond <maxframe.dataframe.Series.dt.microsecond>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1422,7 +1420,7 @@ msgid "The microseconds of the datetime."
 msgstr "日期时间的微秒数。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.nanosecond <maxframe.dataframe.Series.dt.nanosecond>`\\"
+msgid ":py:obj:`Series.dt.nanosecond <maxframe.dataframe.Series.dt.nanosecond>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1430,7 +1428,7 @@ msgid "The nanoseconds of the datetime."
 msgstr "日期时间的纳秒数。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.week <maxframe.dataframe.Series.dt.week>`\\"
+msgid ":py:obj:`Series.dt.week <maxframe.dataframe.Series.dt.week>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1438,11 +1436,11 @@ msgid "The week ordinal of the year."
 msgstr "一年中的第几周。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.weekofyear <maxframe.dataframe.Series.dt.weekofyear>`\\"
+msgid ":py:obj:`Series.dt.weekofyear <maxframe.dataframe.Series.dt.weekofyear>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.dayofweek <maxframe.dataframe.Series.dt.dayofweek>`\\"
+msgid ":py:obj:`Series.dt.dayofweek <maxframe.dataframe.Series.dt.dayofweek>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1450,11 +1448,11 @@ msgid "The day of the week with Monday=0, Sunday=6."
 msgstr "星期几，周一为0，周日为6。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.weekday <maxframe.dataframe.Series.dt.weekday>`\\"
+msgid ":py:obj:`Series.dt.weekday <maxframe.dataframe.Series.dt.weekday>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.dayofyear <maxframe.dataframe.Series.dt.dayofyear>`\\"
+msgid ":py:obj:`Series.dt.dayofyear <maxframe.dataframe.Series.dt.dayofyear>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1462,7 +1460,7 @@ msgid "The ordinal day of the year."
 msgstr "一年中的第几天。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ":py:obj:`Series.dt.quarter <maxframe.dataframe.Series.dt.quarter>`\\"
+msgid ":py:obj:`Series.dt.quarter <maxframe.dataframe.Series.dt.quarter>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1472,7 +1470,7 @@ msgstr "日期所在的季度。"
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.is_month_start "
-"<maxframe.dataframe.Series.dt.is_month_start>`\\"
+"<maxframe.dataframe.Series.dt.is_month_start>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1482,7 +1480,7 @@ msgstr "指示日期是否为该月的第一天。"
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.is_month_end "
-"<maxframe.dataframe.Series.dt.is_month_end>`\\"
+"<maxframe.dataframe.Series.dt.is_month_end>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1492,7 +1490,7 @@ msgstr "指示日期是否为该月的最后一天。"
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.is_quarter_start "
-"<maxframe.dataframe.Series.dt.is_quarter_start>`\\"
+"<maxframe.dataframe.Series.dt.is_quarter_start>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1502,7 +1500,7 @@ msgstr "指示日期是否为季度的第一天。"
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.is_quarter_end "
-"<maxframe.dataframe.Series.dt.is_quarter_end>`\\"
+"<maxframe.dataframe.Series.dt.is_quarter_end>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1512,7 +1510,7 @@ msgstr "指示日期是否为季度的最后一天。"
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.is_year_start "
-"<maxframe.dataframe.Series.dt.is_year_start>`\\"
+"<maxframe.dataframe.Series.dt.is_year_start>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1520,9 +1518,7 @@ msgid "Indicate whether the date is the first day of a year."
 msgstr "指示日期是否为一年的第一天。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ""
-":py:obj:`Series.dt.is_year_end "
-"<maxframe.dataframe.Series.dt.is_year_end>`\\"
+msgid ":py:obj:`Series.dt.is_year_end <maxframe.dataframe.Series.dt.is_year_end>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1532,7 +1528,7 @@ msgstr "指示日期是否为一年的最后一天。"
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.is_leap_year "
-"<maxframe.dataframe.Series.dt.is_leap_year>`\\"
+"<maxframe.dataframe.Series.dt.is_leap_year>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1540,9 +1536,7 @@ msgid "Boolean indicator if the date belongs to a leap year."
 msgstr "布尔值，指示日期是否属于闰年。"
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
-msgid ""
-":py:obj:`Series.dt.daysinmonth "
-"<maxframe.dataframe.Series.dt.daysinmonth>`\\"
+msgid ":py:obj:`Series.dt.daysinmonth <maxframe.dataframe.Series.dt.daysinmonth>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
@@ -1552,7 +1546,7 @@ msgstr "该月的天数。"
 #: ../../source/reference/dataframe/series.rst:274:<autosummary>:1
 msgid ""
 ":py:obj:`Series.dt.days_in_month "
-"<maxframe.dataframe.Series.dt.days_in_month>`\\"
+"<maxframe.dataframe.Series.dt.days_in_month>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:276
@@ -1700,7 +1694,7 @@ msgstr "将 Series/Index 中的字符串首字母大写。"
 #: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.contains <maxframe.dataframe.Series.str.contains>`\\ "
-"\\(pat\\[\\, case\\, flags\\, na\\, ...\\]\\)"
+"\\(pat\\, case\\, flags\\[\\, na\\]\\)"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
@@ -1722,7 +1716,7 @@ msgstr "计算 Series/Index 中每个字符串中模式的出现次数。"
 #: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.endswith <maxframe.dataframe.Series.str.endswith>`\\ "
-"\\(pat\\[\\, na\\]\\)"
+"\\(pat\\, ...\\]\\, na\\)"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
@@ -1848,7 +1842,7 @@ msgstr "从 Series 或 Index 的每个元素中切片出子字符串。"
 #: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
 msgid ""
 ":py:obj:`Series.str.startswith "
-"<maxframe.dataframe.Series.str.startswith>`\\ \\(pat\\[\\, na\\]\\)"
+"<maxframe.dataframe.Series.str.startswith>`\\ \\(pat\\, ...\\]\\, na\\)"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:340:<autosummary>:1
@@ -2123,7 +2117,7 @@ msgid "Struct methods"
 msgstr "结构体方法"
 
 #: ../../source/reference/dataframe/series.rst:412:<autosummary>:1
-msgid ":py:obj:`Series.struct.dtypes <maxframe.dataframe.Series.struct.dtypes>`\\"
+msgid ":py:obj:`Series.struct.dtypes <maxframe.dataframe.Series.struct.dtypes>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:412:<autosummary>:1
@@ -2153,13 +2147,7 @@ msgstr ""
 "方法的形式为 ``Series.plot.<kind>``。"
 
 #: ../../source/reference/dataframe/series.rst:423:<autosummary>:1
-msgid ":py:obj:`Series.plot <maxframe.dataframe.Series.plot>`\\"
-msgstr ""
-
-#: ../../source/reference/dataframe/series.rst:423:<autosummary>:1
-msgid ""
-":py:class:`~maxframe.dataframe.accessors.plotting.core.SeriesPlotAccessor"
-"` 的别名"
+msgid ":py:obj:`Series.plot <maxframe.dataframe.Series.plot>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/series.rst:437:<autosummary>:1
@@ -2297,40 +2285,50 @@ msgstr "返回最小值的行标签。"
 msgid "MaxFrame Extensions"
 msgstr "MaxFrame 扩展"
 
-#: ../../source/reference/dataframe/series.rst:460:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:461:<autosummary>:1
 msgid ""
 ":py:obj:`Series.mf.apply_chunk "
 "<maxframe.dataframe.Series.mf.apply_chunk>`\\ \\(func\\[\\, "
 "batch\\_rows\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:460:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:461:<autosummary>:1
 msgid ""
 "Apply a function that takes pandas Series and outputs pandas "
 "DataFrame/Series."
 msgstr "应用一个接受 pandas Series 并输出 pandas DataFrame/Series 的函数。"
 
-#: ../../source/reference/dataframe/series.rst:460:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:461:<autosummary>:1
 msgid ""
 ":py:obj:`Series.mf.flatmap <maxframe.dataframe.Series.mf.flatmap>`\\ "
 "\\(func\\[\\, dtypes\\, dtype\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:460:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:461:<autosummary>:1
 msgid "Apply the given function to each row and then flatten results."
 msgstr "对每一行应用给定函数，然后展平结果。"
 
-#: ../../source/reference/dataframe/series.rst:460:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:461:<autosummary>:1
 msgid ""
 ":py:obj:`Series.mf.flatjson <maxframe.dataframe.Series.mf.flatjson>`\\ "
 "\\(query\\_paths\\[\\, dtypes\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/series.rst:460:<autosummary>:1
+#: ../../source/reference/dataframe/series.rst:461:<autosummary>:1
 msgid "Flat JSON object in the series to a dataframe according to JSON query."
 msgstr "根据 JSON 查询将序列中的 JSON 对象展平为数据框。"
 
-#: ../../source/reference/dataframe/series.rst:461
+#: ../../source/reference/dataframe/series.rst:461:<autosummary>:1
+msgid ""
+":py:obj:`Series.rechunk <maxframe.dataframe.Series.rechunk>`\\ "
+"\\(chunk\\_size\\[\\, reassign\\_worker\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/series.rst:461:<autosummary>:1
+msgid "Rechunk DataFrame, Series or Index data."
+msgstr "重新分块 DataFrame、Series 或 Index 数据。"
+
+#: ../../source/reference/dataframe/series.rst:462
 msgid ""
 "``Series.mf`` The Series.mf provides methods unique to MaxFrame. These "
 "methods are collated from application scenarios in MaxCompute and these "

@@ -13,27 +13,19 @@
 # limitations under the License.
 
 import enum
-import re
 from collections import defaultdict
 from typing import Any, Dict, Iterator, List, Tuple, Union
-from urllib.parse import urlencode
 
 from ...utils import implements, lazy_import
 from ._oss_lib import common as oc
+from ._oss_lib.common import HostEnforceType
 from ._oss_lib.glob import glob
 from ._oss_lib.handle import OSSIOBase
 from .base import FileSystem, path_type
 
 oss2 = lazy_import("oss2", placeholder=True)
-_ip_regex = re.compile(r"^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})")
 
 _oss_time_out = 10
-
-
-class HostEnforceType(enum.Enum):
-    no_enforce = 0
-    force_internal = 1
-    force_external = 2
 
 
 class AuthMode(enum.Enum):
@@ -61,7 +53,7 @@ class OSSFileSystem(FileSystem):
         )
 
     def _rewrite_path(self, path: str) -> str:
-        return build_oss_path(
+        return oc.build_oss_path(
             path,
             access_key_id=self._access_key_id,
             access_key_secret=self._access_key_secret,
@@ -92,7 +84,7 @@ class OSSFileSystem(FileSystem):
                     continue
                 obj_path = rf"{parsed_path.bucket}/{obj.key}"
                 file_list.append(
-                    build_oss_path(
+                    oc.build_oss_path(
                         obj_path,
                         parsed_path.endpoint,
                         parsed_path.access_key_id,
@@ -153,26 +145,32 @@ class OSSFileSystem(FileSystem):
     def walk(self, path: path_type) -> Iterator[Tuple[str, List[str], List[str]]]:
         if not self.isdir(path):
             return
-        path = path.rstrip("/") + "/"
-        all_subfiles = sorted(self.ls(path))
+        parsed_path = oc.parse_osspath(self._rewrite_path(path))
+        path = parsed_path.key.rstrip("/") + "/"
+        parsed_path = parsed_path._replace(key=path)
+
+        all_subfiles = sorted(self.ls(str(parsed_path)))
         prefixes_to_contents = defaultdict(lambda: (set(), set()))
         for file_path in all_subfiles:
-            if path == file_path:
+            parsed_sub_path = oc.parse_osspath(file_path)
+            if path == parsed_sub_path.key:
                 continue
-            rel_path = file_path[len(path) :].lstrip("/")
+            rel_path = parsed_sub_path.key[len(parsed_path.key) :].lstrip("/")
             if "/" not in rel_path:
-                prefixes_to_contents[path][1].add(rel_path)
+                prefixes_to_contents[parsed_path.key][1].add(rel_path)
             else:
                 rel_root, fn = rel_path.split("/", 1)
-                cur_root = path + rel_root.strip("/") + "/"
+                cur_root = parsed_path.key + rel_root.strip("/") + "/"
                 prefixes_to_contents[cur_root][1].add(fn)
                 rel_prefix = ""
                 for part in rel_root.split("/"):
-                    cur_root = (path + rel_prefix.lstrip("/")).rstrip("/") + "/"
+                    cur_root = (parsed_path.key + rel_prefix.lstrip("/")).rstrip(
+                        "/"
+                    ) + "/"
                     prefixes_to_contents[cur_root][0].add(part)
                     rel_prefix += "/" + part
         for root, (dirs, files) in sorted(prefixes_to_contents.items()):
-            yield root, sorted(dirs), sorted(files)
+            yield str(parsed_path._replace(key=root)), sorted(dirs), sorted(files)
 
     @implements(FileSystem.glob)
     def glob(self, path: path_type, recursive: bool = False) -> List[path_type]:
@@ -219,87 +217,3 @@ class OSSFileSystem(FileSystem):
     @property
     def supports_multipart_upload(self) -> bool:
         return True
-
-
-def _rewrite_internal_endpoint(
-    endpoint: str, host_enforce_type: HostEnforceType = HostEnforceType.no_enforce
-) -> str:
-    if (
-        not endpoint
-        or host_enforce_type == HostEnforceType.no_enforce
-        or _ip_regex.match(endpoint)
-    ):
-        return endpoint
-
-    ep_first, ep_rest = endpoint.split(".", 1)
-    host_with_internal = ep_first.endswith("-internal")
-    if host_enforce_type == HostEnforceType.force_external and host_with_internal:
-        return ep_first.replace("-internal", "") + "." + ep_rest
-    elif host_enforce_type == HostEnforceType.force_internal and not host_with_internal:
-        return ep_first + "-internal." + ep_rest
-    else:
-        return endpoint
-
-
-def build_oss_path(
-    path: path_type,
-    endpoint: str = None,
-    access_key_id: str = None,
-    access_key_secret: str = None,
-    security_token: str = None,
-    host_enforce_type: HostEnforceType = HostEnforceType.no_enforce,
-):
-    """
-    Returns a path with oss info.
-    Used to register the access_key_id, access_key_secret and
-    endpoint of OSS. The access_key_id and endpoint are put
-    into the url with url-safe-base64 encoding.
-
-    Parameters
-    ----------
-    path : path_type
-        The original OSS url.
-
-    endpoint : str
-        The endpoint of OSS.
-
-    access_key_id : str
-        The access key id of OSS.
-
-    access_key_secret : str
-        The access key secret of OSS.
-
-    security_token : str
-        The security token of OSS.
-
-    Returns
-    -------
-    path_type
-        Path include the encoded access key id, end point and
-        access key secret of oss.
-    """
-    if isinstance(path, (list, tuple)):
-        path = path[0]
-    parse_result = oc.parse_osspath(path, check_errors=False)
-    access_key_id = parse_result.access_key_id or access_key_id
-    access_key_secret = parse_result.access_key_secret or access_key_secret
-    security_token = parse_result.security_token or security_token
-
-    scheme = parse_result.scheme or "oss"
-    endpoint = _rewrite_internal_endpoint(
-        parse_result.endpoint or endpoint, host_enforce_type
-    )
-
-    if access_key_id and access_key_secret:
-        creds = f"{access_key_id}:{access_key_secret}@"
-    else:
-        creds = ""
-
-    new_path = f"{scheme}://{creds}{endpoint}/{parse_result.bucket}"
-    if parse_result.key:
-        new_path += f"/{parse_result.key}"
-    if security_token:
-        new_path += f"?{urlencode(dict(security_token=security_token))}"
-    # reparse to check errors
-    oc.parse_osspath(new_path)
-    return new_path

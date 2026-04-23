@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import numpy as np
+
 from .... import tensor as mt
+from ....core import ENTITY_TYPE, OutputType
 from ....tensor.merge.vstack import _vstack
+from ....udf import builtin_function
 from ...preprocessing import LabelEncoder
 from ...utils import check_classification_targets
 from ...utils.checks import assert_all_finite
+from ..models import to_remote_model
 from ..utils import make_import_error_func
-from .core import LGBMScikitLearnBase
+from .core import Booster, LGBMScikitLearnBase
 
 try:
     import lightgbm
@@ -33,17 +38,43 @@ else:
     class LGBMClassifier(LGBMScikitLearnBase, lightgbm.LGBMClassifier):
         _default_objective = "binary"
 
+        @staticmethod
+        @builtin_function
+        def _extract_clf_booster(model, array_module=np):
+            if isinstance(model, lightgbm.LGBMModel):
+                bst = model.booster_
+                if getattr(model, "_le", None) is not None:
+                    le_classes = array_module.array(model._le.classes_)
+                else:
+                    le_classes = array_module.arange(bst.params.get("num_class", 2))
+            elif isinstance(model, lightgbm.Booster):
+                bst = model
+                le_classes = array_module.arange(model.params.get("num_class", 2))
+            else:
+                bst, le_classes = None, None
+            return bst, le_classes
+
         def __init__(self, *args, **kwargs):
-            if args:
-                if (
-                    isinstance(args[0], lightgbm.LGBMClassifier)
-                    and getattr(args[0], "_le", None) is not None
-                ):
+            if args and isinstance(args[0], ENTITY_TYPE):
+                booster = args[0]
+                extra_kw = {
+                    "output_type": OutputType.tensor,
+                    "shape": (np.nan,),
+                    "dtype": np.dtype("O"),
+                }
+                self._le = LabelEncoder()
+                self._Booster, self._le.classes_ = to_remote_model(
+                    booster,
+                    model_cls=Booster,
+                    extractor=self._extract_clf_booster,
+                    extra_kws=[extra_kw],
+                )
+                self._objective = self._default_objective
+            elif args:
+                bst, le_classes = self._extract_clf_booster(args[0], array_module=mt)
+                if bst is not None:
                     self._le = LabelEncoder()
-                    self._le.classes_ = mt.array(args[0]._le.classes_)
-                elif isinstance(args[0], lightgbm.Booster):
-                    self._le = LabelEncoder()
-                    self._le.classes_ = mt.arange(args[0].params.get("num_class", 2))
+                    self._le.classes_ = le_classes
             super().__init__(*args, **kwargs)
 
         def fit(
@@ -53,7 +84,6 @@ else:
             *,
             sample_weight=None,
             init_score=None,
-            group=None,
             eval_set=None,
             eval_names=None,
             eval_sample_weight=None,
@@ -129,6 +159,7 @@ else:
                 eval_names=eval_names,
                 eval_sample_weight=eval_sample_weight,
                 eval_init_score=eval_init_score,
+                eval_group=eval_group,
                 eval_metric=eval_metric,
                 early_stopping_rounds=early_stopping_rounds,
                 verbose=verbose,

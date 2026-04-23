@@ -79,21 +79,23 @@ msgstr ""
 
 #: maxframe.dataframe.merge.merge.join:17 of
 msgid "How to handle the operation of the two objects."
-msgstr ""
+msgstr "如何处理两个对象的操作。"
 
 #: maxframe.dataframe.merge.merge.join:19 of
 msgid "left: use calling frame's index (or column if on is specified)"
-msgstr ""
+msgstr "left: 使用调用框架的索引（或如果指定了 on 则使用列）"
 
 #: maxframe.dataframe.merge.merge.join:20 of
 msgid "right: use `other`'s index."
-msgstr ""
+msgstr "right: 使用 `other` 的索引。"
 
 #: maxframe.dataframe.merge.merge.join:21 of
 msgid ""
 "outer: form union of calling frame's index (or column if on is specified)"
 " with `other`'s index, and sort it. lexicographically."
 msgstr ""
+"outer: 形成调用框架的索引（或如果指定了 on 则使用列）与 `other` 索引的并"
+"集，并按字典序排序。"
 
 #: maxframe.dataframe.merge.merge.join:24 of
 msgid ""
@@ -101,6 +103,8 @@ msgid ""
 "specified) with `other`'s index, preserving the order of the calling's "
 "one."
 msgstr ""
+"inner: 形成调用框架的索引（或如果指定了 on 则使用列）与 `other` 索引的"
+"交集，保持调用框架的顺序。"
 
 #: maxframe.dataframe.merge.merge.join:28 of
 msgid "Suffix to use from left frame's overlapping columns."
@@ -140,23 +144,23 @@ msgstr ""
 
 #: maxframe.dataframe.merge.merge.join:39 of
 msgid "Auto merge small chunks before or after merge"
-msgstr ""
+msgstr "在合并之前或之后自动合并小块"
 
 #: maxframe.dataframe.merge.merge.join:41 of
 msgid "\"both\": auto merge small chunks before and after,"
-msgstr ""
+msgstr "\"both\": 在合并之前和之后自动合并小块，"
 
 #: maxframe.dataframe.merge.merge.join:42 of
 msgid "\"none\": do not merge small chunks"
-msgstr ""
+msgstr "\"none\": 不合并小块"
 
 #: maxframe.dataframe.merge.merge.join:43 of
 msgid "\"before\": only merge small chunks before merge"
-msgstr ""
+msgstr "\"before\": 仅在合并之前合并小块"
 
 #: maxframe.dataframe.merge.merge.join:44 of
 msgid "\"after\": only merge small chunks after merge"
-msgstr ""
+msgstr "\"after\": 仅在合并之后合并小块"
 
 #: maxframe.dataframe.merge.merge.join:46 of
 msgid ""

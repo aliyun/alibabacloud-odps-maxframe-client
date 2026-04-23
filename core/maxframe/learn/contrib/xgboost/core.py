@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ try:
 except ImportError:  # pragma: no cover
     xgboost = None
 
-from ....core import OutputType, enter_mode, is_kernel_mode
+from ....core import ENTITY_TYPE, OutputType, enter_mode, is_kernel_mode
 from ...utils.odpsio import ODPSModelMixin, ReadODPSModel
 from ..models import ModelApplyChunk, ModelWithEval, ModelWithEvalData, to_remote_model
 from .dmatrix import DMatrix
@@ -170,17 +170,26 @@ else:
         Base class for implementing scikit-learn interface
         """
 
+        @staticmethod
+        @builtin_function
+        def _extract_booster(xgb_model):
+            if isinstance(xgb_model, xgboost.XGBModel):
+                return xgb_model.get_booster()
+            elif isinstance(xgb_model, xgboost.Booster):
+                return xgb_model
+            return None
+
         def _set_model(
             self, xgb_model: Union[xgboost.XGBModel, xgboost.Booster] = None
         ):
-            booster = None
-            if isinstance(xgb_model, xgboost.XGBModel):
-                booster = xgb_model.get_booster()
-            elif isinstance(xgb_model, xgboost.Booster):
-                booster = xgb_model
-
-            if booster is not None:
-                self._Booster = to_remote_model(booster, model_cls=Booster)
+            if isinstance(xgb_model, ENTITY_TYPE):
+                self._Booster = to_remote_model(
+                    xgb_model, model_cls=Booster, extractor=self._extract_booster
+                )
+            else:
+                booster = self._extract_booster(xgb_model)
+                if booster is not None:
+                    self._Booster = to_remote_model(booster, model_cls=Booster)
 
         @classmethod
         def _get_param_names(cls):

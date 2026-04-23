@@ -101,7 +101,7 @@ msgstr ""
 
 #: maxframe.learn.metrics.pairwise.euclidean.euclidean_distances:40 of
 msgid "**distances**"
-msgstr ""
+msgstr "**距离**"
 
 #: ../../source/reference/learn/generated/maxframe.learn.metrics.pairwise.euclidean_distances.rst
 msgid "返回类型"

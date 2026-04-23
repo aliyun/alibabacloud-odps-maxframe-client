@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,20 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
 from typing import List
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 
 from .... import opcodes
+from ....config import options
 from ....core import EntityData, OutputType
+from ....lib.dtypes_extension import ArrowDtype
 from ....serialization.serializables import DictField, KeyField, StringField, TupleField
 from ....tensor import tensor as astensor
 from ....tensor.core import TENSOR_TYPE
+from ....utils import wrap_arrow_dtype
 from ...core import SERIES_TYPE
 from ...initializer import Series as asseries
 from ...operators import DataFrameOperator, DataFrameOperatorMixin
-from ...utils import build_empty_series, build_series, infer_index_value, parse_index
+from ...utils import build_series, infer_index_value, parse_index
 
 
 class SeriesStringMethod(DataFrameOperator, DataFrameOperatorMixin):
@@ -58,6 +63,37 @@ class SeriesStringMethod(DataFrameOperator, DataFrameOperatorMixin):
 
 
 class SeriesStringMethodBaseHandler:
+    @staticmethod
+    def _get_mock_method_dtype(in_dtype, method: str, *args, **kwargs):
+        dummy_series = build_series(pd.Series([], dtype=in_dtype))
+        if isinstance(in_dtype, ArrowDtype):
+            dummy_series = dummy_series.astype("O")
+        ret_series = getattr(dummy_series.str, method)(*args, **kwargs)
+        if isinstance(in_dtype, ArrowDtype):
+            ret_arrow = pa.array(ret_series)
+            ret_series = pd.Series(ret_arrow, dtype=wrap_arrow_dtype(ret_arrow.type))
+        return ret_series.dtype
+
+    @staticmethod
+    @functools.lru_cache(maxsize=128)
+    def _get_cached_method_dtype(in_dtype, method: str):
+        return SeriesStringMethodBaseHandler._get_mock_method_dtype(in_dtype, method)
+
+    @classmethod
+    def _get_method_dtype(cls, in_dtype, method: str, *args, **kwargs):
+        if method == "encode":
+            return wrap_arrow_dtype(pa.binary())
+        elif method == "decode":
+            return (
+                wrap_arrow_dtype(pa.string())
+                if options.dataframe.dtype_backend == "pyarrow"
+                else np.dtype("object")
+            )
+
+        if not args and not kwargs:
+            return cls._get_cached_method_dtype(in_dtype, method)
+        return cls._get_mock_method_dtype(in_dtype, method, *args, **kwargs)
+
     @classmethod
     def call(cls, op: SeriesStringMethod, inp):
         if op.method == "__getitem__":
@@ -70,10 +106,9 @@ class SeriesStringMethodBaseHandler:
             op.method_args = ()
             op.method_kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
-        empty_series = build_empty_series(inp.dtype)
-        dtype = getattr(empty_series.str, op.method)(
-            *op.method_args, **op.method_kwargs
-        ).dtype
+        dtype = cls._get_method_dtype(
+            inp.dtype, op.method, *op.method_args, **op.method_kwargs
+        )
         return op.new_series(
             [inp],
             shape=inp.shape,
@@ -216,11 +251,12 @@ string_method_to_handlers["cat"] = SeriesStringCatHandler
 string_method_to_handlers["extract"] = SeriesStringExtractHandler
 string_method_to_handlers["extractall"] = SeriesStringExtractHandler
 # then come to the normal methods
-for method in dir(pd.Series.str):
-    if method.startswith("_") and method != "__getitem__":
+for _method in dir(pd.Series.str):
+    if _method.startswith("_") and _method != "__getitem__":
         continue
-    if method in _not_implements:
+    if _method in _not_implements:
         continue
-    if method in string_method_to_handlers:
+    if _method in string_method_to_handlers:
         continue
-    string_method_to_handlers[method] = SeriesStringMethodBaseHandler
+    string_method_to_handlers[_method] = SeriesStringMethodBaseHandler
+del _method

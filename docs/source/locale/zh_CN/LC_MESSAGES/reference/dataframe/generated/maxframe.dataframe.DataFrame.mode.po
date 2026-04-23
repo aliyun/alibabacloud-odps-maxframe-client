@@ -42,6 +42,8 @@ msgid ""
 "The axis to iterate over while searching for the mode:  * 0 or 'index' : "
 "get mode of each column * 1 or 'columns' : get mode of each row."
 msgstr ""
+"搜索众数时要迭代的轴：* 0 或 'index'：获取每列的众数 * 1 或 'columns'："
+"获取每行的众数。"
 
 #: maxframe.dataframe.reduction.mode.mode_dataframe:6 of
 msgid "The axis to iterate over while searching for the mode:"

@@ -11,6 +11,7 @@ from ...wrapped_pickle import switch_unpickle
 try:
     from pandas import ArrowDtype  # noqa: F401
 
+    ArrowDtype(pa.string())
     pytestmark = pytest.mark.skip("Only test when ArrowDtype not available in pandas")
 except ImportError:
     from .._fake_arrow_dtype import FakeArrowDtype, to_pyarrow_type

@@ -19,12 +19,12 @@ import pytest
 
 from ...... import dataframe as md
 from ......lib.dtypes_extension import dict_
-from ......utils import ARROW_DTYPE_NOT_SUPPORTED, wrap_arrow_dtype
+from ......utils import is_arrow_dtype_supported, wrap_arrow_dtype
 from ....core import SPECodeContext
 from ...accessors.dict_ import SeriesDictMethodAdapter
 
 pytestmark = pytest.mark.skipif(
-    ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported"
+    not is_arrow_dtype_supported(), reason="Arrow Dtype is not supported"
 )
 
 
@@ -92,7 +92,6 @@ var_1.name = 'k1'
     pd.testing.assert_series_equal(expected_series, local_vars["var_1"])
 
 
-@pytest.mark.skipif(ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported")
 def test_getitem_with_default_value(md_df_1, pd_df_1):
     s1 = md_df_1["A"].dict.get("k2", 9)
     context = SPECodeContext()
@@ -197,7 +196,6 @@ var_1 = var_0.map(_inner_set, na_action="ignore").astype(const_0)
     pd.testing.assert_series_equal(expected_series, local_vars["var_1"])
 
 
-@pytest.mark.skipif(ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported")
 def test_length(md_df_1, pd_df_1):
     s1 = md_df_1["A"].dict.len()
     context = SPECodeContext()
@@ -252,7 +250,6 @@ var_1 = var_0.map(_inner_remove, na_action="ignore").astype(const_0)
     pd.testing.assert_series_equal(expected_series, local_vars["var_1"])
 
 
-@pytest.mark.skipif(ARROW_DTYPE_NOT_SUPPORTED, reason="Arrow Dtype is not supported")
 def test_remove_with_key_error(md_df_1, pd_df_1):
     s1 = md_df_1["A"].dict.remove("k2", ignore_key_error=False)
     context = SPECodeContext()

@@ -62,16 +62,15 @@ msgstr ""
 
 #: maxframe.dataframe.merge.update.df_update:13 of
 msgid "How to handle non-NA values for overlapping keys:"
-msgstr ""
+msgstr "如何处理重叠键的非NA值："
 
 #: maxframe.dataframe.merge.update.df_update:15 of
 msgid "True: overwrite original DataFrame's values with values from `other`."
-msgstr ""
+msgstr "True：用`other`的值覆盖原始DataFrame的值。"
 
 #: maxframe.dataframe.merge.update.df_update:17 of
-#, fuzzy
 msgid "False: only update values that are NA in the original DataFrame."
-msgstr "如果 `other` 包含 NaN，则原始 DataFrame 中对应的值不会被更新。"
+msgstr "False：仅更新原始DataFrame中为NA的值。"
 
 #: maxframe.dataframe.merge.update.df_update:20 of
 msgid ""

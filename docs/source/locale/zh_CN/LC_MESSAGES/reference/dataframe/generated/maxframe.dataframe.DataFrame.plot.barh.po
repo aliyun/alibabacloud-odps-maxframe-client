@@ -88,22 +88,22 @@ msgstr ""
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:15
 #: of
 msgid "The color for each of the DataFrame's columns. Possible values are:"
-msgstr ""
+msgstr "DataFrame各列的颜色。可能的值包括："
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:17
 #: of
 msgid "A single color string referred to by name, RGB or RGBA code,"
-msgstr ""
+msgstr "通过名称、RGB或RGBA代码引用的单个颜色字符串，"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:18
 #: of
 msgid "for instance 'red' or '#a98d19'."
-msgstr ""
+msgstr "例如 'red' 或 '#a98d19'。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:20
 #: of
 msgid "A sequence of color strings referred to by name, RGB or RGBA"
-msgstr ""
+msgstr "通过名称、RGB或RGBA代码引用的颜色字符串序列"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:21
 #: of
@@ -113,16 +113,18 @@ msgid ""
 "alternatively. If there is only a single column to be plotted, then only "
 "the first color from the color list will be used."
 msgstr ""
+"代码，将递归地用于每一列。例如 ['green','yellow']，每个列的条形将交替填充"
+"绿色或黄色。如果只有一列要绘制，则只使用颜色列表中的第一个颜色。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:27
 #: of
 msgid "A dict of the form {column name"
-msgstr ""
+msgstr "一个 {列名"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:-1
 #: of
 msgid "color}, so that each column will be"
-msgstr ""
+msgstr "颜色} 形式的字典，这样每一列都将"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:28
 #: of
@@ -132,6 +134,8 @@ msgid ""
 " then passing {'a': 'green', 'b': 'red'} will color bars for column `a` "
 "in green and bars for column `b` in red."
 msgstr ""
+"被相应地着色。例如，如果您的列名为 `a` 和 `b`，那么传递 {'a': 'green', 'b"
+"': 'red'} 将使列 `a` 的条形为绿色，列 `b` 的条形为红色。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:32
 #: of
@@ -232,7 +236,7 @@ msgstr ""
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:46
 #: of
 msgid "Basic example"
-msgstr ""
+msgstr "基本示例"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.barh.rst:7
 msgid ""
@@ -243,9 +247,8 @@ msgstr ""
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:56
 #: of
-#, fuzzy
 msgid "Plot a whole DataFrame to a horizontal bar plot"
-msgstr "制作一个水平条形图。"
+msgstr "将整个DataFrame绘制为水平条形图"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.barh.rst:7
 msgid ""
@@ -257,7 +260,7 @@ msgstr ""
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:69
 #: of
 msgid "Plot stacked barh charts for the DataFrame"
-msgstr ""
+msgstr "为DataFrame绘制堆叠的水平条形图"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.barh.rst:7
 msgid ""
@@ -269,7 +272,7 @@ msgstr ""
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:76
 #: of
 msgid "We can specify colors for each column"
-msgstr ""
+msgstr "我们可以为每一列指定颜色"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.barh.rst:7
 msgid ""
@@ -280,9 +283,8 @@ msgstr ""
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:83
 #: of
-#, fuzzy
 msgid "Plot a column of the DataFrame to a horizontal bar plot"
-msgstr "制作一个水平条形图。"
+msgstr "将DataFrame的一列绘制为水平条形图"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.barh.rst:7
 msgid ""
@@ -294,7 +296,7 @@ msgstr ""
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:96
 #: of
 msgid "Plot DataFrame versus the desired column"
-msgstr ""
+msgstr "针对所需列绘制DataFrame"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.plot.barh.rst:7
 msgid ""

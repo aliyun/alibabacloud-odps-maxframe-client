@@ -1,0 +1,115 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.5.0.dev924+br.g1188c6954.d20260107\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-10 10:53+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.DataFrameGroupBy.rank.rst:2
+msgid "maxframe.dataframe.groupby.DataFrameGroupBy.rank"
+msgstr ""
+
+#: maxframe.dataframe.groupby.rank.rank:1 of
+msgid "Provide the rank of values within each group."
+msgstr "提供每组内值的排名。"
+
+#: maxframe.dataframe.groupby.rank.rank of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.groupby.rank.rank:3 of
+msgid ""
+"* average: average rank of group. * min: lowest rank in group. * max: "
+"highest rank in group. * first: ranks assigned in order they appear in "
+"the array. * dense: like 'min', but rank always increases by 1 between "
+"groups."
+msgstr ""
+"* average: 组内平均排名。 * min: 组内最低排名。 * max: 组内最高排名。 * "
+"first: 按照在数组中出现的顺序分配排名。 * dense: 类似'min'，但组间排名"
+"总是增加1。"
+
+#: maxframe.dataframe.groupby.rank.rank:4 of
+msgid "average: average rank of group."
+msgstr "average: 组内平均排名。"
+
+#: maxframe.dataframe.groupby.rank.rank:5 of
+msgid "min: lowest rank in group."
+msgstr "min: 组内最低排名。"
+
+#: maxframe.dataframe.groupby.rank.rank:6 of
+msgid "max: highest rank in group."
+msgstr "max: 组内最高排名。"
+
+#: maxframe.dataframe.groupby.rank.rank:7 of
+msgid "first: ranks assigned in order they appear in the array."
+msgstr "first: 按照在数组中出现的顺序分配排名。"
+
+#: maxframe.dataframe.groupby.rank.rank:8 of
+msgid "dense: like 'min', but rank always increases by 1 between groups."
+msgstr "dense: 类似'min'，但组间排名总是增加1。"
+
+#: maxframe.dataframe.groupby.rank.rank:10 of
+msgid "False for ranks by high (1) to low (N)."
+msgstr "False表示从高(1)到低(N)排名。"
+
+#: maxframe.dataframe.groupby.rank.rank:12 of
+msgid ""
+"* keep: leave NA values where they are. * top: smallest rank if "
+"ascending. * bottom: smallest rank if descending."
+msgstr ""
+"* keep: 保留NA值在原位置。 * top: 如果升序则为最小排名。 * bottom: 如果"
+"降序则为最小排名。"
+
+#: maxframe.dataframe.groupby.rank.rank:13 of
+msgid "keep: leave NA values where they are."
+msgstr "keep: 保留NA值在原位置。"
+
+#: maxframe.dataframe.groupby.rank.rank:14 of
+msgid "top: smallest rank if ascending."
+msgstr "top: 如果升序则为最小排名。"
+
+#: maxframe.dataframe.groupby.rank.rank:15 of
+msgid "bottom: smallest rank if descending."
+msgstr "bottom: 如果降序则为最小排名。"
+
+#: maxframe.dataframe.groupby.rank.rank:17 of
+msgid "Compute percentage rank of data within each group."
+msgstr "计算每组内数据的百分比排名。"
+
+#: maxframe.dataframe.groupby.rank.rank of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.groupby.rank.rank:24 of
+msgid ":py:obj:`Series.groupby`"
+msgstr ""
+
+#: maxframe.dataframe.groupby.rank.rank:25 of
+msgid "Apply a function groupby to a Series."
+msgstr "对Series应用groupby函数。"
+
+#: maxframe.dataframe.groupby.rank.rank:27 of
+msgid ":py:obj:`DataFrame.groupby`"
+msgstr ""
+
+#: maxframe.dataframe.groupby.rank.rank:28 of
+msgid "Apply a function groupby to each row or column of a DataFrame."
+msgstr "对DataFrame的每一行或每一列应用groupby函数。"
+
+#: maxframe.dataframe.groupby.rank.rank:31 of
+msgid "示例"
+msgstr ""
+

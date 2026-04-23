@@ -58,7 +58,7 @@ msgstr ""
 
 #: maxframe.learn.cluster._kmeans.KMeans:8 of
 msgid "Method for initialization, defaults to 'k-means||':"
-msgstr ""
+msgstr "初始化方法，默认为 'k-means||'："
 
 #: maxframe.learn.cluster._kmeans.KMeans:10 of
 msgid ""
@@ -66,22 +66,24 @@ msgid ""
 "smart way to speed up convergence. See section Notes in k_init for more "
 "details."
 msgstr ""
+"'k-means++' : 以智能方式选择 k-means 聚类的初始聚类中心以加速收敛。更多"
+"详细信息请参见 k_init 中的 Notes 部分。"
 
 #: maxframe.learn.cluster._kmeans.KMeans:14 of
 msgid "'k-means||': scalable k-means++."
-msgstr ""
+msgstr "'k-means||': 可扩展的 k-means++。"
 
 #: maxframe.learn.cluster._kmeans.KMeans:16 of
 msgid ""
 "'random': choose k observations (rows) at random from data for the "
 "initial centroids."
-msgstr ""
+msgstr "'random': 从数据中随机选择 k 个观测值（行）作为初始质心。"
 
 #: maxframe.learn.cluster._kmeans.KMeans:19 of
 msgid ""
 "If a tensor is passed, it should be of shape (n_clusters, n_features) and"
 " gives the initial centers."
-msgstr ""
+msgstr "如果传入张量，它应该是 (n_clusters, n_features) 形状，并给出初始中心。"
 
 #: maxframe.learn.cluster._kmeans.KMeans:22 of
 msgid ""

@@ -18,6 +18,7 @@ import pytest
 
 from .....utils.odpsio import ReadODPSModel
 from ...core import TASK_SENTENCE_EMBEDDING, TASK_TEXT_GENERATION
+from ...deploy.config import REASONING_MODEL_KEY
 from ..managed import ManagedTextEmbeddingModel, ManagedTextGenLLM
 from ..odps import (
     _ODPS_PROP_CPU,
@@ -31,6 +32,7 @@ from ..odps import (
     ODPS_PROP_ACCESS_KEY_ID,
     ODPS_PROP_ACCESS_KEY_SECRET,
     ODPS_PROP_INFERENCE_PARAMETERS,
+    ODPS_PROP_REASONING_MODE,
     ODPS_PROP_ROLE_ARN,
     ODPS_PROP_SOURCE_TYPE_KEY,
     ODPS_PROP_TYPE_KEY,
@@ -357,3 +359,97 @@ def test_properties_and_metadata():
     # Properties always use snake_case keys
     assert props[ODPS_PROP_ACCESS_KEY_ID] == "myak"
     assert props[ODPS_PROP_ACCESS_KEY_SECRET] == "mysk"
+
+
+# Test 5: Parameter type coercion and reasoning_mode handling
+@pytest.mark.parametrize(
+    "scope_config,expected_reasoning,expected_gu,expected_cpu",
+    [
+        # reasoning_mode="false" should be False (not True like bool("false"))
+        (
+            {
+                _ODPS_PROP_GU: 1,
+                _ODPS_PROP_FRAMEWORK: "VLLM_SERVE:TEXT",
+                _ODPS_PROP_DEVICE: "cuda",
+                ODPS_PROP_REASONING_MODE: "false",
+            },
+            False,
+            1,
+            None,
+        ),
+        # reasoning_mode="true" -> True
+        (
+            {
+                _ODPS_PROP_GU: 1,
+                _ODPS_PROP_FRAMEWORK: "VLLM_SERVE:TEXT",
+                _ODPS_PROP_DEVICE: "cuda",
+                ODPS_PROP_REASONING_MODE: "true",
+            },
+            True,
+            1,
+            None,
+        ),
+        # reasoning_mode=False needs is not None check to be stored
+        (
+            {
+                _ODPS_PROP_GU: 1,
+                _ODPS_PROP_FRAMEWORK: "VLLM_SERVE:TEXT",
+                _ODPS_PROP_DEVICE: "cuda",
+                ODPS_PROP_REASONING_MODE: False,
+            },
+            False,
+            1,
+            None,
+        ),
+        # reasoning_mode=0 needs is not None check to be stored as False
+        (
+            {
+                _ODPS_PROP_GU: 1,
+                _ODPS_PROP_FRAMEWORK: "VLLM_SERVE:TEXT",
+                _ODPS_PROP_DEVICE: "cuda",
+                ODPS_PROP_REASONING_MODE: 0,
+            },
+            False,
+            1,
+            None,
+        ),
+        # cpu/gu string numbers converted to int
+        (
+            {
+                _ODPS_PROP_GU: "8",
+                _ODPS_PROP_FRAMEWORK: "VLLM_SERVE:TEXT",
+                _ODPS_PROP_DEVICE: "cuda",
+                _ODPS_PROP_CPU: "4",
+            },
+            None,
+            8,
+            4,
+        ),
+    ],
+    ids=[
+        "reasoning-mode-string-false",
+        "reasoning-mode-string-true",
+        "reasoning-mode-bool-False",
+        "reasoning-mode-int-0",
+        "cpu-gu-string-to-int",
+    ],
+)
+def test_parameter_type_coercion(
+    scope_config, expected_reasoning, expected_gu, expected_cpu
+):
+    """Test parameter type coercion: reasoning_mode strings, cpu/gu string->int."""
+    op = _make_op(
+        options={_SCOPE_MAXFRAME: scope_config},
+        tasks=[TASK_TEXT_GENERATION],
+    )
+    result = ODPSLLM._build_odps_source_model(op)
+    assert isinstance(result, ManagedTextGenLLM)
+    assert result.deploy_config.required_gu == expected_gu
+    assert result.deploy_config.required_cpu == expected_cpu
+    if expected_reasoning is not None:
+        assert (
+            result.deploy_config.properties.get(REASONING_MODEL_KEY)
+            == expected_reasoning
+        )
+    else:
+        assert REASONING_MODEL_KEY not in result.deploy_config.properties

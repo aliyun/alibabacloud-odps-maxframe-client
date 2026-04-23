@@ -26,6 +26,7 @@ from .... import tensor as mt
 from ....config import option_context, options
 from ....core import OutputType
 from ....lib.dtypes_extension import ArrowBlobType, dict_, list_
+from ....tests.utils import require_arrow_dtype
 from ....utils import pd_release_version, wrap_arrow_dtype
 from ..schema import (
     arrow_schema_to_odps_schema,
@@ -552,10 +553,7 @@ def test_table_meta_with_datetime(set_dtype_backend):
     assert schema.columns[1].type == odps_types.datetime
 
 
-@pytest.mark.skipif(
-    pa is None or not hasattr(pd, "ArrowDtype"),
-    reason="pandas doesn't support ArrowDtype",
-)
+@require_arrow_dtype
 def test_pandas_types_to_arrow_schema():
     pd_data = pd.DataFrame(
         {

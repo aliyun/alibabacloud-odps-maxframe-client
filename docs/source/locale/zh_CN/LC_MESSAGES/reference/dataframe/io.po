@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-04 13:26+0800\n"
+"POT-Creation-Date: 2026-02-10 19:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -55,7 +55,7 @@ msgstr "平面文件"
 #: ../../source/reference/dataframe/io.rst:22:<autosummary>:1
 msgid ""
 ":py:obj:`read_csv <maxframe.dataframe.read_csv>`\\ \\(path\\, \\*\\[\\, "
-"names\\, sep\\, index\\_col\\, ...\\]\\)"
+"names\\, index\\_col\\, ...\\]\\)"
 msgstr ""
 
 #: ../../source/reference/dataframe/io.rst:22:<autosummary>:1
@@ -157,8 +157,8 @@ msgstr ""
 
 #: ../../source/reference/dataframe/io.rst:55:<autosummary>:1
 msgid ""
-":py:obj:`read_parquet <maxframe.dataframe.read_parquet>`\\ \\(path\\[\\, "
-"engine\\, columns\\, ...\\]\\)"
+":py:obj:`read_parquet <maxframe.dataframe.read_parquet>`\\ \\(path\\, "
+"engine\\, columns\\, ...\\[\\, ...\\]\\)"
 msgstr ""
 
 #: ../../source/reference/dataframe/io.rst:55:<autosummary>:1

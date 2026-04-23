@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict, List, NamedTuple, Optional, Set
+from typing import Any, Dict, List, NamedTuple, Optional, Set, Union
 
 from odps import ODPS
+from odps.models import Resource as ODPSResource
 
 from ... import opcodes
 from ...core import ENTITY_TYPE, EntityData, OutputType
@@ -76,6 +77,20 @@ class ReadODPSModel(ObjectOperator, LearnOperatorMixin):
         )
 
 
+class ReadODPSResource(ObjectOperator, LearnOperatorMixin):
+    _op_type_ = opcodes.READ_ODPS_RESOURCE
+
+    resource_path = StringField("resource_path", default=None)
+    load_method = StringField("load_method", default=None)
+
+    def has_custom_code(self) -> bool:
+        return True
+
+    def __call__(self):
+        self._output_types = [OutputType.object]
+        return self.new_tileable([], shape=())
+
+
 class ToODPSModel(ObjectOperator, LearnOperatorMixin):
     _op_type_ = opcodes.TO_ODPS_MODEL
 
@@ -110,6 +125,9 @@ class ToODPSModel(ObjectOperator, LearnOperatorMixin):
         param_pos = int(has_training_info)
         replaces = dict(zip(tileables, inputs[param_pos:]))
         [op.params] = replace_objects([op.params], replaces)
+
+    def can_fuse_with_custom_code(self) -> bool:
+        return False
 
     def __call__(self, training_info, params):
         inputs = []
@@ -282,5 +300,33 @@ def read_odps_model(
         options=getattr(model_obj, "options", None) or {},
         tasks=getattr(model_obj, "tasks", None) or [],
         inference_parameters=getattr(model_obj, "inference_parameters", None) or {},
+    )
+    return op()
+
+
+def read_odps_resource(
+    resource: Union[str, ODPSResource],
+    load_method: Optional[str] = "pickle",
+    odps_entry: ODPS = None,
+):
+    odps_entry = odps_entry or ODPS.from_global() or ODPS.from_environments()
+    if not isinstance(resource, ODPSResource):
+        resource = odps_entry.get_resource(resource)
+
+    schema_name = resource.schema.name if resource.schema else None
+    if odps_entry.is_schema_namespace_enabled():
+        schema_name = schema_name or odps_entry.schema or "default"
+    full_res_name = ODPSResource.build_full_resource_name(
+        resource.name, resource.project.name, schema_name
+    )
+
+    if load_method and load_method not in ("pickle", "joblib"):
+        raise ValueError(
+            f"load_method must be one of 'pickle' or 'joblib', got {load_method}"
+        )
+
+    op = ReadODPSResource(
+        resource_path=full_res_name,
+        load_method=load_method,
     )
     return op()

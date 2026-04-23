@@ -96,14 +96,17 @@ msgid ""
 "specified, in which case it will be in Fortran order (column major). If "
 "object is an array the following holds."
 msgstr ""
+"指定数组的内存布局。如果对象不是数组，新创建的数组将是 C 顺序（行优先），"
+"除非指定 'F'，在这种情况下它将是 Fortran 顺序（列优先）。如果对象是数组，"
+"则以下条件成立。"
 
 #: maxframe.tensor.datasource.array.array:22 of
 msgid "order"
-msgstr ""
+msgstr "顺序"
 
 #: maxframe.tensor.datasource.array.array:22 of
 msgid "no copy"
-msgstr ""
+msgstr "不复制"
 
 #: maxframe.tensor.datasource.array.array:22 of
 msgid "copy=True"
@@ -116,11 +119,11 @@ msgstr ""
 #: maxframe.tensor.datasource.array.array:24
 #: maxframe.tensor.datasource.array.array:25 of
 msgid "unchanged"
-msgstr ""
+msgstr "不变"
 
 #: maxframe.tensor.datasource.array.array:24 of
 msgid "F & C order preserved, otherwise most similar order"
-msgstr ""
+msgstr "F 和 C 顺序被保留，否则为最相似的顺序"
 
 #: maxframe.tensor.datasource.array.array:25 of
 msgid "'A'"
@@ -128,7 +131,7 @@ msgstr ""
 
 #: maxframe.tensor.datasource.array.array:25 of
 msgid "F order if input is F and not C, otherwise C order"
-msgstr ""
+msgstr "如果输入是 F 且不是 C 则为 F 顺序，否则为 C 顺序"
 
 #: maxframe.tensor.datasource.array.array:26 of
 msgid "'C'"
@@ -136,7 +139,7 @@ msgstr ""
 
 #: maxframe.tensor.datasource.array.array:26 of
 msgid "C order"
-msgstr ""
+msgstr "C 顺序"
 
 #: maxframe.tensor.datasource.array.array:27 of
 msgid "'F'"
@@ -144,7 +147,7 @@ msgstr ""
 
 #: maxframe.tensor.datasource.array.array:27 of
 msgid "F order"
-msgstr ""
+msgstr "F 顺序"
 
 #: maxframe.tensor.datasource.array.array:30 of
 msgid ""
@@ -152,6 +155,8 @@ msgid ""
 "the same as if ``copy=True``, with some exceptions for `A`, see the Notes"
 " section. The default order is 'K'."
 msgstr ""
+"当 ``copy=False`` 且由于其他原因进行了复制时，结果与 ``copy=True`` 相同，"
+"对于 `A` 有一些例外情况，请参见注释部分。默认顺序是 'K'。"
 
 #: maxframe.tensor.datasource.array.array:34 of
 msgid ""

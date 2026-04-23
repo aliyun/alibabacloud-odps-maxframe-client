@@ -492,6 +492,10 @@ default_options.register_option(
 default_options.register_option(
     "session.client_version", None, validator=is_null | is_string, remote=True
 )
+# image_name: The registered image name in MaxCompute for isolation container execution
+default_options.register_option(
+    "session.image_name", None, validator=is_null | is_string, remote=True
+)
 
 default_options.register_option("warn_duplicated_execution", False, validator=is_bool)
 default_options.register_option(

@@ -22,6 +22,7 @@ import pytest
 
 from ...config import option_context
 from ...core.operator import Operator
+from ...tests.utils import require_arrow_dtype
 from ...udf import (
     MarkedFunction,
     with_network_options,
@@ -59,7 +60,7 @@ def test_pack_function(df1):
     f = pack_func_args(df1, keep)
     assert f(df1).equals(df1)
     assert isinstance(f, MarkedFunction)
-    assert f.resources == ["a.zip"]
+    assert f.file_resources == ["a.zip"]
     assert f.vpc_network_link is None
     assert isinstance(f.internal_network_whitelist, list)
     assert isinstance(f.public_network_whitelist, list)
@@ -88,7 +89,7 @@ def test_pack_function(df1):
     f = pack_func_args(df1, times_add, 5, 6)
     assert f(df1).equals(df1 * 6 + 5)
     assert isinstance(f, MarkedFunction)
-    assert f.resources == ["a.txt"]
+    assert f.file_resources == ["a.txt"]
     assert f.pythonpacks[0].requirements == ("pandas",)
     assert f.vpc_network_link is None
     assert isinstance(f.internal_network_whitelist, list)
@@ -171,8 +172,8 @@ def test_copy_func_scheduling_hints():
     op2 = Operator()
     copy_func_scheduling_hints(marked_func, op2)
     assert op2.expect_engine == "DPE"
-    # The expect_resources will include default values for gpu and gu_quota
-    expected_resources = {"cpu": 4, "memory": "8GiB", "gpu": 0, "gu_quota": None}
+    # The expect_resources will include default values for gpu (gu_quota not set when None)
+    expected_resources = {"cpu": 4, "memory": "8GiB", "gpu": 0}
     assert op2.expect_resources == expected_resources
 
     # Test with MarkedFunction with GPU
@@ -185,12 +186,24 @@ def test_copy_func_scheduling_hints():
     assert op3.gpu is True
     # The expect_resources will include the gu value and default values
     # System has default options: {'cpu': 1, 'memory': '4GiB', 'gpu': 0}
-    # The with_running_options decorator will override the gpu value with the gu value
-    expected_resources = {"gpu": 2, "gu_quota": None, "cpu": 1, "memory": "4GiB"}
+    # When GPU is set, copy_func_scheduling_hints auto-sets gu_quota to
+    # [options.session.gu_quota_name] which defaults to [None]
+    expected_resources = {"gpu": 2, "gu_quota": [None], "cpu": 1, "memory": "4GiB"}
     assert op3.expect_resources == expected_resources
 
+    # Test with MarkedFunction with image_options
+    from maxframe.udf import with_image_options
 
-@pytest.mark.skipif(not hasattr(pd, "ArrowDtype"), reason="ArrowDtype not available")
+    @with_image_options(image_name="python")
+    def image_func(x):
+        return x + 1
+
+    op4 = Operator()
+    copy_func_scheduling_hints(image_func, op4)
+    assert op4.image_options == {"name": "python"}
+
+
+@require_arrow_dtype
 def test_decimal_type_inference():
     dtype1 = pd.ArrowDtype(pa.decimal128(MAX_DECIMAL128_PRECISION, 10))
     dtype2 = pd.ArrowDtype(pa.decimal128(MAX_DECIMAL128_PRECISION, 7))

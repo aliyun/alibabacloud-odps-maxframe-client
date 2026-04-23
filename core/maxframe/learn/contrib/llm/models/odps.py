@@ -24,7 +24,7 @@ from typing import Any, Dict, List, Optional, Set
 
 from ....utils.odpsio import ODPSModelMixin, ReadODPSModel, register_odps_model
 from ..core import TASK_SENTENCE_EMBEDDING, TASK_TEXT_GENERATION
-from ..deploy.config import ModelDeploymentConfig
+from ..deploy.config import REASONING_MODEL_KEY, ModelDeploymentConfig
 from ..deploy.framework import InferenceFrameworkEnum
 from .managed import ManagedTextEmbeddingModel, ManagedTextGenLLM
 
@@ -40,6 +40,7 @@ _ODPS_PROP_FRAMEWORK = "framework"
 _ODPS_PROP_DEVICE = "device"
 _ODPS_PROP_IMAGE = "image"
 
+ODPS_PROP_REASONING_MODE = "reasoning_mode"
 ODPS_PROP_VERSION_KEY = "model_version"
 ODPS_PROP_SOURCE_TYPE_KEY = "model_source_type"
 ODPS_PROP_TYPE_KEY = "model_type"
@@ -63,6 +64,7 @@ _RESERVED_KEYS = {
     _ODPS_PROP_CPU,
     _ODPS_PROP_MEMORY,
     _ODPS_PROP_IMAGE,
+    ODPS_PROP_REASONING_MODE,
     ODPS_PROP_ROLE_ARN,
     ODPS_PROP_ACCESS_KEY_ID,
     ODPS_PROP_ACCESS_KEY_SECRET,
@@ -106,13 +108,15 @@ class ODPSLLM(ODPSModelMixin):
         raise ValueError(f"{scope_name} must be a dict or JSON dict string")
 
     @classmethod
-    def _build_scoped_sources(
-        cls, options: Dict[str, Any], inference_params: Dict[str, Any]
+    def build_scoped_sources(
+        cls,
+        options: Optional[Dict[str, Any]],
+        inference_params: Optional[Dict[str, Any]],
     ) -> List[Dict[str, Any]]:
-        """Build a list of dicts to search in precedence order.
+        """Build source dicts with precedence: options -> inference_params.
 
-        Order: options(top-level) -> options[maxframe] -> options[*]
-             -> inference_params(top-level) -> inference_params[maxframe] -> inference_params[*]
+        Order: maxframe scope -> default scope -> top-level for each source.
+        Returns new dicts safe for mutation.
         """
         options = options or {}
         inference_params = inference_params or {}
@@ -122,6 +126,14 @@ class ODPSLLM(ODPSModelMixin):
             (options, "options"),
             (inference_params, "inference_parameters"),
         ]:
+            # Precedence: maxframe scope > default scope > top-level
+            sources.append(
+                cls._parse_scope_dict(src.get(_SCOPE_MAXFRAME), f"{label}['maxframe']")
+            )
+            sources.append(
+                cls._parse_scope_dict(src.get(_SCOPE_DEFAULT), f"{label}['*']")
+            )
+            # Top-level entries (exclude scope keys) - lowest priority
             sources.append(
                 {
                     k: v
@@ -129,33 +141,34 @@ class ODPSLLM(ODPSModelMixin):
                     if k not in (_SCOPE_MAXFRAME, _SCOPE_DEFAULT)
                 }
             )
-            sources.append(
-                cls._parse_scope_dict(src.get(_SCOPE_MAXFRAME), f"{label}['maxframe']")
-            )
-            sources.append(
-                cls._parse_scope_dict(src.get(_SCOPE_DEFAULT), f"{label}['*']")
-            )
         return sources
 
-    @staticmethod
-    def _get_and_pop_options(
+    @classmethod
+    def get_config_values(
+        cls,
         sources: List[Dict[str, Any]],
         keys: Set[str],
+        *,
+        pop: bool = False,
     ) -> Dict[str, Any]:
-        """Get specified options from sources by popping them.
+        """Extract config values from sources, trying camelCase then snake_case.
 
-        For each key in ``keys``, tries camelCase first then snake_case
-        in every source, keeping the first non-None value found.
-        Matched keys are removed from sources so they won't be picked
-        up again by ``_collect_load_params``.
+        Args:
+            pop: If True, remove matched keys from sources (for client cleanup).
+        Returns:
+            Dict of found values. Missing keys are not included.
         """
         result: Dict[str, Any] = {}
         for field in keys:
             camel = _snake_to_camel(field)
             for source in sources:
-                # always pop both variants from every source
-                val_camel = source.pop(camel, None)
-                val_snake = source.pop(field, None)
+                if pop:
+                    val_camel = source.pop(camel, None)
+                    val_snake = source.pop(field, None)
+                else:
+                    val_camel = source.get(camel)
+                    val_snake = source.get(field)
+
                 if field not in result:
                     picked = val_camel if val_camel is not None else val_snake
                     if picked is not None:
@@ -210,9 +223,9 @@ class ODPSLLM(ODPSModelMixin):
         source_type: Optional[str],
     ) -> ModelDeploymentConfig:
         """Build a ModelDeploymentConfig from ODPS metadata."""
-        sources = cls._build_scoped_sources(options, odps_inference_parameters)
+        sources = cls.build_scoped_sources(options, odps_inference_parameters)
 
-        reserved = cls._get_and_pop_options(sources, _RESERVED_KEYS)
+        reserved = cls.get_config_values(sources, _RESERVED_KEYS, pop=True)
         model_inference_parameters = reserved.get(ODPS_PROP_INFERENCE_PARAMETERS) or {}
 
         framework = InferenceFrameworkEnum.from_string(
@@ -222,6 +235,10 @@ class ODPSLLM(ODPSModelMixin):
         device = reserved.get(_ODPS_PROP_DEVICE)
         required_gu = reserved.get(_ODPS_PROP_GU) or reserved.get(_ODPS_PROP_GPU)
         required_cpu = reserved.get(_ODPS_PROP_CPU)
+        if required_gu:
+            required_gu = int(required_gu)
+        if required_cpu:
+            required_cpu = int(required_cpu)
 
         if not required_cpu and not required_gu:
             required_cpu = 1
@@ -252,6 +269,15 @@ class ODPSLLM(ODPSModelMixin):
             properties[ODPS_PROP_ACCESS_KEY_ID] = access_key_id
         if access_key_secret:
             properties[ODPS_PROP_ACCESS_KEY_SECRET] = access_key_secret
+
+        reasoning_mode = reserved.get(ODPS_PROP_REASONING_MODE)
+        if reasoning_mode is not None:
+            if isinstance(reasoning_mode, str):
+                properties[REASONING_MODEL_KEY] = (
+                    reasoning_mode.lower().strip() == "true"
+                )
+            else:
+                properties[REASONING_MODEL_KEY] = bool(reasoning_mode)
 
         return ModelDeploymentConfig(
             model_name=model_name,

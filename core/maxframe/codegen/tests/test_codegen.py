@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,10 +47,16 @@ def test_obj_to_python_expr(input_obj, expected_output):
 
 def test_obj_to_python_expr_custom_object():
     class CustomClass:
-        def __init__(self, a: int, b: List[int], c: Tuple[int, int]):
+        def __init__(self, a: int, b: List[int], c: Tuple[int, int], picklable=True):
             self.a = a
             self.b = b
             self.c = c
+            self.picklable = picklable
+
+        def __reduce__(self):
+            if not self.picklable:
+                raise SystemError("Intentionally to make unpicklable")
+            return object.__reduce__(self)
 
     custom_obj = CustomClass(1, [2, 3], (4, 5))
     pickle_data = wrapped_pickle.dumps(custom_obj)
@@ -59,7 +65,7 @@ def test_obj_to_python_expr_custom_object():
 
     # with class obj will not support currently
     with pytest.raises(ValueError):
-        UserCodeMixin.obj_to_python_expr(custom_obj)
+        UserCodeMixin.obj_to_python_expr(CustomClass(1, [2, 3], (4, 5), False))
 
     assert (
         UserCodeMixin.obj_to_python_expr(custom_obj_pickle_container)

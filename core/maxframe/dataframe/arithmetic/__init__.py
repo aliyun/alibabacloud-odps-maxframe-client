@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ from .arcsinh import DataFrameArcsinh
 from .arctan import DataFrameArctan
 from .arctanh import DataFrameArctanh
 from .between import between
-from .bitwise_and import DataFrameAnd, bitand, rbitand
+from .bitwise_and import DataFrameAnd, DataFrameTreeAnd, bitand, rbitand
 from .bitwise_or import DataFrameOr, DataFrameTreeOr, bitor, rbitor
 from .bitwise_xor import DataFrameXor, bitxor, rbitxor
 from .ceil import DataFrameCeil

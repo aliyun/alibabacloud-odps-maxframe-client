@@ -61,22 +61,21 @@ msgstr ""
 "则返回元组 ``condition.nonzero()``，即 `condition` 为 True 的索引。"
 
 #: maxframe.tensor.misc.where.where:14 of
-#, fuzzy
 msgid ""
 "**out** -- If both `x` and `y` are specified, the output tensor contains "
 "elements of `x` where `condition` is True, and elements from `y` "
 "elsewhere."
 msgstr ""
-"**out** -- 如果同时指定了 `x` 和 `y`，输出张量在 `condition` 为 True 的"
-"位置包含 `x` 的元素，其他位置包含 `y` 的元素。如果只提供了 `condition`，"
-"则返回元组 ``condition.nonzero()``，即 `condition` 为 True 的索引。"
+"**out** -- 如果同时指定了 `x` 和 `y`，则输出张量包含 `condition` 为 True "
+"时的 `x` 元素，以及 `condition` 为 False 时的 `y` 元素。"
 
 #: maxframe.tensor.misc.where.where:18 of
-#, fuzzy
 msgid ""
 "If only `condition` is given, return the tuple ``condition.nonzero()``, "
 "the indices where `condition` is True."
-msgstr "如果只提供了 `condition`，则返回 ``condition.nonzero()``。"
+msgstr ""
+"如果只给定 `condition`，则返回元组 ``condition.nonzero()``，即 `condition"
+"` 为 True 的索引。"
 
 #: maxframe.tensor.misc.where.where of
 msgid "返回类型"

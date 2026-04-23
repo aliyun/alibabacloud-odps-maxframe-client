@@ -31,7 +31,7 @@ import fnmatch
 import os
 import re
 
-from .common import oss_exists, oss_isdir, oss_scandir
+from .common import oss_exists, oss_isdir, oss_path_join, oss_scandir, parse_osspath
 
 __all__ = ["glob", "iglob", "escape"]
 
@@ -58,8 +58,11 @@ def iglob(pathname, *, recursive=False):
 
 
 def _iglob(pathname, recursive, dironly):
-    dirname, basename = os.path.split(pathname)
-    if not has_magic(pathname):
+    parsed_path = parse_osspath(pathname)
+    _dirname, basename = os.path.split(parsed_path.key)
+    parsed_dirname = parsed_path._replace(key=_dirname)
+    dirname = str(parsed_dirname)
+    if not has_magic(parsed_path.key):
         assert not dironly
         if basename:
             if oss_exists(pathname):
@@ -72,7 +75,7 @@ def _iglob(pathname, recursive, dironly):
     # dirname will not be None in oss path.
     #  Prevent an infinite recursion if a drive or UNC path
     # contains magic characters (i.e. r'\\?\C:').
-    if dirname != pathname and has_magic(dirname):
+    if dirname != pathname and has_magic(parsed_dirname.key):
         dirs = _iglob(dirname, recursive, True)
     else:
         dirs = [dirname]
@@ -82,7 +85,7 @@ def _iglob(pathname, recursive, dironly):
         glob_in_dir = _glob0
     for dirname in dirs:
         for name in glob_in_dir(dirname, basename, dironly):
-            yield os.path.join(dirname, name)
+            yield oss_path_join(dirname, name)
 
 
 # These 2 helper functions non-recursively glob inside a literal directory.

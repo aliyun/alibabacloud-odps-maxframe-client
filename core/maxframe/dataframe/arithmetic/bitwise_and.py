@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ import operator
 
 from ... import opcodes
 from ...utils import classproperty
-from .core import DataFrameBinopUfunc
+from .core import DataFrameArithmeticTreeOp, DataFrameBinopUfunc
 
 
 class DataFrameAnd(DataFrameBinopUfunc):
@@ -34,6 +34,14 @@ class DataFrameAnd(DataFrameBinopUfunc):
         from ...tensor.arithmetic import TensorBitand
 
         return TensorBitand
+
+
+class DataFrameTreeAnd(DataFrameArithmeticTreeOp):
+    _op_type_ = opcodes.TREE_AND
+
+    @classproperty
+    def _operator(self):
+        return operator.and_
 
 
 def bitand(df, other, axis="columns", level=None, fill_value=None):

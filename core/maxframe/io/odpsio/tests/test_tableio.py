@@ -24,10 +24,13 @@ from odps.errors import TableModified
 from odps.models import Table
 
 from ....config import options
+from ....lib.version import parse as parse_version
 from ....tests.utils import flaky, tn
 from ....utils import config_odps_default_options
 from .. import TunnelTableIO
 from ..tableio import ODPSTableIO
+
+_pyarrow_version = parse_version(pa.__version__).release
 
 
 @pytest.fixture
@@ -83,7 +86,8 @@ def test_table_io_without_parts(switch_table_io):
             )
             for i in range(100)
         ]
-        pd_data["f"] = pd.Series(date_val, dtype="datetime64[ms]").dt.tz_localize(
+        dt_type = "datetime64[ms]" if _pyarrow_version[0] >= 13 else "datetime64[ns]"
+        pd_data["f"] = pd.Series(date_val, dtype=dt_type).dt.tz_localize(
             options.local_timezone
         )
         with table_io.open_writer(no_part_table_name) as writer:

@@ -63,29 +63,29 @@ msgstr ""
 
 #: maxframe.tensor.misc.copyto.copyto:11 of
 msgid "Controls what kind of data casting may occur when copying."
-msgstr ""
+msgstr "控制复制时可能发生的数据类型转换。"
 
 #: maxframe.tensor.misc.copyto.copyto:13 of
 msgid "'no' means the data types should not be cast at all."
-msgstr ""
+msgstr "'no' 表示数据类型不应进行任何转换。"
 
 #: maxframe.tensor.misc.copyto.copyto:14 of
 msgid "'equiv' means only byte-order changes are allowed."
-msgstr ""
+msgstr "'equiv' 表示只允许字节序的改变。"
 
 #: maxframe.tensor.misc.copyto.copyto:15 of
 msgid "'safe' means only casts which can preserve values are allowed."
-msgstr ""
+msgstr "'safe' 表示只允许能够保持数值的转换。"
 
 #: maxframe.tensor.misc.copyto.copyto:16 of
 msgid ""
 "'same_kind' means only safe casts or casts within a kind, like float64 to"
 " float32, are allowed."
-msgstr ""
+msgstr "'same_kind' 表示只允许安全转换或同类内的转换，比如 float64 到 float32。"
 
 #: maxframe.tensor.misc.copyto.copyto:18 of
 msgid "'unsafe' means any data conversions may be done."
-msgstr ""
+msgstr "'unsafe' 表示可以进行任何数据转换。"
 
 #: maxframe.tensor.misc.copyto.copyto:20 of
 msgid ""

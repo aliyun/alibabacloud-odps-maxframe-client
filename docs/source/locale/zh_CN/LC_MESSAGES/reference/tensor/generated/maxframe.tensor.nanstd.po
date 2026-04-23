@@ -102,26 +102,22 @@ msgstr ""
 "。如果这些函数没有 `keepdims` 参数，则会引发 RuntimeError。"
 
 #: maxframe.tensor.reduction.nanstd.nanstd:29 of
-#, fuzzy
 msgid ""
 "If this is set to True, the axes which are reduced are left in the result"
 " as dimensions with size one. With this option, the result will broadcast"
 " correctly against the original `a`."
 msgstr ""
-"如果设置为 True，则在结果中保留被缩减的轴，其大小为 1。使用此选项时，结果"
-"将能正确广播到原始 `a`。如果该值不是默认值，则会原样传递给子类的相关函数"
-"。如果这些函数没有 `keepdims` 参数，则会引发 RuntimeError。"
+"如果设置为 True，则被约简的轴将在结果中保留为大小为一的维度。使用此选项时"
+"，结果将能够正确地与原始 `a` 进行广播。"
 
 #: maxframe.tensor.reduction.nanstd.nanstd:33 of
-#, fuzzy
 msgid ""
 "If this value is anything but the default it is passed through as-is to "
 "the relevant functions of the sub-classes.  If these functions do not "
 "have a `keepdims` kwarg, a RuntimeError will be raised."
 msgstr ""
-"如果设置为 True，则在结果中保留被缩减的轴，其大小为 1。使用此选项时，结果"
-"将能正确广播到原始 `a`。如果该值不是默认值，则会原样传递给子类的相关函数"
-"。如果这些函数没有 `keepdims` 参数，则会引发 RuntimeError。"
+"如果此值不是默认值，则将其原样传递给子类的相关函数。如果这些函数没有 `"
+"keepdims` 关键字参数，则会引发 RuntimeError。"
 
 #: maxframe.tensor.reduction.nanstd.nanstd of
 msgid "返回"

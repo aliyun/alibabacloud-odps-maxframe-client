@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -360,6 +360,7 @@ cdef class DirectedGraph:
                 if with_op_id:
                     op_key_id += f"_{id(op)}"
 
+                pred_keys = set(n.key for n in self._predecessors[node])
                 for input_chunk in (op.inputs or []):
                     if input_chunk.key not in visited:
                         sio.write(f'"Chunk:{self._gen_chunk_key(input_chunk, trunc_key)}" {chunk_style}\n')
@@ -367,8 +368,9 @@ cdef class DirectedGraph:
                     if op.key not in visited:
                         sio.write(f'"{op_name}:{op_key_id}" {operator_style}\n')
                         visited.add(op.key)
+                    line_style = "" if input_chunk.key in pred_keys else " [style=dashed,color=red]"
                     sio.write(f'"Chunk:{self._gen_chunk_key(input_chunk, trunc_key)}" -> '
-                              f'"{op_name}:{op_key_id}"\n')
+                              f'"{op_name}:{op_key_id}"{line_style}\n')
 
                 for output_chunk in (op.outputs or []):
                     if output_chunk.key not in visited:

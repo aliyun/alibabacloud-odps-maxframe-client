@@ -50,23 +50,23 @@ msgstr ""
 "histogram_bin_edges` 定义的计算最佳 bin 宽度的方法。"
 
 #: maxframe.tensor.statistics.histogram.histogram:5 of
-#, fuzzy
 msgid ""
 "If `bins` is an int, it defines the number of equal-width bins in the "
 "given range (10, by default). If `bins` is a sequence, it defines a "
 "monotonically increasing tensor of bin edges, including the rightmost "
 "edge, allowing for non-uniform bin widths."
 msgstr ""
-"如果 `bins` 是一个整数，则定义了给定范围内的等宽 bins 数量（默认为 10）。"
-"如果 `bins` 是一个序列，则定义了一个单调递增的 bin 边缘张量，包括最右边的"
-"边缘，允许非均匀的 bin 宽度。如果 `bins` 是一个字符串，则定义了由 `"
-"histogram_bin_edges` 定义的计算最佳 bin 宽度的方法。"
+"如果 `bins` 是一个整数，它定义了给定范围内的等宽箱数（默认为10）。如果 `"
+"bins` 是一个序列，它定义了一个单调递增的箱边缘张量，包括最右边的边缘，"
+"允许非均匀的箱宽。"
 
 #: maxframe.tensor.statistics.histogram.histogram:10 of
 msgid ""
 "If `bins` is a string, it defines the method used to calculate the "
 "optimal bin width, as defined by `histogram_bin_edges`."
 msgstr ""
+"如果 `bins` 是一个字符串，它定义了用于计算最佳箱宽的方法，如 `histogram_"
+"bin_edges` 所定义。"
 
 #: maxframe.tensor.statistics.histogram.histogram:13 of
 msgid ""
@@ -108,7 +108,6 @@ msgstr ""
 "质量* 函数。如果给出，将覆盖 ``normed`` 关键字。"
 
 #: maxframe.tensor.statistics.histogram.histogram:27 of
-#, fuzzy
 msgid ""
 "If ``False``, the result will contain the number of samples in each bin. "
 "If ``True``, the result is the value of the probability *density* "
@@ -117,14 +116,13 @@ msgid ""
 "unless bins of unity width are chosen; it is not a probability *mass* "
 "function."
 msgstr ""
-"如果为 ``False``，结果将包含每个 bin 中的样本数量。如果为 ``True``，结果"
-"是 bin 处的概率 *密度* 函数值，归一化为在该范围内的 *积分* 为 1。注意，"
-"只有在选择了单位宽度的 bins 时，直方图值的总和才会等于 1；它不是概率 *"
-"质量* 函数。如果给出，将覆盖 ``normed`` 关键字。"
+"如果 ``False``，结果将包含每个箱中的样本数量。如果 ``True``，结果是箱处"
+"概率*密度*函数的值，归一化使得整个范围上的*积分*为1。注意，直方图值的总和"
+"将不等于1，除非选择单位宽度的箱；它不是概率*质量*函数。"
 
 #: maxframe.tensor.statistics.histogram.histogram:34 of
 msgid "Overrides the ``normed`` keyword if given."
-msgstr ""
+msgstr "如果给定，则覆盖 ``normed`` 关键字。"
 
 #: maxframe.tensor.statistics.histogram.histogram of
 msgid "返回"

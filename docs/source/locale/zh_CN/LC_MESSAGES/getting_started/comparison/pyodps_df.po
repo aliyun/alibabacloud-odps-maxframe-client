@@ -195,7 +195,7 @@ msgstr ""
 
 #: ../../source/getting_started/comparison/pyodps_df.rst:1
 msgid "DataFrame.merge with filter"
-msgstr ""
+msgstr "DataFrame.merge 与过滤器"
 
 #: ../../source/getting_started/comparison/pyodps_df.rst:1
 msgid "DataFrame.exclude"

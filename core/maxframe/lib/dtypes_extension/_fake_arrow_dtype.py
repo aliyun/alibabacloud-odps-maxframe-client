@@ -321,6 +321,8 @@ class FakeArrowExtensionArray(ExtensionArray, NDArrayBacked):
 
 @register_extension_dtype
 class FakeArrowDtype(ExtensionDtype):
+    _is_fake = True
+
     def __new__(cls, pyarrow_dtype):
         # TODO: here we avoid returning FakeDatetimeTZArrowDtype to make
         #  the behavior of timestamp consistent with other types when
@@ -337,7 +339,10 @@ class FakeArrowDtype(ExtensionDtype):
         elif _pd_string_with_storage_option and pyarrow_dtype == pa.string():
             # Use builtin StringDtype with arrow support to
             #  avoid compatibility issues
-            return pd.StringDtype(storage="pyarrow")
+            try:
+                return pd.StringDtype(storage="pyarrow")
+            except (AttributeError, ImportError):  # pragma: no cover
+                pass
         return object.__new__(cls)
 
     def __init__(self, pyarrow_dtype):

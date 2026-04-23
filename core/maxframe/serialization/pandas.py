@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,11 @@ from typing import Any, Dict, List
 import pandas as pd
 from pandas.api.extensions import ExtensionArray
 from pandas.arrays import IntervalArray
+
+try:
+    import pyarrow as pa
+except ImportError:  # pragma: no cover
+    pa = None
 
 try:
     from pandas.tseries.offsets import BaseOffset as PdBaseOffset
@@ -165,7 +170,9 @@ class ArraySerializer(Serializer):
             ser_type = _TYPE_CHAR_INTERVAL_ARRAY
             data_parts = [obj.left, obj.right]
         elif isinstance(obj.dtype, pd.StringDtype):
-            if hasattr(obj, "tolist"):
+            if pa is not None and getattr(obj.dtype, "storage", None) == "pyarrow":
+                data_parts = [pa.array(obj)]
+            elif hasattr(obj, "tolist"):
                 data_parts = [obj.tolist()]
             else:
                 data_parts = [obj.to_numpy().tolist()]
@@ -266,6 +273,16 @@ class NoDefaultSerializer(Serializer):
         return no_default
 
 
+class PandasNASerializer(Serializer):
+    def serial(self, obj, context):
+        tp_str = "NaT" if obj is pd.NaT else "NA"
+        return [tp_str], [], True
+
+    def deserial(self, serialized, context, subs):
+        assert serialized[0] in ("NaT", "NA")
+        return getattr(pd, serialized[0])
+
+
 DataFrameSerializer.register(pd.DataFrame)
 SeriesSerializer.register(pd.Series)
 IndexSerializer.register(pd.Index)
@@ -276,3 +293,5 @@ PdTimedeltaSerializer.register(pd.Timedelta)
 PeriodSerializer.register(pd.Period)
 PdOffsetSerializer.register(PdBaseOffset)
 NoDefaultSerializer.register(type(no_default))
+PandasNASerializer.register(type(pd.NA))
+PandasNASerializer.register(type(pd.NaT))

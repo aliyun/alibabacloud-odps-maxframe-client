@@ -54,19 +54,19 @@ msgstr ""
 
 #: maxframe.dataframe.misc.duplicated.df_duplicated:8 of
 msgid "Determines which duplicates (if any) to mark."
-msgstr ""
+msgstr "确定要标记哪些重复项（如果有的话）。"
 
 #: maxframe.dataframe.misc.duplicated.df_duplicated:10 of
 msgid "``first`` : Mark duplicates as ``True`` except for the first occurrence."
-msgstr ""
+msgstr "``first`` : 标记重复项为 ``True``，但第一次出现的除外。"
 
 #: maxframe.dataframe.misc.duplicated.df_duplicated:11 of
 msgid "``last`` : Mark duplicates as ``True`` except for the last occurrence."
-msgstr ""
+msgstr "``last`` : 标记重复项为 ``True``，但最后一次出现的除外。"
 
 #: maxframe.dataframe.misc.duplicated.df_duplicated:12 of
 msgid "False : Mark all duplicates as ``True``."
-msgstr ""
+msgstr "False : 将所有重复项标记为 ``True``。"
 
 #: maxframe.dataframe.misc.duplicated.df_duplicated of
 msgid "返回"

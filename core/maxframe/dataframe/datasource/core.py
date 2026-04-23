@@ -101,6 +101,12 @@ class PandasDataSourceOperator(DataFrameOperator):
         ctx[op.outputs[0].key] = estimate_pandas_size(op.get_data())
 
 
+def _deserial_default_index_type(val):
+    if isinstance(val, bool):
+        return DefaultIndexType.range if val else None
+    return val
+
+
 class LakeDataSource(IncrementalIndexDatasource):
     path = AnyField("path")
     storage_options = DictField("storage_options", default=None)
@@ -111,6 +117,7 @@ class LakeDataSource(IncrementalIndexDatasource):
         FieldTypes.int8,
         default=None,
         primitive=True,
+        on_deserialize=_deserial_default_index_type,
     )
     use_nullable_dtypes = BoolField("use_nullable_dtypes", default=None)
     dtype_backend = StringField("dtype_backend", default=None)

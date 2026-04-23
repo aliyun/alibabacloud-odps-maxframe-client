@@ -82,25 +82,21 @@ msgstr ""
 "负数，且其中最多一个为零，则返回柯西主值。[1]_ [2]_"
 
 #: maxframe.tensor.special.ellip_func_integrals.elliprj:38 of
-#, fuzzy
 msgid ""
 "**R** -- Value of the integral. If all of `x`, `y`, `z`, and `p` are "
 "real, the return value is real. Otherwise, the return value is complex."
 msgstr ""
-"**R** -- 积分值。如果 `x`、`y`、`z` 和 `p` 都是实数，则返回值为实数。否则"
-"，返回值为复数。如果 `p` 是实数且为负数，而 `x`、`y` 和 `z` 是实数、非"
-"负数，且其中最多一个为零，则返回柯西主值。[1]_ [2]_"
+"**R** -- 积分的值。如果 `x`、`y`、`z` 和 `p` 都是实数，则返回值为实数。"
+"否则，返回值为复数。"
 
 #: maxframe.tensor.special.ellip_func_integrals.elliprj:41 of
-#, fuzzy
 msgid ""
 "If `p` is real and negative, while `x`, `y`, and `z` are real, non-"
 "negative, and at most one of them is zero, the Cauchy principal value is "
 "returned. [1]_ [2]_"
 msgstr ""
-"**R** -- 积分值。如果 `x`、`y`、`z` 和 `p` 都是实数，则返回值为实数。否则"
-"，返回值为复数。如果 `p` 是实数且为负数，而 `x`、`y` 和 `z` 是实数、非"
-"负数，且其中最多一个为零，则返回柯西主值。[1]_ [2]_"
+"如果 `p` 为实数且为负数，而 `x`、`y` 和 `z` 为实数、非负数且最多有一个为"
+"零，则返回柯西主值。[1]_ [2]_"
 
 #: ../../source/reference/tensor/generated/maxframe.tensor.special.elliprj.rst
 msgid "返回类型"

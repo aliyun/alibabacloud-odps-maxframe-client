@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-22 17:33+0800\n"
+"POT-Creation-Date: 2026-01-29 17:15+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: ../../source/reference/dataframe/groupby.rst:4
 msgid "GroupBy"
-msgstr ""
+msgstr "分组"
 
 #: ../../source/reference/dataframe/groupby.rst:7
 msgid ""
@@ -47,7 +47,7 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/dataframe/groupby.rst:32:<autosummary>:1
-#: ../../source/reference/dataframe/groupby.rst:93:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:96:<autosummary>:1
 msgid "Apply function `func` group-wise and combine the results together."
 msgstr "按组应用函数 `func` 并将结果合并在一起。"
 
@@ -117,7 +117,7 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/dataframe/groupby.rst:58:<autosummary>:1
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid "Cumulative max for each group."
 msgstr "每组的累积最大值。"
 
@@ -128,7 +128,7 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/dataframe/groupby.rst:58:<autosummary>:1
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid "Cumulative min for each group."
 msgstr "每组的累积最小值。"
 
@@ -139,7 +139,7 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/dataframe/groupby.rst:58:<autosummary>:1
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid "Cumulative prod for each group."
 msgstr "每组的累积乘积。"
 
@@ -150,7 +150,7 @@ msgid ""
 msgstr ""
 
 #: ../../source/reference/dataframe/groupby.rst:58:<autosummary>:1
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid "Cumulative sum for each group."
 msgstr "每组的累积总和。"
 
@@ -247,73 +247,96 @@ msgstr ""
 "略有不同，通常 ``DataFrameGroupBy`` 版本允许指定 axis 参数，并且通常有"
 "一个参数用于指示是否限制应用于特定数据类型的列。"
 
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrameGroupBy.count "
 "<maxframe.dataframe.groupby.DataFrameGroupBy.count>`\\ \\(\\*\\*kw\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrameGroupBy.nunique "
 "<maxframe.dataframe.groupby.DataFrameGroupBy.nunique>`\\ \\(\\*\\*kw\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrameGroupBy.cummax "
 "<maxframe.dataframe.groupby.DataFrameGroupBy.cummax>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrameGroupBy.cummin "
 "<maxframe.dataframe.groupby.DataFrameGroupBy.cummin>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrameGroupBy.cumprod "
 "<maxframe.dataframe.groupby.DataFrameGroupBy.cumprod>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrameGroupBy.cumsum "
 "<maxframe.dataframe.groupby.DataFrameGroupBy.cumsum>`\\ \\(\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrameGroupBy.fillna "
 "<maxframe.dataframe.groupby.DataFrameGroupBy.fillna>`\\ \\(\\[value\\, "
 "method\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid "Fill NA/NaN values using the specified method"
 msgstr "使用指定的方法填充 NA/NaN 值"
 
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
+msgid ""
+":py:obj:`DataFrameGroupBy.idxmax "
+"<maxframe.dataframe.groupby.DataFrameGroupBy.idxmax>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
+msgid ""
+":py:obj:`DataFrameGroupBy.idxmin "
+"<maxframe.dataframe.groupby.DataFrameGroupBy.idxmin>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
+msgid ""
+":py:obj:`DataFrameGroupBy.rank "
+"<maxframe.dataframe.groupby.DataFrameGroupBy.rank>`\\ \\(\\[method\\, "
+"ascending\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
+msgid "Provide the rank of values within each group."
+msgstr "提供每组内值的排名。"
+
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrameGroupBy.sample "
 "<maxframe.dataframe.groupby.DataFrameGroupBy.sample>`\\ \\(\\[n\\, "
 "frac\\, replace\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/groupby.rst:77:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:80:<autosummary>:1
 msgid "Return a random sample of items from each group."
 msgstr "从每个组中返回随机样本项。"
 
-#: ../../source/reference/dataframe/groupby.rst:78
+#: ../../source/reference/dataframe/groupby.rst:81
 msgid "The following methods are available only for ``SeriesGroupBy`` objects."
 msgstr "以下方法仅适用于 ``SeriesGroupBy`` 对象。"
 
-#: ../../source/reference/dataframe/groupby.rst:84
+#: ../../source/reference/dataframe/groupby.rst:87
 msgid "The following methods are available only for ``DataFrameGroupBy`` objects."
 msgstr "以下方法仅适用于 ``DataFrameGroupBy`` 对象。"
 
-#: ../../source/reference/dataframe/groupby.rst:93:<autosummary>:1
+#: ../../source/reference/dataframe/groupby.rst:96:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrameGroupBy.mf.apply_chunk "
 "<maxframe.dataframe.groupby.DataFrameGroupBy.mf.apply_chunk>`\\ "

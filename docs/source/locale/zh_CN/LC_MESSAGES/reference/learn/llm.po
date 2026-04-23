@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-29 19:01+0800\n"
+"POT-Creation-Date: 2026-02-11 15:23+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -51,15 +51,14 @@ msgstr "DashScope 文本大语言模型。"
 
 #: ../../source/reference/learn/llm.rst:19:<autosummary>:1
 msgid ""
-":py:obj:`managed.ManagedTextLLM "
-"<maxframe.learn.contrib.llm.models.managed.ManagedTextLLM>`\\"
+":py:obj:`managed.ManagedTextGenLLM "
+"<maxframe.learn.contrib.llm.models.managed.ManagedTextGenLLM>`\\ "
+"\\(name\\[\\, deploy\\_config\\]\\)"
 msgstr ""
 
 #: ../../source/reference/learn/llm.rst:19:<autosummary>:1
-msgid ""
-":py:class:`~maxframe.learn.contrib.llm.models.managed.ManagedTextGenLLM` "
-"的别名"
-msgstr ""
+msgid "Managed text LLM by MaxFrame."
+msgstr "MaxFrame 托管的文本大语言模型。"
 
 #: ../../source/reference/learn/llm.rst:21
 msgid "Custom Model Configuration"
@@ -74,7 +73,7 @@ msgstr ""
 
 #: ../../source/reference/learn/llm.rst:31:<autosummary>:1
 msgid "Model deployment configuration for extending MaxFrame with custom models."
-msgstr ""
+msgstr "用于通过自定义模型扩展 MaxFrame 的模型部署配置。"
 
 #: ../../source/reference/learn/llm.rst:40:<autosummary>:1
 msgid ""

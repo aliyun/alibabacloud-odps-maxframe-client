@@ -43,7 +43,7 @@ msgstr ""
 
 #: maxframe.dataframe.misc.drop.index_drop:9 of
 msgid "**dropped**"
-msgstr ""
+msgstr "**已删除**"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.drop.rst
 msgid "返回类型"

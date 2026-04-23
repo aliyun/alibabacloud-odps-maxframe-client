@@ -60,22 +60,18 @@ msgstr ""
 
 #: maxframe.tensor.linalg.svd.svd:10 of
 msgid "method to calculate qr factorization, tsqr as default"
-msgstr ""
+msgstr "计算 qr 因式分解的方法，默认为 tsqr"
 
 #: maxframe.tensor.linalg.svd.svd:12 of
 msgid "TSQR is presented in:"
-msgstr ""
+msgstr "TSQR 在以下文献中提出："
 
 #: maxframe.tensor.linalg.svd.svd:14 of
-#, fuzzy
 msgid ""
 "A. Benson, D. Gleich, and J. Demmel. Direct QR factorizations for tall-"
 "and-skinny matrices in MapReduce architectures. IEEE International "
 "Conference on Big Data, 2013. http://arxiv.org/abs/1301.1071"
 msgstr ""
-"计算 QR 分解的方法，默认使用 tsqr。TSQR 的描述见于：A. Benson, D. Gleich,"
-" 和 J. Demmel，直接 QR 分解用于 MapReduce 架构中的高瘦矩阵，IEEE 大数据"
-"国际会议，2013 年，http://arxiv.org/abs/1301.1071"
 
 #: maxframe.tensor.linalg.svd.svd of
 msgid "返回"

@@ -44,23 +44,23 @@ msgstr ""
 
 #: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:3 of
 msgid "Method to handle dropping duplicates:"
-msgstr ""
+msgstr "处理删除重复值的方法："
 
 #: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:5 of
 msgid "'first' : Drop duplicates except for the first occurrence."
-msgstr ""
+msgstr "'first' : 保留第一个出现的值，删除其他重复项。"
 
 #: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:6 of
 msgid "'last' : Drop duplicates except for the last occurrence."
-msgstr ""
+msgstr "'last' : 保留最后一个出现的值，删除其他重复项。"
 
 #: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:7 of
 msgid "'any' : Drop duplicates except for a random occurrence."
-msgstr ""
+msgstr "'any' : 随机保留一个值，删除其他重复项。"
 
 #: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:8 of
 msgid "``False`` : Drop all duplicates."
-msgstr ""
+msgstr "``False`` : 删除所有重复项。"
 
 #: maxframe.dataframe.misc.drop_duplicates.series_drop_duplicates:10 of
 msgid "If ``True``, performs operation inplace and returns None."

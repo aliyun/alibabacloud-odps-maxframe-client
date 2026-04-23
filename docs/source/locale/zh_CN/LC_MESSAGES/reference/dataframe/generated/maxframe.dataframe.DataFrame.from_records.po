@@ -45,11 +45,11 @@ msgstr "结构化输入数据。  .. deprecated:: 2.1.0     传递 DataFrame 已
 
 #: maxframe.dataframe.datasource.from_records.from_records:6 of
 msgid "Structured input data."
-msgstr ""
+msgstr "结构化输入数据。"
 
 #: maxframe.dataframe.datasource.from_records.from_records:8 of
 msgid "Passing a DataFrame is deprecated."
-msgstr ""
+msgstr "传递 DataFrame 已弃用。"
 
 #: maxframe.dataframe.datasource.from_records.from_records:11 of
 msgid ""

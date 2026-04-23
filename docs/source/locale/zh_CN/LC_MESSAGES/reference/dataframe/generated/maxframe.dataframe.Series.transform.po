@@ -65,7 +65,7 @@ msgstr "* *Series* * *必须与自身具有相同长度的 Series。*"
 
 #: maxframe.dataframe.misc.transform.series_transform:26 of
 msgid "*Series*"
-msgstr ""
+msgstr "系列"
 
 #: maxframe.dataframe.misc.transform.series_transform:27 of
 msgid "*A Series that must have the same length as self.*"

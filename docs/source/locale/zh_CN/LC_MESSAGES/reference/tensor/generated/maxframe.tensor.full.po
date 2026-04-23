@@ -46,13 +46,12 @@ msgid ""
 msgstr "张量的期望数据类型。默认值 `None` 表示 `np.array(fill_value).dtype`。"
 
 #: maxframe.tensor.datasource.full.full:8 of
-#, fuzzy
 msgid "The desired data-type for the tensor  The default, `None`, means"
-msgstr "张量的期望数据类型。默认值 `None` 表示 `np.array(fill_value).dtype`。"
+msgstr "张量所需的数据类型，默认值 `None` 表示"
 
 #: maxframe.tensor.datasource.full.full:9 of
 msgid "`np.array(fill_value).dtype`."
-msgstr ""
+msgstr "`np.array(fill_value).dtype`。"
 
 #: maxframe.tensor.datasource.full.full:11 of
 msgid "Desired chunk size on each dimension"

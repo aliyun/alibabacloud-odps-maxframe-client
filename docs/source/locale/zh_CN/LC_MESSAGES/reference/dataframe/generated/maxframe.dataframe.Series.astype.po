@@ -62,15 +62,15 @@ msgstr ""
 
 #: maxframe.dataframe.misc.astype.astype:12 of
 msgid "Control raising of exceptions on invalid data for provided dtype."
-msgstr ""
+msgstr "控制对提供的数据类型中无效数据引发异常。"
 
 #: maxframe.dataframe.misc.astype.astype:14 of
 msgid "``raise`` : allow exceptions to be raised"
-msgstr ""
+msgstr "``raise`` : 允许引发异常"
 
 #: maxframe.dataframe.misc.astype.astype:15 of
 msgid "``ignore`` : suppress exceptions. On error return original object."
-msgstr ""
+msgstr "``ignore`` : 抑制异常。出错时返回原始对象。"
 
 #: maxframe.dataframe.misc.astype.astype of
 msgid "返回"
@@ -78,7 +78,7 @@ msgstr ""
 
 #: maxframe.dataframe.misc.astype.astype:18 of
 msgid "**casted**"
-msgstr ""
+msgstr "**已转换**"
 
 #: maxframe.dataframe.misc.astype.astype of
 msgid "返回类型"

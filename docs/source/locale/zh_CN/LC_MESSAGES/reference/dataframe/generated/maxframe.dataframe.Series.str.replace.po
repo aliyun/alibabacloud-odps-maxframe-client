@@ -66,22 +66,19 @@ msgstr ""
 
 #: of pandas.core.strings.accessor.StringMethods.replace:14
 msgid "Determines if replace is case sensitive:"
-msgstr ""
+msgstr "确定替换是否区分大小写："
 
 #: of pandas.core.strings.accessor.StringMethods.replace:16
 msgid "If True, case sensitive (the default if `pat` is a string)"
-msgstr ""
+msgstr "如果为 True，则区分大小写（当 `pat` 是字符串时的默认值）"
 
 #: of pandas.core.strings.accessor.StringMethods.replace:17
 msgid "Set to False for case insensitive"
-msgstr ""
+msgstr "设置为 False 表示不区分大小写"
 
 #: of pandas.core.strings.accessor.StringMethods.replace:18
-#, fuzzy
 msgid "Cannot be set if `pat` is a compiled regex."
-msgstr ""
-"正则表达式模块标志，例如 re.IGNORECASE。如果 `pat` 是编译后的正则表达式，"
-"则不能设置此参数。"
+msgstr "如果 `pat` 是编译后的正则表达式，则不能设置此参数。"
 
 #: of pandas.core.strings.accessor.StringMethods.replace:20
 msgid ""
@@ -104,21 +101,21 @@ msgstr ""
 
 #: of pandas.core.strings.accessor.StringMethods.replace:23
 msgid "Determines if the passed-in pattern is a regular expression:"
-msgstr ""
+msgstr "确定传入的模式是否为正则表达式："
 
 #: of pandas.core.strings.accessor.StringMethods.replace:25
 msgid "If True, assumes the passed-in pattern is a regular expression."
-msgstr ""
+msgstr "如果为 True，表示传入的模式是正则表达式。"
 
 #: of pandas.core.strings.accessor.StringMethods.replace:26
 msgid "If False, treats the pattern as a literal string"
-msgstr ""
+msgstr "如果为 False，则将模式视为字面量字符串"
 
 #: of pandas.core.strings.accessor.StringMethods.replace:27
 msgid ""
 "Cannot be set to False if `pat` is a compiled regex or `repl` is a "
 "callable."
-msgstr ""
+msgstr "如果 `pat` 是编译后的正则表达式或 `repl` 是可调用对象，则不能设为此值。"
 
 #: of pandas.core.strings.accessor.StringMethods.replace
 msgid "返回"
@@ -200,20 +197,22 @@ msgid ""
 ":func:`re.sub`. The callable should expect one positional argument (a "
 "regex object) and return a string."
 msgstr ""
+"当 `repl` 是可调用对象时，它会在每个 `pat` 上使用 :func:`re.sub` 调用。该"
+"可调用对象应该期望一个位置参数（一个正则表达式对象）并返回一个字符串。"
 
 #: of pandas.core.strings.accessor.StringMethods.replace:71
 msgid "To get the idea:"
-msgstr ""
+msgstr "理解概念："
 
 #: of pandas.core.strings.accessor.StringMethods.replace:79
 msgid "Reverse every lowercase alphabetic word:"
-msgstr ""
+msgstr "反转每个小写字母单词："
 
 #: of pandas.core.strings.accessor.StringMethods.replace:89
 msgid "Using regex groups (extract second group and swap case):"
-msgstr ""
+msgstr "使用正则表达式组（提取第二组并交换大小写）："
 
 #: of pandas.core.strings.accessor.StringMethods.replace:99
 msgid "Using a compiled regex with flags"
-msgstr ""
+msgstr "使用带标志的编译正则表达式"
 

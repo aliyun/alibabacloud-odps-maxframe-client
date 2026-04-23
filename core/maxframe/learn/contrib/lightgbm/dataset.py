@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,26 +44,32 @@ class ToLGBMDataset(Operator, TileableOperatorMixin):
     position = AnyField("position", default=None)
     # if to collocate the data, label and weight
     collocate = BoolField("collocate", default=False)
+    group_slice = ListField("group_slice", default=None)
 
     @property
     def output_limit(self):
         if self.collocate:
-            return 1 + sum(bool(x) for x in [self.label, self.weight, self.init_score])
+            return 1 + sum(
+                x is not None
+                for x in [self.label, self.weight, self.init_score, self.group]
+            )
         return 1
 
     @classmethod
     def _set_inputs(cls, op: "ToLGBMDataset", inputs: List[EntityData]):
         super()._set_inputs(op, inputs)
+
+        input_iter = iter(op._inputs)
         if op.data is not None:
-            op.data = op._inputs[0]
-        has_label = op.label is not None
-        if has_label:
-            op.label = op._inputs[1]
+            op.data = next(input_iter)
+        if op.label is not None:
+            op.label = next(input_iter)
         if op.weight is not None:
-            i = 1 if not has_label else 2
-            op.weight = op._inputs[i]
+            op.weight = next(input_iter)
         if op.init_score is not None:
-            op.init_score = op._inputs[-1]
+            op.init_score = next(input_iter)
+        if op.group is not None:
+            op.group = next(input_iter)
 
     @staticmethod
     def _get_kw(obj):
@@ -86,6 +92,8 @@ class ToLGBMDataset(Operator, TileableOperatorMixin):
             inputs.append(self.weight)
         if self.init_score is not None:
             inputs.append(self.init_score)
+        if self.group is not None:
+            inputs.append(self.group)
 
         return self.new_tileable(inputs, **kw)
 
@@ -124,6 +132,7 @@ def to_lgbm_dataset(
     label = check_array_like(label, "label")
     weight = check_array_like(weight, "weight")
     init_score = check_array_like(init_score, "init_score")
+    group = check_array_like(group, "group")
 
     if weight is not None and weight.ndim > 1:
         raise ValueError("weight must be 1-dimensional")

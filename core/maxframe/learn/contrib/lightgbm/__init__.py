@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,11 +23,18 @@ _config_mod_getattr(
     {
         "LGBMClassifier": ".classifier.LGBMClassifier",
         "LGBMRegressor": ".regressor.LGBMRegressor",
-        # "LGBMRanker": ".ranker.LGBMRanker",
+        "LGBMRanker": ".ranker.LGBMRanker",
     },
     globals(),
 )
 
 del _config_mod_getattr
 
-__all__ = ["Dataset", "LGBMClassifier", "LGBMRegressor", "predict", "train"]
+__all__ = [
+    "Dataset",
+    "LGBMClassifier",
+    "LGBMRanker",
+    "LGBMRegressor",
+    "predict",
+    "train",
+]

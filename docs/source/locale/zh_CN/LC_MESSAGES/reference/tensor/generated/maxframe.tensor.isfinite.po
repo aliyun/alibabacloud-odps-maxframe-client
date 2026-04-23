@@ -81,19 +81,18 @@ msgid ""
 " the input is finite; otherwise the value is False (input is either "
 "positive infinity, negative infinity or Not a Number)."
 msgstr ""
+"**y** -- 对于标量输入，结果是一个新的布尔值，如果输入是有限的，则值为True"
+"；否则值为False（输入为正无穷大、负无穷大或非数字）。"
 
 #: maxframe.tensor.arithmetic.isfinite.isfinite:21 of
-#, fuzzy
 msgid ""
 "For array input, the result is a boolean array with the same dimensions "
 "as the input and the values are True if the corresponding element of the "
 "input is finite; otherwise the values are False (element is either "
 "positive infinity, negative infinity or Not a Number)."
 msgstr ""
-"**y** -- 对于标量输入，如果输入是有限的，则结果是一个值为 True 的新布尔值"
-"；否则值为 False（输入为正无穷大、负无穷大或非数字）。对于数组输入，结果"
-"是一个与输入维度相同的布尔数组，如果输入的对应元素是有限的，则值为 True；"
-"否则值为 False（元素为正无穷大、负无穷大或非数字）。"
+"对于数组输入，结果是一个布尔数组，其维度与输入相同，如果输入的对应元素是"
+"有限的，则值为True；否则值为False（元素为正无穷大、负无穷大或非数字）。"
 
 #: maxframe.tensor.arithmetic.isfinite.isfinite of
 msgid "返回类型"

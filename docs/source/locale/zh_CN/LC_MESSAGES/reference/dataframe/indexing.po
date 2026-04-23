@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-13 11:34+0800\n"
+"POT-Creation-Date: 2026-02-11 15:50+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -36,11 +36,11 @@ msgid "Properties"
 msgstr "属性"
 
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
-msgid ":py:obj:`Index.has_duplicates <maxframe.dataframe.Index.has_duplicates>`\\"
+msgid ":py:obj:`Index.has_duplicates <maxframe.dataframe.Index.has_duplicates>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
-msgid ":py:obj:`Index.hasnans <maxframe.dataframe.Index.hasnans>`\\"
+msgid ":py:obj:`Index.hasnans <maxframe.dataframe.Index.hasnans>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
@@ -50,7 +50,7 @@ msgstr "如果包含任何 NaN，返回 True。"
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
 msgid ""
 ":py:obj:`Index.is_monotonic_decreasing "
-"<maxframe.dataframe.Index.is_monotonic_decreasing>`\\"
+"<maxframe.dataframe.Index.is_monotonic_decreasing>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
@@ -60,7 +60,7 @@ msgstr "如果对象中的值是单调递减的，则返回布尔标量。"
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
 msgid ""
 ":py:obj:`Index.is_monotonic_increasing "
-"<maxframe.dataframe.Index.is_monotonic_increasing>`\\"
+"<maxframe.dataframe.Index.is_monotonic_increasing>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
@@ -68,28 +68,27 @@ msgid "Return boolean scalar if values in the object are monotonic_increasing."
 msgstr "如果对象中的值是单调递增的，则返回布尔标量。"
 
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
-msgid ":py:obj:`Index.is_unique <maxframe.dataframe.Index.is_unique>`\\"
+msgid ":py:obj:`Index.is_unique <maxframe.dataframe.Index.is_unique>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
-#, fuzzy
 msgid "Return boolean if values in the index are unique."
 msgstr "如果索引中的值是唯一的，则返回布尔值。"
 
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
-msgid ":py:obj:`Index.name <maxframe.dataframe.Index.name>`\\"
+msgid ":py:obj:`Index.name <maxframe.dataframe.Index.name>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
-msgid ":py:obj:`Index.names <maxframe.dataframe.Index.names>`\\"
+msgid ":py:obj:`Index.names <maxframe.dataframe.Index.names>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
-msgid ":py:obj:`Index.ndim <maxframe.dataframe.Index.ndim>`\\"
+msgid ":py:obj:`Index.ndim <maxframe.dataframe.Index.ndim>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/indexing.rst:29:<autosummary>:1
-msgid ":py:obj:`Index.size <maxframe.dataframe.Index.size>`\\"
+msgid ":py:obj:`Index.size <maxframe.dataframe.Index.size>`"
 msgstr ""
 
 #: ../../source/reference/dataframe/indexing.rst:31
@@ -302,13 +301,27 @@ msgstr ""
 msgid "Selecting"
 msgstr "选择"
 
-#: ../../source/reference/dataframe/indexing.rst:92:<autosummary>:1
+#: ../../source/reference/dataframe/indexing.rst:93:<autosummary>:1
 msgid ""
 ":py:obj:`Index.get_level_values "
 "<maxframe.dataframe.Index.get_level_values>`\\ \\(level\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/indexing.rst:92:<autosummary>:1
+#: ../../source/reference/dataframe/indexing.rst:93:<autosummary>:1
 msgid "Return vector of label values for requested level."
 msgstr "返回指定层级的标签值向量。"
+
+#: ../../source/reference/dataframe/indexing.rst:95
+msgid "MaxFrame Extensions"
+msgstr "MaxFrame 扩展"
+
+#: ../../source/reference/dataframe/indexing.rst:99:<autosummary>:1
+msgid ""
+":py:obj:`Index.rechunk <maxframe.dataframe.Index.rechunk>`\\ "
+"\\(chunk\\_size\\[\\, reassign\\_worker\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/indexing.rst:99:<autosummary>:1
+msgid "Rechunk DataFrame, Series or Index data."
+msgstr "重新分块 DataFrame、Series 或 Index 数据。"
 

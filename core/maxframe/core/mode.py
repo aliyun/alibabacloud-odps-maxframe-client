@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,38 @@
 
 import functools
 import inspect
+import os
+import sys
 import threading
 
 from ..config import options
 
 _internal_mode = threading.local()
+
+_is_in_debug = "VSCODE_PID" in os.environ or "PYCHARM_HOSTED" in os.environ
+_debug_thread_mode = type("_DebugThreadMode", (object,), {})
+_is_daemon_thread_cache = dict()
+
+
+def _is_in_ide_repr_thread() -> bool:
+    """
+    For recent pycharm, repr() is called in a separate thread, thus
+    we need to configure mode flags in a separate global object
+    """
+    if not _is_in_debug:
+        return False
+    thread_ident = threading.current_thread().ident
+    if thread_ident in _is_daemon_thread_cache:
+        return _is_daemon_thread_cache[thread_ident]
+    cur_frame = sys._getframe(1)
+    while cur_frame.f_back is not None:
+        if "pydevd_repr_utils" in cur_frame.f_code.co_filename:
+            # only cache negative result as daemon thread
+            #  seems spawned frequently
+            return True
+        cur_frame = cur_frame.f_back
+    _is_daemon_thread_cache[thread_ident] = False
+    return False
 
 
 def is_eager_mode():
@@ -30,20 +57,25 @@ def is_eager_mode():
         return False
 
 
+def _get_mode_value(mode_name):
+    val = bool(getattr(_internal_mode, mode_name, False))
+    if val:
+        return True
+    elif _is_in_ide_repr_thread():
+        return bool(getattr(_debug_thread_mode, mode_name, False))
+    return False
+
+
 def is_kernel_mode():
-    try:
-        return bool(_internal_mode.kernel)
-    except AttributeError:
-        _internal_mode.kernel = None
-        return False
+    return _get_mode_value("kernel")
 
 
 def is_build_mode():
-    return bool(getattr(_internal_mode, "build", False))
+    return _get_mode_value("build")
 
 
 def is_mock_mode():
-    return bool(getattr(_internal_mode, "mock", False))
+    return _get_mode_value("mock")
 
 
 class _EnterModeFuncWrapper:
@@ -63,13 +95,18 @@ class _EnterModeFuncWrapper:
                 continue
             # set value
             setattr(_internal_mode, mode_name, value)
+            if _is_in_debug:
+                setattr(_debug_thread_mode, mode_name, value)
         self.mode_name_to_value_list.append(mode_name_to_old_value)
 
     def __exit__(self, *_):
         mode_name_to_old_value = self.mode_name_to_value_list.pop()
         for mode_name in self.mode_name_to_value.keys():
             # set back old values
-            setattr(_internal_mode, mode_name, mode_name_to_old_value[mode_name])
+            value = mode_name_to_old_value[mode_name]
+            setattr(_internal_mode, mode_name, value)
+            if _is_in_debug:
+                setattr(_debug_thread_mode, mode_name, value)
 
     def __call__(self, func):
         mode_name_to_value = self.mode_name_to_value.copy()

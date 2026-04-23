@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,12 +32,15 @@ from ...serialization.serializables import (
 from ...udf import BuiltinFunction, MarkedFunction
 from ...utils import copy_if_possible, get_func_token, make_dtype, make_dtypes, tokenize
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import (
+from ..type_infer import (
     InferredDataFrameMeta,
+    infer_dataframe_return_value,
+    wrap_func_with_mock,
+)
+from ..utils import (
     build_df,
     build_series,
     copy_func_scheduling_hints,
-    infer_dataframe_return_value,
     pack_func_args,
     parse_index,
     validate_axis,
@@ -105,8 +108,10 @@ class DataFrameApply(
             new_elementwise = False
 
         def infer_func(in_df):
+            wrap_func = wrap_func_with_mock(self.func)
+
             return in_df.apply(
-                self.func,
+                wrap_func,
                 axis=self.axis,
                 raw=self.raw,
                 result_type=self.result_type,

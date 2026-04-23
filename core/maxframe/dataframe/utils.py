@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import dataclasses
 import functools
 import inspect
 import itertools
@@ -29,30 +28,31 @@ from pandas.core.dtypes.inference import is_dict_like, is_list_like
 
 from ..config.config import options
 from ..config.validators import dtype_backend_validator, is_enum_value
-from ..core import ENTITY_TYPE, Entity, ExecutableTuple, OutputType, get_output_types
+from ..core import ENTITY_TYPE, Entity, ExecutableTuple
 from ..lib.dtypes_extension import ExternalBlobDtype, SolidBlob
 from ..lib.mmh3 import hash as mmh_hash
 from ..protocol import DefaultIndexType
-from ..udf import MarkedFunction
+from ..udf import discover_marked_functions
 from ..utils import (
     ModulePlaceholder,
     is_full_slice,
     lazy_import,
-    make_dtypes,
-    quiet_stdio,
+    pd_release_version,
     sbytes,
     tokenize,
     validate_and_adjust_resource_ratio,
     wrap_arrow_dtype,
 )
 
-if TYPE_CHECKING:
-    from .core import IndexValue
-
 try:
     import pyarrow as pa
 except ImportError:  # pragma: no cover
     pa = ModulePlaceholder("pyarrow")
+
+try:
+    from ..lib.dtypes_extension import ArrowDtype
+except ImportError:
+    ArrowDtype = None
 
 if TYPE_CHECKING:
     from .operators import DataFrameOperator
@@ -61,11 +61,7 @@ MAX_DECIMAL128_PRECISION = 38
 
 cudf = lazy_import("cudf", rename="cudf")
 logger = logging.getLogger(__name__)
-
-try:
-    from ..lib.dtypes_extension import ArrowDtype
-except ImportError:
-    ArrowDtype = None
+_need_enforce_group_keys = pd_release_version < (1, 5, 0)
 
 
 def hash_index(index, size):
@@ -1466,216 +1462,29 @@ def get_callable_by_name(df: Any, func_name: str) -> Callable:
     )
 
 
-@dataclasses.dataclass
-class InferredDataFrameMeta:
-    output_type: OutputType
-    dtypes: Optional[pd.Series] = None
-    dtype: Optional[Any] = None
-    name: Optional[str] = None
-    index_value: Optional["IndexValue"] = None
-    maybe_agg: bool = False
-    elementwise: bool = False
-
-    def check_absence(self, *args: str) -> None:
-        args_set = set(args)
-        if self.output_type == OutputType.dataframe:
-            args_set.difference_update(["dtype", "name"])
-        else:
-            args_set.difference_update(["dtypes"])
-        absent_args = [arg for arg in sorted(args_set) if getattr(self, arg) is None]
-        if absent_args:
-            raise TypeError(
-                f"Cannot determine {', '.join(absent_args)} by calculating "
-                "with mock data, please specify it as arguments"
-            )
-
-
-def _get_groupby_input_df(groupby):
-    in_df = groupby
-    while in_df.op.output_types[0] not in (OutputType.dataframe, OutputType.series):
-        in_df = in_df.inputs[0]
-    return in_df
-
-
-def infer_dataframe_return_value(
-    df_obj,
-    func,
-    output_type=None,
-    dtypes=None,
-    dtype=None,
-    name=None,
-    index=None,
-    inherit_index=False,
-    build_kw=None,
-    elementwise=None,
-    skip_infer=False,
-) -> InferredDataFrameMeta:
-    from .core import GROUPBY_TYPE, INDEX_TYPE
-    from .typing_ import get_function_output_meta
-
-    unwrapped_func = func
-    if isinstance(unwrapped_func, MarkedFunction):
-        unwrapped_func = unwrapped_func.func
-    while True:
-        if isinstance(unwrapped_func, functools.partial):
-            unwrapped_func = unwrapped_func.func
-        elif hasattr(unwrapped_func, "__wrapped__"):
-            unwrapped_func = unwrapped_func.__wrapped__
-        else:
-            break
-
-    func_annotation_meta = get_function_output_meta(unwrapped_func, df_obj)
-    func_index_value = None
-    if func_annotation_meta:
-        output_type = output_type or func_annotation_meta.output_type
-        dtypes = dtypes if dtypes is not None else func_annotation_meta.dtypes
-        dtype = dtype if dtype is not None else func_annotation_meta.dtype
-        name = name if name is not None else func_annotation_meta.name
-        func_index_value = func_annotation_meta.index_value
-
-    if skip_infer:
-        if isinstance(index, INDEX_TYPE):
-            ret_index_value = index.index_value
-        elif index is not None:
-            ret_index_value = parse_index(index, df_obj.key)
-        else:
-            ret_index_value = func_index_value
-
-        return InferredDataFrameMeta(
-            output_type=output_type,
-            dtypes=dtypes,
-            dtype=dtype,
-            name=name,
-            index_value=ret_index_value,
-        )
-
-    if isinstance(index, INDEX_TYPE):
-        index = index.index_value
-
-    if elementwise is None:
-        elementwise = isinstance(unwrapped_func, np.ufunc)
-
-    ret_index_value = func_index_value
-    if output_type is not None and (dtypes is not None or dtype is not None):
-        if inherit_index:
-            ret_index_value = df_obj.index_value
-        elif index is not None:
-            ret_index_value = parse_index(index)
-
-        if ret_index_value is not None:
-            return InferredDataFrameMeta(
-                output_type,
-                dtypes,
-                dtype,
-                name,
-                ret_index_value,
-                elementwise=elementwise or False,
-            )
-
-    ret_output_type = None
-    ret_dtypes = dtypes
-    maybe_agg = False
-    build_kw = build_kw or {}
-    obj_key = df_obj.key
-
-    if elementwise:
-        inherit_index = True
-        (ret_output_type,) = get_output_types(df_obj)
-    if index is not None:
-        ret_index_value = parse_index(index)
-
-    if isinstance(df_obj, GROUPBY_TYPE):
-        is_groupby = True
-        empty_df_obj = df_obj.op.build_mock_groupby(**build_kw)
-    else:
-        is_groupby = False
-        empty_df_obj = (
-            build_df(df_obj, **build_kw)
-            if df_obj.ndim == 2
-            else build_series(df_obj, **build_kw)
-        )
-    try:
-        with np.errstate(all="ignore"), quiet_stdio():
-            infer_df_obj = func(empty_df_obj)
-
-        if ret_index_value is None:
-            if (
-                infer_df_obj is None
-                or not hasattr(infer_df_obj, "index")
-                or infer_df_obj.index is None
-            ):
-                ret_index_value = parse_index(pd.RangeIndex(-1))
-            elif (
-                infer_df_obj.index is getattr(empty_df_obj, "index", None)
-                or inherit_index
-            ):
-                ret_index_value = df_obj.index_value
-            else:
-                ret_index_value = parse_index(infer_df_obj.index, obj_key, func)
-
-        if isinstance(infer_df_obj, pd.DataFrame):
-            if output_type is not None and output_type != OutputType.dataframe:
-                raise TypeError(
-                    f'Cannot infer output_type as "series", '
-                    f'please specify `output_type` as "dataframe"'
-                )
-            ret_output_type = ret_output_type or OutputType.dataframe
-            if ret_dtypes is None:
-                ret_dtypes = infer_df_obj.dtypes
-        else:
-            if output_type is not None and output_type == OutputType.dataframe:
-                raise TypeError(
-                    f'Cannot infer output_type as "dataframe", '
-                    f'please specify `output_type` as "series"'
-                )
-            ret_output_type = ret_output_type or OutputType.series
-            name = name or getattr(infer_df_obj, "name", None)
-            dtype = dtype or infer_df_obj.dtype
-
-        if is_groupby and len(infer_df_obj) <= 2:
-            # we create mock df with 4 rows, 2 groups
-            # if return df has 2 rows, we assume that
-            # it's an aggregation operation
-            maybe_agg = True
-
-        return InferredDataFrameMeta(
-            ret_output_type,
-            make_dtypes(ret_dtypes),
-            make_dtypes(dtype),
-            name,
-            ret_index_value,
-            maybe_agg,
-            elementwise=elementwise,
-        )
-    except:  # noqa: E722  # nosec
-        logger.info(
-            "Exception raised while inferring meta of function result", exc_info=True
-        )
-        return InferredDataFrameMeta(
-            output_type,
-            make_dtypes(dtypes),
-            make_dtypes(dtype),
-            name,
-            ret_index_value,
-            maybe_agg,
-            elementwise=elementwise,
-        )
-
-
 def copy_func_scheduling_hints(func, op: "DataFrameOperator") -> None:
     from ..config import options
 
     expect_engine = None
     expect_gpu = None
     fs_mount = None
+    image_options = None
     default_options = options.function.default_running_options or {}
 
-    if isinstance(func, MarkedFunction):
+    marked_funcs = discover_marked_functions(func)
+    if len(marked_funcs) > 1:
+        raise ValueError(
+            "Multiple functions are marked with running options, "
+            "please keep only one of them"
+        )
+    elif marked_funcs:
+        marked_func = marked_funcs[0]
         # copy from marked function
-        expect_engine = func.expect_engine
-        expect_resources = func.expect_resources or {}
-        expect_gpu = func.gpu
-        fs_mount = func.fs_mount
+        expect_engine = marked_func.expect_engine
+        expect_resources = marked_func.expect_resources or {}
+        expect_gpu = marked_func.gpu
+        fs_mount = marked_func.fs_mount
+        image_options = marked_func.image_options
 
         # merge default options if not set
         for key, value in default_options.items():
@@ -1698,6 +1507,10 @@ def copy_func_scheduling_hints(func, op: "DataFrameOperator") -> None:
             "gu_quota", [options.session.gu_quota_name]
         )
 
+    # Use session default image if not set
+    if not image_options and options.session.image_name:
+        image_options = {"name": options.session.image_name}
+
     if expect_engine:
         op.expect_engine = expect_engine
     if expect_resources:
@@ -1706,6 +1519,8 @@ def copy_func_scheduling_hints(func, op: "DataFrameOperator") -> None:
         op.gpu = expect_gpu
     if fs_mount:
         op.fs_mount = fs_mount
+    if image_options:
+        op.image_options = image_options
 
 
 def make_column_list(col, dtypes_or_columns, level=None):

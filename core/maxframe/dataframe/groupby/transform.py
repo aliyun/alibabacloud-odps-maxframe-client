@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,12 +22,8 @@ from ...serialization.serializables import AnyField, BoolField, DictField, Tuple
 from ...udf import BuiltinFunction, MarkedFunction
 from ...utils import copy_if_possible
 from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import (
-    InferredDataFrameMeta,
-    copy_func_scheduling_hints,
-    infer_dataframe_return_value,
-    parse_index,
-)
+from ..type_infer import InferredDataFrameMeta, infer_dataframe_return_value
+from ..utils import copy_func_scheduling_hints, parse_index
 
 
 class GroupByTransform(DataFrameOperator, DataFrameOperatorMixin):

@@ -48,15 +48,13 @@ msgstr ""
 "，则对元组中指定的所有轴执行乘积操作，而不是单个轴或所有轴。"
 
 #: maxframe.tensor.reduction.prod.prod:5 of
-#, fuzzy
 msgid ""
 "Axis or axes along which a product is performed.  The default, axis=None,"
 " will calculate the product of all the elements in the input tensor. If "
 "axis is negative it counts from the last to the first axis."
 msgstr ""
-"执行乘积操作的轴或多个轴。默认值 axis=None 会计算输入张量中所有元素的乘积"
-"。如果 axis 是负数，则从最后一个轴开始向前计数。如果 axis 是一个整数元组"
-"，则对元组中指定的所有轴执行乘积操作，而不是单个轴或所有轴。"
+"执行乘积运算的轴或轴组。默认值 axis=None 时，将计算输入张量中所有元素的"
+"乘积。如果 axis 为负数，则从最后一个轴开始向前计数。"
 
 #: maxframe.tensor.reduction.prod.prod:10 of
 msgid ""
@@ -64,6 +62,8 @@ msgid ""
 "specified in the tuple instead of a single axis or all the axes as "
 "before."
 msgstr ""
+"如果 axis 是整数元组，则对元组中指定的所有轴执行乘积运算，而不是像之前"
+"那样对单个轴或所有轴执行。"
 
 #: maxframe.tensor.reduction.prod.prod:14 of
 msgid ""
@@ -109,19 +109,19 @@ msgid ""
 " as dimensions with size one. With this option, the result will broadcast"
 " correctly against the input array."
 msgstr ""
+"如果设置为 True，被约简的轴将在结果中保留为大小为一的维度。使用此选项，"
+"结果将能正确地与输入数组进行广播。"
 
 #: maxframe.tensor.reduction.prod.prod:29 of
-#, fuzzy
 msgid ""
 "If the default value is passed, then `keepdims` will not be passed "
 "through to the `prod` method of sub-classes of `Tensor`, however any non-"
 "default value will be.  If the sub-classes `sum` method does not "
 "implement `keepdims` any exceptions will be raised."
 msgstr ""
-"如果设置为 True，则在结果中保留被规约的轴，其大小为一。使用此选项时，结果"
-"将能够与输入数组正确广播。如果传递默认值，则 `keepdims` 不会被传递到 `"
-"Tensor` 子类的 `prod` 方法中；但如果传递的是非默认值，则会被传递。如果"
-"子类的 `sum` 方法没有实现 `keepdims`，则会引发异常。"
+"如果传递默认值，则 `keepdims` 不会传递给 `Tensor` 子类的 `prod` 方法，但"
+"任何非默认值都会被传递。如果子类的 `sum` 方法没有实现 `keepdims`，则会"
+"引发异常。"
 
 #: maxframe.tensor.reduction.prod.prod of
 msgid "返回"

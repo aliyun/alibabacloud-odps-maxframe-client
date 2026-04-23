@@ -72,19 +72,19 @@ msgid ""
 " as dimensions with size one. With this option, the result will broadcast"
 " correctly against the input array."
 msgstr ""
+"如果设置为 True，则被约简的轴将在结果中保留为大小为一的维度。使用此选项时"
+"，结果将能够正确地与输入数组进行广播。"
 
 #: maxframe.tensor.statistics.ptp.ptp:18 of
-#, fuzzy
 msgid ""
 "If the default value is passed, then `keepdims` will not be passed "
 "through to the `ptp` method of sub-classes of `Tensor`, however any non-"
 "default value will be.  If the sub-class' method does not implement "
 "`keepdims` any exceptions will be raised."
 msgstr ""
-"如果设置为 True，则被规约的轴将保留在结果中，其大小为 1。使用此选项时，"
-"结果将正确地与输入数组广播。如果传入默认值，则 `keepdims` 不会被传递给 `"
-"Tensor` 子类的 `ptp` 方法；但若传入非默认值，则会被传递。如果子类方法未"
-"实现 `keepdims`，则会引发异常。"
+"如果传递默认值，则 `keepdims` 不会被传递给 `Tensor` 子类的 `ptp` 方法，"
+"但是任何非默认值都会被传递。如果子类的方法没有实现 `keepdims`，则会引发"
+"异常。"
 
 #: maxframe.tensor.statistics.ptp.ptp of
 msgid "返回"

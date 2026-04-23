@@ -34,6 +34,9 @@ msgid ""
 "\\\\ -\\infty & \\text{otherwise} \\end{cases}\n"
 "\n"
 msgstr ""
+"\\text{entr}(x) = \\begin{cases} - x \\log(x) & x > 0  \\\\ 0 & x = 0 \\"
+"\\ -\\infty & \\text{其他情况} \\end{cases}\n"
+"\n"
 
 #: maxframe.tensor.special.info_theory.entr of
 msgid "参数"

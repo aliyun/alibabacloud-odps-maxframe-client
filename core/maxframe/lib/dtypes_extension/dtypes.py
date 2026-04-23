@@ -19,7 +19,21 @@ import pyarrow as pa
 
 try:
     from pandas import ArrowDtype
-except ImportError:
+
+    # When version is pyarrow is too low (<7.0), we need to call ArrowDtype
+    #  to show if ArrowDtype is actually usable, which will raise ImportError
+    #  when version requirement not met.
+    ArrowDtype(pa.string())
+except ImportError:  # pragma: no cover
+    try:
+        # try unregister default ArrowDtype as it is not usable
+        from pandas import ArrowDtype as PandasArrowDtype
+        from pandas.core.dtypes.base import _registry
+
+        _registry.dtypes = [dt for dt in _registry.dtypes if dt is not PandasArrowDtype]
+    except ImportError:
+        pass
+
     try:
         from ._fake_arrow_dtype import FakeArrowDtype as ArrowDtype
     except ImportError:

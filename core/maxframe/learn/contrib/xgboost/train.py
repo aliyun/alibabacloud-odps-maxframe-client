@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ from collections import OrderedDict
 from typing import List
 
 from .... import opcodes
-from ....core import EntityData, OutputType
+from ....core import ENTITY_TYPE, EntityData, OutputType
 from ....core.operator import ObjectOperator, ObjectOperatorMixin
 from ....serialization.serializables import (
     AnyField,
@@ -165,7 +165,11 @@ def train(
                 processed_evals.append((eval_dmatrix, name))
             else:
                 processed_evals.append((to_dmatrix(eval_dmatrix), name))
-    if xgb_model is not None:
+    if isinstance(xgb_model, ENTITY_TYPE):
+        xgb_model = to_remote_model(
+            xgb_model, model_cls=Booster, extractor=XGBScikitLearnBase._extract_booster
+        )
+    elif xgb_model is not None:
         xgb_model = _get_xgb_booster(xgb_model)
     data = XGBTrain(
         params=params,

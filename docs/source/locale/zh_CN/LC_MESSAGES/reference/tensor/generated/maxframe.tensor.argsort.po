@@ -63,7 +63,6 @@ msgstr ""
 "兼容。  .. versionchanged:: 1.15.0.    添加了 'stable' 选项。"
 
 #: maxframe.tensor.sort.argsort.argsort:12 of
-#, fuzzy
 msgid ""
 "Sorting algorithm. The default is 'quicksort'. Note that both 'stable' "
 "and 'mergesort' use timsort under the covers and, in general, the actual "
@@ -71,12 +70,12 @@ msgid ""
 "retained for backwards compatibility."
 msgstr ""
 "排序算法。默认为 'quicksort'。注意 'stable' 和 'mergesort' 都在底层使用 "
-"timsort，且实际实现通常随数据类型而变化。保留 'mergesort' 选项是为了向后"
-"兼容。  .. versionchanged:: 1.15.0.    添加了 'stable' 选项。"
+"timsort，并且通常实际实现会因数据类型而异。'mergesort' 选项被保留用于向后"
+"兼容。"
 
 #: maxframe.tensor.sort.argsort.argsort:17 of
 msgid "The 'stable' option was added."
-msgstr ""
+msgstr "添加了 'stable' 选项。"
 
 #: maxframe.tensor.sort.argsort.argsort:20 of
 msgid ""

@@ -123,7 +123,7 @@ msgstr ""
 #: maxframe.tensor.arithmetic.arctan2.arctan2:44
 #: maxframe.tensor.arithmetic.arctan2.arctan2:45 of
 msgid "+/- 0"
-msgstr ""
+msgstr "±0"
 
 #: maxframe.tensor.arithmetic.arctan2.arctan2:44 of
 msgid "+0"
@@ -135,7 +135,7 @@ msgstr ""
 
 #: maxframe.tensor.arithmetic.arctan2.arctan2:45 of
 msgid "+/- pi"
-msgstr ""
+msgstr "±π"
 
 #: maxframe.tensor.arithmetic.arctan2.arctan2:46 of
 msgid "> 0"
@@ -146,11 +146,11 @@ msgstr ""
 #: maxframe.tensor.arithmetic.arctan2.arctan2:48
 #: maxframe.tensor.arithmetic.arctan2.arctan2:49 of
 msgid "+/-inf"
-msgstr ""
+msgstr "±∞"
 
 #: maxframe.tensor.arithmetic.arctan2.arctan2:46 of
 msgid "+0 / +pi"
-msgstr ""
+msgstr "+0 / +π"
 
 #: maxframe.tensor.arithmetic.arctan2.arctan2:47 of
 msgid "< 0"
@@ -158,23 +158,23 @@ msgstr ""
 
 #: maxframe.tensor.arithmetic.arctan2.arctan2:47 of
 msgid "-0 / -pi"
-msgstr ""
+msgstr "-0 / -π"
 
 #: maxframe.tensor.arithmetic.arctan2.arctan2:48 of
 msgid "+inf"
-msgstr ""
+msgstr "+∞"
 
 #: maxframe.tensor.arithmetic.arctan2.arctan2:48 of
 msgid "+/- (pi/4)"
-msgstr ""
+msgstr "±(π/4)"
 
 #: maxframe.tensor.arithmetic.arctan2.arctan2:49 of
 msgid "-inf"
-msgstr ""
+msgstr "-∞"
 
 #: maxframe.tensor.arithmetic.arctan2.arctan2:49 of
 msgid "+/- (3*pi/4)"
-msgstr ""
+msgstr "±(3π/4)"
 
 #: maxframe.tensor.arithmetic.arctan2.arctan2:52 of
 msgid ""

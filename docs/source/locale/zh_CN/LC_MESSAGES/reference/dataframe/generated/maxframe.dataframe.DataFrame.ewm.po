@@ -154,6 +154,8 @@ msgid ""
 "weighted_average[0] = arg[0]; weighted_average[i] = "
 "(1-alpha)*weighted_average[i-1] + alpha*arg[i]."
 msgstr ""
+"加权平均值[0] = arg[0]; 加权平均值[i] = (1-alpha)*加权平均值[i-1] + alpha"
+"*arg[i]."
 
 #: maxframe.dataframe.window.ewm.ewm:56 of
 msgid ""

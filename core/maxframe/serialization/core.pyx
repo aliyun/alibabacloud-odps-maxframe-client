@@ -1,5 +1,5 @@
 # distutils: language = c++
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,19 +37,20 @@ from libcpp.unordered_map cimport unordered_map
 from pandas.api.extensions import ExtensionDtype
 from pandas.api.types import pandas_dtype
 
-from .._utils import NamedType
+from ..utils._utils_c import NamedType
 
-from .._utils cimport TypeDispatcher
-from ..utils import wrap_arrow_dtype
+from ..utils._utils_c cimport TypeDispatcher
 
 from ..lib import wrapped_pickle as pickle
 from ..lib.dtypes_extension import ArrowDtype
+from ..lib.dtypes_extension._fake_arrow_dtype import FakeArrowDtype
 from ..utils import (
     NoDefault,
     arrow_type_from_str,
     extract_class_name,
     no_default,
     str_to_bool,
+    wrap_arrow_dtype,
 )
 
 # resolve pandas pickle compatibility between <1.2 and >=1.3
@@ -433,6 +434,12 @@ cdef class PickleContainer:
         if not unpickle_allowed:
             raise ValueError("Unpickle not allowed in this environment")
         return unpickle_buffers(self.buffers)
+
+    cpdef int buffer_size(self):
+        cdef int size = 0
+        for buf in self.buffers:
+            size += len(buf)
+        return size
 
     cpdef list get_buffers(self):
         return self.buffers
@@ -834,7 +841,7 @@ cdef class DtypeSerializer(Serializer):
         elif isinstance(obj, ExtensionDtype):
             if _ARROW_DTYPE_NOT_SUPPORTED:
                 raise ImportError("ArrowDtype is not supported in current environment")
-            if isinstance(obj, ArrowDtype):
+            if isinstance(obj, (ArrowDtype, FakeArrowDtype)):
                 return [_TYPE_CHAR_DTYPE_PANDAS_ARROW, str(obj.pyarrow_dtype)], [], True
             elif isinstance(obj, pd.CategoricalDtype):
                 return [
@@ -874,9 +881,14 @@ cdef class DtypeSerializer(Serializer):
                 return pd.StringDtype()
             try:
                 return pandas_dtype(serialized[1])
+            except ImportError as ex:  # for pandas with pyarrow<7.0
+                if serialized[1] != "string[pyarrow]":
+                    raise
+                return ArrowDtype(pa.string())
             except TypeError:
-                if serialized[1].endswith("Dtype()"):
-                    return pandas_dtype(serialized[1][:-7])
+                if not serialized[1].endswith("Dtype()"):
+                    raise
+                return pandas_dtype(serialized[1][:-7])
         else:
             raise NotImplementedError(f"Unknown serialization type {ser_type}")
 

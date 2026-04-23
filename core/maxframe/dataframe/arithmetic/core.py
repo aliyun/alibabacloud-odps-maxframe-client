@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ from typing import List, MutableMapping, Union
 import numpy as np
 import pandas as pd
 
-from ...core import ENTITY_TYPE, EntityData
-from ...serialization.serializables import AnyField
+from ...core import ENTITY_TYPE, EntityData, get_output_types
+from ...serialization.serializables import AnyField, Int32Field
 from ...tensor.core import TENSOR_TYPE
 from ...utils import classproperty, make_dtype
 from ..core import DATAFRAME_TYPE, SERIES_TYPE
@@ -346,11 +346,25 @@ class DataFrameUnaryOp(DataFrameUnaryOpMixin, DataFrameOperator):
             )
 
 
-class DataFrameArithmeticTreeMixin:
+class DataFrameArithmeticTreeOp(DataFrameOperatorMixin, DataFrameOperator):
+    combine_size = Int32Field("combine_size", default=None)
+
+    @classproperty
+    def _operator(self):
+        raise NotImplementedError
+
     @classmethod
     def _set_inputs(cls, op: "DataFrameOperator", inputs: List[EntityData]):
         inputs = op._get_inputs_data(inputs)
         setattr(op, "_inputs", inputs)
+
+    def __call__(self, *inputs):
+        assert (
+            len(set(inp.index_value.key for inp in inputs)) == 1
+        ), "All inputs must have the same index"
+        kw = inputs[0].params
+        self._output_types = get_output_types(inputs[0])
+        return self.new_tileable(inputs, **kw)
 
 
 class DataFrameUnaryUfunc(DataFrameUnaryOp, TensorUfuncMixin):

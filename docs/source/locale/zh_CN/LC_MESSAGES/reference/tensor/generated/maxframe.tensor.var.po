@@ -57,22 +57,16 @@ msgstr ""
 "元组，则在多个轴上执行方差计算，而不是单个轴或所有轴。"
 
 #: maxframe.tensor.reduction.var.var:10 of
-#, fuzzy
 msgid ""
 "Axis or axes along which the variance is computed.  The default is to "
 "compute the variance of the flattened array."
-msgstr ""
-"计算方差的轴或多个轴。默认情况下是计算扁平化数组的方差。如果这是一个整数"
-"元组，则在多个轴上执行方差计算，而不是单个轴或所有轴。"
+msgstr "计算方差的轴或多个轴。默认情况下是计算扁平化数组的方差。"
 
 #: maxframe.tensor.reduction.var.var:13 of
-#, fuzzy
 msgid ""
 "If this is a tuple of ints, a variance is performed over multiple axes, "
 "instead of a single axis or all the axes as before."
-msgstr ""
-"计算方差的轴或多个轴。默认情况下是计算扁平化数组的方差。如果这是一个整数"
-"元组，则在多个轴上执行方差计算，而不是单个轴或所有轴。"
+msgstr "如果这是一个整数元组，则在多个轴上执行方差计算，而不是单个轴或所有轴。"
 
 #: maxframe.tensor.reduction.var.var:16 of
 msgid ""
@@ -121,19 +115,19 @@ msgid ""
 " as dimensions with size one. With this option, the result will broadcast"
 " correctly against the input tensor."
 msgstr ""
+"如果设置为 True，则被约简的轴将在结果中保留为大小为一的维度。使用此选项，"
+"结果将能够正确地对输入张量进行广播。"
 
 #: maxframe.tensor.reduction.var.var:32 of
-#, fuzzy
 msgid ""
 "If the default value is passed, then `keepdims` will not be passed "
 "through to the `var` method of sub-classes of `Tensor`, however any non-"
 "default value will be.  If the sub-classes `sum` method does not "
 "implement `keepdims` any exceptions will be raised."
 msgstr ""
-"如果设置为 True，则被规约的轴会以大小为一的维度保留在结果中。使用此选项，"
-"结果可以正确地与输入张量进行广播。如果传递默认值，`keepdims` 不会被传递给"
-" `Tensor` 子类的 `var` 方法，但任何非默认值会被传递。如果子类的 `sum` "
-"方法没有实现 `keepdims`，则会引发异常。"
+"如果传递默认值，则 `keepdims` 不会被传递给 `Tensor` 子类的 `var` 方法，但"
+"任何非默认值都会被传递。如果子类的 `sum` 方法没有实现 `keepdims`，则会"
+"引发异常。"
 
 #: maxframe.tensor.reduction.var.var of
 msgid "返回"

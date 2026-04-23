@@ -84,30 +84,29 @@ msgstr ""
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:16 of
 msgid "Specify a date parse order if `arg` is str or its list-likes."
-msgstr ""
+msgstr "如果 `arg` 是字符串或其列表类型，则指定日期解析顺序。"
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:18 of
 msgid ""
 "If True parses dates with the year first, eg 10/11/12 is parsed as "
 "2010-11-12."
-msgstr ""
+msgstr "如果为 True，则首先解析年份，例如 10/11/12 被解析为 2010-11-12。"
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:20 of
 msgid ""
 "If both dayfirst and yearfirst are True, yearfirst is preceded (same as "
 "dateutil)."
 msgstr ""
+"如果 dayfirst 和 yearfirst 都为 True，则优先使用 yearfirst（与 dateutil "
+"相同）。"
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:23 of
-#, fuzzy
 msgid ""
 "Warning: yearfirst=True is not strict, but will prefer to parse with year"
 " first (this is a known bug, based on dateutil behavior)."
 msgstr ""
-"如果 `arg` 是字符串或其类似列表的形式，指定日期解析顺序。如果为 True，则"
-"优先以日优先解析日期，例如 10/11/12 将被解析为 2012-11-10。警告：dayfirst"
-"=True 并非严格模式，但会优先以日优先解析（这是基于 dateutil 行为的一个"
-"已知 bug）。"
+"警告：yearfirst=True 并非严格模式，但会优先以年优先解析（这是基于 "
+"dateutil 行为的一个已知 bug）。"
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:26 of
 msgid ""
@@ -179,11 +178,11 @@ msgstr ""
 msgid ""
 "Define the reference date. The numeric values would be parsed as number "
 "of units (defined by `unit`) since this reference date."
-msgstr ""
+msgstr "定义参考日期。数值将被解析为自该参考日期以来的单位数（由 `unit` 定义）。"
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:51 of
 msgid "If 'unix' (or POSIX) time; origin is set to 1970-01-01."
-msgstr ""
+msgstr "如果是 'unix'（或 POSIX）时间；origin 设置为 1970-01-01。"
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:52 of
 msgid ""
@@ -191,10 +190,12 @@ msgid ""
 "Calendar. Julian day number 0 is assigned to the day starting at noon on "
 "January 1, 4713 BC."
 msgstr ""
+"如果是 'julian'，unit 必须是 'D'，并且 origin 设置为儒略历的开始。儒略"
+"日数 0 被分配给公元前 4713 年 1 月 1 日中午开始的那一天。"
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:55 of
 msgid "If Timestamp convertible, origin is set to Timestamp identified by origin."
-msgstr ""
+msgstr "如果可以转换为时间戳，则 origin 设置为由 origin 标识的时间戳。"
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:58 of
 msgid ""
@@ -228,31 +229,29 @@ msgstr ""
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:65 of
 msgid "If parsing succeeded. Return type depends on input:"
-msgstr ""
+msgstr "如果解析成功。返回类型取决于输入："
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:68 of
 msgid "list-like: DatetimeIndex"
-msgstr ""
+msgstr "列表类：DatetimeIndex"
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:69 of
 msgid "Series: Series of datetime64 dtype"
-msgstr ""
+msgstr "Series：datetime64数据类型的Series"
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:70 of
 msgid "scalar: Timestamp"
-msgstr ""
+msgstr "标量：Timestamp"
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime:72 of
-#, fuzzy
 msgid ""
 "In case when it is not possible to return designated types (e.g. when any"
 " element of input is before Timestamp.min or after Timestamp.max) return "
 "will have datetime.datetime type (or corresponding array/Series)."
 msgstr ""
-"如果解析成功。返回类型取决于输入： - 类似列表：DatetimeIndex - Series："
-"datetime64 数据类型的 Series - 标量：Timestamp  在无法返回指定类型的情况"
-"下（例如输入中的任何元素在 Timestamp.min 之前或 Timestamp.max 之后），"
-"返回值将为 datetime.datetime 类型（或对应的数组/Series）。"
+"在无法返回指定类型的情况下（例如输入中的任何元素在 Timestamp.min 之前或 "
+"Timestamp.max 之后），返回值将为 datetime.datetime 类型（或对应的数组/"
+"Series）。"
 
 #: maxframe.dataframe.tseries.to_datetime.to_datetime of
 msgid "返回类型"

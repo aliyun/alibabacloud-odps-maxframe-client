@@ -57,22 +57,18 @@ msgstr ""
 "多个轴执行平均值计算，而不是像以前那样对单个轴或所有轴执行。"
 
 #: maxframe.tensor.reduction.mean.mean:10 of
-#, fuzzy
 msgid ""
 "Axis or axes along which the means are computed. The default is to "
 "compute the mean of the flattened array."
-msgstr ""
-"计算平均值的轴。默认是计算展平数组的平均值。如果这是一个整数元组，则对"
-"多个轴执行平均值计算，而不是像以前那样对单个轴或所有轴执行。"
+msgstr "计算平均值的轴。默认是计算展平数组的平均值。"
 
 #: maxframe.tensor.reduction.mean.mean:13 of
-#, fuzzy
 msgid ""
 "If this is a tuple of ints, a mean is performed over multiple axes, "
 "instead of a single axis or all the axes as before."
 msgstr ""
-"计算平均值的轴。默认是计算展平数组的平均值。如果这是一个整数元组，则对"
-"多个轴执行平均值计算，而不是像以前那样对单个轴或所有轴执行。"
+"如果这是一个整数元组，则对多个轴执行平均值计算，而不是像以前那样对单个轴"
+"或所有轴执行。"
 
 #: maxframe.tensor.reduction.mean.mean:16 of
 msgid ""
@@ -113,19 +109,19 @@ msgid ""
 " as dimensions with size one. With this option, the result will broadcast"
 " correctly against the input tensor."
 msgstr ""
+"如果设置为 True，则在结果中保留被规约的轴作为大小为一的维度。使用此选项时"
+"，结果将能正确地与输入张量进行广播。"
 
 #: maxframe.tensor.reduction.mean.mean:29 of
-#, fuzzy
 msgid ""
 "If the default value is passed, then `keepdims` will not be passed "
 "through to the `mean` method of sub-classes of `Tensor`, however any non-"
 "default value will be.  If the sub-classes `sum` method does not "
 "implement `keepdims` any exceptions will be raised."
 msgstr ""
-"如果设置为 True，则在结果中保留被规约的轴作为大小为一的维度。使用此选项时"
-"，结果将能正确地与输入张量进行广播。如果传递的是默认值，则 `keepdims` "
-"不会传递给 `Tensor` 子类的 `mean` 方法，但任何非默认值则会传递。如果子类"
-"的 `sum` 方法未实现 `keepdims`，则将引发异常。"
+"如果传递的是默认值，则 `keepdims` 不会传递给 `Tensor` 子类的 `mean` 方法"
+"，但任何非默认值则会传递。如果子类的 `sum` 方法未实现 `keepdims`，则将"
+"引发异常。"
 
 #: maxframe.tensor.reduction.mean.mean of
 msgid "返回"

@@ -76,15 +76,12 @@ msgstr ""
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:17
 #: of
 msgid "Column in the DataFrame to group by."
-msgstr ""
+msgstr "用于分组的 DataFrame 中的列。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:21
 #: of
-#, fuzzy
 msgid "Previously, `by` is silently ignore and makes no groupings"
-msgstr ""
-"用于分组的 DataFrame 列。  .. versionchanged:: 1.4.0     之前，`by` 被"
-"静默忽略且不进行分组"
+msgstr "以前，`by` 被静默忽略且不进行分组"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:23
 #: of

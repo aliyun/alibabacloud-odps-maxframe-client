@@ -15,9 +15,9 @@
 import numpy as np
 import pandas as pd
 import pyarrow as pa
-import pytest
 
 from ....lib.dtypes_extension import dict_
+from ....tests.utils import require_arrow_dtype
 from ..arrow import arrow_to_pandas, pandas_to_arrow
 
 
@@ -91,10 +91,7 @@ def test_scalar_convert():
     assert scalar_data == scalar_res
 
 
-@pytest.mark.skipif(
-    pa is None or not hasattr(pd, "ArrowDtype"),
-    reason="pandas doesn't support ArrowDtype",
-)
+@require_arrow_dtype
 def test_map_convert():
     pd_data = pd.DataFrame(
         {

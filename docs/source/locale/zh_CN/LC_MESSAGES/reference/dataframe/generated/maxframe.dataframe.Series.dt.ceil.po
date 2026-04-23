@@ -62,12 +62,12 @@ msgstr ""
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:8
 msgid "Only relevant for DatetimeIndex:"
-msgstr ""
+msgstr "仅对 DatetimeIndex 有效："
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:10
 msgid "'infer' will attempt to infer fall dst-transition hours based on order"
-msgstr ""
+msgstr "'infer' 将根据顺序尝试推断夏令时转换时间"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:12
@@ -75,16 +75,18 @@ msgid ""
 "bool-ndarray where True signifies a DST time, False designates a non-DST "
 "time (note that this flag is only applicable for ambiguous times)"
 msgstr ""
+"bool-ndarray，其中 True 表示夏令时，False 表示非夏令时（注意此标志仅适用"
+"于模糊时间）"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:15
 msgid "'NaT' will return NaT where there are ambiguous times"
-msgstr ""
+msgstr "'NaT' 将在存在模糊时间时返回 NaT"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:16
 msgid "'raise' will raise an AmbiguousTimeError if there are ambiguous times."
-msgstr ""
+msgstr "'raise' 将在存在模糊时间时引发 AmbiguousTimeError。"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:19
@@ -108,36 +110,36 @@ msgstr ""
 msgid ""
 "A nonexistent time does not exist in a particular timezone where clocks "
 "moved forward due to DST."
-msgstr ""
+msgstr "不存在的时间是指在特定时区中由于夏令时导致时钟向前移动时不存在的时间。"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:22
 msgid ""
 "'shift_forward' will shift the nonexistent time forward to the closest "
 "existing time"
-msgstr ""
+msgstr "'shift_forward' 将不存在的时间向前移动到最近的存在的时间"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:24
 msgid ""
 "'shift_backward' will shift the nonexistent time backward to the closest "
 "existing time"
-msgstr ""
+msgstr "'shift_backward' 将不存在的时间向后移动到最近的存在的时间"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:26
 msgid "'NaT' will return NaT where there are nonexistent times"
-msgstr ""
+msgstr "'NaT' 将在存在不存在的时间时返回 NaT"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:27
 msgid "timedelta objects will shift nonexistent times by the timedelta"
-msgstr ""
+msgstr "timedelta 对象将按 timedelta 移动不存在的时间"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f:28
 msgid "'raise' will raise an NonExistentTimeError if there are nonexistent times."
-msgstr ""
+msgstr "'raise' 将在存在不存在的时间时引发 NonExistentTimeError。"
 
 #: of
 #: pandas.core.accessor.PandasDelegate._add_delegate_accessors.<locals>._create_delegator_method.<locals>.f
