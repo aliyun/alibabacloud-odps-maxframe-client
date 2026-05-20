@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 
 from typing import List
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData
-from ...serialization.serializables import AnyField, Int32Field, TupleField
-from ..operators import TensorHasInput, TensorOperatorMixin
-from ..utils import calc_object_length, filter_inputs, validate_axis
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData
+from maxframe.serialization.serializables import AnyField, Int32Field, TupleField
+from maxframe.tensor.operators import TensorHasInput, TensorOperatorMixin
+from maxframe.tensor.utils import calc_object_length, filter_inputs, validate_axis
 
 
 class TensorInsert(TensorHasInput, TensorOperatorMixin):
@@ -115,7 +115,7 @@ def insert(arr, obj, values, axis=None):
     array([[  0, 999,   1,   2, 999,   3],
            [  4, 999,   5,   6, 999,   7]])
     """
-    from ..datasource import tensor as astensor
+    from maxframe.tensor.datasource import tensor as astensor
 
     arr = astensor(arr)
     if getattr(obj, "ndim", 0) > 1:  # pragma: no cover

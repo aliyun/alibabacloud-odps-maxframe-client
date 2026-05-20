@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...serialization.serializables import AnyField, Int32Field
-from ...typing_ import EntityType
-from ..core import Tensor, TensorOrder
-from ..datasource import tensor as astensor
-from ..operators import TensorHasInput, TensorOperatorMixin
-from ..utils import broadcast_shape
-from .ravel import ravel
+from maxframe import opcodes
+from maxframe.serialization.serializables import AnyField, Int32Field
+from maxframe.tensor.core import Tensor, TensorOrder
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.misc.ravel import ravel
+from maxframe.tensor.operators import TensorHasInput, TensorOperatorMixin
+from maxframe.tensor.utils import broadcast_shape
+from maxframe.typing_ import EntityType
 
 
 class TensorRepeat(TensorHasInput, TensorOperatorMixin):

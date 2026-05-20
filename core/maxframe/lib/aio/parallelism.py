@@ -18,7 +18,7 @@ import threading
 from concurrent.futures import Executor
 from typing import Union
 
-from .base import AioBase, delegate_to_executor, proxy_method_directly
+from maxframe.lib.aio.base import AioBase, delegate_to_executor, proxy_method_directly
 
 event_types = Union[threading.Event, multiprocessing.Event]
 

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..entity import OutputType, register_fetch_class
-from .base import Operator
-from .core import TileableOperatorMixin
-from .fetch import Fetch, FetchMixin
+from maxframe.core.entity import OutputType, register_fetch_class
+from maxframe.core.operator.base import Operator
+from maxframe.core.operator.core import TileableOperatorMixin
+from maxframe.core.operator.fetch import Fetch, FetchMixin
 
 
 class ObjectOperator(Operator):

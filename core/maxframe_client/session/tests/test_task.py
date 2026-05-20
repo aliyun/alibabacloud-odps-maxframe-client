@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,9 +28,15 @@ from maxframe import options
 from maxframe.config import option_context
 from maxframe.protocol import SessionInfo
 from maxframe.tests.utils import tn
-
-from ...session.task import MaxFrameInstanceCaller, MaxFrameTask, MaxFrameTaskSession
-from ..consts import MAXFRAME_OUTPUT_JSON_FORMAT, MAXFRAME_OUTPUT_MSGPACK_FORMAT
+from maxframe_client.session.consts import (
+    MAXFRAME_OUTPUT_JSON_FORMAT,
+    MAXFRAME_OUTPUT_MSGPACK_FORMAT,
+)
+from maxframe_client.session.task import (
+    MaxFrameInstanceCaller,
+    MaxFrameTask,
+    MaxFrameTaskSession,
+)
 
 expected_file_dir = os.path.join(os.path.dirname(__file__), "expected-data")
 

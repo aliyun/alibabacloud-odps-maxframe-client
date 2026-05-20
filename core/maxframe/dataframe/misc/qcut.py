@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@ import numpy as np
 import pandas as pd
 from pandas.api.types import is_integer
 
-from ...core import ENTITY_TYPE
-from ...tensor import tensor as astensor
-from ...tensor.statistics.percentile import percentile
-from ..core import DATAFRAME_TYPE, SERIES_TYPE
-from ..initializer import DataFrame, Series
-from .cut import cut
+from maxframe.core import ENTITY_TYPE
+from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+from maxframe.dataframe.initializer import DataFrame, Series
+from maxframe.dataframe.misc.cut import cut
+from maxframe.tensor import tensor as astensor
+from maxframe.tensor.statistics.percentile import percentile
 
 
 def qcut(x, q, labels=None, retbins=False, precision=3, duplicate="raise"):

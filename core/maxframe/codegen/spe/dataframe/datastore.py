@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +18,16 @@ import pyarrow as pa
 from odps import ODPS
 from odps.types import Column, OdpsSchema, PartitionSpec
 
-from ....config import options
-from ....dataframe.datastore.to_odps import DataFrameToODPSTable
-from ....io.odpsio import ODPSTableIO, pandas_to_arrow, pandas_to_odps_schema
-from ....protocol import DataFrameTableMeta, ResultInfo
-from ....typing_ import PandasObjectTypes
-from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.config import options
+from maxframe.dataframe.datastore.to_odps import DataFrameToODPSTable
+from maxframe.io.odpsio import ODPSTableIO, pandas_to_arrow, pandas_to_odps_schema
+from maxframe.protocol import DataFrameTableMeta, ResultInfo
+from maxframe.typing_ import PandasObjectTypes
 
 
 @register_op_adapter(DataFrameToODPSTable)
@@ -141,12 +145,18 @@ class DataFrameToODPSTableAdapter(SPEOperatorAdapter):
         if partition_columns is not None:
             groupby_obj = df_obj.groupby(partition_columns)
             for group in groupby_obj.groups:
-                group_data = groupby_obj.get_group(group)
+                group = (group,) if len(partition_columns) == 1 else group
+                try:
+                    group_data = groupby_obj.get_group(group)
+                except KeyError:
+                    if len(group) != 1:
+                        raise
+                    group_data = groupby_obj.get_group(group[0])
+
                 group_data = group_data.loc[
                     :, ~group_data.columns.isin(partition_columns)
                 ]
 
-                group = (group,) if len(partition_columns) == 1 else group
                 part_dict = dict(zip(partition_columns, group))
 
                 part_dict.update(dict(partition_spec.items() if partition_spec else {}))

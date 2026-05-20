@@ -15,8 +15,7 @@
 import numpy as np
 
 import maxframe.dataframe as md
-
-from ..models.openai import (
+from maxframe.learn.contrib.llm.models.openai import (
     OpenAICompatibleLLM,
     OpenAICompatibleTextGenOp,
     OpenAICompatibleTextLLM,
@@ -128,7 +127,7 @@ def test_openai_compatible_text_generation_operator_output_dtypes():
     """Test OpenAICompatibleTextGenOperator inherits correct output dtypes."""
     op = OpenAICompatibleTextGenOp()
     dtypes = op.get_output_dtypes()
-    assert dtypes["response"] == np.dtype("O")
+    assert dtypes["response"] == md.dtype("string")
     assert dtypes["success"] == np.dtype("bool")
 
 

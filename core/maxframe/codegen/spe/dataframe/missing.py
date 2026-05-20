@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,19 @@
 
 from typing import List
 
-from ....dataframe.missing.checkna import DataFrameCheckNA
-from ....dataframe.missing.dropna import DataFrameDropNA
-from ....dataframe.missing.fillna import DataFrameFillNA
-from ....dataframe.missing.replace import DataFrameReplace
-from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
-from ..utils import build_method_call_adapter
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.codegen.spe.utils import build_method_call_adapter
+from maxframe.dataframe.missing.checkna import DataFrameCheckNA
+from maxframe.dataframe.missing.dropna import DataFrameDropNA
+from maxframe.dataframe.missing.fillna import DataFrameFillNA
+from maxframe.dataframe.missing.replace import DataFrameReplace
+from maxframe.utils import pd_release_version
+
+_replace_method_removed = pd_release_version >= (3, 0, 0)
 
 
 @register_op_adapter(DataFrameDropNA)
@@ -58,7 +65,13 @@ class DataFrameReplaceAdapter(SPEOperatorAdapter):
     def generate_code(self, op: DataFrameReplace, context: SPECodeContext) -> List[str]:
         input_var = context.get_input_tileable_variable(op.inputs[0])
         output_var = context.get_output_tileable_variable(op.outputs[0])
-        args_str = self.generate_call_args_with_attributes(
-            op, context, kw_keys=["to_replace", "value", "limit", "regex", "method"]
-        )
+        # method parameter was removed in pandas 3.0
+        if _replace_method_removed:  # pragma: no branch
+            args_str = self.generate_call_args_with_attributes(
+                op, context, kw_keys=["to_replace", "value", "limit", "regex"]
+            )
+        else:
+            args_str = self.generate_call_args_with_attributes(
+                op, context, kw_keys=["to_replace", "value", "limit", "regex", "method"]
+            )
         return [f"{output_var} = {input_var}.replace({args_str})"]

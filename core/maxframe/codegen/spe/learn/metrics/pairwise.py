@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .....learn.metrics.pairwise.cosine import CosineDistances
-from .....learn.metrics.pairwise.euclidean import EuclideanDistances
-from .....learn.metrics.pairwise.haversine import HaversineDistances
-from .....learn.metrics.pairwise.manhattan import ManhattanDistances
-from ...utils import build_method_call_adapter
+from maxframe.codegen.spe.utils import build_method_call_adapter
+from maxframe.learn.metrics.pairwise.cosine import CosineDistances
+from maxframe.learn.metrics.pairwise.euclidean import EuclideanDistances
+from maxframe.learn.metrics.pairwise.haversine import HaversineDistances
+from maxframe.learn.metrics.pairwise.manhattan import ManhattanDistances
 
 CosineDistancesAdapter = build_method_call_adapter(
     CosineDistances,

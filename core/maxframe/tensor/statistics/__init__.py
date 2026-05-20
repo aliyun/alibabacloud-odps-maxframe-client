@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .average import average
-from .bincount import bincount
-from .corrcoef import corrcoef
-from .cov import cov
-from .digitize import digitize
-from .histogram import histogram, histogram_bin_edges
-from .median import median
-from .percentile import percentile
-from .ptp import ptp
-from .quantile import quantile
+from maxframe.tensor.statistics.average import average
+from maxframe.tensor.statistics.bincount import bincount
+from maxframe.tensor.statistics.corrcoef import corrcoef
+from maxframe.tensor.statistics.cov import cov
+from maxframe.tensor.statistics.digitize import digitize
+from maxframe.tensor.statistics.histogram import histogram, histogram_bin_edges
+from maxframe.tensor.statistics.median import median
+from maxframe.tensor.statistics.percentile import percentile
+from maxframe.tensor.statistics.ptp import ptp
+from maxframe.tensor.statistics.quantile import quantile

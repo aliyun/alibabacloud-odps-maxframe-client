@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .core import convert_to_tensor_or_dataframe
-from .multiclass import check_classification_targets
-from .odpsio import read_odps_model, read_odps_resource
-from .shuffle import shuffle
-from .sparsefuncs import count_nonzero
-from .validation import check_array, check_consistent_length
+from maxframe.learn.utils.core import convert_to_tensor_or_dataframe
+from maxframe.learn.utils.multiclass import check_classification_targets
+from maxframe.learn.utils.odpsio import read_odps_model, read_odps_resource
+from maxframe.learn.utils.shuffle import shuffle
+from maxframe.learn.utils.sparsefuncs import count_nonzero
+from maxframe.learn.utils.validation import check_array, check_consistent_length

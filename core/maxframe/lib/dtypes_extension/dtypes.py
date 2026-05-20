@@ -24,7 +24,9 @@ try:
     #  to show if ArrowDtype is actually usable, which will raise ImportError
     #  when version requirement not met.
     ArrowDtype(pa.string())
+    _use_pandas_arrow_dtype = True
 except ImportError:  # pragma: no cover
+    _use_pandas_arrow_dtype = False
     try:
         # try unregister default ArrowDtype as it is not usable
         from pandas import ArrowDtype as PandasArrowDtype
@@ -35,9 +37,21 @@ except ImportError:  # pragma: no cover
         pass
 
     try:
-        from ._fake_arrow_dtype import FakeArrowDtype as ArrowDtype
+        from maxframe.lib.dtypes_extension._fake_arrow_dtype import (
+            FakeArrowDtype as ArrowDtype,
+        )
     except ImportError:
         ArrowDtype = None
+
+try:
+    if _use_pandas_arrow_dtype:
+        from pandas.arrays import ArrowExtensionArray
+    else:
+        from maxframe.lib.dtypes_extension._fake_arrow_dtype import (
+            FakeArrowExtensionArray as ArrowExtensionArray,
+        )
+except ImportError:
+    ArrowExtensionArray = None
 
 
 def dict_(

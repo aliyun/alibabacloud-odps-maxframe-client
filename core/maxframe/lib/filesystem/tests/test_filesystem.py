@@ -24,12 +24,15 @@ try:
 except ImportError:  # pragma: no cover
     pa = None
 
-from ....tests.utils import require_hadoop
-from ....utils import lazy_import
-from .. import FileSystem, FSMap, LocalFileSystem, glob
+from maxframe.lib.filesystem import FileSystem, FSMap, LocalFileSystem, glob
+from maxframe.tests.utils import require_hadoop
+from maxframe.utils import lazy_import
 
 if pa is not None:
-    from ..arrow import ArrowBasedLocalFileSystem, HadoopFileSystem
+    from maxframe.lib.filesystem.arrow import (
+        ArrowBasedLocalFileSystem,
+        HadoopFileSystem,
+    )
 else:  # pragma: no cover
     ArrowBasedLocalFileSystem = None
 

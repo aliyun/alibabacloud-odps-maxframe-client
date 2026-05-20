@@ -31,7 +31,13 @@ import fnmatch
 import os
 import re
 
-from .common import oss_exists, oss_isdir, oss_path_join, oss_scandir, parse_osspath
+from maxframe.lib.filesystem._oss_lib.common import (
+    oss_exists,
+    oss_isdir,
+    oss_path_join,
+    oss_scandir,
+    parse_osspath,
+)
 
 __all__ = ["glob", "iglob", "escape"]
 

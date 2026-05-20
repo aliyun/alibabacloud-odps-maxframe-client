@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,13 +19,17 @@ from weakref import WeakKeyDictionary, WeakSet
 
 import numpy as np
 
-from ...serialization.serializables import BoolField, FieldTypes, TupleField
-from ...typing_ import TileableType
-from ...utils import on_deserialize_shape, on_serialize_nsplits, on_serialize_shape
-from ..base import Base
-from ..mode import enter_mode
-from .core import Entity, EntityData
-from .executable import _ExecutableMixin
+from maxframe.core.base import Base
+from maxframe.core.entity.core import Entity, EntityData
+from maxframe.core.entity.executable import _ExecutableMixin
+from maxframe.core.mode import enter_mode, is_build_mode
+from maxframe.serialization.serializables import BoolField, FieldTypes, TupleField
+from maxframe.typing_ import TileableType
+from maxframe.utils import (
+    on_deserialize_shape,
+    on_serialize_nsplits,
+    on_serialize_shape,
+)
 
 
 class NotSupportTile(Exception):
@@ -374,3 +378,11 @@ class HasShapeTileable(Tileable):
             return self
         else:
             return result
+
+    def __bool__(self):
+        if is_build_mode():
+            return True
+        raise ValueError(
+            f"The truth value of a {type(self).__name__} is ambiguous. "
+            "Use a.empty, a.bool(), a.item(), a.any() or a.all()."
+        )

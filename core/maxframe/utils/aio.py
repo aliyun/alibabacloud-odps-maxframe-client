@@ -25,8 +25,8 @@ from typing import Awaitable, Callable, Optional, Tuple, Type, TypeVar, Union
 from tornado import httpclient
 from tornado.simple_httpclient import HTTPTimeoutError
 
-from ..typing_ import TimeoutType
-from .functional import unwrap_function
+from maxframe.typing_ import TimeoutType
+from maxframe.utils.functional import unwrap_function
 
 _PrimitiveType = TypeVar("_PrimitiveType")
 _ToThreadRetType = TypeVar("_ToThreadRetType")
@@ -34,11 +34,18 @@ _RetryRetType = TypeVar("_RetryRetType")
 
 
 async def wait_http_response(
-    url: str, *, request_timeout: TimeoutType = None, **kwargs
+    url: str, *, request_timeout: TimeoutType = None, interval_timeout=10.0, **kwargs
 ) -> httpclient.HTTPResponse:
     start_time = time.time()
     while request_timeout is None or time.time() - start_time < request_timeout:
-        timeout_left = min(10.0, time.time() - start_time) if request_timeout else None
+        if request_timeout is not None:
+            timeout_left = min(
+                interval_timeout, request_timeout - (time.time() - start_time)
+            )
+            if timeout_left <= 0:
+                break
+        else:
+            timeout_left = None
         try:
             return await httpclient.AsyncHTTPClient().fetch(
                 url, request_timeout=timeout_left, **kwargs
@@ -222,7 +229,7 @@ def call_with_retry(
     -------
     Return value of the original function
     """
-    from ..config import options
+    from maxframe.config import options
 
     retry_num = 0
     retry_times = retry_times if retry_times is not None else options.retry_times

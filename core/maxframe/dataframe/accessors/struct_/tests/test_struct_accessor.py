@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from ..... import dataframe as md
-from .....utils import is_arrow_dtype_supported, wrap_arrow_dtype
-from ..core import SeriesStructMethod
+from maxframe import dataframe as md
+from maxframe.dataframe.accessors.struct_.core import SeriesStructMethod
+from maxframe.utils import is_arrow_dtype_supported, wrap_arrow_dtype
 
 pytestmark = pytest.mark.skipif(
     not is_arrow_dtype_supported(), reason="Arrow Dtype is not supported"

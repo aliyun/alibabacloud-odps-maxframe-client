@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,18 +14,21 @@
 
 import numpy as np
 
-from .... import tensor as mt
-from ....core import ENTITY_TYPE
-from ....lib import sparse
-from ...core import BaseEstimator, TransformerMixin
-from ...utils.extmath import _incremental_mean_and_var
-from ...utils.validation import (
+from maxframe import tensor as mt
+from maxframe.core import ENTITY_TYPE
+from maxframe.learn.core import BaseEstimator, TransformerMixin
+from maxframe.learn.preprocessing._data.utils import (
+    _handle_zeros_in_scale,
+    _is_constant_feature,
+)
+from maxframe.learn.utils.extmath import _incremental_mean_and_var
+from maxframe.learn.utils.validation import (
     FLOAT_DTYPES,
     _check_sample_weight,
     check_array,
     check_is_fitted,
 )
-from .utils import _handle_zeros_in_scale, _is_constant_feature
+from maxframe.lib import sparse
 
 
 class StandardScaler(TransformerMixin, BaseEstimator):

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ... import opcodes
-from ...serialization.serializables import AnyField, DictField
-from ..window.rolling import Rolling
-from .core import BaseGroupByWindowOp
+from maxframe import opcodes
+from maxframe.dataframe.groupby.core import BaseGroupByWindowOp
+from maxframe.dataframe.window.rolling import Rolling
+from maxframe.serialization.serializables import AnyField, DictField
+from maxframe.utils import pd_release_version
+
+_has_axis_in_window = pd_release_version < (3, 0, 0)
 
 _supported_funcs = {"sum", "mean", "std", "var", "median", "min", "max", "count"}
 
@@ -31,6 +34,9 @@ class GroupByRollingAgg(BaseGroupByWindowOp):
         # exclude MF-specific args
         for key in Rolling._mf_specific_fields:
             rolling_args.pop(key, None)
+        # pandas 3.0 removed axis parameter from rolling
+        if not _has_axis_in_window:  # pragma: no branch
+            rolling_args.pop("axis", None)
 
         def apply_func(frame, **_):
             return getattr(frame.rolling(**rolling_args), self.func)()

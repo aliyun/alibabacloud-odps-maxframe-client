@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@ import numpy as np
 import pandas as pd
 from pandas.api.types import CategoricalDtype, is_dict_like
 
-from ... import opcodes
-from ...config import options
-from ...io.odpsio.schema import pandas_dtype_to_arrow_type
-from ...serialization.serializables import AnyField, ListField, StringField
-from ...utils import make_dtypes, pd_release_version
-from ..core import DATAFRAME_TYPE, SERIES_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_empty_df, build_empty_series, parse_index
+from maxframe import opcodes
+from maxframe.config import options
+from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_empty_df, build_empty_series, parse_index
+from maxframe.io.odpsio.schema import pandas_dtype_to_arrow_type
+from maxframe.serialization.serializables import AnyField, ListField, StringField
+from maxframe.utils import make_dtypes, pd_release_version
 
 _simple_dtypes = {
     np.dtype(t)

@@ -67,11 +67,11 @@ msgstr ""
 
 #: maxframe.dataframe.statistics.quantile.series_quantile:10 of
 msgid "lower: `i`."
-msgstr ""
+msgstr "下界：`i`。"
 
 #: maxframe.dataframe.statistics.quantile.series_quantile:11 of
 msgid "higher: `j`."
-msgstr ""
+msgstr "上界：`j`。"
 
 #: maxframe.dataframe.statistics.quantile.series_quantile:12 of
 msgid "nearest: `i` or `j` whichever is nearest."
@@ -79,7 +79,7 @@ msgstr "nearest: `i` 或 `j` 中最近的一个。"
 
 #: maxframe.dataframe.statistics.quantile.series_quantile:13 of
 msgid "midpoint: (`i` + `j`) / 2."
-msgstr ""
+msgstr "中点：(`i` + `j`) / 2。"
 
 #: maxframe.dataframe.statistics.quantile.series_quantile of
 msgid "返回"

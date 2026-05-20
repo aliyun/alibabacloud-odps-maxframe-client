@@ -85,16 +85,15 @@ from maxframe.utils import (
     str_to_bool,
     sync_pyodps_options,
 )
-
-from ..clients.framedriver import FrameDriverClient
-from ..fetcher import get_fetcher_cls
-from .consts import (
+from maxframe_client.clients.framedriver import FrameDriverClient
+from maxframe_client.fetcher import get_fetcher_cls
+from maxframe_client.session.consts import (
     DEBUG_MODE_LOCAL,
     EMPTY_RESPONSE_RETRY_COUNT,
     RESTFUL_SESSION_INSECURE_SCHEME,
     RESTFUL_SESSION_SECURE_SCHEME,
 )
-from .graph import gen_submit_tileable_graph
+from maxframe_client.session.graph import gen_submit_tileable_graph
 
 logger = logging.getLogger(__name__)
 
@@ -336,6 +335,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             columns=table_meta.table_column_names,
             index_col=table_meta.table_index_column_names,
             output_type=table_meta.type,
+            odps_entry=self._odps_entry,
         )
         if isinstance(read_tileable, DATAFRAME_TYPE):
             if list(read_tileable.dtypes.index) != list(t.dtypes.index):
@@ -369,6 +369,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         io_handler().write_object(writer, t, data)
         return build_fetch(t).data
 
+    @enter_mode(kernel=True, build=True)
     def _get_local_data(self, t: TileableType) -> Any:
         if isinstance(t.op, (ArrayDataSource, PandasDataSourceOperator)):
             # scenario 1: tensor or DataFrame input
@@ -473,6 +474,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         self._last_settings = copy.deepcopy(new_settings)
         return update
 
+    @enter_mode(kernel=True, build=True)
     def _is_local_executable(self, tileable_graph: TileableGraph) -> bool:
         from maxframe.codegen.spe.core import get_op_adapter
 

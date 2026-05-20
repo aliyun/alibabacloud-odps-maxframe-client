@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 import pandas as pd
 
-from ..datasource.dataframe import from_pandas
+from maxframe.dataframe.datasource.dataframe import from_pandas
 
 
 def append(df, other, ignore_index=False, verify_integrity=False, sort=False):
@@ -106,7 +106,7 @@ def append(df, other, ignore_index=False, verify_integrity=False, sort=False):
     3  3
     4  4
     """
-    from .concat import concat
+    from maxframe.dataframe.merge.concat import concat
 
     if isinstance(other, dict):
         other = from_pandas(pd.DataFrame(dict((k, [v]) for k, v in other.items())))

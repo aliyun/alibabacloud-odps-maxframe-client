@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="512" viewBox="0 0 1024 512">
+  <rect width="1024" height="512" fill="#fbfaf8"/>
+  <text x="18" y="42" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#111827">Video Understanding and Vectorization Pipeline</text>
+  <defs><marker id="arrowv" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto"><path d="M0,0 L12,4 L0,8 Z" fill="#111827"/></marker></defs>
+  <g font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <rect x="227" y="74" width="722" height="249" rx="3" fill="#f8fafc" stroke="#6b7280" stroke-width="1.5"/>
+    <rect x="227" y="74" width="722" height="41" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.5"/>
+    <text x="588" y="101" font-size="18" font-weight="700">MaxFrame Distributed Processing</text>
+    <g transform="translate(75 198)">
+      <path d="M-36 -68 h54 l28 28 v122 h-82z" fill="#fff" stroke="#6b7280" stroke-width="2"/>
+      <path d="M18 -68 v28 h28" fill="none" stroke="#6b7280" stroke-width="2"/>
+      <rect x="-18" y="-15" width="48" height="38" fill="#fff" stroke="#111827" stroke-width="2"/>
+      <polygon points="-1,-6 -1,14 16,4" fill="#111827"/>
+      <text y="93" font-size="14">OSS Video Source</text>
+    </g>
+    <g transform="translate(337 201)">
+      <rect x="-58" y="-62" width="116" height="124" rx="4" fill="#fff" stroke="#9ca3af"/>
+      <rect x="-58" y="-62" width="116" height="16" fill="#f3b94e"/>
+      <text y="-24" font-size="20" font-weight="700">UDF 1</text>
+      <text y="18" font-size="13">Custom image + FFmpeg</text>
+      <text y="37" font-size="13">video frame extraction</text>
+    </g>
+    <g transform="translate(584 201)">
+      <rect x="-58" y="-62" width="116" height="124" rx="4" fill="#fff" stroke="#9ca3af"/>
+      <rect x="-58" y="-62" width="116" height="16" fill="#66a6e8"/>
+      <text y="-24" font-size="20" font-weight="700">UDF 2</text>
+      <text y="18" font-size="13">Bailian multimodal</text>
+      <text y="37" font-size="13">image labeling</text>
+    </g>
+    <g transform="translate(843 201)">
+      <rect x="-58" y="-62" width="116" height="124" rx="4" fill="#fff" stroke="#9ca3af"/>
+      <rect x="-58" y="-62" width="116" height="16" fill="#8ac65d"/>
+      <text y="-24" font-size="20" font-weight="700">UDF 3</text>
+      <text y="18" font-size="13">Bailian multimodal</text>
+      <text y="37" font-size="13">image embedding</text>
+    </g>
+    <path d="M121 198 h144" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/><text x="184" y="185" font-size="13">video files</text>
+    <path d="M395 198 h118" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/><text x="455" y="185" font-size="13">frames</text>
+    <path d="M642 198 h129" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/><text x="708" y="185" font-size="13">images + labels</text>
+    <g transform="translate(309 398)"><rect x="-82" y="-28" width="164" height="76" fill="#fff" stroke="#6b7280"/><rect x="-82" y="-28" width="164" height="26" fill="#ddd6fe" stroke="#6b7280"/><text y="-10" font-size="14" font-weight="700">ODPS Frame Table</text><path d="M-82 18 h164M-41 -2 v50M0 -2 v50M41 -2 v50" stroke="#9ca3af"/></g>
+    <g transform="translate(590 398)"><rect x="-82" y="-28" width="164" height="76" fill="#fff" stroke="#6b7280"/><rect x="-82" y="-28" width="164" height="26" fill="#ddd6fe" stroke="#6b7280"/><text y="-10" font-size="14" font-weight="700">ODPS Label Table</text><path d="M-82 18 h164M-41 -2 v50M0 -2 v50M41 -2 v50" stroke="#9ca3af"/></g>
+    <g transform="translate(863 398)"><rect x="-82" y="-28" width="164" height="76" fill="#fff" stroke="#6b7280"/><rect x="-82" y="-28" width="164" height="26" fill="#ddd6fe" stroke="#6b7280"/><text y="-10" font-size="14" font-weight="700">ODPS Vector Table</text><path d="M-82 18 h164M-41 -2 v50M0 -2 v50M41 -2 v50" stroke="#9ca3af"/></g>
+    <path d="M337 263 v90" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/><path d="M584 263 v90" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/><path d="M843 263 v90" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/>
+  </g>
+</svg>

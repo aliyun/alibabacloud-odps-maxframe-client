@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,37 +12,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .all import TensorAll, all
-from .allclose import allclose
-from .any import TensorAny, any
-from .argmax import TensorArgmax, argmax
-from .argmin import TensorArgmin, argmin
-from .array_equal import array_equal
-from .count_nonzero import TensorCountNonzero, count_nonzero
-from .cumprod import TensorCumprod, cumprod
-from .cumsum import TensorCumsum, cumsum
-from .max import TensorMax, max
-from .mean import TensorMean, mean
-from .min import TensorMin, min
-from .nanargmax import TensorNanArgmax, nanargmax
-from .nanargmin import TensorNanArgmin, nanargmin
-from .nancumprod import TensorNanCumprod, nancumprod
-from .nancumsum import TensorNanCumsum, nancumsum
-from .nanmax import TensorNanMax, nanmax
-from .nanmean import TensorNanMean, nanmean
-from .nanmin import TensorNanMin, nanmin
-from .nanprod import TensorNanProd, nanprod
-from .nanstd import nanstd
-from .nansum import TensorNanSum, nansum
-from .nanvar import TensorNanMoment, TensorNanVar, nanvar
-from .prod import TensorProd, prod
-from .std import std
-from .sum import TensorSum, sum
-from .var import TensorMoment, TensorVar, var
+from maxframe.tensor.reduction.all import TensorAll, all
+from maxframe.tensor.reduction.allclose import allclose
+from maxframe.tensor.reduction.any import TensorAny, any
+from maxframe.tensor.reduction.argmax import TensorArgmax, argmax
+from maxframe.tensor.reduction.argmin import TensorArgmin, argmin
+from maxframe.tensor.reduction.array_equal import array_equal
+from maxframe.tensor.reduction.count_nonzero import TensorCountNonzero, count_nonzero
+from maxframe.tensor.reduction.cumprod import TensorCumprod, cumprod
+from maxframe.tensor.reduction.cumsum import TensorCumsum, cumsum
+from maxframe.tensor.reduction.max import TensorMax, max
+from maxframe.tensor.reduction.mean import TensorMean, mean
+from maxframe.tensor.reduction.min import TensorMin, min
+from maxframe.tensor.reduction.nanargmax import TensorNanArgmax, nanargmax
+from maxframe.tensor.reduction.nanargmin import TensorNanArgmin, nanargmin
+from maxframe.tensor.reduction.nancumprod import TensorNanCumprod, nancumprod
+from maxframe.tensor.reduction.nancumsum import TensorNanCumsum, nancumsum
+from maxframe.tensor.reduction.nanmax import TensorNanMax, nanmax
+from maxframe.tensor.reduction.nanmean import TensorNanMean, nanmean
+from maxframe.tensor.reduction.nanmin import TensorNanMin, nanmin
+from maxframe.tensor.reduction.nanprod import TensorNanProd, nanprod
+from maxframe.tensor.reduction.nanstd import nanstd
+from maxframe.tensor.reduction.nansum import TensorNanSum, nansum
+from maxframe.tensor.reduction.nanvar import TensorNanMoment, TensorNanVar, nanvar
+from maxframe.tensor.reduction.prod import TensorProd, prod
+from maxframe.tensor.reduction.std import std
+from maxframe.tensor.reduction.sum import TensorSum, sum
+from maxframe.tensor.reduction.var import TensorMoment, TensorVar, var
 
 
 def _install():
-    from ..core import Tensor, TensorData
+    from maxframe.tensor.core import Tensor, TensorData
 
     for cls in (Tensor, TensorData):
         setattr(cls, "sum", sum)

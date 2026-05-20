@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,15 +18,15 @@ from typing import Any, Dict, List, MutableMapping, Union
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData, OutputType
-from ...serialization.serializables import AnyField, KeyField
-from ...tensor.core import Tensor
-from ...tensor.datasource import tensor as astensor
-from ...typing_ import EntityType, TileableType
-from ..core import INDEX_TYPE, SERIES_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData, OutputType
+from maxframe.dataframe.core import INDEX_TYPE, SERIES_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index
+from maxframe.serialization.serializables import AnyField, KeyField
+from maxframe.tensor.core import Tensor
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.typing_ import EntityType, TileableType
 
 
 class DataFrameFromTensor(DataFrameOperator, DataFrameOperatorMixin):

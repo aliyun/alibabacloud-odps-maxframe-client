@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 import numpy as np
 
-from ... import opcodes
-from ..utils import inject_dtype
-from .core import TensorUnaryOp
-from .utils import arithmetic_operator
+from maxframe import opcodes
+from maxframe.tensor.arithmetic.core import TensorUnaryOp
+from maxframe.tensor.arithmetic.utils import arithmetic_operator
+from maxframe.tensor.utils import inject_dtype
 
 
 @arithmetic_operator(sparse_mode="always_false")

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,10 +20,14 @@ try:
 except ImportError:
     xgboost = None
 
-from ...... import tensor as mt
-from ......learn.contrib.xgboost import DMatrix, train
-from ....core import SPECodeContext
-from ..xgboost import ToDMatrixAdapter, XGBPredictAdapter, XGBTrainAdapter
+from maxframe import tensor as mt
+from maxframe.codegen.spe.core import SPECodeContext
+from maxframe.codegen.spe.learn.contrib.xgboost import (
+    ToDMatrixAdapter,
+    XGBPredictAdapter,
+    XGBTrainAdapter,
+)
+from maxframe.learn.contrib.xgboost import DMatrix, train
 
 pytestmark = pytest.mark.skipif(
     xgboost is None, reason="requires xgboost to run the test"

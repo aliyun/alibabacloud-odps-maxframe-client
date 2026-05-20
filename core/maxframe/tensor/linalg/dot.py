@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
 
 from typing import List
 
-from ... import opcodes
-from ...core import EntityData
-from ...serialization.serializables import KeyField
-from ..core import Tensor, TensorOrder
-from ..datasource import tensor as astensor
-from ..operators import TensorOperator, TensorOperatorMixin
-from .tensordot import tensordot
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.serialization.serializables import KeyField
+from maxframe.tensor.core import Tensor, TensorOrder
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.linalg.tensordot import tensordot
+from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
 
 
 class TensorDot(TensorOperator, TensorOperatorMixin):

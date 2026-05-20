@@ -14,11 +14,15 @@
 
 from typing import Any, Dict, List, Optional, Union
 
-from ..... import opcodes
-from .....serialization.serializables import BoolField, ReferenceField, StringField
-from ..core import TASK_SENTENCE_EMBEDDING, LLMTextEmbeddingOp, LLMTextGenOperator
-from ..deploy.config import ModelDeploymentConfig
-from ..text import TextEmbeddingModel, TextGenLLM
+from maxframe import opcodes
+from maxframe.learn.contrib.llm.core import (
+    TASK_SENTENCE_EMBEDDING,
+    LLMTextEmbeddingOp,
+    LLMTextGenOperator,
+)
+from maxframe.learn.contrib.llm.deploy.config import ModelDeploymentConfig
+from maxframe.learn.contrib.llm.text import TextEmbeddingModel, TextGenLLM
+from maxframe.serialization.serializables import BoolField, ReferenceField, StringField
 
 
 class ManagedLLMTextGenOp(LLMTextGenOperator):

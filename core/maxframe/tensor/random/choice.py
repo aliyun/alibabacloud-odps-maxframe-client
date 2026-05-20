@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,20 +17,20 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import EntityData
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     FieldTypes,
     KeyField,
     TupleField,
 )
-from ..core import TENSOR_TYPE, TensorOrder
-from ..datasource import array
-from ..operators import TensorOperatorMixin
-from ..utils import gen_random_seeds
-from .core import TensorRandomOperator
+from maxframe.tensor.core import TENSOR_TYPE, TensorOrder
+from maxframe.tensor.datasource import array
+from maxframe.tensor.operators import TensorOperatorMixin
+from maxframe.tensor.random.core import TensorRandomOperator
+from maxframe.tensor.utils import gen_random_seeds
 
 
 class TensorChoice(TensorRandomOperator, TensorOperatorMixin):

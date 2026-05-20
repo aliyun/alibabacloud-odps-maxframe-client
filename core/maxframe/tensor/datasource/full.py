@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 
 import numpy as np
 
-from ... import opcodes
-from ...serialization.serializables import AnyField, KeyField, StringField
-from ..utils import get_order
-from .array import tensor
-from .core import TensorLike, TensorNoInput
+from maxframe import opcodes
+from maxframe.serialization.serializables import AnyField, KeyField, StringField
+from maxframe.tensor.datasource.array import tensor
+from maxframe.tensor.datasource.core import TensorLike, TensorNoInput
+from maxframe.tensor.utils import get_order
 
 
 class TensorFull(TensorNoInput):
@@ -87,7 +87,7 @@ def full(shape, fill_value, dtype=None, chunk_size=None, gpu=None, order="C"):
     """
     v = np.asarray(fill_value)
     if len(v.shape) > 0:
-        from ..misc import broadcast_to
+        from maxframe.tensor.misc import broadcast_to
 
         return broadcast_to(
             tensor(v, dtype=dtype, chunk_size=chunk_size, gpu=gpu, order=order), shape

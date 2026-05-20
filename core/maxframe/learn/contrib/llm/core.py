@@ -17,14 +17,15 @@ from typing import Any, Dict
 import numpy as np
 import pandas as pd
 
-from ....core.entity.output_types import OutputType
-from ....core.operator.base import Operator
-from ....core.operator.core import TileableOperatorMixin
-from ....dataframe.operators import DataFrameOperatorMixin
-from ....dataframe.utils import parse_index
-from ....serialization.serializables import Int32Field
-from ....serialization.serializables.core import Serializable
-from ....serialization.serializables.field import (
+from maxframe import dataframe as md
+from maxframe.core.entity.output_types import OutputType
+from maxframe.core.operator.base import Operator
+from maxframe.core.operator.core import TileableOperatorMixin
+from maxframe.dataframe.operators import DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index
+from maxframe.serialization.serializables import Int32Field
+from maxframe.serialization.serializables.core import Serializable
+from maxframe.serialization.serializables.field import (
     AnyField,
     BoolField,
     DictField,
@@ -64,7 +65,7 @@ class LLMTaskOperator(Operator, DataFrameOperatorMixin):
     @staticmethod
     def _setup_default_quotas(running_options):
         """Setup default quota configurations."""
-        from .... import options
+        from maxframe import options
 
         quota_names = ["gu_quota_name", "inference_quota_name"]
 
@@ -105,7 +106,7 @@ class LLMTextGenOperator(LLMTaskOperator, TileableOperatorMixin):
     prompt_template = AnyField("prompt_template", default=None)
 
     def get_output_dtypes(self) -> Dict[str, np.dtype]:
-        return {"response": np.dtype("O"), "success": np.dtype("bool")}
+        return {"response": md.dtype("string"), "success": np.dtype("bool")}
 
 
 class LLMTextEmbeddingOp(LLMTaskOperator, TileableOperatorMixin):
@@ -114,4 +115,4 @@ class LLMTextEmbeddingOp(LLMTaskOperator, TileableOperatorMixin):
     simple_output = BoolField("simple_output", default=False)
 
     def get_output_dtypes(self) -> Dict[str, np.dtype]:
-        return {"response": np.dtype("O"), "success": np.dtype("bool")}
+        return {"response": md.dtype("string"), "success": np.dtype("bool")}

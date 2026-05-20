@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ import itertools
 from typing import TYPE_CHECKING, Iterable, Optional, Tuple, Type
 
 if TYPE_CHECKING:
-    from .codegen import DAGCodeGenerator
+    from maxframe.codegen import DAGCodeGenerator
 
     try:
         import maxframe_framedriver.runners

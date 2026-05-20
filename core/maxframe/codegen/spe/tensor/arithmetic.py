@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,18 @@
 
 from typing import List
 
-from ....tensor.arithmetic.angle import TensorAngle
-from ....tensor.arithmetic.around import TensorAround
-from ....tensor.arithmetic.core import TensorBinOp, TensorUnaryOp
-from ....tensor.arithmetic.isclose import TensorIsclose
-from ....tensor.arithmetic.setimag import TensorSetImag
-from ....tensor.arithmetic.setreal import TensorSetReal
-from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
-from .core import TensorUnaryCommonAdapter
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.codegen.spe.tensor.core import TensorUnaryCommonAdapter
+from maxframe.tensor.arithmetic.angle import TensorAngle
+from maxframe.tensor.arithmetic.around import TensorAround
+from maxframe.tensor.arithmetic.core import TensorBinOp, TensorUnaryOp
+from maxframe.tensor.arithmetic.isclose import TensorIsclose
+from maxframe.tensor.arithmetic.setimag import TensorSetImag
+from maxframe.tensor.arithmetic.setreal import TensorSetReal
 
 
 @register_op_adapter(TensorUnaryOp)

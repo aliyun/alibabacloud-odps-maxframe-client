@@ -5,6 +5,8 @@ User Guide
 
 .. toctree::
    :maxdepth: 2
+   :hidden:
 
    general/index
    dataframe/index
+   /skills/index

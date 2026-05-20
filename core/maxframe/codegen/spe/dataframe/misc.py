@@ -14,30 +14,34 @@
 
 from typing import Any, List
 
-from ....dataframe.core import DATAFRAME_TYPE, SERIES_TYPE, TILEABLE_TYPE
-from ....dataframe.misc.apply import DataFrameApply
-from ....dataframe.misc.astype import DataFrameAstype
-from ....dataframe.misc.case_when import DataFrameCaseWhen
-from ....dataframe.misc.check_monotonic import DataFrameCheckMonotonic
-from ....dataframe.misc.clip import DataFrameClip
-from ....dataframe.misc.cut import DataFrameCut
-from ....dataframe.misc.describe import DataFrameDescribe
-from ....dataframe.misc.diff import DataFrameDiff
-from ....dataframe.misc.drop import DataFrameDrop
-from ....dataframe.misc.drop_duplicates import DataFrameDropDuplicates
-from ....dataframe.misc.duplicated import DataFrameDuplicated
-from ....dataframe.misc.eval import DataFrameEval
-from ....dataframe.misc.explode import DataFrameExplode
-from ....dataframe.misc.get_dummies import DataFrameGetDummies
-from ....dataframe.misc.isin import DataFrameIsin
-from ....dataframe.misc.map import DataFrameMap
-from ....dataframe.misc.memory_usage import DataFrameMemoryUsage
-from ....dataframe.misc.repeat import DataFrameRepeat
-from ....dataframe.misc.shift import DataFrameShift
-from ....dataframe.misc.to_numeric import DataFrameToNumeric
-from ....dataframe.misc.transform import DataFrameTransform
-from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
-from ..utils import build_method_call_adapter
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.codegen.spe.utils import build_method_call_adapter
+from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE, TILEABLE_TYPE
+from maxframe.dataframe.misc.apply import DataFrameApply
+from maxframe.dataframe.misc.astype import DataFrameAstype
+from maxframe.dataframe.misc.case_when import DataFrameCaseWhen
+from maxframe.dataframe.misc.check_monotonic import DataFrameCheckMonotonic
+from maxframe.dataframe.misc.clip import DataFrameClip
+from maxframe.dataframe.misc.cut import DataFrameCut
+from maxframe.dataframe.misc.describe import DataFrameDescribe
+from maxframe.dataframe.misc.diff import DataFrameDiff
+from maxframe.dataframe.misc.drop import DataFrameDrop
+from maxframe.dataframe.misc.drop_duplicates import DataFrameDropDuplicates
+from maxframe.dataframe.misc.duplicated import DataFrameDuplicated
+from maxframe.dataframe.misc.eval import DataFrameEval
+from maxframe.dataframe.misc.explode import DataFrameExplode
+from maxframe.dataframe.misc.get_dummies import DataFrameGetDummies
+from maxframe.dataframe.misc.isin import DataFrameIsin
+from maxframe.dataframe.misc.map import DataFrameMap
+from maxframe.dataframe.misc.memory_usage import DataFrameMemoryUsage
+from maxframe.dataframe.misc.repeat import DataFrameRepeat
+from maxframe.dataframe.misc.shift import DataFrameShift
+from maxframe.dataframe.misc.to_numeric import DataFrameToNumeric
+from maxframe.dataframe.misc.transform import DataFrameTransform
 
 DataFrameAstypeAdapter = build_method_call_adapter(
     DataFrameAstype, "astype", "dtype_values"

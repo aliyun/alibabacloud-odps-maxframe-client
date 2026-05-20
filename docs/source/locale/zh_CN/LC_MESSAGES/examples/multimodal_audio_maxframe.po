@@ -1,0 +1,259 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev21+br.g2bf54307e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-29 16:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+msgid "**MaxFrame SDK version**"
+msgstr "**MaxFrame SDK 版本**"
+
+msgid "Use MaxFrame SDK **2.7.0** or above (``pip install maxframe>=2.7.0``)."
+msgstr ""
+"请使用 MaxFrame SDK **2.7.0** 及以上版本（``pip install maxframe>=2.7.0``"
+"）。"
+
+msgid "#"
+msgstr ""
+
+msgid "**Audio uploaded to OSS**"
+msgstr "**上传音频至 OSS**"
+
+msgid ""
+"**Built-in distributed audio operators** for decode, metadata, language "
+"detection, transcription, and VAD."
+msgstr "**内置分布式音频算子**：支持 decode、元信息、语言检测、转写与 VAD。"
+
+msgid "**DPE enabled**"
+msgstr "**开通 DPE 引擎**"
+
+msgid ""
+"**Direct OSS ingestion** with ``.url.download()`` and no object table "
+"dependency."
+msgstr ""
+"**URL 直通 OSS 音频**：通过 ``.url.download()`` 直接处理 OSS 音频，无需"
+"依赖 Object Table。"
+
+msgid ""
+"**Flexible resource control** for CPU/GPU style workloads through "
+"operator and engine parameters."
+msgstr "**灵活的资源控制**：可通过算子与引擎参数适配 CPU/GPU 风格负载。"
+
+msgid ""
+"**Low operational overhead** by reusing MaxCompute elastic compute and "
+"storage stack."
+msgstr "**低运维成本**：复用 MaxCompute 弹性计算与存储体系。"
+
+msgid "**MaxCompute enabled**"
+msgstr "**开通 MaxCompute**"
+
+msgid "**OSS RAM role authorization**"
+msgstr "**OSS RAM 角色授权**"
+
+msgid ""
+"**Speech transcription** for podcasts, courses, interviews, and meeting "
+"recordings."
+msgstr ""
+"**语音内容转录**：适用于播客、课程录音、访谈、会议音频等内容的批量转写，"
+"便于后续归档、检索和内容消费。"
+
+msgid ""
+"**Structured processing** for customer service calls and business "
+"recordings."
+msgstr ""
+"**业务录音结构化处理**：适用于客服录音、服务通话、业务访谈等场景，将非"
+"结构化音频内容转化为可分析的文本数据。"
+
+msgid ""
+"**Subtitle generation** and text extraction from audio tracks in media "
+"files."
+msgstr ""
+"**字幕生成与文本提取**：适用于对音视频中的音轨进行识别，生成字幕文本或"
+"提取语音内容。"
+
+msgid ""
+"**Training data preparation** for speech recognition and speech "
+"understanding models."
+msgstr ""
+"**训练数据准备**：适用于从原始音频中批量提取文本，为语音识别、语音理解等"
+"模型训练准备基础语料。"
+
+msgid "1"
+msgstr ""
+
+msgid "2"
+msgstr ""
+
+msgid "3"
+msgstr ""
+
+msgid "4"
+msgstr ""
+
+msgid "A MaxCompute project with valid Access ID / Access Key."
+msgstr "需要一个已开通的 MaxCompute 项目，并具备有效的 Access ID / Access Key。"
+
+msgid ""
+"As multimodal foundation models and speech applications grow quickly, "
+"audio becomes a key data source for training and content understanding. "
+"Workloads such as ASR, subtitle generation, speech retrieval, and corpus "
+"preparation all require reliable text extraction from large-scale raw "
+"audio."
+msgstr ""
+"随着多模态大模型和语音智能应用的快速发展，音频数据正成为模型训练与内容"
+"理解的重要数据来源。无论是语音识别、字幕生成、语音内容检索，还是训练语料"
+"构建，都需要先从海量原始音频中高效提取文本信息。"
+
+msgid "Audio processing pipeline with MaxFrame audio operators"
+msgstr "MaxFrame 音频算子处理流程"
+
+msgid "Background"
+msgstr "背景信息"
+
+msgid "Build OSS audio URL list:"
+msgstr "构建 OSS 音频 URL 列表："
+
+msgid "Cleanup:"
+msgstr "资源清理："
+
+msgid "Complete code example"
+msgstr "完整代码参考"
+
+msgid "Configure OSS RAM role"
+msgstr "配置 OSS RAM 角色授权"
+
+#, python-brace-format
+msgid ""
+"Configure Role ARN for ``.url.download(storage_options={\"role_arn\": "
+"...})``."
+msgstr ""
+"为 ``.url.download(storage_options={\"role_arn\": ...})`` 配置可用的 Role"
+" ARN。"
+
+msgid "Description"
+msgstr "说明"
+
+msgid "Environment setup"
+msgstr "环境准备"
+
+msgid ""
+"In production, audio files are usually scattered across storage locations"
+" with inconsistent formats, durations, and quality. Traditional pipelines"
+" rely on many separate tools for download, transcoding, transcription, "
+"and aggregation, which increases development and operational complexity "
+"at scale."
+msgstr ""
+"但在实际业务中，音频文件通常分散存放在不同位置，格式、时长和质量也"
+"不尽相同，难以直接用于后续处理。传统方式往往需要先完成音频下载，再借助"
+"多个独立工具进行转码、识别和结果整理，整体流程较为分散，在大规模处理场景"
+"下容易出现效率低、开发复杂和运维成本高等问题。"
+
+msgid "Initialize ODPS and MaxFrame session:"
+msgstr "初始化 ODPS 与 MaxFrame Session："
+
+msgid "MaxCompute placeholders:"
+msgstr "MaxCompute 参数占位："
+
+msgid "MaxFrame Multimodal Audio Operator Practice"
+msgstr "MaxFrame 多模态音视频算子开发实践"
+
+msgid "OSS placeholders:"
+msgstr "OSS 参数占位："
+
+msgid "Pipeline"
+msgstr "核心流程说明"
+
+msgid "Prerequisites"
+msgstr "前提条件"
+
+msgid "Requirement"
+msgstr "条件"
+
+msgid "Source audio files are available in a target OSS bucket."
+msgstr "原始音频文件已上传至目标 OSS Bucket。"
+
+msgid "Technical highlights"
+msgstr "核心技术亮点"
+
+msgid ""
+"The role has OSS read permission (for example "
+"``AliyunOSSReadOnlyAccess``)."
+msgstr "该角色具备 OSS 读权限（例如 ``AliyunOSSReadOnlyAccess``）。"
+
+msgid "The role trust policy allows MaxCompute service to assume the role."
+msgstr "该角色的信任策略允许 MaxCompute 服务扮演该角色。"
+
+msgid ""
+"Use ``.audio`` operators for decode, language detection, transcription, "
+"and VAD:"
+msgstr "使用 ``.audio`` 算子进行解码、语言检测、语音转写与 VAD："
+
+msgid "Use cases"
+msgstr "适用场景"
+
+#, python-brace-format
+msgid ""
+"When using ``.url.download(storage_options={\"role_arn\": ...})``, "
+"MaxFrame reads OSS data by assuming a RAM role. Make sure:"
+msgstr ""
+"使用 ``.url.download(storage_options={\"role_arn\": ...})`` 时，MaxFrame "
+"会通过 RAM 角色读取 OSS 数据。请确保："
+
+msgid ""
+"With MaxCompute + MaxFrame, you can run a unified distributed pipeline "
+"from OSS audio ingestion to structured transcription output. This "
+"tutorial focuses on practical audio processing with built-in MaxFrame "
+"``.audio`` operators."
+msgstr ""
+"MaxCompute 提供 Data+AI 一体化能力，通过分布式计算框架 MaxFrame，支持对"
+"音频数据进行统一调度与批量处理。用户可以基于 MaxFrame 构建从音频下载到"
+"语音识别的完整处理链路，对海量原始音频进行自动化转写，并将识别结果输出为"
+"结构化数据，便于后续分析、检索和模型训练使用。"
+
+msgid "``.url.download()`` and ``.audio.*`` operators run on DPE."
+msgstr "``.url.download()`` 与 ``.audio.*`` 算子在 DPE 上执行。"
+
+msgid "Troubleshooting"
+msgstr "常见问题排查"
+
+msgid "OSS access denied"
+msgstr "OSS 访问被拒绝"
+
+msgid ""
+"**Symptom**: ``.url.download(storage_options={\"role_arn\": ...})`` fails"
+" with an access denied error."
+msgstr ""
+"**现象**：调用 ``.url.download(storage_options={\"role_arn\": ...})`` 时报访"
+"问被拒绝错误。"
+
+msgid "**Cause**: Wrong or missing role permissions."
+msgstr "**原因**：角色权限配置错误或缺失。"
+
+msgid "**Solution**: Verify the following:"
+msgstr "**解决方案**：请逐一确认以下事项："
+
+msgid ""
+"**Role ARN is correct** — double-check the ``role_arn`` value in "
+"``storage_options`` matches the RAM role configured in the Alibaba Cloud "
+"console."
+msgstr ""
+"**Role ARN 正确** — 确认 ``storage_options`` 中的 ``role_arn`` 值与阿里"
+"云控制台配置的 RAM 角色一致。"
+
+msgid ""
+"**OSS read permission** — ensure the RAM role has the "
+"``AliyunOSSReadOnlyAccess`` policy (or equivalent custom policy) "
+"attached, granting ``oss:GetObject`` permission on the target bucket."
+msgstr ""
+"**OSS 读权限** — 确认 RAM 角色已附加 ``AliyunOSSReadOnlyAccess`` 策略"
+"（或等效自定义策略），具备目标 Bucket 的 ``oss:GetObject`` 权限。"
+

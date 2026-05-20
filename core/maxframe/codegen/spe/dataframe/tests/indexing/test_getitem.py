@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,12 @@
 
 import pytest
 
-from .... import SPECodeGenerator
-from ....core import SPECodeContext
-from ...indexing import DataFrameIndexAdapter, SeriesIndexAdapter
+from maxframe.codegen.spe import SPECodeGenerator
+from maxframe.codegen.spe.core import SPECodeContext
+from maxframe.codegen.spe.dataframe.indexing import (
+    DataFrameIndexAdapter,
+    SeriesIndexAdapter,
+)
 
 
 @pytest.mark.skip(reason="Mars bug: https://github.com/mars-project/mars/issues/3356")

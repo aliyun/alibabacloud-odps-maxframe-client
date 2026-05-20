@@ -15,12 +15,14 @@
 import datetime
 import io
 import tokenize as pytokenize
+import warnings
 from typing import Union
 
 import numpy as np
 import pandas as pd
 
-from ..lib.dtypes_extension import ArrowBlobType, ArrowDtype
+from maxframe.errors import OutputColumnMismatchError, OutputDtypeMismatchError
+from maxframe.lib.dtypes_extension import ArrowBlobType, ArrowDtype, ExternalBlobDtype
 
 try:
     import pyarrow as pa
@@ -28,22 +30,32 @@ except ImportError:
     pa = None
 
 
-def make_dtype(dtype: Union[np.dtype, pd.api.extensions.ExtensionDtype]):
+def make_dtype(
+    dtype: Union[np.dtype, pd.api.extensions.ExtensionDtype],
+    return_pd_dtype: bool = True,
+):
     if dtype is None:
         return None
-    elif (
-        isinstance(dtype, str) and dtype == "category"
-    ) or pd.api.types.is_extension_array_dtype(dtype):
+    elif return_pd_dtype and (
+        (isinstance(dtype, str) and dtype == "category")
+        or pd.api.types.is_extension_array_dtype(dtype)
+    ):
         # return string dtype directly as legacy python version
         #  does not support ExtensionDtype
         return dtype
+    elif isinstance(dtype, str) and dtype.lower() in ("blob", "maxframe.blob"):
+        # Handle blob type strings
+        return ExternalBlobDtype()
     elif dtype is pd.Timestamp or dtype is datetime.datetime:
         return np.dtype("datetime64[ns]")
     elif dtype is pd.Timedelta or dtype is datetime.timedelta:
         return np.dtype("timedelta64[ns]")
     else:
         try:
-            return pd.api.types.pandas_dtype(dtype)
+            ret = pd.api.types.pandas_dtype(dtype)
+            if not return_pd_dtype and pd.api.types.is_extension_array_dtype(dtype):
+                ret = np.dtype(ret.type)
+            return ret
         except TypeError:
             return np.dtype("O")
 
@@ -212,8 +224,13 @@ def arrow_type_from_str(type_str: str) -> pa.DataType:
         raise ValueError(
             f"Unexpected error occurred when parsing type {type_str}: {ex}"
         ) from None
-    if len(value_stack) > 1:
+    if len(value_stack) > 1 or len(value_stack) == 0:
         raise ValueError(f"Cannot parse type {type_str}")
+    elif isinstance(value_stack[-1], str):
+        try:
+            return _arrow_type_constructors[value_stack[-1]]()
+        except (KeyError, TypeError):
+            raise ValueError(f"Cannot parse type {type_str}")
     return value_stack[-1]
 
 
@@ -250,3 +267,310 @@ def is_datetime64_dtype(arr_or_dtype) -> bool:
         return pa.types.is_timestamp(arr_or_dtype.pyarrow_dtype)
 
     return pd.api.types.is_datetime64_any_dtype(arr_or_dtype)
+
+
+def check_dtype_compatibility(
+    actual_dtype: np.dtype,
+    expected_dtype: np.dtype,
+    column_name: str = None,
+) -> None:
+    """
+    Check if actual dtype can be safely cast to expected dtype.
+
+    Parameters
+    ----------
+    actual_dtype : np.dtype
+        Actual dtype from result
+    expected_dtype : np.dtype
+        Expected dtype
+    column_name : str, optional
+        Column name for error messages
+
+    Raises
+    ------
+    OutputDtypeMismatchError
+        When dtype cannot be cast to expected dtype
+    """
+
+    # Helper function to check if a dtype is a blob type
+    def _is_blob_type(dtype):
+        return isinstance(dtype, ExternalBlobDtype) or (
+            isinstance(dtype, ArrowDtype)
+            and isinstance(dtype.pyarrow_dtype, ArrowBlobType)
+        )
+
+    # Handle blob types (ExternalBlobDtype or ArrowBlobType)
+    if _is_blob_type(actual_dtype) or _is_blob_type(expected_dtype):
+        # Blob types are only compatible with other blob types
+        if _is_blob_type(actual_dtype) and _is_blob_type(expected_dtype):
+            return
+        col_info = f" for column '{column_name}'" if column_name else ""
+        raise OutputDtypeMismatchError(
+            column=column_name or "unknown",
+            actual_dtype=actual_dtype,
+            expected_dtype=expected_dtype,
+            can_cast=False,
+            extra_msg=f"Cannot cast {actual_dtype} to {expected_dtype}{col_info}",
+        )
+
+    # Handle ArrowDtype
+    if isinstance(actual_dtype, ArrowDtype) or isinstance(expected_dtype, ArrowDtype):
+        # For Arrow dtypes, we check if they're the same type
+        if actual_dtype == expected_dtype:
+            return
+        # Try to determine if cast is possible
+        try:
+            if isinstance(actual_dtype, ArrowDtype) and isinstance(
+                expected_dtype, ArrowDtype
+            ):
+                # Both are Arrow types
+                can_cast = pa.types.can_cast(
+                    actual_dtype.pyarrow_dtype, expected_dtype.pyarrow_dtype
+                )
+            else:
+                # Mixed Arrow and non-Arrow, be conservative
+                can_cast = False
+
+            if can_cast:
+                return
+            else:
+                col_info = f" for column '{column_name}'" if column_name else ""
+                error_msg = f"Cannot cast {actual_dtype} to {expected_dtype}{col_info}"
+                raise OutputDtypeMismatchError(
+                    column=column_name or "unknown",
+                    actual_dtype=actual_dtype,
+                    expected_dtype=expected_dtype,
+                    can_cast=False,
+                    extra_msg=error_msg,
+                )
+        except OutputDtypeMismatchError:
+            raise
+        except Exception:
+            # If we can't determine, be conservative
+            raise OutputDtypeMismatchError(
+                column=column_name or "unknown",
+                actual_dtype=actual_dtype,
+                expected_dtype=expected_dtype,
+                can_cast=False,
+                extra_msg=f"Cannot determine castability for {actual_dtype}",
+            ) from None
+
+    # Handle regular numpy dtypes
+    # Special check for float to integer conversion - this should not be allowed
+    # as it causes silent truncation and data loss
+    float_dtypes = {"float16", "float32", "float64", "float128"}
+    integer_dtypes = {
+        "int8",
+        "int16",
+        "int32",
+        "int64",
+        "uint8",
+        "uint16",
+        "uint32",
+        "uint64",
+    }
+    actual_dtype_str = str(actual_dtype)
+    expected_dtype_str = str(expected_dtype)
+
+    if actual_dtype_str in float_dtypes and expected_dtype_str in integer_dtypes:
+        col_info = f" for column '{column_name}'" if column_name else ""
+        raise OutputDtypeMismatchError(
+            column=column_name or "unknown",
+            actual_dtype=actual_dtype,
+            expected_dtype=expected_dtype,
+            can_cast=False,
+            extra_msg=(
+                f"Cannot cast float dtype {actual_dtype} to integer dtype "
+                f"{expected_dtype}{col_info}. Float to integer conversion "
+                "causes truncation and potential data loss. Please ensure "
+                "your function returns the correct integer dtype."
+            ),
+        )
+
+    try:
+        # Check if we can safely cast
+        if np.can_cast(actual_dtype, expected_dtype, casting="safe") or np.can_cast(
+            actual_dtype, expected_dtype, casting="same_kind"
+        ):
+            # Can cast with potential precision loss
+            return
+        else:
+            col_info = f" for column '{column_name}'" if column_name else ""
+            error_msg = f"Cannot cast {actual_dtype} to {expected_dtype}{col_info}"
+            raise OutputDtypeMismatchError(
+                column=column_name or "unknown",
+                actual_dtype=actual_dtype,
+                expected_dtype=expected_dtype,
+                can_cast=False,
+                extra_msg=error_msg,
+            )
+    except OutputDtypeMismatchError:
+        raise
+    except (TypeError, ValueError):
+        # If numpy can't determine castability, check if types are the same
+        if actual_dtype == expected_dtype:
+            return
+        col_info = f" for column '{column_name}'" if column_name else ""
+        raise OutputDtypeMismatchError(
+            column=column_name or "unknown",
+            actual_dtype=actual_dtype,
+            expected_dtype=expected_dtype,
+            can_cast=False,
+            extra_msg=f"Cannot cast {actual_dtype} to {expected_dtype}{col_info}",
+        ) from None
+
+
+def validate_and_align_output(
+    result: Union[pd.DataFrame, pd.Series],
+    expected_dtypes: Union[pd.Series, np.dtype],
+    check_output_dtypes: str = None,
+) -> Union[pd.DataFrame, pd.Series]:
+    """
+    Validate and align output from user function.
+
+    Parameters
+    ----------
+    result : DataFrame or Series
+        Result from user function
+    expected_dtypes : Series or dtype
+        Expected dtypes for output
+    check_output_dtypes : str, default None
+        Validation mode: 'ignore', 'warns', or 'raises'
+        - 'ignore': No validation performed
+        - 'warns': Validate and show warnings on mismatch (default when None)
+        - 'raises': Validate and raise errors on mismatch
+
+    Returns
+    -------
+    DataFrame or Series
+        Aligned result with columns reordered and dtypes cast
+
+    Raises
+    ------
+    OutputColumnMismatchError
+        When check_output_dtypes='raises' and columns don't match
+    OutputDtypeMismatchError
+        When check_output_dtypes='raises' and dtype cannot be cast
+    """
+    # Normalize check_output_dtypes parameter
+    # If None or False or 'ignore', skip all validation and casting
+    if (
+        check_output_dtypes is None
+        or check_output_dtypes is False
+        or check_output_dtypes == "ignore"
+    ):
+        return result
+
+    # If expected_dtypes is None, skip validation
+    if expected_dtypes is None:
+        return result
+
+    # Determine if we should raise or warn
+    should_raise = check_output_dtypes == "raises"
+
+    # Handle Series case
+    if isinstance(result, pd.Series):
+        if isinstance(expected_dtypes, pd.Series):
+            # Expected dtypes is a Series (from DataFrame.dtypes), take the first value
+            expected_dtype = (
+                expected_dtypes.iloc[0] if len(expected_dtypes) > 0 else None
+            )
+        else:
+            expected_dtype = expected_dtypes
+
+        if expected_dtype is None:
+            return result
+
+        actual_dtype = result.dtype
+        try:
+            check_dtype_compatibility(actual_dtype, expected_dtype, result.name)
+
+            # If check passed, try to cast if dtypes differ
+            if actual_dtype != expected_dtype:
+                try:
+                    result = result.astype(expected_dtype)
+                except (ValueError, TypeError):
+                    error = OutputDtypeMismatchError(
+                        result.name or "series",
+                        actual_dtype,
+                        expected_dtype,
+                        can_cast=False,
+                    )
+                    if should_raise:
+                        raise error
+                    else:
+                        warnings.warn(str(error), FutureWarning)
+        except OutputDtypeMismatchError as e:
+            if should_raise:
+                raise
+            else:
+                warnings.warn(str(e), FutureWarning)
+
+        return result
+
+    # Handle DataFrame case
+    if not isinstance(result, pd.DataFrame):
+        return result
+
+    # Get expected columns and dtypes
+    if isinstance(expected_dtypes, pd.Series):
+        expected_columns = expected_dtypes.index.tolist()
+        expected_dtypes_dict = expected_dtypes.to_dict()
+    else:
+        # Single dtype for all columns
+        expected_columns = result.columns.tolist()
+        expected_dtypes_dict = {col: expected_dtypes for col in expected_columns}
+
+    # Check for missing and extra columns
+    result_columns = result.columns.tolist()
+    missing_cols = [col for col in expected_columns if col not in result_columns]
+    extra_cols = [col for col in result_columns if col not in expected_columns]
+
+    if missing_cols or extra_cols:
+        if should_raise:
+            raise OutputColumnMismatchError(
+                missing_cols=missing_cols, extra_cols=extra_cols
+            )
+        else:
+            msg_parts = []
+            if missing_cols:
+                msg_parts.append(f"Missing columns: {missing_cols}")
+            if extra_cols:
+                msg_parts.append(f"Unexpected columns: {extra_cols}")
+            warnings.warn("; ".join(msg_parts), FutureWarning)
+
+    # Reorder columns to match expected order (only include columns that exist)
+    aligned_columns = [col for col in expected_columns if col in result_columns]
+    if aligned_columns:
+        result = result[aligned_columns]
+
+    # Check and cast dtypes for each column
+    for col in aligned_columns:
+        actual_dtype = result[col].dtype
+        expected_dtype = expected_dtypes_dict.get(col)
+
+        if expected_dtype is None:
+            continue
+
+        try:
+            check_dtype_compatibility(actual_dtype, expected_dtype, col)
+
+            # If check passed, try to cast if dtypes differ
+            if actual_dtype != expected_dtype:
+                try:
+                    result[col] = result[col].astype(expected_dtype)
+                except (ValueError, TypeError):
+                    error = OutputDtypeMismatchError(
+                        col, actual_dtype, expected_dtype, can_cast=False
+                    )
+                    if should_raise:
+                        raise error
+                    else:
+                        warnings.warn(str(error), FutureWarning)
+        except OutputDtypeMismatchError as e:
+            if should_raise:
+                raise
+            else:
+                warnings.warn(str(e), FutureWarning)
+
+    return result

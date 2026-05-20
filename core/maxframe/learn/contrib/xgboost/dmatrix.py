@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,18 +14,23 @@
 
 from typing import List
 
-from .... import opcodes
-from ....core import EntityData
-from ....core.entity.output_types import get_output_types
-from ....core.operator.base import Operator
-from ....core.operator.core import TileableOperatorMixin
-from ....dataframe.core import DATAFRAME_TYPE
-from ....serialization.serializables import BoolField, Float64Field, KeyField, ListField
-from ....serialization.serializables.field import AnyField, Int64Field
-from ....tensor import tensor as astensor
-from ....tensor.core import TENSOR_TYPE
-from ....typing_ import TileableType
-from ...utils import convert_to_tensor_or_dataframe
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.core.entity.output_types import get_output_types
+from maxframe.core.operator.base import Operator
+from maxframe.core.operator.core import TileableOperatorMixin
+from maxframe.dataframe.core import DATAFRAME_TYPE
+from maxframe.learn.utils import convert_to_tensor_or_dataframe
+from maxframe.serialization.serializables import (
+    BoolField,
+    Float64Field,
+    KeyField,
+    ListField,
+)
+from maxframe.serialization.serializables.field import AnyField, Int64Field
+from maxframe.tensor import tensor as astensor
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.typing_ import TileableType
 
 
 class ToDMatrix(Operator, TileableOperatorMixin):

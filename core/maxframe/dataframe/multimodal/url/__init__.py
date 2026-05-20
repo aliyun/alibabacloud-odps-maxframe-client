@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .accessor import UrlAccessor
-from .core import SeriesUrlMethods, url_download
+from maxframe.dataframe.multimodal.url.accessor import UrlAccessor
+from maxframe.dataframe.multimodal.url.core import SeriesUrlMethods, url_download

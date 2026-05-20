@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import EntityData
-from ...serialization.serializables import KeyField, StringField
-from ...utils import make_dtype
-from ..operators import TensorHasInput, TensorOperatorMixin
-from ..utils import get_order
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.serialization.serializables import KeyField, StringField
+from maxframe.tensor.operators import TensorHasInput, TensorOperatorMixin
+from maxframe.tensor.utils import get_order
+from maxframe.utils import make_dtype
 
 
 class TensorAstype(TensorHasInput, TensorOperatorMixin):
@@ -104,16 +104,18 @@ def astype(tensor, dtype, order="K", casting="unsafe", copy=True):
     >>> x.astype(int).execute()
     array([1, 2, 2])
     """
-    dtype = make_dtype(dtype)
+    dtype = make_dtype(dtype, return_pd_dtype=False)
     tensor_order = get_order(order, tensor.order)
 
     if tensor.dtype == dtype and tensor.order == tensor_order:
         return tensor if not copy else tensor.copy(order=order)
-    elif not np.can_cast(tensor.dtype, dtype, casting=casting):
-        raise TypeError(
-            f"Cannot cast array from {tensor.dtype!r} to {dtype!r} "
-            f"according to the rule {casting}"
-        )
+    else:
+        tensor_dtype = make_dtype(tensor.dtype, return_pd_dtype=False)
+        if not np.can_cast(tensor_dtype, dtype, casting=casting):
+            raise TypeError(
+                f"Cannot cast array from {tensor.dtype!r} to {dtype!r} "
+                f"according to the rule {casting}"
+            )
 
     op = TensorAstype(
         dtype=dtype, order=order, casting=casting, sparse=tensor.issparse()

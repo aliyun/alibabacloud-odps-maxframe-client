@@ -16,12 +16,17 @@ import asyncio
 import contextlib
 import sys
 
-from .file import AioFileObject, AioFilesystem
-from .isolation import Isolation, get_isolation, new_isolation, stop_isolation
-from .lru import alru_cache
-from .parallelism import AioEvent
+from maxframe.lib.aio.file import AioFileObject, AioFilesystem
+from maxframe.lib.aio.isolation import (
+    Isolation,
+    get_isolation,
+    new_isolation,
+    stop_isolation,
+)
+from maxframe.lib.aio.lru import alru_cache
+from maxframe.lib.aio.parallelism import AioEvent
 
 if sys.version_info[:2] < (3, 9):
-    from ._threads import to_thread
+    from maxframe.lib.aio._threads import to_thread
 
     asyncio.to_thread = to_thread

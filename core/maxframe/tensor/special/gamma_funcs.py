@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..arithmetic.utils import arithmetic_operator
-from ..utils import implement_scipy, infer_scipy_dtype
-from .core import (
+from maxframe.tensor.arithmetic.utils import arithmetic_operator
+from maxframe.tensor.special.core import (
     TensorSpecialBinOp,
     TensorSpecialMultiOp,
     TensorSpecialUnaryOp,
     _register_special_op,
 )
+from maxframe.tensor.utils import implement_scipy, infer_scipy_dtype
 
 
 class NoOrderSpecialMixin:

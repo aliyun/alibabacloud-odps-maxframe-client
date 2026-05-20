@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,11 +20,11 @@ from math import ceil, floor
 
 import numpy as np
 
-from ... import tensor as mt
-from ...core import ExecutableTuple
-from ...tensor.utils import check_random_state
-from ..utils import shuffle as shuffle_arrays
-from ..utils.validation import _num_samples, indexable
+from maxframe import tensor as mt
+from maxframe.core import ExecutableTuple
+from maxframe.learn.utils import shuffle as shuffle_arrays
+from maxframe.learn.utils.validation import _num_samples, indexable
+from maxframe.tensor.utils import check_random_state
 
 
 def train_test_split(*arrays, **options):

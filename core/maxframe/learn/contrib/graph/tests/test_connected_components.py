@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
 import numpy as np
 import pytest
 
-from ..... import dataframe as md
-from .....dataframe.core import DataFrameData
-from .....tensor.core import TensorData
-from .. import connected_components
+from maxframe import dataframe as md
+from maxframe.dataframe.core import DataFrameData
+from maxframe.learn.contrib.graph import connected_components
+from maxframe.tensor.core import TensorData
 
 
 @pytest.fixture

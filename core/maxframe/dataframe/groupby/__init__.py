@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,29 +13,41 @@
 # limitations under the License.
 
 # noinspection PyUnresolvedReferences
-from ..core import DataFrameGroupBy, GroupBy, SeriesGroupBy
-from .core import _make_named_agg_compat
-from .expanding import ExpandingGroupby
-from .rolling import RollingGroupby
+from maxframe.dataframe.core import DataFrameGroupBy, GroupBy, SeriesGroupBy
+from maxframe.dataframe.groupby.core import _make_named_agg_compat
+from maxframe.dataframe.groupby.expanding import ExpandingGroupby
+from maxframe.dataframe.groupby.rolling import RollingGroupby
 
 
 def _install():
-    from ...core import CachedAccessor
-    from ..core import DATAFRAME_GROUPBY_TYPE, DATAFRAME_TYPE, GROUPBY_TYPE, SERIES_TYPE
-    from .aggregation import agg
-    from .apply import groupby_apply
-    from .apply_chunk import df_groupby_apply_chunk
-    from .core import groupby
-    from .expanding import cumcount, cummax, cummin, cumprod, cumsum, expanding
-    from .extensions import DataFrameGroupByMaxFrameAccessor
-    from .fill import bfill, ffill, fillna
-    from .getitem import df_groupby_getitem
-    from .head import head
-    from .rank import rank
-    from .rolling import rolling
-    from .sample import groupby_sample
-    from .shift import shift
-    from .transform import groupby_transform
+    from maxframe.core import CachedAccessor
+    from maxframe.dataframe.core import (
+        DATAFRAME_GROUPBY_TYPE,
+        DATAFRAME_TYPE,
+        GROUPBY_TYPE,
+        SERIES_TYPE,
+    )
+    from maxframe.dataframe.groupby.aggregation import agg
+    from maxframe.dataframe.groupby.apply import groupby_apply
+    from maxframe.dataframe.groupby.apply_chunk import df_groupby_apply_chunk
+    from maxframe.dataframe.groupby.core import groupby
+    from maxframe.dataframe.groupby.expanding import (
+        cumcount,
+        cummax,
+        cummin,
+        cumprod,
+        cumsum,
+        expanding,
+    )
+    from maxframe.dataframe.groupby.extensions import DataFrameGroupByMaxFrameAccessor
+    from maxframe.dataframe.groupby.fill import bfill, ffill, fillna
+    from maxframe.dataframe.groupby.getitem import df_groupby_getitem
+    from maxframe.dataframe.groupby.head import head
+    from maxframe.dataframe.groupby.rank import rank
+    from maxframe.dataframe.groupby.rolling import rolling
+    from maxframe.dataframe.groupby.sample import groupby_sample
+    from maxframe.dataframe.groupby.shift import shift
+    from maxframe.dataframe.groupby.transform import groupby_transform
 
     for cls in DATAFRAME_TYPE:
         setattr(cls, "groupby", groupby)
@@ -51,7 +63,7 @@ def _install():
         setattr(cls, "any", lambda groupby, **kw: agg(groupby, "any", **kw))
         setattr(cls, "count", lambda groupby, **kw: agg(groupby, "count", **kw))
         setattr(cls, "kurt", lambda groupby, **kw: agg(groupby, "kurt", **kw))
-        setattr(cls, "kurtosis", lambda groupby, **kw: agg(groupby, "kurtosis", **kw))
+        setattr(cls, "kurtosis", lambda groupby, **kw: agg(groupby, "kurt", **kw))
         setattr(cls, "idxmax", lambda groupby, **kw: agg(groupby, "idxmax", **kw))
         setattr(cls, "idxmin", lambda groupby, **kw: agg(groupby, "idxmin", **kw))
         setattr(cls, "max", lambda groupby, **kw: agg(groupby, "max", **kw))

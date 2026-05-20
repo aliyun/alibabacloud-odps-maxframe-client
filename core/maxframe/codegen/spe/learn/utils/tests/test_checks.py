@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...... import tensor as mt
-from ......learn.utils.checks import (
+from maxframe import tensor as mt
+from maxframe.codegen.spe.core import SPECodeContext
+from maxframe.codegen.spe.learn.utils.checks import (
+    AssertAllFiniteAdapter,
+    CheckNonNegativeAdapter,
+)
+from maxframe.learn.utils.checks import (
     assert_all_finite,
     check_non_negative_then_return_value,
 )
-from ....core import SPECodeContext
-from ..checks import AssertAllFiniteAdapter, CheckNonNegativeAdapter
 
 
 def test_assert_all_finite():

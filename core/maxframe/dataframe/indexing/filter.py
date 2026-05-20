@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@ import re
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import get_output_types
-from ...serialization.serializables import Int32Field, ListField, StringField
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from maxframe import opcodes
+from maxframe.core import get_output_types
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index
+from maxframe.serialization.serializables import Int32Field, ListField, StringField
 
 
 class DataFrameFilter(DataFrameOperatorMixin, DataFrameOperator):

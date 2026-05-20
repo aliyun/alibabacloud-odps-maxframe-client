@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +17,14 @@ from typing import List, Union
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import EntityData
-from ...serialization.serializables import AnyField, BoolField, KeyField
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_df, parse_index
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_df, parse_index
+from maxframe.serialization.serializables import AnyField, BoolField, KeyField
+from maxframe.utils import pd_release_version
+
+_future_stack_param = pd_release_version >= (2, 1, 0)
 
 
 class DataFrameStack(DataFrameOperator, DataFrameOperatorMixin):
@@ -49,7 +52,13 @@ class DataFrameStack(DataFrameOperator, DataFrameOperatorMixin):
 
     def __call__(self, input_df):
         test_df = build_df(input_df)
-        test_df = test_df.stack(level=self.level, dropna=self.dropna)
+        if _future_stack_param:  # pragma: no branch
+            test_df = test_df.stack(
+                level=self.level, dropna=self.dropna, future_stack=False
+            )
+        else:
+            test_df = test_df.stack(level=self.level, dropna=self.dropna)
+
         if self.dropna:
             size = np.nan
         else:

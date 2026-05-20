@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+from decimal import Decimal
 
 import numpy as np
 import pandas as pd
@@ -20,16 +21,15 @@ import pyarrow as pa
 import pytest
 from odps import types as odps_types
 
-from .... import dataframe as md
-from .... import env
-from .... import tensor as mt
-from ....config import option_context, options
-from ....core import OutputType
-from ....lib.dtypes_extension import ArrowBlobType, dict_, list_
-from ....tests.utils import require_arrow_dtype
-from ....utils import pd_release_version, wrap_arrow_dtype
-from ..schema import (
+from maxframe import dataframe as md
+from maxframe import env
+from maxframe import tensor as mt
+from maxframe.config import option_context, options
+from maxframe.core import OutputType
+from maxframe.io.odpsio.schema import (
+    _cast_column_as_decimal,
     arrow_schema_to_odps_schema,
+    arrow_schema_to_pandas_dtypes,
     build_dataframe_table_meta,
     build_table_column_name,
     odps_schema_to_arrow_schema,
@@ -38,6 +38,15 @@ from ..schema import (
     pandas_to_odps_schema,
     pandas_types_to_arrow_schema,
 )
+from maxframe.lib.dtypes_extension import (
+    ArrowBlobType,
+    ArrowDtype,
+    ArrowExtensionArray,
+    dict_,
+    list_,
+)
+from maxframe.tests.utils import require_arrow_dtype
+from maxframe.utils import pd_release_version, wrap_arrow_dtype
 
 
 @pytest.fixture
@@ -374,7 +383,7 @@ def test_odps_pandas_schema_conversion_with_numpy(set_dtype_backend):
 
     expected_series = pd.Series(
         [
-            np.dtype("O"),  # string
+            pd_dtypes.iloc[0],  # string
             np.dtype("O"),  # binary
             np.dtype(np.int8),
             np.dtype(np.int16),
@@ -592,3 +601,108 @@ def test_blob_types_conversion():
     arrow_schema2 = odps_schema_to_arrow_schema(odps_schema)
     assert arrow_schema2.field("int_col").type == pa.int64()
     assert arrow_schema2.field("blob_col").type == ArrowBlobType()
+
+
+@pytest.mark.parametrize(
+    "source_data,source_dtype,target_dtype,expected_values",
+    [
+        # Same precision and scale - should return as-is
+        (
+            [Decimal("1.23"), Decimal("4.56")],
+            pa.decimal128(10, 2),
+            pa.decimal128(10, 2),
+            [Decimal("1.23"), Decimal("4.56")],
+        ),
+        # Reduce scale - should round
+        (
+            [Decimal("1.234"), Decimal("5.678")],
+            pa.decimal128(10, 3),
+            pa.decimal128(10, 1),
+            [Decimal("1.2"), Decimal("5.7")],
+        ),
+        # Increase precision
+        (
+            [Decimal("1.23"), Decimal("4.56")],
+            pa.decimal128(5, 2),
+            pa.decimal128(10, 2),
+            [Decimal("1.23"), Decimal("4.56")],
+        ),
+        # Integer to decimal - need sufficient precision
+        (
+            [100, 200],
+            pa.int32(),
+            pa.decimal128(15, 2),
+            [Decimal("100.00"), Decimal("200.00")],
+        ),
+        # Float to decimal
+        (
+            [1.5, 2.7],
+            pa.float64(),
+            pa.decimal128(10, 2),
+            [Decimal("1.50"), Decimal("2.70")],
+        ),
+    ],
+)
+@require_arrow_dtype
+def test_cast_column_as_decimal(
+    source_data, source_dtype, target_dtype, expected_values
+):
+    # Create source series
+    if isinstance(source_dtype, pa.Decimal128Type):
+        source_series = pd.Series(
+            ArrowExtensionArray(pa.array(source_data, type=source_dtype))
+        )
+    else:
+        source_series = pd.Series(source_data, dtype=source_dtype.to_pandas_dtype())
+
+    # Cast to target decimal type
+    target_arrow_dtype = ArrowDtype(target_dtype)
+    result = _cast_column_as_decimal(source_series, target_arrow_dtype)
+
+    # Verify result type
+    assert isinstance(result.dtype, ArrowDtype)
+    assert result.dtype.pyarrow_dtype == target_dtype
+
+    # Verify values
+    result_values = result.tolist()
+    for i, expected in enumerate(expected_values):
+        assert result_values[i] == expected
+
+
+@pytest.mark.parametrize("set_dtype_backend", ["numpy", "pyarrow"], indirect=True)
+def test_arrow_schema_to_pandas_dtypes(set_dtype_backend):
+    """Test arrow_schema_to_pandas_dtypes with various types and backends."""
+    # Schema covering basic types, nested types, and edge cases
+    schema = pa.schema(
+        [
+            ("int_col", pa.int64()),
+            ("str_col", pa.string()),
+            ("list_col", pa.list_(pa.int64())),
+            ("map_col", pa.map_(pa.string(), pa.int64())),
+            ("struct_col", pa.struct([("x", pa.int64())])),
+        ]
+    )
+
+    # Test with current backend from fixture
+    result = arrow_schema_to_pandas_dtypes(schema, set_dtype_backend)
+    assert isinstance(result, pd.Series)
+    assert len(result) == 5
+
+    if set_dtype_backend == "numpy":
+        # numpy backend - simple types use numpy dtypes, nested use ArrowDtype
+        assert result["int_col"] == np.dtype("int64")
+        assert result["str_col"] == np.dtype("object")
+        assert isinstance(result["list_col"], ArrowDtype)
+        assert isinstance(result["map_col"], ArrowDtype)
+        assert isinstance(result["struct_col"], ArrowDtype)
+    else:  # pyarrow
+        # pyarrow backend - all types use Arrow-backed dtypes
+        assert isinstance(result["int_col"], ArrowDtype)
+        assert isinstance(result["str_col"], type(wrap_arrow_dtype(pa.string())))
+        assert isinstance(result["list_col"], ArrowDtype)
+        assert isinstance(result["map_col"], ArrowDtype)
+        assert isinstance(result["struct_col"], ArrowDtype)
+
+    # Test that None uses global config (which is set by fixture)
+    result_none = arrow_schema_to_pandas_dtypes(schema, None)
+    pd.testing.assert_series_equal(result, result_none)

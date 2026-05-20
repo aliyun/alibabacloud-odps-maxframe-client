@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ from typing import TYPE_CHECKING, Callable, List, Optional
 from odps import ODPS
 from pandas.core.common import get_callable_name
 
-from ....serialization.serializables import FieldTypes, ListField, StringField
-from ....udf import PythonPackOptions
-from ...core import AbstractUDF, UserCodeMixin
+from maxframe.codegen.core import AbstractUDF, UserCodeMixin
+from maxframe.serialization.serializables import FieldTypes, ListField, StringField
+from maxframe.udf import PythonPackOptions
 
 if TYPE_CHECKING:
     from odpsctx import ODPSSessionContext

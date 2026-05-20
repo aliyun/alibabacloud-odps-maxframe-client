@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...... import tensor as mt
-from ......learn.metrics import auc, roc_auc_score, roc_curve
-from ....core import SPECodeContext
-from .._ranking import AucOpAdapter, RocAucScoreAdapter, RocCurveAdapter
+from maxframe import tensor as mt
+from maxframe.codegen.spe.core import SPECodeContext
+from maxframe.codegen.spe.learn.metrics._ranking import (
+    AucOpAdapter,
+    RocAucScoreAdapter,
+    RocCurveAdapter,
+)
+from maxframe.learn.metrics import auc, roc_auc_score, roc_curve
 
 
 def test_auc():

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ from collections import defaultdict
 import pandas as pd
 import pytest
 
-from .... import dataframe as md
-from ...groupby.apply_chunk import GroupByApplyChunk
-from .. import DataFrameApplyChunk
+from maxframe import dataframe as md
+from maxframe.dataframe.extensions import DataFrameApplyChunk
+from maxframe.dataframe.groupby.apply_chunk import GroupByApplyChunk
 
 
 @pytest.fixture

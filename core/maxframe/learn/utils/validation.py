@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ import warnings
 
 import numpy as np
 
-from ...core import get_output_types
+from maxframe.core import get_output_types
 
 try:
     from sklearn.exceptions import DataConversionWarning
@@ -26,17 +26,20 @@ except ImportError:
     DataConversionWarning = RuntimeWarning
     check_is_fitted = lambda *_, **__: None
 
-from ... import dataframe as md
-from ... import opcodes
-from ... import tensor as mt
-from ...core.operator import Operator
-from ...lib.sparse import issparse
-from ...lib.version import parse as parse_version
-from ...serialization.serializables import Int32Field, Int64Field
-from ...tensor import Tensor
-from ...typing_ import TileableType
-from ..core import LearnOperatorMixin
-from .checks import assert_all_finite, check_non_negative_then_return_value
+from maxframe import dataframe as md
+from maxframe import opcodes
+from maxframe import tensor as mt
+from maxframe.core.operator import Operator
+from maxframe.learn.core import LearnOperatorMixin
+from maxframe.learn.utils.checks import (
+    assert_all_finite,
+    check_non_negative_then_return_value,
+)
+from maxframe.lib.sparse import issparse
+from maxframe.lib.version import parse as parse_version
+from maxframe.serialization.serializables import Int32Field, Int64Field
+from maxframe.tensor import Tensor
+from maxframe.typing_ import TileableType
 
 FLOAT_DTYPES = (np.float64, np.float32, np.float16)
 check_is_fitted = check_is_fitted

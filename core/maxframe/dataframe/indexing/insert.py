@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@ from typing import List
 
 import pandas as pd
 
-from ... import opcodes
-from ...core import EntityData, get_output_types
-from ...serialization.serializables import AnyField, BoolField, Int64Field
-from ...tensor.core import TENSOR_TYPE
-from ..core import INDEX_TYPE, SERIES_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_empty_df, parse_index
+from maxframe import opcodes
+from maxframe.core import EntityData, get_output_types
+from maxframe.dataframe.core import INDEX_TYPE, SERIES_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_empty_df, parse_index
+from maxframe.serialization.serializables import AnyField, BoolField, Int64Field
+from maxframe.tensor.core import TENSOR_TYPE
 
 
 class DataFrameInsert(DataFrameOperator, DataFrameOperatorMixin):

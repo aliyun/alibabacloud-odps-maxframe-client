@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,24 +18,31 @@ from typing import Any, Dict, List
 
 import pandas as pd
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, Entity, EntityData, OutputType
-from ...core.operator import MapReduceOperator
-from ...env import MAXFRAME_INSIDE_TASK
-from ...serialization import PickleContainer
-from ...serialization.serializables import AnyField, BoolField, DictField, Int32Field
-from ...udf import BuiltinFunction
-from ...utils import find_objects, lazy_import, no_default
-from ..core import GROUPBY_TYPE, SERIES_TYPE
-from ..initializer import Series as asseries
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import (
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, Entity, EntityData, OutputType
+from maxframe.core.operator import MapReduceOperator
+from maxframe.dataframe.core import GROUPBY_TYPE, SERIES_TYPE
+from maxframe.dataframe.indexing.getitem import DataFrameIndex
+from maxframe.dataframe.initializer import Series as asseries
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import (
     build_df,
     build_series,
     call_groupby_with_params,
+    find_input_of_groupby,
     make_column_list,
     parse_index,
 )
+from maxframe.env import MAXFRAME_INSIDE_TASK
+from maxframe.serialization import PickleContainer
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    DictField,
+    Int32Field,
+)
+from maxframe.udf import BuiltinFunction
+from maxframe.utils import find_objects, lazy_import, no_default
 
 cudf = lazy_import("cudf")
 
@@ -53,6 +60,7 @@ class DataFrameGroupByOp(MapReduceOperator, DataFrameOperatorMixin):
     as_index = BoolField("as_index", default=None)
     sort = BoolField("sort", default=None)
     group_keys = BoolField("group_keys", default=None)
+    dropna = BoolField("dropna", default=None)
 
     shuffle_size = Int32Field("shuffle_size", default=None)
 
@@ -89,6 +97,7 @@ class DataFrameGroupByOp(MapReduceOperator, DataFrameOperatorMixin):
             as_index=self.as_index,
             sort=self.sort,
             group_keys=self.group_keys,
+            dropna=self.dropna,
         )
 
     def build_mock_groupby(self, **kwargs):
@@ -112,6 +121,18 @@ class DataFrameGroupByOp(MapReduceOperator, DataFrameOperatorMixin):
             new_by = []
             for v in new_kw["by"]:
                 if isinstance(v, ENTITY_TYPE):
+                    # Check if v is a column from the source dataframe
+                    if (
+                        self.is_dataframe_obj
+                        and isinstance(v.op, DataFrameIndex)
+                        and v.inputs[0] is in_df
+                        and v.op.col_names is not None
+                    ):
+                        # v is a column selected from in_df, use column directly
+                        new_by.append(mock_obj[v.op.col_names])
+                        continue
+
+                    # v is not from source dataframe, need to build mock_by
                     build_fun = build_df if v.ndim == 2 else build_series
                     mock_by = pd.concat(
                         [
@@ -167,7 +188,9 @@ class DataFrameGroupByOp(MapReduceOperator, DataFrameOperatorMixin):
 DataFrameGroupByOperator = DataFrameGroupByOp
 
 
-def groupby(df, by=None, level=None, as_index=True, sort=True, group_keys=True):
+def groupby(
+    df, by=None, level=None, as_index=True, sort=True, group_keys=True, dropna=True
+):
     """
     Group DataFrame using a mapper or by a Series of columns.
 
@@ -197,6 +220,9 @@ def groupby(df, by=None, level=None, as_index=True, sort=True, group_keys=True):
         group. Groupby preserves the order of rows within each group.
     group_keys : bool
         When calling apply, add group keys to index to identify pieces.
+    dropna : bool, default True
+        If True (default), NA values in the grouping columns are excluded from
+        the groups. If False, NA values are treated as a valid group.
 
     Notes
     -----
@@ -250,6 +276,7 @@ def groupby(df, by=None, level=None, as_index=True, sort=True, group_keys=True):
         as_index=as_index,
         sort=sort,
         group_keys=group_keys if group_keys is not no_default else None,
+        dropna=dropna,
         output_types=output_types,
     )
     return op(df)
@@ -304,9 +331,7 @@ class BaseGroupByWindowOp(DataFrameOperatorMixin, DataFrameOperator):
             return result_df.name, result_df.dtype
 
     def __call__(self, groupby):
-        in_df = groupby
-        while in_df.op.output_types[0] not in (OutputType.dataframe, OutputType.series):
-            in_df = in_df.inputs[0]
+        in_df = find_input_of_groupby(groupby)
 
         out_dtypes = self._calc_out_dtypes(groupby)
 
@@ -327,7 +352,7 @@ class BaseGroupByWindowOp(DataFrameOperatorMixin, DataFrameOperator):
 
 def _make_named_agg_compat(name):  # pragma: no cover
     # to make imports compatible
-    from ..reduction import NamedAgg
+    from maxframe.dataframe.reduction import NamedAgg
 
     if name == "NamedAgg":
         if MAXFRAME_INSIDE_TASK not in os.environ:

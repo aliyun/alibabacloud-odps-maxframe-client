@@ -1,0 +1,282 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version:  maxframe\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-08 00:00+0800\n"
+"PO-Revision-Date: 2026-05-08 00:00+0800\n"
+"Last-Translator: MaxFrame Docs Team\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+msgid "#"
+msgstr ""
+
+msgid "**DPE enabled**"
+msgstr "**开通 DPE 引擎**"
+
+msgid "**DashScope API key**"
+msgstr "**百炼 API Key**"
+
+msgid "**Images uploaded to OSS**"
+msgstr "**上传图片至 OSS**"
+
+msgid "**MaxCompute enabled**"
+msgstr "**开通 MaxCompute**"
+
+msgid "**OSS RAM role authorization**"
+msgstr "**OSS RAM 角色授权**"
+
+msgid "1"
+msgstr ""
+
+msgid "1. Build input dataset"
+msgstr "1. 构建输入数据集"
+
+msgid "2"
+msgstr ""
+
+msgid "2. Download, decode, and resize images"
+msgstr "2. 图片下载、解码与重采样"
+
+msgid "3"
+msgstr ""
+
+msgid "3. Multimodal embedding inference"
+msgstr "3. 多模态 Embedding 推理"
+
+msgid "4"
+msgstr ""
+
+msgid "4. Persist embeddings to MaxCompute"
+msgstr "4. 将 Embedding 结果写入 MaxCompute"
+
+msgid "5"
+msgstr ""
+
+msgid "5. Cleanup"
+msgstr "5. 资源清理"
+
+msgid "A MaxCompute project with valid Access ID / Access Key."
+msgstr "需要一个已开通的 MaxCompute 项目，并具备有效的 Access ID / Access Key。"
+
+msgid ""
+"A practical pattern is to standardize the pipeline: download and decode "
+"raw files, normalize formats, run semantic understanding, generate "
+"labels, extract embeddings, and store vectors in a reusable feature "
+"table."
+msgstr ""
+"一个可复用的生产模式是将链路标准化：下载并解码原始文件、统一格式、执行"
+"语义理解、生成标签、提取 Embedding，并将向量写入可复用的特征表。"
+
+msgid "Applicable scenarios"
+msgstr "适用场景"
+
+msgid "Ask admin to enable DPE in project."
+msgstr "联系管理员在项目中开通 DPE。"
+
+msgid "Background"
+msgstr "背景信息"
+
+msgid "Cause"
+msgstr "原因"
+
+msgid "Check API key status in DashScope console."
+msgstr "在百炼控制台检查 API Key 状态。"
+
+msgid "Configure Role ARN for OSS read access."
+msgstr "配置用于 OSS 读取访问的 Role ARN。"
+
+msgid ""
+"Create your own OSS bucket and upload the five sample images used by this"
+" tutorial."
+msgstr "请自行创建 OSS Bucket，并上传本教程使用的五张示例图片。"
+
+msgid "Configure OSS RAM role"
+msgstr "配置 OSS RAM 角色"
+
+#, python-brace-format
+msgid ""
+"Refer to the service enablement and authorization section in `OSS "
+"mounting and use practices <https://help.aliyun.com/zh/maxcompute/user-"
+"guide/oss-mounting-and-use-practices>`__ to create an OSS bucket and a "
+"RAM role with OSS read permission. In this example, the code only needs "
+"the RAM role ARN passed through ``with_fs_mount`` as "
+"``storage_options={\"role_arn\": ROLE_ARN}``."
+msgstr ""
+"请参考 `OSS 挂载及使用实践 <https://help.aliyun.com/zh/maxcompute/user-"
+"guide/oss-mounting-and-use-practices>`__ 中“开通服务及授权”部分，创建 "
+"OSS Bucket 以及具备 OSS 读取权限的 RAM 角色。本示例代码只需要将 RAM Role "
+"ARN 通过 ``with_fs_mount`` 的 ``storage_options={\"role_arn\": ROLE_ARN}`"
+"` 传入。"
+
+msgid ""
+"The service-linked-role step shown in the console guide is not used by "
+"this example. If your MaxCompute service has already been enabled, focus "
+"on the RAM role and OSS permission configuration needed by ``role_arn``."
+msgstr ""
+"控制台指南中的“创建服务关联角色”步骤不是本示例代码会用到的内容。如果你"
+"的 MaxCompute 服务已经开通，请重点完成 ``role_arn`` 所需的 RAM 角色和 OSS"
+" 权限配置。"
+
+msgid ""
+"Upload these five images to ``oss://<your_oss_endpoint>/<your_oss_bucket"
+">/maxframe-image-demo/`` before running this section. The names in "
+"``IMAGE_FILES`` must exactly match the objects in your OSS bucket."
+msgstr ""
+"运行本节前，请将这五张图片上传到 ``oss://<your_oss_endpoint>/<your_oss_"
+"bucket>/maxframe-image-demo/``。``IMAGE_FILES`` 中的文件名必须和 OSS "
+"Bucket 中的对象名完全一致。"
+
+msgid ""
+"For large-scale production workloads, request higher API concurrency "
+"limits to avoid 429/403 throttling. If the task times out, open LogView "
+"first and check whether OSS mount, image file names, RAM role "
+"permissions, and DashScope network access are all valid."
+msgstr ""
+"在大规模生产任务中，建议申请更高 API 并发配额以避免 429/403 限流。如果"
+"任务超时，请优先打开 LogView，检查 OSS 挂载、图片文件名、RAM 角色权限以及"
+"百炼网络访问是否正确。"
+
+msgid "Content understanding, moderation, and quality analysis."
+msgstr "内容理解、审核与质量分析。"
+
+msgid "Core workflow"
+msgstr "核心处理流程"
+
+msgid "Create an API key for multimodal embedding calls."
+msgstr "创建用于多模态 Embedding 调用的 API Key。"
+
+msgid ""
+"Create or manage your API key in DashScope console: `DashScope API Key "
+"management <https://bailian.console.aliyun.com/cn-beijing?tab=model#/api-"
+"key>`__."
+msgstr ""
+"前往 `百炼控制台 - API Key 管理 <https://bailian.console.aliyun.com/cn-"
+"beijing?tab=model#/api-key>`__ 创建或管理 API Key。"
+
+msgid "DPE is not enabled"
+msgstr "未开通 DPE"
+
+msgid "DashScope API key management page"
+msgstr "百炼控制台 API Key 管理页面"
+
+msgid "Data preparation for RAG, knowledge base, and agent applications."
+msgstr "为 RAG、知识库与 Agent 应用准备多模态数据。"
+
+msgid "Deduplication and clustering using vector similarity."
+msgstr "基于向量相似度进行去重与聚类。"
+
+msgid "Description"
+msgstr "说明"
+
+msgid "Different embedding models were mixed"
+msgstr "混用了不同的 Embedding 模型"
+
+msgid "Embedding is ``None``"
+msgstr "Embedding 结果为 ``None``"
+
+msgid ""
+"Enterprise data platforms increasingly rely on multimodal data such as "
+"images, text, audio, and video. These data assets are often heterogeneous"
+" and unstructured, making them difficult to use directly for search, "
+"recommendation, moderation, clustering, and analytics."
+msgstr ""
+"企业数据平台越来越多地使用图片、文本、音频和视频等多模态数据。这些数据"
+"通常格式异构、结构化程度低，难以直接支撑检索、推荐、审核、聚类和分析等"
+"下游场景。"
+
+msgid "Environment setup"
+msgstr "环境准备"
+
+msgid "Feature generation for recommendation and ranking systems."
+msgstr "为推荐与排序系统生产图像特征。"
+
+msgid ""
+"For large-scale production workloads, request higher API concurrency "
+"limits to avoid 429/403 throttling."
+msgstr "在大规模生产任务中，建议申请更高 API 并发配额以避免 429/403 限流。"
+
+msgid "Get DashScope API key"
+msgstr "获取百炼 API Key"
+
+msgid "Image operators and ``apply_chunk`` run on DPE."
+msgstr "Image 算子与 ``apply_chunk`` 在 DPE 上执行。"
+
+msgid "Image processing and embedding workflow"
+msgstr "图像处理与 Embedding 流程"
+
+msgid "Inconsistent vector dimensions"
+msgstr "向量维度不一致"
+
+msgid "Invalid API key"
+msgstr "API Key 无效"
+
+msgid "Issue"
+msgstr "问题"
+
+msgid "Multimodal Image Feature Pipeline with MaxFrame"
+msgstr "多模态图像特征生产方案"
+
+msgid "Multimodal retrieval and similar-content recall."
+msgstr "多模态检索与相似内容召回。"
+
+msgid "Per-image inference failure"
+msgstr "单张图片推理失败"
+
+msgid "Prerequisites"
+msgstr "前提条件"
+
+msgid "**MaxFrame SDK version**"
+msgstr "**MaxFrame SDK 版本**"
+
+msgid "Use MaxFrame SDK **2.6.0** or above (``pip install maxframe>=2.6.0``)."
+msgstr ""
+"请使用 MaxFrame SDK **2.6.0** 及以上版本（``pip install maxframe>=2.6.0``"
+"）。"
+
+msgid "Requirement"
+msgstr "条件"
+
+msgid "Resolution"
+msgstr "解决方案"
+
+msgid "Reusable feature asset construction for enterprise data governance."
+msgstr "构建可复用的企业级图像特征资产。"
+
+msgid "Source images are in a target OSS bucket."
+msgstr "原始图片已上传至目标 OSS Bucket。"
+
+msgid ""
+"This tutorial demonstrates a multimodal image feature pipeline on "
+"MaxFrame: distributed image preprocessing, semantic embedding inference, "
+"and table persistence for downstream retrieval, recommendation, "
+"moderation, clustering, and analytics."
+msgstr ""
+"本方案依托 MaxFrame 的分布式处理能力，演示一条面向多场景复用的图像特征"
+"生产链路：批量预处理图像、调用多模态模型生成语义 Embedding，并将结果写入"
+"表中，供检索、推荐、审核、聚类和分析等下游任务使用。"
+
+msgid "Troubleshooting"
+msgstr "常见问题排查"
+
+msgid "Use one embedding model per batch/output table."
+msgstr "同一批次或输出表请使用同一 Embedding 模型。"
+
+msgid "Verify ``role_arn`` and OSS read permissions."
+msgstr "检查 ``role_arn`` 与 OSS 读取权限配置。"
+
+msgid "Verify image integrity and base64 generation."
+msgstr "检查图片完整性与 base64 编码结果。"
+
+msgid "Wrong or missing role permissions"
+msgstr "角色权限错误或缺失"
+
+msgid "``Engine DPE not available``"
+msgstr ""
+

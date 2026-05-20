@@ -194,6 +194,8 @@ msgid ""
 "An ndarray is returned with one :class:`matplotlib.axes.Axes` per column "
 "when ``subplots=True``."
 msgstr ""
+"当 ``subplots=True`` 时，返回一个 ndarray，每个列对应一个 :class:`"
+"matplotlib.axes.Axes`。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:37
 #: of

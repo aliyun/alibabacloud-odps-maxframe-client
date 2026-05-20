@@ -19,6 +19,7 @@ import enum
 import importlib
 import inspect
 import itertools
+import json
 import logging
 import math
 import numbers
@@ -43,16 +44,18 @@ from typing import (
     Type,
     Union,
 )
+from urllib.parse import urlparse
 
 import numpy as np
 import pandas as pd
 import traitlets
 from tornado import web
 
-from ..lib.dtypes_extension import ArrowDtype
-from ..lib.version import parse as parse_version
-from ..typing_ import TileableType, TimeoutType
-from ._utils_c import new_random_id
+from maxframe.env import MAX_STORAGE_DATA_PROXY_CONF, ODPS_STORAGE_API_ENDPOINT
+from maxframe.lib.dtypes_extension import ArrowDtype
+from maxframe.lib.version import parse as parse_version
+from maxframe.typing_ import TileableType, TimeoutType
+from maxframe.utils._utils_c import new_random_id
 
 _is_ci = (os.environ.get("CI") or "0").lower() in ("1", "true")
 np_release_version: Tuple[int] = parse_version(np.__version__).release
@@ -148,6 +151,7 @@ def calc_nsplits(chunk_idx_to_shape: Dict[Tuple[int], Tuple[int]]) -> Tuple[Tupl
     -------
     nsplits
     """
+    assert chunk_idx_to_shape, "No nsplits passed"
     ndim = len(next(iter(chunk_idx_to_shape)))
     tileable_nsplits = []
     # for each dimension, record chunk shape whose index is zero on other dimensions
@@ -312,7 +316,15 @@ def estimate_pandas_size(
             sample_frame_size = iloc[indices].memory_usage(deep=True, index=False).sum()
         return index_size + sample_frame_size * len(pd_obj) // max_samples
     else:
-        sample_size = sys.getsizeof(iloc[indices])
+        if isinstance(pd_obj, pd.Index):
+            # For Index objects, use memory_usage(deep=True) in pandas 3.0+
+            sample_size = iloc[indices].memory_usage(deep=True)
+        elif is_series:
+            # For Series, use memory_usage(deep=True) in pandas 3.0+
+            sample_size = iloc[indices].memory_usage(deep=True, index=False)
+        else:
+            # For DataFrame
+            sample_size = iloc[indices].memory_usage(deep=True, index=False).sum()
         return sample_size * len(pd_obj) // max_samples
 
 
@@ -710,7 +722,7 @@ def copy_if_possible(obj: Any, deep=False) -> Any:
 
 
 def cache_tileables(*tileables):
-    from ..core import ENTITY_TYPE
+    from maxframe.core import ENTITY_TYPE
 
     if len(tileables) == 1 and isinstance(tileables[0], (tuple, list)):
         tileables = tileables[0]
@@ -901,3 +913,56 @@ class KeyLogWrapper:
         if self._limit and len(chunks) > self._limit:
             strs = f"{strs}, and {len(chunks) - self._limit} more..."
         return f"[{strs}]"
+
+
+def get_storage_api_endpoint() -> Optional[str]:
+    """
+    Get storage API endpoint with fresh port from config file.
+
+    The port in ODPS_STORAGE_API_ENDPOINT may become stale at runtime.
+    This function reads the latest port from MAX_STORAGE_DATA_PROXY_CONF
+    config file and combines it with the host from the original endpoint.
+
+    Returns
+    -------
+    str or None
+        Endpoint with fresh port from config file, or None if the required
+        environment variables (ODPS_STORAGE_API_ENDPOINT and MAX_STORAGE_DATA_PROXY_CONF)
+        are not both set, or if the config file doesn't exist.
+
+    Raises
+    ------
+    RuntimeError
+        If MAX_STORAGE_DATA_PROXY_CONF is set but config file cannot be read,
+        or doesn't contain MAX_STORAGE_DATA_PROXY_PORT.
+    """
+    endpoint = os.getenv(ODPS_STORAGE_API_ENDPOINT)
+    if not endpoint:
+        return None
+
+    data_proxy_conf = os.getenv(MAX_STORAGE_DATA_PROXY_CONF)
+    if not data_proxy_conf:
+        return endpoint
+
+    # Config file must exist, otherwise return None
+    if not os.path.exists(data_proxy_conf):
+        return None
+
+    try:
+        with open(data_proxy_conf, "r") as f:
+            config = json.loads(f.read())
+    except (IOError, json.JSONDecodeError) as e:
+        raise RuntimeError(
+            f"Failed to read data proxy config file: {data_proxy_conf}. Error: {e}"
+        )
+
+    port = config.get("MAX_STORAGE_DATA_PROXY_PORT")
+    if port is None:
+        raise RuntimeError(
+            f"MAX_STORAGE_DATA_PROXY_PORT not found in config file: {data_proxy_conf}"
+        )
+
+    parsed = urlparse(endpoint)
+    fresh_endpoint = f"{parsed.scheme}://{parsed.hostname}:{port}"
+    logger.info("Storage API endpoint: %s (from config file)", fresh_endpoint)
+    return fresh_endpoint

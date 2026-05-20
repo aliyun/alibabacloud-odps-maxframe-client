@@ -14,8 +14,8 @@
 
 from typing import Any, Dict, List, Union
 
-from ..utils import arrow_type_from_str, extract_class_name
-from .core import Serializer, buffered
+from maxframe.serialization.core import Serializer, buffered
+from maxframe.utils import arrow_type_from_str, extract_class_name
 
 try:
     import pyarrow as pa

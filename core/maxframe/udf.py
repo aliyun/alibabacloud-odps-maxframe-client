@@ -21,10 +21,10 @@ import numpy as np
 from odps.models import Function as ODPSFunctionObj
 from odps.models import Resource as ODPSResourceObj
 
-from .config.validators import is_positive_integer
-from .core.mode import is_mock_mode
-from .serialization import load_member
-from .serialization.serializables import (
+from maxframe.config.validators import is_positive_integer
+from maxframe.core.mode import is_mock_mode
+from maxframe.serialization import load_member
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
@@ -33,8 +33,8 @@ from .serialization.serializables import (
     Serializable,
     StringField,
 )
-from .typing_ import PandasDType
-from .utils import extract_class_name, make_dtype, tokenize, unwrap_function
+from maxframe.typing_ import PandasDType
+from maxframe.utils import extract_class_name, make_dtype, tokenize, unwrap_function
 
 
 class PythonPackOptions(Serializable):
@@ -271,8 +271,10 @@ class ODPSFunction(Serializable):
         raise NotImplementedError("Need to be referenced inside apply or map functions")
 
     def _call_aggregate(self, obj, *args, **kwargs):
-        from .dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
-        from .dataframe.reduction.custom_reduction import build_custom_reduction_result
+        from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+        from maxframe.dataframe.reduction.custom_reduction import (
+            build_custom_reduction_result,
+        )
 
         if isinstance(obj, (DATAFRAME_TYPE, SERIES_TYPE)):
             return build_custom_reduction_result(obj, self)

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
 import itertools
 from typing import List
 
-from ....typing_ import TileableType
-from ...mode import enter_mode
-from ..entity import EntityGraph, TileableGraph
-from .tileable import TileableGraphBuilder
+from maxframe.core.graph.builder.tileable import TileableGraphBuilder
+from maxframe.core.graph.entity import EntityGraph, TileableGraph
+from maxframe.core.mode import enter_mode
+from maxframe.typing_ import TileableType
 
 
 @enter_mode(kernel=True)

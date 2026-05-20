@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@ import warnings
 
 import numpy as np
 
-from ..core import Tensor
-from ..datasource import array
-from ..datasource import tensor as astensor
-from ..misc.squeeze import squeeze
-from ..misc.where import where
-from .average import average
+from maxframe.tensor.core import Tensor
+from maxframe.tensor.datasource import array
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.misc.squeeze import squeeze
+from maxframe.tensor.misc.where import where
+from maxframe.tensor.statistics.average import average
 
 
 def cov(m, y=None, rowvar=True, bias=False, ddof=None, fweights=None, aweights=None):
@@ -132,8 +132,8 @@ def cov(m, y=None, rowvar=True, bias=False, ddof=None, fweights=None, aweights=N
     11.71
 
     """
-    from ..linalg import dot
-    from ..merge import vstack
+    from maxframe.tensor.linalg import dot
+    from maxframe.tensor.merge import vstack
 
     if ddof is not None and ddof != int(ddof):
         raise ValueError("ddof must be integer")

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@ import textwrap
 
 import pytest
 
-from .... import dataframe as md
-from .... import tensor as mt
-from ....dataframe.utils import bind_func_args_from_pos
-from ....lib import wrapped_pickle as pickle
-from ..core import SPECodeGenerator
+from maxframe import dataframe as md
+from maxframe import tensor as mt
+from maxframe.codegen.spe.core import SPECodeGenerator
+from maxframe.dataframe.utils import bind_func_args_from_pos
+from maxframe.lib import wrapped_pickle as pickle
 
 
 @pytest.fixture

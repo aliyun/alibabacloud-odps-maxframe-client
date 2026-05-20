@@ -17,14 +17,19 @@ import enum
 import numpy as np
 import pandas as pd
 
-from ....core import ENTITY_TYPE, OutputType
-from ....dataframe import DataFrame as MFDataFrame
-from ....dataframe import Series as MFSeries
-from ....errors import TileableNotExecutedError
-from ....lib.version import parse as parse_version
-from ....tensor import tensor as mf_tensor
-from ....udf import builtin_function
-from ..models import ModelApplyChunk, ModelWithEval, ModelWithEvalData, to_remote_model
+from maxframe.core import ENTITY_TYPE, OutputType
+from maxframe.dataframe import DataFrame as MFDataFrame
+from maxframe.dataframe import Series as MFSeries
+from maxframe.errors import TileableNotExecutedError
+from maxframe.learn.contrib.models import (
+    ModelApplyChunk,
+    ModelWithEval,
+    ModelWithEvalData,
+    to_remote_model,
+)
+from maxframe.lib.version import parse as parse_version
+from maxframe.tensor import tensor as mf_tensor
+from maxframe.udf import builtin_function
 
 try:
     import lightgbm
@@ -84,7 +89,7 @@ class BoosterData(ModelWithEvalData):
         validate_features=False,
         **kwargs,
     ):
-        from ._predict import predict
+        from maxframe.learn.contrib.lightgbm._predict import predict
 
         return predict(
             self,
@@ -186,7 +191,7 @@ class LGBMScikitLearnBase:
     def _construct_dataset(
         cls, X, y, sample_weight, init_score, group, params, categorical_feature="auto"
     ):
-        from .dataset import Dataset
+        from maxframe.learn.contrib.lightgbm.dataset import Dataset
 
         return Dataset(
             cls._convert_tileable(X),
@@ -229,7 +234,7 @@ class LGBMScikitLearnBase:
         4. fobj
         5. feval
         """
-        from ._train import train
+        from maxframe.learn.contrib.lightgbm._train import train
 
         session = kwargs.pop("session", None)
         run_kwargs = kwargs.pop("run_kwargs", dict())

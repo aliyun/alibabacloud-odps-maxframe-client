@@ -17,8 +17,8 @@ from typing import List
 
 import numpy as np
 
-from .array import SparseArray, SparseNDArray
-from .core import (
+from maxframe.lib.sparse.array import SparseArray, SparseNDArray
+from maxframe.lib.sparse.core import (
     cp,
     cps,
     get_array_module,

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ try:
 except ImportError:  # pragma: no cover
     sps = None
 
-from ..lib.sparse.array import SparseNDArray
-from .core import Serializer, buffered, deserialize, serialize
+from maxframe.lib.sparse.array import SparseNDArray
+from maxframe.serialization.core import Serializer, buffered, deserialize, serialize
 
 
 class SparseNDArraySerializer(Serializer):

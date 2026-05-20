@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 import numpy as np
 
-from ..core import Tensor
-from ..datasource import tensor as astensor
-from ..utils import AxisError, validate_axis
+from maxframe.tensor.core import Tensor
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.utils import AxisError, validate_axis
 
 
 def compress(condition, a, axis=None, out=None):

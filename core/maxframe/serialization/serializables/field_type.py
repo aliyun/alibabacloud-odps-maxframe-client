@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ from typing import Tuple, Type
 import numpy as np
 import pandas as pd
 
-from ...utils import lazy_import
-from ..core import PickleContainer
+from maxframe.serialization.core import PickleContainer
+from maxframe.utils import lazy_import
 
 cupy = lazy_import("cupy")
 cudf = lazy_import("cudf")
@@ -226,7 +226,7 @@ class KeyType(SingletonFieldType):
 
     @property
     def valid_types(self) -> Tuple[Type, ...]:
-        from ...core.entity import ENTITY_TYPE
+        from maxframe.core.entity import ENTITY_TYPE
 
         return ENTITY_TYPE
 

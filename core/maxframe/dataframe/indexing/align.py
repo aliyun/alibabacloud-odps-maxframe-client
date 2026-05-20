@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@ from typing import Any, List, Optional, Union
 
 import numpy as np
 
-from ... import opcodes
-from ...core import EntityData, OutputType, get_output_types
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import EntityData, OutputType, get_output_types
+from maxframe.dataframe.core import IndexValue
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_empty_df, parse_index, validate_axis
+from maxframe.serialization.serializables import (
     AnyField,
     Int16Field,
     Int64Field,
     KeyField,
     StringField,
 )
-from ...typing_ import TileableType
-from ..core import IndexValue
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_empty_df, parse_index, validate_axis
+from maxframe.typing_ import TileableType
 
 
 class _NoNeedToAlign(Exception):

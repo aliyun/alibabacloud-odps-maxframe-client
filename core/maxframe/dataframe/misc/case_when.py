@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@ from typing import List
 import numpy as np
 from pandas.core.dtypes.cast import find_common_type
 
-from ... import opcodes
-from ...core import TILEABLE_TYPE, EntityData
-from ...serialization.serializables import FieldTypes, ListField
-from ..core import SERIES_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import apply_if_callable
+from maxframe import opcodes
+from maxframe.core import TILEABLE_TYPE, EntityData
+from maxframe.dataframe.core import SERIES_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import apply_if_callable
+from maxframe.serialization.serializables import FieldTypes, ListField
 
 
 class DataFrameCaseWhen(DataFrameOperator, DataFrameOperatorMixin):

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 
 import numpy as np
 
-from .... import tensor as mt
-from ....tensor.core import TENSOR_TYPE
+from maxframe import tensor as mt
+from maxframe.tensor.core import TENSOR_TYPE
 
 
 def _handle_zeros_in_scale(scale, copy=True, constant_mask=None):

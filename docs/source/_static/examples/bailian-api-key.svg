@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="400" viewBox="0 0 1024 400">
+  <rect width="1024" height="400" fill="#f6f8fb"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <rect x="0" y="0" width="1024" height="48" fill="#fff"/><text x="48" y="31" font-size="18" font-weight="700" fill="#111827">Alibaba Cloud Bailian</text>
+    <text x="236" y="31" font-size="14" fill="#374151">Models</text><text x="312" y="31" font-size="14" fill="#374151">Applications</text><text x="423" y="31" font-size="14" fill="#374151">Subscriptions</text><text x="548" y="31" font-size="14" fill="#374151">Docs</text><text x="610" y="31" font-size="14" fill="#374151">API Reference</text>
+    <rect x="0" y="48" width="144" height="352" fill="#fbfcff"/><text x="25" y="94" font-size="13" fill="#6b7280">Model Gallery</text><text x="25" y="134" font-size="13" fill="#111827">Text Models</text><text x="25" y="174" font-size="13" fill="#111827">Audio Models</text><text x="25" y="214" font-size="13" fill="#111827">Vision Models</text><text x="25" y="254" font-size="13" fill="#111827">Data Management</text><text x="25" y="294" font-size="13" fill="#111827">Model Usage</text>
+    <rect x="144" y="48" width="880" height="352" fill="#fff"/>
+    <text x="176" y="91" font-size="18" font-weight="700">API Keys</text>
+    <rect x="512" y="69" width="72" height="32" rx="4" fill="#fff" stroke="#d1d5db"/><text x="548" y="90" font-size="12" text-anchor="middle">API Key</text>
+    <rect x="590" y="69" width="88" height="32" rx="4" fill="#f9fafb" stroke="#d1d5db"/><text x="634" y="90" font-size="12" text-anchor="middle">KMS Management</text>
+    <rect x="888" y="58" width="100" height="34" rx="6" fill="#4f46e5"/><text x="938" y="80" font-size="13" fill="#fff" text-anchor="middle">Create API Key</text>
+    <path d="M800 76 C835 70 854 67 884 65" fill="none" stroke="#d72525" stroke-width="3"/><polygon points="884,65 874,61 876,72" fill="#d72525"/>
+    <line x1="176" y1="122" x2="988" y2="122" stroke="#e5e7eb"/>
+    <text x="178" y="111" font-size="12" font-weight="700" fill="#374151">ID</text><text x="236" y="111" font-size="12" font-weight="700" fill="#374151">API Key</text><text x="430" y="111" font-size="12" font-weight="700" fill="#374151">Description</text><text x="590" y="111" font-size="12" font-weight="700" fill="#374151">Bound Account</text><text x="735" y="111" font-size="12" font-weight="700" fill="#374151">Created At</text><text x="870" y="111" font-size="12" font-weight="700" fill="#374151">Actions</text>
+    <g fill="#eef0f4">
+      <rect x="176" y="146" width="46" height="13" rx="3"/><rect x="236" y="146" width="116" height="13" rx="3"/><rect x="430" y="146" width="64" height="13" rx="3"/><rect x="590" y="146" width="110" height="13" rx="3"/><rect x="735" y="146" width="98" height="13" rx="3"/>
+      <rect x="176" y="194" width="46" height="13" rx="3"/><rect x="236" y="194" width="116" height="13" rx="3"/><rect x="430" y="194" width="64" height="13" rx="3"/><rect x="590" y="194" width="110" height="13" rx="3"/><rect x="735" y="194" width="98" height="13" rx="3"/>
+      <rect x="176" y="242" width="46" height="13" rx="3"/><rect x="236" y="242" width="116" height="13" rx="3"/><rect x="430" y="242" width="64" height="13" rx="3"/><rect x="590" y="242" width="110" height="13" rx="3"/><rect x="735" y="242" width="98" height="13" rx="3"/>
+    </g>
+    <g fill="#7867f0"><rect x="870" y="146" width="44" height="13" rx="3"/><rect x="870" y="194" width="44" height="13" rx="3"/><rect x="870" y="242" width="44" height="13" rx="3"/></g>
+    <g fill="#fca5a5"><rect x="928" y="146" width="22" height="13" rx="3"/><rect x="928" y="194" width="22" height="13" rx="3"/><rect x="928" y="242" width="22" height="13" rx="3"/></g>
+  </g>
+</svg>

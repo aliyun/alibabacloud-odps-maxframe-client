@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +18,15 @@ from collections.abc import Iterable
 import numpy as np
 import pandas as pd
 
-from ...serialization.serializables import AnyField, BoolField, Int32Field, Int64Field
-from ..core import DATAFRAME_TYPE, ENTITY_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_df, build_empty_series, parse_index
+from maxframe.dataframe.core import DATAFRAME_TYPE, ENTITY_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_df, build_empty_series, parse_index
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    Int32Field,
+    Int64Field,
+)
 
 
 class BaseDataFrameExpandingAgg(DataFrameOperator, DataFrameOperatorMixin):

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,14 @@
 
 from typing import List, Union
 
-from ....tensor.datasource import (
+from maxframe.codegen import EngineAcceptance
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.codegen.spe.utils import build_method_call_adapter
+from maxframe.tensor.datasource import (
     Scalar,
     TensorArange,
     TensorDiag,
@@ -26,14 +33,11 @@ from ....tensor.datasource import (
     TensorZeros,
     TensorZerosLike,
 )
-from ....tensor.datasource.array import ArrayDataSource
-from ....tensor.datasource.from_dataframe import TensorFromDataFrame
-from ....tensor.datasource.full import TensorFull
-from ....tensor.datasource.ones import TensorOnes
-from ....tensor.datasource.tri_array import TensorTriArray
-from ... import EngineAcceptance
-from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
-from ..utils import build_method_call_adapter
+from maxframe.tensor.datasource.array import ArrayDataSource
+from maxframe.tensor.datasource.from_dataframe import TensorFromDataFrame
+from maxframe.tensor.datasource.full import TensorFull
+from maxframe.tensor.datasource.ones import TensorOnes
+from maxframe.tensor.datasource.tri_array import TensorTriArray
 
 TensorArangeAdapter = build_method_call_adapter(
     TensorArange,

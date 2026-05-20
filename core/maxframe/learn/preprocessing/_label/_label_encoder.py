@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 
 import numpy as np
 
-from .... import tensor as mt
-from ....udf import builtin_function
-from ...core import BaseEstimator, TransformerMixin
-from ...utils._encode import _encode, _unique
-from ...utils.validation import _num_samples, column_or_1d
+from maxframe import tensor as mt
+from maxframe.learn.core import BaseEstimator, TransformerMixin
+from maxframe.learn.utils._encode import _encode, _unique
+from maxframe.learn.utils.validation import _num_samples, column_or_1d
+from maxframe.udf import builtin_function
 
 try:
     from sklearn.utils.validation import check_is_fitted

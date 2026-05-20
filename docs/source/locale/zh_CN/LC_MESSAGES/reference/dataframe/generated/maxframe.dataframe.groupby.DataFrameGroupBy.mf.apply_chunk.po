@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-12 17:08+0800\n"
+"POT-Creation-Date: 2026-04-27 16:16+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -52,7 +52,7 @@ msgstr ""
 "不要期望在函数中接收到 DataFrame 的所有行，因为这取决于 MaxFrame 的实现和"
 " MaxCompute 的内部运行状态。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk of
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.DataFrameGroupBy.mf.apply_chunk.rst
 msgid "参数"
 msgstr ""
 
@@ -95,10 +95,15 @@ msgid "Specify index of returned object. See `Notes` for more details."
 msgstr "指定返回对象的索引。详见 `Notes`。"
 
 #: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:33 of
-msgid "Whether to infer dtypes when dtypes or output_type is not specified."
-msgstr "当未指定 dtypes 或 output_type 时是否自动推断数据类型。"
+msgid ""
+"Whether to skip inferring dtypes when dtypes or output_type is not "
+"specified. Once specified as True, you need to explicitly specify dtypes "
+"and output_type via arguments or type annotations of the function."
+msgstr ""
+"当未指定 dtypes 或 output_type 时，是否跳过推断 dtypes。一旦指定为 True，"
+"您需要通过参数或函数的类型注解显式指定 dtypes 和 output_type。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:35 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:38 of
 msgid ""
 "If True, the index of returned dataframe or series will automatically "
 "contain group keys if ``as_index=True``, or group indexes if "
@@ -118,7 +123,7 @@ msgstr ""
 "警告。为了确保您的代码在未来的版本中正常工作，     请将其设置为 True，并"
 "在索引参数或 ``func`` 的类型注解中移除组索引。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:35 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:38 of
 msgid ""
 "If True, the index of returned dataframe or series will automatically "
 "contain group keys if ``as_index=True``, or group indexes if "
@@ -130,7 +135,7 @@ msgstr ""
 "False``）。该选项为 True 时也会默认将分组列排除在函数输入之外，参考"
 "注意事项以获得更多信息。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:43 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:46 of
 msgid ""
 "``prepend_index_group_keys`` will be set to True by default in future "
 "releases, and a warning will be shown if the parameter is set to False. "
@@ -142,52 +147,92 @@ msgstr ""
 "被设置为 False，将会显示警告。为了确保您的代码在未来的版本中正常工作，请"
 "将其设置为 True，并在索引参数或 ``func`` 的类型注解中移除组索引。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:49
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:51 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:52 of
+msgid ""
+"Validation mode for output dtypes and columns. When specified, validates "
+"that the user function returns data with expected dtypes.  - 'ignore': No"
+" validation performed - 'warns': Validate and show warnings on mismatch "
+"(default when None) - 'raises': Validate and raise errors on mismatch  "
+"Note: Group columns are automatically excluded from validation as they "
+"are managed separately by the groupby infrastructure."
+msgstr ""
+"输出数据类型和列的验证模式。指定时，验证用户函数是否返回具有预期数据类型"
+"的值。- 'ignore': 不执行验证 - 'warns': 验证并在不匹配时显示警告（None时"
+"的默认值）- 'raises': 验证并在不匹配时引发错误 注意：分组列会自动从验证中"
+"排除，因为它们由groupby基础架构单独管理。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:52 of
+msgid ""
+"Validation mode for output dtypes and columns. When specified, validates "
+"that the user function returns data with expected dtypes."
+msgstr ""
+"输出数据类型和列的验证模式。指定时，验证用户函数是否返回具有预期数据类型"
+"的值。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:55 of
+msgid "'ignore': No validation performed"
+msgstr "'ignore': 不执行验证"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:56 of
+msgid "'warns': Validate and show warnings on mismatch (default when None)"
+msgstr "'warns': 验证并在不匹配时显示警告（None时的默认值）"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:57 of
+msgid "'raises': Validate and raise errors on mismatch"
+msgstr "'raises': 验证并在不匹配时引发错误"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:59 of
+msgid ""
+"Note: Group columns are automatically excluded from validation as they "
+"are managed separately by the groupby infrastructure."
+msgstr "注意：分组列会自动从验证中排除，因为它们由groupby基础架构单独管理。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:62
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:64 of
 msgid "Optional positional and keyword arguments to pass to ``func``."
 msgstr "传递给 ``func`` 的可选位置参数和关键字参数。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk of
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.DataFrameGroupBy.mf.apply_chunk.rst
 msgid "返回"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:54 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:67 of
 msgid "**applied**"
 msgstr "**已应用**"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk of
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.groupby.DataFrameGroupBy.mf.apply_chunk.rst
 msgid "返回类型"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:59 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:72 of
 msgid ":py:obj:`Series.apply`"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:60 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:73 of
 msgid "Apply a function to a Series."
 msgstr "对 Series 应用一个函数。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:62 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:75 of
 msgid ":py:obj:`DataFrame.apply`"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:63 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:76 of
 msgid "Apply a function to each row or column of a DataFrame."
 msgstr "对 DataFrame 的每一行或每一列应用一个函数。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:65 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:78 of
 msgid ":py:obj:`DataFrame.mf.apply_chunk`"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:66 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:79 of
 msgid "Apply a function to row batches of a DataFrame."
 msgstr "对 DataFrame 的行批次应用一个函数。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:69 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:82 of
 msgid "备注"
 msgstr ""
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:70 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:83 of
 msgid ""
 "When deciding output dtypes and shape of the return value, MaxFrame will "
 "try applying ``func`` onto a mock grouped object, and the apply call may "
@@ -198,7 +243,7 @@ msgstr ""
 "模拟的分组对象，此时 apply 调用可能会失败。如果发生这种情况，则需要在 "
 "output_type 中指定 apply 调用的类型（DataFrame 或 Series）。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:75 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:88 of
 msgid ""
 "For DataFrame output, you need to specify a list or a pandas Series as "
 "``dtypes`` of output DataFrame."
@@ -206,13 +251,13 @@ msgstr ""
 "对于 DataFrame 输出，你需要指定一个列表或 pandas Series 作为输出 "
 "DataFrame 的 ``dtypes``。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:77 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:90 of
 msgid ""
 "For Series output, you need to specify ``dtype`` and ``name`` of output "
 "Series."
 msgstr "对于 Series 输出，你需要指定输出 Series 的 ``dtype`` 和 ``name``。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:79 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:92 of
 msgid ""
 "``index`` determines index of output DataFrame or Series. You may specify"
 " a dummy pandas index indicating the names and types of index of the "
@@ -239,7 +284,7 @@ msgstr ""
 "传递完整索引定义比较复杂，``prepend_index_group_keys=False`` 将在不久的"
 "将来被弃用。请尽可能提供 ``prepend_index_group_keys=True``。"
 
-#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:92 of
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:105 of
 msgid ""
 "MaxFrame adopts expected behavior of pandas>=3.0 by ignoring group "
 "columns in user function input. If you still need a group column for your"
@@ -251,4 +296,173 @@ msgstr ""
 "仍需要将分组列传递给函数，可以在 `groupby` 结果后立即选择该列，例如 ``df."
 "groupby(\"A\")[[\"A\", \"B\", \"C\"]].mf.apply_chunk(func)`` 会将列 A 的"
 "数据传递给 ``func``。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:111 of
+msgid ""
+"The ``batch_rows`` parameter controls memory usage. Larger values may "
+"improve performance but increase OOM risk. Ensure sufficient worker "
+"memory when processing entire groups in a single batch."
+msgstr ""
+"``batch_rows`` 参数控制内存使用。较大的值可能提高性能但增加OOM风险。在"
+"单个批次中处理整个分组时确保工作节点内存充足。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:116 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:118 of
+msgid "Example 1: Filter rows within each group"
+msgstr "示例1：过滤每个分组中的行"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:120 of
+msgid ""
+"Find employees with salary above a threshold in each department. This "
+"demonstrates how the result index shows intra-group positions (0-n)."
+msgstr ""
+"查找每个部门中薪资超过阈值的员工。这展示了结果索引如何显示组内位置（0-n）"
+"。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:172 of
+msgid ""
+"Result explanation: - The first level index (\"department\") shows the "
+"group key values - The second level index (2, 3, 4, 5, 6, 7...) are the "
+"ORIGINAL row indices from the input DataFrame - For Finance department: "
+"employees at original indices 6-7 meet the criteria - For HR department: "
+"employee at original index 2 meets the criteria - For IT department: "
+"employees at original indices 3-5 meet the criteria - Group keys are NOT "
+"included in the batch_df in the UDF input by default, but are included in"
+" the result - When specifying dtypes, exclude group key columns (they are"
+" indexes in the result)"
+msgstr ""
+"结果解释：- 第一级索引（\"department\"）显示分组键值 - 第二级索引（2, 3, "
+"4, 5, 6, 7...）是输入DataFrame的原始行索引 - 对于财务部门：原始索引为6-7"
+"的员工符合标准 - 对于人力资源部门：原始索引为2的员工符合标准 - 对于IT部门"
+"：原始索引为3-5的员工符合标准 - 分组键默认不包含在UDF输入的batch_df中，但"
+"包含在结果中 - 指定dtypes时，排除分组键列（它们是结果中的索引）"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:182 of
+msgid "Example 2: Return DataFrame with single aggregation column"
+msgstr "示例2：返回具有单个聚合列的DataFrame"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:184 of
+msgid ""
+"Apply a function to calculate average salary by department, returning a "
+"DataFrame with a single column and explicit type specifications. This "
+"example introduces the ``batch_rows`` parameter to control batch size."
+msgstr ""
+"应用函数按部门计算平均薪资，返回具有单列和明确类型规范的DataFrame。此示例"
+"引入了``batch_rows``参数来控制批处理大小。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:212 of
+msgid ""
+"Result explanation: - The first level index (\"department\") shows the "
+"group key values - The second level index ('0') is newly created because "
+"each UDF call returns a single-row DataFrame - HR department shows two "
+"rows because batch_rows=2 caused two separate UDF calls - Finance and IT "
+"departments were processed in single batches - When UDF returns "
+"aggregated results, the index is from newly created dataframe"
+msgstr ""
+"结果解释：- 第一级索引（\"department\"）显示分组键值 - 第二级索引（'0'）"
+"是新创建的，因为每次UDF调用都返回单行DataFrame - 人力资源部门显示两行，"
+"因为batch_rows=2导致两次独立的UDF调用 - 财务和IT部门在单个批次中处理 - 当"
+"UDF返回聚合结果时，索引来自新创建的数据框"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:220 of
+msgid "Example 3: Including group keys in UDF input"
+msgstr "示例3：在UDF输入中包含分组键"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:222 of
+msgid ""
+"Sometimes you need access to group keys within your UDF. This example "
+"shows how to include them by explicitly selecting the group column along "
+"with other columns. We'll filter high-salary employees but this time "
+"include the department column in the UDF input."
+msgstr ""
+"有时您需要在UDF中访问分组键。此示例展示如何通过显式选择分组列和其他列来"
+"包含它们。我们将过滤高薪员工，但这次在UDF输入中包含部门列。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:251 of
+msgid ""
+"Result explanation: - The first level index (\"department\") shows the "
+"group key values - The second level index (2, 3, 4, 5, 6, 7...) are the "
+"ORIGINAL row indices from the input DataFrame - By selecting "
+"['department', 'employee_id', 'salary'], we ensure the department column "
+"is available in UDF - The UDF can now access department values (though "
+"not used in this simple filter) - Original indices are preserved in the "
+"result - The filter logic is the same as Example 1: salary > 55000"
+msgstr ""
+"结果解释：- 第一级索引（\"department\"）显示分组键值 - 第二级索引（2, 3, "
+"4, 5, 6, 7...）是输入DataFrame的原始行索引 - 通过选择['department', '"
+"employee_id', 'salary']，我们确保部门列在UDF中可用 - UDF现在可以访问部门"
+"值（尽管在此简单过滤器中未使用）- 原始索引在结果中保留 - 过滤逻辑与示例1"
+"相同：salary > 55000"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:259 of
+msgid ""
+"This example demonstrates how to explicitly include group keys in your "
+"UDF by selecting them in the groupby operation, making them available for"
+" use within your function if needed."
+msgstr ""
+"此示例演示如何通过在groupby操作中选择分组键来显式地在UDF中包含它们，使"
+"它们在函数内部可用（如有需要）。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:264 of
+msgid "Example 4: Explicitly specifying output types and index"
+msgstr "示例 4：显式指定输出类型和索引"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:266 of
+msgid ""
+"When UDFs cannot be executed locally for inference, you must explicitly "
+"specify output_type, dtypes, and index via arguments or type annotation "
+"to ensure correct execution."
+msgstr ""
+"当 UDF 无法在本地执行推断时，您必须通过参数或类型注解显式指定 output_type"
+"、dtypes 和 index 以确保正确执行。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:308 of
+msgid ""
+"Result explanation: - The first level index (\"department\") shows the "
+"group key values (string type) - The second level index (\"inner_index\")"
+" comes from the UDF's returned DataFrame (int type) - "
+"output_type='dataframe' tells MaxFrame to expect DataFrame output - "
+"dtypes defines exact column types to prevent inference errors - index "
+"parameter specifies the structure of the final MultiIndex result - "
+"batch_rows=10000 ensures entire groups are processed together"
+msgstr ""
+"结果解释：- 第一级索引（\"department\"）显示分组键值（字符串类型）- "
+"第二级索引（\"inner_index\"）来自UDF返回的DataFrame（整数类型）- output_"
+"type='dataframe'告诉MaxFrame期望DataFrame输出 - dtypes定义精确的列类型以"
+"防止推断错误 - index参数指定最终MultiIndex结果的结构 - batch_rows=10000"
+"确保整个分组一起处理"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:316 of
+msgid ""
+"To simplify output type definition, you can also use type annotations. In"
+" the code snippet below, pd.DataFrame shows the returning type is a "
+"DataFrame with index names 'inner_index' and columns 'avg_salary', "
+"'total_salary', 'employee_count'. Types of both indexes and columns are "
+"also specified."
+msgstr ""
+"为了简化输出类型定义，您也可以使用类型注解。在下面的代码片段中，pd."
+"DataFrame 表示返回类型是具有索引名称 'inner_index' 和列 'avg_salary'、'"
+"total_salary'、'employee_count' 的 DataFrame。索引和列的类型也都有指定。"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:328 of
+msgid ""
+"Key takeaway: Always specify output_type and dtypes when: 1. UDF creates "
+"new DataFrame structures 2. Local inference might fail 3. You need "
+"consistent output format"
+msgstr ""
+"关键要点：始终在以下情况下指定output_type和dtypes：1. UDF创建新的"
+"DataFrame结构 2. 本地推断可能失败 3. 您需要一致的输出格式"
+
+#: maxframe.dataframe.groupby.apply_chunk.df_groupby_apply_chunk:333 of
+msgid ""
+"Note: The index parameter defines the inner index structure when "
+"prepend_index_group_keys=True is specified, and the resulting index "
+"combines group keys (first level, string) and UDF indices (second level, "
+"int)."
+msgstr ""
+"注意：当指定 prepend_index_group_keys=True 时，index 参数定义内部索引结构"
+"，结果索引结合了分组键（第一层，字符串）和 UDF 索引（第二层，整数）。"
 

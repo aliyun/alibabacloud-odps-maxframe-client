@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,32 +14,36 @@
 
 from typing import List, Union
 
-from ....dataframe.core import DATAFRAME_TYPE, INDEX_TYPE
-from ....dataframe.indexing.align import DataFrameAlign
-from ....dataframe.indexing.droplevel import DataFrameDropLevel
-from ....dataframe.indexing.filter import DataFrameFilter
-from ....dataframe.indexing.get_level_values import IndexGetLevelValues
-from ....dataframe.indexing.getitem import DataFrameIndex, SeriesIndex
-from ....dataframe.indexing.iloc import (
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.codegen.spe.utils import build_method_call_adapter
+from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE
+from maxframe.dataframe.indexing.align import DataFrameAlign
+from maxframe.dataframe.indexing.droplevel import DataFrameDropLevel
+from maxframe.dataframe.indexing.filter import DataFrameFilter
+from maxframe.dataframe.indexing.get_level_values import IndexGetLevelValues
+from maxframe.dataframe.indexing.getitem import DataFrameIndex, SeriesIndex
+from maxframe.dataframe.indexing.iloc import (
     DataFrameIlocGetItem,
     DataFrameIlocSetItem,
     IndexIlocGetItem,
     SeriesIlocGetItem,
     SeriesIlocSetItem,
 )
-from ....dataframe.indexing.insert import DataFrameInsert
-from ....dataframe.indexing.loc import DataFrameLocGetItem, DataFrameLocSetItem
-from ....dataframe.indexing.reindex import DataFrameReindex
-from ....dataframe.indexing.rename import DataFrameRename
-from ....dataframe.indexing.rename_axis import DataFrameRenameAxis
-from ....dataframe.indexing.reorder_levels import DataFrameReorderLevels
-from ....dataframe.indexing.reset_index import DataFrameResetIndex
-from ....dataframe.indexing.sample import DataFrameSample
-from ....dataframe.indexing.set_axis import DataFrameSetAxis
-from ....dataframe.indexing.set_index import DataFrameSetIndex
-from ....dataframe.indexing.setitem import DataFrameSetitem
-from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
-from ..utils import build_method_call_adapter
+from maxframe.dataframe.indexing.insert import DataFrameInsert
+from maxframe.dataframe.indexing.loc import DataFrameLocGetItem, DataFrameLocSetItem
+from maxframe.dataframe.indexing.reindex import DataFrameReindex
+from maxframe.dataframe.indexing.rename import DataFrameRename
+from maxframe.dataframe.indexing.rename_axis import DataFrameRenameAxis
+from maxframe.dataframe.indexing.reorder_levels import DataFrameReorderLevels
+from maxframe.dataframe.indexing.reset_index import DataFrameResetIndex
+from maxframe.dataframe.indexing.sample import DataFrameSample
+from maxframe.dataframe.indexing.set_axis import DataFrameSetAxis
+from maxframe.dataframe.indexing.set_index import DataFrameSetIndex
+from maxframe.dataframe.indexing.setitem import DataFrameSetitem
 
 
 @register_op_adapter(DataFrameAlign)

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,29 +16,29 @@ from typing import List
 
 import numpy as np
 
-from ...core.operator import OperatorStage
+from maxframe.core.operator import OperatorStage
 
 try:
     import scipy.sparse as sps
 except ImportError:  # pragma: no cover
     sps = None
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData
+from maxframe.dataframe.core import INDEX_TYPE
+from maxframe.dataframe.core import Index as DataFrameIndexType
+from maxframe.dataframe.initializer import Index as asindex
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index, validate_axis_style_args
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     Int64Field,
     KeyField,
     StringField,
 )
-from ...tensor import tensor as astensor
-from ...utils import is_full_slice, lazy_import, pd_release_version
-from ..core import INDEX_TYPE
-from ..core import Index as DataFrameIndexType
-from ..initializer import Index as asindex
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index, validate_axis_style_args
+from maxframe.tensor import tensor as astensor
+from maxframe.utils import is_full_slice, lazy_import, pd_release_version
 
 cudf = lazy_import("cudf")
 

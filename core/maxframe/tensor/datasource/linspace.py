@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 import numpy as np
 
-from ... import opcodes
-from ...core import ExecutableTuple
-from ...serialization.serializables import AnyField, BoolField, Int64Field
-from .core import TensorNoInput
+from maxframe import opcodes
+from maxframe.core import ExecutableTuple
+from maxframe.serialization.serializables import AnyField, BoolField, Int64Field
+from maxframe.tensor.datasource.core import TensorNoInput
 
 
 class TensorLinspace(TensorNoInput):

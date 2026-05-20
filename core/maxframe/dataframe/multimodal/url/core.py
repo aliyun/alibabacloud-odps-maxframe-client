@@ -22,14 +22,15 @@ except ImportError:
 import numpy as np
 import pandas as pd
 import pyarrow as pa
+from pandas.api.types import is_string_dtype
 
-from .... import opcodes
-from ....core import OutputType
-from ....serialization.serializables import DictField, StringField
-from ...operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.serialization.serializables import DictField, StringField
 
 if TYPE_CHECKING:
-    from ...core import Series
+    from maxframe.dataframe.core import Series
 
 
 class SeriesUrlMethods(DataFrameOperator, DataFrameOperatorMixin):
@@ -47,9 +48,7 @@ class SeriesUrlMethods(DataFrameOperator, DataFrameOperatorMixin):
 
     def __call__(self, series: "Series") -> "Series":
         # Add input validation for URL strings
-        if self.method == "download" and not (
-            series.dtype == np.dtype(object) or series.dtype == np.dtype(str)
-        ):
+        if self.method == "download" and not is_string_dtype(series.dtype):
             raise TypeError(
                 f"Input series for url.download must be string-like, but got {series.dtype}"
             )

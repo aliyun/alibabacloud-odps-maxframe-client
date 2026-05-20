@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import EntityData
-from ...serialization.serializables import Int32Field, KeyField
-from ..datasource import tensor as astensor
-from ..operators import TensorOperatorMixin
-from ..utils import AxisError, gen_random_seeds, validate_axis
-from .core import TensorRandomMapReduceOperator
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.serialization.serializables import Int32Field, KeyField
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorOperatorMixin
+from maxframe.tensor.random.core import TensorRandomMapReduceOperator
+from maxframe.tensor.utils import AxisError, gen_random_seeds, validate_axis
 
 
 def _permutation_on_axis(ar, axis, rs, xp):
@@ -93,7 +93,7 @@ def permutation(random_state, x, axis=0, chunk_size=None):
     numpy.AxisError: x must be an integer or at least 1-dimensional
     """
     if isinstance(x, (Integral, np.integer)):
-        from ..datasource import arange
+        from maxframe.tensor.datasource import arange
 
         x = arange(x, chunk_size=chunk_size)
     else:

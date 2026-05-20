@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +18,17 @@ import numpy as np
 import pandas as pd
 from pandas.api.types import is_list_like
 
-from ... import opcodes
-from ...core import EntityData, OutputType
-from ...serialization.serializables import AnyField, BoolField, KeyField, StringField
-from ...utils import no_default
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_df, make_column_list, parse_index
+from maxframe import opcodes
+from maxframe.core import EntityData, OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_df, make_column_list, parse_index
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    KeyField,
+    StringField,
+)
+from maxframe.utils import no_default
 
 
 class DataFramePivotTable(DataFrameOperator, DataFrameOperatorMixin):

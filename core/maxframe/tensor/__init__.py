@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import extensions, fetch, fft, linalg, random, spatial, special, statistics
-from .arithmetic import absolute
-from .arithmetic import absolute as abs
-from .arithmetic import (
+from maxframe.tensor import (
+    extensions,
+    fetch,
+    fft,
+    linalg,
+    random,
+    spatial,
+    special,
+    statistics,
+)
+from maxframe.tensor.arithmetic import absolute
+from maxframe.tensor.arithmetic import absolute as abs
+from maxframe.tensor.arithmetic import (
     add,
     angle,
     arccos,
@@ -27,10 +36,10 @@ from .arithmetic import (
     arctanh,
     around,
 )
-from .arithmetic import bitand as bitwise_and
-from .arithmetic import bitor as bitwise_or
-from .arithmetic import bitxor as bitwise_xor
-from .arithmetic import (
+from maxframe.tensor.arithmetic import bitand as bitwise_and
+from maxframe.tensor.arithmetic import bitor as bitwise_or
+from maxframe.tensor.arithmetic import bitxor as bitwise_xor
+from maxframe.tensor.arithmetic import (
     cbrt,
     ceil,
     clip,
@@ -51,11 +60,21 @@ from .arithmetic import (
     float_power,
     floor,
 )
-from .arithmetic import floordiv as floor_divide
-from .arithmetic import fmax, fmin, fmod, frexp, greater, greater_equal, hypot, i0, imag
-from .arithmetic import invert
-from .arithmetic import invert as bitwise_not
-from .arithmetic import (
+from maxframe.tensor.arithmetic import floordiv as floor_divide
+from maxframe.tensor.arithmetic import (
+    fmax,
+    fmin,
+    fmod,
+    frexp,
+    greater,
+    greater_equal,
+    hypot,
+    i0,
+    imag,
+)
+from maxframe.tensor.arithmetic import invert
+from maxframe.tensor.arithmetic import invert as bitwise_not
+from maxframe.tensor.arithmetic import (
     isclose,
     iscomplex,
     iscomplexobj,
@@ -77,8 +96,8 @@ from .arithmetic import (
     logical_or,
     logical_xor,
 )
-from .arithmetic import lshift as left_shift
-from .arithmetic import (
+from maxframe.tensor.arithmetic import lshift as left_shift
+from maxframe.tensor.arithmetic import (
     maximum,
     minimum,
     mod,
@@ -97,10 +116,10 @@ from .arithmetic import (
     remainder,
     rint,
 )
-from .arithmetic import round_
-from .arithmetic import round_ as round
-from .arithmetic import rshift as right_shift
-from .arithmetic import (
+from maxframe.tensor.arithmetic import round_
+from maxframe.tensor.arithmetic import round_ as round
+from maxframe.tensor.arithmetic import rshift as right_shift
+from maxframe.tensor.arithmetic import (
     sign,
     signbit,
     sin,
@@ -113,10 +132,10 @@ from .arithmetic import (
     tan,
     tanh,
 )
-from .arithmetic import truediv as true_divide
-from .arithmetic import trunc
-from .core import Tensor
-from .datasource import (
+from maxframe.tensor.arithmetic import truediv as true_divide
+from maxframe.tensor.arithmetic import trunc
+from maxframe.tensor.core import Tensor
+from maxframe.tensor.datasource import (
     arange,
     array,
     asarray,
@@ -143,7 +162,7 @@ from .datasource import (
     zeros,
     zeros_like,
 )
-from .indexing import (
+from maxframe.tensor.indexing import (
     choose,
     compress,
     extract,
@@ -153,9 +172,25 @@ from .indexing import (
     take,
     unravel_index,
 )
-from .linalg import dot, einsum, inner, innerproduct, matmul, tensordot, vdot
-from .merge import append, column_stack, concatenate, dstack, hstack, stack, vstack
-from .misc import (
+from maxframe.tensor.linalg import (
+    dot,
+    einsum,
+    inner,
+    innerproduct,
+    matmul,
+    tensordot,
+    vdot,
+)
+from maxframe.tensor.merge import (
+    append,
+    column_stack,
+    concatenate,
+    dstack,
+    hstack,
+    stack,
+    vstack,
+)
+from maxframe.tensor.misc import (
     argwhere,
     array_split,
     astype,
@@ -198,8 +233,8 @@ from .misc import (
     vsplit,
     where,
 )
-from .rechunk import rechunk
-from .reduction import (
+from maxframe.tensor.rechunk import rechunk
+from maxframe.tensor.reduction import (
     all,
     allclose,
     any,
@@ -210,12 +245,12 @@ from .reduction import (
     cumprod,
     cumsum,
 )
-from .reduction import max
-from .reduction import max as amax
-from .reduction import mean
-from .reduction import min
-from .reduction import min as amin
-from .reduction import (
+from maxframe.tensor.reduction import max
+from maxframe.tensor.reduction import max as amax
+from maxframe.tensor.reduction import mean
+from maxframe.tensor.reduction import min
+from maxframe.tensor.reduction import min as amin
+from maxframe.tensor.reduction import (
     nanargmax,
     nanargmin,
     nancumprod,
@@ -228,12 +263,12 @@ from .reduction import (
     nansum,
     nanvar,
 )
-from .reduction import prod
-from .reduction import prod as product
-from .reduction import std, sum, var
-from .reshape import reshape
-from .sort import argpartition, argsort, partition, sort
-from .statistics import (
+from maxframe.tensor.reduction import prod
+from maxframe.tensor.reduction import prod as product
+from maxframe.tensor.reduction import std, sum, var
+from maxframe.tensor.reshape import reshape
+from maxframe.tensor.sort import argpartition, argsort, partition, sort
+from maxframe.tensor.statistics import (
     average,
     bincount,
     corrcoef,
@@ -246,12 +281,12 @@ from .statistics import (
     ptp,
     quantile,
 )
-from .ufunc import ufunc
-from .utils import AxisError
+from maxframe.tensor.ufunc import ufunc
+from maxframe.tensor.utils import AxisError
 
 # isort: off
 # noinspection PyUnresolvedReferences
-from .lib.index_tricks import mgrid, ogrid, ndindex, r_, c_
+from maxframe.tensor.lib.index_tricks import mgrid, ogrid, ndindex, r_, c_
 
 # noinspection PyUnresolvedReferences
 from numpy import (

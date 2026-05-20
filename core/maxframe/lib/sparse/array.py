@@ -14,8 +14,7 @@
 
 from functools import partialmethod
 
-from ...utils import ceildiv
-from .core import (
+from maxframe.lib.sparse.core import (
     cp,
     cps,
     get_array_module,
@@ -25,6 +24,7 @@ from .core import (
     naked,
     np,
 )
+from maxframe.utils import ceildiv
 
 
 class SparseNDArray:
@@ -34,11 +34,11 @@ class SparseNDArray:
     def __new__(cls, *args, **kwargs):
         shape = kwargs.get("shape", None)
         if shape is not None and len(shape) == 1:
-            from .vector import SparseVector
+            from maxframe.lib.sparse.vector import SparseVector
 
             return object.__new__(SparseVector)
         if len(args) == 1 and issparse(args[0]) and args[0].ndim == 2:
-            from .matrix import SparseMatrix
+            from maxframe.lib.sparse.matrix import SparseMatrix
 
             return object.__new__(SparseMatrix)
 
@@ -410,12 +410,12 @@ class SparseArray(SparseNDArray):
         return get_array_module(x).asarray(x)
 
     def __matmul__(self, other):
-        from . import matmul
+        from maxframe.lib.sparse import matmul
 
         return matmul(self, other)
 
     def __rmatmul__(self, other):
-        from . import matmul
+        from maxframe.lib.sparse import matmul
 
         return matmul(other, self)
 

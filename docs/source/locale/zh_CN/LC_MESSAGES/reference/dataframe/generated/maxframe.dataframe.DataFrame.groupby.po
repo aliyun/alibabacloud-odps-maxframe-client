@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"POT-Creation-Date: 2026-03-09 13:14+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -78,11 +78,19 @@ msgstr ""
 msgid "When calling apply, add group keys to index to identify pieces."
 msgstr "调用 apply 时，将组键添加到索引中以标识各个片段。"
 
-#: maxframe.dataframe.groupby.core.groupby:29 of
+#: maxframe.dataframe.groupby.core.groupby:27 of
+msgid ""
+"If True (default), NA values in the grouping columns are excluded from "
+"the groups. If False, NA values are treated as a valid group."
+msgstr ""
+"如果为 True（默认），则从分组中排除分组列中的 NA 值。如果为 False，则将 "
+"NA 值视为有效分组。"
+
+#: maxframe.dataframe.groupby.core.groupby:33 of
 msgid "备注"
 msgstr ""
 
-#: maxframe.dataframe.groupby.core.groupby:30 of
+#: maxframe.dataframe.groupby.core.groupby:34 of
 msgid ""
 "MaxFrame only supports groupby with axis=0. Default value of `group_keys`"
 " will be decided given the version of local pandas library, which is True"
@@ -95,7 +103,7 @@ msgstr ""
 msgid "返回"
 msgstr ""
 
-#: maxframe.dataframe.groupby.core.groupby:34 of
+#: maxframe.dataframe.groupby.core.groupby:38 of
 msgid "Returns a groupby object that contains information about the groups."
 msgstr "返回一个包含有关分组信息的 groupby 对象。"
 
@@ -103,15 +111,15 @@ msgstr "返回一个包含有关分组信息的 groupby 对象。"
 msgid "返回类型"
 msgstr ""
 
-#: maxframe.dataframe.groupby.core.groupby:39 of
+#: maxframe.dataframe.groupby.core.groupby:43 of
 msgid ":py:obj:`resample`"
 msgstr ""
 
-#: maxframe.dataframe.groupby.core.groupby:40 of
+#: maxframe.dataframe.groupby.core.groupby:44 of
 msgid "Convenience method for frequency conversion and resampling of time series."
 msgstr "用于时间序列频率转换和重采样的便捷方法。"
 
-#: maxframe.dataframe.groupby.core.groupby:43 of
+#: maxframe.dataframe.groupby.core.groupby:47 of
 msgid "示例"
 msgstr ""
 

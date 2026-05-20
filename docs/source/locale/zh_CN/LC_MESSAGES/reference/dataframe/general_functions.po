@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-13 11:34+0800\n"
+"POT-Creation-Date: 2026-04-08 19:49+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -139,13 +139,33 @@ msgstr "返回一个固定频率的 DatetimeIndex。"
 msgid "Top-level evaluation"
 msgstr "顶层表达式求值"
 
-#: ../../source/reference/dataframe/general_functions.rst:47:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:48:<autosummary>:1
 msgid ""
 ":py:obj:`eval <maxframe.dataframe.eval>`\\ \\(expr\\[\\, parser\\, "
 "engine\\, local\\_dict\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/general_functions.rst:47:<autosummary>:1
+#: ../../source/reference/dataframe/general_functions.rst:48:<autosummary>:1
 msgid "Evaluate a Python expression as a string using various backends."
 msgstr "使用各种后端将 Python 表达式作为字符串进行求值。"
+
+#: ../../source/reference/dataframe/general_functions.rst:50
+msgid "Type utilities"
+msgstr "类型工具"
+
+#: ../../source/reference/dataframe/general_functions.rst:55:<autosummary>:1
+msgid ":py:obj:`dtype <maxframe.dataframe.dtype>`\\ \\(type\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/general_functions.rst:55:<autosummary>:1
+msgid "Recommend dtype for MaxFrame DataFrame operations."
+msgstr "返回推荐的 MaxFrame DataFrame 类型。"
+
+#: ../../source/reference/dataframe/general_functions.rst:55:<autosummary>:1
+msgid ":py:obj:`infer_dtype <maxframe.dataframe.infer_dtype>`\\ \\(obj\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/general_functions.rst:55:<autosummary>:1
+msgid "Infer MaxFrame-compatible dtype from a Python object."
+msgstr "从 Python 对象推断 MaxFrame 兼容的数据类型。"
 

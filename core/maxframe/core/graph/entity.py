@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@ from abc import ABCMeta, abstractmethod
 from collections import defaultdict
 from typing import Dict, Iterable, List
 
-from ...core import Tileable
-from ...serialization.core import buffered, load_type
-from ...serialization.serializables import (
+from maxframe.core import Tileable
+from maxframe.core.graph.core import DAG
+from maxframe.serialization.core import buffered, load_type
+from maxframe.serialization.serializables import (
     BoolField,
     DictField,
     ListField,
     Serializable,
     StringField,
 )
-from ...serialization.serializables.core import SerializableSerializer
-from ...utils import extract_class_name, tokenize
-from .core import DAG
+from maxframe.serialization.serializables.core import SerializableSerializer
+from maxframe.utils import extract_class_name, tokenize
 
 
 class EntityGraph(DAG, metaclass=ABCMeta):

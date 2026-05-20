@@ -15,7 +15,7 @@
 try:
     from pyarrow.fs import HadoopFileSystem as _ArrowHadoopFileSystem
 
-    from .arrow import HadoopFileSystem
+    from maxframe.lib.filesystem.arrow import HadoopFileSystem
 
     del _ArrowHadoopFileSystem
 except ImportError:  # pragma: no cover
@@ -25,7 +25,7 @@ except ImportError:  # pragma: no cover
     except ImportError:
         HadoopFileSystem = None
 
-from .core import register_filesystem
+from maxframe.lib.filesystem.core import register_filesystem
 
 if HadoopFileSystem is not None:  # pragma: no branch
     register_filesystem("hdfs", HadoopFileSystem)

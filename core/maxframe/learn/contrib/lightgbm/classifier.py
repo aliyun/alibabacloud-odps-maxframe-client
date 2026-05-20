@@ -14,16 +14,16 @@
 
 import numpy as np
 
-from .... import tensor as mt
-from ....core import ENTITY_TYPE, OutputType
-from ....tensor.merge.vstack import _vstack
-from ....udf import builtin_function
-from ...preprocessing import LabelEncoder
-from ...utils import check_classification_targets
-from ...utils.checks import assert_all_finite
-from ..models import to_remote_model
-from ..utils import make_import_error_func
-from .core import Booster, LGBMScikitLearnBase
+from maxframe import tensor as mt
+from maxframe.core import ENTITY_TYPE, OutputType
+from maxframe.learn.contrib.lightgbm.core import Booster, LGBMScikitLearnBase
+from maxframe.learn.contrib.models import to_remote_model
+from maxframe.learn.contrib.utils import make_import_error_func
+from maxframe.learn.preprocessing import LabelEncoder
+from maxframe.learn.utils import check_classification_targets
+from maxframe.learn.utils.checks import assert_all_finite
+from maxframe.tensor.merge.vstack import _vstack
+from maxframe.udf import builtin_function
 
 try:
     import lightgbm

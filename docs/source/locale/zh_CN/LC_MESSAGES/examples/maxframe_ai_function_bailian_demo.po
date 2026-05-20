@@ -1,0 +1,294 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev21+br.g2bf54307e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-29 16:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+msgid "#"
+msgstr ""
+
+msgid "**DPE engine enabled**"
+msgstr "**开通 DPE 引擎**"
+
+msgid "**MaxCompute enabled**"
+msgstr "**开通 MaxCompute**"
+
+msgid "**Model compute service purchased**"
+msgstr "**购买模型计算服务**"
+
+msgid "**Python version**"
+msgstr "**Python 版本**"
+
+msgid "**SDK version**"
+msgstr "**SDK 版本**"
+
+msgid "**MaxFrame SDK version**"
+msgstr "**MaxFrame SDK 版本**"
+
+msgid "**Supported region**"
+msgstr "**支持地域**"
+
+msgid "1"
+msgstr ""
+
+msgid "1. Environment setup and session creation"
+msgstr "1. 环境准备与会话创建"
+
+msgid "2"
+msgstr ""
+
+msgid "2. Browse Bailian public modelset"
+msgstr "2. 浏览百炼公共模型集"
+
+msgid "3"
+msgstr ""
+
+msgid "3. Inspect model details"
+msgstr "3. 查看模型详情"
+
+msgid "4"
+msgstr ""
+
+msgid "4. Text embedding inference"
+msgstr "4. 文本 Embedding 推理"
+
+msgid "5"
+msgstr ""
+
+msgid "5. Text generation inference"
+msgstr "5. 文本生成推理"
+
+msgid "6"
+msgstr ""
+
+msgid "6. Cleanup"
+msgstr "6. 资源清理"
+
+msgid "APIs"
+msgstr "推理方法"
+
+msgid "Appendix: Bailian models vs built-in managed models"
+msgstr "附录：百炼模型 vs 内置托管模型"
+
+msgid "Ask your admin to enable DPE."
+msgstr "联系管理员开通 DPE 引擎。"
+
+msgid "Bailian AI Function calls in this workflow run through DPE."
+msgstr "本流程中的百炼 AI Function 调用通过 DPE 执行。"
+
+msgid "Bailian LLM Calling Tutorial"
+msgstr "百炼大模型系列调用教程"
+
+msgid "Bailian pre-registered models"
+msgstr "百炼预注册模型"
+
+msgid "Browse available models in ``BIGDATA_PUBLIC_MODELSET``."
+msgstr "浏览 ``BIGDATA_PUBLIC_MODELSET`` 中可用的模型。"
+
+msgid "Build prompt and run:"
+msgstr "构造 Prompt 并执行："
+
+msgid "Built-in managed models"
+msgstr "内置托管模型"
+
+msgid "Cause"
+msgstr "原因"
+
+msgid "Check MaxFrame version:"
+msgstr "检查 MaxFrame 版本："
+
+msgid "Check available names with ``list_models()`` and verify region support."
+msgstr "使用 ``list_models()`` 确认可用模型，并检查地域支持情况。"
+
+msgid "Configure engine and create session:"
+msgstr "配置引擎并创建会话："
+
+msgid "DPE is not enabled for the project"
+msgstr "项目未开通 DPE"
+
+msgid "Description"
+msgstr "说明"
+
+msgid "Ensure ``.execute()`` is called."
+msgstr "确认已调用 ``.execute()``。"
+
+msgid ""
+"Ensure your MaxCompute project is in a region where Bailian model "
+"services are available."
+msgstr "请确保 MaxCompute 项目所在地域支持百炼模型服务。"
+
+msgid "Execute:"
+msgstr "触发执行："
+
+msgid "Imports:"
+msgstr "导入依赖："
+
+msgid ""
+"In MaxCompute console, purchase/enable model compute service and confirm "
+"the associated inference quota before running Bailian model inference."
+msgstr ""
+"在 MaxCompute 控制台购买或开通模型计算服务，并在运行百炼模型推理前确认已"
+"关联推理配额。"
+
+msgid "Inference job timed out"
+msgstr "推理任务超时"
+
+msgid "Inference quota is not configured"
+msgstr "推理配额未配置"
+
+msgid "Inspect model metadata and inference parameters."
+msgstr "查看模型元信息与推理参数。"
+
+msgid "Issue"
+msgstr "问题"
+
+msgid "Item"
+msgstr "对比项"
+
+msgid ""
+"Keep the LogView URL for troubleshooting. It is the main entry for worker"
+" logs and runtime diagnostics."
+msgstr ""
+"请保存 LogView 地址以便排障。它是查看 Worker 日志和运行时诊断信息的核心"
+"入口。"
+
+msgid "Key tasks covered:"
+msgstr "本文包括："
+
+msgid "Lazy graph has not been triggered"
+msgstr "懒执行计算图尚未触发"
+
+msgid "Load API"
+msgstr "加载 API"
+
+msgid "Load embedding model:"
+msgstr "加载 Embedding 模型："
+
+msgid "Load generation model:"
+msgstr "加载生成模型："
+
+msgid "Managed model example:"
+msgstr "内置托管模型示例："
+
+msgid "MaxCompute model compute service and inference quota page"
+msgstr "MaxCompute 模型计算服务购买页面"
+
+msgid "MaxFrame managed model catalog"
+msgstr "MaxFrame 托管模型目录"
+
+msgid "Model compute service and inference quota"
+msgstr "模型计算服务与推理配额"
+
+msgid "Models registered on Bailian platform"
+msgstr "百炼平台已注册模型"
+
+msgid "Optional persistence:"
+msgstr "可选：结果持久化"
+
+msgid "Persist outputs to MaxCompute tables."
+msgstr "将推理结果写入 MaxCompute 表。"
+
+msgid "Prepare input data:"
+msgstr "准备输入数据："
+
+msgid "Prerequisites"
+msgstr "前提条件"
+
+msgid ""
+"Purchase model compute service in MaxCompute console; an inference quota "
+"is created and billed by usage."
+msgstr "在 MaxCompute 控制台购买模型计算服务；系统将创建推理配额并按使用量计费。"
+
+msgid "Python 3.11 is recommended."
+msgstr "推荐使用 Python 3.11。"
+
+msgid "Reduce batch size and inspect LogView logs."
+msgstr "减少批次大小并通过 LogView 排查日志。"
+
+msgid "Requirement"
+msgstr "条件"
+
+msgid "Resolution"
+msgstr "解决方案"
+
+msgid "Run ``embed()``:"
+msgstr "调用 ``embed()``："
+
+msgid "Run text embedding inference with ``embed()``."
+msgstr "文本 Embedding 推理。"
+
+msgid "Run text generation inference with ``generate()``."
+msgstr "文本生成推理。"
+
+msgid "Set a valid ``options.session.inference_quota_name``."
+msgstr "请设置有效的 ``options.session.inference_quota_name``。"
+
+msgid "Source"
+msgstr "来源"
+
+msgid ""
+"This tutorial explains how to access models in the Bailian public "
+"modelset from MaxFrame and run both text embedding and text generation "
+"workloads on DPE."
+msgstr "本文介绍如何在 MaxFrame 中访问百炼公共模型集提供的模型及操作示例。"
+
+msgid "Troubleshooting"
+msgstr "常见问题排查"
+
+msgid "Typical names"
+msgstr "典型模型名"
+
+msgid "Use MaxFrame SDK **2.6.0** or above (``pip install maxframe>=2.6.0``)."
+msgstr ""
+"请使用 MaxFrame SDK **2.6.0** 及以上版本（``pip install maxframe>=2.6.0``"
+"）。"
+
+msgid "Wrong model name or unsupported region"
+msgstr "模型名称错误或地域不支持"
+
+msgid "You need a MaxCompute project with valid Access ID / Access Key."
+msgstr "需要一个已开通的 MaxCompute 项目，并具备有效的 Access ID / Access Key。"
+
+msgid "``Engine DPE not available``"
+msgstr ""
+
+msgid "``ManagedTextGenLLM(name=\"...\")``"
+msgstr ""
+
+msgid "``Model not found``"
+msgstr ""
+
+msgid "``Session timeout``"
+msgstr ""
+
+msgid "``execute()`` returns nothing"
+msgstr "``execute()`` 无返回"
+
+msgid "``generate()`` / ``embed()``"
+msgstr ""
+
+msgid "``generate()`` / ``embed()`` / ``translate()`` / ``extract()``"
+msgstr ""
+
+msgid "``inference_quota_name`` error"
+msgstr "``inference_quota_name`` 报错"
+
+msgid "``qwen2.5-1.5b-instruct``, ``DeepSeek-R1``"
+msgstr ""
+
+msgid "``read_odps_model(\"name\", project=\"bigdata_public_modelset\")``"
+msgstr ""
+
+msgid "``text-embedding-v4``, ``qwen3-max``"
+msgstr ""
+

@@ -5,3 +5,5 @@ General topics
    :maxdepth: 2
 
    execution
+   local_debug
+   logview

@@ -18,26 +18,16 @@ from typing import Any, MutableMapping, Union
 import numpy as np
 from pandas import DataFrame, Series
 
-from ... import opcodes
-from ...core import OutputType
-from ...core.operator import OperatorLogicKeyGeneratorMixin
-from ...serialization.serializables import (
-    AnyField,
-    BoolField,
-    DictField,
-    FunctionField,
-    StringField,
-    TupleField,
-)
-from ...udf import BuiltinFunction, MarkedFunction
-from ...utils import copy_if_possible, get_func_token, make_dtype, make_dtypes, tokenize
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..type_infer import (
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.core.operator import OperatorLogicKeyGeneratorMixin
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.type_infer import (
     InferredDataFrameMeta,
     infer_dataframe_return_value,
     wrap_func_with_mock,
 )
-from ..utils import (
+from maxframe.dataframe.utils import (
     build_df,
     build_series,
     copy_func_scheduling_hints,
@@ -46,6 +36,23 @@ from ..utils import (
     validate_axis,
     validate_output_types,
 )
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    DictField,
+    FunctionField,
+    StringField,
+    TupleField,
+)
+from maxframe.udf import BuiltinFunction, MarkedFunction
+from maxframe.utils import (
+    copy_if_possible,
+    get_func_token,
+    make_dtype,
+    make_dtypes,
+    tokenize,
+)
+from maxframe.utils.functional import check_closure_for_entities
 
 
 class ApplyOperandLogicKeyGeneratorMixin(OperatorLogicKeyGeneratorMixin):
@@ -98,7 +105,7 @@ class DataFrameApply(
         return self
 
     def _infer_df_func_returns(
-        self, df, dtypes, dtype=None, name=None, index=None
+        self, df, dtypes, dtype=None, name=None, index=None, skip_infer=False
     ) -> InferredDataFrameMeta:
         if isinstance(self.func, np.ufunc):
             output_type = OutputType.dataframe
@@ -129,6 +136,8 @@ class DataFrameApply(
             index=index,
             inherit_index=True,
             build_kw={"size": 2},
+            skip_infer=skip_infer,
+            axis=self.axis,
         )
         inferred_meta.check_absence("output_type", "dtypes")
 
@@ -145,11 +154,18 @@ class DataFrameApply(
     def _call_df_or_series(self, df):
         return self.new_df_or_series([df])
 
-    def _call_dataframe(self, df, dtypes=None, dtype=None, name=None, index=None):
+    def _call_dataframe(
+        self, df, dtypes=None, dtype=None, name=None, index=None, skip_infer=False
+    ):
         # for backward compatibility
         dtype = dtype if dtype is not None else dtypes
         inferred_meta = self._infer_df_func_returns(
-            df, dtypes, dtype=dtype, name=name, index=index
+            df,
+            dtypes,
+            dtype=dtype,
+            name=name,
+            index=index,
+            skip_infer=skip_infer,
         )
         index_value = inferred_meta.index_value
         if index_value is None:
@@ -180,7 +196,9 @@ class DataFrameApply(
                 [df], shape=shape, name=name, dtype=dtype, index_value=index_value
             )
 
-    def _call_series(self, series, dtypes=None, dtype=None, name=None, index=None):
+    def _call_series(
+        self, series, dtypes=None, dtype=None, name=None, index=None, skip_infer=False
+    ):
         # for backward compatibility
         dtype = dtype if dtype is not None else dtypes
         if not self.convert_dtype:
@@ -208,6 +226,7 @@ class DataFrameApply(
                 index=index,
                 inherit_index=True,
                 build_kw={"size": 2},
+                skip_infer=skip_infer,
             )
 
             output_type = inferred_meta.output_type or output_type
@@ -236,22 +255,47 @@ class DataFrameApply(
                     name=inferred_meta.name,
                 )
 
-    def __call__(self, df_or_series, dtypes=None, dtype=None, name=None, index=None):
+    def __call__(
+        self,
+        df_or_series,
+        dtypes=None,
+        dtype=None,
+        name=None,
+        index=None,
+        check_output_dtypes=None,
+        skip_infer=False,
+    ):
         axis = getattr(self, "axis", None) or 0
         dtypes = make_dtypes(dtypes)
         dtype = make_dtype(dtype)
         self.axis = validate_axis(axis, df_or_series)
+
+        # Store check_output_dtypes in extra_params if specified
+        if check_output_dtypes is not None:
+            if not hasattr(self, "extra_params") or self.extra_params is None:
+                self.extra_params = {}
+            self.extra_params["check_output_dtypes"] = check_output_dtypes
 
         if self.output_types and self.output_types[0] == OutputType.df_or_series:
             return self._call_df_or_series(df_or_series)
 
         if df_or_series.op.output_types[0] == OutputType.dataframe:
             return self._call_dataframe(
-                df_or_series, dtypes=dtypes, dtype=dtype, name=name, index=index
+                df_or_series,
+                dtypes=dtypes,
+                dtype=dtype,
+                name=name,
+                index=index,
+                skip_infer=skip_infer,
             )
         else:
             return self._call_series(
-                df_or_series, dtypes=dtypes, dtype=dtype, name=name, index=index
+                df_or_series,
+                dtypes=dtypes,
+                dtype=dtype,
+                name=name,
+                index=index,
+                skip_infer=skip_infer,
             )
 
     def _build_stub_pandas_obj(self, df_or_series) -> Union[DataFrame, Series]:
@@ -292,6 +336,7 @@ def df_apply(
     index=None,
     elementwise=None,
     skip_infer=False,
+    check_output_dtypes=None,
     **kwds,
 ):
     # FIXME: https://github.com/aliyun/alibabacloud-odps-maxframe-client/issues/50
@@ -367,6 +412,12 @@ def df_apply(
 
     skip_infer: bool, default False
         Whether infer dtypes when dtypes or output_type is not specified.
+
+    check_output_dtypes : str, default None
+        Validation mode for output dtypes and columns:
+        - 'ignore': No validation performed
+        - 'warns': Validate and show warnings on mismatch (default when None)
+        - 'raises': Validate and raise errors on mismatch
 
     args : tuple
         Positional arguments to pass to `func` in addition to the
@@ -507,8 +558,6 @@ def df_apply(
         output_type=output_type, output_types=output_types, object_type=object_type
     )
     output_type = output_types[0] if output_types else None
-    if skip_infer and output_type is None:
-        output_type = OutputType.df_or_series
 
     # calling member function
     if isinstance(func, str):
@@ -517,6 +566,9 @@ def df_apply(
         if "axis" in sig.args:
             kwds["axis"] = axis
         return func(*args, **kwds)
+
+    # Check for entities captured in closure
+    check_closure_for_entities(func, operation_name="apply")
 
     op = DataFrameApply(
         func=func,
@@ -528,7 +580,15 @@ def df_apply(
         output_type=output_type,
         elementwise=elementwise,
     )
-    return op(df, dtypes=dtypes, dtype=dtype, name=name, index=index)
+    return op(
+        df,
+        dtypes=dtypes,
+        dtype=dtype,
+        name=name,
+        index=index,
+        check_output_dtypes=check_output_dtypes,
+        skip_infer=skip_infer,
+    )
 
 
 def series_apply(
@@ -542,6 +602,7 @@ def series_apply(
     name=None,
     index=None,
     skip_infer=False,
+    check_output_dtypes=None,
     **kwds,
 ):
     """
@@ -579,6 +640,12 @@ def series_apply(
 
     skip_infer: bool, default False
         Whether infer dtypes when dtypes or output_type is not specified.
+
+    check_output_dtypes : str, default None
+        Validation mode for output dtypes and columns:
+        - 'ignore': No validation performed
+        - 'warns': Validate and show warnings on mismatch (default when None)
+        - 'raises': Validate and raise errors on mismatch
 
     **kwds
         Additional keyword arguments passed to func.
@@ -715,15 +782,15 @@ def series_apply(
                 f"for '{type(series).__name__}' object"
             )
 
-    if skip_infer and output_type is None:
-        output_type = OutputType.df_or_series
-
     output_types = kwds.pop("output_types", None)
     object_type = kwds.pop("object_type", None)
     output_types = validate_output_types(
         output_type=output_type, output_types=output_types, object_type=object_type
     )
     output_type = output_types[0] if output_types else OutputType.series
+
+    # Check for entities captured in closure
+    check_closure_for_entities(func, operation_name="apply")
 
     op = DataFrameApply(
         func=func,
@@ -732,4 +799,12 @@ def series_apply(
         kwds=kwds,
         output_type=output_type,
     )
-    return op(series, dtypes=dtypes, dtype=dtype, name=name, index=index)
+    return op(
+        series,
+        dtypes=dtypes,
+        dtype=dtype,
+        name=name,
+        index=index,
+        check_output_dtypes=check_output_dtypes,
+        skip_infer=skip_infer,
+    )

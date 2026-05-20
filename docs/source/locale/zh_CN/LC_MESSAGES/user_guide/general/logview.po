@@ -1,0 +1,827 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.7.0.dev1063+br.g22042ce95.d20260511\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-15 15:56+0800\n"
+"PO-Revision-Date: 2026-05-15 16:20+0800\n"
+"Last-Translator: \n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/user_guide/general/logview.rst:4
+msgid "View MaxFrame jobs with Logview"
+msgstr "使用 Logview 查看 MaxFrame 作业"
+
+#: ../../source/user_guide/general/logview.rst:6
+msgid ""
+"Logview is a tool that records and displays the execution status of "
+"MaxCompute jobs. It has been adapted for MaxFrame. This page describes "
+"how to use Logview 2.0 to inspect MaxFrame job execution information."
+msgstr ""
+"Logview 是用于记录和展示 MaxCompute 作业执行状态的工具，并已适配 MaxFrame"
+"。本页介绍如何使用 Logview 查看 MaxFrame 作业的执行信息。"
+
+#: ../../source/user_guide/general/logview.rst:11
+msgid "Overview"
+msgstr "概览"
+
+#: ../../source/user_guide/general/logview.rst:13
+msgid ""
+"Logview has been adapted for MaxFrame and supports the following "
+"capabilities:"
+msgstr "Logview 已适配 MaxFrame，支持以下能力："
+
+#: ../../source/user_guide/general/logview.rst:16
+msgid ""
+"View execution records and elapsed time of all DAGs submitted from a "
+"MaxFrame session."
+msgstr "查看一个 MaxFrame session 中提交的所有 DAG 的执行记录和耗时。"
+
+#: ../../source/user_guide/general/logview.rst:18
+msgid ""
+"Interactively view the execution order, runtime, operator topology, and "
+"status relations of every Sub DAG inside a DAG."
+msgstr ""
+"交互式查看一个 DAG 内各个 Sub DAG 的执行顺序、运行时间、算子拓扑和状态"
+"关系。"
+
+#: ../../source/user_guide/general/logview.rst:20
+msgid ""
+"View the configuration, runtime status, memory and CPU resource usage of "
+"each sub-instance."
+msgstr "查看每个子实例的配置、运行状态，以及内存和 CPU 资源使用情况。"
+
+#: ../../source/user_guide/general/logview.rst:23
+msgid ""
+"For general information about Logview, refer to `Use Logview to view job "
+"information <https://help.aliyun.com/zh/maxcompute/user-guide/use-"
+"logview-v2-0-to-view-job-information>`_. This page focuses on viewing "
+"MaxFrame job information."
+msgstr ""
+"关于 Logview 的通用说明，请参考 `使用 Logview 查看作业信息 <https://help."
+"aliyun.com/zh/maxcompute/user-guide/use-logview-v2-0-to-view-job-"
+"information>`_。本页重点说明如何查看 MaxFrame 作业信息。"
+
+#: ../../source/user_guide/general/logview.rst:28
+msgid "MaxFrame Logview entrance"
+msgstr "MaxFrame Logview 入口"
+
+#: ../../source/user_guide/general/logview.rst:30
+msgid ""
+"After you create a session with ``session = new_session(...)``, the "
+"system automatically generates a URL that starts with "
+"``https://logview.aliyun.com/logview``."
+msgstr ""
+"使用 ``session = new_session(...)`` 创建 session 后，系统会自动生成以 ``"
+"https://logview.aliyun.com/logview`` 开头的 URL。"
+
+#: ../../source/user_guide/general/logview.rst:34
+msgid ""
+"When you submit MaxFrame jobs from DataWorks, click the URL directly to "
+"open the MaxFrame Logview UI."
+msgstr ""
+"如果从 DataWorks 提交 MaxFrame 作业，可以直接单击该 URL 打开 MaxFrame "
+"Logview UI。"
+
+#: ../../source/user_guide/general/logview.rst:36
+msgid ""
+"When you submit MaxFrame jobs from a local environment, call "
+"``session.get_logview_address()`` to print the URL, then copy it into "
+"your browser."
+msgstr ""
+"如果从本地环境提交 MaxFrame 作业，可以调用 ``session.get_logview_address("
+")`` 打印 URL，然后复制到浏览器中打开。"
+
+#: ../../source/user_guide/general/logview.rst:40
+msgid "The MaxFrame Logview UI looks as follows:"
+msgstr "MaxFrame Logview UI 如下所示："
+
+#: ../../source/user_guide/general/logview.rst:42
+msgid "MaxFrame Logview 概览界面"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Number"
+msgstr "编号"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Area"
+msgstr "区域"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "①"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Title and feature area. See `Title and feature area`_."
+msgstr "标题与功能区。参见 `Title and feature area`_。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "②"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid ""
+"Basic Info. See `Basic Info <https://help.aliyun.com/zh/maxcompute/user-"
+"guide/use-logview-v2-0-to-view-job-information#section-cpk-fnd-egg>`_."
+msgstr ""
+"Basic Info。参见 `Basic Info <https://help.aliyun.com/zh/maxcompute/user-"
+"guide/use-logview-v2-0-to-view-job-information#section-cpk-fnd-egg>`_。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "③"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "DAG list. See `DAG list`_."
+msgstr "DAG 列表。参见 `DAG list`_。"
+
+#: ../../source/user_guide/general/logview.rst:54
+msgid "Title and feature area"
+msgstr "标题与功能区"
+
+#: ../../source/user_guide/general/logview.rst:56
+msgid ""
+"The title and feature area shows the unique job ID generated when you "
+"submit the job, plus the custom job name. The following operations are "
+"also available."
+msgstr ""
+"标题与功能区展示提交作业时生成的唯一 job ID，以及自定义作业名称。同时支持"
+"以下操作。"
+
+#: ../../source/user_guide/general/logview.rst:64
+msgid "Icon"
+msgstr "图标"
+
+#: ../../source/user_guide/general/logview.rst:65
+msgid "Function"
+msgstr "功能"
+
+#: ../../source/user_guide/general/logview.rst:66
+msgid "复制 URL 图标"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:68
+msgid "Get the MaxFrame Logview URL."
+msgstr "获取 MaxFrame Logview URL。"
+
+#: ../../source/user_guide/general/logview.rst:69
+msgid "保存详情图标"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:71
+msgid "Save the job details file to the local device."
+msgstr "将作业详情文件保存到本地设备。"
+
+#: ../../source/user_guide/general/logview.rst:72
+msgid "停止进程图标"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:74
+msgid "Stop the current job process."
+msgstr "停止当前作业进程。"
+
+#: ../../source/user_guide/general/logview.rst:75
+msgid "打开本地 Logview_detail.txt 文件图标"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:77
+msgid "Open the locally saved ``Logview_detail.txt`` file."
+msgstr "打开本地保存的 ``Logview_detail.txt`` 文件。"
+
+#: ../../source/user_guide/general/logview.rst:78
+msgid "Job list icon"
+msgstr "Job list 图标"
+
+#: ../../source/user_guide/general/logview.rst:79
+msgid "Open the job list to view jobs under the specified project."
+msgstr "打开作业列表，查看指定 project 下的作业。"
+
+#: ../../source/user_guide/general/logview.rst:80
+msgid "Auto refresh toggle"
+msgstr "Auto refresh 开关"
+
+#: ../../source/user_guide/general/logview.rst:81
+msgid ""
+"Enable or disable auto refresh. When enabled, the page refreshes every 10"
+" seconds."
+msgstr "开启或关闭自动刷新。开启后，页面每 10 秒刷新一次。"
+
+#: ../../source/user_guide/general/logview.rst:85
+msgid "DAG list"
+msgstr "DAG 列表"
+
+#: ../../source/user_guide/general/logview.rst:87
+msgid ""
+"The DAG list is sorted by the order in which ``execute()`` was called, in"
+" descending order. The most recently submitted job appears first. The "
+"columns are described below."
+msgstr ""
+"DAG 列表按照 ``execute()`` 调用顺序倒序排列，最新提交的作业显示在最前面。"
+"各列说明如下。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Column"
+msgstr "列"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Description"
+msgstr "说明"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Id"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "DAG ID. A unique identifier generated for every ``execute()`` call."
+msgstr "DAG ID。每次调用 ``execute()`` 时生成的唯一标识。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Detail"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Click the icon to view the corresponding Sub DAG details."
+msgstr "单击图标查看对应的 Sub DAG 详情。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Start Time"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Time when the DAG was submitted."
+msgstr "DAG 提交时间。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "End Time"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Time when the DAG completed. Empty if the DAG is still running."
+msgstr "DAG 完成时间。如果 DAG 仍在运行，则为空。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Duration"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid ""
+"DAG runtime, calculated from Start Time to End Time (or to the current "
+"time if still running)."
+msgstr ""
+"DAG 运行耗时，按 Start Time 到 End Time 计算；如果仍在运行，则计算到当前"
+"时间。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Status"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Job status. See *Status values* below."
+msgstr "作业状态。参见下方 *Status values*。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Description of the DAG."
+msgstr "DAG 说明。"
+
+#: ../../source/user_guide/general/logview.rst:102
+msgid "**Status values**"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:104
+msgid "**Preparing**: The DAG is being parsed and has not started execution."
+msgstr "**Preparing**：DAG 正在解析，尚未开始执行。"
+
+#: ../../source/user_guide/general/logview.rst:105
+msgid "**Running**: The DAG is running."
+msgstr "**Running**：DAG 正在运行。"
+
+#: ../../source/user_guide/general/logview.rst:106
+msgid "**Succeeded**: The DAG finished successfully."
+msgstr "**Succeeded**：DAG 已成功完成。"
+
+#: ../../source/user_guide/general/logview.rst:107
+msgid "**Failed**: The DAG failed."
+msgstr "**Failed**：DAG 执行失败。"
+
+#: ../../source/user_guide/general/logview.rst:108
+msgid "**Cancelling**: The DAG is being cancelled."
+msgstr "**Cancelling**：DAG 正在取消。"
+
+#: ../../source/user_guide/general/logview.rst:109
+msgid "**Cancelled**: The DAG has been cancelled."
+msgstr "**Cancelled**：DAG 已取消。"
+
+#: ../../source/user_guide/general/logview.rst:112
+msgid "Sub DAG details"
+msgstr "Sub DAG 详情"
+
+#: ../../source/user_guide/general/logview.rst:114
+msgid "The Sub DAG details page contains the following four areas:"
+msgstr "Sub DAG 详情页包含以下四个区域："
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Sub DAG Graph. See `Sub DAG Graph`_."
+msgstr "Sub DAG Graph。参见 `Sub DAG Graph`_。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Sub DAG list. See `Sub DAG list`_."
+msgstr "Sub DAG 列表。参见 `Sub DAG list`_。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Instance list of the Sub DAG. See `Instance list`_."
+msgstr "Sub DAG 的 Instance 列表。参见 `Instance list`_。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "④"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid ""
+"Basic Info of the Sub DAG. See `Basic Info "
+"<https://help.aliyun.com/zh/maxcompute/user-guide/use-logview-v2-0-to-"
+"view-job-information#section-cpk-fnd-egg>`_."
+msgstr ""
+"Sub DAG 的 Basic Info。参见 `Basic Info <https://help.aliyun.com/zh/"
+"maxcompute/user-guide/use-logview-v2-0-to-view-job-information#section-"
+"cpk-fnd-egg>`_。"
+
+#: ../../source/user_guide/general/logview.rst:125
+msgid "Sub DAG Graph"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:127
+msgid "The Sub DAG Graph helps you quickly understand the current DAG."
+msgstr "Sub DAG Graph 可帮助你快速理解当前 DAG。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Current Sub DAG ID. Click it to return to the DAG list page."
+msgstr "当前 Sub DAG ID。单击后返回 DAG 列表页。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Breadcrumb navigation. Use it to switch between Sub DAG levels."
+msgstr "面包屑导航。用于在 Sub DAG 层级之间切换。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid ""
+"Diagnostic helpers, including Progress Chart, Input Heat Chart, Output "
+"Heat Chart, TaskTime Heat Chart and InstanceTime Heat Chart."
+msgstr ""
+"诊断辅助工具，包括 Progress Chart、Input Heat Chart、Output Heat Chart、"
+"TaskTime Heat Chart 和 InstanceTime Heat Chart。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid ""
+"Refresh job execution status, switch to full screen or zoom the execution"
+" graph, open MaxCompute Studio docs, and switch to the parent task level."
+msgstr ""
+"刷新作业执行状态、切换全屏或缩放执行图、打开 MaxCompute Studio 文档，以及"
+"切换到父任务层级。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "⑤"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Zoom helpers."
+msgstr "缩放辅助工具。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "⑥"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Table node. Represents an ODPS table."
+msgstr "Table 节点，表示 ODPS 表。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "⑦"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Sub DAG node. See *Sub DAG node fields* below."
+msgstr "Sub DAG 节点。参见下方 *Sub DAG node fields*。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "⑧"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid ""
+"Data flow. Represents data movement between STAGEs or between a STAGE and"
+" a table."
+msgstr "Data flow，表示 STAGE 之间或 STAGE 与表之间的数据流转。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "⑨"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Canvas overview pane."
+msgstr "画布概览面板。"
+
+#: ../../source/user_guide/general/logview.rst:142
+msgid "**Sub DAG node fields**"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:144
+msgid ""
+"``STAGE_X``: Sub DAG name. The number indicates execution order, starting"
+" from 1 and increasing."
+msgstr "``STAGE_X``：Sub DAG 名称。数字表示执行顺序，从 1 开始递增。"
+
+#: ../../source/user_guide/general/logview.rst:146
+msgid ""
+"``X/X/X`` (for example ``0/5/5``): Number of ODPS instances in different "
+"states inside the current Sub DAG, in the order *running / completed / "
+"total*."
+msgstr ""
+"``X/X/X``（例如 ``0/5/5``）：当前 Sub DAG 中不同状态的 ODPS instance 数量"
+"，顺序为 *running / completed / total*。"
+
+#: ../../source/user_guide/general/logview.rst:149
+msgid "Start and end time."
+msgstr "开始和结束时间。"
+
+#: ../../source/user_guide/general/logview.rst:150
+msgid "``MCSQL``: Engine that executes the current Sub DAG."
+msgstr "``MCSQL``：执行当前 Sub DAG 的引擎。"
+
+#: ../../source/user_guide/general/logview.rst:151
+msgid ""
+"``OP 1``: Number of operators contained in the current Sub DAG. Double-"
+"click the node to view the operator graph."
+msgstr ""
+"``OP 1``：当前 Sub DAG 包含的 operator 数量。双击节点可查看 operator "
+"graph。"
+
+#: ../../source/user_guide/general/logview.rst:155
+msgid "Sub DAG list"
+msgstr "Sub DAG 列表"
+
+#: ../../source/user_guide/general/logview.rst:157
+msgid ""
+"This list shows the runtime information of all Sub DAGs in the current "
+"DAG, sorted by time."
+msgstr "该列表按时间顺序展示当前 DAG 中所有 Sub DAG 的运行信息。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Sub DAG"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Name of the current Sub DAG."
+msgstr "当前 Sub DAG 的名称。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Failed/Terminated/ALL"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid ""
+"Number of ODPS instances in different states inside the current Sub DAG. "
+"``(+X Fallback)`` means X instances were downgraded from MCQA to Offline "
+"SQL — the data is not corrupted."
+msgstr ""
+"当前 Sub DAG 中不同状态的 ODPS instance 数量。``(+X Fallback)`` 表示 X 个"
+" instance 从 MCQA 降级到 Offline SQL，数据不会损坏。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Sub DAG status: Failed / Cancelled / Running / Succeeded."
+msgstr "Sub DAG 状态：Failed / Cancelled / Running / Succeeded。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Progress"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+#, python-format
+msgid ""
+"Sub DAG progress. Reaching 100% in the Running state only means all "
+"instances scheduled so far have finished, not that the Sub DAG itself is "
+"complete."
+msgstr ""
+"Sub DAG 进度。在 Running 状态下达到 100% 只表示当前已调度的所有 instance "
+"已完成，并不表示 Sub DAG 本身已经完成。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Sub DAG submission time."
+msgstr "Sub DAG 提交时间。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Sub DAG completion time."
+msgstr "Sub DAG 完成时间。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Sub DAG runtime."
+msgstr "Sub DAG 运行耗时。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Timeline"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Timeline preview that shows the start order and time consumption."
+msgstr "Timeline 预览，用于展示开始顺序和耗时。"
+
+#: ../../source/user_guide/general/logview.rst:173
+msgid "Instance list"
+msgstr "Instance 列表"
+
+#: ../../source/user_guide/general/logview.rst:175
+msgid "This list shows the ODPS instance jobs related to the Sub DAG."
+msgstr "该列表展示与 Sub DAG 相关的 ODPS instance jobs。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Instance ID"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "ID of the ODPS instance job."
+msgstr "ODPS instance job 的 ID。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Instance status. See *Instance status values* below."
+msgstr "Instance 状态。参见下方 *Instance status values*。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Job details."
+msgstr "作业详情。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Job submission time."
+msgstr "作业提交时间。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Job completion time."
+msgstr "作业完成时间。"
+
+#: ../../source/user_guide/general/logview.rst:1
+msgid "Job runtime."
+msgstr "作业运行耗时。"
+
+#: ../../source/user_guide/general/logview.rst:188
+msgid "**Instance status values**"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:190
+msgid "**Failed**: Execution failed."
+msgstr "**Failed**：执行失败。"
+
+#: ../../source/user_guide/general/logview.rst:191
+msgid "**Cancelled**: The job was cancelled."
+msgstr "**Cancelled**：作业已取消。"
+
+#: ../../source/user_guide/general/logview.rst:192
+msgid "**Running**: The job is running."
+msgstr "**Running**：作业正在运行。"
+
+#: ../../source/user_guide/general/logview.rst:193
+msgid "**Terminated**: The job finished successfully."
+msgstr "**Terminated**：作业已成功完成。"
+
+#: ../../source/user_guide/general/logview.rst:194
+msgid ""
+"**Fallback**: The job was downgraded; a new instance record will be "
+"created."
+msgstr "**Fallback**：作业发生降级，会创建一条新的 instance 记录。"
+
+#: ../../source/user_guide/general/logview.rst:196
+msgid ""
+"**Unknown_terminated**: The job has finished, but it is not known whether"
+" it succeeded or failed."
+msgstr "**Unknown_terminated**：作业已结束，但无法确定是成功还是失败。"
+
+#: ../../source/user_guide/general/logview.rst:200
+msgid "Fuxi Sensor"
+msgstr ""
+
+#: ../../source/user_guide/general/logview.rst:202
+msgid ""
+"Fuxi Sensor is the full-dimension resource view of a MaxFrame job. You "
+"can use Fuxi Sensor to view the actual CPU and memory consumption of "
+"every Fuxi instance. It is an essential tool for diagnosing job issues "
+"and analyzing job runtime quality. For example, Fuxi Sensor helps with "
+"the following scenarios:"
+msgstr ""
+"Fuxi Sensor 是 MaxFrame 作业的全维度资源视图。你可以通过 Fuxi Sensor 查看"
+"每个 Fuxi instance 的实际 CPU 和内存消耗，它是诊断作业问题和分析作业运行"
+"质量的重要工具。例如，Fuxi Sensor 可用于以下场景："
+
+#: ../../source/user_guide/general/logview.rst:208
+msgid "Determine the actual amount of memory used when a job runs out of memory."
+msgstr "确认作业发生 OOM 时实际使用了多少内存。"
+
+#: ../../source/user_guide/general/logview.rst:210
+msgid "Inspect the resource usage of MaxFrame Fuxi instances:"
+msgstr "查看 MaxFrame Fuxi instance 的资源使用情况："
+
+#: ../../source/user_guide/general/logview.rst:212
+msgid "**CPU usage**"
+msgstr "**CPU 使用率**"
+
+#: ../../source/user_guide/general/logview.rst:214
+msgid ""
+"The CPU chart contains two lines: one shows the requested CPU "
+"(``cpu_plan``), the other shows the actual CPU usage (``cpu_usage``). On "
+"the y-axis, ``400`` means 4 processors. The requested CPU can be adjusted"
+" only by changing the number of processors. The actual CPU usage cannot "
+"be tuned directly."
+msgstr ""
+"CPU 图表包含两条线：一条表示申请的 CPU（``cpu_plan``），另一条表示实际 "
+"CPU 使用量（``cpu_usage``）。在 y 轴上，``400`` 表示 4 个 processor。申请"
+"的 CPU 只能通过调整 processor 数量改变，实际 CPU 使用量无法直接调节。"
+
+#: ../../source/user_guide/general/logview.rst:220
+msgid "**Memory usage**"
+msgstr "**内存使用量**"
+
+#: ../../source/user_guide/general/logview.rst:222
+msgid ""
+"The memory chart contains two lines: requested memory (``mem_plan``) and "
+"actual memory usage (``mem_usage``)."
+msgstr ""
+"内存图表包含两条线：申请内存（``mem_plan``）和实际内存使用量（``mem_usage"
+"``）。"
+
+#: ../../source/user_guide/general/logview.rst:226
+msgid "Use cases"
+msgstr "使用场景"
+
+#: ../../source/user_guide/general/logview.rst:229
+msgid "View the longest-running stage"
+msgstr "查看耗时最长的 stage"
+
+#: ../../source/user_guide/general/logview.rst:231
+msgid ""
+"The Timeline column in the DAG list, Sub DAG list, and Instance list lets"
+" you quickly find the longest-running DAG, Sub DAG, or Instance at the "
+"current level."
+msgstr ""
+"DAG 列表、Sub DAG 列表和 Instance 列表中的 Timeline 列，可帮助你快速找到"
+"当前层级耗时最长的 DAG、Sub DAG 或 Instance。"
+
+#: ../../source/user_guide/general/logview.rst:237
+msgid ""
+"When the list is long and paginated, sort the Duration column in "
+"descending order to find the longest-running entries quickly."
+msgstr ""
+"当列表较长并分页展示时，可以按 Duration 列倒序排序，快速找到耗时最长的"
+"条目。"
+
+#: ../../source/user_guide/general/logview.rst:241
+msgid "View the cause of an execution failure"
+msgstr "查看执行失败原因"
+
+#: ../../source/user_guide/general/logview.rst:243
+msgid ""
+"When a DAG fails or the client returns an exception, follow these steps "
+"in MaxFrame Logview:"
+msgstr ""
+"当 DAG 执行失败或客户端返回异常时，可以在 MaxFrame Logview 中按以下步骤"
+"排查："
+
+#: ../../source/user_guide/general/logview.rst:246
+msgid "Check the status of every DAG in the DAG list."
+msgstr "在 DAG 列表中查看每个 DAG 的状态。"
+
+#: ../../source/user_guide/general/logview.rst:247
+msgid ""
+"Find the most recent DAG with status ``Failed`` and click the icon in the"
+" **Detail** column to view the details."
+msgstr "找到最近一个状态为 ``Failed`` 的 DAG，单击 **Detail** 列中的图标查看详情。"
+
+#: ../../source/user_guide/general/logview.rst:249
+msgid ""
+"On the DAG details page, find the Sub DAG node displayed in red (for "
+"example ``STAGE_1``). The **Result** page also shows the error message."
+msgstr ""
+"在 DAG 详情页中找到显示为红色的 Sub DAG 节点（例如 ``STAGE_1``）。**"
+"Result** 页面也会展示错误信息。"
+
+#: ../../source/user_guide/general/logview.rst:251
+msgid ""
+"Click the failed Sub DAG node ``STAGE_1``. In the Instance list, click "
+"the icon in the **Detail** column to find the failed instance."
+msgstr ""
+"单击失败的 Sub DAG 节点 ``STAGE_1``。在 Instance 列表中，单击 **Detail** "
+"列中的图标，定位失败的 instance。"
+
+#: ../../source/user_guide/general/logview.rst:255
+msgid "View operators contained in a Sub DAG"
+msgstr "查看 Sub DAG 中包含的 operators"
+
+#: ../../source/user_guide/general/logview.rst:257
+msgid "There are two ways to view the operators contained in a Sub DAG:"
+msgstr "可以通过以下两种方式查看 Sub DAG 中包含的 operators："
+
+#: ../../source/user_guide/general/logview.rst:259
+msgid "**Method 1**: On the DAG details page, click the Sub DAG node."
+msgstr "**方式 1**：在 DAG 详情页中，单击 Sub DAG 节点。"
+
+#: ../../source/user_guide/general/logview.rst:260
+msgid "**Method 2**: On the DAG details page, double-click the Sub DAG node."
+msgstr "**方式 2**：在 DAG 详情页中，双击 Sub DAG 节点。"
+
+#: ../../source/user_guide/general/logview.rst:264
+msgid ""
+"Each operator is annotated with the line of MaxFrame script code it "
+"corresponds to."
+msgstr "每个 operator 都会标注其对应的 MaxFrame 脚本代码行。"
+
+#: ../../source/user_guide/general/logview.rst:266
+msgid ""
+"Some operators are tagged with ``merged from``. This means the optimizer "
+"merged multiple operators after DAG submission to produce a new operator "
+"with the same functionality but better performance."
+msgstr ""
+"部分 operators 会带有 ``merged from`` 标记，表示优化器在 DAG 提交后合并了"
+"多个 operators，生成了功能相同但性能更好的新 operator。"
+
+#: ../../source/user_guide/general/logview.rst:271
+msgid "View table data"
+msgstr "查看表数据"
+
+#: ../../source/user_guide/general/logview.rst:273
+msgid "**View the data flow structure**"
+msgstr "**查看数据流结构**"
+
+#: ../../source/user_guide/general/logview.rst:275
+msgid ""
+"To inspect the data flow, double-click a Sub DAG node on the DAG details "
+"page to enter the operator details page. Click the connection line "
+"between two operators to view the data type, index, and column name "
+"information."
+msgstr ""
+"如需查看数据流，在 DAG 详情页中双击某个 Sub DAG 节点进入 operator 详情页"
+"。单击两个 operators 之间的连线，即可查看数据类型、index 和 column name "
+"信息。"
+
+#: ../../source/user_guide/general/logview.rst:280
+msgid "The fields are described below:"
+msgstr "字段说明如下："
+
+#: ../../source/user_guide/general/logview.rst:282
+msgid "``Type: dataframe``: The upstream operator outputs a ``dataframe``."
+msgstr "``Type: dataframe``：上游 operator 输出 ``dataframe``。"
+
+#: ../../source/user_guide/general/logview.rst:283
+msgid "``DataFrame Index``: Index information."
+msgstr "``DataFrame Index``：Index 信息。"
+
+#: ../../source/user_guide/general/logview.rst:285
+msgid ""
+"``None: int64`` means the DataFrame contains a single unnamed index of "
+"type ``int64``."
+msgstr ""
+"``None: int64`` 表示该 DataFrame 包含一个未命名、类型为 ``int64`` 的单级 "
+"index。"
+
+#: ../../source/user_guide/general/logview.rst:287
+msgid "``DataFrame Columns``: Column information."
+msgstr "``DataFrame Columns``：Column 信息。"
+
+#: ../../source/user_guide/general/logview.rst:289
+msgid ""
+"``<column name>: <dtype>`` lists every column in the current DataFrame "
+"with its data type."
+msgstr "``<column name>: <dtype>`` 列出当前 DataFrame 中每个 column 及其数据类型。"
+
+#: ../../source/user_guide/general/logview.rst:291
+msgid "``DataFrame Level Names``: The level names of the current DataFrame."
+msgstr "``DataFrame Level Names``：当前 DataFrame 的 level names。"
+
+#: ../../source/user_guide/general/logview.rst:293
+msgid "**View the data table structure**"
+msgstr "**查看数据表结构**"
+
+#: ../../source/user_guide/general/logview.rst:295
+msgid ""
+"Click any operator graph or any ODPS Table node in the Sub DAG Graph to "
+"view the table structure."
+msgstr ""
+"在 Sub DAG Graph 中单击任意 operator graph 或 ODPS Table 节点，即可查看表"
+"结构。"
+
+#: ../../source/user_guide/general/logview.rst:299
+msgid "View job details"
+msgstr "查看作业详情"
+
+#: ../../source/user_guide/general/logview.rst:301
+msgid ""
+"On the DAG details page, click the icon in the **Detail** column of the "
+"Instance list to view the job details."
+msgstr ""
+"在 DAG 详情页中，单击 Instance 列表 **Detail** 列中的图标，即可查看作业"
+"详情。"
+

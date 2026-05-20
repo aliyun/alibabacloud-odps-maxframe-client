@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,20 +17,20 @@ import pandas as pd
 import pyarrow as pa
 from odps import ODPS
 
-from ..... import dataframe as md
-from ..... import tensor as mt
-from .....dataframe.datasource.index import from_pandas
-from .....io.odpsio import ODPSTableIO
-from .....tests.utils import flaky, tn
-from ....core import EngineAcceptance
-from ...core import SPECodeContext
-from ..datasource import (
+from maxframe import dataframe as md
+from maxframe import tensor as mt
+from maxframe.codegen.core import EngineAcceptance
+from maxframe.codegen.spe.core import SPECodeContext
+from maxframe.codegen.spe.dataframe.datasource import (
     DataFrameDateRangeAdapter,
     DataFrameFromRecordsAdapter,
     DataFrameReadODPSTableAdapter,
     IndexDataSourceAdapter,
     SeriesFromTensorAdapter,
 )
+from maxframe.dataframe.datasource.index import from_pandas
+from maxframe.io.odpsio import ODPSTableIO
+from maxframe.tests.utils import flaky, tn
 
 
 def _run_generated_code(code: str, ctx: SPECodeContext) -> dict:

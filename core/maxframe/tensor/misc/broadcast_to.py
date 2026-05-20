@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 import numpy as np
 
-from ... import opcodes
-from ...serialization.serializables import KeyField, TupleField
-from ..datasource import tensor as astensor
-from ..operators import TensorHasInput, TensorOperatorMixin
+from maxframe import opcodes
+from maxframe.serialization.serializables import KeyField, TupleField
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorHasInput, TensorOperatorMixin
 
 
 class TensorBroadcastTo(TensorHasInput, TensorOperatorMixin):
@@ -60,7 +60,7 @@ def broadcast_to(tensor, shape):
            [1, 2, 3],
            [1, 2, 3]])
     """
-    from ..core import Tensor
+    from maxframe.tensor.core import Tensor
 
     tensor = tensor if isinstance(tensor, Tensor) else astensor(tensor)
     shape = tuple(shape) if isinstance(shape, (list, tuple)) else (shape,)

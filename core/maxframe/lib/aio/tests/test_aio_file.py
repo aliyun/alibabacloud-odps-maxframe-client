@@ -17,8 +17,8 @@ import tempfile
 
 import pytest
 
-from ...filesystem import LocalFileSystem
-from .. import AioFileObject, AioFilesystem
+from maxframe.lib.aio import AioFileObject, AioFilesystem
+from maxframe.lib.filesystem import LocalFileSystem
 
 
 @pytest.mark.asyncio

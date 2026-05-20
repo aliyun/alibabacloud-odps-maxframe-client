@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 
 import numpy as np
 
-from ....core import SPECodeContext
-from ...indexing import DataFrameSetitemAdapter
+from maxframe.codegen.spe.core import SPECodeContext
+from maxframe.codegen.spe.dataframe.indexing import DataFrameSetitemAdapter
 
 
 def test_dataframe_setitem_with_scalar_to_one_index(df1):

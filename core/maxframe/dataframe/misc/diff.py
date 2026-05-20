@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ... import opcodes
-from ...serialization.serializables import AnyField, Int8Field, Int64Field
-from ..core import DATAFRAME_TYPE, OutputType
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_empty_df, build_empty_series, validate_axis
+from maxframe import opcodes
+from maxframe.dataframe.core import DATAFRAME_TYPE, OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_empty_df, build_empty_series, validate_axis
+from maxframe.serialization.serializables import AnyField, Int8Field, Int64Field
 
 
 class DataFrameDiff(DataFrameOperatorMixin, DataFrameOperator):

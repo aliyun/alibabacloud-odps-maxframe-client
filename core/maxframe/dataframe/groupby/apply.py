@@ -16,10 +16,25 @@ from typing import MutableMapping, Union
 
 import numpy as np
 
-from ... import opcodes
-from ...core import OutputType
-from ...core.operator import OperatorLogicKeyGeneratorMixin
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.core.operator import OperatorLogicKeyGeneratorMixin
+from maxframe.dataframe.core import GROUPBY_TYPE
+from maxframe.dataframe.groupby.utils import (
+    warn_axis_argument,
+    warn_prepend_index_group_keys,
+)
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.type_infer import (
+    InferredDataFrameMeta,
+    infer_dataframe_return_value,
+)
+from maxframe.dataframe.utils import (
+    copy_func_scheduling_hints,
+    parse_index,
+    validate_output_types,
+)
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
@@ -27,13 +42,15 @@ from ...serialization.serializables import (
     StringField,
     TupleField,
 )
-from ...udf import BuiltinFunction, MarkedFunction
-from ...utils import copy_if_possible, get_func_token, make_dtype, make_dtypes, tokenize
-from ..core import GROUPBY_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..type_infer import InferredDataFrameMeta, infer_dataframe_return_value
-from ..utils import copy_func_scheduling_hints, parse_index, validate_output_types
-from .utils import warn_axis_argument, warn_prepend_index_group_keys
+from maxframe.udf import BuiltinFunction, MarkedFunction
+from maxframe.utils import (
+    copy_if_possible,
+    get_func_token,
+    make_dtype,
+    make_dtypes,
+    tokenize,
+)
+from maxframe.utils.functional import check_closure_for_entities
 
 
 class GroupByApplyLogicKeyGeneratorMixin(OperatorLogicKeyGeneratorMixin):
@@ -269,6 +286,9 @@ def groupby_apply(
         output_types = [
             OutputType.dataframe if in_groupby.ndim == 2 else OutputType.series
         ]
+
+    # Check for entities captured in closure
+    check_closure_for_entities(func, operation_name="groupby_apply")
 
     dtypes = make_dtypes(dtypes)
     dtype = make_dtype(dtype)

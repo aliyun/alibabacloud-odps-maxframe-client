@@ -1,0 +1,81 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev21+br.g2bf54307e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-30 10:41+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+msgid ""
+"Access pre-registered models in ``BIGDATA_PUBLIC_MODELSET`` with "
+"``read_odps_model()``, then run ``embed()`` and ``generate()`` at scale "
+"on DPE."
+msgstr ""
+"介绍如何在 MaxFrame 中访问百炼公共模型集提供的模型，并运行文本 Embedding "
+"与文本生成操作示例。"
+
+msgid "Bailian LLM calling tutorial"
+msgstr "百炼大模型系列调用教程"
+
+msgid ""
+"Build reusable image feature assets with distributed preprocessing, "
+"DashScope multimodal embedding, and vector persistence in MaxCompute."
+msgstr ""
+"通过分布式预处理、DashScope 多模态 Embedding 和 MaxCompute 向量结果持久化"
+"，构建可复用的图像特征资产。"
+
+msgid ""
+"Catalog OSS images with an object table, resize in a distributed MaxFrame"
+" UDF, and write to Paimon on DLF."
+msgstr ""
+"使用 Object Table 编目 OSS 图像，通过分布式 MaxFrame UDF 缩放图片，并写入"
+" DLF 上的 Paimon。"
+
+msgid ""
+"End-to-end video processing on DPE using a custom FFmpeg image: frame "
+"extraction, multimodal labeling, and embedding generation."
+msgstr ""
+"依托 MaxFrame 的分布式处理能力，实现视频数据的端到端批量处理，将非结构化"
+"视频数据转化为可检索、可分析、可复用的数据资产。"
+
+msgid "Examples"
+msgstr "示例"
+
+msgid ""
+"Extract text from OSS PDFs with ``apply_chunk``, split it into semantic "
+"chunks, generate Bailian embeddings, and write vector features to "
+"MaxCompute."
+msgstr ""
+"使用 ``apply_chunk`` 从 OSS PDF 中抽取文本，切分为语义片段，生成百炼 "
+"Embedding，并将向量特征写入 MaxCompute。"
+
+msgid "Multimodal image feature pipeline (OSS + embedding)"
+msgstr "多模态图像特征生产方案（OSS + Embedding）"
+
+msgid "MaxFrame multimodal audio operators practice"
+msgstr "MaxFrame 多模态音视频算子开发实践"
+
+msgid "OpenLake multimodal images (Object Table + Paimon)"
+msgstr "OpenLake 多模态图像（Object Table + Paimon）"
+
+msgid "PDF text parsing and Bailian embedding"
+msgstr "PDF 文本解析和百炼 Embedding"
+
+msgid ""
+"Process OSS audio directly through ``.url.download()`` and ``.audio.*`` "
+"operators for decode, language detection, transcription, and VAD."
+msgstr ""
+"展示如何基于 MaxFrame 完成音频下载与语音识别任务，将原始音频数据高效转化"
+"为可用的文本结果。"
+
+msgid "Video pipeline: frame extraction -> labeling -> embedding"
+msgstr "视频处理全流程：抽帧 → 打标 → 向量化"
+

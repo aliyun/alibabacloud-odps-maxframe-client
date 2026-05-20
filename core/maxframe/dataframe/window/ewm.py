@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,22 +15,23 @@
 import math
 from collections import OrderedDict
 
-from ... import opcodes
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.dataframe.utils import validate_axis
+from maxframe.dataframe.window.aggregation import BaseDataFrameExpandingAgg
+from maxframe.dataframe.window.core import Window
+from maxframe.serialization.serializables import (
     BoolField,
     Float64Field,
     Int32Field,
     Int64Field,
     StringField,
 )
-from ...utils import pd_release_version
-from ..utils import validate_axis
-from .aggregation import BaseDataFrameExpandingAgg
-from .core import Window
+from maxframe.utils import pd_release_version
 
 _default_min_period_1 = pd_release_version >= (1, 1, 0)
 _pd_1_3_repr = pd_release_version >= (1, 3, 0)
 _window_has_method = pd_release_version >= (1, 4, 0)
+_has_axis_in_window = pd_release_version < (3, 0, 0)
 
 
 class DataFrameEwmAgg(BaseDataFrameExpandingAgg):
@@ -62,10 +63,19 @@ class EWM(Window):
 
         for k in args:
             p[k] = getattr(self, k)
+
+        # In pandas 3.0, axis is removed from window functions
+        if not _has_axis_in_window:
+            p.pop("axis", None)
+
         return p
 
     def __call__(self, df):
-        return df.ewm(**self.params)
+        params = self.params.copy()
+        # pandas 3.0 removed axis parameter from ewm
+        if not _has_axis_in_window:  # pragma: no branch
+            params.pop("axis", None)
+        return df.ewm(**params)
 
     def _repr(self, params):
         com = 1.0 / params.pop("alpha") - 1

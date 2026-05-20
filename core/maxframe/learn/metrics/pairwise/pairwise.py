@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@ try:
 except ImportError:  # pragma: no cover
     DataConversionWarning = None
 
-from ....tensor.spatial import distance
-from ...utils.validation import check_non_negative
-from .core import PairwiseDistances
-from .cosine import cosine_distances
-from .euclidean import euclidean_distances
-from .haversine import haversine_distances
-from .manhattan import manhattan_distances
+from maxframe.learn.metrics.pairwise.core import PairwiseDistances
+from maxframe.learn.metrics.pairwise.cosine import cosine_distances
+from maxframe.learn.metrics.pairwise.euclidean import euclidean_distances
+from maxframe.learn.metrics.pairwise.haversine import haversine_distances
+from maxframe.learn.metrics.pairwise.manhattan import manhattan_distances
+from maxframe.learn.utils.validation import check_non_negative
+from maxframe.tensor.spatial import distance
 
 _VALID_METRICS = [
     "euclidean",

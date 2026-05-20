@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import EntityData
-from ...serialization.serializables import KeyField, StringField
-from ..datasource import tensor as astensor
-from ..operators import TensorOperator, TensorOperatorMixin
-from .broadcast_to import broadcast_to
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.serialization.serializables import KeyField, StringField
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.misc.broadcast_to import broadcast_to
+from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
 
 
 class TensorCopyTo(TensorOperator, TensorOperatorMixin):
@@ -59,7 +59,7 @@ class TensorCopyTo(TensorOperator, TensorOperatorMixin):
         return src, dst, where
 
     def __call__(self, *inputs):
-        from ..core import Tensor
+        from maxframe.tensor.core import Tensor
 
         src, dst, where = self._extract_inputs(inputs)
 

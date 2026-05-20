@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,10 +22,10 @@ try:
 except ImportError:
     from numpy.core.numeric import ScalarType
 
-from .. import datasource as _nx
-from ..core import Tensor
-from ..merge import concatenate
-from ..misc import ndim
+from maxframe.tensor import datasource as _nx
+from maxframe.tensor.core import Tensor
+from maxframe.tensor.merge import concatenate
+from maxframe.tensor.misc import ndim
 
 
 class nd_grid(object):

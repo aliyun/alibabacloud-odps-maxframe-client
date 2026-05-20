@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@ from odps import ODPS
 from odps.errors import TableModified
 from odps.models import Table
 
-from ....config import options
-from ....lib.version import parse as parse_version
-from ....tests.utils import flaky, tn
-from ....utils import config_odps_default_options
-from .. import TunnelTableIO
-from ..tableio import ODPSTableIO
+from maxframe.config import options
+from maxframe.io.odpsio import TunnelTableIO
+from maxframe.io.odpsio.tableio import ODPSTableIO
+from maxframe.lib.version import parse as parse_version
+from maxframe.tests.utils import flaky, tn
+from maxframe.utils import config_odps_default_options
 
 _pyarrow_version = parse_version(pa.__version__).release
 

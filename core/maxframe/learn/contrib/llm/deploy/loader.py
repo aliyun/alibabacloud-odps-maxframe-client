@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,12 @@
 import json
 from typing import Any, Dict, List, Optional
 
-from .....protocol import JsonSerializable
-from .....serialization.serializables import (
+from maxframe.learn.contrib.llm.deploy.core import (
+    ResourceNameTemplate,
+    register_model_deployments,
+)
+from maxframe.protocol import JsonSerializable
+from maxframe.serialization.serializables import (
     DictField,
     FieldTypes,
     Int32Field,
@@ -24,7 +28,6 @@ from .....serialization.serializables import (
     ReferenceField,
     StringField,
 )
-from .core import ResourceNameTemplate, register_model_deployments
 
 _ALLOWED_DEVICES = {"cpu", "gpu", "ppu", "tpu", "cuda"}
 

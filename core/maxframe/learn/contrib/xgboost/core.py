@@ -19,18 +19,23 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 
-from ....errors import TileableNotExecutedError
-from ....udf import builtin_function
+from maxframe.errors import TileableNotExecutedError
+from maxframe.udf import builtin_function
 
 try:
     import xgboost
 except ImportError:  # pragma: no cover
     xgboost = None
 
-from ....core import ENTITY_TYPE, OutputType, enter_mode, is_kernel_mode
-from ...utils.odpsio import ODPSModelMixin, ReadODPSModel
-from ..models import ModelApplyChunk, ModelWithEval, ModelWithEvalData, to_remote_model
-from .dmatrix import DMatrix
+from maxframe.core import ENTITY_TYPE, OutputType, enter_mode, is_kernel_mode
+from maxframe.learn.contrib.models import (
+    ModelApplyChunk,
+    ModelWithEval,
+    ModelWithEvalData,
+    to_remote_model,
+)
+from maxframe.learn.contrib.xgboost.dmatrix import DMatrix
+from maxframe.learn.utils.odpsio import ODPSModelMixin, ReadODPSModel
 
 _xgb_type_to_np_type = {
     "float": "float32",
@@ -88,7 +93,7 @@ class BoosterData(ModelWithEvalData):
         iteration_range=None,
         strict_shape=False,
     ):
-        from .predict import predict
+        from maxframe.learn.contrib.xgboost.predict import predict
 
         return predict(
             self,
@@ -218,7 +223,7 @@ else:
             base_margin_eval_set=None,
             **kw,
         ):
-            from .train import train
+            from maxframe.learn.contrib.xgboost.train import train
 
             session = kw.pop("session", None)
             run_kwargs = kw.pop("run_kwargs", dict())

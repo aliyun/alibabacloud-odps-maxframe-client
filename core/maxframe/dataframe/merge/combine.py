@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ... import opcodes
-from ...serialization.serializables import AnyField, BoolField, FunctionField
-from ...udf import BuiltinFunction
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe import opcodes
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.serialization.serializables import AnyField, BoolField, FunctionField
+from maxframe.udf import BuiltinFunction
 
 
 class DataFrameCombine(DataFrameOperator, DataFrameOperatorMixin):
@@ -29,7 +29,7 @@ class DataFrameCombine(DataFrameOperator, DataFrameOperatorMixin):
         return not isinstance(self.func, BuiltinFunction)
 
     def __call__(self, obj1, obj2):
-        from ..indexing.align import align
+        from maxframe.dataframe.indexing.align import align
 
         assert obj1.ndim == 1 and obj2.ndim == 1
         obj1, obj2 = align(obj1, obj2)
@@ -151,8 +151,8 @@ def df_combine(df, other, func, fill_value=None, overwrite=True):
     2  NaN  3.0 1.0
     """
     # todo merge series logic into whole dataframe to reduce latency
-    from ..indexing.align import align
-    from .concat import concat
+    from maxframe.dataframe.indexing.align import align
+    from maxframe.dataframe.merge.concat import concat
 
     src_df_cols = set(df.dtypes.index)
     src_other_cols = set(other.dtypes.index)

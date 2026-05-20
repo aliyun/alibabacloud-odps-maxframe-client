@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,9 +17,18 @@ from typing import List
 
 import pandas as pd
 
-from ... import opcodes
-from ...core import EntityData
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.dataframe.core import DATAFRAME_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import (
+    build_empty_df,
+    build_empty_series,
+    parse_index,
+    validate_axis,
+)
+from maxframe.dataframe.window.core import Window
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
@@ -31,10 +40,9 @@ from ...serialization.serializables import (
     StringField,
     TupleField,
 )
-from ..core import DATAFRAME_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_empty_df, build_empty_series, parse_index, validate_axis
-from .core import Window
+from maxframe.utils import pd_release_version
+
+_has_axis_in_window = pd_release_version < (3, 0, 0)
 
 
 class DataFrameRollingAgg(DataFrameOperator, DataFrameOperatorMixin):
@@ -84,6 +92,9 @@ class DataFrameRollingAgg(DataFrameOperator, DataFrameOperatorMixin):
                 empty_df = empty_df._get_numeric_data()
             for key in Rolling._mf_specific_fields:
                 params.pop(key, None)
+            # pandas 3.0 removed axis parameter from rolling
+            if not _has_axis_in_window:  # pragma: no branch
+                params.pop("axis", None)
             test_df = empty_df.rolling(**params).agg(self.func)
             if self.axis == 0:
                 index_value = inp.index_value
@@ -106,6 +117,9 @@ class DataFrameRollingAgg(DataFrameOperator, DataFrameOperatorMixin):
             rolling_params = rolling.params.copy()
             for k in Rolling._mf_specific_fields:
                 rolling_params.pop(k, None)
+            # pandas 3.0 removed axis parameter from rolling
+            if not _has_axis_in_window:  # pragma: no branch
+                rolling_params.pop("axis", None)
             test_obj = empty_series.rolling(**rolling_params).agg(self.func)
             if isinstance(test_obj, pd.DataFrame):
                 return self.new_dataframe(
@@ -174,6 +188,9 @@ class Rolling(Window):
         params = (self.params or dict()).copy()
         for key in self._mf_specific_fields:
             params.pop(key, None)
+        # pandas 3.0 removed axis parameter from rolling
+        if not _has_axis_in_window:  # pragma: no branch
+            params.pop("axis", None)
         pd_rolling = empty_obj.rolling(**params)
         for k in params:
             # update value according to pandas rolling

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,14 @@
 
 import json
 import time
+from typing import Any
 
+import pandas as pd
 import pytest
 
-from ..lib import wrapped_pickle
-from ..protocol import (
+from maxframe.io.odpsio.arrow import pandas_to_arrow
+from maxframe.lib import wrapped_pickle
+from maxframe.protocol import (
     DagInfo,
     DisplayMessage,
     ErrorInfo,
@@ -28,8 +31,8 @@ from ..protocol import (
     ResultInfo,
     SessionInfo,
 )
-from ..serialization import RemoteException
-from ..utils import deserialize_serializable, serialize_serializable
+from maxframe.serialization import RemoteException
+from maxframe.utils import deserialize_serializable, serialize_serializable
 
 
 def _json_round_trip(json_data: dict) -> dict:
@@ -118,6 +121,67 @@ def test_error_info_fallback_json_serialize():
 
         with pytest.raises(RemoteException):
             deserial_err_info.reraise()
+
+
+def test_failure_info_roundtrip():
+    # ErrorInfo transport must strip heavy raw bytes.
+    arrow_data, table_meta = pandas_to_arrow(pd.DataFrame({"a": [1]}))
+    fi = {
+        "substep_id": "abc",
+        "operator_name": "Apply",
+        "table": "proj.tmp_tbl",
+        "arrow_data": serialize_serializable(arrow_data),
+        "table_meta": table_meta.to_json(),
+    }
+
+    # ExceptionSerializer roundtrip (container -> host)
+    exc: Any = ValueError("boom")
+    exc._failure_info = fi
+    blob = serialize_serializable(exc)
+
+    restored = deserialize_serializable(blob)
+    assert getattr(restored, "_failure_info") == fi
+
+    # Serialize normally; deserialize while unpickle is forbidden (e.g. FrameDriver).
+    # Exception body becomes RemoteException but _failure_info must still attach.
+    value = serialize_serializable(exc)
+    with wrapped_pickle.switch_unpickle():
+        restored_fd = deserialize_serializable(value)
+    assert isinstance(restored_fd, RemoteException)
+    assert getattr(restored_fd, "_failure_info") == fi
+
+    # Both directions under forbidden unpickle (still preserves failure_info on wire).
+    with wrapped_pickle.switch_unpickle():
+        blob2 = serialize_serializable(exc)
+        restored2 = deserialize_serializable(blob2)
+    assert getattr(restored2, "_failure_info") == fi
+
+    # ErrorInfo JSON roundtrip (host -> client)
+    err_info = ErrorInfo.from_exception(exc)
+    assert err_info.failure_info == {
+        "table": "proj.tmp_tbl",
+        "table_meta": table_meta.to_json(),
+        "substep_id": "abc",
+        "operator_name": "Apply",
+    }
+
+    json_restored = ErrorInfo.from_json(_json_round_trip(err_info.to_json()))
+    assert json_restored.failure_info == {
+        "table": "proj.tmp_tbl",
+        "table_meta": table_meta.to_json(),
+        "substep_id": "abc",
+        "operator_name": "Apply",
+    }
+
+    with pytest.raises(ValueError) as exc_info:
+        json_restored.reraise()
+    reraised: Any = exc_info.value
+    assert getattr(reraised, "_failure_info") == {
+        "table": "proj.tmp_tbl",
+        "table_meta": table_meta.to_json(),
+        "substep_id": "abc",
+        "operator_name": "Apply",
+    }
 
 
 def test_dag_info_json_serialize():

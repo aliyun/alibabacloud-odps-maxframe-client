@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,14 +16,19 @@ from typing import Any, Dict, List
 
 import numpy as np
 
-from .... import opcodes
-from ....core import OutputType
-from ....core.operator import Operator, TileableOperatorMixin
-from ....serialization.serializables import BoolField, DictField, Int32Field, KeyField
-from ....tensor.core import TensorOrder
-from ....typing_ import EntityType
-from ..models import to_remote_model
-from .dataset import check_data
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.core.operator import Operator, TileableOperatorMixin
+from maxframe.learn.contrib.lightgbm.dataset import check_data
+from maxframe.learn.contrib.models import to_remote_model
+from maxframe.serialization.serializables import (
+    BoolField,
+    DictField,
+    Int32Field,
+    KeyField,
+)
+from maxframe.tensor.core import TensorOrder
+from maxframe.typing_ import EntityType
 
 
 class LGBMPredict(Operator, TileableOperatorMixin):
@@ -107,7 +112,7 @@ def predict(
 ):
     import lightgbm
 
-    from .core import Booster, BoosterData
+    from maxframe.learn.contrib.lightgbm.core import Booster, BoosterData
 
     if not isinstance(booster, (Booster, BoosterData, lightgbm.Booster)):
         raise TypeError(

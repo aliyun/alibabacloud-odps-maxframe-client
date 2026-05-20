@@ -47,6 +47,8 @@ nosetests.xml
 .idea
 .vscode
 *.iml
+.env
+*.code-workspace
 
 # virtualenv
 env
@@ -64,6 +66,9 @@ test*.ipynb
 *.tmp
 *.swp
 
+# nohup outputs
+nohup.out
+
 # documentation
 docs/**/*.mo
 docs/**/generated/**/*.rst
@@ -74,18 +79,15 @@ docs/**/generated/**/*.rst
 # graph view file
 default.pdf
 
-# cython compiled files
-core/maxframe/*.c*
-core/maxframe/*.h*
-core/maxframe/core/**/*.c*
-core/maxframe/learn/cluster/*.c*
-core/maxframe/learn/utils/*.c*
-core/maxframe/lib/*.c*
-core/maxframe/serialization/*.c*
-
 # Makefile related
 package
 maxframe-*.tar.gz
+
+# bazel-related stuff
+bazel-*
+
+# AI-coding related
+.claude
 
 # Files making troubles
 \\*

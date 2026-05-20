@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,13 @@
 
 from typing import List
 
-from .....dataframe.accessors.datetime_ import SeriesDatetimeMethod
-from .....dataframe.accessors.string_ import SeriesStringMethod
-from ...core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.dataframe.accessors.datetime_ import SeriesDatetimeMethod
+from maxframe.dataframe.accessors.string_ import SeriesStringMethod
 
 
 @register_op_adapter(SeriesDatetimeMethod)

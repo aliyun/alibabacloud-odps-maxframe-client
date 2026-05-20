@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"POT-Creation-Date: 2026-03-05 10:34+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -33,7 +33,7 @@ msgid ""
 " will be generated."
 msgstr "支持将某些列指定为索引。如果未指定，将生成 RangeIndex。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_odps_table.rst
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table of
 msgid "参数"
 msgstr ""
 
@@ -70,15 +70,100 @@ msgid ""
 "experimental)."
 msgstr "应用于结果 DataFrame 的后端数据类型（仍处于实验阶段）。"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_odps_table.rst
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:21 of
+msgid ""
+"Filter expression to apply when reading data.  - **String format**: SQL "
+"WHERE clause passed directly to StorageAPI.  - **List format**: Nested "
+"list of tuples.    Format: Inner lists are ANDed, outer lists are ORed."
+"   Example: ``[[('col1', '==', 'value'), ('col2', '>', 10)]]``  Supported"
+" operators: ``==``, ``!=``, ``<``, ``>``, ``<=``, ``>=``, ``in``, ``not "
+"in``.  .. note::     Complete filtering is not guaranteed for this "
+"argument given     implementation."
+msgstr ""
+"读取数据时应用的过滤表达式。  - **字符串格式**: 直接传递给 StorageAPI 的 "
+"SQL WHERE 子句。  - **列表格式**: 嵌套的元组列表。    格式: 内部列表使用 "
+"AND 连接，外部列表使用 OR 连接。   示例: ``[[('col1', '==', 'value'), ('"
+"col2', '>', 10)]]``  支持的操作符: ``==``, ``!=``, ``<``, ``>``, ``<=``, "
+"``>=``, ``in``, ``not in``。  .. note::     给定实现，不能保证此参数的"
+"完整过滤功能。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:21 of
+msgid "Filter expression to apply when reading data."
+msgstr "读取数据时应用的过滤表达式。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:23 of
+msgid "**String format**: SQL WHERE clause passed directly to StorageAPI."
+msgstr "**字符串格式**：直接传递给 StorageAPI 的 SQL WHERE 子句。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:25 of
+msgid "**List format**: Nested list of tuples."
+msgstr "**列表格式**：嵌套的元组列表。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:27 of
+msgid ""
+"Format: Inner lists are ANDed, outer lists are ORed. Example: "
+"``[[('col1', '==', 'value'), ('col2', '>', 10)]]``"
+msgstr ""
+"格式：内部列表使用 AND 连接，外部列表使用 OR 连接。示例：``[[('col1', '=="
+"', 'value'), ('col2', '>', 10)]]``"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:30 of
+msgid ""
+"Supported operators: ``==``, ``!=``, ``<``, ``>``, ``<=``, ``>=``, "
+"``in``, ``not in``."
+msgstr ""
+"支持的操作符：``==``, ``!=``, ``<``, ``>``, ``<=``, ``>=``, ``in``, ``not"
+" in``。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:33 of
+msgid ""
+"Complete filtering is not guaranteed for this argument given "
+"implementation."
+msgstr "由于实现原因，不能保证此参数的完整过滤功能。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table of
 msgid "返回"
 msgstr ""
 
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:22 of
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:37 of
 msgid "**result** -- DataFrame read from MaxCompute (ODPS) table"
 msgstr "**result** -- 从 MaxCompute (ODPS) 表中读取的 DataFrame"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_odps_table.rst
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table of
 msgid "返回类型"
 msgstr ""
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:41 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:42 of
+msgid ""
+"Before using `read_odps_table`, you need to create an ODPS entry whose "
+"parameters will be stored globally in current process."
+msgstr ""
+"在使用 `read_odps_table` 之前，您需要创建一个 ODPS 条目，其参数将在当前"
+"进程中全局存储。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:50 of
+msgid "Simply read a table by name."
+msgstr "简单地按名称读取表。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:54 of
+msgid "Read table by partition (or partitions)."
+msgstr "按分区（或多个分区）读取表。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:61 of
+msgid "Read with column selection."
+msgstr "带列选择的读取。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:65 of
+msgid "Read with columns as index."
+msgstr "将列作为索引进行读取。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:72 of
+msgid ""
+"Read with filter condition. Note that complete filtering is not "
+"guaranteed."
+msgstr "带过滤条件的读取。注意不能保证完整的过滤功能。"
 

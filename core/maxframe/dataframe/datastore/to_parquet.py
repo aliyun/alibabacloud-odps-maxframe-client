@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ... import opcodes
-from ...serialization.serializables import BoolField, DictField, StringField
-from ..datasource.read_parquet import check_engine
-from ..utils import parse_index
-from .core import LakeDataStore
+from maxframe import opcodes
+from maxframe.dataframe.datasource.read_parquet import check_engine
+from maxframe.dataframe.datastore.core import LakeDataStore
+from maxframe.dataframe.utils import parse_index
+from maxframe.serialization.serializables import BoolField, DictField, StringField
 
 
 class DataFrameToParquet(LakeDataStore):

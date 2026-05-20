@@ -18,27 +18,37 @@ from typing import Any, Callable, Dict, List, MutableMapping, Tuple, Union
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import (
-    DictField,
-    FunctionField,
-    Int32Field,
-    TupleField,
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.core import (
+    DATAFRAME_TYPE,
+    INDEX_TYPE,
+    DataFrame,
+    IndexValue,
+    Series,
 )
-from ...typing_ import TileableType
-from ...udf import BuiltinFunction, MarkedFunction
-from ...utils import copy_if_possible, make_dtype, make_dtypes
-from ..core import DATAFRAME_TYPE, INDEX_TYPE, DataFrame, IndexValue, Series
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..type_infer import InferredDataFrameMeta, infer_dataframe_return_value
-from ..utils import (
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.type_infer import (
+    InferredDataFrameMeta,
+    infer_dataframe_return_value,
+)
+from maxframe.dataframe.utils import (
     build_df,
     copy_func_scheduling_hints,
     pack_func_args,
     parse_index,
     validate_output_types,
 )
+from maxframe.serialization.serializables import (
+    DictField,
+    FunctionField,
+    Int32Field,
+    TupleField,
+)
+from maxframe.typing_ import TileableType
+from maxframe.udf import BuiltinFunction, MarkedFunction
+from maxframe.utils import copy_if_possible, make_dtype, make_dtypes
+from maxframe.utils.functional import check_closure_for_entities
 
 
 class DataFrameApplyChunk(DataFrameOperator, DataFrameOperatorMixin):
@@ -117,9 +127,17 @@ class DataFrameApplyChunk(DataFrameOperator, DataFrameOperatorMixin):
         output_type=None,
         index=None,
         skip_infer=False,
+        check_output_dtypes=None,
     ):
         args = self.args or ()
         kwargs = self.kwargs or {}
+
+        # Store check_output_dtypes in extra_params if specified
+        if check_output_dtypes is not None:
+            if not hasattr(self, "extra_params") or self.extra_params is None:
+                self.extra_params = {}
+            self.extra_params["check_output_dtypes"] = check_output_dtypes
+
         # if not dtypes and not skip_infer:
         try:
             packed_func = get_packed_func(df_or_series, self.func, *args, **kwargs)
@@ -252,6 +270,7 @@ def df_apply_chunk(
     index=None,
     skip_infer=False,
     args=(),
+    check_output_dtypes=None,
     **kwargs,
 ):
     """
@@ -293,6 +312,12 @@ def df_apply_chunk(
 
     skip_infer: bool, default False
         Whether infer dtypes when dtypes or output_type is not specified.
+
+    check_output_dtypes : str, default None
+        Validation mode for output dtypes and columns:
+        - 'ignore': No validation performed
+        - 'warns': Validate and show warnings on mismatch (default when None)
+        - 'raises': Validate and raise errors on mismatch
 
     args : tuple
         Positional arguments to pass to ``func`` in addition to the
@@ -466,6 +491,9 @@ def df_apply_chunk(
     if skip_infer and output_type is None:
         output_type = OutputType.df_or_series
 
+    # Check for entities captured in closure
+    check_closure_for_entities(func, operation_name="apply_chunk")
+
     # bind args and kwargs
     op = DataFrameApplyChunk(
         func=func,
@@ -483,6 +511,7 @@ def df_apply_chunk(
         index=index,
         output_type=output_type,
         skip_infer=skip_infer,
+        check_output_dtypes=check_output_dtypes,
     )
 
 
@@ -497,6 +526,7 @@ def series_apply_chunk(
     index=None,
     skip_infer=False,
     args=(),
+    check_output_dtypes=None,
     **kwargs,
 ):
     """
@@ -542,6 +572,12 @@ def series_apply_chunk(
 
     skip_infer: bool, default False
         Whether infer dtypes when dtypes or output_type is not specified.
+
+    check_output_dtypes : str, default None
+        Validation mode for output dtypes and columns:
+        - 'ignore': No validation performed
+        - 'warns': Validate and show warnings on mismatch (default when None)
+        - 'raises': Validate and raise errors on mismatch
 
     **kwds
         Additional keyword arguments passed to func.
@@ -712,6 +748,9 @@ def series_apply_chunk(
     if skip_infer and output_type is None:
         output_type = OutputType.df_or_series
 
+    # Check for entities captured in closure
+    check_closure_for_entities(func, operation_name="apply_chunk")
+
     op = DataFrameApplyChunk(
         func=func,
         batch_rows=batch_rows,
@@ -729,4 +768,5 @@ def series_apply_chunk(
         name=name,
         output_type=output_type,
         index=index,
+        check_output_dtypes=check_output_dtypes,
     )

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,21 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .direct import df_to_dict, series_to_dict, series_to_list, to_clipboard
-from .to_csv import to_csv
-from .to_json import to_json
-from .to_odps import to_odps_table
-from .to_parquet import to_parquet
+from maxframe.dataframe.datastore.direct import (
+    df_to_dict,
+    series_to_dict,
+    series_to_list,
+    to_clipboard,
+)
+from maxframe.dataframe.datastore.to_csv import to_csv
+from maxframe.dataframe.datastore.to_json import to_json
+from maxframe.dataframe.datastore.to_lance import to_lance
+from maxframe.dataframe.datastore.to_odps import to_odps_table
+from maxframe.dataframe.datastore.to_parquet import to_parquet
 
 
 def _install():
-    from ..core import DATAFRAME_TYPE, SERIES_TYPE
+    from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
 
     for t in DATAFRAME_TYPE:
         t.to_clipboard = to_clipboard
         t.to_csv = to_csv
         t.to_dict = df_to_dict
         t.to_json = to_json
+        t.to_lance = to_lance
         t.to_odps_table = to_odps_table
         t.to_parquet = to_parquet
     for t in SERIES_TYPE:

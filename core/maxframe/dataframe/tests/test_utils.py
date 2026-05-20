@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import itertools
 import operator
 
@@ -20,25 +21,35 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from ...config import option_context
-from ...core.operator import Operator
-from ...tests.utils import require_arrow_dtype
-from ...udf import (
+from maxframe.config import option_context
+from maxframe.core.operator import Operator
+from maxframe.dataframe.utils import (
+    MAX_DECIMAL128_PRECISION,
+    _calc_add_precision_scale,
+    _calc_div_precision_scale_hive,
+    _calc_mean_precision_scale,
+    _calc_mul_precision_scale,
+    _calc_sum_precision_scale,
+    _estimate_integer_precision,
+    _generate_value,
+    _infer_decimal_agg_dtype,
+    _pd_time_has_unit,
+    copy_func_scheduling_hints,
+    extract_scalar_dtype,
+    infer_dtype,
+    infer_dtypes,
+    pack_func_args,
+)
+from maxframe.tests.utils import require_arrow_dtype
+from maxframe.udf import (
     MarkedFunction,
+    with_image_options,
     with_network_options,
     with_python_requirements,
     with_resources,
     with_running_options,
 )
-from ...utils import wrap_arrow_dtype
-from ..utils import (
-    MAX_DECIMAL128_PRECISION,
-    _generate_value,
-    copy_func_scheduling_hints,
-    infer_dtype,
-    infer_dtypes,
-    pack_func_args,
-)
+from maxframe.utils import wrap_arrow_dtype
 
 try:
     from pandas import ArrowDtype
@@ -79,7 +90,15 @@ def test_pack_function(df1):
     assert isinstance(f.public_network_whitelist, list)
 
     f = pack_func_args(df1, np.sum)
-    assert f(df1).equals(np.sum(df1))
+    # In pandas 2.0+, np.sum(df1) returns a Series, not a scalar
+    df1_sum = np.sum(df1)
+    f_result = f(df1)
+    if isinstance(df1_sum, pd.Series):
+        # When df1_sum is a Series, f_result is also a Series
+        # Compare them using .equals()
+        assert f_result.equals(df1_sum)
+    else:
+        assert f_result == df1_sum
 
     @with_resources("a.txt")
     @with_python_requirements("pandas")
@@ -192,8 +211,6 @@ def test_copy_func_scheduling_hints():
     assert op3.expect_resources == expected_resources
 
     # Test with MarkedFunction with image_options
-    from maxframe.udf import with_image_options
-
     @with_image_options(image_name="python")
     def image_func(x):
         return x + 1
@@ -209,7 +226,7 @@ def test_decimal_type_inference():
     dtype2 = pd.ArrowDtype(pa.decimal128(MAX_DECIMAL128_PRECISION, 7))
     inferred = infer_dtype(dtype1, dtype2, operator.truediv)
     assert inferred.pyarrow_dtype.precision == MAX_DECIMAL128_PRECISION
-    assert inferred.pyarrow_dtype.scale == 12
+    assert inferred.pyarrow_dtype.scale == 18
 
     dtypes1 = pd.Series(
         [np.dtype("int64"), pd.ArrowDtype(pa.decimal128(MAX_DECIMAL128_PRECISION, 10))]
@@ -219,7 +236,7 @@ def test_decimal_type_inference():
     )
     inferred = infer_dtypes(dtypes1, dtypes2, operator.truediv)
     assert inferred.iloc[1].pyarrow_dtype.precision == MAX_DECIMAL128_PRECISION
-    assert inferred.iloc[1].pyarrow_dtype.scale == 12
+    assert inferred.iloc[1].pyarrow_dtype.scale == 18
 
 
 @pytest.mark.parametrize(
@@ -260,3 +277,192 @@ def test_with_network_options(
         assert test_func.internal_network_whitelist == ["e", "f"]
     else:
         assert not test_func.internal_network_whitelist
+
+
+@pytest.mark.skipif(not _pd_time_has_unit, reason="pandas time objects has no unit")
+@pytest.mark.parametrize(
+    "scalar_value,expected_dtype",
+    [
+        (np.int32(5), np.dtype("int32")),
+        (
+            lambda: pd.Timestamp("2023-01-01 12:33:41").as_unit("ms"),
+            np.dtype("datetime64[ms]"),
+        ),
+        (
+            lambda: pd.Timestamp("2023-01-01 12:33:41").as_unit("ns"),
+            np.dtype("datetime64[ns]"),
+        ),
+        (lambda: pd.Timedelta(days=1).as_unit("ms"), np.dtype("timedelta64[ms]")),
+        (lambda: pd.Timedelta(days=1).as_unit("ns"), np.dtype("timedelta64[ns]")),
+        (datetime.datetime(2023, 1, 1), np.dtype("datetime64[ms]")),
+        (datetime.timedelta(days=1), np.dtype("timedelta64[ms]")),
+        ("hello", str),
+    ],
+)
+def test_extract_scalar_dtype(scalar_value, expected_dtype):
+    if callable(scalar_value):
+        scalar_value = scalar_value()
+    result = extract_scalar_dtype(scalar_value)
+    if isinstance(expected_dtype, type):
+        assert result == expected_dtype
+    else:
+        assert result == expected_dtype
+
+
+# Tests for decimal precision/scale calculation
+
+
+@require_arrow_dtype
+@pytest.mark.parametrize(
+    "op,expected_precision,expected_scale",
+    [
+        # Addition/Subtraction
+        (operator.add, 12, 3),
+        (operator.sub, 12, 3),
+        # Multiplication
+        (operator.mul, 19, 5),
+        # Division (using Hive formula)
+        (operator.truediv, 22, 11),
+    ],
+)
+def test_arithmetic_precision(op, expected_precision, expected_scale):
+    """Test arithmetic precision/scale calculation using Hive rules"""
+    dtype1 = pd.ArrowDtype(pa.decimal128(10, 2))
+    dtype2 = pd.ArrowDtype(pa.decimal128(8, 3))
+
+    result = infer_dtype(dtype1, dtype2, op)
+    assert result.pyarrow_dtype.precision == expected_precision
+    assert result.pyarrow_dtype.scale == expected_scale
+
+
+@require_arrow_dtype
+def test_infer_dtypes_dataframe():
+    """Test infer_dtypes for DataFrame operations"""
+    dtypes1 = pd.Series(
+        {
+            "a": pd.ArrowDtype(pa.decimal128(10, 2)),
+            "b": pd.ArrowDtype(pa.decimal128(8, 1)),
+        }
+    )
+    dtypes2 = pd.Series(
+        {
+            "a": pd.ArrowDtype(pa.decimal128(5, 1)),
+            "b": pd.ArrowDtype(pa.decimal128(6, 0)),
+        }
+    )
+
+    result = infer_dtypes(dtypes1, dtypes2, operator.truediv)
+    # Using Hive formula
+    assert result["a"].pyarrow_dtype.precision == 17
+    assert result["a"].pyarrow_dtype.scale == 8
+
+
+@require_arrow_dtype
+@pytest.mark.parametrize(
+    "func_name,expected_precision,expected_scale",
+    [
+        # Sum: Hive uses min(p + 10, 38)
+        ("sum", 20, 2),  # min(10 + 10, 38) = 20
+        # Mean: Hive uses min(p + 4, 38) and min(s + 4, 18)
+        ("mean", 14, 6),  # min(10 + 4, 38) = 14, min(2 + 4, 18) = 6
+        # Min/Max preserve input type
+        ("min", 10, 2),
+        ("max", 10, 2),
+    ],
+)
+def test_aggregation_precision(func_name, expected_precision, expected_scale):
+    """Test aggregation precision/scale calculation using Hive rules"""
+    input_dtype = pd.ArrowDtype(pa.decimal128(10, 2))
+
+    result = _infer_decimal_agg_dtype(input_dtype, func_name)
+    assert result.pyarrow_dtype.precision == expected_precision
+    assert result.pyarrow_dtype.scale == expected_scale
+
+
+@require_arrow_dtype
+@pytest.mark.parametrize("agg_func", ["var", "std"])
+def test_variance_std_precision(agg_func):
+    """Test that var/std use decimal arithmetic with max precision in Hive mode"""
+    input_dtype = pd.ArrowDtype(pa.decimal128(10, 2))
+
+    result = _infer_decimal_agg_dtype(input_dtype, agg_func)
+    # Hive mode uses decimal arithmetic with max precision
+    assert result.pyarrow_dtype.precision == 38
+
+
+@require_arrow_dtype
+@pytest.mark.parametrize(
+    "int_type,expected_precision",
+    [
+        (np.int8, 3),  # max 127
+        (np.int16, 5),  # max 32767
+        (np.int32, 10),  # max 2147483647
+        (np.int64, 19),  # max 9223372036854775807
+    ],
+)
+def test_integer_precision_estimation(int_type, expected_precision):
+    """Test integer precision estimation for mixed decimal/integer operations"""
+    assert _estimate_integer_precision(int_type) == expected_precision
+
+
+@require_arrow_dtype
+@pytest.mark.parametrize(
+    "calc_func,p1,s1,p2,s2,expected_precision,expected_scale",
+    [
+        # Addition: max(p1-s1, p2-s2) + max(s1, s2) + 1
+        (_calc_add_precision_scale, 10, 2, 8, 3, 12, 3),
+        # Multiplication: p1 + p2 + 1, s1 + s2
+        (_calc_mul_precision_scale, 10, 2, 8, 3, 19, 5),
+        # Division (Hive): precision = p1 - s1 + s2 + max(6, s1 + p2 + 1)
+        (_calc_div_precision_scale_hive, 10, 2, 5, 1, 17, 8),
+    ],
+)
+def test_calc_precision_scale_functions(
+    calc_func, p1, s1, p2, s2, expected_precision, expected_scale
+):
+    """Test individual decimal calculation functions"""
+    precision, scale = calc_func(p1, s1, p2, s2)
+    assert precision == expected_precision
+    assert scale == expected_scale
+
+
+@require_arrow_dtype
+@pytest.mark.parametrize(
+    "calc_func,expected_precision,expected_scale",
+    [
+        # Sum: Hive uses min(p + 10, 38)
+        (_calc_sum_precision_scale, 20, 2),
+        # Mean: Hive uses min(p + 4, 38) and min(s + 4, 18)
+        (_calc_mean_precision_scale, 14, 6),
+    ],
+)
+def test_calc_aggregation_functions(calc_func, expected_precision, expected_scale):
+    """Test aggregation precision/scale calculation functions"""
+    precision, scale = calc_func(10, 2)
+    assert precision == expected_precision
+    assert scale == expected_scale
+
+
+@require_arrow_dtype
+def test_precision_overflow_protection():
+    """Test that precision is capped at maximum"""
+    dtype1 = pd.ArrowDtype(pa.decimal128(38, 18))
+    dtype2 = pd.ArrowDtype(pa.decimal128(38, 18))
+
+    # Test multiplication which would exceed max precision
+    result = infer_dtype(dtype1, dtype2, operator.mul)
+    # Precision should be capped at 38
+    assert result.pyarrow_dtype.precision <= 38
+    assert result.pyarrow_dtype.scale <= 18
+
+
+@require_arrow_dtype
+def test_division_by_integer():
+    """Test division by integer-scale decimal"""
+    dtype1 = pd.ArrowDtype(pa.decimal128(10, 4))
+    dtype2 = pd.ArrowDtype(pa.decimal128(10, 0))  # integer-scale decimal
+
+    # Using Hive formula
+    result = infer_dtype(dtype1, dtype2, operator.truediv)
+    # Should produce scale = max(6, s1 + p2 + 1) = max(6, 4 + 10 + 1) = 15
+    assert result.pyarrow_dtype.scale == 15

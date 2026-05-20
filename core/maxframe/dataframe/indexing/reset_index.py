@@ -17,20 +17,29 @@ from typing import Union
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import OutputType
-from ...protocol import DefaultIndexType
-from ...serialization.serializables import AnyField, BoolField, EnumField, FieldTypes
-from ...utils import check_unexpected_kwargs, no_default, pd_release_version
-from ..core import DataFrameIndexTypeMixin
-from ..operators import DATAFRAME_TYPE, DataFrameOperator, DataFrameOperatorMixin
-from ..utils import (
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.core import DataFrameIndexTypeMixin
+from maxframe.dataframe.operators import (
+    DATAFRAME_TYPE,
+    DataFrameOperator,
+    DataFrameOperatorMixin,
+)
+from maxframe.dataframe.utils import (
     build_empty_df,
     build_empty_series,
     get_index_value_by_default_index_type,
     parse_index,
     validate_default_index_type,
 )
+from maxframe.protocol import DefaultIndexType
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    EnumField,
+    FieldTypes,
+)
+from maxframe.utils import check_unexpected_kwargs, no_default, pd_release_version
 
 _reset_index_has_names = pd_release_version >= (1, 5)
 

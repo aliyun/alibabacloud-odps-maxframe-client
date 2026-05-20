@@ -19,18 +19,23 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa
 
-from .... import opcodes
-from ....config import options
-from ....core import EntityData, OutputType
-from ....lib.dtypes_extension import ArrowDtype
-from ....serialization.serializables import DictField, KeyField, StringField, TupleField
-from ....tensor import tensor as astensor
-from ....tensor.core import TENSOR_TYPE
-from ....utils import wrap_arrow_dtype
-from ...core import SERIES_TYPE
-from ...initializer import Series as asseries
-from ...operators import DataFrameOperator, DataFrameOperatorMixin
-from ...utils import build_series, infer_index_value, parse_index
+from maxframe import opcodes
+from maxframe.config import options
+from maxframe.core import EntityData, OutputType
+from maxframe.dataframe.core import SERIES_TYPE
+from maxframe.dataframe.initializer import Series as asseries
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_series, infer_index_value, parse_index
+from maxframe.lib.dtypes_extension import ArrowDtype
+from maxframe.serialization.serializables import (
+    DictField,
+    KeyField,
+    StringField,
+    TupleField,
+)
+from maxframe.tensor import tensor as astensor
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.utils import wrap_arrow_dtype
 
 
 class SeriesStringMethod(DataFrameOperator, DataFrameOperatorMixin):
@@ -165,7 +170,7 @@ class SeriesStringCatHandler(SeriesStringMethodBaseHandler):
         others = method_kwargs.get("others")
 
         if others is None:
-            from ...reduction import build_str_concat_object
+            from maxframe.dataframe.reduction import build_str_concat_object
 
             return build_str_concat_object(
                 inp,

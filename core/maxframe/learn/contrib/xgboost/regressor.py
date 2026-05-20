@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
 
 from typing import Union
 
-from ...utils.odpsio import register_odps_model
-from ..utils import make_import_error_func
-from .core import XGBScikitLearnBase, xgboost
+from maxframe.learn.contrib.utils import make_import_error_func
+from maxframe.learn.contrib.xgboost.core import XGBScikitLearnBase, xgboost
+from maxframe.learn.utils.odpsio import register_odps_model
 
 if not xgboost:
     XGBRegressor = make_import_error_func("xgboost")
 else:
     from xgboost.sklearn import XGBRegressorBase
 
-    from .predict import predict
+    from maxframe.learn.contrib.xgboost.predict import predict
 
     @register_odps_model
     class XGBRegressor(XGBScikitLearnBase, XGBRegressorBase):

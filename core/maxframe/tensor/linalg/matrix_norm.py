@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .norm import norm
+from maxframe.tensor.linalg.norm import norm
 
 
 def matrix_norm(x, *, keepdims=False, ord="fro"):
@@ -69,7 +69,7 @@ def matrix_norm(x, *, keepdims=False, ord="fro"):
     1.8570331885190563e-016 # may vary
 
     """
-    from ..datasource.array import asarray
+    from maxframe.tensor.datasource.array import asarray
 
     x = asarray(x)
     return norm(x, axis=(-2, -1), keepdims=keepdims, ord=ord)

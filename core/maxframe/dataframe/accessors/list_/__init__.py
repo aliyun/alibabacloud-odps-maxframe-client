@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,15 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .core import SeriesListMethod
+from maxframe.dataframe.accessors.list_.core import SeriesListMethod
 
 
 def _install():
-    from ....core import CachedAccessor
-    from ...core import SERIES_TYPE
-    from .accessor import ListAccessor
-    from .getitem import series_list_getitem, series_list_getitem_with_index_error
-    from .length import series_list_length
+    from maxframe.core import CachedAccessor
+    from maxframe.dataframe.accessors.list_.accessor import ListAccessor
+    from maxframe.dataframe.accessors.list_.getitem import (
+        series_list_getitem,
+        series_list_getitem_with_index_error,
+    )
+    from maxframe.dataframe.accessors.list_.length import series_list_length
+    from maxframe.dataframe.core import SERIES_TYPE
 
     list_method_to_handlers = {
         "__getitem__": series_list_getitem_with_index_error,

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils import implement_scipy, infer_scipy_dtype
-from .core import TensorSpecialBinOp, _register_special_op
+from maxframe.tensor.special.core import TensorSpecialBinOp, _register_special_op
+from maxframe.tensor.utils import implement_scipy, infer_scipy_dtype
 
 
 @_register_special_op
@@ -119,7 +119,7 @@ def softmax(x, axis=None):
     >>> m.sum(axis=1).to_numpy()
     array([ 1.,  1.,  1.])
     """
-    from ... import tensor as mt
+    from maxframe import tensor as mt
 
     x = mt.tensor(x)
     x_max = mt.amax(x, axis=axis, keepdims=True)
@@ -158,6 +158,6 @@ def softplus(x, **kwargs):
     array([0.31326169, 0.69314718, 1.31326169])
     """
     # use numpy implementation as softplus is introduced in scipy 1.15.
-    from ... import tensor as mt
+    from maxframe import tensor as mt
 
     return mt.logaddexp(0, x, **kwargs)

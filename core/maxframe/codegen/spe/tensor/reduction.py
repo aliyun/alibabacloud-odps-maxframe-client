@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 
 from typing import List
 
-from ....tensor.reduction.core import TensorCumReduction, TensorReduction
-from ....tensor.reduction.nanvar import TensorNanVar
-from ....tensor.reduction.var import TensorVar
-from ..core import register_op_adapter
-from .core import TensorUnaryCommonAdapter
+from maxframe.codegen.spe.core import register_op_adapter
+from maxframe.codegen.spe.tensor.core import TensorUnaryCommonAdapter
+from maxframe.tensor.reduction.core import TensorCumReduction, TensorReduction
+from maxframe.tensor.reduction.nanvar import TensorNanVar
+from maxframe.tensor.reduction.var import TensorVar
 
 
 @register_op_adapter(TensorReduction)

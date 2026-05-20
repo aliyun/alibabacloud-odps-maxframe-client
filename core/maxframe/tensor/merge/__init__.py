@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .append import append
-from .column_stack import column_stack
-from .concatenate import concatenate
-from .dstack import dstack
-from .hstack import hstack
-from .stack import stack
-from .vstack import vstack
+from maxframe.tensor.merge.append import append
+from maxframe.tensor.merge.column_stack import column_stack
+from maxframe.tensor.merge.concatenate import concatenate
+from maxframe.tensor.merge.dstack import dstack
+from maxframe.tensor.merge.hstack import hstack
+from maxframe.tensor.merge.stack import stack
+from maxframe.tensor.merge.vstack import vstack

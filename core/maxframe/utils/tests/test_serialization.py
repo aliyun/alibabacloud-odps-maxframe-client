@@ -15,8 +15,8 @@
 import numpy as np
 import pandas as pd
 
-from ...serialization import Serializer
-from ..serialization import (
+from maxframe.serialization import Serializer
+from maxframe.utils.serialization import (
     deserialize_serializable,
     on_deserialize_shape,
     on_serialize_nsplits,

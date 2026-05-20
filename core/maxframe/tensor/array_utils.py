@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@ from contextlib import contextmanager
 
 import numpy as np
 
-from ..lib import sparse
-from ..lib.sparse.core import get_dense_module, issparse
-from ..utils import lazy_import
+from maxframe.lib import sparse
+from maxframe.lib.sparse.core import get_dense_module, issparse
+from maxframe.utils import lazy_import
 
 cp = lazy_import("cupy", rename="cp")
 

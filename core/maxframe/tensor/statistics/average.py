@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 import numpy as np
 
-from ..datasource import tensor as astensor
-from ..misc.broadcast_to import broadcast_to
-from ..misc.swapaxes import swapaxes
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.misc.broadcast_to import broadcast_to
+from maxframe.tensor.misc.swapaxes import swapaxes
 
 
 def average(a, axis=None, weights=None, returned=False):
@@ -97,7 +97,7 @@ def average(a, axis=None, weights=None, returned=False):
     TypeError: Axis must be specified when shapes of a and weights differ.
 
     """
-    from ..arithmetic import multiply, truediv
+    from maxframe.tensor.arithmetic import multiply, truediv
 
     a = astensor(a)
 

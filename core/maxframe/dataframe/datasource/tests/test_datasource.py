@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,13 +25,11 @@ from odps import ODPS
 from odps import types as odps_types
 from odps.errors import ODPSError
 
-from .... import tensor as mt
-from ....core import OutputType
-from ....core.operator import estimate_size
-from ....tests.utils import tn
-from ....utils import lazy_import
-from ... import read_odps_query, read_odps_table
-from ...core import (
+from maxframe import tensor as mt
+from maxframe.core import OutputType
+from maxframe.core.operator import estimate_size
+from maxframe.dataframe import read_odps_query, read_odps_table
+from maxframe.dataframe.core import (
     DatetimeIndex,
     Float64Index,
     Index,
@@ -39,23 +37,25 @@ from ...core import (
     Int64Index,
     MultiIndex,
 )
-from ..dataframe import from_pandas as from_pandas_df
-from ..date_range import date_range
-from ..from_tensor import (
+from maxframe.dataframe.datasource.dataframe import from_pandas as from_pandas_df
+from maxframe.dataframe.datasource.date_range import date_range
+from maxframe.dataframe.datasource.from_tensor import (
     dataframe_from_1d_tileables,
     dataframe_from_tensor,
     series_from_tensor,
 )
-from ..index import from_pandas as from_pandas_index
-from ..index import from_tileable
-from ..read_odps_query import (
+from maxframe.dataframe.datasource.index import from_pandas as from_pandas_index
+from maxframe.dataframe.datasource.index import from_tileable
+from maxframe.dataframe.datasource.read_odps_query import (
     ColumnSchema,
     _parse_full_explain,
     _parse_simple_explain,
     _resolve_query_schema,
     _resolve_task_sector,
 )
-from ..series import from_pandas as from_pandas_series
+from maxframe.dataframe.datasource.series import from_pandas as from_pandas_series
+from maxframe.tests.utils import tn
+from maxframe.utils import lazy_import
 
 ray = lazy_import("ray")
 
@@ -74,7 +74,9 @@ def test_from_pandas_dataframe():
     assert df.index_value.is_unique is True
     assert df.index_value.min_val == 0
     assert df.index_value.max_val == 9
-    np.testing.assert_equal(df.columns_value._index_value._data, data.columns.values)
+    np.testing.assert_array_equal(
+        df.columns_value._index_value._data, data.columns.values
+    )
 
     result_ctx = dict()
     estimate_size(result_ctx, df.op)
@@ -158,7 +160,7 @@ def test_from_tensor():
     tensor = mt.random.rand(10, 10, chunk_size=5)
     df = dataframe_from_tensor(tensor)
     assert isinstance(df.index_value._index_value, IndexValue.RangeIndex)
-    assert df.dtypes[0] == tensor.dtype
+    assert df.dtypes.iloc[0] == tensor.dtype
 
     # test converted from scalar
     scalar = mt.array(1)
@@ -296,10 +298,12 @@ def test_from_odps_table():
     assert df.index_value.name is None
     assert isinstance(df.index_value.value, IndexValue.RangeIndex)
     assert df.op.get_columns() == ["col1", "col2", "col3"]
+    # In pandas 3.0, string columns have str dtype instead of object
+    string_dtype = pd.Series(["a"]).dtype
     pd.testing.assert_series_equal(
         df.dtypes,
         pd.Series(
-            [np.dtype("O"), np.dtype("int64"), np.dtype("float64")],
+            [string_dtype, np.dtype("int64"), np.dtype("float64")],
             index=["col1", "col2", "col3"],
         ),
     )
@@ -320,16 +324,19 @@ def test_from_odps_table():
     assert df.index_value.name is None
     assert isinstance(df.index_value.value, IndexValue.RangeIndex)
     assert df.op.get_columns() == ["col1", "col2"]
+    # In pandas 3.0, string columns have str dtype instead of object
+    string_dtype = pd.Series(["a"]).dtype
     pd.testing.assert_series_equal(
         df.dtypes,
-        pd.Series([np.dtype("O"), np.dtype("int64")], index=["col1", "col2"]),
+        pd.Series([string_dtype, np.dtype("int64")], index=["col1", "col2"]),
     )
 
     df = read_odps_table(test_table, index_col="col1")
     assert df.op.table_name == test_table.full_table_name
     assert df.index_value.name == "col1"
     assert isinstance(df.index_value.value, IndexValue.Index)
-    assert df.index.dtype == np.dtype("O")
+    # In pandas 3.0, string index has str dtype instead of object
+    assert str(df.index.dtype) in ("object", "string", "str")
     assert df.op.get_columns() == ["col2", "col3"]
     pd.testing.assert_series_equal(
         df.dtypes,
@@ -342,10 +349,12 @@ def test_from_odps_table():
     df = read_odps_table(test_parted_table, append_partitions=True)
     assert df.op.append_partitions is True
     assert df.op.get_columns() == ["col1", "col2", "col3", "pt"]
+    # In pandas 3.0, string columns have str dtype instead of object
+    string_dtype = pd.Series(["a"]).dtype
     pd.testing.assert_series_equal(
         df.dtypes,
         pd.Series(
-            [np.dtype("O"), np.dtype("int64"), np.dtype("float64"), np.dtype("O")],
+            [string_dtype, np.dtype("int64"), np.dtype("float64"), string_dtype],
             index=["col1", "col2", "col3", "pt"],
         ),
     )
@@ -357,10 +366,12 @@ def test_from_odps_table():
     assert df.op.append_partitions is True
     assert df.op.partitions == ["pt=20240103"]
     assert df.op.get_columns() == ["col1", "col2", "pt"]
+    # In pandas 3.0, string columns have str dtype instead of object
+    string_dtype = pd.Series(["a"]).dtype
     pd.testing.assert_series_equal(
         df.dtypes,
         pd.Series(
-            [np.dtype("O"), np.dtype("int64"), np.dtype("O")],
+            [string_dtype, np.dtype("int64"), string_dtype],
             index=["col1", "col2", "pt"],
         ),
     )
@@ -412,10 +423,12 @@ def test_from_odps_query():
     assert df.op.extra_params.no_split_sql is True
     assert df.index_value.name is None
     assert isinstance(df.index_value.value, IndexValue.RangeIndex)
+    # In pandas 3.0, string columns have str dtype instead of object
+    string_dtype = pd.Series(["a"]).dtype
     pd.testing.assert_series_equal(
         df.dtypes,
         pd.Series(
-            [np.dtype("O"), np.dtype("int64"), np.dtype("float64")],
+            [string_dtype, np.dtype("int64"), np.dtype("float64")],
             index=["col1", "col2", "col3"],
         ),
     )
@@ -483,9 +496,9 @@ def test_date_range():
     with pytest.raises(ValueError):
         _ = date_range(pd.NaT, periods=10)
 
-    expected = pd.date_range("2020-1-1", periods=9.0, name="date")
+    expected = pd.date_range("2020-1-1", periods=9, name="date")
 
-    dr = date_range("2020-1-1", periods=9.0, name="date", chunk_size=3)
+    dr = date_range("2020-1-1", periods=9, name="date", chunk_size=3)
     assert isinstance(dr, DatetimeIndex)
     assert dr.shape == (9,)
     assert dr.dtype == expected.dtype

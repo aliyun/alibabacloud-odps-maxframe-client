@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,18 +17,30 @@ from typing import List
 
 import numpy as np
 
-from ...tensor.core import TENSOR_TYPE
+from maxframe.tensor.core import TENSOR_TYPE
 
 try:
     from sklearn.exceptions import ConvergenceWarning
 except ImportError:
     ConvergenceWarning = RuntimeWarning
 
-from ... import opcodes
-from ... import tensor as mt
-from ...core import ENTITY_TYPE, EntityData, ExecutableTuple, OutputType
-from ...core.operator import Operator
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe import tensor as mt
+from maxframe.core import ENTITY_TYPE, EntityData, ExecutableTuple, OutputType
+from maxframe.core.operator import Operator
+from maxframe.learn.core import (
+    BaseEstimator,
+    ClusterMixin,
+    LearnOperatorMixin,
+    TransformerMixin,
+)
+from maxframe.learn.metrics.pairwise import euclidean_distances
+from maxframe.learn.utils.validation import (
+    _check_sample_weight,
+    check_array,
+    check_is_fitted,
+)
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     Float64Field,
@@ -36,10 +48,7 @@ from ...serialization.serializables import (
     KeyField,
     StringField,
 )
-from ...tensor.random import RandomStateField
-from ..core import BaseEstimator, ClusterMixin, LearnOperatorMixin, TransformerMixin
-from ..metrics.pairwise import euclidean_distances
-from ..utils.validation import _check_sample_weight, check_array, check_is_fitted
+from maxframe.tensor.random import RandomStateField
 
 
 def _validate_center_shape(X, n_centers, centers):

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,15 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from .... import dataframe as md
-from ....tests.utils import assert_mf_index_dtype
-from ...core import IndexValue
-from .. import DataFrameMerge
-from ..merge import DistributedMapJoinHint, MapJoinHint, SkewJoinHint
+from maxframe import dataframe as md
+from maxframe.dataframe.core import IndexValue
+from maxframe.dataframe.merge import DataFrameMerge
+from maxframe.dataframe.merge.merge import (
+    DistributedMapJoinHint,
+    MapJoinHint,
+    SkewJoinHint,
+)
+from maxframe.tests.utils import assert_mf_index_dtype
 
 
 def test_merge():

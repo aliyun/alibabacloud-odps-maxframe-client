@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ from typing import Any, Dict
 
 import numpy as np
 
-from ..core import (
+from maxframe.core import (
     HasShapeTileable,
     HasShapeTileableData,
     OutputType,
@@ -28,15 +28,15 @@ from ..core import (
     is_build_mode,
     register_output_types,
 )
-from ..core.entity.utils import fill_chunk_slices, refresh_tileable_shape
-from ..serialization.serializables import (
+from maxframe.core.entity.utils import fill_chunk_slices, refresh_tileable_shape
+from maxframe.serialization.serializables import (
     AnyField,
     DataTypeField,
     Serializable,
     StringField,
 )
-from ..utils import make_dtype
-from .utils import fetch_corner_data, get_chunk_slices
+from maxframe.tensor.utils import fetch_corner_data, get_chunk_slices
+from maxframe.utils import make_dtype
 
 logger = logging.getLogger(__name__)
 
@@ -149,13 +149,13 @@ class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
 
     @property
     def real(self):
-        from .arithmetic import real
+        from maxframe.tensor.arithmetic import real
 
         return real(self)
 
     @property
     def imag(self):
-        from .arithmetic import imag
+        from maxframe.tensor.arithmetic import imag
 
         return imag(self)
 
@@ -183,7 +183,7 @@ class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
         if self.issparse():
             return self
 
-        from .datasource import fromdense
+        from maxframe.tensor.datasource import fromdense
 
         return fromdense(self, missing=missing)
 
@@ -191,12 +191,12 @@ class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
         if not self.issparse():
             return self
 
-        from .datasource import fromsparse
+        from maxframe.tensor.datasource import fromsparse
 
         return fromsparse(self, fill_value=fill_value)
 
     def transpose(self, *axes):
-        from .misc import transpose
+        from maxframe.tensor.misc import transpose
 
         if len(axes) == 1 and isinstance(axes[0], Iterable):
             axes = axes[0]
@@ -208,7 +208,7 @@ class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
         return self.transpose()
 
     def reshape(self, shape, *shapes, **kw):
-        from .reshape import reshape
+        from maxframe.tensor.reshape import reshape
 
         order = kw.pop("order", "C")
         if kw:
@@ -226,12 +226,12 @@ class TensorData(HasShapeTileableData, _ExecuteAndFetchMixin):
 
     @staticmethod
     def from_dataframe(in_df):
-        from .datasource import from_dataframe
+        from maxframe.tensor.datasource import from_dataframe
 
         return from_dataframe(in_df)
 
     def to_dataframe(self, *args, **kwargs):
-        from ..dataframe.datasource.from_tensor import dataframe_from_tensor
+        from maxframe.dataframe.datasource.from_tensor import dataframe_from_tensor
 
         return dataframe_from_tensor(self, *args, **kwargs)
 
@@ -271,7 +271,7 @@ class Tensor(HasShapeTileable):
 
     @real.setter
     def real(self, new_real):
-        from .arithmetic.setreal import set_real
+        from maxframe.tensor.arithmetic.setreal import set_real
 
         self._data = set_real(self._data, new_real).data
 
@@ -281,7 +281,7 @@ class Tensor(HasShapeTileable):
 
     @imag.setter
     def imag(self, new_imag):
-        from .arithmetic.setimag import set_imag
+        from maxframe.tensor.arithmetic.setimag import set_imag
 
         self._data = set_imag(self._data, new_imag).data
 
@@ -289,7 +289,7 @@ class Tensor(HasShapeTileable):
         return np.asarray(self.to_numpy(), dtype=dtype)
 
     def __array_function__(self, func, types, args, kwargs):
-        from .. import tensor as module
+        from maxframe import tensor as module
 
         for submodule in func.__module__.split(".")[1:]:
             try:
@@ -462,7 +462,7 @@ class Tensor(HasShapeTileable):
         array([('c', 1), ('a', 2)],
               dtype=[('x', '|S1'), ('y', '<i4')])
         """
-        from .sort import sort
+        from maxframe.tensor.sort import sort
 
         self._data = sort(
             self,
@@ -524,7 +524,7 @@ class Tensor(HasShapeTileable):
         >>> a.execute()
         array([1, 2, 3, 4])
         """
-        from .sort import partition
+        from maxframe.tensor.sort import partition
 
         self._data = partition(self, kth, axis=axis, kind=kind, order=order, **kw).data
 

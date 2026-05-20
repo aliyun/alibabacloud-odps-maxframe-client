@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,17 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import TILEABLE_TYPE, EntityData
-from ...serialization.serializables import AnyField, Int32Field, Int64Field, StringField
-from ..core import TENSOR_TYPE, TensorOrder
-from ..datasource.array import tensor as astensor
-from ..operators import TensorOperator, TensorOperatorMixin
+from maxframe import opcodes
+from maxframe.core import TILEABLE_TYPE, EntityData
+from maxframe.serialization.serializables import (
+    AnyField,
+    Int32Field,
+    Int64Field,
+    StringField,
+)
+from maxframe.tensor.core import TENSOR_TYPE, TensorOrder
+from maxframe.tensor.datasource.array import tensor as astensor
+from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
 
 
 class TensorSearchsorted(TensorOperator, TensorOperatorMixin):

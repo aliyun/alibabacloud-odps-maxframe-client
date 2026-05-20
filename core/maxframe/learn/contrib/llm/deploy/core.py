@@ -16,9 +16,9 @@ from typing import Any, Dict, List, Optional, Union
 
 from odps.models import Resource as ODPSResource
 
-from .....serialization.serializables import Serializable, StringField
-from .config import ModelDeploymentConfig
-from .framework import InferenceFrameworkEnum
+from maxframe.learn.contrib.llm.deploy.config import ModelDeploymentConfig
+from maxframe.learn.contrib.llm.deploy.framework import InferenceFrameworkEnum
+from maxframe.serialization.serializables import Serializable, StringField
 
 _registered_llm_models = {}
 

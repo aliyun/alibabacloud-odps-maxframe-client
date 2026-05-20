@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,11 +15,10 @@
 import numpy as np
 import pytest
 
-from ....serialization import deserialize, serialize
-from ....serialization.serializables import Serializable
-from ...datasource import tensor as from_ndarray
-from ...utils import AxisError
-from .. import (
+from maxframe.serialization import deserialize, serialize
+from maxframe.serialization.serializables import Serializable
+from maxframe.tensor.datasource import tensor as from_ndarray
+from maxframe.tensor.random import (
     RandomState,
     TensorPermutation,
     beta,
@@ -31,7 +30,8 @@ from .. import (
     randn,
     shuffle,
 )
-from ..core import RandomStateField
+from maxframe.tensor.random.core import RandomStateField
+from maxframe.tensor.utils import AxisError
 
 
 class ObjWithRandomStateField(Serializable):

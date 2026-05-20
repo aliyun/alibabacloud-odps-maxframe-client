@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 import numpy as np
 
-from ...... import tensor as mt
-from ......learn.utils import check_consistent_length
-from ....core import SPECodeContext
-from ..validation import CheckConsistentLengthAdapter
+from maxframe import tensor as mt
+from maxframe.codegen.spe.core import SPECodeContext
+from maxframe.codegen.spe.learn.utils.validation import CheckConsistentLengthAdapter
+from maxframe.learn.utils import check_consistent_length
 
 
 def test_check_consistent_length():

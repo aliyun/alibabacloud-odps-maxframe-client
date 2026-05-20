@@ -22,13 +22,20 @@ from typing import TYPE_CHECKING, Any, Optional
 import numpy as np
 import pandas as pd
 
-from ..core import OutputType, get_output_types
-from ..errors import TypeInferWarning
-from ..utils import make_dtypes, quiet_stdio, unwrap_function
-from .utils import build_df, build_empty_df, build_series, make_column_list, parse_index
+from maxframe.core import OutputType, get_output_types
+from maxframe.dataframe.utils import (
+    build_df,
+    build_empty_df,
+    build_series,
+    find_input_of_groupby,
+    make_column_list,
+    parse_index,
+)
+from maxframe.errors import TypeInferWarning
+from maxframe.utils import make_dtypes, quiet_stdio, unwrap_function
 
 if TYPE_CHECKING:
-    from .core import IndexValue
+    from maxframe.dataframe.core import IndexValue
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +64,7 @@ class InferredDataFrameMeta:
             )
 
     def prepend_groupby_keys(self, in_groupby_obj) -> None:
-        from .core import GROUPBY_TYPE
+        from maxframe.dataframe.core import GROUPBY_TYPE
 
         if self.index_value is None:
             return
@@ -66,13 +73,6 @@ class InferredDataFrameMeta:
         self.index_value = parse_index(
             prepend_group_keys_as_index(res_idx, in_groupby_obj), in_groupby_obj.key
         )
-
-
-def _get_groupby_input_df(groupby):
-    in_df = groupby
-    while in_df.op.output_types[0] not in (OutputType.dataframe, OutputType.series):
-        in_df = in_df.inputs[0]
-    return in_df
 
 
 class MockObjectMixin:
@@ -128,9 +128,10 @@ def infer_dataframe_return_value(
     elementwise=None,
     skip_infer=False,
     prepend_index_group_keys=False,
+    axis=None,
 ) -> InferredDataFrameMeta:
-    from .core import GROUPBY_TYPE, INDEX_TYPE, IndexValue
-    from .typing_ import get_function_output_meta
+    from maxframe.dataframe.core import GROUPBY_TYPE, INDEX_TYPE, IndexValue
+    from maxframe.dataframe.typing_ import get_function_output_meta
 
     ret_output_type = None
     ret_index_value = None
@@ -141,7 +142,7 @@ def infer_dataframe_return_value(
 
     unwrapped_func = unwrap_function(func)
 
-    func_annotation_meta = get_function_output_meta(unwrapped_func, df_obj)
+    func_annotation_meta = get_function_output_meta(unwrapped_func, df_obj, axis=axis)
     func_index_value = None
     if func_annotation_meta:
         output_type = output_type or func_annotation_meta.output_type
@@ -178,7 +179,7 @@ def infer_dataframe_return_value(
                 "index parameter if you need other indexes.",
                 TypeInferWarning,
             )
-            in_df_obj = _get_groupby_input_df(df_obj)
+            in_df_obj = find_input_of_groupby(df_obj)
             ret_index_value = parse_index(
                 in_df_obj.index_value.to_pandas()[:0], df_obj.key, func
             )
@@ -308,7 +309,7 @@ def infer_dataframe_return_value(
 
 
 def prepend_group_keys_as_index(res_index, input_groupby) -> pd.Index:
-    from .core import GROUPBY_TYPE
+    from maxframe.dataframe.core import GROUPBY_TYPE
 
     groupby_params = input_groupby.op.groupby_params
     if not groupby_params.get("group_keys"):

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,6 @@
 # limitations under the License.
 
 # noinspection PyUnresolvedReferences
-from ..core import ExecutableTuple
-from .core import spawn
-from .run_script import run_script
+from maxframe.core import ExecutableTuple
+from maxframe.remote.core import spawn
+from maxframe.remote.run_script import run_script

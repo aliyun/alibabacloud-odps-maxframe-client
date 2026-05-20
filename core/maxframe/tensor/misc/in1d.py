@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ from typing import Union
 
 import numpy as np
 
-from ...typing_ import TileableType
+from maxframe.typing_ import TileableType
 
 
 def in1d(
@@ -86,8 +86,8 @@ def in1d(
     >>> test[mask].execute()
     array([1, 5])
     """
-    from .. import asarray
-    from .isin import isin
+    from maxframe.tensor import asarray
+    from maxframe.tensor.misc.isin import isin
 
     ar1 = asarray(ar1).ravel()
     ar2 = asarray(ar2).ravel()

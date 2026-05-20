@@ -23,18 +23,18 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, Type, Union
 from odps.types import OdpsSchema
 from odps.utils import camel_to_underline
 
-from ..core import OperatorType, Tileable, TileableGraph, enter_mode
-from ..core.operator import Fetch, Operator
-from ..extension import iter_extensions
-from ..io.odpsio import build_dataframe_table_meta
-from ..io.odpsio.schema import pandas_to_odps_schema
-from ..lib import wrapped_pickle as pickle
-from ..protocol import DataFrameTableMeta, ResultInfo
-from ..serialization import PickleContainer
-from ..serialization.serializables import Serializable, StringField
-from ..typing_ import PandasObjectTypes
-from ..udf import MarkedFunction, PythonPackOptions
-from ..utils import ServiceLoggerAdapter
+from maxframe.core import OperatorType, Tileable, TileableGraph, enter_mode
+from maxframe.core.operator import Fetch, Operator
+from maxframe.extension import iter_extensions
+from maxframe.io.odpsio import build_dataframe_table_meta
+from maxframe.io.odpsio.schema import pandas_to_odps_schema
+from maxframe.lib import wrapped_pickle as pickle
+from maxframe.protocol import DataFrameTableMeta, ResultInfo
+from maxframe.serialization import PickleContainer
+from maxframe.serialization.serializables import Serializable, StringField
+from maxframe.typing_ import PandasObjectTypes
+from maxframe.udf import MarkedFunction, PythonPackOptions
+from maxframe.utils import ServiceLoggerAdapter
 
 if TYPE_CHECKING:
     from odpsctx import ODPSSessionContext

@@ -1,7 +1,7 @@
 import sys
 from functools import wraps
 
-from . import Traceback
+from maxframe.lib.tblib import Traceback
 
 
 class Error(object):

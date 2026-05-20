@@ -16,9 +16,12 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ....udf import MarkedFunction
-from ... import DataFrame
-from ...core import DATAFRAME_TYPE, SERIES_TYPE
+from maxframe.dataframe import DataFrame
+from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+from maxframe.udf import MarkedFunction
+from maxframe.utils import pd_release_version
+
+_get_column_by_copy = pd_release_version[0] >= 3
 
 
 @pytest.fixture
@@ -98,7 +101,7 @@ def test_apply_chunk_infer_dtypes_and_index(df1, df2, df3):
     assert result.dtypes.equals(df2.dtypes)
 
     # mark functions
-    from ....udf import with_python_requirements, with_resources
+    from maxframe.udf import with_python_requirements, with_resources
 
     @with_resources("empty.txt")
     @with_python_requirements("numpy")
@@ -158,12 +161,13 @@ def test_apply_chunk(df1):
         batch_rows=5,
     )
     assert result.shape == (np.nan,)
-    assert df1.index_value.key == result.index_value.key
-    assert df1.a.index_value.key == result.index_value.key
+    if not _get_column_by_copy:
+        assert df1.index_value.key == result.index_value.key
+        assert df1.a.index_value.key == result.index_value.key
 
     # return dataframe with given dtypes
     result = df1.a.mf.apply_chunk(
-        lambda x: pd.concat([x, x], axis=1),
+        lambda x: pd.concat([x, x]),
         output_type="dataframe",
         dtypes=pd.Series(["int64", "int64"]),
         batch_rows=5,

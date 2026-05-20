@@ -33,8 +33,8 @@ try:
 except ImportError:
     NDArrayBacked = type("NDArrayBacked", (object,), {"is_fake": True})
 
-from ...lib.version import parse as parse_version
-from ..compat import cached_property
+from maxframe.lib.compat import cached_property
+from maxframe.lib.version import parse as parse_version
 
 """
 This module is copied from pandas to use in framedriver as it can only run on python3.7,
@@ -153,7 +153,10 @@ class FakeArrowExtensionArray(ExtensionArray, NDArrayBacked):
                 x if not pd.api.types.is_scalar(x) or pd.notna(x) else None
                 for x in scalars
             ]
-            pa_array = pa.array(scalars, type=pa_type)
+            try:
+                pa_array = pa.array(scalars, type=pa_type)
+            except TypeError:
+                pa_array = pa.array(scalars).cast(pa_type)
         arr = cls(pa_array)
         return arr
 
@@ -607,7 +610,7 @@ class FakeDatetimeTZArrowDtype(DatetimeTZDtype, FakeArrowDtype):
     """
 
     def __init__(self, pyarrow_type):
-        from ... import options
+        from maxframe import options
 
         FakeArrowDtype.__init__(self, pyarrow_type)
         DatetimeTZDtype.__init__(

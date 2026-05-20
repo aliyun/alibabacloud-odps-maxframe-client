@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,19 +17,19 @@ from typing import List
 import numpy as np
 import pandas as pd
 
-from ...core import EntityData, OutputType
-from ...serialization.serializables import (
+from maxframe.core import EntityData, OutputType
+from maxframe.dataframe.datasource.dataframe import from_pandas as from_pandas_df
+from maxframe.dataframe.datasource.series import from_pandas as from_pandas_series
+from maxframe.dataframe.initializer import Series as asseries
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     KeyField,
     ListField,
     StringField,
 )
-from ...utils import make_dtype, pd_release_version
-from ..datasource.dataframe import from_pandas as from_pandas_df
-from ..datasource.series import from_pandas as from_pandas_series
-from ..initializer import Series as asseries
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.utils import make_dtype, pd_release_version
 
 _encoding_dtype_kind = ["O", "S", "U"]
 _ret_uint8 = pd_release_version < (2, 0, 0)

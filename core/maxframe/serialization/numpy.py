@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ from typing import Any, Dict, List
 
 import numpy as np
 
-from .core import Serializer, buffered
+from maxframe.serialization.core import Serializer, buffered
 
 _TYPE_CHAR_NP_GENERIC = "G"
 

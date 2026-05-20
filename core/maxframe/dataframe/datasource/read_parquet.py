@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ from urllib.parse import urlparse
 import numpy as np
 import pandas as pd
 
-from ...protocol import DefaultIndexType
+from maxframe.protocol import DefaultIndexType
 
 try:
     import pyarrow as pa
@@ -26,9 +26,21 @@ try:
 except ImportError:
     pa = pq = None
 
-from ... import opcodes
-from ...config import options
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.config import options
+from maxframe.dataframe.datasource.core import (
+    ColumnPruneSupportedDataSourceMixin,
+    DtypeBackendCompatibleMixin,
+    LakeDataSource,
+)
+from maxframe.dataframe.datasource.utils import get_lake_output_info, iter_local_files
+from maxframe.dataframe.operators import OutputType
+from maxframe.dataframe.utils import (
+    parse_index,
+    to_arrow_dtypes,
+    validate_default_index_type,
+)
+from maxframe.serialization.serializables import (
     BoolField,
     DictField,
     Int32Field,
@@ -36,15 +48,7 @@ from ...serialization.serializables import (
     ListField,
     StringField,
 )
-from ...utils import make_dtypes, no_default
-from ..operators import OutputType
-from ..utils import parse_index, to_arrow_dtypes, validate_default_index_type
-from .core import (
-    ColumnPruneSupportedDataSourceMixin,
-    DtypeBackendCompatibleMixin,
-    LakeDataSource,
-)
-from .utils import get_lake_output_info, iter_local_files
+from maxframe.utils import make_dtypes, no_default
 
 PARQUET_MEMORY_SCALE = 15
 STRING_FIELD_OVERHEAD = 50
@@ -71,6 +75,7 @@ class DataFrameReadParquet(
     groups_as_chunks = BoolField("groups_as_chunks", default=None)
     group_index = Int32Field("group_index", default=None)
     read_kwargs = DictField("read_kwargs", default=None)
+    filters = ListField("filters", default=None)
     # for chunk
     partitions = DictField("partitions", default=None)
     partition_keys = DictField("partition_keys", default=None)
@@ -113,6 +118,7 @@ def read_parquet(
     engine: str = "auto",
     columns: list = None,
     groups_as_chunks: bool = False,
+    filters: list = None,
     dtype_backend: str = no_default,
     default_index_type: Union[DefaultIndexType, str] = None,
     storage_options: dict = None,
@@ -154,6 +160,13 @@ def read_parquet(
         if True, each row group correspond to a chunk.
         if False, each file correspond to a chunk.
         Only available for 'pyarrow' engine.
+    filters : list, default=None
+        To filter out data. Filter syntax: [[(column, op, val), …],…] where op is
+        [==, =, >, >=, <, <=, !=, in, not in] The innermost tuples are transposed
+        into a set of filters applied through an AND operation. The outer list
+        combines these sets of filters through an OR operation. A single list of
+        tuples can also be used, meaning that no OR operation between set of
+        filters is to be conducted.
     default_index_type: {None, 'range', 'incremental'}, default None
         If index_col not specified, specify type of index to generate.
         If not specified, `options.dataframe.default_index_type` will be used.
@@ -172,7 +185,7 @@ def read_parquet(
     -------
     MaxFrame DataFrame
     """
-    from .dataframe import from_pandas
+    from maxframe.dataframe.datasource.dataframe import from_pandas
 
     engine_type = check_engine(engine)
     default_index_type = validate_default_index_type(default_index_type, **kwargs)
@@ -203,6 +216,7 @@ def read_parquet(
         engine=engine_type,
         columns=columns,
         groups_as_chunks=groups_as_chunks,
+        filters=filters,
         dtype_backend=dtype_backend,
         storage_options=storage_options,
         read_kwargs=kwargs,

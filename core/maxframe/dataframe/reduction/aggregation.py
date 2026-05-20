@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,23 +24,11 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa
 
-from ... import opcodes
-from ... import tensor as maxframe_tensor
-from ...core import ENTITY_TYPE, OutputType, enter_mode
-from ...io.odpsio.schema import pandas_dtype_to_arrow_type
-from ...serialization.serializables import (
-    AnyField,
-    BoolField,
-    DictField,
-    Int32Field,
-    ListField,
-)
-from ...typing_ import TileableType
-from ...udf import BuiltinFunction
-from ...utils import get_pd_option, lazy_import, pd_release_version, wrap_arrow_dtype
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_df, build_empty_df, build_series, parse_index, validate_axis
-from .core import (
+from maxframe import opcodes
+from maxframe import tensor as maxframe_tensor
+from maxframe.core import ENTITY_TYPE, OutputType, enter_mode
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.reduction.core import (
     BuiltinReduction,
     CustomReduction,
     ReductionAggStep,
@@ -48,7 +36,30 @@ from .core import (
     ReductionPostStep,
     ReductionPreStep,
 )
-from .unique import _unique
+from maxframe.dataframe.reduction.unique import _unique
+from maxframe.dataframe.utils import (
+    build_df,
+    build_empty_df,
+    build_series,
+    parse_index,
+    validate_axis,
+)
+from maxframe.io.odpsio.schema import pandas_dtype_to_arrow_type
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    DictField,
+    Int32Field,
+    ListField,
+)
+from maxframe.typing_ import TileableType
+from maxframe.udf import BuiltinFunction
+from maxframe.utils import (
+    get_pd_option,
+    lazy_import,
+    pd_release_version,
+    wrap_arrow_dtype,
+)
 
 cp = lazy_import("cupy", rename="cp")
 cudf = lazy_import("cudf")
@@ -81,7 +92,7 @@ _agg_functions = {
     "sem": lambda x, skipna=True, ddof=1: x.sem(skipna=skipna, ddof=ddof),
     "skew": lambda x, skipna=True, bias=False: x.skew(skipna=skipna, bias=bias),
     "kurt": lambda x, skipna=True, bias=False: x.kurt(skipna=skipna, bias=bias),
-    "kurtosis": lambda x, skipna=True, bias=False: x.kurtosis(skipna=skipna, bias=bias),
+    "kurtosis": lambda x, skipna=True, bias=False: x.kurt(skipna=skipna, bias=bias),
     "nunique": lambda x: x.nunique(),
     "unique": lambda x: _unique(x, output_list_scalar=True),
     "median": lambda x, skipna=True: x.median(skipna=skipna),

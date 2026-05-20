@@ -1,7 +1,7 @@
 import sys
 from types import TracebackType
 
-from . import Frame, Traceback
+from maxframe.lib.tblib import Frame, Traceback
 
 if sys.version_info.major >= 3:
     import copyreg

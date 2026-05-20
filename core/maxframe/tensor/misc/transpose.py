@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import EntityData
-from ...serialization.serializables import FieldTypes, KeyField, ListField
-from ..core import TensorOrder
-from ..datasource import tensor as astensor
-from ..operators import TensorHasInput, TensorOperatorMixin
-from ..utils import reverse_order
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.serialization.serializables import FieldTypes, KeyField, ListField
+from maxframe.tensor.core import TensorOrder
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorHasInput, TensorOperatorMixin
+from maxframe.tensor.utils import reverse_order
 
 
 def _reorder(x, axes):

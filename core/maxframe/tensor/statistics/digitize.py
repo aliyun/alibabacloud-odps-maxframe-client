@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...lib.sparse.core import get_array_module
-from ...serialization.serializables import AnyField, BoolField, KeyField
-from ...typing_ import EntityType
-from ..core import Tensor, TensorOrder
-from ..datasource import tensor as astensor
-from ..operators import TensorHasInput, TensorOperatorMixin
+from maxframe import opcodes
+from maxframe.lib.sparse.core import get_array_module
+from maxframe.serialization.serializables import AnyField, BoolField, KeyField
+from maxframe.tensor.core import Tensor, TensorOrder
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorHasInput, TensorOperatorMixin
+from maxframe.typing_ import EntityType
 
 
 class TensorDigitize(TensorHasInput, TensorOperatorMixin):

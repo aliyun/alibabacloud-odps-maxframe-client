@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...core import OutputType, register_fetch_class
-from ...core.operator import Fetch, FetchMixin, FetchShuffle
-from ...serialization.serializables import DataTypeField
-from ..operators import TensorOperatorMixin
+from maxframe.core import OutputType, register_fetch_class
+from maxframe.core.operator import Fetch, FetchMixin, FetchShuffle
+from maxframe.serialization.serializables import DataTypeField
+from maxframe.tensor.operators import TensorOperatorMixin
 
 
 class TensorFetchMixin(TensorOperatorMixin, FetchMixin):

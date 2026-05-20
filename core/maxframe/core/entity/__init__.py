@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .core import ENTITY_TYPE, Entity, EntityData
-from .executable import ExecutableTuple, _ExecuteAndFetchMixin
-from .objects import OBJECT_TYPE, Object, ObjectData
-from .output_types import (
+from maxframe.core.entity.core import ENTITY_TYPE, Entity, EntityData
+from maxframe.core.entity.executable import ExecutableTuple, _ExecuteAndFetchMixin
+from maxframe.core.entity.objects import OBJECT_TYPE, Object, ObjectData
+from maxframe.core.entity.output_types import (
     OutputType,
     df_output_types,
     get_fetch_class,
@@ -24,7 +24,7 @@ from .output_types import (
     register_fetch_class,
     register_output_types,
 )
-from .tileables import (
+from maxframe.core.entity.tileables import (
     TILEABLE_TYPE,
     HasShapeTileable,
     HasShapeTileableData,

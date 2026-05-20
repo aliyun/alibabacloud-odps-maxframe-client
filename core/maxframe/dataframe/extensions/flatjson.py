@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
 
 from typing import List
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import ListField
-from ...serialization.serializables.field_type import FieldTypes
-from ...utils import make_dtype, make_dtypes
-from ..core import DataFrame
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.core import DataFrame
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index
+from maxframe.serialization.serializables import ListField
+from maxframe.serialization.serializables.field_type import FieldTypes
+from maxframe.utils import make_dtype, make_dtypes
 
 
 class SeriesFlatJSONOperator(DataFrameOperator, DataFrameOperatorMixin):

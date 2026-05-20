@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,12 +15,17 @@
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import AnyField, BoolField, Int32Field, StringField
-from ...utils import no_default, pd_release_version
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index, validate_axis
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index, validate_axis
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    Int32Field,
+    StringField,
+)
+from maxframe.utils import no_default, pd_release_version
 
 _drop_na_enable_no_default = pd_release_version[:2] >= (1, 5)
 
@@ -158,7 +163,12 @@ def df_dropna(
     1  Batman  Batmobile 1940-04-25
     """
     axis = validate_axis(axis, df)
-    use_inf_as_na = pd.get_option("mode.use_inf_as_na")
+    try:
+        use_inf_as_na = pd.get_option("mode.use_inf_as_na")
+    except KeyError:
+        # use_inf_as_na option is deprecated in pandas 2.1+
+        use_inf_as_na = False
+
     if axis != 0:
         raise NotImplementedError("Does not support dropna on DataFrame when axis=1")
     if (

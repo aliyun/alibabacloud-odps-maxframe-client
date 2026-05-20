@@ -15,8 +15,12 @@
 import io
 from typing import Any, Optional
 
-from ....utils import lazy_import
-from .common import get_oss_bucket, oss_stat, parse_osspath
+from maxframe.lib.filesystem._oss_lib.common import (
+    get_oss_bucket,
+    oss_stat,
+    parse_osspath,
+)
+from maxframe.utils import lazy_import
 
 oss2 = lazy_import("oss2", placeholder=True)
 

@@ -408,12 +408,12 @@ cdef class DirectedGraph:
         return Source(self.to_dot())._repr_mimebundle_(*args, **kw)
 
     def compose(self, list keys=None):
-        from ...optimizes.chunk_graph.fuse import Fusion
+        from maxframe.optimizes.chunk_graph.fuse import Fusion
 
         return Fusion(self).compose(keys=keys)
 
     def decompose(self, nodes=None):
-        from ...optimizes.chunk_graph.fuse import Fusion
+        from maxframe.optimizes.chunk_graph.fuse import Fusion
 
         Fusion(self).decompose(nodes=nodes)
 

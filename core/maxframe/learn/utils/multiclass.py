@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,15 +18,15 @@ from typing import List
 import numpy as np
 from scipy.sparse import spmatrix
 
-from ... import opcodes
-from ... import tensor as mt
-from ...core import ENTITY_TYPE, TILEABLE_TYPE, OutputType
-from ...core.operator import Operator
-from ...serialization.serializables import AnyField, ListField
-from ...tensor.core import TENSOR_TYPE, TensorOrder
-from ...typing_ import EntityType, TileableType
-from ...udf import builtin_function
-from ..core import LearnOperatorMixin
+from maxframe import opcodes
+from maxframe import tensor as mt
+from maxframe.core import ENTITY_TYPE, TILEABLE_TYPE, OutputType
+from maxframe.core.operator import Operator
+from maxframe.learn.core import LearnOperatorMixin
+from maxframe.serialization.serializables import AnyField, ListField
+from maxframe.tensor.core import TENSOR_TYPE, TensorOrder
+from maxframe.typing_ import EntityType, TileableType
+from maxframe.udf import builtin_function
 
 
 class UniqueLabels(Operator, LearnOperatorMixin):

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,16 +16,22 @@ from typing import List
 
 import pandas as pd
 
-from ... import opcodes
-from ...core import EntityData, OutputType
-from ...serialization.serializables import AnyField, Int8Field, Int64Field, KeyField
-from ...utils import no_default, pd_release_version
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_df, build_series, parse_index, validate_axis
+from maxframe import opcodes
+from maxframe.core import EntityData, OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_df, build_series, parse_index, validate_axis
+from maxframe.serialization.serializables import (
+    AnyField,
+    Int8Field,
+    Int64Field,
+    KeyField,
+)
+from maxframe.utils import no_default, pd_release_version
 
 _need_consolidate = pd.__version__ in ("1.1.0", "1.3.0", "1.3.1")
 _enable_no_default = pd_release_version[:2] > (1, 1)
 _with_column_freq_bug = (1, 2, 0) <= pd_release_version < (1, 4, 3)
+_freq_with_fill_value_deprecated = pd_release_version >= (2, 1, 0)
 
 
 class DataFrameShift(DataFrameOperator, DataFrameOperatorMixin):
@@ -46,15 +52,18 @@ class DataFrameShift(DataFrameOperator, DataFrameOperatorMixin):
         super()._set_inputs(op, inputs)
         op._input = op._inputs[0]
 
-    def _call_dataframe(self, df):
-        test_df = build_df(df)
-        result_df = test_df.shift(
-            periods=self.periods,
-            freq=self.freq,
-            axis=self.axis,
-            fill_value=self.fill_value,
+    def _mock_shift(self, inp):
+        shift_ext_kw = {}
+        if _with_column_freq_bug or not (
+            _freq_with_fill_value_deprecated and self.freq is not None
+        ):  # pragma: no branch
+            shift_ext_kw["fill_value"] = self.fill_value
+        return inp.shift(
+            periods=self.periods, freq=self.freq, axis=self.axis, **shift_ext_kw
         )
 
+    def _call_dataframe(self, df):
+        result_df = self._mock_shift(build_df(df))
         if self.freq is None:
             # shift data
             index_value = df.index_value
@@ -79,14 +88,7 @@ class DataFrameShift(DataFrameOperator, DataFrameOperatorMixin):
         )
 
     def _call_series(self, series):
-        test_series = build_series(series)
-        result_series = test_series.shift(
-            periods=self.periods,
-            freq=self.freq,
-            axis=self.axis,
-            fill_value=self.fill_value,
-        )
-
+        result_series = self._mock_shift(build_series(series))
         index_value = series.index_value
         if self.freq is not None:
             # shift index
@@ -130,7 +132,7 @@ class DataFrameShift(DataFrameOperator, DataFrameOperatorMixin):
             return parse_index(pd_index, periods, freq)
 
 
-def shift(df_or_series, periods=1, freq=None, axis=0, fill_value=None):
+def shift(df_or_series, periods=1, freq=None, axis=0, fill_value=no_default):
     """
     Shift index by desired number of periods with an optional time `freq`.
 
@@ -205,7 +207,7 @@ def shift(df_or_series, periods=1, freq=None, axis=0, fill_value=None):
     axis = validate_axis(axis, df_or_series)
     if periods == 0:
         return df_or_series.copy()
-    if fill_value is no_default:  # pragma: no cover
+    if fill_value is no_default:
         if not _enable_no_default or (
             _with_column_freq_bug and axis == 1 and freq is not None
         ):

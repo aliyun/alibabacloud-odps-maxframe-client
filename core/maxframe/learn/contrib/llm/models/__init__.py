@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .dashscope import DashScopeMultiModalLLM, DashScopeTextLLM
-from .odps import ODPSLLM
-from .openai import OpenAICompatibleTextLLM
+from maxframe.learn.contrib.llm.models.dashscope import (
+    DashScopeMultiModalLLM,
+    DashScopeTextLLM,
+)
+from maxframe.learn.contrib.llm.models.odps import ODPSLLM
+from maxframe.learn.contrib.llm.models.openai import OpenAICompatibleTextLLM

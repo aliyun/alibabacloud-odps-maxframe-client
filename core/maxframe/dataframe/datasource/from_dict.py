@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...core import ENTITY_TYPE
-from ...utils import find_objects, no_default
-from ..utils import validate_axis
+from maxframe.core import ENTITY_TYPE
+from maxframe.dataframe.utils import validate_axis
+from maxframe.utils import find_objects, no_default
 
 
 def dataframe_from_dict(data, orient="columns", dtype=None, columns=None):
@@ -98,8 +98,8 @@ def dataframe_from_dict(data, orient="columns", dtype=None, columns=None):
     a  b   1  3
        c   2  4
     """
-    from ..initializer import DataFrame as DataFrameInit
-    from .from_tensor import dataframe_from_1d_tileables
+    from maxframe.dataframe.datasource.from_tensor import dataframe_from_1d_tileables
+    from maxframe.dataframe.initializer import DataFrame as DataFrameInit
 
     if orient != "tight" and not find_objects(data, ENTITY_TYPE):
         res = DataFrameInit(data)

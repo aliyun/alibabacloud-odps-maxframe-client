@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,17 +19,17 @@ import warnings
 import numpy as np
 import pandas as pd
 
-from ...utils import parse_readable_size
+from maxframe.utils import parse_readable_size
 
 try:
     from sklearn import get_config as sklearn_get_config
 except ImportError:
     sklearn_get_config = None
 
-from ...config import options
-from ...dataframe import DataFrame, Series
-from ...dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
-from ...tensor import tensor as astensor
+from maxframe.config import options
+from maxframe.dataframe import DataFrame, Series
+from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+from maxframe.tensor import tensor as astensor
 
 
 def convert_to_tensor_or_dataframe(item):

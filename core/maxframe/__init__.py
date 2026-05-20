@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import dataframe, learn, remote, tensor
-from .config import options
-from .lib.dtypes_extension import ExternalBlobDtype
-from .session import execute, fetch, new_session, stop_server
+from maxframe import dataframe, learn, remote, tensor
+from maxframe.config import options
+from maxframe.failures import get_failure_info
+from maxframe.lib.dtypes_extension import ExternalBlobDtype
+from maxframe.session import execute, fetch, new_session, stop_server
 
 
 def _get_version():

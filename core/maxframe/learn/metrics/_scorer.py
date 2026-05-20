@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 from typing import Callable, Union
 
-from . import accuracy_score, log_loss, r2_score
+from maxframe.learn.metrics import accuracy_score, log_loss, r2_score
 
 try:
     from sklearn.metrics import make_scorer

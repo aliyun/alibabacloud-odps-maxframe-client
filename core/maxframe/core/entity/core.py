@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...serialization.serializables import (
+from maxframe.core.base import Base
+from maxframe.serialization.serializables import (
     DictField,
     FieldTypes,
     ReferenceField,
     Serializable,
 )
-from ...utils import AttributeDict
-from ..base import Base
+from maxframe.utils import AttributeDict
 
 
 class EntityData(Base):
@@ -54,7 +54,7 @@ class EntityData(Base):
         return self.op.is_sparse()
 
     def is_fetch(self):
-        from ..operator import Fetch
+        from maxframe.core.operator import Fetch
 
         return isinstance(self.op, Fetch)
 
@@ -65,7 +65,7 @@ class EntityData(Base):
         return self._extra_params
 
     def build_graph(self, **kw):
-        from ..graph.builder.utils import build_graph
+        from maxframe.core.graph.builder.utils import build_graph
 
         return build_graph([self], **kw)
 

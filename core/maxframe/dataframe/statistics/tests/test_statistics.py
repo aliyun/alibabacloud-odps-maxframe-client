@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 import numpy as np
 import pandas as pd
 
-from ....tensor import Tensor
-from ...core import DataFrame, Series
-from ...datasource.dataframe import from_pandas as df_from_pandas
-from ...datasource.series import from_pandas as series_from_pandas
+from maxframe.dataframe.core import DataFrame, Series
+from maxframe.dataframe.datasource.dataframe import from_pandas as df_from_pandas
+from maxframe.dataframe.datasource.series import from_pandas as series_from_pandas
+from maxframe.tensor import Tensor
 
 
 def test_series_quantile():

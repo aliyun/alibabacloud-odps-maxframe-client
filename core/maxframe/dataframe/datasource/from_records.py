@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import MutableMapping, Union
+from typing import List, MutableMapping, Union
 
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import BoolField, Int32Field, ListField
-from ...tensor.core import TENSOR_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData, OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    Int32Field,
+    ListField,
+)
+from maxframe.tensor.core import TENSOR_TYPE
 
 
 class DataFrameFromRecords(DataFrameOperator, DataFrameOperatorMixin):
@@ -32,6 +37,7 @@ class DataFrameFromRecords(DataFrameOperator, DataFrameOperatorMixin):
     exclude = ListField("exclude", default=None)
     coerce_float = BoolField("coerce_float", default=False)
     nrows = Int32Field("nrows", default=None)
+    index = AnyField("index", default=None)
 
     def __init__(self, index=None, columns=None, **kw):
         if index is not None or columns is not None:
@@ -42,16 +48,30 @@ class DataFrameFromRecords(DataFrameOperator, DataFrameOperatorMixin):
     def input(self):
         return self._inputs[0]
 
+    @classmethod
+    def _set_inputs(cls, op: "DataFrameFromRecords", inputs: List[EntityData]):
+        super()._set_inputs(op, inputs)
+        if isinstance(op.index, ENTITY_TYPE):
+            op.index = inputs[-1]
+
     def __call__(self, data):
         if self.nrows is None:
             nrows = data.shape[0]
         else:
             nrows = self.nrows
+
         index_value = parse_index(pd.RangeIndex(start=0, stop=nrows))
+        if self.index is None:
+            self.index = parse_index(self.index)
+
         dtypes = pd.Series(dict((k, np.dtype(v)) for k, v in data.dtype.descr))
         columns_value = parse_index(pd.Index(data.dtype.names), store_data=True)
+
+        inputs = [data]
+        if isinstance(self.index, ENTITY_TYPE):
+            inputs.append(self.index)
         return self.new_dataframe(
-            [data],
+            inputs,
             (data.shape[0], len(data.dtype.names)),
             dtypes=dtypes,
             index_value=index_value,
@@ -154,8 +174,10 @@ def from_records(
     2      1     c
     3      0     d
     """
+    from ..initializer import Index as MDIndex
+
     if isinstance(data, (np.ndarray, list)):
-        from .dataframe import from_pandas
+        from maxframe.dataframe.datasource.dataframe import from_pandas
 
         return from_pandas(
             pd.DataFrame.from_records(
@@ -175,7 +197,7 @@ def from_records(
             raise ValueError(f"Not a tensor with non 1-D structured dtype {data.shape}")
 
         op = DataFrameFromRecords(
-            index=None,
+            index=MDIndex(index) if index is not None else None,
             exclude=exclude,
             columns=columns,
             coerce_float=coerce_float,

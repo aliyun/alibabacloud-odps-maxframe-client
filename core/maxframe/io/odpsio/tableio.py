@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,10 +35,15 @@ try:
 except ImportError:
     pac = None
 
-from ...config import options
-from ...env import ODPS_STORAGE_API_ENDPOINT
-from ...utils import call_with_retry, is_empty, sync_pyodps_options
-from .schema import odps_schema_to_arrow_schema
+from maxframe.config import options
+from maxframe.env import ODPS_STORAGE_API_ENDPOINT
+from maxframe.io.odpsio.schema import odps_schema_to_arrow_schema
+from maxframe.utils import (
+    call_with_retry,
+    get_storage_api_endpoint,
+    is_empty,
+    sync_pyodps_options,
+)
 
 PartitionsType = Union[List[str], str, None]
 
@@ -589,8 +594,6 @@ class HaloTableArrowWriter:
 
 
 class HaloTableIO(ODPSTableIO):
-    _storage_api_endpoint = os.getenv(ODPS_STORAGE_API_ENDPOINT)
-
     @staticmethod
     def _convert_partitions(partitions: PartitionsType) -> Optional[List[str]]:
         if partitions is None:
@@ -627,7 +630,7 @@ class HaloTableIO(ODPSTableIO):
         client = StorageApiArrowClient(
             self._odps,
             table,
-            rest_endpoint=self._storage_api_endpoint,
+            rest_endpoint=get_storage_api_endpoint(),
             quota_name=options.tunnel_quota_name,
         )
 
@@ -708,7 +711,7 @@ class HaloTableIO(ODPSTableIO):
         client = StorageApiArrowClient(
             self._odps,
             table,
-            rest_endpoint=self._storage_api_endpoint,
+            rest_endpoint=get_storage_api_endpoint(),
             quota_name=options.tunnel_quota_name,
         )
 

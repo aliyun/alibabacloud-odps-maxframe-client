@@ -37,18 +37,19 @@ from libcpp.unordered_map cimport unordered_map
 from pandas.api.extensions import ExtensionDtype
 from pandas.api.types import pandas_dtype
 
-from ..utils._utils_c import NamedType
+from maxframe.utils._utils_c import NamedType
 
-from ..utils._utils_c cimport TypeDispatcher
+from maxframe.utils._utils_c cimport TypeDispatcher
 
-from ..lib import wrapped_pickle as pickle
-from ..lib.dtypes_extension import ArrowDtype
-from ..lib.dtypes_extension._fake_arrow_dtype import FakeArrowDtype
-from ..utils import (
+from maxframe.lib import wrapped_pickle as pickle
+from maxframe.lib.dtypes_extension import ArrowDtype
+from maxframe.lib.dtypes_extension._fake_arrow_dtype import FakeArrowDtype
+from maxframe.utils import (
     NoDefault,
     arrow_type_from_str,
     extract_class_name,
     no_default,
+    pd_release_version,
     str_to_bool,
     wrap_arrow_dtype,
 )
@@ -82,6 +83,7 @@ BUFFER_PICKLE_PROTOCOL = max(pickle.DEFAULT_PROTOCOL, 5)
 cdef bint HAS_PICKLE_BUFFER = pickle.HIGHEST_PROTOCOL >= 5
 cdef bint _PANDAS_HAS_MGR = hasattr(pd.Series([0]), "_mgr")
 cdef bint _ARROW_DTYPE_NOT_SUPPORTED = ArrowDtype is None
+cdef bint _STRING_DTYPE_HAS_NA_VALUE = pd_release_version[0] >= 3
 
 
 cdef TypeDispatcher _serial_dispatcher = TypeDispatcher()
@@ -153,6 +155,10 @@ def reload_unpickle_flag():
     )
 
 
+def is_unpickle_allowed():
+    return unpickle_allowed
+
+
 reload_unpickle_flag()
 
 
@@ -161,7 +167,7 @@ cdef object _load_by_name(str class_name):
         cls = _type_cache[class_name]
     else:
         try:
-            from .deserializer import safe_load_by_name
+            from maxframe.serialization.deserializer import safe_load_by_name
 
             cls = safe_load_by_name(class_name)
         except ImportError:
@@ -321,9 +327,9 @@ cdef class Serializer:
         return None
 
     @classmethod
-    def calc_default_serializer_id(cls):
-        s = f"{cls.__module__}.{cls.__qualname__}"
-        h = hashlib.md5(s.encode())
+    def calc_default_serializer_id(cls, qualname: str = None):
+        qualname = qualname or f"{cls.__module__}.{cls.__qualname__}"
+        h = hashlib.md5(qualname.encode())
         return int(h.hexdigest(), 16) % _SERIALIZER_ID_PRIME
 
     @classmethod
@@ -378,7 +384,7 @@ def buffered(func):
     def wrapped(self, obj: Any, dict context):
         cdef uint64_t obj_id = _fast_id(<PyObject*>obj)
         if obj_id in context:
-            return Placeholder(_fast_id(<PyObject*>obj))
+            return Placeholder(obj_id)
         else:
             context[obj_id] = obj
             return func(self, obj, context)
@@ -478,7 +484,8 @@ cdef class PickleSerializer(Serializer):
         return [], pickle_buffers(obj), True
 
     cpdef deserial(self, list serialized, dict context, list subs):
-        from .deserializer import deserial_pickle
+        from maxframe.serialization.deserializer import deserial_pickle
+
         cdef object deserial_hook
 
         deserial_hook = pickle_deserial_hook.get()
@@ -813,6 +820,7 @@ cdef class TZInfoSerializer(Serializer):
 
 cdef:
     object _TYPE_CHAR_DTYPE_NUMPY = "N"
+    object _TYPE_CHAR_DTYPE_STRING = "S"
     object _TYPE_CHAR_DTYPE_PANDAS_ARROW = "PA"
     object _TYPE_CHAR_DTYPE_PANDAS_CATEGORICAL = "PC"
     object _TYPE_CHAR_DTYPE_PANDAS_INTERVAL = "PI"
@@ -851,6 +859,11 @@ cdef class DtypeSerializer(Serializer):
                 return [
                     _TYPE_CHAR_DTYPE_PANDAS_INTERVAL, obj.closed
                 ], [obj.subdtype], False
+            elif isinstance(obj, pd.StringDtype):
+                ser = [_TYPE_CHAR_DTYPE_STRING, obj.storage]
+                if hasattr(obj, "na_value"):
+                    ser.append(obj.na_value)
+                return ser, [], False
             else:
                 return [_TYPE_CHAR_DTYPE_PANDAS_EXTENSION, repr(obj)], [], True
         else:
@@ -876,12 +889,31 @@ cdef class DtypeSerializer(Serializer):
             return pd.CategoricalDtype(subs[0], serialized[1])
         elif ser_type == _TYPE_CHAR_DTYPE_PANDAS_INTERVAL:
             return pd.IntervalDtype(subs[0], serialized[1])
+        elif ser_type == _TYPE_CHAR_DTYPE_STRING:
+            try:
+                if len(serialized) < 3:
+                    return pd.StringDtype(serialized[1])
+                elif _STRING_DTYPE_HAS_NA_VALUE:
+                    # In pandas 3.0+, na_value is supported
+                    return pd.StringDtype(serialized[1], na_value=serialized[2])
+                else:
+                    # Fallback for legacy pandas: ignore na_value parameter
+                    return pd.StringDtype(serialized[1])
+            except ImportError:  # for pandas with pyarrow<7.0
+                if serialized[1] != "pyarrow":
+                    raise
+                return ArrowDtype(pa.string())
         elif ser_type == _TYPE_CHAR_DTYPE_PANDAS_EXTENSION:
-            if serialized[1] == "StringDtype":  # for legacy pandas version
+            if isinstance(serialized[1], str) and (
+                serialized[1] == "StringDtype" or serialized[1].startswith("string")
+            ):
+                # for legacy pandas version, or
+                # pandas 3.0+ formats repr(StringDtype()) as <StringDtype(na_value=<NA>)>
                 return pd.StringDtype()
+
             try:
                 return pandas_dtype(serialized[1])
-            except ImportError as ex:  # for pandas with pyarrow<7.0
+            except ImportError:  # for pandas with pyarrow<7.0
                 if serialized[1] != "string[pyarrow]":
                     raise
                 return ArrowDtype(pa.string())
@@ -1310,6 +1342,6 @@ def deserialize(list serialized, list buffers, dict context = None):
     global deserialize_impl
 
     if deserialize_impl is None:
-        from .deserializer import deserialize as deserialize_impl
+        from maxframe.serialization.deserializer import deserialize as deserialize_impl
 
     return deserialize_impl(serialized, buffers, context)

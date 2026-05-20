@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .partition import TensorPartition, _validate_partition_arguments
+from maxframe.tensor.sort.partition import (
+    TensorPartition,
+    _validate_partition_arguments,
+)
 
 
 def argpartition(a, kth, axis=-1, kind="introselect", order=None, **kw):

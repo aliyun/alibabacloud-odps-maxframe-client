@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 from typing import Generator
 
-from ...mode import enter_mode
-from ..entity import TileableGraph
-from .base import AbstractGraphBuilder
+from maxframe.core.graph.builder.base import AbstractGraphBuilder
+from maxframe.core.graph.entity import TileableGraph
+from maxframe.core.mode import enter_mode
 
 
 class TileableGraphBuilder(AbstractGraphBuilder):

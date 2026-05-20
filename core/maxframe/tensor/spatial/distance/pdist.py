@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@ from typing import List, Tuple
 
 import numpy as np
 
-from .... import opcodes
-from ....core import EntityData
-from ....core.operator import OperatorStage
-from ....serialization import PickleContainer
-from ....serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.core.operator import OperatorStage
+from maxframe.serialization import PickleContainer
+from maxframe.serialization.serializables import (
     AnyField,
     FieldTypes,
     Float16Field,
@@ -28,11 +28,11 @@ from ....serialization.serializables import (
     KeyField,
     TupleField,
 )
-from ....udf import BuiltinFunction
-from ....utils import check_unexpected_kwargs
-from ...core import TensorOrder
-from ...datasource.array import tensor as astensor
-from ...operators import TensorMapReduceOperator, TensorOperatorMixin
+from maxframe.tensor.core import TensorOrder
+from maxframe.tensor.datasource.array import tensor as astensor
+from maxframe.tensor.operators import TensorMapReduceOperator, TensorOperatorMixin
+from maxframe.udf import BuiltinFunction
+from maxframe.utils import check_unexpected_kwargs
 
 
 class TensorPDist(TensorMapReduceOperator, TensorOperatorMixin):

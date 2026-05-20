@@ -16,8 +16,15 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from ....utils import is_arrow_dtype_supported
-from ..dtypes import dict_, is_list_dtype, is_map_dtype, is_struct_dtype, list_, struct_
+from maxframe.lib.dtypes_extension.dtypes import (
+    dict_,
+    is_list_dtype,
+    is_map_dtype,
+    is_struct_dtype,
+    list_,
+    struct_,
+)
+from maxframe.utils import is_arrow_dtype_supported
 
 try:
     from pandas import ArrowDtype

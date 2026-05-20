@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
 import string
 from collections import defaultdict
 from typing import Any, Dict, Tuple
@@ -22,14 +23,20 @@ import pyarrow as pa
 from odps import types as odps_types
 from pandas.api import types as pd_types
 
-from ...config import options
-from ...core import TILEABLE_TYPE, OutputType
-from ...dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
-from ...lib.dtypes_extension import ArrowBlobType, ArrowDtype
-from ...lib.version import parse as parse_version
-from ...protocol import DataFrameTableMeta
-from ...tensor.core import TENSOR_TYPE
-from ...utils import build_temp_table_name, pd_release_version, wrap_arrow_dtype
+from maxframe.config import options
+from maxframe.core import TILEABLE_TYPE, OutputType
+from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
+from maxframe.dataframe.utils import is_decimal128_dtype
+from maxframe.lib.dtypes_extension import ArrowBlobType, ArrowDtype, ArrowExtensionArray
+from maxframe.lib.version import parse as parse_version
+from maxframe.protocol import DataFrameTableMeta
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.utils import build_temp_table_name, pd_release_version, wrap_arrow_dtype
+
+try:
+    import pyarrow.compute as pac
+except ImportError:
+    pac = None
 
 _TEMP_TABLE_PREFIX = "tmp_mf_"
 DEFAULT_SINGLE_INDEX_NAME = "_idx_0"
@@ -103,16 +110,110 @@ if hasattr(odps_types, "blob"):
 _based_for_pandas_pa_types = (pa.ListType, pa.MapType, pa.StructType)
 
 
+def _cast_column_as_decimal(series: pd.Series, target_dtype: ArrowDtype) -> pd.Series:
+    """
+    Cast a pandas Series to a decimal dtype with proper truncation handling.
+
+    Parameters
+    ----------
+    series : pd.Series
+        Input series to cast
+    target_dtype : ArrowDtype
+        Target decimal dtype
+
+    Returns
+    -------
+    pd.Series
+        Casted series with decimal dtype
+    """
+    source_dtype = series.dtype
+
+    if is_decimal128_dtype(source_dtype):
+        # Cast decimal to decimal with truncation
+        source_pa_type = source_dtype.pyarrow_dtype
+        target_pa_type = target_dtype.pyarrow_dtype
+
+        # If precision and scale match, return as-is
+        if (
+            source_pa_type.precision == target_pa_type.precision
+            and source_pa_type.scale == target_pa_type.scale
+        ):
+            return series
+
+        # Convert to PyArrow array
+        pa_array = pa.array(series.array)
+
+        # Round to target scale if reducing scale
+        if target_pa_type.scale < source_pa_type.scale:
+            round_mode = options.dataframe.decimal.round_mode
+            if hasattr(round_mode, "name"):
+                round_mode = round_mode.name
+            pa_array = pac.round(pa_array, target_pa_type.scale, round_mode=round_mode)
+
+        # Cast to target type with allow_decimal_truncate
+        casted_array = pac.cast(
+            pa_array,
+            options=pac.CastOptions(target_pa_type, allow_decimal_truncate=True),
+        )
+
+        # Convert back to pandas Series
+        return pd.Series(ArrowExtensionArray(casted_array), index=series.index)
+    else:
+        # Non-decimal to decimal
+        try:
+            return series.astype(target_dtype)
+        except pa.ArrowInvalid:
+            # If direct cast fails, try with intermediate conversion
+            pa_array = pa.array(series.array)
+            target_pa_type = target_dtype.pyarrow_dtype
+            casted_array = pac.cast(
+                pa_array,
+                options=pac.CastOptions(target_pa_type, allow_decimal_truncate=True),
+            )
+            return pd.Series(ArrowExtensionArray(casted_array), index=series.index)
+
+
 def cast_df_with_possible_nans(
     df_obj: pd.DataFrame, dtypes: pd.Series, try_cast_back: bool = True
 ) -> pd.DataFrame:
     # align types to cast with existing dataframe
     new_dtypes = df_obj.dtypes.copy()
     new_dtypes.update(dtypes)
-    try:
-        res = df_obj.astype(new_dtypes.replace(_int_to_pd_dtype))
-    except TypeError:
-        res = df_obj.astype(new_dtypes.replace(_pd_dtype_replaces))
+
+    # Check if any column needs decimal casting
+    has_decimal = any(is_decimal128_dtype(dt) for dt in new_dtypes)
+
+    if has_decimal and pac is not None:
+        # Handle decimal columns separately with allow_decimal_truncate
+        res = df_obj.copy()
+        for col_name in new_dtypes.index:
+            target_dtype = new_dtypes[col_name]
+            if col_name not in res.columns:
+                continue
+            source_dtype = res[col_name].dtype
+
+            # Skip if dtypes match
+            if source_dtype == target_dtype:
+                continue
+
+            # Handle decimal casting with truncation
+            if is_decimal128_dtype(target_dtype):
+                res[col_name] = _cast_column_as_decimal(res[col_name], target_dtype)
+            else:
+                # Non-decimal casting
+                try:
+                    res[col_name] = res[col_name].astype(target_dtype)
+                except (TypeError, pa.ArrowInvalid):
+                    # Handle integer/float dtype replacements
+                    if target_dtype in _pd_dtype_replaces:
+                        res[col_name] = res[col_name].astype(target_dtype)
+    else:
+        # No decimal types, use original logic
+        try:
+            res = df_obj.astype(new_dtypes.replace(_int_to_pd_dtype))
+        except TypeError:
+            res = df_obj.astype(new_dtypes.replace(_pd_dtype_replaces))
+
     if not try_cast_back:
         return res
 
@@ -279,15 +380,33 @@ def arrow_table_to_pandas_dataframe(
     need_cast_ms = pd_release_version[0] >= 2 and _pyarrow_version[0] < 13
     has_ms_col = False
 
-    def _arrow_types_mapper(x):
+    def _arrow_types_mapper(x, default=None):
         nonlocal has_ms_col
         if use_arrow_backend or is_based_for_pandas_dtype(x):
             return wrap_arrow_dtype(x)
         elif need_cast_ms and isinstance(x, pa.TimestampType) and x.unit == "ms":
             has_ms_col = True
-        return None
+        return default
 
-    df = table.to_pandas(types_mapper=_arrow_types_mapper, ignore_metadata=True)
+    try:
+        df = table.to_pandas(types_mapper=_arrow_types_mapper, ignore_metadata=True)
+    except pa.ArrowException:
+        # Fall back to column-by-column conversion when encountering encoding errors
+        series_list = []
+        for i, col_name in enumerate(table.schema.names):
+            col = table.column(i)
+            dt = None
+            if meta:
+                name_iter = zip(meta.table_column_names, meta.pd_column_names)
+                pd_col = next((pc for tc, pc in name_iter if tc == col_name), None)
+                if pd_col:
+                    dt = meta.pd_column_dtypes.get(pd_col, None)
+            series = col.to_pandas(
+                types_mapper=functools.partial(_arrow_types_mapper, default=dt)
+            )
+            series_list.append(series)
+        df = pd.concat(series_list, axis=1)
+
     if has_ms_col:
         df = df.astype(
             {
@@ -374,8 +493,8 @@ def pandas_to_odps_schema(
     unknown_as_string: bool = False,
     ignore_index=False,
 ) -> Tuple[odps_types.OdpsSchema, DataFrameTableMeta]:
-    from ... import dataframe as md
-    from .arrow import pandas_to_arrow
+    from maxframe import dataframe as md
+    from maxframe.io.odpsio.arrow import pandas_to_arrow
 
     if is_scalar_object(df_obj) or is_tensor_object(df_obj):
         empty_index = None
@@ -574,3 +693,42 @@ def build_dataframe_table_meta(
         pd_column_level_names=column_index_names,
         pd_index_dtypes=pd_index_dtypes,
     )
+
+
+def arrow_schema_to_pandas_dtypes(
+    arrow_schema: pa.Schema, dtype_backend=None
+) -> pd.Series:
+    """
+    Convert Arrow schema to pandas dtypes Series.
+
+    Delegates to arrow_table_to_pandas_dataframe to ensure consistent type conversion.
+    - For nested types (list, map, struct), always uses ArrowDtype regardless of backend
+    - For simple types, respects dtype_backend parameter
+    - If dtype_backend is not specified, uses global options.dataframe.dtype_backend
+
+    Parameters
+    ----------
+    arrow_schema : pa.Schema
+        PyArrow schema to convert
+    dtype_backend : str or None, optional
+        Dtype backend for pandas conversion. Options:
+        - "numpy" or None or no_default: Use numpy dtypes (default)
+        - "pyarrow": Use pyarrow-backed dtypes
+        If None, uses options.dataframe.dtype_backend
+
+    Returns
+    -------
+    pd.Series
+        Series mapping column names to pandas dtypes
+    """
+    # Create empty table from schema
+    empty_table = pa.table(
+        {
+            name: pa.array([], type=dtype)
+            for name, dtype in zip(arrow_schema.names, arrow_schema.types)
+        }
+    )
+
+    df = arrow_table_to_pandas_dataframe(empty_table, dtype_backend=dtype_backend)
+
+    return df.dtypes

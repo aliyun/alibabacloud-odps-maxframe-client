@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,14 @@ from numbers import Integral
 
 import numpy as np
 
-from ..core import TENSOR_TYPE
-from ..datasource import tensor as astensor
-from ..utils import broadcast_shape, calc_sliced_size, index_ndim, replace_ellipsis
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.utils import (
+    broadcast_shape,
+    calc_sliced_size,
+    index_ndim,
+    replace_ellipsis,
+)
 
 _INDEX_ERROR_MSG = (
     "only integers, slices (`:`), ellipsis (`...`), "
@@ -102,7 +107,7 @@ def calc_shape(tensor_shape, index):
 
 
 def preprocess_index(index, convert_bool_to_fancy=None):
-    from .nonzero import nonzero
+    from maxframe.tensor.indexing.nonzero import nonzero
 
     inds = []
     fancy_indexes = []

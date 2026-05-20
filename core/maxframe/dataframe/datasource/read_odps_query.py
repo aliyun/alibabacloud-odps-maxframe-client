@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,13 +28,19 @@ from odps.models import TableSchema
 from odps.types import Column, OdpsSchema, validate_data_type
 from odps.utils import split_sql_by_semicolon
 
-from ... import opcodes
-from ...config import option_context, options
-from ...core import OutputType
-from ...core.graph import DAG
-from ...io.odpsio import odps_schema_to_pandas_dtypes
-from ...protocol import DefaultIndexType
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.config import option_context, options
+from maxframe.core import OutputType
+from maxframe.core.graph import DAG
+from maxframe.dataframe.datasource.core import (
+    ColumnPruneSupportedDataSourceMixin,
+    DtypeBackendCompatibleMixin,
+    IncrementalIndexDatasource,
+)
+from maxframe.dataframe.utils import parse_index, validate_dtype_backend
+from maxframe.io.odpsio import odps_schema_to_pandas_dtypes
+from maxframe.protocol import DefaultIndexType
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
@@ -45,13 +51,7 @@ from ...serialization.serializables import (
     SeriesField,
     StringField,
 )
-from ...utils import is_empty
-from ..utils import parse_index, validate_dtype_backend
-from .core import (
-    ColumnPruneSupportedDataSourceMixin,
-    DtypeBackendCompatibleMixin,
-    IncrementalIndexDatasource,
-)
+from maxframe.utils import is_empty
 
 logger = logging.getLogger(__name__)
 

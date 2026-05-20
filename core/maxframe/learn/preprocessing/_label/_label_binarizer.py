@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,23 +17,23 @@ from typing import List
 import numpy as np
 import scipy.sparse as sps
 
-from ....udf import builtin_function
+from maxframe.udf import builtin_function
 
 try:
     from sklearn.utils.multiclass import type_of_target as sk_type_of_target
 except ImportError:
     sk_type_of_target = lambda _: None
 
-from .... import opcodes
-from .... import tensor as mt
-from ....core import ENTITY_TYPE, OutputType
-from ....core.operator import Operator
-from ....serialization.serializables import AnyField, BoolField, Int32Field
-from ....tensor.core import TensorOrder
-from ....typing_ import EntityType, TileableType
-from ...core import BaseEstimator, LearnOperatorMixin, TransformerMixin
-from ...utils.multiclass import type_of_target, unique_labels
-from ...utils.validation import _num_samples, check_array, check_is_fitted
+from maxframe import opcodes
+from maxframe import tensor as mt
+from maxframe.core import ENTITY_TYPE, OutputType
+from maxframe.core.operator import Operator
+from maxframe.learn.core import BaseEstimator, LearnOperatorMixin, TransformerMixin
+from maxframe.learn.utils.multiclass import type_of_target, unique_labels
+from maxframe.learn.utils.validation import _num_samples, check_array, check_is_fitted
+from maxframe.serialization.serializables import AnyField, BoolField, Int32Field
+from maxframe.tensor.core import TensorOrder
+from maxframe.typing_ import EntityType, TileableType
 
 
 class LabelBinarizer(TransformerMixin, BaseEstimator):

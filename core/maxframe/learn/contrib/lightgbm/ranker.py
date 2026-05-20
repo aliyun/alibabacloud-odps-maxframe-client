@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils import make_import_error_func
-from .core import LGBMScikitLearnBase
+from maxframe.learn.contrib.lightgbm.core import LGBMScikitLearnBase
+from maxframe.learn.contrib.utils import make_import_error_func
 
 try:
     import lightgbm

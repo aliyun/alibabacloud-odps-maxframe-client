@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,11 +19,11 @@ try:
 except ImportError:
     spspecial = None
 
-from ... import opcodes
-from ...core import ExecutableTuple
-from ...serialization.serializables import StringField
-from ..arithmetic.core import TensorBinOp, TensorMultiOp, TensorUnaryOp
-from ..datasource import tensor as astensor
+from maxframe import opcodes
+from maxframe.core import ExecutableTuple
+from maxframe.serialization.serializables import StringField
+from maxframe.tensor.arithmetic.core import TensorBinOp, TensorMultiOp, TensorUnaryOp
+from maxframe.tensor.datasource import tensor as astensor
 
 _func_name_to_special_cls = {}
 

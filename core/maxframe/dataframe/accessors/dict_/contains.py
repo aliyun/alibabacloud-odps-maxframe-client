@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,13 @@
 
 import pyarrow as pa
 
-from .... import opcodes
-from ....serialization.serializables.field import AnyField
-from ....utils import wrap_arrow_dtype
-from .core import LegacySeriesDictOperator, SeriesDictMethod
+from maxframe import opcodes
+from maxframe.dataframe.accessors.dict_.core import (
+    LegacySeriesDictOperator,
+    SeriesDictMethod,
+)
+from maxframe.serialization.serializables.field import AnyField
+from maxframe.utils import wrap_arrow_dtype
 
 
 class SeriesDictContainsOperator(LegacySeriesDictOperator):

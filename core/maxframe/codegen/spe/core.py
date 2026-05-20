@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,18 +22,18 @@ from numpy import dtype as npdtype
 from numpy import ndarray
 from pandas.tseries.offsets import BaseOffset
 
-from ...core import TILEABLE_TYPE, OperatorType, TileableGraph
-from ...core.operator.base import Operator
-from ...serialization import PickleContainer
-from ...utils import TypeDispatcher, no_default
-from ..core import (
+from maxframe.codegen.core import (
     BUILTIN_ENGINE_SPE,
     DAGCodeContext,
     DAGCodeGenerator,
     DagOperatorAdapter,
     register_engine_codegen,
 )
-from .dataframe.udf import SpeUDF
+from maxframe.codegen.spe.dataframe.udf import SpeUDF
+from maxframe.core import TILEABLE_TYPE, OperatorType, TileableGraph
+from maxframe.core.operator.base import Operator
+from maxframe.serialization import PickleContainer
+from maxframe.utils import TypeDispatcher, no_default
 
 _spe_op_adapter = TypeDispatcher()
 
@@ -276,7 +276,7 @@ class SPECodeGenerator(DAGCodeGenerator):
         return get_op_adapter(op_type)
 
     def generate_code(self, dag: TileableGraph) -> List[str]:
-        from . import dataframe, tensor
+        from maxframe.codegen.spe import dataframe, tensor
 
         del dataframe, tensor
         main_codes = super().generate_code(dag)

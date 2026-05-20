@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,15 +23,9 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from .... import dataframe as md
-from ....lib.dtypes_extension import ArrowDtype
-from ....tensor import Tensor
-from ....tests.utils import assert_mf_index_dtype, require_arrow_dtype
-from ....udf import ODPSFunction
-from ....utils import wrap_arrow_dtype
-from ...core import DataFrame, IndexValue, OutputType, Series
-from ...utils import MAX_DECIMAL128_PRECISION
-from .. import (
+from maxframe import dataframe as md
+from maxframe.dataframe.core import DataFrame, IndexValue, OutputType, Series
+from maxframe.dataframe.reduction import (
     CustomReduction,
     DataFrameAggregate,
     DataFrameAll,
@@ -53,8 +47,13 @@ from .. import (
     DataFrameSum,
     DataFrameVar,
 )
-from ..aggregation import where_function
-from ..core import ReductionCompiler
+from maxframe.dataframe.reduction.aggregation import where_function
+from maxframe.dataframe.reduction.core import ReductionCompiler
+from maxframe.lib.dtypes_extension import ArrowDtype
+from maxframe.tensor import Tensor
+from maxframe.tests.utils import assert_mf_index_dtype, require_arrow_dtype
+from maxframe.udf import ODPSFunction
+from maxframe.utils import wrap_arrow_dtype
 
 pytestmark = pytest.mark.pd_compat
 
@@ -558,15 +557,22 @@ def test_reduction_with_decimal():
     assert (
         isinstance(col_dt, ArrowDtype)
         and isinstance(col_dt.pyarrow_dtype, pa.Decimal128Type)
-        and col_dt.pyarrow_dtype.precision == MAX_DECIMAL128_PRECISION
+        and col_dt.pyarrow_dtype.precision == 15
     )
 
     sum_df = df.groupby("idx").agg(["sum", "mean"])
-    col_dt = sum_df.dtypes[("dec_col", "sum")]
+    sum_col_dt = sum_df.dtypes[("dec_col", "sum")]
     assert (
-        isinstance(col_dt, ArrowDtype)
-        and isinstance(col_dt.pyarrow_dtype, pa.Decimal128Type)
-        and col_dt.pyarrow_dtype.precision == MAX_DECIMAL128_PRECISION
+        isinstance(sum_col_dt, ArrowDtype)
+        and isinstance(sum_col_dt.pyarrow_dtype, pa.Decimal128Type)
+        and sum_col_dt.pyarrow_dtype.precision == 15
+    )
+    mean_col_dt = sum_df.dtypes[("dec_col", "mean")]
+    assert (
+        isinstance(mean_col_dt, ArrowDtype)
+        and isinstance(mean_col_dt.pyarrow_dtype, pa.Decimal128Type)
+        and mean_col_dt.pyarrow_dtype.precision == 9
+        and mean_col_dt.pyarrow_dtype.scale == 6
     )
 
     sum_df = df.groupby("idx").agg({"dec_col": "sum"})
@@ -574,7 +580,7 @@ def test_reduction_with_decimal():
     assert (
         isinstance(col_dt, ArrowDtype)
         and isinstance(col_dt.pyarrow_dtype, pa.Decimal128Type)
-        and col_dt.pyarrow_dtype.precision == MAX_DECIMAL128_PRECISION
+        and col_dt.pyarrow_dtype.precision == 15
     )
 
     sum_df = df.groupby("idx").agg(agg_dec_col=("dec_col", "sum"))
@@ -582,7 +588,7 @@ def test_reduction_with_decimal():
     assert (
         isinstance(col_dt, ArrowDtype)
         and isinstance(col_dt.pyarrow_dtype, pa.Decimal128Type)
-        and col_dt.pyarrow_dtype.precision == MAX_DECIMAL128_PRECISION
+        and col_dt.pyarrow_dtype.precision == 15
     )
 
     # aggregate series
@@ -591,7 +597,7 @@ def test_reduction_with_decimal():
     assert (
         isinstance(col_dt, ArrowDtype)
         and isinstance(col_dt.pyarrow_dtype, pa.Decimal128Type)
-        and col_dt.pyarrow_dtype.precision == MAX_DECIMAL128_PRECISION
+        and col_dt.pyarrow_dtype.precision == 15
     )
 
     sum_df = df.groupby("idx")["dec_col"].agg(["sum", "mean"])
@@ -599,5 +605,5 @@ def test_reduction_with_decimal():
     assert (
         isinstance(col_dt, ArrowDtype)
         and isinstance(col_dt.pyarrow_dtype, pa.Decimal128Type)
-        and col_dt.pyarrow_dtype.precision == MAX_DECIMAL128_PRECISION
+        and col_dt.pyarrow_dtype.precision == 15
     )

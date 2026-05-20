@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,18 +18,26 @@ import numpy as np
 import pandas as pd
 from pandas.api.types import is_dict_like, is_scalar
 
-from ... import opcodes
-from ...core import EntityData
-from ...serialization.serializables import AnyField, BoolField, KeyField, StringField
-from ...tensor import tensor as astensor
-from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
-from ..initializer import DataFrame as asdataframe
-from ..initializer import Index as asindex
-from ..initializer import Series as asseries
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import lazy_import, parse_index
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
+from maxframe.dataframe.initializer import DataFrame as asdataframe
+from maxframe.dataframe.initializer import Index as asindex
+from maxframe.dataframe.initializer import Series as asseries
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import lazy_import, parse_index
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    KeyField,
+    StringField,
+)
+from maxframe.tensor import tensor as astensor
+from maxframe.utils import pd_release_version
 
 cudf = lazy_import("cudf")
+
+_has_infer_datetime_format = pd_release_version < (3, 0, 0)
 
 
 class DataFrameToDatetime(DataFrameOperator, DataFrameOperatorMixin):
@@ -62,8 +70,7 @@ class DataFrameToDatetime(DataFrameOperator, DataFrameOperatorMixin):
 
     def __call__(self, arg):
         if is_scalar(arg):
-            ret = pd.to_datetime(
-                arg,
+            to_datetime_kw = dict(
                 errors=self.errors,
                 dayfirst=self.dayfirst,
                 yearfirst=self.yearfirst,
@@ -71,10 +78,12 @@ class DataFrameToDatetime(DataFrameOperator, DataFrameOperatorMixin):
                 format=self.format,
                 exact=self.exact,
                 unit=self.unit,
-                infer_datetime_format=self.infer_datetime_format,
                 origin=self.origin,
                 cache=self.cache,
             )
+            if _has_infer_datetime_format:  # pragma: no branch
+                to_datetime_kw["infer_datetime_format"] = self.infer_datetime_format
+            ret = pd.to_datetime(arg, **to_datetime_kw)
             return astensor(ret)
 
         dtype = np.datetime64(1, "ns").dtype
@@ -148,7 +157,6 @@ def to_datetime(
     errors : {'ignore', 'raise', 'coerce'}, default 'raise'
         - If 'raise', then invalid parsing will raise an exception.
         - If 'coerce', then invalid parsing will be set as NaT.
-        - If 'ignore', then invalid parsing will return the input.
     dayfirst : bool, default False
         Specify a date parse order if `arg` is str or its list-likes.
         If True, parses dates with the day first, eg 10/11/12 is parsed as
@@ -188,6 +196,10 @@ def to_datetime(
         datetime strings, and if it can be inferred, switch to a faster
         method of parsing them. In some cases this can increase the parsing
         speed by ~5-10x.
+
+        .. note::
+            Only kept for compatibility issue.
+
     origin : scalar, default 'unix'
         Define the reference date. The numeric values would be parsed as number
         of units (defined by `unit`) since this reference date.
@@ -250,8 +262,6 @@ def to_datetime(
     Passing errors='coerce' will force an out-of-bounds date to NaT,
     in addition to forcing non-dates (or non-parseable dates) to NaT.
 
-    >>> md.to_datetime('13000101', format='%Y%m%d', errors='ignore').execute()
-    datetime.datetime(1300, 1, 1, 0, 0)
     >>> md.to_datetime('13000101', format='%Y%m%d', errors='coerce').execute()
     NaT
 

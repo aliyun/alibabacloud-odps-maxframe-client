@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
 import io
 from typing import Any, Callable, Dict
 
-from ....core import TILEABLE_TYPE
-from ....lib import wrapped_pickle as pickle
-from ....typing_ import SessionType
-from ....utils import find_objects, replace_objects
-from .run_script import run_pytorch_script
+from maxframe.core import TILEABLE_TYPE
+from maxframe.learn.contrib.pytorch.run_script import run_pytorch_script
+from maxframe.lib import wrapped_pickle as pickle
+from maxframe.typing_ import SessionType
+from maxframe.utils import find_objects, replace_objects
 
 _script_template = """
 import cloudpickle

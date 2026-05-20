@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
 import numbers
 from abc import ABCMeta, abstractmethod
 
-from ... import tensor as mt
-from ...tensor.datasource import tensor as astensor
-from ..core import BaseEstimator, ClassifierMixin
-from ..preprocessing import normalize as f_normalize
-from ..utils.validation import FLOAT_DTYPES, check_array
+from maxframe import tensor as mt
+from maxframe.learn.core import BaseEstimator, ClassifierMixin
+from maxframe.learn.preprocessing import normalize as f_normalize
+from maxframe.learn.utils.validation import FLOAT_DTYPES, check_array
+from maxframe.tensor.datasource import tensor as astensor
 
 try:
     from sklearn.utils.validation import check_is_fitted

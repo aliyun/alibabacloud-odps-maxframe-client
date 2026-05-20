@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import (
+from maxframe.serialization import (
     arrow,
     blob,
     exception,
@@ -22,7 +22,7 @@ from . import (
     scipy,
     serializables,
 )
-from .core import (
+from maxframe.serialization.core import (
     PickleContainer,
     PickleHookOptions,
     Serializer,
@@ -34,6 +34,6 @@ from .core import (
     serialize,
     serialize_with_spawn,
 )
-from .exception import RemoteException
+from maxframe.serialization.exception import RemoteException
 
 del arrow, blob, exception, maxframe_objects, numpy, pandas, scipy

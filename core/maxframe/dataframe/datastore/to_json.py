@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,16 @@
 
 from typing import Any, Dict, Optional, Union
 
-from ... import opcodes
-from ...serialization.serializables import AnyField, BoolField, DictField, StringField
-from ...utils import check_unexpected_kwargs
-from ..utils import parse_index
-from .core import LakeDataStore
+from maxframe import opcodes
+from maxframe.dataframe.datastore.core import LakeDataStore
+from maxframe.dataframe.utils import parse_index
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    DictField,
+    StringField,
+)
+from maxframe.utils import check_unexpected_kwargs
 
 
 class DataFrameToJSON(LakeDataStore):

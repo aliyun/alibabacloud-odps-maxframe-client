@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
 
 import pandas as pd
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import AnyField, BoolField
-from ...utils import lazy_import
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index, validate_axis
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import find_input_of_groupby, parse_index, validate_axis
+from maxframe.serialization.serializables import AnyField, BoolField
+from maxframe.utils import lazy_import
 
 cudf = lazy_import("cudf")
 
@@ -54,9 +54,7 @@ class GroupByCumReductionOperator(DataFrameOperatorMixin, DataFrameOperator):
             return result_df.name, result_df.dtype
 
     def __call__(self, groupby):
-        in_df = groupby
-        while in_df.op.output_types[0] not in (OutputType.dataframe, OutputType.series):
-            in_df = in_df.inputs[0]
+        in_df = find_input_of_groupby(groupby)
 
         self.axis = validate_axis(self.axis or 0, in_df)
 

@@ -17,8 +17,8 @@ import os
 import shutil
 from typing import BinaryIO, Dict, Iterator, List, TextIO, Tuple, Union
 
-from ...utils import implements, stringify_path
-from .base import FileSystem, path_type
+from maxframe.lib.filesystem.base import FileSystem, path_type
+from maxframe.utils import implements, stringify_path
 
 
 class LocalFileSystem(FileSystem):

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import logging
-from typing import List, MutableMapping, Optional, Union
+from typing import List, MutableMapping, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -22,12 +22,24 @@ from odps.errors import NoSuchObject
 from odps.models import Table
 from odps.utils import to_timestamp
 
-from ... import opcodes
-from ...config import option_context, options
-from ...core import OutputType
-from ...io.odpsio import odps_schema_to_pandas_dtypes
-from ...protocol import DefaultIndexType
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.config import option_context, options
+from maxframe.core import OutputType
+from maxframe.dataframe.core import DataFrame  # noqa: F401
+from maxframe.dataframe.datasource.core import (
+    ColumnPruneSupportedDataSourceMixin,
+    DtypeBackendCompatibleMixin,
+    IncrementalIndexDatasource,
+)
+from maxframe.dataframe.utils import (
+    get_index_value_by_default_index_type,
+    parse_index,
+    validate_default_index_type,
+    validate_dtype_backend,
+)
+from maxframe.io.odpsio import odps_schema_to_pandas_dtypes
+from maxframe.protocol import DefaultIndexType
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     EnumField,
@@ -37,18 +49,12 @@ from ...serialization.serializables import (
     SeriesField,
     StringField,
 )
-from ...utils import estimate_table_size, get_odps_dlf_table, is_empty, str_to_bool
-from ..core import DataFrame  # noqa: F401
-from ..utils import (
-    get_index_value_by_default_index_type,
-    parse_index,
-    validate_default_index_type,
-    validate_dtype_backend,
-)
-from .core import (
-    ColumnPruneSupportedDataSourceMixin,
-    DtypeBackendCompatibleMixin,
-    IncrementalIndexDatasource,
+from maxframe.utils import (
+    deprecate_positional_args,
+    estimate_table_size,
+    get_odps_dlf_table,
+    is_empty,
+    str_to_bool,
 )
 
 logger = logging.getLogger(__name__)
@@ -76,6 +82,7 @@ class DataFrameReadODPSTable(
     default_index_type = EnumField(
         "default_index_type", DefaultIndexType, FieldTypes.int8, default=None
     )
+    filters = AnyField("filters", default=None)
 
     def __init__(self, memory_scale=None, dtype_backend=None, **kw):
         output_type = kw.pop("output_type", OutputType.dataframe)
@@ -167,16 +174,19 @@ class DataFrameReadODPSTable(
         )
 
 
+@deprecate_positional_args
 def read_odps_table(
     table_name: Union[str, Table],
     partitions: Union[None, str, List[str]] = None,
     columns: Optional[List[str]] = None,
     index_col: Union[None, str, List[str]] = None,
+    *,
     odps_entry: ODPS = None,
     string_as_binary: bool = None,
     append_partitions: bool = False,
     dtype_backend: str = None,
     default_index_type: DefaultIndexType = None,
+    filters: Union[str, List[List[Tuple]]] = None,
     **kw,
 ):
     """
@@ -202,11 +212,69 @@ def read_odps_table(
         `columns` is not specified,
     dtype_backend: {'numpy', 'pyarrow'}, default 'numpy'
         Back-end data type applied to the resultant DataFrame (still experimental).
+    filters : Union[str, List[List[Tuple]]], default None
+        Filter expression to apply when reading data.
+
+        - **String format**: SQL WHERE clause passed directly to StorageAPI.
+
+        - **List format**: Nested list of tuples.
+
+          Format: Inner lists are ANDed, outer lists are ORed.
+          Example: ``[[('col1', '==', 'value'), ('col2', '>', 10)]]``
+
+        Supported operators: ``==``, ``!=``, ``<``, ``>``, ``<=``, ``>=``, ``in``, ``not in``.
+
+        .. note::
+            Complete filtering is not guaranteed for this argument given
+            implementation.
 
     Returns
     -------
     result: DataFrame
         DataFrame read from MaxCompute (ODPS) table
+
+    Examples
+    --------
+
+    Before using `read_odps_table`, you need to create an ODPS entry
+    whose parameters will be stored globally in current process.
+
+    >>> import maxframe.dataframe as md
+    >>> from odps import ODPS
+    >>>
+    >>> o = ODPS(...)  # Fill account information here
+
+    Simply read a table by name.
+
+    >>> df = md.read_odps_table("simple_table")
+
+    Read table by partition (or partitions).
+
+    >>> # Read partitioned table
+    >>> df = md.read_odps_table("partitioned_table", partitions="pt=20230101")
+    >>> # Read with multiple partitions
+    >>> df = md.read_odps_table("partitioned_table", partitions=["pt=20230101", "pt=20230102"])
+
+    Read with column selection.
+
+    >>> df = md.read_odps_table("table_name", columns=["col1", "col2", "col3"])
+
+    Read with columns as index.
+
+    >>> # Read with index columns
+    >>> df = md.read_odps_table("table_name", index_col="id")
+    >>> # Read with multiple index columns
+    >>> df = md.read_odps_table("table_name", index_col=["id", "timestamp"])
+
+    Read with filter condition. Note that complete filtering is not guaranteed.
+
+    >>> # Read table with string filter
+    >>> df = md.read_odps_table("source_table", filters="age > 18")
+    >>> # Read with list filter
+    >>> df = md.read_odps_table(
+    ...     "table_name",
+    ...     filters=[[('age', '>', 18), ('city', '==', 'Beijing')]]
+    ... )
     """
     default_index_type = validate_default_index_type(default_index_type, **kw)
     odps_entry = odps_entry or ODPS.from_global() or ODPS.from_environments()
@@ -315,6 +383,7 @@ def read_odps_table(
         index_dtypes=index_dtypes,
         odps_entry=odps_entry,
         default_index_type=default_index_type,
+        filters=filters,
         **kw,
     )
     return op(shape, chunk_bytes=chunk_bytes, chunk_size=chunk_size)

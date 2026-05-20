@@ -23,6 +23,7 @@ from odps import ODPS
 from odps.config import option_context as pyodps_option_context
 from odps.models import Project, Table, TableSchema
 from odps.models.schema import Schema
+from odps.utils import split_backquoted, strip_backquotes
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +45,7 @@ def build_session_volume_name(session_id: str) -> str:
 def sync_pyodps_options():
     from odps.config import option_context as pyodps_option_context
 
-    from ..config import options
+    from maxframe.config import options
 
     with pyodps_option_context() as cfg:
         cfg.local_timezone = options.local_timezone
@@ -54,7 +55,7 @@ def sync_pyodps_options():
 
 
 def update_wlm_quota_settings(session_id: str, engine_settings: Dict[str, Any]):
-    from ..config import options
+    from maxframe.config import options
 
     engine_quota = engine_settings.get("odps.task.wlm.quota", None)
     session_quota = options.session.quota_name or None
@@ -101,6 +102,8 @@ def get_odps_dlf_table(
     sql_hints: Optional[Dict[str, str]] = None,
     inst_logger: Optional[logging.Logger] = None,
 ):
+    from maxframe.config import options
+
     def adapt_dlf_schema(src_schema_list):
         ret = []
         for c in src_schema_list:
@@ -123,18 +126,16 @@ def get_odps_dlf_table(
         project = project or odps_entry.project
 
     schema = schema or "default"
-    if "." in table_name:
-        full_table_name = table_name
-        name_parts = table_name.split(".")
-        if len(name_parts) == 2:
-            schema, table_name = name_parts
-        else:
-            assert len(name_parts) == 3
-            project, schema, table_name = name_parts
-        if table_name.startswith("`") and table_name.endswith("`"):
-            table_name = table_name[1:-1]
-    else:
-        full_table_name = ".".join([project, schema, f"`{table_name}`"])
+
+    enable_schema = options.session.enable_schema
+    project, parsed_schema, table, full_table_name = parse_table_name(
+        table_name,
+        default_project=project,
+        default_schema=schema,
+        enable_schema=enable_schema,
+    )
+    schema = parsed_schema or schema
+    table_name = table
 
     ddl_sql_hints = (sql_hints or {}).copy()
     ddl_sql_hints["odps.sql.submit.mode"] = ""
@@ -206,3 +207,31 @@ def submit_survey_logs(odps_entry: ODPS):
             odps_entry.rest.put(log_url, json.dumps(log))
     except:
         pass
+
+
+def parse_table_name(
+    table_name, default_project=None, default_schema=None, enable_schema=None
+):
+    parts = [p for p in split_backquoted(strip_backquotes(table_name), sep=".") if p]
+    if len(parts) == 1:
+        project = default_project
+        schema = default_schema
+        table = parts[0]
+    elif len(parts) == 2:
+        if enable_schema:
+            project = default_project
+            schema = parts[0]
+            table = parts[1]
+        else:
+            project = parts[0]
+            schema = default_schema
+            table = parts[1]
+    else:
+        project = parts[0]
+        schema = parts[1]
+        table = parts[2]
+
+    full_name_parts = [p for p in [project, schema, table] if p]
+    full_name = ".".join(full_name_parts)
+
+    return (project, schema, table, full_name)

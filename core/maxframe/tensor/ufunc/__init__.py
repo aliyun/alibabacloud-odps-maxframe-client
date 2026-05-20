@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 
 
 def _install():
-    from ..core import Tensor
-    from .ufunc import _array_ufunc
+    from maxframe.tensor.core import Tensor
+    from maxframe.tensor.ufunc.ufunc import _array_ufunc
 
     Tensor.__array_ufunc__ = _array_ufunc
 

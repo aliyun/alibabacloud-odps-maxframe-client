@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,15 +18,15 @@ from collections.abc import Iterable
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import ExecutableTuple, OutputType, get_output_types
-from ...core.operator import MapReduceOperator
-from ...dataframe.utils import parse_index
-from ...serialization.serializables import FieldTypes, Int64Field, TupleField
-from ...tensor.utils import check_random_state, gen_random_seeds, validate_axis
-from ...utils import tokenize
-from ..core import LearnOperatorMixin
-from . import convert_to_tensor_or_dataframe
+from maxframe import opcodes
+from maxframe.core import ExecutableTuple, OutputType, get_output_types
+from maxframe.core.operator import MapReduceOperator
+from maxframe.dataframe.utils import parse_index
+from maxframe.learn.core import LearnOperatorMixin
+from maxframe.learn.utils import convert_to_tensor_or_dataframe
+from maxframe.serialization.serializables import FieldTypes, Int64Field, TupleField
+from maxframe.tensor.utils import check_random_state, gen_random_seeds, validate_axis
+from maxframe.utils import tokenize
 
 
 def _shuffle_index_value(op, index_value, chunk_index=None):
@@ -58,7 +58,7 @@ class LearnShuffle(MapReduceOperator, LearnOperatorMixin):
     def _shuffle_dtypes(self, dtypes):
         seed = self.seeds[self.axes.index(1)]
         rs = np.random.RandomState(seed)
-        shuffled_dtypes = dtypes[rs.permutation(np.arange(len(dtypes)))]
+        shuffled_dtypes = dtypes.iloc[rs.permutation(np.arange(len(dtypes)))]
         return shuffled_dtypes
 
     def _calc_params(self, params):

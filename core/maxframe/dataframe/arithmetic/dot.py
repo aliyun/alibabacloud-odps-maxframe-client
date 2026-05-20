@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@ from typing import List
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import EntityData
-from ...serialization.serializables import AnyField, KeyField
-from ...tensor import tensor as astensor
-from ...tensor.core import TENSOR_TYPE
-from ..core import DATAFRAME_TYPE, SERIES_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index
+from maxframe.serialization.serializables import AnyField, KeyField
+from maxframe.tensor import tensor as astensor
+from maxframe.tensor.core import TENSOR_TYPE
 
 
 class DataFrameDot(DataFrameOperator, DataFrameOperatorMixin):

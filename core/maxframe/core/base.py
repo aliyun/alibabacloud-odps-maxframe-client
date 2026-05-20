@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@ from typing import Dict, Optional, Tuple, Type
 
 from odps.errors import ODPSError
 
-from ..serialization.serializables import Serializable, StringField
-from ..serialization.serializables.core import SerializableSerializer
-from ..utils import tokenize
+from maxframe.serialization.serializables import Serializable, StringField
+from maxframe.serialization.serializables.core import SerializableSerializer
+from maxframe.utils import tokenize
 
 
 class Base(Serializable):

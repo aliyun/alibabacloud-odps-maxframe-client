@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,12 @@ from typing import List, Optional, Sequence, Union
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData, OutputType, get_output_types
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData, get_output_types
+from maxframe.dataframe.initializer import Series as asseries
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import find_input_of_groupby, parse_index
+from maxframe.serialization.serializables import (
     BoolField,
     DictField,
     Float32Field,
@@ -30,10 +33,7 @@ from ...serialization.serializables import (
     NDArrayField,
     StringField,
 )
-from ...tensor.random import RandomStateField
-from ..initializer import Series as asseries
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from maxframe.tensor.random import RandomStateField
 
 
 class GroupBySample(DataFrameOperator, DataFrameOperatorMixin):
@@ -68,9 +68,7 @@ class GroupBySample(DataFrameOperator, DataFrameOperatorMixin):
             op.weights = next(input_iter)
 
     def __call__(self, groupby):
-        df = groupby
-        while df.op.output_types[0] not in (OutputType.dataframe, OutputType.series):
-            df = df.inputs[0]
+        df = find_input_of_groupby(groupby)
 
         selection = groupby.op.groupby_params.pop("selection", None)
         if df.ndim > 1 and selection:

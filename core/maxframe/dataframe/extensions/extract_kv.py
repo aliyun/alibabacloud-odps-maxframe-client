@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@ from typing import List
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import EntityData, OutputType
-from ...serialization.serializables import AnyField, KeyField, StringField
-from ...utils import make_dtype, no_default
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import make_column_list
+from maxframe import opcodes
+from maxframe.core import EntityData, OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import make_column_list
+from maxframe.serialization.serializables import AnyField, KeyField, StringField
+from maxframe.utils import make_dtype, no_default
 
 
 class DataFrameExtractKv(DataFrameOperator, DataFrameOperatorMixin):
@@ -164,7 +164,8 @@ def extract_kv(
     if non_exist_key is not no_default:
         raise ValueError(f"Column {non_exist_key} specified is not a valid column.")
     for col in columns_list:
-        if str(data.dtypes[col]) not in ("object", "string"):
+        # In pandas 3.0, string dtype is represented as "str" instead of "object"
+        if str(data.dtypes[col]) not in ("object", "string", "str"):
             raise ValueError(f"Column '{col}' must be of string type.")
     op = DataFrameExtractKv(
         columns=columns,

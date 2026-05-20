@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+import decimal
 import functools
 import inspect
 import itertools
@@ -26,15 +28,16 @@ import numpy as np
 import pandas as pd
 from pandas.core.dtypes.inference import is_dict_like, is_list_like
 
-from ..config.config import options
-from ..config.validators import dtype_backend_validator, is_enum_value
-from ..core import ENTITY_TYPE, Entity, ExecutableTuple
-from ..lib.dtypes_extension import ExternalBlobDtype, SolidBlob
-from ..lib.mmh3 import hash as mmh_hash
-from ..protocol import DefaultIndexType
-from ..udf import discover_marked_functions
-from ..utils import (
+from maxframe.config.config import options
+from maxframe.config.validators import dtype_backend_validator, is_enum_value
+from maxframe.core import ENTITY_TYPE, Entity, ExecutableTuple, OutputType
+from maxframe.lib.dtypes_extension import ExternalBlobDtype, SolidBlob
+from maxframe.lib.mmh3 import hash as mmh_hash
+from maxframe.protocol import DefaultIndexType
+from maxframe.udf import discover_marked_functions
+from maxframe.utils import (
     ModulePlaceholder,
+    TypeDispatcher,
     is_full_slice,
     lazy_import,
     pd_release_version,
@@ -46,22 +49,26 @@ from ..utils import (
 
 try:
     import pyarrow as pa
+    import pyarrow.compute as pac
 except ImportError:  # pragma: no cover
     pa = ModulePlaceholder("pyarrow")
+    pac = ModulePlaceholder("pyarrow.compute")
 
 try:
-    from ..lib.dtypes_extension import ArrowDtype
+    from maxframe.lib.dtypes_extension import ArrowDtype
 except ImportError:
     ArrowDtype = None
 
 if TYPE_CHECKING:
-    from .operators import DataFrameOperator
+    from maxframe.dataframe.operators import DataFrameOperator
 
 MAX_DECIMAL128_PRECISION = 38
+MAX_DECIMAL128_SCALE = 18
 
 cudf = lazy_import("cudf", rename="cudf")
 logger = logging.getLogger(__name__)
 _need_enforce_group_keys = pd_release_version < (1, 5, 0)
+_pd_time_has_unit = pd_release_version[0] >= 2
 
 
 def hash_index(index, size):
@@ -162,7 +169,7 @@ def is_pd_range_empty(pd_range_index):
 
 
 def parse_index(index_value, *args, store_data=False, key=None):
-    from .core import IndexValue
+    from maxframe.dataframe.core import IndexValue
 
     def _extract_property(index, tp, ret_data):
         kw = {
@@ -495,7 +502,17 @@ def _generate_value(dtype, fill_value):
     # otherwise, just use dtype.type itself to convert
     target_dtype = getattr(dtype, "type", dtype)
     convert = dispatch.get(target_dtype, target_dtype)
-    return convert(fill_value)
+    ret = convert(fill_value)
+    if target_dtype in (np.datetime64, np.timedelta64):
+        target_unit = np.datetime_data(dtype)[0]
+        if (
+            target_unit
+            and hasattr(ret, "unit")
+            and ret.unit != target_unit
+            and target_unit != "generic"
+        ):
+            ret = ret.as_unit(target_unit)
+    return ret
 
 
 def build_empty_df(dtypes, index=None):
@@ -512,7 +529,7 @@ def build_empty_df(dtypes, index=None):
 
 
 def build_df(df_obj, fill_value=1, size=1, ensure_string=False):
-    from .core import INDEX_TYPE, SERIES_TYPE
+    from maxframe.dataframe.core import INDEX_TYPE, SERIES_TYPE
 
     dfs = []
     if not isinstance(size, (list, tuple)):
@@ -649,7 +666,7 @@ def build_series(
 
 
 def infer_index_value(left_index_value, right_index_value, level=None):
-    from .core import IndexValue
+    from maxframe.dataframe.core import IndexValue
 
     if isinstance(left_index_value.value, IndexValue.RangeIndex) and isinstance(
         right_index_value.value, IndexValue.RangeIndex
@@ -778,7 +795,10 @@ def _clear_decimal128_int_part(dtype):
     if not is_decimal128_dtype(dtype):
         return dtype
     return wrap_arrow_dtype(
-        pa.decimal128(dtype.pyarrow_dtype.scale + 1, dtype.pyarrow_dtype.scale)
+        pa.decimal128(
+            min(MAX_DECIMAL128_PRECISION, dtype.pyarrow_dtype.scale + 1),
+            dtype.pyarrow_dtype.scale,
+        )
     )
 
 
@@ -790,47 +810,448 @@ def _maximize_decimal128_precision(dtype):
     )
 
 
-def _infer_dtypes(left_dtypes, right_dtypes, operator):
+@functools.lru_cache(100)
+def _estimate_integer_precision(dtype):
+    """
+    Estimate precision for integer types.
+
+    For integer types, precision is the number of decimal digits needed
+    to represent the maximum value. For example, int32 needs at most 10 digits
+    (max value 2147483647).
+
+    This function is cached to avoid repeated calculations for the same dtype.
+
+    Parameters
+    ----------
+    dtype : dtype
+        Integer dtype to estimate precision for
+
+    Returns
+    -------
+    int
+        Estimated precision (number of decimal digits)
+    """
+    try:
+        import numpy as np
+
+        if hasattr(dtype, "itemsize") and np.issubdtype(dtype, np.integer):
+            max_val = np.iinfo(dtype).max
+            return min(38, len(str(max_val)))
+    except (ValueError, TypeError):
+        pass
+    return 38
+
+
+def _get_decimal_precision_scale(dtype):
+    """
+    Extract precision and scale from a decimal dtype.
+
+    For non-decimal types (e.g., integers), estimates precision and sets scale=0.
+
+    Parameters
+    ----------
+    dtype : dtype
+        Dtype to extract precision and scale from
+
+    Returns
+    -------
+    tuple (precision, scale)
+        Precision and scale of the dtype
+    """
+    if is_decimal128_dtype(dtype):
+        return dtype.pyarrow_dtype.precision, dtype.pyarrow_dtype.scale
+    else:
+        # For integer types, estimate precision and set scale=0
+        return _estimate_integer_precision(dtype), 0
+
+
+# Pure formula calculation functions - only take p1, s1, p2, s2
+
+
+def _calc_add_precision_scale(p1, s1, p2, s2):
+    """
+    Calculate precision and scale for decimal addition/subtraction.
+    Both PyArrow and Hive use the same formula.
+
+    Formula:
+    - result_scale = max(s1, s2)
+    - result_precision = max(p1-s1, p2-s2) + result_scale + 1
+
+    Returns
+    -------
+    tuple (precision, scale)
+    """
+    result_scale = max(s1, s2)
+    result_precision = max(p1 - s1, p2 - s2) + result_scale + 1
+    return result_precision, result_scale
+
+
+def _calc_mul_precision_scale(p1, s1, p2, s2):
+    """
+    Calculate precision and scale for decimal multiplication.
+    Both PyArrow and Hive use the same formula.
+
+    Formula:
+    - result_scale = s1 + s2
+    - result_precision = p1 + p2 + 1
+
+    Returns
+    -------
+    tuple (precision, scale)
+    """
+    result_scale = s1 + s2
+    result_precision = p1 + p2 + 1
+    return result_precision, result_scale
+
+
+def _calc_div_precision_scale_hive(p1, s1, p2, s2):
+    """
+    Calculate precision and scale for decimal division using Hive formula.
+
+    Hive formula:
+    - result_scale = max(6, s1 + p2 + 1)
+    - result_precision = p1 - s1 + s2 + result_scale
+
+    Returns
+    -------
+    tuple (precision, scale)
+    """
+    result_scale = max(6, s1 + p2 + 1)
+    result_precision = p1 - s1 + s2 + result_scale
+    return result_precision, result_scale
+
+
+def _calc_div_precision_scale_pyarrow(p1, s1, p2, s2):
+    """
+    Calculate precision and scale for decimal division using PyArrow formula.
+
+    PyArrow formula:
+    - result_scale = min(s1 + p2 + 1 - s2, 18)
+    - result_precision = min(p1 + p2 + 1, 38)
+
+    Returns
+    -------
+    tuple (precision, scale)
+    """
+    result_scale = s1 + p2 + 1 - s2
+    result_precision = p1 + p2 + 1
+    return result_precision, result_scale
+
+
+# Operator mappings for precision/scale calculation
+_DECIMAL_CALC_HIVE = {
+    operator.add: _calc_add_precision_scale,
+    operator.sub: _calc_add_precision_scale,  # Same as addition
+    operator.mul: _calc_mul_precision_scale,
+    operator.truediv: _calc_div_precision_scale_hive,
+}
+
+
+def _calc_decimal_precision_scale(left_dtype, right_dtype, opr):
+    """
+    Unified function to calculate decimal precision and scale for arithmetic operations.
+
+    This function:
+    1. Extracts precision and scale from input dtypes
+    2. Applies Hive formula for the operator
+    3. Caps results at maximum precision (38) and scale (18)
+
+    Parameters
+    ----------
+    left_dtype : dtype
+        Left operand dtype
+    right_dtype : dtype
+        Right operand dtype
+    opr : operator
+        Operator (add, sub, mul, truediv)
+
+    Returns
+    -------
+    dtype or None
+        Result dtype with calculated precision and scale, or None if neither operand is decimal
+    """
+    # Check if at least one operand is decimal
+    left_is_decimal = is_decimal128_dtype(left_dtype)
+    right_is_decimal = is_decimal128_dtype(right_dtype)
+
+    if not left_is_decimal and not right_is_decimal:
+        return None
+
+    # Get precision and scale for both operands
+    p1, s1 = _get_decimal_precision_scale(left_dtype)
+    p2, s2 = _get_decimal_precision_scale(right_dtype)
+
+    # Get the calculation function for the operator
+    calc_func = _DECIMAL_CALC_HIVE.get(opr)
+
+    if calc_func is None:
+        return None
+
+    # Calculate precision and scale
+    result_precision, result_scale = calc_func(p1, s1, p2, s2)
+
+    # Cap at maximum limits
+    result_precision = min(MAX_DECIMAL128_PRECISION, result_precision)
+    result_scale = min(MAX_DECIMAL128_SCALE, result_scale)
+
+    return wrap_arrow_dtype(pa.decimal128(result_precision, result_scale))
+
+
+# Aggregation precision/scale calculation functions
+
+
+def _calc_sum_precision_scale(p, s):
+    """
+    Calculate precision and scale for decimal sum using Hive formula.
+
+    Hive: precision = min(p + 10, 38), scale = s
+
+    Returns
+    -------
+    tuple (precision, scale)
+    """
+    result_precision = min(p + 10, MAX_DECIMAL128_PRECISION)
+    return result_precision, s
+
+
+def _calc_mean_precision_scale(p, s):
+    """
+    Calculate precision and scale for decimal mean using Hive formula.
+
+    Hive: precision = min(p + 4, 38), scale = min(s + 4, 18)
+
+    Returns
+    -------
+    tuple (precision, scale)
+    """
+    result_precision = min(p + 4, MAX_DECIMAL128_PRECISION)
+    result_scale = min(s + 4, MAX_DECIMAL128_SCALE)
+    return result_precision, result_scale
+
+
+def _calc_var_std_precision_scale(p, s):
+    """
+    Calculate precision and scale for decimal variance/std using Hive formula.
+
+    Hive: Uses decimal arithmetic, returns decimal(38, scale)
+
+    Returns
+    -------
+    tuple (precision, scale)
+    """
+    # Hive uses decimal arithmetic with max precision
+    return MAX_DECIMAL128_PRECISION, min(s * 2, MAX_DECIMAL128_SCALE)
+
+
+# Aggregation function name to calculation function mapping
+_AGGREGATION_CALC_MAP = {
+    "sum": _calc_sum_precision_scale,
+    "mean": _calc_mean_precision_scale,
+    "var": _calc_var_std_precision_scale,
+    "std": _calc_var_std_precision_scale,
+    # min, max preserve input type - no need for calculation
+}
+
+
+def _infer_decimal_agg_dtype(input_dtype, func_name):
+    """
+    Infer result dtype for decimal aggregation operations using Hive rules.
+
+    Parameters
+    ----------
+    input_dtype : dtype
+        Input dtype (must be decimal)
+    func_name : str
+        Aggregation function name (sum, mean, var, std, min, max, etc.)
+
+    Returns
+    -------
+    dtype
+        Result dtype with calculated precision and scale
+    """
+    if not is_decimal128_dtype(input_dtype):
+        return input_dtype
+
+    # For min/max, preserve input type
+    if func_name in ("min", "max"):
+        return input_dtype
+
+    # Get input precision and scale
+    p = input_dtype.pyarrow_dtype.precision
+    s = input_dtype.pyarrow_dtype.scale
+
+    # Get calculation function
+    calc_func = _AGGREGATION_CALC_MAP.get(func_name)
+
+    if calc_func is None:
+        # Unknown aggregation - preserve input type
+        return input_dtype
+
+    # Calculate result precision and scale
+    result_precision, result_scale = calc_func(p, s)
+
+    # Cap at maximum limits
+    result_precision = min(MAX_DECIMAL128_PRECISION, result_precision)
+    result_scale = min(MAX_DECIMAL128_SCALE, result_scale)
+
+    return wrap_arrow_dtype(pa.decimal128(result_precision, result_scale))
+
+
+def _infer_dtypes(left_dtypes, right_dtypes, opr):
     left = build_empty_df(left_dtypes)
     right = build_empty_df(right_dtypes)
-    return operator(left, right).dtypes
+    return opr(left, right).dtypes
 
 
-def infer_dtypes(left_dtypes, right_dtypes, operator):
+def infer_dtypes(left_dtypes, right_dtypes, opr):
+    """
+    Infer result dtypes for binary operations on DataFrames.
+
+    Parameters
+    ----------
+    left_dtypes : pd.Series
+        Left DataFrame dtypes
+    right_dtypes : pd.Series
+        Right DataFrame dtypes
+    opr : operator
+        Binary operator (add, sub, mul, truediv)
+
+    Returns
+    -------
+    pd.Series
+        Result dtypes
+    """
+    # Check if any column is decimal
+    has_decimal = any(is_decimal128_dtype(dt) for dt in left_dtypes) or any(
+        is_decimal128_dtype(dt) for dt in right_dtypes
+    )
+
+    if has_decimal:
+        # Use direct calculation for decimal columns
+        def calculate_column_dtype(col_name):
+            left_dt = left_dtypes.get(col_name)
+            right_dt = right_dtypes.get(col_name)
+            if left_dt is None or right_dt is None:
+                return None
+
+            # Use unified decimal calculation for decimal types
+            if is_decimal128_dtype(left_dt) or is_decimal128_dtype(right_dt):
+                result_dtype = _calc_decimal_precision_scale(left_dt, right_dt, opr)
+                if result_dtype:
+                    return result_dtype
+            return None
+
+        # Try to calculate all columns
+        result_dtypes = {}
+        all_calculated = True
+        for col_name in left_dtypes.index:
+            calc_dtype = calculate_column_dtype(col_name)
+            if calc_dtype is not None:
+                result_dtypes[col_name] = calc_dtype
+            else:
+                all_calculated = False
+                break
+
+        if all_calculated:
+            return pd.Series(result_dtypes)
+
+    # Fallback to mock inference for non-decimal or mixed operations
     try:
-        return _infer_dtypes(left_dtypes, right_dtypes, operator)
+        return _infer_dtypes(left_dtypes, right_dtypes, opr)
     except pa.ArrowInvalid as exc:
         if "Decimal precision" not in str(exc):
             raise
-        # infer scale part and use maximum precision
-        left_dtypes = left_dtypes.map(_clear_decimal128_int_part)
-        right_dtypes = right_dtypes.map(_clear_decimal128_int_part)
-        return _infer_dtypes(left_dtypes, right_dtypes, operator).map(
-            _maximize_decimal128_precision
+
+        # Try direct calculation for decimal operations
+        def fix_decimal_dtype(col_name, dt):
+            if not is_decimal128_dtype(dt):
+                return dt
+            # Get left and right dtypes by column name
+            left_dt = left_dtypes.get(col_name)
+            right_dt = right_dtypes.get(col_name)
+            if left_dt is None or right_dt is None:
+                return _maximize_decimal128_precision(dt)
+
+            # Use unified decimal calculation
+            result_dtype = _calc_decimal_precision_scale(left_dt, right_dt, opr)
+            if result_dtype:
+                return result_dtype
+            return _maximize_decimal128_precision(dt)
+
+        # Try to get result dtypes from mock inference
+        result_dtypes = _infer_dtypes(
+            left_dtypes.map(_clear_decimal128_int_part),
+            right_dtypes.map(_clear_decimal128_int_part),
+            opr,
+        )
+
+        return pd.Series(
+            [fix_decimal_dtype(col_name, dt) for col_name, dt in result_dtypes.items()],
+            index=result_dtypes.index,
         )
 
 
-def _infer_dtype(left_dtype, right_dtype, operator):
+def _infer_dtype(left_dtype, right_dtype, opr):
     left = build_empty_series(left_dtype)
     right = build_empty_series(right_dtype)
-    return operator(left, right).dtype
+    try:
+        return opr(left, right).dtype
+    except TypeError:
+        if any(
+            t.dtype == "O" or isinstance(t.dtype, pd.api.extensions.ExtensionDtype)
+            for t in (left, right)
+        ):
+            return np.dtype("O")
+        raise
 
 
 @functools.lru_cache(100)
-def infer_dtype(left_dtype, right_dtype, operator):
+def _infer_dtype_cached(left_dtype, right_dtype, opr):
+    """
+    Internal cached implementation of infer_dtype.
+    """
+    # For decimal operations, use direct calculation
+    if is_decimal128_dtype(left_dtype) or is_decimal128_dtype(right_dtype):
+        result_dtype = _calc_decimal_precision_scale(left_dtype, right_dtype, opr)
+        if result_dtype:
+            return result_dtype
+
+    # For non-decimal operations, use mock inference
     try:
-        return _infer_dtype(left_dtype, right_dtype, operator)
+        return _infer_dtype(left_dtype, right_dtype, opr)
     except pa.ArrowInvalid as exc:
         if "Decimal precision" not in str(exc):
             raise
-        # infer scale part and use maximum precision
+
+        # Generic fallback - maximize precision
         return _maximize_decimal128_precision(
             _infer_dtype(
                 _clear_decimal128_int_part(left_dtype),
                 _clear_decimal128_int_part(right_dtype),
-                operator,
+                opr,
             )
         )
+
+
+def infer_dtype(left_dtype, right_dtype, opr):
+    """
+    Infer result dtype for binary operations on Series.
+
+    Parameters
+    ----------
+    left_dtype : dtype
+        Left operand dtype
+    right_dtype : dtype
+        Right operand dtype
+    opr : operator
+        Binary operator (add, sub, mul, truediv)
+
+    Returns
+    -------
+    dtype
+        Result dtype
+    """
+    return _infer_dtype_cached(left_dtype, right_dtype, opr)
 
 
 def filter_dtypes(dtypes, column_min_max):
@@ -968,7 +1389,7 @@ def validate_axis_style_args(
 
 
 def validate_output_types(**kwargs):
-    from ..core import OutputType
+    from maxframe.core import OutputType
 
     output_type = kwargs.pop("object_type", None) or kwargs.pop("output_type", None)
     output_types = kwargs.pop("output_types", None) or (
@@ -1027,7 +1448,7 @@ def fetch_corner_data(df_or_series, session=None) -> pd.DataFrame:
     :param df_or_series: DataFrame or Series
     :return: corner DataFrame
     """
-    from .indexing.iloc import iloc
+    from maxframe.dataframe.indexing.iloc import iloc
 
     max_rows = pd.get_option("display.max_rows")
     try:
@@ -1067,6 +1488,31 @@ class ReprSeries(pd.Series):
         # the length would be wrong and we have no way to control,
         # thus we just overwrite the length to show the real one
         return self._real_shape[0]
+
+    @property
+    def shape(self):
+        # In pandas 3.0+, the internal _mgr.shape is (num_columns, num_rows),
+        #  but the public shape property should be (num_rows,) for Series.
+        return (self._real_shape[0],)
+
+    def take(self, indices, axis=0, **kwargs):
+        # Override take to handle virtual indexing for display purposes.
+        # When pandas tries to access indices like [0, 1, 2, 3, 4, 995, 996, 997, 998, 999],
+        # we need to map the high indices to the tail of the actual data.
+        actual_len = super().__len__()
+        real_len = self._real_shape[0]
+
+        # Map indices: head indices (< actual_len) stay as-is,
+        # other indices map to the end of actual data
+        offset = real_len - actual_len
+        mapped_indices = [idx if idx < actual_len else idx - offset for idx in indices]
+
+        # Filter out duplicates and sort
+        mapped_indices = sorted(set(mapped_indices))
+        # Filter to valid range
+        mapped_indices = [i for i in mapped_indices if 0 <= i < actual_len]
+
+        return super().take(mapped_indices, axis=axis, **kwargs)
 
 
 def filter_dtypes_by_index(dtypes, index):
@@ -1115,7 +1561,7 @@ def create_sa_connection(con, **kwargs):
 
 
 def to_arrow_dtypes(dtypes):
-    from ..io.odpsio.schema import pandas_dtypes_to_arrow_schema
+    from maxframe.io.odpsio.schema import pandas_dtypes_to_arrow_schema
 
     if isinstance(dtypes, pa.Schema):
         arrow_schema = dtypes
@@ -1395,7 +1841,7 @@ def pack_func_args(df, funcs, *args, args_bind_position=1, **kwargs) -> Any:
     AttributeError :
         If there's a string but no corresponding function is found.
     """
-    from ..udf import MarkedFunction
+    from maxframe.udf import MarkedFunction
 
     if not args and not kwargs:
         return funcs
@@ -1463,7 +1909,7 @@ def get_callable_by_name(df: Any, func_name: str) -> Callable:
 
 
 def copy_func_scheduling_hints(func, op: "DataFrameOperator") -> None:
-    from ..config import options
+    from maxframe.config import options
 
     expect_engine = None
     expect_gpu = None
@@ -1571,3 +2017,42 @@ def validate_dtype_backend(value):
     if not dtype_backend_validator(value):
         raise ValueError(f"Invalid dtype_backend: {value}")
     return value
+
+
+_scalar_datetime_dtype_dispatcher = TypeDispatcher(
+    {
+        pd.Timestamp: lambda unit: np.dtype(f"datetime64[{unit}]"),
+        pd.Timedelta: lambda unit: np.dtype(f"timedelta64[{unit}]"),
+        datetime.datetime: lambda unit: np.dtype("datetime64[ms]"),
+        datetime.timedelta: lambda unit: np.dtype("timedelta64[ms]"),
+    }
+)
+
+
+def extract_scalar_dtype(scalar):
+    if hasattr(scalar, "dtype"):
+        return scalar.dtype
+    elif isinstance(scalar, decimal.Decimal):
+        dec_tuple = scalar.as_tuple()
+        try:
+            return ArrowDtype(
+                pa.decimal128(len(dec_tuple.digits), abs(dec_tuple.exponent))
+            )
+        except (AttributeError, ImportError, TypeError, ValueError):
+            return type(scalar)
+    elif not _pd_time_has_unit:
+        return type(scalar)
+
+    try:
+        dt_handler = _scalar_datetime_dtype_dispatcher.get_handler(type(scalar))
+        unit = getattr(scalar, "unit", "ns")
+        return dt_handler(unit)
+    except KeyError:
+        return type(scalar)
+
+
+def find_input_of_groupby(groupby):
+    df = groupby
+    while df.op.output_types[0] not in (OutputType.dataframe, OutputType.series):
+        df = df.inputs[0]
+    return df

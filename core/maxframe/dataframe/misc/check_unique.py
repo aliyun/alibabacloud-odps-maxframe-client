@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 import pandas as pd
 
-from ...udf import builtin_function
+from maxframe.udf import builtin_function
 
 
 @builtin_function
@@ -28,7 +28,7 @@ def _tailor_unique(series_or_idx):
 
 
 def _is_unique(series_or_index):
-    from ... import tensor as mt
+    from maxframe import tensor as mt
 
     return mt.equal(
         series_or_index.mf.apply_chunk(

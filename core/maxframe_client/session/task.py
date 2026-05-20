@@ -40,7 +40,7 @@ try:
 except ImportError:
     mf_version = None
 
-from .consts import (
+from maxframe_client.session.consts import (
     EMPTY_RESPONSE_RETRY_COUNT,
     MAXFRAME_DEFAULT_PROTOCOL,
     MAXFRAME_OUTPUT_JSON_FORMAT,
@@ -56,7 +56,7 @@ from .consts import (
     ODPS_SESSION_INSECURE_SCHEME,
     ODPS_SESSION_SECURE_SCHEME,
 )
-from .odps import MaxFrameServiceCaller, MaxFrameSession
+from maxframe_client.session.odps import MaxFrameServiceCaller, MaxFrameSession
 
 logger = logging.getLogger(__name__)
 

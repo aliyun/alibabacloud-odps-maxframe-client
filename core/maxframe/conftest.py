@@ -21,7 +21,7 @@ import pytest
 from odps import ODPS
 from odps.accounts import BearerTokenAccount
 
-from .config import options
+from maxframe.config import options
 
 faulthandler.enable(all_threads=True)
 _test_conf_file_name = os.path.join(
@@ -132,7 +132,7 @@ def _enter_odps_envs(entry, drop_temp_tables=True):
             os.environ[env_name] = val
 
         if drop_temp_tables:
-            from .tests.utils import _test_tables_to_drop
+            from maxframe.tests.utils import _test_tables_to_drop
 
             for table_name in _test_tables_to_drop:
                 try:

@@ -38,11 +38,11 @@ from cpython cimport PyBytes_FromStringAndSize
 from libc.stdint cimport uint8_t, uint32_t, uint_fast64_t
 from libc.stdlib cimport free, malloc
 
-from ..lib.cython.libcpp cimport mt19937_64
+from maxframe.lib.cython.libcpp cimport mt19937_64
 
-from ..lib.mmh3 import hash as mmh_hash
-from ..lib.mmh3 import hash_bytes as mmh_hash_bytes
-from ..lib.mmh3 import hash_from_buffer as mmh3_hash_from_buffer
+from maxframe.lib.mmh3 import hash as mmh_hash
+from maxframe.lib.mmh3 import hash_bytes as mmh_hash_bytes
+from maxframe.lib.mmh3 import hash_from_buffer as mmh3_hash_from_buffer
 
 try:
     from pandas.tseries.offsets import Tick as PDTick
@@ -116,8 +116,8 @@ NamedType = collections.namedtuple("NamedType", ["name", "type_"])
 
 
 cdef class TypeDispatcher:
-    def __init__(self):
-        self._handlers = dict()
+    def __init__(self, handlers=None):
+        self._handlers = dict(handlers or dict())
         self._lazy_handlers = dict()
         # store inherited handlers to facilitate unregistering
         self._inherit_handlers = dict()
@@ -330,13 +330,16 @@ cdef list tokenize_pandas_series(ob):
 
 
 cdef list tokenize_pandas_dataframe(ob):
-    l = [block.values for block in ob._data.blocks]
+    if hasattr(ob, '_data'):
+        l = [block.values for block in ob._data.blocks]
+    else:
+        l = [block.values for block in ob._mgr.blocks]
     l.extend([ob.columns, ob.index])
     return iterative_tokenize(l)
 
 
 cdef list tokenize_pandas_categorical(ob):
-    l = ob.to_list()
+    l = ob.tolist()
     l.append(ob.shape)
     return iterative_tokenize(l)
 
@@ -407,14 +410,14 @@ def tokenize_pickled_with_cache(ob):
 
 
 def tokenize_cupy(ob):
-    from .serialization import serialize
+    from maxframe.serialization import serialize
 
     header, _buffers = serialize(ob)
     return iterative_tokenize([header, ob.data.ptr])
 
 
 def tokenize_cudf(ob):
-    from .serialization import serialize
+    from maxframe.serialization import serialize
 
     header, buffers = serialize(ob)
     return iterative_tokenize([header] + [(buf.ptr, buf.size) for buf in buffers])

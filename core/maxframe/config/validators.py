@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@ import os
 from typing import Callable
 from urllib.parse import urlparse
 
-from .. import env
-from ..utils import str_to_bool
+from maxframe import env
+from maxframe.utils import str_to_bool
 
 ValidatorType = Callable[..., bool]
 
@@ -115,7 +115,7 @@ def is_enum_value(enum_tp):
     def validate(x):
         nonlocal enum_cls
         if enum_cls is None:
-            from ..serialization import load_type
+            from maxframe.serialization import load_type
 
             enum_cls = load_type(enum_tp, enum.Enum)
         if x is None:
@@ -150,7 +150,7 @@ def simple_yaml_str_validator(name: str) -> bool:
 
 
 def dtype_backend_validator(name: str) -> bool:
-    from ..utils import no_default, pd_release_version
+    from maxframe.utils import no_default, pd_release_version
 
     check_pd_version = not str_to_bool(os.getenv(env.MAXFRAME_INSIDE_TASK))
     name = "pyarrow" if name == "arrow" else name

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,16 +18,16 @@ import numpy as np
 import pandas as pd
 from pandas.api.types import is_list_like
 
-from ... import opcodes
-from ...core import EntityData, OutputType
-from ...serialization.serializables import AnyField, KeyField
-from ...tensor.core import TENSOR_TYPE
-from ...utils import pd_release_version
-from ..core import DATAFRAME_TYPE, ENTITY_TYPE, SERIES_TYPE, DataFrame
-from ..initializer import DataFrame as asframe
-from ..initializer import Series as asseries
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from maxframe import opcodes
+from maxframe.core import EntityData, OutputType
+from maxframe.dataframe.core import DATAFRAME_TYPE, ENTITY_TYPE, SERIES_TYPE, DataFrame
+from maxframe.dataframe.initializer import DataFrame as asframe
+from maxframe.dataframe.initializer import Series as asseries
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index
+from maxframe.serialization.serializables import AnyField, KeyField
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.utils import pd_release_version
 
 # in pandas 1.0.x, __setitem__ with a list with missing items are not allowed
 _allow_set_missing_list = pd_release_version[:2] >= (1, 1)

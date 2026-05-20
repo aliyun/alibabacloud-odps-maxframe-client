@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@ from typing import List
 
 import numpy as np
 
-from ...core import EntityData, ExecutableTuple
-from ...serialization.serializables import (
+from maxframe.core import EntityData, ExecutableTuple
+from maxframe.serialization.serializables import (
     AnyField,
     DictField,
     FieldTypes,
@@ -25,10 +25,15 @@ from ...serialization.serializables import (
     ListField,
     StringField,
 )
-from ..core import Tensor, TensorOrder
-from ..datasource import tensor as astensor
-from ..operators import TensorOperator, TensorOperatorMixin
-from ..utils import broadcast_shape, check_order, check_out_param, filter_inputs
+from maxframe.tensor.core import Tensor, TensorOrder
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
+from maxframe.tensor.utils import (
+    broadcast_shape,
+    check_order,
+    check_out_param,
+    filter_inputs,
+)
 
 
 class TensorElementWise(TensorOperatorMixin):

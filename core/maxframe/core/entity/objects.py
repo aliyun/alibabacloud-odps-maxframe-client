@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
 
 from typing import Any, Dict, Type
 
-from ...serialization import load_type
-from ...serialization.serializables import StringField
-from ...utils import extract_class_name
-from .core import Entity
-from .executable import _ToObjectMixin
-from .tileables import TileableData
+from maxframe.core.entity.core import Entity
+from maxframe.core.entity.executable import _ToObjectMixin
+from maxframe.core.entity.tileables import TileableData
+from maxframe.serialization import load_type
+from maxframe.serialization.serializables import StringField
+from maxframe.utils import extract_class_name
 
 
 class ObjectData(TileableData, _ToObjectMixin):

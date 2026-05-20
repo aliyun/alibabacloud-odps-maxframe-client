@@ -155,28 +155,52 @@ msgstr ""
 msgid "Parquet"
 msgstr ""
 
-#: ../../source/reference/dataframe/io.rst:55:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:56:<autosummary>:1
 msgid ""
 ":py:obj:`read_parquet <maxframe.dataframe.read_parquet>`\\ \\(path\\, "
 "engine\\, columns\\, ...\\[\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/io.rst:55:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:56:<autosummary>:1
 msgid "Load a parquet object from the file path, returning a DataFrame."
 msgstr "从文件路径加载 parquet 对象，返回一个 DataFrame。"
 
-#: ../../source/reference/dataframe/io.rst:55:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:56:<autosummary>:1
 msgid ""
 ":py:obj:`DataFrame.to_parquet "
 "<maxframe.dataframe.DataFrame.to_parquet>`\\ \\(path\\[\\, engine\\, "
 "...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/dataframe/io.rst:55:<autosummary>:1
+#: ../../source/reference/dataframe/io.rst:56:<autosummary>:1
 msgid ""
 "Write a DataFrame to the binary parquet format, each chunk will be "
 "written to a Parquet file."
 msgstr ""
 "将 DataFrame 以二进制 parquet 格式写入，每个数据块将被写入一个 Parquet "
 "文件。"
+
+#: ../../source/reference/dataframe/io.rst:58
+msgid "Lance"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:63:<autosummary>:1
+msgid ""
+":py:obj:`read_lance <maxframe.dataframe.read_lance>`\\ \\(path\\[\\, "
+"version\\, asof\\, columns\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:63:<autosummary>:1
+msgid "Load a Lance dataset from the file path, returning a DataFrame."
+msgstr "从文件路径加载 Lance 数据集，返回 DataFrame。"
+
+#: ../../source/reference/dataframe/io.rst:63:<autosummary>:1
+msgid ""
+":py:obj:`DataFrame.to_lance <maxframe.dataframe.DataFrame.to_lance>`\\ "
+"\\(path\\[\\, mode\\, index\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/dataframe/io.rst:63:<autosummary>:1
+msgid "Write a DataFrame to a Lance dataset."
+msgstr "将 DataFrame 写入 Lance 数据集。"
 

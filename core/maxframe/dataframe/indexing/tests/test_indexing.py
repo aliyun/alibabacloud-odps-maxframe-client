@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,16 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from .... import dataframe as md
-from .... import tensor as mt
-from ....tensor.core import TENSOR_TYPE, Tensor
-from ...core import DATAFRAME_TYPE, SERIES_TYPE, DataFrame, Series
-from ..iloc import DataFrameIlocGetItem, DataFrameIlocSetItem, IndexingError
-from ..loc import DataFrameLocGetItem
+from maxframe import dataframe as md
+from maxframe import tensor as mt
+from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE, DataFrame, Series
+from maxframe.dataframe.indexing.iloc import (
+    DataFrameIlocGetItem,
+    DataFrameIlocSetItem,
+    IndexingError,
+)
+from maxframe.dataframe.indexing.loc import DataFrameLocGetItem
+from maxframe.tensor.core import TENSOR_TYPE, Tensor
 
 
 def test_iloc_getitem():
@@ -294,7 +298,10 @@ def test_dataframe_loc():
     df2 = df3.loc[md.Series([2, 1])]
     assert isinstance(df2, DataFrame)
     assert df2.shape == (2, 3)
-    assert isinstance(df2.index_value.to_pandas(), type(raw2.loc[[2, 1]].index))
+    # In pandas 3.0, fancy indexing on RangeIndex returns Int64Index instead of RangeIndex
+    assert isinstance(
+        df2.index_value.to_pandas(), type(raw2.loc[[2, 1]].index)
+    ) or isinstance(df2.index_value.to_pandas(), pd.Index)
     assert df2.index_value.key != df3.index_value.key
     pd.testing.assert_index_equal(df2.columns_value.to_pandas(), raw.columns)
     pd.testing.assert_series_equal(df2.dtypes, raw.dtypes)

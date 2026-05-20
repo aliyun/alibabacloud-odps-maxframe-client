@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,13 +34,12 @@ from maxframe.serialization import RemoteException
 from maxframe.session import new_session
 from maxframe.tests.utils import ensure_table_deleted, require_arrow_dtype, tn
 from maxframe.utils import build_temp_table_name
+from maxframe_client.clients.framedriver import FrameDriverClient
+from maxframe_client.session.consts import DEBUG_MODE_LOCAL
+from maxframe_client.session.odps import MaxFrameRestCaller, MaxFrameSession
 from maxframe_framedriver.app.tests.test_framedriver_webapp import (  # noqa: F401
     framedriver_app,
 )
-
-from ..clients.framedriver import FrameDriverClient
-from ..session.consts import DEBUG_MODE_LOCAL
-from ..session.odps import MaxFrameRestCaller, MaxFrameSession
 
 pytestmark = pytest.mark.maxframe_engine(["MCSQL", "SPE"])
 

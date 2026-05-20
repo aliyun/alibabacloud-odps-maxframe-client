@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .cov import cov
+from maxframe.tensor.statistics.cov import cov
 
 
 def corrcoef(x, y=None, rowvar=True):
@@ -65,8 +65,8 @@ def corrcoef(x, y=None, rowvar=True):
     safely ignored in this and previous versions of numpy.
 
     """
-    from ..arithmetic import sqrt
-    from ..datasource import diag
+    from maxframe.tensor.arithmetic import sqrt
+    from maxframe.tensor.datasource import diag
 
     c = cov(x, y, rowvar)
     if c.ndim == 0:

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,10 +48,10 @@ def array_equal(a1, a2):
     False
 
     """
-    from ..arithmetic import equal
-    from ..datasource import tensor as astensor
-    from ..datasource.scalar import scalar
-    from .all import all
+    from maxframe.tensor.arithmetic import equal
+    from maxframe.tensor.datasource import tensor as astensor
+    from maxframe.tensor.datasource.scalar import scalar
+    from maxframe.tensor.reduction.all import all
 
     try:
         a1, a2 = astensor(a1), astensor(a2)

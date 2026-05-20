@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -117,7 +117,7 @@ def cov_dataframe(df, min_periods=None, ddof=1, numeric_only=True):
     b       NaN  1.248003  0.191417
     c -0.150812  0.191417  0.895202
     """
-    from ..statistics.corr import DataFrameCorr
+    from maxframe.dataframe.statistics.corr import DataFrameCorr
 
     if not numeric_only:
         raise NotImplementedError("numeric_only==True not supported")
@@ -160,7 +160,7 @@ def cov_series(series, other, min_periods=None, ddof=1):
     >>> s1.cov(s2).execute()
     -0.01685762652715874
     """
-    from ..statistics.corr import DataFrameCorr
+    from maxframe.dataframe.statistics.corr import DataFrameCorr
 
     op = DataFrameCorr(other=other, method="cov", min_periods=min_periods, ddof=ddof)
     return op(series)

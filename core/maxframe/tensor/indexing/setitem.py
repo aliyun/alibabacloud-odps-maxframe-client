@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,15 +17,20 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData
-from ...core.operator import OperatorStage
-from ...serialization.serializables import AnyField, BoolField, KeyField, TupleField
-from ...tensor import tensor as astensor
-from ..core import TENSOR_TYPE
-from ..operators import TensorMapReduceOperator, TensorOperatorMixin
-from ..utils import filter_inputs
-from .core import process_index
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData
+from maxframe.core.operator import OperatorStage
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    KeyField,
+    TupleField,
+)
+from maxframe.tensor import tensor as astensor
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.tensor.indexing.core import process_index
+from maxframe.tensor.operators import TensorMapReduceOperator, TensorOperatorMixin
+from maxframe.tensor.utils import filter_inputs
 
 
 class TensorIndexSetValue(TensorMapReduceOperator, TensorOperatorMixin):

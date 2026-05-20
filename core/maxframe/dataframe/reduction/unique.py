@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,23 +16,23 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, OutputType
-from ...io.odpsio.schema import (
-    pandas_dtype_to_arrow_type,
-    pandas_dtypes_to_arrow_schema,
-)
-from ...serialization.serializables import BoolField
-from ...tensor.core import TensorOrder
-from ...utils import lazy_import, wrap_arrow_dtype
-from ..core import DATAFRAME_TYPE
-from ..initializer import Series as asseries
-from .core import (
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, OutputType
+from maxframe.dataframe.core import DATAFRAME_TYPE
+from maxframe.dataframe.initializer import Series as asseries
+from maxframe.dataframe.reduction.core import (
     BuiltinReduction,
     DataFrameReduction,
     DataFrameReductionMixin,
     ReductionCallable,
 )
+from maxframe.io.odpsio.schema import (
+    pandas_dtype_to_arrow_type,
+    pandas_dtypes_to_arrow_schema,
+)
+from maxframe.serialization.serializables import BoolField
+from maxframe.tensor.core import TensorOrder
+from maxframe.utils import lazy_import, wrap_arrow_dtype
 
 cudf = lazy_import("cudf")
 

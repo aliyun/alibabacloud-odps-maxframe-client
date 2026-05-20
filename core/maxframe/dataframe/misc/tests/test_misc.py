@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,21 +16,24 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from maxframe import options
-
-from .... import opcodes
-from ....core import OutputType
-from ....dataframe import DataFrame
-from ....tensor.core import TENSOR_TYPE
-from ....udf import ODPSFunction, with_running_options
-from ... import eval as maxframe_eval
-from ... import get_dummies, to_numeric
-from ...arithmetic import DataFrameGreater, DataFrameLess
-from ...core import CATEGORICAL_TYPE, DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
-from ...datasource.dataframe import from_pandas as from_pandas_df
-from ...datasource.index import from_pandas as from_pandas_index
-from ...datasource.series import from_pandas as from_pandas_series
-from .. import astype, cut
+from maxframe import opcodes, options
+from maxframe.core import OutputType
+from maxframe.dataframe import DataFrame
+from maxframe.dataframe import eval as maxframe_eval
+from maxframe.dataframe import get_dummies, to_numeric
+from maxframe.dataframe.arithmetic import DataFrameGreater, DataFrameLess
+from maxframe.dataframe.core import (
+    CATEGORICAL_TYPE,
+    DATAFRAME_TYPE,
+    INDEX_TYPE,
+    SERIES_TYPE,
+)
+from maxframe.dataframe.datasource.dataframe import from_pandas as from_pandas_df
+from maxframe.dataframe.datasource.index import from_pandas as from_pandas_index
+from maxframe.dataframe.datasource.series import from_pandas as from_pandas_series
+from maxframe.dataframe.misc import astype, cut
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.udf import ODPSFunction, with_running_options
 
 
 def test_dataframe_apply():
@@ -577,8 +580,8 @@ def test_apply():
 
 
 def test_pivot_table():
-    from ...groupby.aggregation import DataFrameGroupByAgg
-    from ...reshape.pivot_table import DataFramePivotTable
+    from maxframe.dataframe.groupby.aggregation import DataFrameGroupByAgg
+    from maxframe.dataframe.reshape.pivot_table import DataFramePivotTable
 
     raw = pd.DataFrame(
         {

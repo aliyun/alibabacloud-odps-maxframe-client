@@ -15,7 +15,7 @@
 from collections.abc import MutableMapping
 from urllib.parse import urlparse
 
-from .local import LocalFileSystem
+from maxframe.lib.filesystem.local import LocalFileSystem
 
 
 class FSMap(MutableMapping):

@@ -17,15 +17,15 @@ import operator
 from collections.abc import Iterable
 from functools import partial, reduce
 
-from . import linalg
-from .array import SparseNDArray, call_sparse
-from .core import get_sparse_module, issparse
-from .matrix import SparseMatrix
-from .vector import SparseVector
+from maxframe.lib.sparse import linalg
+from maxframe.lib.sparse.array import SparseNDArray, call_sparse
+from maxframe.lib.sparse.core import get_sparse_module, issparse
+from maxframe.lib.sparse.matrix import SparseMatrix
+from maxframe.lib.sparse.vector import SparseVector
 
 
 def asarray(x, shape=None):
-    from .core import issparse
+    from maxframe.lib.sparse.core import issparse
 
     if issparse(x):
         return SparseNDArray(x, shape=shape)
@@ -106,7 +106,7 @@ def mod(a, b, **_):
 
 
 def _call_bin(method, a, b, **kwargs):
-    from .core import cp, get_array_module, issparse
+    from maxframe.lib.sparse.core import cp, get_array_module, issparse
 
     # order does not take effect for sparse
     kwargs.pop("order", None)
@@ -132,7 +132,7 @@ def _call_bin(method, a, b, **kwargs):
 
 
 def _call_unary(method, x, *args, **kwargs):
-    from .core import get_array_module
+    from maxframe.lib.sparse.core import get_array_module
 
     # order does not take effect for sparse
     kwargs.pop("order", None)
@@ -499,7 +499,7 @@ def signbit(x, **kw):
 
 
 def dot(a, b, sparse=True, **_):
-    from .core import issparse
+    from maxframe.lib.sparse.core import issparse
 
     if not issparse(a):
         ret = a.dot(b)
@@ -685,7 +685,7 @@ def radians(x, **kw):
 
 
 def clip(a, a_max, a_min, **kw):
-    from .core import get_array_module
+    from maxframe.lib.sparse.core import get_array_module
 
     if hasattr(a, "clip"):
         res = getattr(a, "clip")(a_max, a_min, **kw)
@@ -767,7 +767,7 @@ def where(cond, x, y):
     if any([i.ndim not in (0, 2) for i in (cond, x, y)]):
         raise NotImplementedError
 
-    from .matrix import where as matrix_where
+    from maxframe.lib.sparse.matrix import where as matrix_where
 
     return matrix_where(cond, x, y)
 
@@ -797,7 +797,7 @@ def unique(a, return_index=False, return_inverse=False, return_counts=False, axi
 
 def zeros(shape, dtype=float, gpu=False):
     if len(shape) == 2:
-        from .matrix import zeros_sparse_matrix
+        from maxframe.lib.sparse.matrix import zeros_sparse_matrix
 
         return zeros_sparse_matrix(shape, dtype=dtype, gpu=gpu)
 
@@ -805,7 +805,7 @@ def zeros(shape, dtype=float, gpu=False):
 
 
 def ones_like(x):
-    from .core import get_array_module
+    from maxframe.lib.sparse.core import get_array_module
 
     return get_array_module(x).ones(x.shape)
 
@@ -813,20 +813,20 @@ def ones_like(x):
 def diag(v, k=0, gpu=False):
     assert v.ndim in {1, 2}
 
-    from .matrix import diag_sparse_matrix
+    from maxframe.lib.sparse.matrix import diag_sparse_matrix
 
     return diag_sparse_matrix(v, k=k, gpu=gpu)
 
 
 def eye(N, M=None, k=0, dtype=float, gpu=False):
-    from .matrix import eye_sparse_matrix
+    from maxframe.lib.sparse.matrix import eye_sparse_matrix
 
     return eye_sparse_matrix(N, M=M, k=k, dtype=dtype, gpu=gpu)
 
 
 def triu(m, k=0, gpu=False):
     if m.ndim == 2:
-        from .matrix import triu_sparse_matrix
+        from maxframe.lib.sparse.matrix import triu_sparse_matrix
 
         return triu_sparse_matrix(m, k=k, gpu=gpu)
 
@@ -835,7 +835,7 @@ def triu(m, k=0, gpu=False):
 
 def tril(m, k=0, gpu=False):
     if m.ndim == 2:
-        from .matrix import tril_sparse_matrix
+        from maxframe.lib.sparse.matrix import tril_sparse_matrix
 
         return tril_sparse_matrix(m, k=k, gpu=gpu)
 
@@ -851,6 +851,6 @@ def block(arrs):
     elif arr.ndim != 2:  # pragma: no cover
         raise NotImplementedError
 
-    from .matrix import block
+    from maxframe.lib.sparse.matrix import block
 
     return block(arrs)

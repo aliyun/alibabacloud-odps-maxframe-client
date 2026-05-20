@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,14 +18,14 @@ from typing import List, MutableMapping, Union
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import EntityData, OutputType
-from ...serialization.serializables import AnyField, KeyField, StringField
-from ...udf import BuiltinFunction, MarkedFunction, ODPSFunction
-from ...utils import make_dtype, quiet_stdio
-from ..core import SERIES_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_series, copy_func_scheduling_hints
+from maxframe import opcodes
+from maxframe.core import EntityData, OutputType
+from maxframe.dataframe.core import SERIES_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_series, copy_func_scheduling_hints
+from maxframe.serialization.serializables import AnyField, KeyField, StringField
+from maxframe.udf import BuiltinFunction, MarkedFunction, ODPSFunction
+from maxframe.utils import make_dtype, quiet_stdio
 
 
 class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
@@ -89,7 +89,11 @@ class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
                     inferred_dtype = pd.Series(self.arg).dtype
                 else:
                     inferred_dtype = self.arg.dtype
-            if inferred_dtype is not None and np.issubdtype(inferred_dtype, np.number):
+            if (
+                inferred_dtype is not None
+                and isinstance(inferred_dtype, np.dtype)
+                and np.issubdtype(inferred_dtype, np.number)
+            ):
                 if np.issubdtype(inferred_dtype, np.inexact):
                     # for the inexact e.g. float
                     # we can make the decision,
@@ -109,7 +113,7 @@ class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
                 )
         else:
             dtype = np.int64 if dtype is int else dtype
-            dtype = np.dtype(dtype)
+            dtype = make_dtype(dtype)
 
         inputs = [series]
         if isinstance(self.arg, SERIES_TYPE):

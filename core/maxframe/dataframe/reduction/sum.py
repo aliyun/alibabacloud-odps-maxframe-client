@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,18 @@
 
 import numpy as np
 
-from ... import opcodes
-from ...core import OutputType
-from .core import DataFrameReduction, DataFrameReductionMixin, ReductionCallable
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.reduction.core import (
+    DataFrameReduction,
+    DataFrameReductionMixin,
+    ReductionCallable,
+)
 
 
 class SumReductionCallable(ReductionCallable):
     def __call__(self, value):
-        from .aggregation import where_function
+        from maxframe.dataframe.reduction.aggregation import where_function
 
         skipna, min_count = self.kwargs["skipna"], self.kwargs["min_count"]
         if min_count == 0:

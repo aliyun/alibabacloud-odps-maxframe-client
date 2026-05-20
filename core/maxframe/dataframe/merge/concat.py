@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,21 +16,15 @@ from typing import List, Union
 
 import pandas as pd
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData, OutputType
-from ...protocol import DefaultIndexType
-from ...serialization.serializables import (
-    AnyField,
-    BoolField,
-    EnumField,
-    FieldTypes,
-    ListField,
-    StringField,
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData, OutputType
+from maxframe.dataframe.core import DataFrame, DataFrameIndexTypeMixin, Series
+from maxframe.dataframe.operators import (
+    SERIES_TYPE,
+    DataFrameOperator,
+    DataFrameOperatorMixin,
 )
-from ...utils import lazy_import
-from ..core import DataFrame, DataFrameIndexTypeMixin, Series
-from ..operators import SERIES_TYPE, DataFrameOperator, DataFrameOperatorMixin
-from ..utils import (
+from maxframe.dataframe.utils import (
     build_empty_df,
     build_empty_series,
     get_index_value_by_default_index_type,
@@ -38,6 +32,16 @@ from ..utils import (
     validate_axis,
     validate_default_index_type,
 )
+from maxframe.protocol import DefaultIndexType
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    EnumField,
+    FieldTypes,
+    ListField,
+    StringField,
+)
+from maxframe.utils import lazy_import
 
 cudf = lazy_import("cudf")
 

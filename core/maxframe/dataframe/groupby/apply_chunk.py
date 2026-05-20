@@ -17,9 +17,32 @@ from typing import Any, Callable, Dict, List, MutableMapping, Tuple, Union
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.core import (
+    DATAFRAME_GROUPBY_TYPE,
+    GROUPBY_TYPE,
+    DataFrameGroupBy,
+    IndexValue,
+    SeriesGroupBy,
+)
+from maxframe.dataframe.groupby.utils import (
+    warn_axis_argument,
+    warn_prepend_index_group_keys,
+)
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.type_infer import (
+    InferredDataFrameMeta,
+    infer_dataframe_return_value,
+    prepend_group_keys_as_index,
+)
+from maxframe.dataframe.utils import (
+    copy_func_scheduling_hints,
+    make_column_list,
+    parse_index,
+    validate_output_types,
+)
+from maxframe.serialization.serializables import (
     DictField,
     FieldTypes,
     FunctionField,
@@ -27,34 +50,15 @@ from ...serialization.serializables import (
     ListField,
     TupleField,
 )
-from ...udf import BuiltinFunction, MarkedFunction
-from ...utils import (
+from maxframe.udf import BuiltinFunction, MarkedFunction
+from maxframe.utils import (
     copy_if_possible,
     deprecate_positional_args,
     make_dtype,
     make_dtypes,
     pd_release_version,
 )
-from ..core import (
-    DATAFRAME_GROUPBY_TYPE,
-    GROUPBY_TYPE,
-    DataFrameGroupBy,
-    IndexValue,
-    SeriesGroupBy,
-)
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..type_infer import (
-    InferredDataFrameMeta,
-    infer_dataframe_return_value,
-    prepend_group_keys_as_index,
-)
-from ..utils import (
-    copy_func_scheduling_hints,
-    make_column_list,
-    parse_index,
-    validate_output_types,
-)
-from .utils import warn_axis_argument, warn_prepend_index_group_keys
+from maxframe.utils.functional import check_closure_for_entities
 
 _apply_without_group_keys = pd_release_version < (1, 5, 0)
 _has_include_groups = (2, 2, 0) <= pd_release_version < (3, 0, 0)
@@ -220,6 +224,9 @@ class GroupByApplyChunk(DataFrameOperatorMixin, DataFrameOperator):
                 res.index = prepend_group_keys_as_index(res.index, input_groupby)
             return res
 
+        # Set __wrapped__ so unwrap_function(infer_func) reaches self.func,
+        infer_func.__wrapped__ = self.func
+
         inferred_meta = infer_dataframe_return_value(
             input_groupby,
             infer_func,
@@ -232,6 +239,7 @@ class GroupByApplyChunk(DataFrameOperatorMixin, DataFrameOperator):
             skip_infer=skip_infer,
             prepend_index_group_keys=prepend_index_group_keys,
         )
+
         # merge specified and inferred index, dtypes, output_type
         # elementwise used to decide shape
         self.output_types = (
@@ -271,6 +279,7 @@ def df_groupby_apply_chunk(
     order_cols=None,
     ascending=True,
     prepend_index_group_keys=False,
+    check_output_dtypes=None,
     args=(),
     **kwargs,
 ):
@@ -317,7 +326,10 @@ def df_groupby_apply_chunk(
         Specify index of returned object. See `Notes` for more details.
 
     skip_infer: bool, default False
-        Whether to infer dtypes when dtypes or output_type is not specified.
+        Whether to skip inferring dtypes when dtypes or output_type is not
+        specified. Once specified as True, you need to explicitly specify
+        dtypes and output_type via arguments or type annotations of
+        the function.
 
     prepend_index_group_keys: bool, default False
         If True, the index of returned dataframe or series will automatically
@@ -333,6 +345,17 @@ def df_groupby_apply_chunk(
             is set to False. To make sure your code works in future
             releases, please set this to True and remove group indexes
             in index parameter or type annotation of ``func``.
+
+    check_output_dtypes : {'ignore', 'warns', 'raises'}, default None
+        Validation mode for output dtypes and columns. When specified,
+        validates that the user function returns data with expected dtypes.
+
+        - 'ignore': No validation performed
+        - 'warns': Validate and show warnings on mismatch (default when None)
+        - 'raises': Validate and raise errors on mismatch
+
+        Note: Group columns are automatically excluded from validation as they
+        are managed separately by the groupby infrastructure.
 
     args, kwargs : tuple and dict
         Optional positional and keyword arguments to pass to ``func``.
@@ -376,6 +399,232 @@ def df_groupby_apply_chunk(
     input, try selecting it right after `groupby` results, for instance,
     ``df.groupby("A")[["A", "B", "C"]].mf.apply_chunk(func)`` will pass data of
     column A into ``func``.
+
+    The ``batch_rows`` parameter controls memory usage. Larger values may improve
+    performance but increase OOM risk. Ensure sufficient worker memory when
+    processing entire groups in a single batch.
+
+    Examples
+    --------
+    Example 1: Filter rows within each group
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Find employees with salary above a threshold in each department.
+    This demonstrates how the result index shows intra-group positions (0-n).
+
+    >>> import maxframe.dataframe as md
+    >>> import pandas as pd
+    >>>
+    >>> # Create sample employee data
+    >>> data = {
+    ...     'department': ['HR', 'HR', 'HR', 'IT', 'IT', 'IT', 'Finance', 'Finance'],
+    ...     'employee_id': [1, 2, 3, 4, 5, 6, 7, 8],
+    ...     'salary': [50000, 55000, 60000, 70000, 75000, 80000, 90000, 95000],
+    ...     'years_experience': [2, 3, 5, 1, 4, 6, 3, 7]
+    ... }
+    >>> df = md.DataFrame(data)
+    >>> df.execute()
+      department  employee_id  salary  years_experience
+    0         HR            1   50000                 2
+    1         HR            2   55000                 3
+    2         HR            3   60000                 5
+    3         IT            4   70000                 1
+    4         IT            5   75000                 4
+    5         IT            6   80000                 6
+    6    Finance            7   90000                 3
+    7    Finance            8   95000                 7
+
+    >>> def filter_high_salary(batch_df):
+    ...     # batch_df contains employee data for a single department
+    ...     # Group key (department) is NOT included in the DataFrame columns
+    ...     print(f"Processing {len(batch_df)} rows, received {batch_df}", flush=True)
+    ...
+    ...     # Filter: keep employees with salary > 55000
+    ...     return batch_df[batch_df['salary'] > 55000]
+    >>>
+    >>> # Specify dtypes without the group key column (department)
+    >>> result_dtypes = df.dtypes[['employee_id', 'salary', 'years_experience']]
+    >>>
+    >>> result = df.groupby('department').mf.apply_chunk(
+    ...     filter_high_salary,
+    ...     output_type='dataframe',
+    ...     dtypes=result_dtypes,
+    ...     prepend_index_group_keys=True,
+    ... )
+    >>> result.execute()
+                  employee_id  salary  years_experience
+    department
+    Finance    6            7   90000                 3
+               7            8   95000                 7
+    HR         2            3   60000                 5
+    IT         3            4   70000                 1
+               4            5   75000                 4
+               5            6   80000                 6
+
+    Result explanation:
+    - The first level index ("department") shows the group key values
+    - The second level index (2, 3, 4, 5, 6, 7...) are the ORIGINAL row indices from the input DataFrame
+    - For Finance department: employees at original indices 6-7 meet the criteria
+    - For HR department: employee at original index 2 meets the criteria
+    - For IT department: employees at original indices 3-5 meet the criteria
+    - Group keys are NOT included in the batch_df in the UDF input by default, but are included in the result
+    - When specifying dtypes, exclude group key columns (they are indexes in the result)
+
+    Example 2: Return DataFrame with single aggregation column
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Apply a function to calculate average salary by department,
+    returning a DataFrame with a single column and explicit type specifications.
+    This example introduces the ``batch_rows`` parameter to control batch size.
+
+    >>> # Specify dtypes with type annotations
+    >>> def calculate_avg_salary(batch_df) -> pd.DataFrame['avg_salary': 'float64']:
+    ...     # Important: batch_df contains only non-group columns by default
+    ...     # Group keys are not included in the UDF input
+    ...     print(f"Processing batch with {len(batch_df)} rows")
+    ...
+    ...     # Return a single value as DataFrame - internal index is preserved by design
+    ...     avg_val = batch_df['salary'].mean()
+    ...     return pd.DataFrame({'avg_salary': [avg_val]})
+    >>>
+    >>> result = df.groupby('department').mf.apply_chunk(
+    ...     calculate_avg_salary,
+    ...     batch_rows=2,  # Process 2 rows per batch
+    ...     prepend_index_group_keys=True,
+    ... )
+    >>> result.execute()
+                  avg_salary
+    department
+    Finance    0     92500.0
+    HR         0     52500.0
+               0     60000.0
+    IT         0     72500.0
+               0     80000.0
+
+    Result explanation:
+    - The first level index ("department") shows the group key values
+    - The second level index ('0') is newly created because each UDF call returns a single-row DataFrame
+    - HR department shows two rows because batch_rows=2 caused two separate UDF calls
+    - Finance and IT departments were processed in single batches
+    - When UDF returns aggregated results, the index is from newly created dataframe
+
+    Example 3: Including group keys in UDF input
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Sometimes you need access to group keys within your UDF. This example
+    shows how to include them by explicitly selecting the group column
+    along with other columns. We'll filter high-salary employees but this
+    time include the department column in the UDF input.
+
+    >>> def filter_high_salary_with_dept(batch_df) -> pd.DataFrame[
+    ...     'department': 'object', 'employee_id': 'int64', 'salary': 'float64'
+    ... ]:
+    ...     # Now batch_df includes the department column since we explicitly selected it
+    ...     department = batch_df['department'].iloc[0]
+    ...     print(f"Processing {len(batch_df)} rows for department: {department}")
+    ...
+    ...     # Filter: keep employees with salary > 55000 (same logic as Example 1)
+    ...     return batch_df[batch_df['salary'] > 55000]
+    >>>
+    >>> # Include the group key by explicitly selecting it with other columns
+    >>> result = df.groupby('department')[['department', 'employee_id', 'salary']].mf.apply_chunk(
+    ...     filter_high_salary_with_dept, prepend_index_group_keys=True
+    ... )
+    >>> result.execute()
+                 department  employee_id   salary
+    department
+    Finance    6    Finance            7  90000.0
+               7    Finance            8  95000.0
+    HR         2         HR            3  60000.0
+    IT         3         IT            4  70000.0
+               4         IT            5  75000.0
+               5         IT            6  80000.0
+
+    Result explanation:
+    - The first level index ("department") shows the group key values
+    - The second level index (2, 3, 4, 5, 6, 7...) are the ORIGINAL row indices from the input DataFrame
+    - By selecting ['department', 'employee_id', 'salary'], we ensure the department column is available in UDF
+    - The UDF can now access department values (though not used in this simple filter)
+    - Original indices are preserved in the result
+    - The filter logic is the same as Example 1: salary > 55000
+
+    This example demonstrates how to explicitly include group keys in your UDF
+    by selecting them in the groupby operation, making them available for use
+    within your function if needed.
+
+    Example 4: Explicitly specifying output types and index
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    When UDFs cannot be executed locally for inference, you must explicitly
+    specify output_type, dtypes, and index via arguments or type annotation
+    to ensure correct execution.
+
+    >>> def create_summary_stats(batch_df):
+    ...     # Calculate basic statistics
+    ...     avg_salary = batch_df['salary'].mean()
+    ...     total_salary = batch_df['salary'].sum()
+    ...     employee_count = len(batch_df)
+    ...
+    ...     # Return DataFrame with correct types
+    ...     result_df = pd.DataFrame({
+    ...         'avg_salary': pd.Series([avg_salary], dtype='float64'),
+    ...         'total_salary': pd.Series([total_salary], dtype='float64'),
+    ...         'employee_count': pd.Series([employee_count], dtype='int64')
+    ...     })
+    ...
+    ...     return result_df
+    >>>
+    >>> # Create inner index returned by UDF
+    >>> result_index = pd.Index([], dtype='int64', name='inner_index')
+    >>>
+    >>> # Explicitly specify all output parameters
+    >>> result = df.groupby('department').mf.apply_chunk(
+    ...     create_summary_stats,
+    ...     batch_rows=10000,
+    ...     output_type='dataframe',  # specifies output type as DataFrame
+    ...     dtypes={
+    ...         'avg_salary': 'float64',
+    ...         'total_salary': 'float64',
+    ...         'employee_count': 'int'
+    ...     }, # specifies the final dataframe column types
+    ...     index=result_index,  # specifies the structure of the final MultiIndex result
+    ...     prepend_index_group_keys=True,
+    ... )
+    >>> result.execute()
+                           avg_salary  total_salary  employee_count
+    department inner_index
+    Finance    0            92500.0      185000.0                2
+    HR         0            55000.0      165000.0                3
+    IT         0            75000.0      225000.0                3
+
+    Result explanation:
+    - The first level index ("department") shows the group key values (string type)
+    - The second level index ("inner_index") comes from the UDF's returned DataFrame (int type)
+    - output_type='dataframe' tells MaxFrame to expect DataFrame output
+    - dtypes defines exact column types to prevent inference errors
+    - index parameter specifies the structure of the final MultiIndex result
+    - batch_rows=10000 ensures entire groups are processed together
+
+    To simplify output type definition, you can also use type annotations.
+    In the code snippet below, pd.DataFrame shows the returning type is
+    a DataFrame with index names 'inner_index' and columns 'avg_salary',
+    'total_salary', 'employee_count'. Types of both indexes and columns are
+    also specified.
+
+    >>> def create_summary_stats(batch_df) -> pd.DataFrame[
+    ...     {'inner_index': 'int64'},  # type of index
+    ...     {'avg_salary': 'float64', 'total_salary': 'float64', 'employee_count': 'int64'},  # type of data
+    ... ]:
+    ...     # details of function omitted
+
+    Key takeaway: Always specify output_type and dtypes when:
+    1. UDF creates new DataFrame structures
+    2. Local inference might fail
+    3. You need consistent output format
+
+    Note: The index parameter defines the inner index structure when
+    prepend_index_group_keys=True is specified, and the resulting index
+    combines group keys (first level, string) and UDF indices (second level, int).
     """
     if not prepend_index_group_keys:
         warn_prepend_index_group_keys(dataframe_groupby)
@@ -414,6 +663,9 @@ def df_groupby_apply_chunk(
     elif len(order_cols) != len(ascending):
         raise ValueError("order_cols and ascending must have same length")
 
+    # Check for entities captured in closure
+    check_closure_for_entities(func, operation_name="groupby_apply_chunk")
+
     # bind args and kwargs
     op = GroupByApplyChunk(
         func=func,
@@ -425,6 +677,12 @@ def df_groupby_apply_chunk(
         ascending=ascending,
         groupby_params=(dataframe_groupby.op.groupby_params or {}).copy(),
     )
+
+    # Store check_output_dtypes in extra_params if specified
+    if check_output_dtypes is not None:
+        if not hasattr(op, "extra_params") or op.extra_params is None:
+            op.extra_params = {}
+        op.extra_params["check_output_dtypes"] = check_output_dtypes
 
     return op(
         dataframe_groupby,

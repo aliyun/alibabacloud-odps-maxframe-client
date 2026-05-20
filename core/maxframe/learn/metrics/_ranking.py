@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData, ExecutableTuple, OutputType
-from ...core.operator import Operator
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData, ExecutableTuple, OutputType
+from maxframe.core.operator import Operator
+from maxframe.learn.core import LearnOperatorMixin
+from maxframe.learn.utils.validation import check_consistent_length, column_or_1d
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     Float64Field,
     KeyField,
     StringField,
 )
-from ...tensor import tensor as astensor
-from ...utils import cache_tileables
-from ..core import LearnOperatorMixin
-from ..utils.validation import check_consistent_length, column_or_1d
+from maxframe.tensor import tensor as astensor
+from maxframe.utils import cache_tileables
 
 
 class AucOp(Operator, LearnOperatorMixin):

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,9 +46,9 @@ def setdiff1d(ar1, ar2, assume_unique=False):
 
     """
 
-    from ..datasource.array import asarray
-    from .in1d import in1d
-    from .unique import unique
+    from maxframe.tensor.datasource.array import asarray
+    from maxframe.tensor.misc.in1d import in1d
+    from maxframe.tensor.misc.unique import unique
 
     if assume_unique:
         ar1 = asarray(ar1).ravel()

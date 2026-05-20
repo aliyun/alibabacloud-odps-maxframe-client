@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .base import (
+from maxframe.core.operator.base import (
     HasInput,
     LogicKeyGenerator,
     Operator,
@@ -20,13 +20,17 @@ from .base import (
     OperatorStage,
     VirtualOperator,
 )
-from .core import (
+from maxframe.core.operator.core import (
     TileableOperatorMixin,
     estimate_size,
     estimate_tileable_execution_size,
     execute,
 )
-from .fetch import Fetch, FetchMixin, FetchShuffle
-from .objects import ObjectFetch, ObjectOperator, ObjectOperatorMixin
-from .shuffle import MapReduceOperator, ShuffleProxy
-from .utils import add_fetch_builder, build_fetch
+from maxframe.core.operator.fetch import Fetch, FetchMixin, FetchShuffle
+from maxframe.core.operator.objects import (
+    ObjectFetch,
+    ObjectOperator,
+    ObjectOperatorMixin,
+)
+from maxframe.core.operator.shuffle import MapReduceOperator, ShuffleProxy
+from maxframe.core.operator.utils import add_fetch_builder, build_fetch

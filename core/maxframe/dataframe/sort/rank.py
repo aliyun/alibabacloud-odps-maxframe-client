@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
 import numpy as np
 import pandas as pd
 
-from ...serialization.serializables import BoolField, StringField
-from ..operators import DataFrameOperatorMixin
-from .core import DataFrameSortOperator
+from maxframe.dataframe.operators import DataFrameOperatorMixin
+from maxframe.dataframe.sort.core import DataFrameSortOperator
+from maxframe.serialization.serializables import BoolField, StringField
 
 
 class DataFrameRank(DataFrameSortOperator, DataFrameOperatorMixin):

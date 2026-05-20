@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# noinspection PyUnresolvedReferences
-from ..typing_ import ChunkType, EntityType, OperatorType, TileableType
-from .accessor import BaseMaxFrameAccessor, CachedAccessor
-from .base import Base, ExecutionError
-from .entity import (
+from maxframe.core.accessor import BaseMaxFrameAccessor, CachedAccessor
+from maxframe.core.base import Base, ExecutionError
+from maxframe.core.entity import (
     ENTITY_TYPE,
     OBJECT_TYPE,
     TILEABLE_TYPE,
@@ -41,7 +39,7 @@ from .entity import (
 )
 
 # noinspection PyUnresolvedReferences
-from .graph import (
+from maxframe.core.graph import (
     DAG,
     DirectedGraph,
     GraphContainsCycleError,
@@ -49,5 +47,8 @@ from .graph import (
     TileableGraph,
     TileableGraphBuilder,
 )
-from .mode import enter_mode, is_build_mode, is_eager_mode, is_kernel_mode
-from .operator import build_fetch
+from maxframe.core.mode import enter_mode, is_build_mode, is_eager_mode, is_kernel_mode
+from maxframe.core.operator import build_fetch
+
+# noinspection PyUnresolvedReferences
+from maxframe.typing_ import ChunkType, EntityType, OperatorType, TileableType

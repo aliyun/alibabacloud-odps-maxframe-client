@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,13 +14,17 @@
 
 from typing import List
 
-from .....learn.metrics._check_targets import CheckTargets
-from .....learn.metrics._classification import (
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.learn.metrics._check_targets import CheckTargets
+from maxframe.learn.metrics._classification import (
     AccuracyScore,
     MultiLabelConfusionMatrix,
     PrecisionRecallFScoreSupport,
 )
-from ...core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
 
 
 @register_op_adapter(CheckTargets)

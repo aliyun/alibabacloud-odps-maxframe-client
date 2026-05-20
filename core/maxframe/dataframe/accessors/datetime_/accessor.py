@@ -22,14 +22,19 @@ from pandas.api.types import (
     is_timedelta64_dtype,
 )
 
-from ....utils import adapt_docstring, is_datetime64_dtype
-from .core import SeriesDatetimeMethod, datetime_method_to_handlers
+from maxframe.dataframe.accessors.datetime_.core import (
+    SeriesDatetimeMethod,
+    datetime_method_to_handlers,
+)
+from maxframe.utils import adapt_docstring, is_datetime64_dtype
 
 
 class DatetimeAccessor:
     def __init__(self, series):
         if (
             not is_datetime64_dtype(series.dtype)
+            and not isinstance(series.dtype, pd.DatetimeTZDtype)
+            and not isinstance(series.dtype, pd.PeriodDtype)
             and not is_datetime64tz_dtype(series.dtype)
             and not is_timedelta64_dtype(series.dtype)
             and not is_period_dtype(series.dtype)

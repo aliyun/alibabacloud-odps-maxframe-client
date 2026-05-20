@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 
 import pytest
 
-from .. import enter_mode, is_build_mode, is_eager_mode, is_kernel_mode
+from maxframe.core import enter_mode, is_build_mode, is_eager_mode, is_kernel_mode
 
 
 def test_enter_mode():
-    from ...config import option_context, options
+    from maxframe.config import option_context, options
 
     @enter_mode(kernel=True)
     def wrapped():

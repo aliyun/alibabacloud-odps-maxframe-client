@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@ from typing import Union
 
 import numpy as np
 
-from .... import tensor as mt
-from ....tensor.merge.vstack import _vstack
-from ...utils.odpsio import register_odps_model
-from ..utils import make_import_error_func
-from .core import XGBScikitLearnBase, xgboost
+from maxframe import tensor as mt
+from maxframe.learn.contrib.utils import make_import_error_func
+from maxframe.learn.contrib.xgboost.core import XGBScikitLearnBase, xgboost
+from maxframe.learn.utils.odpsio import register_odps_model
+from maxframe.tensor.merge.vstack import _vstack
 
 if not xgboost:
     XGBClassifier = make_import_error_func("xgboost")
 else:
     from xgboost.sklearn import XGBClassifierBase
 
-    from .predict import predict
+    from maxframe.learn.contrib.xgboost.predict import predict
 
     @register_odps_model
     class XGBClassifier(XGBScikitLearnBase, XGBClassifierBase):

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,19 +17,23 @@ from typing import Callable, MutableMapping, Union
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.core import DataFrame
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import (
+    copy_func_scheduling_hints,
+    gen_unknown_index_value,
+    parse_index,
+)
+from maxframe.serialization.serializables import (
     BoolField,
     DictField,
     FunctionField,
     TupleField,
 )
-from ...udf import BuiltinFunction, MarkedFunction
-from ...utils import make_dtypes
-from ..core import DataFrame
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import copy_func_scheduling_hints, gen_unknown_index_value, parse_index
+from maxframe.udf import BuiltinFunction, MarkedFunction
+from maxframe.utils import make_dtypes
 
 
 class DataFrameFlatMapOperator(DataFrameOperator, DataFrameOperatorMixin):

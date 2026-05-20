@@ -14,19 +14,19 @@
 
 from typing import Callable, List, Optional, Tuple, Type, Union
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData, OutputType
-from ...core.operator import ObjectOperator, ObjectOperatorMixin
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData, OutputType
+from maxframe.core.operator import ObjectOperator, ObjectOperatorMixin
+from maxframe.learn.core import Model, ModelData
+from maxframe.serialization.serializables import (
     AnyField,
     DictField,
     FunctionField,
     Int16Field,
     TupleField,
 )
-from ...udf import BuiltinFunction
-from ...utils import find_objects, replace_objects
-from ..core import Model, ModelData
+from maxframe.udf import BuiltinFunction
+from maxframe.utils import find_objects, replace_objects
 
 
 class ModelWithEvalData(ModelData):

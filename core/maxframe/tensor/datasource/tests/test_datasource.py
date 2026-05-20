@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,15 +18,21 @@ import numpy as np
 import pytest
 import scipy.sparse as sps
 
-from .... import dataframe as md
-from ....core import enter_mode
-from ... import arange, diag, full, ones, ones_like, tensor, zeros
-from ...core import SparseTensor, Tensor
-from .. import array, asarray, ascontiguousarray, asfortranarray, fromdense
-from ..array import CSRMatrixDataSource
-from ..from_dataframe import from_dataframe
-from ..from_dense import DenseToSparse
-from ..ones import TensorOnesLike
+from maxframe import dataframe as md
+from maxframe.core import enter_mode
+from maxframe.tensor import arange, diag, full, ones, ones_like, tensor, zeros
+from maxframe.tensor.core import SparseTensor, Tensor
+from maxframe.tensor.datasource import (
+    array,
+    asarray,
+    ascontiguousarray,
+    asfortranarray,
+    fromdense,
+)
+from maxframe.tensor.datasource.array import CSRMatrixDataSource
+from maxframe.tensor.datasource.from_dataframe import from_dataframe
+from maxframe.tensor.datasource.from_dense import DenseToSparse
+from maxframe.tensor.datasource.ones import TensorOnesLike
 
 
 def test_array():
@@ -141,7 +147,7 @@ def test_zeros():
 
 
 def test_data_source():
-    from ...misc.broadcast_to import TensorBroadcastTo
+    from maxframe.tensor.misc.broadcast_to import TensorBroadcastTo
 
     data = np.random.random((10, 3))
     t = tensor(data, chunk_size=2)

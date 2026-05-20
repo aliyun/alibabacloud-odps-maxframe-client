@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +14,15 @@
 
 from typing import List
 
-from ... import opcodes
-from ...core import EntityData
-from ...lib.sparse import diag as sparse_diag
-from ...lib.sparse import get_sparse_module, issparse
-from ...lib.sparse.core import get_array_module
-from ...serialization.serializables import Int32Field
-from ..core import TENSOR_TYPE, TensorOrder
-from .array import tensor
-from .core import TensorHasInput
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.lib.sparse import diag as sparse_diag
+from maxframe.lib.sparse import get_sparse_module, issparse
+from maxframe.lib.sparse.core import get_array_module
+from maxframe.serialization.serializables import Int32Field
+from maxframe.tensor.core import TENSOR_TYPE, TensorOrder
+from maxframe.tensor.datasource.array import tensor
+from maxframe.tensor.datasource.core import TensorHasInput
 
 
 def _get_diag_shape(v_shape, k):

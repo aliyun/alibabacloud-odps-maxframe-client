@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ._predict import predict
-from ._train import train
-from .dataset import Dataset
+from maxframe.learn.contrib.lightgbm._predict import predict
+from maxframe.learn.contrib.lightgbm._train import train
+from maxframe.learn.contrib.lightgbm.dataset import Dataset
 
 # isort: off
-from ..utils import config_mod_getattr as _config_mod_getattr
+from maxframe.learn.contrib.utils import config_mod_getattr as _config_mod_getattr
 
 _config_mod_getattr(
     {

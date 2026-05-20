@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,19 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .rank import DataFrameRank
-from .sort_index import DataFrameSortIndex
-from .sort_values import DataFrameSortValues
+from maxframe.dataframe.sort.rank import DataFrameRank
+from maxframe.dataframe.sort.sort_index import DataFrameSortIndex
+from maxframe.dataframe.sort.sort_values import DataFrameSortValues
 
 
 def _install():
-    from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
-    from .argsort import index_argsort, series_argsort
-    from .nlargest import df_nlargest, series_nlargest
-    from .nsmallest import df_nsmallest, series_nsmallest
-    from .rank import rank
-    from .sort_index import sort_index
-    from .sort_values import dataframe_sort_values, series_sort_values
+    from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
+    from maxframe.dataframe.sort.argsort import index_argsort, series_argsort
+    from maxframe.dataframe.sort.nlargest import df_nlargest, series_nlargest
+    from maxframe.dataframe.sort.nsmallest import df_nsmallest, series_nsmallest
+    from maxframe.dataframe.sort.rank import rank
+    from maxframe.dataframe.sort.sort_index import sort_index
+    from maxframe.dataframe.sort.sort_values import (
+        dataframe_sort_values,
+        series_sort_values,
+    )
 
     for cls in DATAFRAME_TYPE:
         setattr(cls, "nlargest", df_nlargest)

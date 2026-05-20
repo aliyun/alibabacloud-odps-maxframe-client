@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,18 +15,18 @@
 import os
 from typing import Any, BinaryIO, Dict, List, TextIO, Union
 
-from .. import opcodes
-from ..core import TILEABLE_TYPE, OutputType
-from ..core.operator import ObjectOperator, ObjectOperatorMixin
-from ..serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import TILEABLE_TYPE, OutputType
+from maxframe.core.operator import ObjectOperator, ObjectOperatorMixin
+from maxframe.serialization.serializables import (
     BoolField,
     BytesField,
     DictField,
     Int32Field,
     ListField,
 )
-from ..typing_ import SessionType, TileableType
-from ..utils import to_binary
+from maxframe.typing_ import SessionType, TileableType
+from maxframe.utils import to_binary
 
 
 class RunScript(ObjectOperator, ObjectOperatorMixin):

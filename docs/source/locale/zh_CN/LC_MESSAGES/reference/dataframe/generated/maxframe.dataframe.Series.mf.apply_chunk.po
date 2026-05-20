@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-05 14:45+0800\n"
+"POT-Creation-Date: 2026-04-27 13:57+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -106,6 +106,15 @@ msgid "Whether infer dtypes when dtypes or output_type is not specified."
 msgstr "当未指定 dtypes 或 output_type 时是否推断 dtypes。"
 
 #: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:33 of
+msgid ""
+"Validation mode for output dtypes and columns: - 'ignore': No validation "
+"performed - 'warns': Validate and show warnings on mismatch (default when"
+" None) - 'raises': Validate and raise errors on mismatch"
+msgstr ""
+"输出数据类型和列的验证模式：- 'ignore'：不执行验证 - 'warns'：验证并在不"
+"匹配时显示警告（None 时的默认值）- 'raises'：验证并在不匹配时引发错误"
+
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:38 of
 msgid "Additional keyword arguments passed to func."
 msgstr "传递给 func 的额外关键字参数。"
 
@@ -113,7 +122,7 @@ msgstr "传递给 func 的额外关键字参数。"
 msgid "返回"
 msgstr ""
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:35 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:40 of
 msgid ""
 "If func returns a Series object the result will be a Series, else the "
 "result will be a DataFrame."
@@ -123,27 +132,27 @@ msgstr "如果 func 返回 Series 对象，则结果将是 Series，否则结果
 msgid "返回类型"
 msgstr ""
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:40 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:45 of
 msgid ":py:obj:`DataFrame.apply_chunk`"
 msgstr ""
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:41 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:46 of
 msgid "Apply function to DataFrame chunk."
 msgstr "对 DataFrame 区块应用函数。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:43 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:48 of
 msgid ":py:obj:`Series.apply`"
 msgstr ""
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:44 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:49 of
 msgid "For non-batching operations."
 msgstr "用于非批处理操作。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:47 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:52 of
 msgid "备注"
 msgstr ""
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:48 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:53 of
 msgid ""
 "When deciding output dtypes and shape of the return value, MaxFrame will "
 "try applying ``func`` onto a mock Series, and the apply call may fail. "
@@ -154,7 +163,7 @@ msgstr ""
 "模拟 Series 上，apply 调用可能会失败。当这种情况发生时，您需要在 output_"
 "type 中指定 apply 调用的类型（DataFrame 或 Series）。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:53 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:58 of
 msgid ""
 "For DataFrame output, you need to specify a list or a pandas Series as "
 "``dtypes`` of output DataFrame. ``index`` of output can also be "
@@ -163,13 +172,13 @@ msgstr ""
 "对于 DataFrame 输出，您需要指定一个列表或 pandas Series 作为输出 "
 "DataFrame 的 ``dtypes``。也可以指定输出的 ``index``。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:56 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:61 of
 msgid ""
 "For Series output, you need to specify ``dtype`` and ``name`` of output "
 "Series."
 msgstr "对于 Series 输出，您需要指定输出 Series 的 ``dtype`` 和 ``name``。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:58 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:63 of
 msgid ""
 "For any input with data type ``pandas.ArrowDtype(pyarrow.MapType)``, it "
 "will always be converted to a Python dict. And for any output with this "
@@ -179,27 +188,27 @@ msgstr ""
 "始终被转换为 Python dict。对于任何具有此数据类型的输出，也必须作为 Python"
 " dict 返回。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:63 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:68 of
 msgid "示例"
 msgstr ""
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:64 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:69 of
 msgid "Create a series with typical summer temperatures for each city."
 msgstr "为每个城市创建一个典型的夏季温度 series。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:76 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:81 of
 msgid ""
 "Square the values by defining a function and passing it as an argument to"
 " ``apply_chunk()``."
 msgstr "通过定义一个函数并将其作为参数传递给 ``apply_chunk()`` 来对值进行平方。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:87 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:92 of
 msgid ""
 "Square the values by passing an anonymous function as an argument to "
 "``apply_chunk()``."
 msgstr "通过将匿名函数作为参数传递给 ``apply_chunk()`` 来对值进行平方。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:96 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:101 of
 msgid ""
 "Define a custom function that needs additional positional arguments and "
 "pass these additional arguments using the ``args`` keyword."
@@ -207,27 +216,27 @@ msgstr ""
 "定义一个需要额外位置参数的自定义函数，并使用 ``args`` 关键字传递这些额外"
 "参数。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:109 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:114 of
 msgid ""
 "Define a custom function that takes keyword arguments and pass these "
 "arguments to ``apply_chunk``."
 msgstr "定义一个接受关键字参数的自定义函数，并将这些参数传递给 ``apply_chunk``。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:123 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:128 of
 msgid ""
 "If func return a dataframe, the apply_chunk will return a dataframe as "
 "well."
 msgstr "如果 func 返回一个 dataframe，apply_chunk 也会返回一个 dataframe。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:134 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:139 of
 msgid "Provides a dtypes or dtype with name to naming the output schema."
 msgstr "提供 dtypes 或带有名称的 dtype 来命名输出模式。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:147 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:152 of
 msgid "Create a series with a dict type."
 msgstr "创建一个字典类型的 series。"
 
-#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:162 of
+#: maxframe.dataframe.extensions.apply_chunk.series_apply_chunk:167 of
 msgid ""
 "Define a function that updates the map type with a new key-value pair in "
 "a batch."

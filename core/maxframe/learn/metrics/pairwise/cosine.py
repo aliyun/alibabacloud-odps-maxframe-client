@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@ from typing import List
 
 import numpy as np
 
-from .... import opcodes
-from ....core import EntityData
-from ....serialization.serializables import KeyField
-from ....tensor.core import TensorOrder
-from ...preprocessing import normalize
-from .core import PairwiseDistances
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.learn.metrics.pairwise.core import PairwiseDistances
+from maxframe.learn.preprocessing import normalize
+from maxframe.serialization.serializables import KeyField
+from maxframe.tensor.core import TensorOrder
 
 
 class CosineDistances(PairwiseDistances):

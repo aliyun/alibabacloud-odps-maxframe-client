@@ -17,7 +17,7 @@ import pickle
 
 import pytest
 
-from ..wrapped_pickle import switch_unpickle
+from maxframe.lib.wrapped_pickle import switch_unpickle
 
 
 @pytest.mark.asyncio

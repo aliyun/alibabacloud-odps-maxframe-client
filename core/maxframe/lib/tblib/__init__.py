@@ -7,7 +7,7 @@ try:
 except ImportError:
     tproxy = None
 try:
-    from .cpython import tb_set_next
+    from maxframe.lib.tblib.cpython import tb_set_next
 except ImportError:
     tb_set_next = None
 

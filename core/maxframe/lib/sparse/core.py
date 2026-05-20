@@ -21,7 +21,7 @@ except ImportError:  # pragma: no cover
     sps = None
     splinalg = None
 
-from ...utils import lazy_import
+from maxframe.utils import lazy_import
 
 splinalg = splinalg
 cp = lazy_import("cupy", rename="cp")
@@ -40,7 +40,7 @@ def issparse(x):
     if cp and isinstance(x, cp.ndarray):
         return False
 
-    from .array import SparseNDArray
+    from maxframe.lib.sparse.array import SparseNDArray
 
     return isinstance(x, SparseNDArray)
 
@@ -55,7 +55,7 @@ def is_sparse_or_dense(x):
 
 
 def get_dense_module(x):
-    from .array import SparseNDArray
+    from maxframe.lib.sparse.array import SparseNDArray
 
     if cp:
         if isinstance(x, SparseNDArray):

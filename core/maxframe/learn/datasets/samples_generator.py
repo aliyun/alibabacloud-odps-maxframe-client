@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@ from collections.abc import Iterable
 
 import numpy as np
 
-from ... import tensor as mt
-from ...tensor.utils import check_random_state
-from ..utils import shuffle as util_shuffle
-from ..utils.validation import check_array
+from maxframe import tensor as mt
+from maxframe.learn.utils import shuffle as util_shuffle
+from maxframe.learn.utils.validation import check_array
+from maxframe.tensor.utils import check_random_state
 
 
 def make_classification(
@@ -468,7 +468,7 @@ def make_blobs(
     --------
     make_classification: a more intricate variant
     """
-    from ..utils.checks import AssertAllFinite
+    from maxframe.learn.utils.checks import AssertAllFinite
 
     generator = check_random_state(random_state)
 

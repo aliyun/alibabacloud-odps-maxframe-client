@@ -13,8 +13,13 @@
 # limitations under the License.
 
 import warnings
+from functools import partial
 
-from ..functional import deprecate_positional_args
+import maxframe.dataframe as md
+from maxframe.utils.functional import (
+    check_closure_for_entities,
+    deprecate_positional_args,
+)
 
 
 def test_deprecate_positional_args():
@@ -59,3 +64,102 @@ def test_deprecate_positional_args():
         result = func(10)  # no args passed positionally
         assert len(w) == 0  # No warning for b and c
         assert result == (10, 2, 3)
+
+
+def test_check_closure_entities():
+    """Test closure variable detection."""
+    # Test entities in closure trigger warning
+    df = md.DataFrame({"a": [1, 2, 3]})
+    series = md.Series([1, 2, 3])
+
+    def func_with_df(x):
+        return x + df["a"].sum()
+
+    def func_with_series(x):
+        return x + series.sum()
+
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        check_closure_for_entities(func_with_df, "apply")
+        assert len(w) == 1
+        assert "MaxFrame entities" in str(w[0].message)
+        assert "apply" in str(w[0].message)
+
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        check_closure_for_entities(func_with_series, "apply")
+        assert len(w) == 1
+        assert "MaxFrame entities" in str(w[0].message)
+
+    # Test no entities produces no warning
+    def func_no_entity(x):
+        return x + 1
+
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        check_closure_for_entities(func_no_entity, "apply")
+        assert len(w) == 0
+
+
+def test_check_global_entities():
+    """Test global variable detection via bytecode."""
+    global_df = md.DataFrame({"a": [1, 2, 3]})
+    _unused_df = md.DataFrame({"b": [4, 5, 6]})  # noqa: F841
+
+    def func_uses_global(x):
+        return x + global_df["a"].sum()
+
+    def func_ignores_global(x):
+        # _unused_df exists in globals but not referenced
+        return x + 1
+
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        check_closure_for_entities(func_uses_global, "apply")
+        assert len(w) == 1
+        assert "MaxFrame entities" in str(w[0].message)
+
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        check_closure_for_entities(func_ignores_global, "apply")
+        assert len(w) == 0  # No warning for unreferenced global
+
+
+def test_check_partial_entities():
+    """Test partial function detection."""
+    df = md.DataFrame({"a": [1, 2, 3]})
+
+    def my_func(x, df_arg, df_kwarg=None):
+        return x
+
+    # Test entity in partial args
+    partial_func = partial(my_func, df_arg=df)
+
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        check_closure_for_entities(partial_func, "apply")
+        assert len(w) == 1
+
+    # Test entity in partial kwargs
+    partial_func2 = partial(my_func, df_arg=1, df_kwarg=df)
+
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        check_closure_for_entities(partial_func2, "apply_chunk")
+        assert len(w) == 1
+
+
+def test_check_closure_integration():
+    """Test integration with apply operations."""
+    _df = md.DataFrame({"a": [1, 2, 3]})  # noqa: F841
+    captured_df = md.DataFrame({"b": [4, 5, 6]})
+
+    def func_with_closure(x):
+        return x + captured_df["b"].sum()
+
+    # Test that the warning is raised when checking the function
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        check_closure_for_entities(func_with_closure, "apply")
+        assert len(w) == 1
+        assert "apply" in str(w[0].message)

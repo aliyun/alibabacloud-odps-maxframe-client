@@ -16,15 +16,16 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 
-from .... import opcodes
-from ....dataframe.core import DataFrame, Series
-from ....serialization.serializables import (
+from maxframe import dataframe as md
+from maxframe import opcodes
+from maxframe.dataframe.core import DataFrame, Series
+from maxframe.learn.contrib.llm.core import LLM, LLMTaskOperator
+from maxframe.serialization.serializables import (
     DictField,
     FieldTypes,
     ListField,
     StringField,
 )
-from .core import LLM, LLMTaskOperator
 
 
 class TextLLMSummarizeOp(LLMTaskOperator):
@@ -33,7 +34,7 @@ class TextLLMSummarizeOp(LLMTaskOperator):
 
     def get_output_dtypes(self) -> Dict[str, np.dtype]:
         return {
-            "summary": np.dtype("O"),
+            "summary": md.dtype("string"),
             "success": np.dtype("bool"),
         }
 
@@ -49,7 +50,7 @@ class TextLLMTranslateOp(LLMTaskOperator):
 
     def get_output_dtypes(self) -> Dict[str, np.dtype]:
         return {
-            "output": np.dtype("O"),
+            "output": md.dtype("string"),
             "success": np.dtype("bool"),
         }
 
@@ -64,8 +65,8 @@ class TextLLMClassifyOp(LLMTaskOperator):
 
     def get_output_dtypes(self) -> Dict[str, np.dtype]:
         return {
-            "label": np.dtype("O"),
-            "reason": np.dtype("O"),
+            "label": md.dtype("string"),
+            "reason": md.dtype("string"),
             "success": np.dtype("bool"),
         }
 
@@ -80,7 +81,7 @@ class TextLLMExtractOp(LLMTaskOperator):
 
     def get_output_dtypes(self) -> Dict[str, np.dtype]:
         return {
-            "output": np.dtype("O"),
+            "output": md.dtype("string"),
             "success": np.dtype("bool"),
         }
 

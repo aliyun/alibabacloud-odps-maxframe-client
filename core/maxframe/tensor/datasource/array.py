@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,20 +14,20 @@
 
 import numpy as np
 
-from ... import opcodes
-from ...lib.sparse.core import cp, get_array_module, issparse
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.lib.sparse.core import cp, get_array_module, issparse
+from maxframe.serialization.serializables import (
     AnyField,
     FieldTypes,
     NDArrayField,
     StringField,
     TupleField,
 )
-from ...utils import on_deserialize_shape, on_serialize_shape
-from ..array_utils import is_array, is_cupy
-from ..core import TENSOR_TYPE, Tensor, TensorData, TensorOrder
-from .core import TensorNoInput
-from .scalar import scalar
+from maxframe.tensor.array_utils import is_array, is_cupy
+from maxframe.tensor.core import TENSOR_TYPE, Tensor, TensorData, TensorOrder
+from maxframe.tensor.datasource.core import TensorNoInput
+from maxframe.tensor.datasource.scalar import scalar
+from maxframe.utils import on_deserialize_shape, on_serialize_shape
 
 
 class ArrayDataSource(TensorNoInput):
@@ -116,7 +116,7 @@ def tensor(
         and len(data) > 0
         and all(isinstance(d, TENSOR_TYPE) for d in data)
     ):
-        from ..merge import stack
+        from maxframe.tensor.merge import stack
 
         data = stack(data)
         return data.astype(dtype or data.dtype, order=order, copy=False)

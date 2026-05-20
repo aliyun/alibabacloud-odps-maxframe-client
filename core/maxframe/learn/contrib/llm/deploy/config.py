@@ -15,19 +15,20 @@
 from copy import deepcopy
 from typing import Any, Dict, List, Optional, Union
 
-from .....protocol import Serializable
-from .....serialization.serializables import StringField
-from .....serialization.serializables.field import (
+from maxframe.learn.contrib.llm.deploy.framework import InferenceFrameworkEnum
+from maxframe.protocol import Serializable
+from maxframe.serialization.serializables import StringField
+from maxframe.serialization.serializables.field import (
     DictField,
     EnumField,
     Int32Field,
     ListField,
 )
-from .....serialization.serializables.field_type import FieldTypes
-from .....udf import FsMountOptions
-from .framework import InferenceFrameworkEnum
+from maxframe.serialization.serializables.field_type import FieldTypes
+from maxframe.udf import FsMountOptions
 
 REASONING_MODEL_KEY = "reasoning_model"
+DEFAULT_ENABLE_THINKING_KEY = "default_enable_thinking"
 
 
 class ModelDeploymentConfig(Serializable):
@@ -166,6 +167,11 @@ class ModelDeploymentConfig(Serializable):
         if not self.properties:
             return False
         return self.properties.get(REASONING_MODEL_KEY, False)
+
+    def get_default_enable_thinking(self):
+        if not self.properties:
+            return False
+        return self.properties.get(DEFAULT_ENABLE_THINKING_KEY, False)
 
     def copy(self) -> "ModelDeploymentConfig":
         return deepcopy(self)

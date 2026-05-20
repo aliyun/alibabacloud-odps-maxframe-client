@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,14 +18,18 @@ from typing import List
 
 import numpy as np
 
-from ...core import EntityData
-from ...serialization.serializables import FieldTypes, Int32Field, TupleField
-from ...utils import on_deserialize_shape, on_serialize_shape
-from ..core import TENSOR_TYPE
-from ..datasource import tensor as astensor
-from ..misc import broadcast_to
-from ..operators import TensorMapReduceOperator, TensorOperator, TensorOperatorMixin
-from ..utils import broadcast_shape
+from maxframe.core import EntityData
+from maxframe.serialization.serializables import FieldTypes, Int32Field, TupleField
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.misc import broadcast_to
+from maxframe.tensor.operators import (
+    TensorMapReduceOperator,
+    TensorOperator,
+    TensorOperatorMixin,
+)
+from maxframe.tensor.utils import broadcast_shape
+from maxframe.utils import on_deserialize_shape, on_serialize_shape
 
 
 class RandomState:

@@ -1,0 +1,698 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version:  maxframe\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-19 21:48+0800\n"
+"PO-Revision-Date: 2026-05-19 21:48+0800\n"
+"Last-Translator: MaxFrame Docs Team\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/skills/index.rst:4
+msgid "Coding Skills"
+msgstr ""
+
+#: ../../source/skills/index.rst:6
+msgid "AI-powered programming assistant for distributed data development."
+msgstr "AI 驱动的分布式数据开发编程助手。"
+
+#: ../../source/skills/index.rst:9
+msgid "Overview"
+msgstr "功能概述"
+
+#: ../../source/skills/index.rst:11
+msgid ""
+"MaxFrame Coding Skill is an AI coding assistant released by Alibaba Cloud"
+" MaxFrame. It integrates with mainstream AI coding assistants as an "
+"intelligent plugin and injects MaxFrame's distributed data processing "
+"knowledge into AI agents, enabling them to generate runnable MaxFrame "
+"code from natural language requirements."
+msgstr ""
+"MaxFrame Coding Skill 是阿里云 MaxFrame 推出的 AI 编程辅助工具。它以智能"
+"插件的形式集成到主流 AI 编程助手中，将 MaxFrame 完整的分布式数据处理知识"
+"体系注入 AI Agent，使其能够根据自然语言描述，自动生成可直接运行的 "
+"MaxFrame 代码。"
+
+#: ../../source/skills/index.rst:17
+msgid ""
+"MaxFrame Coding Skill covers the full MaxFrame development workflow, from"
+" session management, data reading and writing, and operator selection to "
+"result writing. It lowers the entry barrier for distributed data "
+"processing and improves coding efficiency."
+msgstr ""
+"MaxFrame Coding Skill 覆盖 MaxFrame 开发的全链路流程：从会话管理、数据"
+"读写、算子选择到结果写入，降低分布式数据处理的开发门槛，提升编码效率。"
+
+#: ../../source/skills/index.rst:23
+msgid "Architecture"
+msgstr "技术架构"
+
+#: ../../source/skills/index.rst:25
+msgid ""
+"MaxFrame Coding Skill uses a multi-layer knowledge injection architecture"
+" to systematically inject the complete development knowledge base into AI"
+" agents:"
+msgstr ""
+"MaxFrame Coding Skill 采用多层知识注入架构，将完整的开发知识体系系统化地"
+"注入 AI Agent："
+
+#: ../../source/skills/index.rst:59
+msgid "Component"
+msgstr "组件"
+
+#: ../../source/skills/index.rst:60
+msgid "Capability"
+msgstr "功能"
+
+#: ../../source/skills/index.rst:61
+msgid "Coding skill definition"
+msgstr "编码技能定义"
+
+#: ../../source/skills/index.rst:62
+msgid ""
+"Defines the Skill's core responsibilities, capability boundaries, and "
+"workflow."
+msgstr "定义 Skill 的核心职责、能力边界和工作流程。"
+
+#: ../../source/skills/index.rst:63
+msgid "Context guide"
+msgstr "上下文指南"
+
+#: ../../source/skills/index.rst:64
+msgid ""
+"A comprehensive 1700+ line reference covering all features from basics to"
+" advanced usage."
+msgstr "1700+ 行的全面参考文档，覆盖从基础到高级的所有功能。"
+
+#: ../../source/skills/index.rst:65
+msgid "Operator selector agent"
+msgstr "算子选择代理"
+
+#: ../../source/skills/index.rst:66
+msgid ""
+"An intelligent agent responsible for operator discovery, validation, and "
+"recommendation."
+msgstr "智能代理，负责算子发现、验证和推荐。"
+
+#: ../../source/skills/index.rst:67
+msgid "Selection rule engine"
+msgstr "选择规则引擎"
+
+#: ../../source/skills/index.rst:68
+msgid ""
+"Selection strategies based on performance-first, batch-first, and "
+"compatibility-first principles."
+msgstr "基于性能优先、批处理优先、兼容性优先等原则的选择策略。"
+
+#: ../../source/skills/index.rst:69
+msgid "API documentation library"
+msgstr "API 文档库"
+
+#: ../../source/skills/index.rst:70
+msgid ""
+"900+ pages of complete MaxFrame API documentation with real-time lookup "
+"support."
+msgstr "900+ 页 MaxFrame 完整 API 文档，支持实时查询。"
+
+#: ../../source/skills/index.rst:71
+msgid "Operator validation scripts"
+msgstr "算子验证脚本"
+
+#: ../../source/skills/index.rst:72
+msgid ""
+"Executable scripts that verify whether operators exist and retrieve "
+"detailed documentation."
+msgstr "可执行脚本，验证算子是否存在并获取详细文档。"
+
+#: ../../source/skills/index.rst:73
+msgid "Production examples"
+msgstr "实战代码示例"
+
+#: ../../source/skills/index.rst:74
+msgid "10 complete production-grade code templates covering typical scenarios."
+msgstr "10 个覆盖典型场景的完整生产级代码模板。"
+
+#: ../../source/skills/index.rst:77
+msgid "Supported Platforms"
+msgstr "适用平台"
+
+#: ../../source/skills/index.rst:79
+msgid ""
+"MaxFrame Coding Skill supports mainstream AI coding assistants with a "
+"unified installation pattern:"
+msgstr "MaxFrame Coding Skill 支持主流 AI 编程助手，安装方式统一："
+
+#: ../../source/skills/index.rst:87
+msgid "AI coding platform"
+msgstr "AI 编程平台"
+
+#: ../../source/skills/index.rst:88
+msgid "Installation directory"
+msgstr "安装目录"
+
+#: ../../source/skills/index.rst:89
+msgid "Claude Code"
+msgstr ""
+
+#: ../../source/skills/index.rst:90
+msgid "``.claude/skills/``"
+msgstr ""
+
+#: ../../source/skills/index.rst:91
+msgid "Cursor"
+msgstr ""
+
+#: ../../source/skills/index.rst:92
+msgid "``.cursor/rules/``"
+msgstr ""
+
+#: ../../source/skills/index.rst:93
+msgid "Codex"
+msgstr ""
+
+#: ../../source/skills/index.rst:94
+msgid "``.codex/skills/``"
+msgstr ""
+
+#: ../../source/skills/index.rst:95
+msgid "OpenCode"
+msgstr ""
+
+#: ../../source/skills/index.rst:96
+msgid "``.opencode/skills/``"
+msgstr ""
+
+#: ../../source/skills/index.rst:97
+msgid "Gemini CLI"
+msgstr ""
+
+#: ../../source/skills/index.rst:98
+msgid "``.gemini/skills/``"
+msgstr ""
+
+#: ../../source/skills/index.rst:99
+msgid "Tongyi Lingma / Qoder"
+msgstr "通义灵码 / Qoder"
+
+#: ../../source/skills/index.rst:100
+msgid "``.aone_copilot/skills/`` or ``.qoder/skills/``"
+msgstr "``.aone_copilot/skills/`` 或 ``.qoder/skills/``"
+
+#: ../../source/skills/index.rst:103
+msgid "Installation"
+msgstr "安装步骤"
+
+#: ../../source/skills/index.rst:105
+msgid "**Download the package**"
+msgstr "**下载安装包**"
+
+#: ../../source/skills/index.rst:107
+msgid ""
+"Skill package: `maxframe-coding-skill.zip <https://help-static-aliyun-"
+"doc.aliyuncs.com/file-manage-files/zh-CN/20260424/mqanrl/maxframe-coding-"
+"skill.zip>`__"
+msgstr ""
+"Skill 安装包：`maxframe-coding-skill.zip <https://help-static-aliyun-doc."
+"aliyuncs.com/file-manage-files/zh-CN/20260424/mqanrl/maxframe-coding-"
+"skill.zip>`__"
+
+#: ../../source/skills/index.rst:109
+msgid ""
+"**Extract it to the skills directory of your AI coding assistant**. For "
+"Claude Code:"
+msgstr "**解压到对应 AI 编程助手的 skills 目录**。以 Claude Code 为例："
+
+#: ../../source/skills/index.rst:115
+msgid "**Verify the installation**"
+msgstr "**验证安装结果**"
+
+#: ../../source/skills/index.rst:121
+msgid ""
+"The directory should contain ``SKILL.md``, ``examples/``, "
+"``references/``, and ``scripts/``."
+msgstr ""
+"目录中应包含 ``SKILL.md``、``examples/``、``references/`` 和 ``scripts/``"
+"。"
+
+#: ../../source/skills/index.rst:123
+msgid ""
+"**After installation, enter the following prompt in your AI coding "
+"assistant**"
+msgstr "**安装完成后，在 AI 编程助手中输入以下指令验证**"
+
+#: ../../source/skills/index.rst:129
+msgid "The AI assistant will automatically:"
+msgstr "AI 将自动完成以下流程："
+
+#: ../../source/skills/index.rst:131
+msgid "Confirm the data source and output target."
+msgstr "确认数据源和输出目标。"
+
+#: ../../source/skills/index.rst:132
+msgid "Recommend the best operator combination, such as ``groupby().agg()``."
+msgstr "推荐最优算子组合，例如 ``groupby().agg()``。"
+
+#: ../../source/skills/index.rst:133
+msgid ""
+"Generate runnable code with complete Session management and error "
+"handling."
+msgstr "生成包含完整 Session 管理和错误处理的可运行代码。"
+
+#: ../../source/skills/index.rst:136
+msgid "Core Capabilities"
+msgstr "核心能力"
+
+#: ../../source/skills/index.rst:139
+msgid "Intelligent Operator Recommendation"
+msgstr "智能算子推荐"
+
+#: ../../source/skills/index.rst:141
+msgid ""
+"MaxFrame provides a multi-layer operator system, including standard "
+"pandas-compatible operators, MaxFrame-specific ``.mf`` extension "
+"operators such as ``apply_chunk``, ``map_reduce``, ``flatmap``, and "
+"``rebalance``, and UDF / UDTF capabilities. For a specific data "
+"processing requirement, the Operator Selector agent built into Coding "
+"Skill automatically completes operator selection and validation:"
+msgstr ""
+"MaxFrame 提供多层次算子体系，包括标准 pandas 兼容算子、MaxFrame 专属的 ``"
+".mf`` 扩展算子（如 ``apply_chunk``、``map_reduce``、``flatmap``、``"
+"rebalance`` 等），以及 UDF / UDTF 能力。面对具体的数据处理需求，Coding "
+"Skill 内置的 Operator Selector 智能代理能够自动完成算子选择与验证："
+
+#: ../../source/skills/index.rst:148
+msgid ""
+"**Task-driven recommendation**: recommends the best operator combination "
+"based on the task description and explains the reason."
+msgstr "**任务驱动推荐**：根据任务描述，自动推荐最优算子组合，并给出选择理由。"
+
+#: ../../source/skills/index.rst:149
+msgid ""
+"**API authenticity validation**: validates operators against 900+ pages "
+"of API documentation to prevent hallucinated APIs."
+msgstr ""
+"**API 真实性校验**：基于 900+ 页 API 文档实时验证算子是否存在，杜绝幻觉 "
+"API。"
+
+#: ../../source/skills/index.rst:150
+msgid ""
+"**Fallback alternatives**: provides alternatives, including UDF fallback "
+"options, when the preferred operator has constraints."
+msgstr ""
+"**备选方案提供**：当首选算子存在限制时，自动提供替代方案，包括 UDF 回退"
+"方案。"
+
+#: ../../source/skills/index.rst:152
+msgid "Example:"
+msgstr "示例："
+
+#: ../../source/skills/index.rst:161
+msgid "End-to-End Code Generation"
+msgstr "全链路代码生成"
+
+#: ../../source/skills/index.rst:163
+msgid "Coding Skill covers the complete MaxFrame development lifecycle:"
+msgstr "Coding Skill 覆盖 MaxFrame 开发的完整生命周期："
+
+#: ../../source/skills/index.rst:169
+msgid ""
+"It uses a three-phase confirm-before-execute interaction model to ensure "
+"the generated code precisely matches the requirement:"
+msgstr "采用先确认再执行的三阶段交互模式，确保生成的代码精确匹配需求："
+
+#: ../../source/skills/index.rst:177
+msgid "Phase"
+msgstr "阶段"
+
+#: ../../source/skills/index.rst:178
+msgid "Content"
+msgstr "内容"
+
+#: ../../source/skills/index.rst:179
+msgid "Description"
+msgstr "说明"
+
+#: ../../source/skills/index.rst:180
+msgid "Phase 1"
+msgstr ""
+
+#: ../../source/skills/index.rst:181
+msgid "Requirement and data confirmation"
+msgstr "需求与数据确认"
+
+#: ../../source/skills/index.rst:182
+msgid ""
+"Confirms data sources, target tables, selected columns, and related "
+"inputs."
+msgstr "确认数据来源、目标表、列选择等。"
+
+#: ../../source/skills/index.rst:183
+msgid "Phase 2"
+msgstr ""
+
+#: ../../source/skills/index.rst:184
+msgid "Operator selection confirmation"
+msgstr "算子选择确认"
+
+#: ../../source/skills/index.rst:185
+msgid "Shows recommended operators and alternatives, then waits for confirmation."
+msgstr "展示推荐算子及备选方案，等待确认。"
+
+#: ../../source/skills/index.rst:186
+msgid "Phase 3"
+msgstr ""
+
+#: ../../source/skills/index.rst:187
+msgid "Code generation and validation"
+msgstr "代码生成与验证"
+
+#: ../../source/skills/index.rst:188
+msgid "Generates complete runnable code based on the confirmed plan."
+msgstr "基于确认结果生成完整可运行代码。"
+
+#: ../../source/skills/index.rst:190
+msgid "All generated code follows production-grade standards:"
+msgstr "所有生成的代码均遵循生产级标准："
+
+#: ../../source/skills/index.rst:192
+msgid "Uses ``try/finally`` to ensure Session resource cleanup."
+msgstr "使用 ``try/finally`` 模式确保 Session 资源清理。"
+
+#: ../../source/skills/index.rst:193
+msgid "Automatically calls ``.execute()`` to trigger lazy execution."
+msgstr "自动调用 ``.execute()`` 触发懒执行。"
+
+#: ../../source/skills/index.rst:194
+msgid "Correctly declares UDF return types with ``dtypes``."
+msgstr "正确声明 UDF 返回类型（``dtypes``）。"
+
+#: ../../source/skills/index.rst:195
+msgid "Includes complete error handling logic."
+msgstr "包含完善的错误处理逻辑。"
+
+#: ../../source/skills/index.rst:198
+msgid "Common Pitfall Prevention"
+msgstr "常见陷阱自动规避"
+
+#: ../../source/skills/index.rst:200
+msgid ""
+"Generic AI-generated MaxFrame code often runs into the following issues. "
+"Coding Skill solves them with its built-in knowledge base:"
+msgstr ""
+"通用 AI 生成的 MaxFrame 代码常会遇到以下问题，Coding Skill 通过内置的知识"
+"体系逐一解决："
+
+#: ../../source/skills/index.rst:208
+msgid "Common issue"
+msgstr "常见问题"
+
+#: ../../source/skills/index.rst:209
+msgid "How Coding Skill solves it"
+msgstr "Coding Skill 的解法"
+
+#: ../../source/skills/index.rst:210
+msgid "Calling nonexistent APIs"
+msgstr "调用不存在的 API"
+
+#: ../../source/skills/index.rst:211
+msgid ""
+"Validates against 900+ pages of documentation to prevent hallucinated "
+"APIs."
+msgstr "基于 900+ 页文档实时校验，杜绝幻觉 API。"
+
+#: ../../source/skills/index.rst:212
+msgid "Missing ``.execute()`` calls"
+msgstr "遗漏 ``.execute()`` 调用"
+
+#: ../../source/skills/index.rst:213
+msgid ""
+"Enforces lazy execution patterns and includes execution triggers in code "
+"templates."
+msgstr "强制遵循懒执行模式，代码模板自带执行触发。"
+
+#: ../../source/skills/index.rst:214
+msgid "Session not destroyed correctly"
+msgstr "Session 未正确销毁"
+
+#: ../../source/skills/index.rst:215
+msgid "Uses ``try/finally`` in all generated code to release resources."
+msgstr "所有代码使用 ``try/finally`` 模式确保资源释放。"
+
+#: ../../source/skills/index.rst:216
+msgid "UDF return type mismatch"
+msgstr "UDF 返回类型不匹配"
+
+#: ../../source/skills/index.rst:217
+msgid "Shows the correct ``dtypes`` declaration pattern through examples."
+msgstr "通过示例代码展示正确的 ``dtypes`` 声明方式。"
+
+#: ../../source/skills/index.rst:218
+msgid "Poor execution engine choice"
+msgstr "执行引擎选择不当"
+
+#: ../../source/skills/index.rst:219
+msgid "Recommends engines by SQL Engine > DPE > SPE priority."
+msgstr "按 SQL Engine > DPE > SPE 优先级自动推荐。"
+
+#: ../../source/skills/index.rst:220
+msgid "Inefficient operators"
+msgstr "使用低效算子"
+
+#: ../../source/skills/index.rst:221
+msgid ""
+"Recommends ``DataFrame.mf.apply_chunk`` instead of ``Series.apply`` where"
+" appropriate."
+msgstr "在合适场景中自动推荐 ``DataFrame.mf.apply_chunk`` 替代 ``Series.apply``。"
+
+#: ../../source/skills/index.rst:224
+msgid "Built-In Scenario Templates"
+msgstr "内置应用场景模板"
+
+#: ../../source/skills/index.rst:226
+msgid ""
+"Coding Skill includes 10 production-grade code templates for typical "
+"business scenarios. AI agents can use these templates to generate high-"
+"quality code:"
+msgstr ""
+"Coding Skill 内置 10 个覆盖典型业务场景的生产级代码模板，AI Agent 可参考"
+"这些模板生成高质量代码："
+
+#: ../../source/skills/index.rst:234
+msgid "Scenario"
+msgstr "场景分类"
+
+#: ../../source/skills/index.rst:235
+msgid "Example file"
+msgstr "示例文件"
+
+#: ../../source/skills/index.rst:236
+msgid "Core capability"
+msgstr "核心能力"
+
+#: ../../source/skills/index.rst:237
+msgid "LLM batch inference"
+msgstr "AI 大模型推理"
+
+#: ../../source/skills/index.rst:238
+msgid "``ai_function_basic.py``"
+msgstr ""
+
+#: ../../source/skills/index.rst:239
+msgid ""
+"Distributed batch inference with ManagedTextLLM, ready to use out of the "
+"box."
+msgstr "ManagedTextLLM 分布式批量推理，开箱即用。"
+
+#: ../../source/skills/index.rst:240
+msgid "GPU-accelerated computing"
+msgstr "GPU 加速计算"
+
+#: ../../source/skills/index.rst:241
+msgid "``gpu_unit_dpe_processing.py``"
+msgstr ""
+
+#: ../../source/skills/index.rst:242
+msgid "GPU resource allocation with ``@with_running_options(gu=1)``."
+msgstr "``@with_running_options(gu=1)`` GPU 资源分配。"
+
+#: ../../source/skills/index.rst:243
+msgid "OSS file processing"
+msgstr "OSS 文件处理"
+
+#: ../../source/skills/index.rst:244
+msgid "``fs_mount_example.py``"
+msgstr ""
+
+#: ../../source/skills/index.rst:245
+msgid "Distributed OSS file reading with ``@with_fs_mount``."
+msgstr "``@with_fs_mount`` 分布式 OSS 文件读取。"
+
+#: ../../source/skills/index.rst:246
+msgid "Multiple OSS mounts"
+msgstr "多路 OSS 挂载"
+
+#: ../../source/skills/index.rst:247
+msgid "``oss_multi_mount.py``"
+msgstr ""
+
+#: ../../source/skills/index.rst:248
+msgid "Mounts one or more OSS buckets at the same time."
+msgstr "单 / 多 OSS Bucket 同时挂载。"
+
+#: ../../source/skills/index.rst:249
+msgid "Grouped batch processing"
+msgstr "分组批处理"
+
+#: ../../source/skills/index.rst:250
+msgid "``groupby_batch_processing.py``"
+msgstr ""
+
+#: ../../source/skills/index.rst:251
+msgid "Efficient grouped batch processing with ``groupby`` + ``apply_chunk``."
+msgstr "``groupby`` + ``apply_chunk`` 高效分组批处理。"
+
+#: ../../source/skills/index.rst:252
+msgid "Complex data structures"
+msgstr "复杂数据结构"
+
+#: ../../source/skills/index.rst:253
+msgid "``complex_struct.py``"
+msgstr ""
+
+#: ../../source/skills/index.rst:254
+msgid "Nested structures with custom grouped processing."
+msgstr "嵌套结构体 + 自定义分组处理。"
+
+#: ../../source/skills/index.rst:255
+msgid "Arrow type handling"
+msgstr "Arrow 类型处理"
+
+#: ../../source/skills/index.rst:256
+msgid "``complex_struct_arrow.py``"
+msgstr ""
+
+#: ../../source/skills/index.rst:257
+msgid "PyArrow complex types with JSON conversion."
+msgstr "PyArrow 复杂类型 + JSON 转换。"
+
+#: ../../source/skills/index.rst:258
+msgid "DLF external table writes"
+msgstr "DLF 外部表写入"
+
+#: ../../source/skills/index.rst:259
+msgid "``dlf_table_write_basic.py``"
+msgstr ""
+
+#: ../../source/skills/index.rst:260
+msgid "DLF external table configuration and data writing."
+msgstr "DLF 外部表配置与数据写入。"
+
+#: ../../source/skills/index.rst:261
+msgid "DLF primary-key table writes"
+msgstr "DLF 主键表写入"
+
+#: ../../source/skills/index.rst:262
+msgid "``dlf_table_write_with_pk.py``"
+msgstr ""
+
+#: ../../source/skills/index.rst:263
+msgid "Primary-key tables with binary data type handling."
+msgstr "主键表 + 二进制数据类型处理。"
+
+#: ../../source/skills/index.rst:264
+msgid "Large-scale document deduplication"
+msgstr "大规模文档去重"
+
+#: ../../source/skills/index.rst:265
+msgid "``minhash_lsh_document_similarity.py``"
+msgstr ""
+
+#: ../../source/skills/index.rst:266
+msgid "MinHash + LSH algorithm with 4000+ parallelism support."
+msgstr "MinHash + LSH 算法，支持 4000+ 并行度。"
+
+#: ../../source/skills/index.rst:269
+msgid "Typical Scenarios"
+msgstr "典型应用场景"
+
+#: ../../source/skills/index.rst:272
+msgid "Scenario 1: Distributed Batch LLM Inference"
+msgstr "场景一：大模型分布式批量推理"
+
+#: ../../source/skills/index.rst:274
+msgid ""
+"Requirement: run batch inference on massive text data with a large "
+"language model."
+msgstr "需求描述：使用大语言模型对海量文本数据批量推理。"
+
+#: ../../source/skills/index.rst:277
+msgid ""
+"No model deployment, GPU resource management, or inference service "
+"development is required. ManagedTextLLM provides built-in qwen2.5 series "
+"models, DeepSeek-R1, and more."
+msgstr ""
+"无需部署模型、无需管理 GPU 资源、无需编写推理服务。ManagedTextLLM 内置 "
+"qwen2.5 系列、DeepSeek-R1 等多个模型，开箱即用。"
+
+#: ../../source/skills/index.rst:281 ../../source/skills/index.rst:331
+msgid "Generated code example:"
+msgstr "生成代码示例："
+
+#: ../../source/skills/index.rst:323
+msgid "Scenario 2: Distributed OSS File Processing"
+msgstr "场景二：OSS 分布式文件处理"
+
+#: ../../source/skills/index.rst:325
+msgid ""
+"Requirement: mount files from OSS to every distributed Worker node for "
+"parallel reading and processing."
+msgstr ""
+"需求描述：将 OSS 存储中的文件挂载到每个分布式 Worker 节点，并行读取与处理"
+"。"
+
+#: ../../source/skills/index.rst:328
+msgid ""
+"OSS paths are mounted as local file system paths. Distributed Workers "
+"read data in parallel, and throughput scales with the number of nodes."
+msgstr ""
+"OSS 路径自动挂载为本地文件系统路径，分布式 Worker 自动并行读取，吞吐量随"
+"节点数线性扩展。"
+
+#: ../../source/skills/index.rst:352
+msgid "Related Links"
+msgstr "相关链接"
+
+#: ../../source/skills/index.rst:354
+msgid ""
+"Skill repository: `aliyun/alibabacloud-aiops-skills "
+"<https://github.com/aliyun/alibabacloud-aiops-"
+"skills/tree/master/skills/analyticscomputing/odps/alibabacloud-odps-"
+"maxframe-coding>`__"
+msgstr ""
+"Skill 仓库：`aliyun/alibabacloud-aiops-skills <https://github.com/aliyun/"
+"alibabacloud-aiops-skills/tree/master/skills/analyticscomputing/odps/"
+"alibabacloud-odps-maxframe-coding>`__"
+
+#: ../../source/skills/index.rst:355
+msgid ""
+"MaxFrame official documentation: `MaxFrame distributed AI computing "
+"engine <https://help.aliyun.com/zh/maxcompute/user-guide/maxframe-"
+"overview-1/>`__"
+msgstr ""
+"MaxFrame 官方文档：`分布式 AI 计算引擎 MaxFrame <https://help.aliyun.com/"
+"zh/maxcompute/user-guide/maxframe-overview-1/>`__"
+
+#: ../../source/skills/index.rst:356
+msgid ""
+"`MaxFrame FAQ <https://help.aliyun.com/zh/maxcompute/user-guide/faq-"
+"about-maxframe>`__"
+msgstr ""
+"`MaxFrame 常见问题 <https://help.aliyun.com/zh/maxcompute/user-guide/faq-"
+"about-maxframe>`__"
+

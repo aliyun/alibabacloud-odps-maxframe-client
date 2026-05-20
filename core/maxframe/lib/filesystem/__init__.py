@@ -12,11 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .base import FileSystem
-from .core import file_size, get_fs, glob, open_file, register_filesystem
-from .fshandler import MFFileSystemHandler, to_arrow_file_system
-from .fsmap import FSMap
+from maxframe.lib.filesystem.base import FileSystem
+from maxframe.lib.filesystem.core import (
+    file_size,
+    get_fs,
+    glob,
+    open_file,
+    register_filesystem,
+)
+from maxframe.lib.filesystem.fshandler import MFFileSystemHandler, to_arrow_file_system
+from maxframe.lib.filesystem.fsmap import FSMap
 
 # noinspection PyUnresolvedReferences
-from .hdfs import HadoopFileSystem
-from .local import LocalFileSystem
+from maxframe.lib.filesystem.hdfs import HadoopFileSystem
+from maxframe.lib.filesystem.local import LocalFileSystem

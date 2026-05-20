@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@ except ImportError:
     xgboost = None
 
 
-from ..... import tensor as mt
+from maxframe import tensor as mt
 
 if xgboost:
-    from ..core import wrap_evaluation_matrices
+    from maxframe.learn.contrib.xgboost.core import wrap_evaluation_matrices
 
 
 @pytest.mark.skipif(xgboost is None, reason="XGBoost not installed")

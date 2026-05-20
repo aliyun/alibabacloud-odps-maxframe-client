@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .min_max_scaler import MinMaxScaler, minmax_scale
-from .normalize import normalize
-from .standard_scaler import StandardScaler, scale
+from maxframe.learn.preprocessing._data.min_max_scaler import MinMaxScaler, minmax_scale
+from maxframe.learn.preprocessing._data.normalize import normalize
+from maxframe.learn.preprocessing._data.standard_scaler import StandardScaler, scale

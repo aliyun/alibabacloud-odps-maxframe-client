@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@ from typing import List
 
 import numpy as np
 
-from .... import opcodes
-from ....config import options
-from ....core import EntityData
-from ....core.operator import OperatorStage
-from ....serialization.serializables import (
+from maxframe import opcodes
+from maxframe.config import options
+from maxframe.core import EntityData
+from maxframe.core.operator import OperatorStage
+from maxframe.learn.metrics.pairwise.core import PairwiseDistances
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
     Int64Field,
     KeyField,
 )
-from ....tensor.core import TensorOrder
-from .core import PairwiseDistances
+from maxframe.tensor.core import TensorOrder
 
 
 class PairwiseDistancesTopk(PairwiseDistances):
@@ -55,7 +55,7 @@ class PairwiseDistancesTopk(PairwiseDistances):
             op.x = op.y = None
 
     def __call__(self, X, Y):
-        from .pairwise import pairwise_distances
+        from maxframe.learn.metrics.pairwise.pairwise import pairwise_distances
 
         # leverage pairwise_distances for checks
         d = pairwise_distances(X, Y, metric=self.metric, **self.metric_kwargs)

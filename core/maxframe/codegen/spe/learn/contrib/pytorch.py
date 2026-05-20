@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,12 @@
 import sys
 from typing import List, Union
 
-from .....learn.contrib.pytorch.run_script import RunPyTorch
-from ...core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.learn.contrib.pytorch.run_script import RunPyTorch
 
 
 @register_op_adapter(RunPyTorch)

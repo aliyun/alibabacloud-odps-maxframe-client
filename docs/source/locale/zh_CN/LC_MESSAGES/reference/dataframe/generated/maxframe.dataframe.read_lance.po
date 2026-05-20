@@ -1,0 +1,136 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev875+gd7f92f2dd\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-09 18:48+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_lance.rst:2
+msgid "maxframe.dataframe.read\\_lance"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:1 of
+msgid "Load a Lance dataset from the file path, returning a DataFrame."
+msgstr "从文件路径加载 Lance 数据集，返回 DataFrame。"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:3 of
+msgid ""
+"Any valid string path is acceptable. The string could be a URL. For "
+"Aliyun OSS URLs, the format is: ``oss://<endpoint>/<bucket>/<path>``. "
+"Example: ``oss://oss-cn-beijing.aliyuncs.com/my-bucket/dataset``. For S3 "
+"URLs, the format is: ``s3://<bucket>/<path>``."
+msgstr ""
+"任何有效的字符串路径都是可接受的。字符串可以是 URL。对于阿里云 OSS URL，"
+"格式为：``oss://<endpoint>/<bucket>/<path>``。示例：``oss://oss-cn-"
+"beijing.aliyuncs.com/my-bucket/dataset``。对于 S3 URL，格式为：``s3://<"
+"bucket>/<path>``。"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:8 of
+msgid ""
+"Specific version of the dataset to read. If not specified, reads the "
+"latest version."
+msgstr "要读取的数据集的特定版本。如果未指定，则读取最新版本。"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:11 of
+msgid ""
+"Timestamp for point-in-time read. Format: ISO 8601 datetime string. "
+"Cannot be used together with version."
+msgstr ""
+"时间点读取的时间戳。格式：ISO 8601 日期时间字符串。不能与 version 参数"
+"一起使用。"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:14 of
+msgid "If not None, only these columns will be read from the dataset."
+msgstr "如果不为 None，则只从数据集中读取这些列。"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:16 of
+msgid ""
+"SQL-like filter expression for predicate pushdown. The filter is applied "
+"during read to filter rows within each fragment. Example: ``\"age > 18 "
+"AND city = 'Beijing'\"``"
+msgstr ""
+"用于谓词下推的类 SQL 过滤表达式。过滤器在读取期间应用，以过滤每个片段中的"
+"行。示例：``\"age > 18 AND city = 'Beijing'\"``"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:20 of
+msgid ""
+"Column(s) to use as the row labels of the DataFrame, either given as "
+"string name or column index. If a sequence of int/str is given, a "
+"MultiIndex is used. If False, no column is used as index (ignoring any "
+"pandas metadata in the dataset). If None, uses pandas metadata if "
+"available, otherwise falls back to default_index_type."
+msgstr ""
+"用作 DataFrame 行标签的列，可以是字符串名称或列索引。如果给定了 int/str "
+"序列，则使用 MultiIndex。如果为 False，则不使用任何列作为索引（忽略数据"
+"集中的任何 pandas 元数据）。如果为 None，则在可用时使用 pandas 元数据，"
+"否则回退到 default_index_type。"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:26 of
+msgid ""
+"If index_col not specified, specify type of index to generate. If not "
+"specified, `options.dataframe.default_index_type` will be used."
+msgstr ""
+"如果未指定 index_col，则指定要生成的索引类型。如果未指定，将使用 `options"
+".dataframe.default_index_type`。"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:29 of
+msgid "Back-end data type applied to the resultant DataFrame."
+msgstr "应用于结果 DataFrame 的后端数据类型。"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:31 of
+#, python-brace-format
+msgid ""
+"Options for storage connection. For Aliyun OSS with RAM role: "
+"``{'role_arn': 'acs:ram::xxx:role/name'}`` For Aliyun OSS with AK/SK: "
+"``{'access_key_id': 'xxx', 'access_key_secret': 'xxx'}`` For S3: "
+"``{'aws_access_key_id': 'xxx', 'aws_secret_access_key': 'xxx'}``"
+msgstr ""
+"存储连接选项。对于使用 RAM 角色的阿里云 OSS：``{'role_arn': 'acs:ram::xxx"
+":role/name'}`` 对于使用 AK/SK 的阿里云 OSS：``{'access_key_id': 'xxx', '"
+"access_key_secret': 'xxx'}`` 对于 S3：``{'aws_access_key_id': 'xxx', 'aws"
+"_secret_access_key': 'xxx'}``"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:36 of
+msgid "Scale that real memory occupation divided with raw file size."
+msgstr "实际内存占用除以原始文件大小的比例。"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:38 of
+msgid ""
+"Merge small Lance fragments into larger chunks for better parallel "
+"processing efficiency."
+msgstr "将小的 Lance 片段合并为更大的块，以获得更好的并行处理效率。"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:41 of
+msgid "Options for merging small files."
+msgstr "合并小文件的选项。"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:43 of
+msgid "Any additional kwargs are passed to lance."
+msgstr "任何额外的 kwargs 都会传递给 lance。"
+
+#: maxframe.dataframe.datasource.read_lance.read_lance of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.datasource.read_lance.read_lance:48 of
+msgid "示例"
+msgstr ""
+

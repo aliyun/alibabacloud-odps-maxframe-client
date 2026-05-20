@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...udf import builtin_function
+from maxframe.udf import builtin_function
 
 
 @builtin_function
@@ -23,7 +23,7 @@ def _item_or_none(item):
 
 
 def _valid_index(df_or_series, slc: slice):
-    from ... import tensor as mt
+    from maxframe import tensor as mt
 
     idx = df_or_series.dropna(how="all").index[slc]
     return mt.array(idx).mf.apply_chunk(_item_or_none, dtype=idx.dtype)

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,15 @@
 
 from typing import List
 
-from .....learn.contrib.xgboost.dmatrix import ToDMatrix
-from .....learn.contrib.xgboost.predict import XGBPredict
-from .....learn.contrib.xgboost.train import XGBTrain
-from .....typing_ import OperatorType
-from ...core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.learn.contrib.xgboost.dmatrix import ToDMatrix
+from maxframe.learn.contrib.xgboost.predict import XGBPredict
+from maxframe.learn.contrib.xgboost.train import XGBTrain
+from maxframe.typing_ import OperatorType
 
 
 class _XGBoostAdapter(SPEOperatorAdapter):

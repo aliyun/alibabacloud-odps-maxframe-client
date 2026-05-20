@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,6 +52,6 @@ def read_clipboard(sep=None, **kwargs):
     0    1  2  3
     1    4  5  6
     """
-    from ..initializer import DataFrame
+    from maxframe.dataframe.initializer import DataFrame
 
     return DataFrame(pd.read_clipboard(sep=sep, **kwargs))

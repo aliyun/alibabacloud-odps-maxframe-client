@@ -18,9 +18,9 @@ import numpy as np
 import pytest
 import scipy.sparse as sps
 
-from ... import sparse as mls
-from .. import SparseMatrix, SparseNDArray, SparseVector
-from ..core import issparse
+from maxframe.lib import sparse as mls
+from maxframe.lib.sparse import SparseMatrix, SparseNDArray, SparseVector
+from maxframe.lib.sparse.core import issparse
 
 s1_data = sps.csr_matrix([[1, 0, 1], [0, 0, 1]])
 s2_data = sps.csr_matrix([[0, 1, 1], [1, 0, 1]])

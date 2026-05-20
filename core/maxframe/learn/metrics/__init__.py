@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import _check_targets
-from ._classification import (
+from maxframe.learn.metrics import _check_targets
+from maxframe.learn.metrics._classification import (
     accuracy_score,
     f1_score,
     fbeta_score,
@@ -23,9 +23,9 @@ from ._classification import (
     precision_score,
     recall_score,
 )
-from ._ranking import auc, roc_auc_score, roc_curve
-from ._regression import r2_score
-from .pairwise import pairwise_distances
+from maxframe.learn.metrics._ranking import auc, roc_auc_score, roc_curve
+from maxframe.learn.metrics._regression import r2_score
+from maxframe.learn.metrics.pairwise import pairwise_distances
 
 # isort: off
-from ._scorer import get_scorer
+from maxframe.learn.metrics._scorer import get_scorer

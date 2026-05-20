@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..core import Tensor
-from .array import tensor as astensor
-from .diag import diag
+from maxframe.tensor.core import Tensor
+from maxframe.tensor.datasource.array import tensor as astensor
+from maxframe.tensor.datasource.diag import diag
 
 
 def diagflat(v, k=0, sparse=None, gpu=None, chunk_size=None):

@@ -19,12 +19,12 @@ try:
 except ImportError:
     from typing_extensions import Literal
 
-from ....core import BaseMaxFrameAccessor
-from ...core import SERIES_TYPE
-from .core import url_download
+from maxframe.core import BaseMaxFrameAccessor
+from maxframe.dataframe.core import SERIES_TYPE
+from maxframe.dataframe.multimodal.url.core import url_download
 
 if TYPE_CHECKING:
-    from ...core import Series
+    from maxframe.dataframe.core import Series
 
 
 class UrlAccessor(BaseMaxFrameAccessor):

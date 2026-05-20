@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@ import logging
 import os
 from typing import Any, BinaryIO, Dict, List, Optional, TextIO, Union
 
-from .... import opcodes
-from ....remote.run_script import RunScript, _extract_inputs
-from ....serialization.serializables import Int32Field, StringField
-from ....typing_ import SessionType, TileableType
-from ....utils import to_binary
+from maxframe import opcodes
+from maxframe.remote.run_script import RunScript, _extract_inputs
+from maxframe.serialization.serializables import Int32Field, StringField
+from maxframe.typing_ import SessionType, TileableType
+from maxframe.utils import to_binary
 
 logger = logging.getLogger(__name__)
 

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, OutputType
-from ...serialization.serializables import StringField
-from ...tensor import tensor as astensor
-from ..initializer import Series as asseries
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, OutputType
+from maxframe.dataframe.initializer import Series as asseries
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.serialization.serializables import StringField
+from maxframe.tensor import tensor as astensor
 
 
 class DataFrameToNumeric(DataFrameOperator, DataFrameOperatorMixin):

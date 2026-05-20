@@ -19,7 +19,7 @@ except ImportError:  # pragma: no cover
     FileSystemHandler = object
     PythonFile = PyFileSystem = None
 
-from .base import FileSystem
+from maxframe.lib.filesystem.base import FileSystem
 
 
 class MFFileSystemHandler(FileSystemHandler):
@@ -129,7 +129,7 @@ class MFFileSystemHandler(FileSystemHandler):
 
 
 def to_arrow_file_system(mf_fs: FileSystem):
-    from .arrow import ArrowBasedFileSystem
+    from maxframe.lib.filesystem.arrow import ArrowBasedFileSystem
 
     if isinstance(mf_fs, ArrowBasedFileSystem):
         return mf_fs._arrow_fs

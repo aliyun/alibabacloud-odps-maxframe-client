@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 import functools
 from enum import Enum
 
-from .objects import OBJECT_TYPE
+from maxframe.core.entity.objects import OBJECT_TYPE
 
 
 class OutputType(Enum):
@@ -70,7 +70,7 @@ def get_fetch_class(output_type):
     return _OUTPUT_TYPE_TO_FETCH_CLS[output_type]
 
 
-@functools.lru_cache(100)
+@functools.lru_cache(maxsize=None)
 def _get_output_type_by_cls(cls):
     for tp in OutputType.__members__.values():
         try:

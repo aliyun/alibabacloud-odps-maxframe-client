@@ -21,61 +21,83 @@ try:
 except ImportError:  # pragma: no cover
     PdOpsMixin = None
 
-from .abs import DataFrameAbs, abs_
-from .add import DataFrameAdd, add, radd
-from .arccos import DataFrameArccos
-from .arccosh import DataFrameArccosh
-from .arcsin import DataFrameArcsin
-from .arcsinh import DataFrameArcsinh
-from .arctan import DataFrameArctan
-from .arctanh import DataFrameArctanh
-from .between import between
-from .bitwise_and import DataFrameAnd, DataFrameTreeAnd, bitand, rbitand
-from .bitwise_or import DataFrameOr, DataFrameTreeOr, bitor, rbitor
-from .bitwise_xor import DataFrameXor, bitxor, rbitxor
-from .ceil import DataFrameCeil
-from .cos import DataFrameCos
-from .cosh import DataFrameCosh
-from .degrees import DataFrameDegrees
-from .dot import DataFrameDot, dot, rdot
-from .equal import DataFrameEqual, eq
-from .exp import DataFrameExp
-from .exp2 import DataFrameExp2
-from .expm1 import DataFrameExpm1
-from .floor import DataFrameFloor
-from .floordiv import DataFrameFloorDiv, floordiv, rfloordiv
-from .greater import DataFrameGreater, gt
-from .greater_equal import DataFrameGreaterEqual, ge
-from .invert import DataFrameNot, invert
-from .is_ufuncs import DataFrameIsFinite, DataFrameIsInf, DataFrameIsNan
-from .less import DataFrameLess, lt
-from .less_equal import DataFrameLessEqual, le
-from .log import DataFrameLog
-from .log2 import DataFrameLog2
-from .log10 import DataFrameLog10
-from .maximum import DataFrameMaximum
-from .minimum import DataFrameMinimum
-from .mod import DataFrameMod, mod, rmod
-from .multiply import DataFrameMul, mul, rmul
-from .negative import DataFrameNegative, negative
-from .not_equal import DataFrameNotEqual, ne
-from .power import DataFramePower, power, rpower
-from .radians import DataFrameRadians
-from .round import DataFrameRound, round
-from .sin import DataFrameSin
-from .sinh import DataFrameSinh
-from .sqrt import DataFrameSqrt
-from .subtract import DataFrameSubtract, rsubtract, subtract
-from .tan import DataFrameTan
-from .tanh import DataFrameTanh
-from .truediv import DataFrameTrueDiv, rtruediv, truediv
-from .trunc import DataFrameTrunc
+from maxframe.dataframe.arithmetic.abs import DataFrameAbs, abs_
+from maxframe.dataframe.arithmetic.add import DataFrameAdd, add, radd
+from maxframe.dataframe.arithmetic.arccos import DataFrameArccos
+from maxframe.dataframe.arithmetic.arccosh import DataFrameArccosh
+from maxframe.dataframe.arithmetic.arcsin import DataFrameArcsin
+from maxframe.dataframe.arithmetic.arcsinh import DataFrameArcsinh
+from maxframe.dataframe.arithmetic.arctan import DataFrameArctan
+from maxframe.dataframe.arithmetic.arctanh import DataFrameArctanh
+from maxframe.dataframe.arithmetic.between import between
+from maxframe.dataframe.arithmetic.bitwise_and import (
+    DataFrameAnd,
+    DataFrameTreeAnd,
+    bitand,
+    rbitand,
+)
+from maxframe.dataframe.arithmetic.bitwise_or import (
+    DataFrameOr,
+    DataFrameTreeOr,
+    bitor,
+    rbitor,
+)
+from maxframe.dataframe.arithmetic.bitwise_xor import DataFrameXor, bitxor, rbitxor
+from maxframe.dataframe.arithmetic.ceil import DataFrameCeil
+from maxframe.dataframe.arithmetic.cos import DataFrameCos
+from maxframe.dataframe.arithmetic.cosh import DataFrameCosh
+from maxframe.dataframe.arithmetic.degrees import DataFrameDegrees
+from maxframe.dataframe.arithmetic.dot import DataFrameDot, dot, rdot
+from maxframe.dataframe.arithmetic.equal import DataFrameEqual, eq
+from maxframe.dataframe.arithmetic.exp import DataFrameExp
+from maxframe.dataframe.arithmetic.exp2 import DataFrameExp2
+from maxframe.dataframe.arithmetic.expm1 import DataFrameExpm1
+from maxframe.dataframe.arithmetic.floor import DataFrameFloor
+from maxframe.dataframe.arithmetic.floordiv import (
+    DataFrameFloorDiv,
+    floordiv,
+    rfloordiv,
+)
+from maxframe.dataframe.arithmetic.greater import DataFrameGreater, gt
+from maxframe.dataframe.arithmetic.greater_equal import DataFrameGreaterEqual, ge
+from maxframe.dataframe.arithmetic.invert import DataFrameNot, invert
+from maxframe.dataframe.arithmetic.is_ufuncs import (
+    DataFrameIsFinite,
+    DataFrameIsInf,
+    DataFrameIsNan,
+)
+from maxframe.dataframe.arithmetic.less import DataFrameLess, lt
+from maxframe.dataframe.arithmetic.less_equal import DataFrameLessEqual, le
+from maxframe.dataframe.arithmetic.log import DataFrameLog
+from maxframe.dataframe.arithmetic.log2 import DataFrameLog2
+from maxframe.dataframe.arithmetic.log10 import DataFrameLog10
+from maxframe.dataframe.arithmetic.maximum import DataFrameMaximum
+from maxframe.dataframe.arithmetic.minimum import DataFrameMinimum
+from maxframe.dataframe.arithmetic.mod import DataFrameMod, mod, rmod
+from maxframe.dataframe.arithmetic.multiply import DataFrameMul, mul, rmul
+from maxframe.dataframe.arithmetic.negative import DataFrameNegative, negative
+from maxframe.dataframe.arithmetic.not_equal import DataFrameNotEqual, ne
+from maxframe.dataframe.arithmetic.power import DataFramePower, power, rpower
+from maxframe.dataframe.arithmetic.radians import DataFrameRadians
+from maxframe.dataframe.arithmetic.round import DataFrameRound, round
+from maxframe.dataframe.arithmetic.sin import DataFrameSin
+from maxframe.dataframe.arithmetic.sinh import DataFrameSinh
+from maxframe.dataframe.arithmetic.sqrt import DataFrameSqrt
+from maxframe.dataframe.arithmetic.subtract import (
+    DataFrameSubtract,
+    rsubtract,
+    subtract,
+)
+from maxframe.dataframe.arithmetic.tan import DataFrameTan
+from maxframe.dataframe.arithmetic.tanh import DataFrameTanh
+from maxframe.dataframe.arithmetic.truediv import DataFrameTrueDiv, rtruediv, truediv
+from maxframe.dataframe.arithmetic.trunc import DataFrameTrunc
 
 
 def _wrap_eq():
     @functools.wraps(eq)
     def call(df, other, **kw):
-        from ..core import is_build_mode
+        from maxframe.dataframe.core import is_build_mode
 
         if is_build_mode():
             return df._equals(other)
@@ -87,8 +109,8 @@ def _wrap_eq():
 def _wrap_comparison(func):
     @functools.wraps(func)
     def call(df, other, **kw):
-        from ..core import DATAFRAME_TYPE
-        from ..utils import wrap_notimplemented_exception
+        from maxframe.dataframe.core import DATAFRAME_TYPE
+        from maxframe.dataframe.utils import wrap_notimplemented_exception
 
         if isinstance(df, DATAFRAME_TYPE) and isinstance(other, DATAFRAME_TYPE):
             # index and columns should be identical
@@ -128,7 +150,7 @@ def _wrap_pandas_magics(cls, magic_name: str):
 
     @functools.wraps(raw_method)
     def wrapped(self, other):
-        from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
+        from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
 
         if not isinstance(other, (DATAFRAME_TYPE, SERIES_TYPE, INDEX_TYPE)):
             return raw_method(self, other)
@@ -146,12 +168,12 @@ def _wrap_pandas_magics(cls, magic_name: str):
 
 
 def _install():
-    from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
-    from ..ufunc.tensor import register_tensor_ufunc
-    from ..utils import wrap_notimplemented_exception
+    from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
+    from maxframe.dataframe.ufunc.tensor import register_tensor_ufunc
+    from maxframe.dataframe.utils import wrap_notimplemented_exception
 
     def _register_method(cls, name, func, wrapper=None):
-        from ..core import DATAFRAME_TYPE, SERIES_TYPE
+        from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
 
         if wrapper is None:
 

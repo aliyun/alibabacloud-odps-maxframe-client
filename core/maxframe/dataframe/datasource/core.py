@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,11 @@
 import asyncio
 from typing import List, MutableMapping, Optional, Union
 
-from ...protocol import DefaultIndexType
-from ...serialization.serializables import (
+from maxframe.dataframe.core import DataFrameIndexTypeMixin
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import validate_dtype_backend
+from maxframe.protocol import DefaultIndexType
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
@@ -25,10 +28,7 @@ from ...serialization.serializables import (
     Int64Field,
     StringField,
 )
-from ...utils import estimate_pandas_size
-from ..core import DataFrameIndexTypeMixin
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import validate_dtype_backend
+from maxframe.utils import estimate_pandas_size
 
 
 class HeadOptimizedDataSource(DataFrameOperator, DataFrameOperatorMixin):

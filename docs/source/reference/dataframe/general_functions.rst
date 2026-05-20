@@ -45,3 +45,11 @@ Top-level evaluation
    :toctree: generated/
 
    eval
+
+Type utilities
+~~~~~~~~~~~~~~
+.. autosummary::
+   :toctree: generated/
+
+   dtype
+   infer_dtype

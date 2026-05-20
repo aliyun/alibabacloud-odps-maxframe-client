@@ -23,13 +23,13 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa
 
-from .... import opcodes
-from ....core import OutputType
-from ....serialization.serializables import StringField
-from ...operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.serialization.serializables import StringField
 
 if TYPE_CHECKING:
-    from ...core import Series
+    from maxframe.dataframe.core import Series
 
 _INT_METHODS = ("width", "height", "size")
 _STR_METHODS = ("mode", "format")

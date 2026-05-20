@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,18 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .core import SeriesDictMethod
+from maxframe.dataframe.accessors.dict_.core import SeriesDictMethod
 
 
 def _install():
-    from ....core import CachedAccessor
-    from ...core import SERIES_TYPE
-    from .accessor import DictAccessor
-    from .contains import series_dict_contains
-    from .getitem import series_dict_getitem, series_dict_getitem_with_key_error
-    from .length import series_dict_length
-    from .remove import series_dict_remove
-    from .setitem import series_dict_setitem
+    from maxframe.core import CachedAccessor
+    from maxframe.dataframe.accessors.dict_.accessor import DictAccessor
+    from maxframe.dataframe.accessors.dict_.contains import series_dict_contains
+    from maxframe.dataframe.accessors.dict_.getitem import (
+        series_dict_getitem,
+        series_dict_getitem_with_key_error,
+    )
+    from maxframe.dataframe.accessors.dict_.length import series_dict_length
+    from maxframe.dataframe.accessors.dict_.remove import series_dict_remove
+    from maxframe.dataframe.accessors.dict_.setitem import series_dict_setitem
+    from maxframe.dataframe.core import SERIES_TYPE
 
     dict_method_to_handlers = {
         "__getitem__": series_dict_getitem_with_key_error,

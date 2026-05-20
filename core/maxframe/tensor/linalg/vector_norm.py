@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils import normalize_axis_tuple
+from maxframe.tensor.utils import normalize_axis_tuple
 
 
 def vector_norm(x, *, axis=None, keepdims=False, ord=2):
@@ -74,10 +74,10 @@ def vector_norm(x, *, axis=None, keepdims=False, ord=2):
     0.8058837395885292
 
     """
-    from ..datasource.array import asarray
-    from ..misc import transpose
-    from ..reduction import prod
-    from .norm import norm
+    from maxframe.tensor.datasource.array import asarray
+    from maxframe.tensor.linalg.norm import norm
+    from maxframe.tensor.misc import transpose
+    from maxframe.tensor.reduction import prod
 
     x = asarray(x)
     shape = list(x.shape)

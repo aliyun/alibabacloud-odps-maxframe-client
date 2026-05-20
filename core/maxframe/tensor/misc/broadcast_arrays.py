@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...core import ExecutableTuple
-from ...utils import check_unexpected_kwargs
-from ..datasource import tensor as astensor
-from ..utils import broadcast_shape
-from .broadcast_to import broadcast_to
+from maxframe.core import ExecutableTuple
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.misc.broadcast_to import broadcast_to
+from maxframe.tensor.utils import broadcast_shape
+from maxframe.utils import check_unexpected_kwargs
 
 
 def broadcast_arrays(*args, **kwargs):

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,12 +23,17 @@ from pandas._libs.tslibs import timezones
 from pandas.tseries.frequencies import to_offset
 from pandas.tseries.offsets import Tick
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import AnyField, BoolField, Int64Field, StringField
-from ...utils import no_default, pd_release_version
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    Int64Field,
+    StringField,
+)
+from maxframe.utils import no_default, pd_release_version
 
 try:
     from pandas._libs.tslib import normalize_date
@@ -437,6 +442,8 @@ def date_range(
             "Of the four parameters: start, end, periods, "
             "and freq, exactly three must be specified"
         )
+    if isinstance(freq, str) and any(ch.isdigit() for ch in freq):
+        freq = freq.lower()
     freq = to_offset(freq)
 
     if _date_range_use_inclusive and closed is not no_default:
@@ -480,7 +487,12 @@ def date_range(
         # adjust start first
         start = pd.date_range(start=start, periods=1, freq=freq)[0]
         size = periods
-        end = start + (periods - 1) * freq
+
+        if inclusive == "neither":
+            end = start + periods * freq
+        else:
+            end = start + (periods - 1) * freq
+
         if inclusive in ("neither", "right"):
             size -= 1
         elif inclusive == "left":

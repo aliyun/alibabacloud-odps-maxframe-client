@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,30 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...core import CachedAccessor
-from .accessor import (
+from maxframe.core import CachedAccessor
+from maxframe.dataframe.extensions.accessor import (
     DataFrameMaxFrameAccessor,
     IndexMaxFrameAccessor,
     SeriesMaxFrameAccessor,
 )
-from .apply_chunk import (
+from maxframe.dataframe.extensions.apply_chunk import (
     DataFrameApplyChunk,
     DataFrameApplyChunkOperator,
     df_apply_chunk,
     series_apply_chunk,
 )
-from .cartesian_chunk import cartesian_chunk
-from .collect_kv import collect_kv
-from .extract_kv import extract_kv
-from .flatjson import series_flatjson
-from .flatmap import df_flatmap, series_flatmap
-from .map_reduce import map_reduce
-from .rebalance import DataFrameRebalance, rebalance
-from .reshuffle import DataFrameReshuffle, df_reshuffle
+from maxframe.dataframe.extensions.cartesian_chunk import cartesian_chunk
+from maxframe.dataframe.extensions.collect_kv import collect_kv
+from maxframe.dataframe.extensions.extract_kv import extract_kv
+from maxframe.dataframe.extensions.flatjson import series_flatjson
+from maxframe.dataframe.extensions.flatmap import df_flatmap, series_flatmap
+from maxframe.dataframe.extensions.map_reduce import map_reduce
+from maxframe.dataframe.extensions.rebalance import DataFrameRebalance, rebalance
+from maxframe.dataframe.extensions.reshuffle import DataFrameReshuffle, df_reshuffle
 
 
 def _install():
-    from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
+    from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
 
     DataFrameMaxFrameAccessor._register("apply_chunk", df_apply_chunk)
     DataFrameMaxFrameAccessor._register("cartesian_chunk", cartesian_chunk)

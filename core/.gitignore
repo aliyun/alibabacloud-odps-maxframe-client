@@ -5,5 +5,5 @@ maxframe/core/**/*.c*
 maxframe/learn/cluster/*.c*
 maxframe/learn/utils/*.c*
 maxframe/lib/*.c*
-maxframe/serialization/*.c*
+maxframe/serialization/**/*.c*
 maxframe/utils/**/*.c*

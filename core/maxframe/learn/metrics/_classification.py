@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,14 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ... import tensor as mt
-from ...core import ENTITY_TYPE, ExecutableTuple, OutputType
-from ...core.operator import Operator
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe import tensor as mt
+from maxframe.core import ENTITY_TYPE, ExecutableTuple, OutputType
+from maxframe.core.operator import Operator
+from maxframe.learn.core import LearnOperatorMixin
+from maxframe.learn.metrics._check_targets import _check_targets
+from maxframe.learn.utils import check_array, check_consistent_length
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     FieldTypes,
@@ -30,11 +33,8 @@ from ...serialization.serializables import (
     ListField,
     StringField,
 )
-from ...tensor.core import TensorOrder
-from ...typing_ import EntityType
-from ..core import LearnOperatorMixin
-from ..utils import check_array, check_consistent_length
-from ._check_targets import _check_targets
+from maxframe.tensor.core import TensorOrder
+from maxframe.typing_ import EntityType
 
 
 def _weighted_sum(sample_score, sample_weight, normalize=False):

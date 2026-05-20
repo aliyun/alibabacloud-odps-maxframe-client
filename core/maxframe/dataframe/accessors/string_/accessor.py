@@ -17,8 +17,11 @@ from typing import Iterable
 
 import pandas as pd
 
-from ....utils import adapt_docstring
-from .core import SeriesStringMethod, string_method_to_handlers
+from maxframe.dataframe.accessors.string_.core import (
+    SeriesStringMethod,
+    string_method_to_handlers,
+)
+from maxframe.utils import adapt_docstring
 
 
 class StringAccessor:

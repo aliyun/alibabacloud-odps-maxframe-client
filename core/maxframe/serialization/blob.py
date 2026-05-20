@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,18 @@
 
 from typing import Dict
 
-from ..lib.dtypes_extension.blob import AbstractExternalBlob, SolidBlob
-from .core import Serializer
+from maxframe.lib.dtypes_extension.blob import AbstractExternalBlob
+from maxframe.serialization.core import Serializer
 
 
 class ExternalBlobSerializer(Serializer):
     def serial(self, obj: AbstractExternalBlob, context: Dict):
-        _, vals = obj.__reduce__()
-        return [type(obj).__name__], list(vals), False
+        tp, vals = obj.to_serializable().__reduce__()
+        if not issubclass(tp, AbstractExternalBlob):
+            raise ValueError(
+                f"{type(obj)}.to_serializable() should produce another ExternalBlob"
+            )
+        return [tp.__name__], list(vals), False
 
     def deserial(self, serialized, context, subs):
         cls_name = serialized[0]
@@ -29,4 +33,4 @@ class ExternalBlobSerializer(Serializer):
         return cls(*subs)
 
 
-ExternalBlobSerializer.register(SolidBlob)
+ExternalBlobSerializer.register(AbstractExternalBlob)

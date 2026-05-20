@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...core import OutputType
-from .sort_values import DataFrameSortValues
+from maxframe.core import OutputType
+from maxframe.dataframe.sort.sort_values import DataFrameSortValues
 
 
 def _nsmallest(df, n, columns=None, keep="first"):
@@ -25,6 +25,12 @@ def _nsmallest(df, n, columns=None, keep="first"):
         ascending=True,
         nrows=n,
         keep_kind=keep,
+        na_position="last",
+        kind="quicksort",
+        inplace=False,
+        parallel_kind="PSRS",
+        psrs_kinds=None,
+        default_index_type=None,
     )
     return op(df)
 

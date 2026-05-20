@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 import pytest
 
-from ..... import dataframe as md
-from ...core import SPECodeContext
-from ..groupby import (
+from maxframe import dataframe as md
+from maxframe.codegen.spe.core import SPECodeContext
+from maxframe.codegen.spe.dataframe.groupby import (
     DataFrameGroupByAggAdapter,
     DataFrameGroupByOpAdapter,
     GroupByApplyAdapter,
@@ -53,7 +53,7 @@ def test_dataframe_groupby(df1):
     res = df1.groupby("A")
     results = adapter.generate_code(res.op, context)
     expected_results = [
-        "var_1 = var_0.groupby(by=['A'], as_index=True, sort=True, group_keys=True)"
+        "var_1 = var_0.groupby(by=['A'], as_index=True, sort=True, group_keys=True, dropna=True)"
     ]
     assert results == expected_results
 
@@ -66,7 +66,7 @@ def test_dataframe_groupby_agg(df1):
     results = adapter.generate_code(res.op, context)
     expected_results = [
         "var_1 = var_0.groupby(by=['A'], as_index=True, sort=True, "
-        "group_keys=True).agg(['sum', 'max', 'median'])"
+        "group_keys=True, dropna=True).agg(['sum', 'max', 'median'])"
     ]
     assert results == expected_results
 
@@ -87,7 +87,7 @@ def test_dataframe_groupby_cum(df1, func, func_kwargs, expected_results):
     context = SPECodeContext()
     adapter = GroupByExpandingAggAdapter()
 
-    groupby_code = "var_0.groupby(by=['A'], as_index=True, sort=True, group_keys=True)"
+    groupby_code = "var_0.groupby(by=['A'], as_index=True, sort=True, group_keys=True, dropna=True)"
     res = getattr(df1.groupby("A"), func)(**func_kwargs)
     results = adapter.generate_code(res.op, context)
     assert results == [s.replace("{G}", groupby_code) for s in expected_results]
@@ -103,8 +103,8 @@ def test_dataframe_groupby_expanding(df1):
         "    func = 'sum' if func != \"prod\" else lambda x: x.prod()",
         "    out_frame = frame.expanding(min_periods=2).agg(func)",
         "    return out_frame",
-        "var_1 = var_0.groupby(by=['A'], as_index=True, sort=True, group_keys=True"
-        ").apply(_exp_fun_var_1, include_groups=False)",
+        "var_1 = var_0.groupby(by=['A'], as_index=True, sort=True, group_keys=True, "
+        "dropna=True).apply(_exp_fun_var_1, include_groups=False)",
     ]
 
     res = df1.groupby("A").expanding(2, shift=1).sum()
@@ -116,7 +116,7 @@ def test_dataframe_groupby_expanding(df1):
         "    out_frame = frame.expanding(min_periods=2).agg(func)",
         "    return out_frame",
         "var_2 = var_0.groupby(by=['A'], as_index=True, sort=True, "
-        "group_keys=True).apply(_exp_fun_var_2, include_groups=False)",
+        "group_keys=True, dropna=True).apply(_exp_fun_var_2, include_groups=False)",
     ]
 
     res = df1.groupby("A").expanding(2, shift=1, reverse_range=True).sum()
@@ -130,7 +130,7 @@ def test_dataframe_groupby_expanding(df1):
         "    out_frame = out_frame.iloc[::-1]",
         "    return out_frame",
         "var_3 = var_0.groupby(by=['A'], as_index=True, sort=True, "
-        "group_keys=True).apply(_exp_fun_var_3, include_groups=False)",
+        "group_keys=True, dropna=True).apply(_exp_fun_var_3, include_groups=False)",
     ]
 
 
@@ -146,7 +146,7 @@ def test_dataframe_groupby_rolling(df1):
         "    return frame.rolling(window=3, min_periods=None, center=False, "
         "win_type=None, axis=0, on=None, closed=None).agg(func)",
         "var_1 = var_0.groupby(by=['A'], as_index=True, sort=True, "
-        "group_keys=True).apply(_roll_fun_var_1, include_groups=False)",
+        "group_keys=True, dropna=True).apply(_roll_fun_var_1, include_groups=False)",
     ]
 
     res = df1.groupby("A").rolling(3, shift=1).sum()
@@ -158,7 +158,7 @@ def test_dataframe_groupby_rolling(df1):
         "    return frame.rolling(window=3, min_periods=None, center=False, "
         "win_type=None, axis=0, on=None, closed=None).agg(func)",
         "var_2 = var_0.groupby(by=['A'], as_index=True, sort=True, "
-        "group_keys=True).apply(_roll_fun_var_2, include_groups=False)",
+        "group_keys=True, dropna=True).apply(_roll_fun_var_2, include_groups=False)",
     ]
 
 
@@ -184,7 +184,7 @@ def test_dataframe_groupby_head(df1):
     res = df1.groupby("A").head(10)
     results = adapter.generate_code(res.op, context)
     expected_results = [
-        "var_1 = var_0.groupby(by=['A'], sort=True, group_keys=True).head(10)"
+        "var_1 = var_0.groupby(by=['A'], sort=True, group_keys=True, dropna=True).head(10)"
     ]
     assert results == expected_results
 
@@ -220,15 +220,17 @@ def test_dataframe_groupby_apply_chunk(df1):
     if _need_enforce_group_keys:
         expected_results = [
             "var_1 = var_0.groupby("
-            "by=['A'], as_index=True, sort=True, group_keys=True)"
+            "by=['A'], as_index=True, sort=True, group_keys=True, dropna=True)"
             f"[['B', 'C', 'D', 'A']].apply({f.name})",
             "var_1 = var_1.set_index(['A', var_1.index])",
+            "var_1.index.names = ['A', 'test_idx']",
         ]
     else:
         expected_results = [
             "var_1 = var_0.groupby("
-            "by=['A'], as_index=True, sort=True, group_keys=True)"
+            "by=['A'], as_index=True, sort=True, group_keys=True, dropna=True)"
             f"[['B', 'C', 'D']].apply({f.name})",
+            "var_1.index.names = ['A', 'test_idx']",
         ]
     assert results == expected_results
 
@@ -246,8 +248,9 @@ def test_dataframe_groupby_apply_chunk(df1):
             "    else:",
             "        return batches[0]",
             "var_1 = var_0.groupby(by=['A'], as_index=True, sort=True, "
-            "group_keys=True)[['B', 'C', 'D', 'A']].apply(batch_apply_var_0)",
+            "group_keys=True, dropna=True)[['B', 'C', 'D', 'A']].apply(batch_apply_var_0)",
             "var_1 = var_1.set_index(['A', var_1.index])",
+            "var_1.index.names = ['A', 'test_idx']",
         ]
     else:
         expected_results = [
@@ -259,7 +262,8 @@ def test_dataframe_groupby_apply_chunk(df1):
             "    else:",
             "        return batches[0]",
             "var_1 = var_0.groupby(by=['A'], as_index=True, sort=True, "
-            "group_keys=True)[['B', 'C', 'D']].apply(batch_apply_var_0)",
+            "group_keys=True, dropna=True)[['B', 'C', 'D']].apply(batch_apply_var_0)",
+            "var_1.index.names = ['A', 'test_idx']",
         ]
     assert results == expected_results
 
@@ -282,7 +286,7 @@ def test_dataframe_groupby_sample(df1):
     res = df1.groupby("A").sample(frac=0.5)
     results = adapter.generate_code(res.op, context)
     expected_results = [
-        "var_1 = var_0.groupby(by=['A'], sort=True, group_keys=True)"
+        "var_1 = var_0.groupby(by=['A'], sort=True, group_keys=True, dropna=True)"
         ".agg(frac=0.5, replace=False)"
     ]
     assert results == expected_results

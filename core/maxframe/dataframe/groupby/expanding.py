@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@ from typing import Any, Dict
 
 import pandas as pd
 
-from ... import opcodes
-from ...serialization.serializables import AnyField, DictField
-from ..window.expanding import Expanding
-from .core import BaseGroupByWindowOp
+from maxframe import opcodes
+from maxframe.dataframe.groupby.core import BaseGroupByWindowOp
+from maxframe.dataframe.window.expanding import Expanding
+from maxframe.serialization.serializables import AnyField, DictField
 
 _supported_funcs = {
     "sum",

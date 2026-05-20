@@ -30,8 +30,8 @@ try:
 except ImportError:
     PdBaseOffset = type("FakeBaseOffset", (), {})
 
-from ..utils import no_default
-from .core import Serializer, buffered
+from maxframe.serialization.core import Serializer, buffered
+from maxframe.utils import no_default
 
 
 class DataFrameSerializer(Serializer):

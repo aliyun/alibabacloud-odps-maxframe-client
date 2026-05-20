@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,8 +53,8 @@ def series_argsort(series, axis=0, kind="quicksort", order=None, stable=None):
     2    0
     dtype: int64
     """
-    from ... import tensor as mt
-    from ..datasource.from_tensor import series_from_tensor
+    from maxframe import tensor as mt
+    from maxframe.dataframe.datasource.from_tensor import series_from_tensor
 
     _ = axis, order, stable
     axis = 0
@@ -63,6 +63,6 @@ def series_argsort(series, axis=0, kind="quicksort", order=None, stable=None):
 
 
 def index_argsort(index, *args, **kwargs):
-    from ... import tensor as mt
+    from maxframe import tensor as mt
 
     return mt.argsort(index.to_tensor(), *args, **kwargs)

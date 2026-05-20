@@ -16,11 +16,15 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from .... import opcodes
-from ....core import OutputType
-from ...core import SERIES_TYPE
-from ...datasource.series import from_pandas as from_pandas_series
-from ..url import SeriesUrlMethods, UrlAccessor, url_download
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.core import SERIES_TYPE
+from maxframe.dataframe.datasource.series import from_pandas as from_pandas_series
+from maxframe.dataframe.multimodal.url import (
+    SeriesUrlMethods,
+    UrlAccessor,
+    url_download,
+)
 
 
 def test_url_download():

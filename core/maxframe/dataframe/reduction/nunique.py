@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,13 +17,17 @@ try:
 except ImportError:  # pragma: no cover
     pa = None
 
-from ... import opcodes
-from ...config import options
-from ...core import OutputType
-from ...serialization.serializables import BoolField, StringField
-from ...utils import lazy_import
-from ..utils import validate_dtype_backend
-from .core import DataFrameReduction, DataFrameReductionMixin, ReductionCallable
+from maxframe import opcodes
+from maxframe.config import options
+from maxframe.core import OutputType
+from maxframe.dataframe.reduction.core import (
+    DataFrameReduction,
+    DataFrameReductionMixin,
+    ReductionCallable,
+)
+from maxframe.dataframe.utils import validate_dtype_backend
+from maxframe.serialization.serializables import BoolField, StringField
+from maxframe.utils import lazy_import
 
 cudf = lazy_import("cudf")
 

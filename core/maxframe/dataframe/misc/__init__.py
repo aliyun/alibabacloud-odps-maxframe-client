@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,48 +12,62 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .apply import df_apply, series_apply
-from .astype import astype, index_astype
-from .case_when import case_when
-from .check_monotonic import (
+from maxframe.dataframe.misc.apply import df_apply, series_apply
+from maxframe.dataframe.misc.astype import astype, index_astype
+from maxframe.dataframe.misc.case_when import case_when
+from maxframe.dataframe.misc.check_monotonic import (
     check_monotonic,
     is_monotonic,
     is_monotonic_decreasing,
     is_monotonic_increasing,
 )
-from .check_unique import index_is_unique, series_is_unique
-from .clip import clip
-from .cut import cut
-from .describe import describe
-from .diff import df_diff, series_diff
-from .drop import df_drop, df_pop, index_drop, series_drop, series_pop
-from .drop_duplicates import (
+from maxframe.dataframe.misc.check_unique import index_is_unique, series_is_unique
+from maxframe.dataframe.misc.clip import clip
+from maxframe.dataframe.misc.cut import cut
+from maxframe.dataframe.misc.describe import describe
+from maxframe.dataframe.misc.diff import df_diff, series_diff
+from maxframe.dataframe.misc.drop import (
+    df_drop,
+    df_pop,
+    index_drop,
+    series_drop,
+    series_pop,
+)
+from maxframe.dataframe.misc.drop_duplicates import (
     df_drop_duplicates,
     index_drop_duplicates,
     series_drop_duplicates,
 )
-from .duplicated import df_duplicated, index_duplicated, series_duplicated
-from .eval import df_eval, df_query
-from .explode import df_explode, series_explode
-from .factorize import factorize
-from .infer_dtypes import convert_dtypes, infer_objects
-from .isin import df_isin, series_isin
-from .map import df_map, index_map, series_map
-from .memory_usage import df_memory_usage, index_memory_usage, series_memory_usage
-from .pct_change import pct_change
-from .qcut import qcut
-from .rechunk import rechunk
-from .repeat import index_repeat, series_repeat
-from .select_dtypes import select_dtypes
-from .shift import shift, tshift
-from .transform import df_transform, series_transform
-from .transpose import transpose
-from .valid_index import first_valid_index, last_valid_index
-from .value_counts import df_value_counts, value_counts
+from maxframe.dataframe.misc.duplicated import (
+    df_duplicated,
+    index_duplicated,
+    series_duplicated,
+)
+from maxframe.dataframe.misc.eval import df_eval, df_query
+from maxframe.dataframe.misc.explode import df_explode, series_explode
+from maxframe.dataframe.misc.factorize import factorize
+from maxframe.dataframe.misc.infer_dtypes import convert_dtypes, infer_objects
+from maxframe.dataframe.misc.isin import df_isin, series_isin
+from maxframe.dataframe.misc.map import df_map, index_map, series_map
+from maxframe.dataframe.misc.memory_usage import (
+    df_memory_usage,
+    index_memory_usage,
+    series_memory_usage,
+)
+from maxframe.dataframe.misc.pct_change import pct_change
+from maxframe.dataframe.misc.qcut import qcut
+from maxframe.dataframe.misc.rechunk import rechunk
+from maxframe.dataframe.misc.repeat import index_repeat, series_repeat
+from maxframe.dataframe.misc.select_dtypes import select_dtypes
+from maxframe.dataframe.misc.shift import shift, tshift
+from maxframe.dataframe.misc.transform import df_transform, series_transform
+from maxframe.dataframe.misc.transpose import transpose
+from maxframe.dataframe.misc.valid_index import first_valid_index, last_valid_index
+from maxframe.dataframe.misc.value_counts import df_value_counts, value_counts
 
 
 def _install():
-    from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
+    from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
 
     for t in DATAFRAME_TYPE:
         setattr(t, "apply", df_apply)

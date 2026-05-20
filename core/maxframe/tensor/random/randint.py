@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ... import opcodes
-from ...serialization.serializables import Float64Field, Int64Field
-from ..utils import gen_random_seeds
-from .core import TensorRandomOperatorMixin, TensorSimpleRandomData
+from maxframe import opcodes
+from maxframe.serialization.serializables import Float64Field, Int64Field
+from maxframe.tensor.random.core import (
+    TensorRandomOperatorMixin,
+    TensorSimpleRandomData,
+)
+from maxframe.tensor.utils import gen_random_seeds
 
 
 class TensorRandint(TensorSimpleRandomData, TensorRandomOperatorMixin):

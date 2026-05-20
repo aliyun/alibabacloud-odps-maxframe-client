@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization import PickleContainer
-from ...serialization.serializables import BoolField, DictField, Int64Field
-from ...udf import BuiltinFunction
-from ...utils import find_objects, pd_release_version
-from ..core import IndexValue
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.core import IndexValue
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import find_input_of_groupby, parse_index
+from maxframe.serialization import PickleContainer
+from maxframe.serialization.serializables import BoolField, DictField, Int64Field
+from maxframe.udf import BuiltinFunction
+from maxframe.utils import find_objects, pd_release_version
 
 _pandas_enable_negative = pd_release_version >= (1, 4, 0)
 
@@ -45,9 +45,7 @@ class GroupByHead(DataFrameOperator, DataFrameOperatorMixin):
         return any(not isinstance(fun, BuiltinFunction) for fun in callable_bys)
 
     def __call__(self, groupby):
-        df = groupby
-        while df.op.output_types[0] not in (OutputType.dataframe, OutputType.series):
-            df = df.inputs[0]
+        df = find_input_of_groupby(groupby)
 
         selection = groupby.op.groupby_params.pop("selection", None)
         if df.ndim > 1 and selection:

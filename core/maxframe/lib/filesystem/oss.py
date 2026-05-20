@@ -16,12 +16,12 @@ import enum
 from collections import defaultdict
 from typing import Any, Dict, Iterator, List, Tuple, Union
 
-from ...utils import implements, lazy_import
-from ._oss_lib import common as oc
-from ._oss_lib.common import HostEnforceType
-from ._oss_lib.glob import glob
-from ._oss_lib.handle import OSSIOBase
-from .base import FileSystem, path_type
+from maxframe.lib.filesystem._oss_lib import common as oc
+from maxframe.lib.filesystem._oss_lib.common import HostEnforceType
+from maxframe.lib.filesystem._oss_lib.glob import glob
+from maxframe.lib.filesystem._oss_lib.handle import OSSIOBase
+from maxframe.lib.filesystem.base import FileSystem, path_type
+from maxframe.utils import implements, lazy_import
 
 oss2 = lazy_import("oss2", placeholder=True)
 

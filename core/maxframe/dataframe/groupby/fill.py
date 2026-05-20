@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,16 @@
 
 import pandas as pd
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import AnyField, DictField, Int64Field, StringField
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import find_input_of_groupby, parse_index
+from maxframe.serialization.serializables import (
+    AnyField,
+    DictField,
+    Int64Field,
+    StringField,
+)
 
 
 class GroupByFill(DataFrameOperator, DataFrameOperatorMixin):
@@ -35,17 +40,23 @@ class GroupByFill(DataFrameOperator, DataFrameOperatorMixin):
         mock_groupby = in_groupby.op.build_mock_groupby()
         func_name = getattr(self, "_func_name")
 
+        if self.method in ("ffill", "pad"):
+            func_name = "ffilll"
+        elif self.method in ("bfill", "backfill"):
+            func_name = "bfill"
+
         if func_name == "fillna":
             kw = {}
             if self.axis is not None:
                 kw["axis"] = self.axis
-            result_df = mock_groupby.fillna(
-                value=self.value,
-                method=self.method,
-                limit=self.limit,
-                downcast=self.downcast,
-                **kw,
-            )
+            try:
+                result_df = mock_groupby.fillna(
+                    value=self.value, limit=self.limit, **kw
+                )
+            except AttributeError:
+                result_df = mock_groupby.apply(
+                    lambda d: d.fillna(value=self.value, limit=self.limit, **kw)
+                )
         else:
             result_df = getattr(mock_groupby, func_name)(limit=self.limit)
 
@@ -57,9 +68,7 @@ class GroupByFill(DataFrameOperator, DataFrameOperatorMixin):
             return result_df.name, result_df.dtype
 
     def __call__(self, groupby):
-        in_df = groupby
-        while in_df.op.output_types[0] not in (OutputType.dataframe, OutputType.series):
-            in_df = in_df.inputs[0]
+        in_df = find_input_of_groupby(groupby)
         out_dtypes = self._calc_out_dtypes(groupby)
 
         kw = in_df.params.copy()

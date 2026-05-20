@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,8 +13,8 @@
 # limitations under the License.
 
 
-from ..misc import atleast_2d
-from .concatenate import _concatenate, concatenate
+from maxframe.tensor.merge.concatenate import _concatenate, concatenate
+from maxframe.tensor.misc import atleast_2d
 
 
 def vstack(tup):

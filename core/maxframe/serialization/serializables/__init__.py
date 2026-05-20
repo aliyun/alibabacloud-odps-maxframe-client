@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .core import Serializable, SerializableMeta
-from .field import (
+from maxframe.serialization.serializables.core import Serializable, SerializableMeta
+from maxframe.serialization.serializables.field import (
     AnyField,
     BoolField,
     BytesField,
@@ -52,4 +52,4 @@ from .field import (
     UInt32Field,
     UInt64Field,
 )
-from .field_type import FieldTypes
+from maxframe.serialization.serializables.field_type import FieldTypes

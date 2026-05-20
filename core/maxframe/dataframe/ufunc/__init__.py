@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 
 def _install():
-    from ..core import DataFrame, Series
-    from .tensor import _tensor_ufunc
-    from .ufunc import _array_ufunc
+    from maxframe.dataframe.core import DataFrame, Series
+    from maxframe.dataframe.ufunc.tensor import _tensor_ufunc
+    from maxframe.dataframe.ufunc.ufunc import _array_ufunc
 
     for Entity in (DataFrame, Series):
         Entity.__array_ufunc__ = _array_ufunc

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,23 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .choose import TensorChoose, choose
-from .compress import compress
-from .extract import extract
-from .fill_diagonal import TensorFillDiagonal, fill_diagonal
-from .flatnonzero import flatnonzero
-from .getitem import TensorIndex
-from .nonzero import TensorNonzero, nonzero
-from .setitem import TensorIndexSetValue
-from .slice import TensorSlice
-from .take import take
-from .unravel_index import TensorUnravelIndex, unravel_index
+from maxframe.tensor.indexing.choose import TensorChoose, choose
+from maxframe.tensor.indexing.compress import compress
+from maxframe.tensor.indexing.extract import extract
+from maxframe.tensor.indexing.fill_diagonal import TensorFillDiagonal, fill_diagonal
+from maxframe.tensor.indexing.flatnonzero import flatnonzero
+from maxframe.tensor.indexing.getitem import TensorIndex
+from maxframe.tensor.indexing.nonzero import TensorNonzero, nonzero
+from maxframe.tensor.indexing.setitem import TensorIndexSetValue
+from maxframe.tensor.indexing.slice import TensorSlice
+from maxframe.tensor.indexing.take import take
+from maxframe.tensor.indexing.unravel_index import TensorUnravelIndex, unravel_index
 
 
 def _install():
-    from ..core import Tensor, TensorData
-    from .getitem import _getitem
-    from .setitem import _setitem
+    from maxframe.tensor.core import Tensor, TensorData
+    from maxframe.tensor.indexing.getitem import _getitem
+    from maxframe.tensor.indexing.setitem import _setitem
 
     setattr(Tensor, "__getitem__", _getitem)
     setattr(TensorData, "__getitem__", _getitem)

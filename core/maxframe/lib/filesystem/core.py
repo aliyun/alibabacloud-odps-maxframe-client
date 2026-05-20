@@ -17,10 +17,10 @@ import os
 from typing import Dict, List
 from urllib.parse import urlparse
 
-from ..compression import compress
-from .base import FileSystem, path_type
-from .local import LocalFileSystem
-from .oss import OSSFileSystem
+from maxframe.lib.compression import compress
+from maxframe.lib.filesystem.base import FileSystem, path_type
+from maxframe.lib.filesystem.local import LocalFileSystem
+from maxframe.lib.filesystem.oss import OSSFileSystem
 
 _filesystems = {"file": LocalFileSystem, "oss": OSSFileSystem}
 _scheme_to_dependencies = {

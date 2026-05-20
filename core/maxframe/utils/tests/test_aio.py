@@ -19,8 +19,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 
-from ... import utils
-from ...lib.wrapped_pickle import is_unpickle_forbidden, switch_unpickle
+from maxframe import utils
+from maxframe.lib.wrapped_pickle import is_unpickle_forbidden, switch_unpickle
 
 
 @pytest.mark.parametrize("use_async", [False, True])

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ... import opcodes
-from ..datasource import tensor as astensor
-from .core import TensorReduction, TensorReductionMixin
+from maxframe import opcodes
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.reduction.core import TensorReduction, TensorReductionMixin
 
 
 class TensorNanMax(TensorReduction, TensorReductionMixin):

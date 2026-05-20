@@ -16,7 +16,7 @@
 # Only import what's actually used by other modules to avoid circular imports
 
 # Import from _utils_c (Cython modules)
-from ._utils_c import (  # Common utilities from _utils_c
+from maxframe.utils._utils_c import (  # Common utilities from _utils_c
     NamedType,
     Timer,
     TypeDispatcher,
@@ -33,7 +33,7 @@ from ._utils_c import (  # Common utilities from _utils_c
 )
 
 # Import asyncio utilities
-from .aio import (
+from maxframe.utils.aio import (
     ToThreadCancelledError,
     ToThreadMixin,
     call_with_retry,
@@ -43,7 +43,7 @@ from .aio import (
 )
 
 # Import collection utilities
-from .collections_ import (
+from maxframe.utils.collections_ import (
     AttributeDict,
     LRUDict,
     find_objects,
@@ -54,7 +54,7 @@ from .collections_ import (
 )
 
 # Data type functions (most commonly imported)
-from .datatypes import (
+from maxframe.utils.datatypes import (
     arrow_type_from_str,
     is_arrow_dtype_supported,
     is_bool_dtype,
@@ -62,11 +62,18 @@ from .datatypes import (
     is_string_dtype,
     make_dtype,
     make_dtypes,
+    validate_and_align_output,
     wrap_arrow_dtype,
 )
 
+# Filtering functions (most commonly imported)
+from maxframe.utils.filters import (
+    convert_filters_to_arrow_expression,
+    convert_filters_to_sql,
+)
+
 # Decorators and functional utilities
-from .functional import (
+from maxframe.utils.functional import (
     deprecate_positional_args,
     enter_current_session,
     get_func_token,
@@ -78,7 +85,7 @@ from .functional import (
 )
 
 # Import ODPS utilities
-from .odps import (
+from maxframe.utils.odps import (
     add_survey_log,
     build_session_volume_name,
     build_temp_intermediate_table_name,
@@ -86,13 +93,14 @@ from .odps import (
     config_odps_default_options,
     get_default_table_properties,
     get_odps_dlf_table,
+    parse_table_name,
     submit_survey_logs,
     sync_pyodps_options,
     update_wlm_quota_settings,
 )
 
 # Import serialization utilities
-from .serialization import (
+from maxframe.utils.serialization import (
     deserialize_serializable,
     on_deserialize_shape,
     on_serialize_nsplits,
@@ -103,7 +111,7 @@ from .serialization import (
 
 # Re-export no_default for convenience
 # Core utility classes and functions
-from .utils import (
+from maxframe.utils.utils import (
     KeyLogWrapper,
     ModulePlaceholder,
     NoDefault,
@@ -129,6 +137,7 @@ from .utils import (
     get_item_if_scalar,
     get_pd_option,
     get_python_tag,
+    get_storage_api_endpoint,
     has_unknown_shape,
     is_full_slice,
     lazy_import,

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...utils import check_unexpected_kwargs
-from .array import tensor
+from maxframe.tensor.datasource.array import tensor
+from maxframe.utils import check_unexpected_kwargs
 
 
 def meshgrid(*xi, **kwargs):
@@ -98,7 +98,7 @@ def meshgrid(*xi, **kwargs):
     >>> h = plt.contourf(x,y,z)
 
     """
-    from ..misc import broadcast_to
+    from maxframe.tensor.misc import broadcast_to
 
     indexing = kwargs.pop("indexing", "xy")
     sparse = kwargs.pop("sparse", False)

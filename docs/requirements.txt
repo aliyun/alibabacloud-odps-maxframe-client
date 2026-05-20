@@ -1,6 +1,6 @@
 babel
 numpy>=1.14.0
-pandas>=1.0.0,<2.0.0
+pandas>=1.0.0,<3.1.0
 pyarrow>=0.11.0,!=0.16.*
 cython>=0.29
 sphinx>=3.0.0

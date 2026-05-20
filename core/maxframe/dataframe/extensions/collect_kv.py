@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...serialization.serializables import AnyField, StringField
-from ...utils import no_default
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import make_column_list
+from maxframe import opcodes
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import make_column_list
+from maxframe.serialization.serializables import AnyField, StringField
+from maxframe.utils import no_default
 
 
 class DataFrameCollectKv(DataFrameOperator, DataFrameOperatorMixin):

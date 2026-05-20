@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,12 @@ import numpy as np
 import pandas as pd
 from pandas.core.dtypes.cast import find_common_type
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData
+from maxframe.dataframe.core import DATAFRAME_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_empty_df, parse_index, validate_axis
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DataTypeField,
@@ -28,14 +31,11 @@ from ...serialization.serializables import (
     KeyField,
     StringField,
 )
-from ...tensor.core import TENSOR_TYPE
-from ...tensor.datasource import empty
-from ...tensor.datasource import from_series as tensor_from_series
-from ...tensor.datasource import tensor as astensor
-from ...tensor.statistics.quantile import quantile as tensor_quantile
-from ..core import DATAFRAME_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_empty_df, parse_index, validate_axis
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.tensor.datasource import empty
+from maxframe.tensor.datasource import from_series as tensor_from_series
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.statistics.quantile import quantile as tensor_quantile
 
 
 class DataFrameQuantile(DataFrameOperator, DataFrameOperatorMixin):

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import decimal
 import operator
 from dataclasses import dataclass
 from decimal import Decimal
@@ -24,14 +25,10 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from .... import dataframe as md
-from ....core import OperatorType
-from ....core.operator import estimate_size
-from ....tests.utils import assert_mf_index_dtype, require_arrow_dtype
-from ....utils import dataslots, wrap_arrow_dtype
-from ...core import IndexValue
-from ...utils import MAX_DECIMAL128_PRECISION, split_monotonic_index_min_max
-from .. import (
+from maxframe import dataframe as md
+from maxframe.core import OperatorType
+from maxframe.core.operator import estimate_size
+from maxframe.dataframe.arithmetic import (
     DataFrameAdd,
     DataFrameAnd,
     DataFrameEqual,
@@ -49,6 +46,13 @@ from .. import (
     DataFrameTrueDiv,
     DataFrameXor,
 )
+from maxframe.dataframe.core import IndexValue
+from maxframe.dataframe.utils import (
+    MAX_DECIMAL128_PRECISION,
+    split_monotonic_index_min_max,
+)
+from maxframe.tests.utils import assert_mf_index_dtype, require_arrow_dtype
+from maxframe.utils import dataslots, wrap_arrow_dtype
 
 
 def comp_func(name, reverse_name):
@@ -738,6 +742,9 @@ def test_decimal128_precision_arithmetic():
     s1 = md.Series(data1)
     s2 = md.Series(data2)
     assert isinstance((s1 + s2).dtype.pyarrow_dtype, pa.Decimal128Type)
+    assert isinstance(
+        (s1 + decimal.Decimal("1.3")).dtype.pyarrow_dtype, pa.Decimal128Type
+    )
 
     data1 = pd.DataFrame([[Decimal("1.23"), Decimal("2.34")]], columns=["a", "b"])
     data2 = pd.DataFrame([[Decimal("3.24"), Decimal("4.35")]], columns=["a", "b"])

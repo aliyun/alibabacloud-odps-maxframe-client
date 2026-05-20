@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,15 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .melt import melt
-from .pivot import pivot
-from .pivot_table import pivot_table
-from .stack import stack
-from .unstack import unstack
+from maxframe.dataframe.reshape.melt import melt
+from maxframe.dataframe.reshape.pivot import pivot
+from maxframe.dataframe.reshape.pivot_table import pivot_table
+from maxframe.dataframe.reshape.stack import stack
+from maxframe.dataframe.reshape.unstack import unstack
 
 
 def _install():
-    from ..core import DATAFRAME_TYPE, SERIES_TYPE
+    from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
 
     for t in DATAFRAME_TYPE:
         setattr(t, "melt", melt)

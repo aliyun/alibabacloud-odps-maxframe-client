@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,32 +15,94 @@
 from typing import Union
 
 import pandas as pd
+import pyarrow as pa
 from pandas.api.types import is_list_like
 from pandas.core.dtypes.common import pandas_dtype
 
-from ..core import ENTITY_TYPE
-from ..serialization.serializables import SerializableMeta
-from ..tensor import stack
-from ..tensor import tensor as astensor
-from ..tensor.array_utils import is_cupy
-from ..tensor.core import TENSOR_TYPE
-from ..utils import ceildiv, lazy_import
-from .core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
-from .core import DataFrame as _Frame
-from .core import Index as _Index
-from .core import Series as _Series
-from .datasource.dataframe import from_pandas as from_pandas_df
-from .datasource.from_tensor import (
+from maxframe.config import options
+from maxframe.core import ENTITY_TYPE
+from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
+from maxframe.dataframe.core import DataFrame as _Frame
+from maxframe.dataframe.core import Index as _Index
+from maxframe.dataframe.core import Series as _Series
+from maxframe.dataframe.datasource.dataframe import from_pandas as from_pandas_df
+from maxframe.dataframe.datasource.from_tensor import (
     dataframe_from_1d_tileables,
     dataframe_from_tensor,
     series_from_tensor,
 )
-from .datasource.index import from_pandas as from_pandas_index
-from .datasource.index import from_tileable as from_tileable_index
-from .datasource.series import from_pandas as from_pandas_series
-from .utils import is_cudf, is_index
+from maxframe.dataframe.datasource.index import from_pandas as from_pandas_index
+from maxframe.dataframe.datasource.index import from_tileable as from_tileable_index
+from maxframe.dataframe.datasource.series import from_pandas as from_pandas_series
+from maxframe.dataframe.utils import is_cudf, is_index, validate_dtype_backend
+from maxframe.lib.dtypes_extension import ArrowDtype
+from maxframe.serialization.serializables import SerializableMeta
+from maxframe.tensor import stack
+from maxframe.tensor import tensor as astensor
+from maxframe.tensor.array_utils import is_cupy
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.utils import ceildiv, is_arrow_dtype_supported, lazy_import
 
 cudf = lazy_import("cudf")
+_ARROW_SAMPLE_SIZE = 100
+
+
+def _convert_to_arrow_dtype(obj):
+    """Convert pandas object to use ArrowDtype"""
+    if not is_arrow_dtype_supported():
+        return obj
+
+    if isinstance(obj, pd.DataFrame):
+        # Handle duplicate column names
+        has_duplicates = obj.columns.duplicated().any()
+
+        if has_duplicates:
+            # For DataFrames with duplicate columns, convert each column individually
+            converted_cols = []
+            for i in range(len(obj.columns)):
+                col_data = obj.iloc[:_ARROW_SAMPLE_SIZE, i]
+                arr = pa.array(col_data)
+                arrow_type = arr.type
+                converted_col = col_data.astype(ArrowDtype(arrow_type))
+                converted_col.name = obj.columns[i]
+                converted_cols.append(converted_col)
+
+            # Reconstruct DataFrame using concat to preserve dtypes and column names
+            result_df = pd.concat(converted_cols, axis=1)
+            result_df.index = obj.index
+            return result_df
+        else:
+            # Use pyarrow to infer schema for DataFrames with unique columns
+            table = pa.Table.from_pandas(obj.iloc[:_ARROW_SAMPLE_SIZE])
+            # Build dtype mapping
+            dtype_map = {}
+            for i, col in enumerate(obj.columns):
+                arrow_type = table.schema.field(i).type
+                dtype_map[col] = ArrowDtype(arrow_type)
+            return obj.astype(dtype_map)
+    elif isinstance(obj, pd.Series):
+        # Use pyarrow to infer type
+        arr = pa.array(obj.iloc[:_ARROW_SAMPLE_SIZE])
+        arrow_type = arr.type
+        return obj.astype(ArrowDtype(arrow_type))
+    elif isinstance(obj, pd.MultiIndex):
+        # For MultiIndex, convert each level separately
+        converted_levels = []
+        for i in range(obj.nlevels):
+            level_values = obj.get_level_values(i)
+            arr = pa.array(level_values[:_ARROW_SAMPLE_SIZE])
+            arrow_type = arr.type
+            converted_level = pd.Index(level_values, name=level_values.name).astype(
+                ArrowDtype(arrow_type)
+            )
+            converted_levels.append(converted_level)
+        return pd.MultiIndex.from_arrays(converted_levels, names=obj.names)
+    elif isinstance(obj, pd.Index):
+        # Use pyarrow to infer type for regular Index
+        arr = pa.array(obj[:_ARROW_SAMPLE_SIZE])
+        arrow_type = arr.type
+        return obj.astype(ArrowDtype(arrow_type))
+    return obj
 
 
 class InitializerMeta(SerializableMeta):
@@ -60,7 +122,12 @@ class DataFrame(_Frame, metaclass=InitializerMeta):
         gpu=None,
         sparse=None,
         num_partitions=None,
+        dtype_backend=None,
     ):
+        dtype_backend = validate_dtype_backend(
+            dtype_backend or options.dataframe.dtype_backend
+        )
+
         need_repart = False
         if columns is not None and not is_list_like(columns):
             raise ValueError("columns must be a list-like object")
@@ -123,6 +190,9 @@ class DataFrame(_Frame, metaclass=InitializerMeta):
                 pdf = pd.DataFrame(
                     data, index=index, columns=columns, dtype=dtype, copy=copy
                 )
+                # Apply dtype_backend conversion for pandas DataFrame
+                if dtype_backend == "pyarrow":
+                    pdf = _convert_to_arrow_dtype(pdf)
             if num_partitions is not None:
                 chunk_size = ceildiv(len(pdf), num_partitions)
             df = from_pandas_df(pdf, chunk_size=chunk_size, gpu=gpu, sparse=sparse)
@@ -155,7 +225,12 @@ class Series(_Series, metaclass=InitializerMeta):
         gpu=None,
         sparse=None,
         num_partitions=None,
+        dtype_backend=None,
     ):
+        dtype_backend = validate_dtype_backend(
+            dtype_backend or options.dataframe.dtype_backend
+        )
+
         if dtype is not None:
             dtype = pandas_dtype(dtype)
         need_repart = False
@@ -190,6 +265,9 @@ class Series(_Series, metaclass=InitializerMeta):
                 pd_series = pd.Series(
                     data, index=index, dtype=dtype, name=name, copy=copy
                 )
+                # Apply dtype_backend conversion for pandas Series
+                if dtype_backend == "pyarrow":
+                    pd_series = _convert_to_arrow_dtype(pd_series)
             if num_partitions is not None:
                 chunk_size = ceildiv(len(pd_series), num_partitions)
             series = from_pandas_series(
@@ -219,7 +297,12 @@ class Index(_Index, metaclass=InitializerMeta):
         names=None,
         num_partitions=None,
         store_data=False,
+        dtype_backend=None,
     ):
+        dtype_backend = validate_dtype_backend(
+            dtype_backend or options.dataframe.dtype_backend
+        )
+
         need_repart = False
         if isinstance(data, INDEX_TYPE):
             if not hasattr(data, "data"):
@@ -249,8 +332,14 @@ class Index(_Index, metaclass=InitializerMeta):
                         pd_index = xdf.Index(
                             data=data, dtype=dtype, copy=copy, name=name
                         )
+                    # Apply dtype_backend conversion for pandas Index
+                    if xdf is pd and dtype_backend == "pyarrow":
+                        pd_index = _convert_to_arrow_dtype(pd_index)
                 else:
                     pd_index = data
+                    # Apply dtype_backend conversion for existing pandas Index/MultiIndex
+                    if isinstance(pd_index, pd.Index) and dtype_backend == "pyarrow":
+                        pd_index = _convert_to_arrow_dtype(pd_index)
 
                 if num_partitions is not None:
                     chunk_size = ceildiv(len(pd_index), num_partitions)

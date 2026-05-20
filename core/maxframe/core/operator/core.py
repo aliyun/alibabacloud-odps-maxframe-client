@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,25 +20,25 @@ from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Type, Uni
 import numpy as np
 import pandas as pd
 
-from .utils import rewrite_stop_iteration
+from maxframe.core.operator.utils import rewrite_stop_iteration
 
 if TYPE_CHECKING:
-    from .. import TileableGraph
+    from maxframe.core import TileableGraph
 
 try:
     from numpy.core._exceptions import UFuncTypeError
 except ImportError:  # pragma: no cover
     UFuncTypeError = None
 
-from ...typing_ import ChunkType, OperatorType, TileableType
-from ..entity import (
+from maxframe.core.entity import (
     ExecutableTuple,
     OutputType,
     get_fetch_class,
     get_output_types,
     get_tileable_types,
 )
-from ..mode import is_eager_mode
+from maxframe.core.mode import is_eager_mode
+from maxframe.typing_ import ChunkType, OperatorType, TileableType
 
 _op_type_to_executor: Dict[Type[OperatorType], Callable] = dict()
 _op_type_to_size_estimator: Dict[Type[OperatorType], Callable] = dict()
@@ -196,7 +196,7 @@ class TileableOperatorMixin:
         return self.new_tileables(inputs, kws=kws, **kw)[0]
 
     def get_fetch_op_cls(self, obj: Union[ChunkType, OutputType]):
-        from .shuffle import ShuffleProxy
+        from maxframe.core.operator.shuffle import ShuffleProxy
 
         if isinstance(obj, OutputType):
             output_types = [obj or OutputType.object]

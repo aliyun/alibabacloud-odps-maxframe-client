@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="300" viewBox="0 0 1024 300">
+  <rect width="1024" height="300" fill="#f5f7fa"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="6" y="24" font-size="14" font-weight="700">MaxCompute Model Compute Service</text>
+    <rect x="70" y="38" width="908" height="52" fill="#fff"/><text x="108" y="62" font-size="12" font-weight="700" fill="#2563eb">Billing details</text><text x="108" y="80" font-size="12" fill="#374151">Enable Model Compute Service billing before calling hosted models.</text>
+    <rect x="70" y="103" width="908" height="56" fill="#fff" stroke="#e5e7eb"/>
+    <text x="86" y="135" font-size="14" font-weight="700">Product type</text>
+    <g font-size="12" text-anchor="middle">
+      <rect x="173" y="117" width="84" height="24" fill="#fff" stroke="#d1d5db"/><text x="215" y="134">Subscription</text>
+      <rect x="272" y="117" width="84" height="24" fill="#fff" stroke="#d1d5db"/><text x="314" y="134">Pay-as-you-go</text>
+      <rect x="371" y="117" width="108" height="24" fill="#fff7ed" stroke="#d1d5db"/><text x="425" y="134">AI compute quota</text>
+      <rect x="494" y="117" width="112" height="24" fill="#eaf2ff" stroke="#2563eb"/><text x="550" y="134">Model compute</text>
+      <rect x="621" y="117" width="106" height="24" fill="#fff" stroke="#d1d5db"/><text x="674" y="134">Hourly billing</text>
+      <rect x="742" y="117" width="106" height="24" fill="#fff" stroke="#d1d5db"/><text x="795" y="134">Storage service</text>
+    </g>
+    <rect x="70" y="159" width="908" height="117" fill="#fff" stroke="#e5e7eb"/>
+    <text x="86" y="194" font-size="14" font-weight="700">Region</text>
+    <g font-size="12" text-anchor="middle">
+      <rect x="173" y="178" width="84" height="24" fill="#eaf2ff" stroke="#bfdbfe"/><text x="215" y="195">China North 2</text>
+      <rect x="272" y="178" width="84" height="24" fill="#fff" stroke="#d1d5db"/><text x="314" y="195">China East 2</text>
+      <rect x="371" y="178" width="84" height="24" fill="#fff" stroke="#d1d5db"/><text x="413" y="195">China East 1</text>
+      <rect x="470" y="178" width="84" height="24" fill="#fff" stroke="#d1d5db"/><text x="512" y="195">China South 1</text>
+    </g>
+    <text x="86" y="231" font-size="14" font-weight="700">Instance type</text>
+    <rect x="173" y="215" width="120" height="24" fill="#eaf2ff" stroke="#bfdbfe"/><text x="233" y="232" font-size="12" text-anchor="middle">Inference Quota</text>
+    <text x="173" y="254" font-size="12" fill="#4b5563">After purchase, hosted Bailian models can be called from MaxFrame examples.</text>
+  </g>
+</svg>

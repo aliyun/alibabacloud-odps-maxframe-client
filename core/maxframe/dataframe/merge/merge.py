@@ -20,9 +20,12 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 import numpy as np
 from pandas import Index
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.core import DataFrame, Series
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_df, parse_index
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
@@ -32,10 +35,7 @@ from ...serialization.serializables import (
     StringField,
     TupleField,
 )
-from ...utils import lazy_import
-from ..core import DataFrame, Series
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_df, parse_index
+from maxframe.utils import lazy_import
 
 logger = logging.getLogger(__name__)
 DEFAULT_BLOOM_FILTER_CHUNK_THRESHOLD = 10

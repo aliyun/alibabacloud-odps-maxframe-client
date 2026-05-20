@@ -12,15 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict, List, NamedTuple, Optional, Set, Union
+import re
+from typing import Any, Dict, List, NamedTuple, Optional, Set, Tuple, Union
 
 from odps import ODPS
 from odps.models import Resource as ODPSResource
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData, OutputType
-from ...core.operator import ObjectOperator
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData, OutputType
+from maxframe.core.operator import ObjectOperator
+from maxframe.learn.core import LearnOperatorMixin
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
@@ -29,8 +31,13 @@ from ...serialization.serializables import (
     ListField,
     StringField,
 )
-from ...utils import find_objects, replace_objects
-from ..core import LearnOperatorMixin
+from maxframe.utils import find_objects, replace_objects
+
+# Pre-compiled regex for slash-format model name: projects/<project>/schemas/<schema>/models/<model>
+# The model name part (.+) allows dots and other characters in model names (e.g. "qwen3.6-plus")
+_MODEL_NAME_RESOURCE_REGEX = re.compile(
+    r"^projects/([^/]+)/schemas/([^/]+)/models/(.+)$"
+)
 
 _odps_model_classes: Set["ODPSModelMixin"] = set()
 
@@ -42,6 +49,8 @@ def register_odps_model(model_cls: "ODPSModelMixin"):
 
 class ReadODPSModel(ObjectOperator, LearnOperatorMixin):
     _op_type_ = opcodes.READ_ODPS_MODEL
+    # We need to change location, thus the serialized fields cannot be cached
+    _cache_primitive_serial = False
 
     model_name = StringField("model_name", default=None)
     model_version = StringField("model_version", default=None)
@@ -93,6 +102,8 @@ class ReadODPSResource(ObjectOperator, LearnOperatorMixin):
 
 class ToODPSModel(ObjectOperator, LearnOperatorMixin):
     _op_type_ = opcodes.TO_ODPS_MODEL
+    # We need to change location, thus the serialized fields cannot be cached
+    _cache_primitive_serial = False
 
     model_name = StringField("model_name", default=None)
     model_version = StringField("model_version", default=None)
@@ -237,7 +248,13 @@ class ODPSModelMixin:
         ...                       "role_arn": "acs:ram::<user_id>:role/aliyunodpsdefaultrole"
         ...                   }).execute()
         """
-        model_name = _build_odps_model_name(model_name, schema, project)
+        # Resolve project: fall back to the default ODPS project when not specified,
+        # so that existing code calling to_odps_model(model_name="my_model") without
+        # an explicit project continues to work.
+        resolved_project = project or getattr(
+            ODPS.from_global() or ODPS.from_environments(), "project", None
+        )
+        model_name = _build_odps_model_name(model_name, schema, resolved_project)
         model_info = self._get_odps_model_info()
 
         op = ToODPSModel(
@@ -256,15 +273,101 @@ class ODPSModelMixin:
         return op(getattr(self, "training_info_"), model_info.model_params)
 
 
+def parse_odps_model_name(model_name: str) -> Tuple[str, str, str]:
+    """
+    Parse a model name into (project, schema, model_name) components.
+
+    Supports two formats:
+    1. Slash format: ``projects/<project>/schemas/<schema>/models/<model>``
+       The literal segments "projects", "schemas" and "models" are required.
+    2. Dot format: ``project.schema.model_name`` or ``project.model_name``
+       When there are 3+ dot-separated parts, the model name itself may
+       contain dots (e.g. "qwen3.6-plus"), so parts[2:] are joined back.
+
+    Parameters
+    ----------
+    model_name : str
+        The full model name to parse.
+
+    Returns
+    -------
+    Tuple[str, str, str]
+        A tuple of (project, schema, model_short_name).
+        For slash format, values are extracted directly.
+        For dot format with 2 parts, schema defaults to "default".
+        For dot format with 1 part, project is "" and schema is "default".
+
+    Raises
+    ------
+    ValueError
+        If slash format is used but doesn't match the required structure.
+    """
+    if "/" in model_name:
+        m = _MODEL_NAME_RESOURCE_REGEX.match(model_name)
+        if not m:
+            raise ValueError(
+                f"Model name format mismatch: {model_name!r}. "
+                "Expected 'projects/<project>/schemas/<schema>/models/<model>'"
+            )
+        return m.group(1), m.group(2), m.group(3)
+
+    # Parse full name in old dot format
+    parts = [part.strip() for part in model_name.split(".") if part.strip()]
+    if len(parts) >= 3:
+        return parts[0], parts[1], ".".join(parts[2:])
+    elif len(parts) == 2:
+        return parts[0], "default", parts[1]
+    else:
+        return "", "default", parts[0] if parts else ""
+
+
 def _build_odps_model_name(model_name: str, schema: str, project: str = None):
-    if "." not in model_name:
-        if project and not schema:
-            schema = "default"
-        if schema:
-            model_name = f"{schema}.{model_name}"
-        if project:
-            model_name = f"{project}.{model_name}"
-    return model_name
+    """
+    Build a fully-qualified model name in slash format.
+
+    Always produces ``projects/<project>/schemas/<schema>/models/<model>`` format.
+    If the input is already a valid slash-format name, it is returned as-is.
+    Otherwise, the input is treated as a short model name and the
+    ``project`` / ``schema`` arguments are used to build the full name
+    (``schema`` defaults to ``"default"``).
+
+    ``project`` is required when the input is a short (non-slash) name,
+    because the round-trip through ``parse_odps_model_name`` must be
+    lossless: a short name that contains dots (e.g. "qwen3.6-plus") cannot
+    be correctly parsed back without the slash-format wrapper.
+
+    Parameters
+    ----------
+    model_name : str
+        Short model name or an already-qualified slash-format name.
+    schema : str
+        Schema name (defaults to ``"default"`` inside the built name).
+    project : str, optional
+        Project name. Required when *model_name* is a short name.
+        Ignored when *model_name* is already in slash format.
+
+    Raises
+    ------
+    ValueError
+        If *model_name* is a short name and *project* is not provided, or
+        if a slash-format name does not match the expected structure.
+    """
+    if "/" in model_name:
+        if not _MODEL_NAME_RESOURCE_REGEX.match(model_name):
+            raise ValueError(
+                f"Model name format mismatch: {model_name!r}. "
+                "Expected 'projects/<project>/schemas/<schema>/models/<model>'"
+            )
+        return model_name
+
+    # model_name is a short name (may contain dots like "qwen3.6-plus")
+    if not project:
+        raise ValueError(
+            "project is required when building a fully-qualified model name "
+            f"from a short name {model_name!r}"
+        )
+
+    return f"projects/{project}/schemas/{schema or 'default'}/models/{model_name}"
 
 
 def read_odps_model(

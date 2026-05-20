@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import AnyField
-from ...tensor.rechunk.rechunk import chunk_size_type
-from ...typing_ import TileableType
-from ..core import DATAFRAME_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.core import DATAFRAME_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.serialization.serializables import AnyField
+from maxframe.tensor.rechunk.rechunk import chunk_size_type
+from maxframe.typing_ import TileableType
 
 
 class DataFrameRechunk(DataFrameOperator, DataFrameOperatorMixin):

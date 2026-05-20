@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import dis
 import functools
 import inspect
 import sys
@@ -22,7 +23,154 @@ import weakref
 from contextlib import contextmanager
 from typing import Callable
 
-from ._utils_c import tokenize
+from maxframe.utils._utils_c import tokenize
+
+_entity_types_cache = None
+
+
+def _get_entity_types():
+    """
+    Get combined entity types for isinstance checks.
+    Uses lazy import to avoid circular dependencies.
+
+    Returns
+    -------
+    tuple
+        Combined tuple of (Class, DataClass) pairs for all entity types.
+    """
+    global _entity_types_cache
+
+    if _entity_types_cache is None:
+        from maxframe.dataframe.core import (
+            DATAFRAME_TYPE,
+            GROUPBY_TYPE,
+            INDEX_TYPE,
+            SERIES_TYPE,
+        )
+
+        _entity_types_cache = DATAFRAME_TYPE + SERIES_TYPE + INDEX_TYPE + GROUPBY_TYPE
+
+    return _entity_types_cache
+
+
+def _check_partial(func, entities):
+    """
+    Check functools.partial for entities in args/kwargs.
+    """
+    while isinstance(func, functools.partial):
+        # Check positional arguments
+        for arg in func.args:
+            if isinstance(arg, _get_entity_types()):
+                entities.append(arg)
+
+        # Check keyword arguments
+        for value in func.keywords.values():
+            if isinstance(value, _get_entity_types()):
+                entities.append(value)
+
+        # Recursively check wrapped function
+        func = func.func
+    return func
+
+
+def _check_closure(func, entities):
+    """
+    Check closure variables for entities.
+    """
+    if hasattr(func, "__closure__") and func.__closure__:
+        for cell in func.__closure__:
+            try:
+                value = cell.cell_contents
+                if isinstance(value, _get_entity_types()):
+                    entities.append(value)
+                # Recursively check nested functions
+                elif callable(value):
+                    _check_closure_for_entities_cached(value)  # noqa: F821
+            except ValueError:
+                # Cell is empty
+                pass
+
+
+def _check_globals(func, entities):
+    """
+    Check globals referenced by function via bytecode.
+    """
+
+    if not hasattr(func, "__globals__") or not hasattr(func, "__code__"):
+        return
+
+    # Pre-filter: check if globals contain any entities
+    entity_globals = {
+        name: obj
+        for name, obj in func.__globals__.items()
+        if isinstance(obj, _get_entity_types())
+    }
+
+    if not entity_globals:
+        return  # No entities in globals, skip bytecode inspection
+
+    # Get referenced global names via bytecode
+    referenced_names = set()
+    for instruction in dis.get_instructions(func.__code__):
+        if instruction.opname == "LOAD_GLOBAL":
+            referenced_names.add(instruction.argval)
+
+    # Check if referenced globals are entities
+    for name in referenced_names:
+        if name in entity_globals:
+            entities.append(entity_globals[name])
+
+
+@functools.lru_cache(maxsize=128)
+def _check_closure_for_entities_cached(func):
+    """
+    Cached internal inspection function.
+    """
+    entities = []
+
+    func = unwrap_function(_check_partial(func, entities))
+    _check_closure(func, entities)
+    _check_globals(func, entities)
+    return entities
+
+
+def check_closure_for_entities(func, operation_name="apply"):
+    """
+    Check if a function's closure, globals, or partial args contain MaxFrame entity objects.
+
+    Parameters
+    ----------
+    func : callable
+        The function to inspect.
+    operation_name : str, optional
+        Name of the operation for warning message (e.g., "apply", "apply_chunk").
+        Default is "apply".
+
+    Raises
+    ------
+    UserWarning
+        If MaxFrame entities are found in closure, globals, or partial args.
+
+    Examples
+    --------
+    >>> import maxframe.dataframe as md
+    >>> df = md.DataFrame({'a': [1, 2, 3]})
+    >>> def func(x):
+    ...     return df['a'] + x  # df is captured in closure
+    >>> check_closure_for_entities(func, "apply")
+    UserWarning: MaxFrame entities found in function for apply. This may cause
+    unexpected behavior during distributed execution.
+    """
+    entities = _check_closure_for_entities_cached(func)
+    if entities:
+        warnings.warn(
+            f"MaxFrame entities found in function for {operation_name}. "
+            "This may cause unexpected behavior during distributed execution. "
+            "Try using md.merge instead or execute and fetch the entity first "
+            "and reference local object instead.",
+            UserWarning,
+            stacklevel=3,
+        )
 
 
 def implements(f: Callable):
@@ -90,7 +238,7 @@ def enter_current_session(func: Callable):
 
     @functools.wraps(func)
     def wrapped(cls, ctx, op):
-        from ..session import AbstractSession, get_default_session
+        from maxframe.session import AbstractSession, get_default_session
 
         global _enter_counter, _initial_session
         # skip in some test cases

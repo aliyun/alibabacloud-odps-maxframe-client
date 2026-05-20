@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import plotting
-from .datetime_ import SeriesDatetimeMethod
-from .dict_ import SeriesDictMethod
-from .list_ import SeriesListMethod
-from .string_ import SeriesStringMethod
-from .struct_ import SeriesStructMethod
+from maxframe.dataframe.accessors import plotting
+from maxframe.dataframe.accessors.datetime_ import SeriesDatetimeMethod
+from maxframe.dataframe.accessors.dict_ import SeriesDictMethod
+from maxframe.dataframe.accessors.list_ import SeriesListMethod
+from maxframe.dataframe.accessors.string_ import SeriesStringMethod
+from maxframe.dataframe.accessors.struct_ import SeriesStructMethod

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 import numpy as np
 
-from ..utils import get_order
+from maxframe.tensor.utils import get_order
 
 
 def flatten(a, order="C"):
@@ -52,7 +52,7 @@ def flatten(a, order="C"):
     array([1, 2, 3, 4])
     """
 
-    from ..reshape.reshape import TensorReshape, calc_shape
+    from maxframe.tensor.reshape.reshape import TensorReshape, calc_shape
 
     if a.ndim == 1:
         return a

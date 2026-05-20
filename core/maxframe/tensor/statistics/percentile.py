@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 import numpy as np
 
-from ...core import ENTITY_TYPE
-from ..arithmetic import truediv
-from .quantile import _quantile_is_valid, _quantile_unchecked
+from maxframe.core import ENTITY_TYPE
+from maxframe.tensor.arithmetic import truediv
+from maxframe.tensor.statistics.quantile import _quantile_is_valid, _quantile_unchecked
 
 q_error_msg = "Percentiles must be in the range [0, 100]"
 

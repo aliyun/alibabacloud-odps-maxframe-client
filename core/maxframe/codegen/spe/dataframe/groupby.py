@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,23 +16,27 @@ from typing import Any, Dict, List
 
 import pandas as pd
 
-from ....dataframe.groupby.aggregation import DataFrameGroupByAgg
-from ....dataframe.groupby.apply import GroupByApply
-from ....dataframe.groupby.apply_chunk import GroupByApplyChunk
-from ....dataframe.groupby.core import DataFrameGroupByOp
-from ....dataframe.groupby.cum import GroupByCumcount, GroupByCumReductionOperator
-from ....dataframe.groupby.expanding import GroupByExpandingAgg
-from ....dataframe.groupby.fill import GroupByFill
-from ....dataframe.groupby.getitem import GroupByIndex
-from ....dataframe.groupby.head import GroupByHead
-from ....dataframe.groupby.rolling import GroupByRollingAgg
-from ....dataframe.groupby.sample import GroupBySample
-from ....dataframe.groupby.transform import GroupByTransform
-from ....dataframe.utils import make_column_list
-from ....dataframe.window.rolling import Rolling
-from ....lib.version import parse as parse_version
-from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
-from ..utils import build_method_call_adapter
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.codegen.spe.utils import build_method_call_adapter
+from maxframe.dataframe.groupby.aggregation import DataFrameGroupByAgg
+from maxframe.dataframe.groupby.apply import GroupByApply
+from maxframe.dataframe.groupby.apply_chunk import GroupByApplyChunk
+from maxframe.dataframe.groupby.core import DataFrameGroupByOp
+from maxframe.dataframe.groupby.cum import GroupByCumcount, GroupByCumReductionOperator
+from maxframe.dataframe.groupby.expanding import GroupByExpandingAgg
+from maxframe.dataframe.groupby.fill import GroupByFill
+from maxframe.dataframe.groupby.getitem import GroupByIndex
+from maxframe.dataframe.groupby.head import GroupByHead
+from maxframe.dataframe.groupby.rolling import GroupByRollingAgg
+from maxframe.dataframe.groupby.sample import GroupBySample
+from maxframe.dataframe.groupby.transform import GroupByTransform
+from maxframe.dataframe.utils import make_column_list
+from maxframe.dataframe.window.rolling import Rolling
+from maxframe.lib.version import parse as parse_version
 
 _need_enforce_group_keys = parse_version(pd.__version__) < parse_version("1.5.0")
 
@@ -69,7 +73,7 @@ class DataFrameGroupByAggAdapter(SPEGroupByOperatorAdapter):
 DataFrameGroupByOpAdapter = build_method_call_adapter(
     DataFrameGroupByOp,
     "groupby",
-    kw_keys=["by", "level", "as_index", "sort", "group_keys"],
+    kw_keys=["by", "level", "as_index", "sort", "group_keys", "dropna"],
 )
 
 
@@ -139,6 +143,12 @@ class GroupByApplyChunkAdapter(SPEGroupByOperatorAdapter):
                 f"{output_var} = {output_var}.set_index("
                 f"[{by_cols_str}, {output_var}.index])",
             )
+
+        # Apply index names from the output metadata
+        expected_names = list(op.outputs[0].index_value.to_pandas().names)
+        if any(n is not None for n in expected_names):
+            lines.append(f"{output_var}.index.names = {expected_names!r}")
+
         return lines
 
 

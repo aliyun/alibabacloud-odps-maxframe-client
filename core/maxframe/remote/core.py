@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,21 +15,21 @@
 from functools import partial
 from typing import List
 
-from .. import opcodes
-from ..core import ENTITY_TYPE, EntityData
-from ..core.operator import ObjectOperator, ObjectOperatorMixin
-from ..dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
-from ..serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData
+from maxframe.core.operator import ObjectOperator, ObjectOperatorMixin
+from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
+from maxframe.serialization.serializables import (
     BoolField,
     DictField,
     FunctionField,
     Int32Field,
     ListField,
 )
-from ..tensor.core import TENSOR_TYPE
-from ..typing_ import TileableType
-from ..udf import BuiltinFunction
-from ..utils import find_objects, replace_objects
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.typing_ import TileableType
+from maxframe.udf import BuiltinFunction
+from maxframe.utils import find_objects, replace_objects
 
 
 class RemoteFunction(ObjectOperatorMixin, ObjectOperator):

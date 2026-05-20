@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@ import importlib
 import inspect
 import itertools
 import os
-from abc import ABC, ABCMeta, abstractmethod
+from abc import ABCMeta, abstractmethod
 from typing import Any, Callable, Optional, Type, Union
 
-from ...utils import no_default, str_to_bool
-from .field_type import (
+from maxframe.serialization.serializables._core_c import Field
+from maxframe.serialization.serializables.field_type import (
     AbstractFieldType,
     DictType,
     FieldTypes,
@@ -29,102 +29,9 @@ from .field_type import (
     ReferenceType,
     TupleType,
 )
+from maxframe.utils import no_default, str_to_bool
 
 _is_ci = bool(str_to_bool(os.environ.get("CI")))
-
-
-class Field(ABC):
-    __slots__ = (
-        "_tag",
-        "_default_value",
-        "_default_factory",
-        "_on_serialize",
-        "_on_deserialize",
-        "name",  # The __name__ of member_descriptor
-        "get",  # The __get__ of member_descriptor
-        "set",  # The __set__ of member_descriptor
-        "__delete__",  # The __delete__ of member_descriptor
-    )
-
-    _tag: str
-    _default_value: Any
-    _default_factory: Optional[Callable]
-
-    def __init__(
-        self,
-        tag: str,
-        default: Any = no_default,
-        default_factory: Optional[Callable] = None,
-        on_serialize: Callable[[Any], Any] = None,
-        on_deserialize: Callable[[Any], Any] = None,
-    ):
-        if (
-            default is not no_default and default_factory is not None
-        ):  # pragma: no cover
-            raise ValueError("default and default_factory can not be specified both")
-
-        self._tag = tag
-        self._default_value = default
-        self._default_factory = default_factory
-        self._on_serialize = on_serialize
-        self._on_deserialize = on_deserialize
-
-    @property
-    def tag(self):
-        return self._tag
-
-    @property
-    def on_serialize(self):
-        return self._on_serialize
-
-    @property
-    def on_deserialize(self):
-        return self._on_deserialize
-
-    @property
-    @abstractmethod
-    def field_type(self) -> AbstractFieldType:
-        """
-        Field type.
-
-        Returns
-        -------
-        field_type : AbstractFieldType
-             Field type.
-        """
-
-    def __get__(self, instance, owner=None):
-        try:
-            return self.get(instance, owner)
-        except AttributeError:
-            if self._default_value is not no_default:
-                val = self._default_value
-                self.set(instance, val)
-                return val
-            elif self._default_factory is not None:
-                val = self._default_factory()
-                self.set(instance, val)
-                return val
-            else:
-                raise
-
-    def __set__(self, instance, value) -> None:
-        if _is_ci:  # pragma: no branch
-            from ...core import is_kernel_mode
-
-            if not is_kernel_mode():
-                field_type = self.field_type
-                try:
-                    to_check_value = value
-                    if to_check_value is not None and self._on_serialize:
-                        to_check_value = self._on_serialize(to_check_value)
-                    field_type.validate(to_check_value)
-                except (TypeError, ValueError) as e:
-                    raise type(e)(
-                        f"Failed to set `{self.name}` for {type(instance).__name__} "
-                        f"when environ CI=true is set: {str(e)}"
-                    )
-        self.set(instance, value)
 
 
 class AnyField(Field):
@@ -549,7 +456,7 @@ class ReferenceField(Field):
 
     def __set__(self, instance, value):
         if _is_ci:
-            from ...core import is_kernel_mode
+            from maxframe.core import is_kernel_mode
 
             if not is_kernel_mode():
                 field_type = self.get_field_type(instance)

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,7 @@ import numpy as np
 import pytest
 
 import maxframe.dataframe as md
-
-from .. import text as llm_text
+from maxframe.learn.contrib.llm import text as llm_text
 
 
 def test_generate_invalid_data_type_raises():

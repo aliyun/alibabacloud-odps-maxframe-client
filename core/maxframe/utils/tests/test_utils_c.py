@@ -22,8 +22,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ...serialization import PickleContainer
-from .. import _utils_c as utils
+from maxframe.serialization import PickleContainer
+from maxframe.utils import _utils_c as utils
 
 
 def test_string_conversion():

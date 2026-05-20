@@ -14,10 +14,10 @@
 
 from typing import Tuple, Union
 
-from ... import opcodes
-from ...serialization.serializables import AnyField
-from ..core import Tensor
-from ..operators import TensorOperator, TensorOperatorMixin
+from maxframe import opcodes
+from maxframe.serialization.serializables import AnyField
+from maxframe.tensor.core import Tensor
+from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
 
 chunk_size_type = Union[int, Tuple[int], Tuple[Tuple[int], ...]]
 

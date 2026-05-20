@@ -14,20 +14,21 @@
 
 import numpy as np
 
-from .. import core as llm_core
+from maxframe import dataframe as md
+from maxframe.learn.contrib.llm import core as llm_core
 
 
 def test_text_gen_operator_output_dtypes():
     op = llm_core.LLMTextGenOperator()
     dtypes = op.get_output_dtypes()
-    assert dtypes["response"] == np.dtype("O")
+    assert dtypes["response"] == md.dtype("string")
     assert dtypes["success"] == np.dtype("bool")
 
 
 def test_text_embedding_operator_output_dtypes_and_defaults():
     op = llm_core.LLMTextEmbeddingOp()
     dtypes = op.get_output_dtypes()
-    assert dtypes["response"] == np.dtype("O")
+    assert dtypes["response"] == md.dtype("string")
     assert dtypes["success"] == np.dtype("bool")
     assert op.simple_output is False
     assert op.dimensions is None

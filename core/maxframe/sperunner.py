@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,14 +19,14 @@ from typing import Any, Dict
 import pandas as pd
 from odps import ODPS
 
-from .codegen import CodeGenResult
-from .codegen.spe.core import SPECodeContext
-from .config import option_context
-from .core import TileableGraph
-from .lib.compat import patch_pandas
-from .protocol import ResultInfo
-from .typing_ import PandasObjectTypes, TileableType
-from .utils import build_temp_table_name
+from maxframe.codegen import CodeGenResult
+from maxframe.codegen.spe.core import SPECodeContext
+from maxframe.config import option_context
+from maxframe.core import TileableGraph
+from maxframe.lib.compat import patch_pandas
+from maxframe.protocol import ResultInfo
+from maxframe.typing_ import PandasObjectTypes, TileableType
+from maxframe.utils import build_temp_table_name
 
 logger = logging.getLogger(__name__)
 

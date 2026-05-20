@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@ from io import StringIO
 
 import pytest
 
-from ...... import dataframe as md
-from ......learn.contrib.pytorch import run_pytorch_script
-from ....core import SPECodeContext
-from ..pytorch import RunPyTorchAdapter
+from maxframe import dataframe as md
+from maxframe.codegen.spe.core import SPECodeContext
+from maxframe.codegen.spe.learn.contrib.pytorch import RunPyTorchAdapter
+from maxframe.learn.contrib.pytorch import run_pytorch_script
 
 
 @pytest.fixture

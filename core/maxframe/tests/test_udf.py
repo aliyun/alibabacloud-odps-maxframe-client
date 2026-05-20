@@ -19,8 +19,8 @@ import pytest
 from odps import ODPS
 from odps.errors import NoSuchObject
 
-from ..tests.utils import tn
-from ..udf import (
+from maxframe.tests.utils import tn
+from maxframe.udf import (
     FsMountOptions,
     MarkedFunction,
     ODPSFunction,

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 
 def _install():
-    from ..core import DATAFRAME_TYPE, SERIES_TYPE
-    from .ewm import ewm
-    from .expanding import expanding
-    from .rolling import rolling
+    from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+    from maxframe.dataframe.window.ewm import ewm
+    from maxframe.dataframe.window.expanding import expanding
+    from maxframe.dataframe.window.rolling import rolling
 
     for t in DATAFRAME_TYPE + SERIES_TYPE:
         t.rolling = rolling

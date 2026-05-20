@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,14 +18,14 @@ from typing import List
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData, OutputType
-from ...serialization.serializables import AnyField, BoolField
-from ...tensor.core import TENSOR_TYPE
-from ...tensor.datasource import tensor as astensor
-from ..core import DATAFRAME_TYPE, SERIES_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData, OutputType
+from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index
+from maxframe.serialization.serializables import AnyField, BoolField
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.tensor.datasource import tensor as astensor
 
 
 class SeriesIndex(DataFrameOperator, DataFrameOperatorMixin):

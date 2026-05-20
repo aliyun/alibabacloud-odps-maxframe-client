@@ -18,8 +18,8 @@ import tempfile
 import pytest
 from pyarrow.fs import FileSelector
 
-from .. import LocalFileSystem
-from ..fshandler import MFFileSystemHandler
+from maxframe.lib.filesystem import LocalFileSystem
+from maxframe.lib.filesystem.fshandler import MFFileSystemHandler
 
 
 def test_init_and_get_type_name():

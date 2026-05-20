@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 import pytest
 
-from ...datasource import ones
-from ...utils import AxisError
-from .. import concatenate, stack
+from maxframe.tensor.datasource import ones
+from maxframe.tensor.merge import concatenate, stack
+from maxframe.tensor.utils import AxisError
 
 
 def test_concatenate():

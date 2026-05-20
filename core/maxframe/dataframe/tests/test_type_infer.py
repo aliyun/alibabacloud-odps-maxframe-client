@@ -13,14 +13,19 @@
 # limitations under the License.
 
 import pandas as pd
+import pyarrow as pa
+import pytest
 
-from ...core import OutputType
-from ..type_infer import (
+from maxframe.core import OutputType
+from maxframe.dataframe.type_infer import (
     MockDataFrame,
     MockSeries,
     _wrap_mock,
     infer_dataframe_return_value,
 )
+from maxframe.dataframe.typing_ import dtype, infer_dtype
+from maxframe.lib.dtypes_extension import ArrowDtype
+from maxframe.lib.dtypes_extension.blob import ExternalBlobDtype, SolidBlob
 
 
 def test_mock_and_wrap_mock():
@@ -85,3 +90,72 @@ def test_mock_and_wrap_mock():
         sample_df.data, _error_func, output_type=OutputType.series
     )
     assert result.output_type == OutputType.series
+
+
+def test_infer_dtype_basic():
+    """Test infer_dtype with basic scalar types."""
+    # Integer
+    result = infer_dtype(42)
+    assert result == dtype(pa.int64())
+
+    # Float
+    result = infer_dtype(3.14)
+    assert result == dtype(pa.float64())
+
+    # Boolean
+    result = infer_dtype(True)
+    assert result == dtype(pa.bool_())
+
+    # String
+    result = infer_dtype("hello")
+    assert result == dtype(pa.string())
+
+    # Bytes
+    result = infer_dtype(b"bytes")
+    assert result == dtype(pa.binary())
+
+    # SolidBlob object
+    blob = SolidBlob(b"test_data")
+    result = infer_dtype(blob)
+    assert isinstance(result, ExternalBlobDtype)
+
+    # None should raise TypeError
+    with pytest.raises(TypeError, match="Cannot infer dtype"):
+        infer_dtype(None)
+
+    # Unsupported custom object
+    with pytest.raises(TypeError, match="Cannot infer dtype"):
+        infer_dtype(type("CustomClass", (object,), {})())
+
+
+def test_infer_dtype_collections():
+    """Test infer_dtype with collection types and verify sub-types."""
+    # List with integer elements
+    result = infer_dtype([1, 2, 3])
+    assert isinstance(result, ArrowDtype)
+    assert pa.types.is_list(result.pyarrow_dtype)
+    assert result.pyarrow_dtype.value_type == pa.int64()
+
+    # List with string elements
+    result = infer_dtype(["a", "b", "c"])
+    assert isinstance(result, ArrowDtype)
+    assert pa.types.is_list(result.pyarrow_dtype)
+    assert result.pyarrow_dtype.value_type == pa.string()
+
+    # Dict/struct type
+    result = infer_dtype({"a": 1, "b": "text"})
+    assert isinstance(result, ArrowDtype)
+    assert pa.types.is_struct(result.pyarrow_dtype)
+    # Verify struct has 2 fields
+    struct_type = result.pyarrow_dtype
+    assert len(struct_type) == 2
+
+    # List of lists
+    result = infer_dtype([[1, 2], [3, 4]])
+    assert isinstance(result, ArrowDtype)
+    assert pa.types.is_list(result.pyarrow_dtype)
+
+    # Dict with list values
+    result = infer_dtype({"a": [1, 2], "b": [3, 4]})
+    assert isinstance(result, ArrowDtype)
+    assert pa.types.is_struct(result.pyarrow_dtype)

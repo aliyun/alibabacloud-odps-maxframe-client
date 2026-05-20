@@ -12,8 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .array import SparseArray, SparseNDArray
-from .core import get_array_module, get_sparse_module, is_cupy, issparse, naked, np
+from maxframe.lib.sparse.array import SparseArray, SparseNDArray
+from maxframe.lib.sparse.core import (
+    get_array_module,
+    get_sparse_module,
+    is_cupy,
+    issparse,
+    naked,
+    np,
+)
 
 
 class SparseVector(SparseArray):

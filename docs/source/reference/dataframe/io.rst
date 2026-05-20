@@ -53,3 +53,11 @@ Parquet
 
    read_parquet
    DataFrame.to_parquet
+
+Lance
+~~~~~
+.. autosummary::
+   :toctree: generated/
+
+   read_lance
+   DataFrame.to_lance

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,12 @@
 
 from typing import Any, Dict, List, Union
 
-from ....dataframe.reduction import (
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.dataframe.reduction import (
     DataFrameAggregate,
     DataFrameAll,
     DataFrameAny,
@@ -37,8 +42,7 @@ from ....dataframe.reduction import (
     DataFrameUnique,
     DataFrameVar,
 )
-from ....dataframe.reduction.core import DataFrameCumReduction, DataFrameReduction
-from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
+from maxframe.dataframe.reduction.core import DataFrameCumReduction, DataFrameReduction
 
 
 @register_op_adapter(DataFrameCumReduction)

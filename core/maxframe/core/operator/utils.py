@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
 import contextlib
 import sys
 
-from ...typing_ import EntityType, TileableType
-from ..entity import TILEABLE_TYPE
+from maxframe.core.entity import TILEABLE_TYPE
+from maxframe.typing_ import EntityType, TileableType
 
 
 def build_fetch_tileable(tileable: TileableType) -> TileableType:

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 
 import numpy as np
 
-from ... import opcodes
-from ...core import get_output_types
-from ...serialization.serializables import AnyField, Int32Field, StringField
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index, validate_axis
+from maxframe import opcodes
+from maxframe.core import get_output_types
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index, validate_axis
+from maxframe.serialization.serializables import AnyField, Int32Field, StringField
 
 
 class DataFrameBetweenTime(DataFrameOperator, DataFrameOperatorMixin):

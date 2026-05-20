@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,15 +18,20 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, ExecutableTuple
-from ...serialization.serializables import AnyField, BoolField, KeyField, TupleField
-from ...typing_ import EntityType
-from ...utils import np_release_version
-from ..core import TENSOR_TYPE, TensorOrder
-from ..datasource import tensor as astensor
-from ..operators import TensorOperator, TensorOperatorMixin
-from ..utils import is_asc_sorted
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, ExecutableTuple
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    KeyField,
+    TupleField,
+)
+from maxframe.tensor.core import TENSOR_TYPE, TensorOrder
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
+from maxframe.tensor.utils import is_asc_sorted
+from maxframe.typing_ import EntityType
+from maxframe.utils import np_release_version
 
 # since numpy 2.3 `auto` bins limits bin count (numpy-28426)
 _np_histogram_limit_nbins = np_release_version[:2] >= (2, 3)
@@ -122,7 +127,7 @@ class TensorHistogramBinEdges(TensorOperator, TensorOperatorMixin):
             op.weights = next(inputs_iter)
 
     def __call__(self, a, bins, range, weights):
-        from ... import tensor as mt
+        from maxframe import tensor as mt
 
         if range is not None:
             _check_range(range)

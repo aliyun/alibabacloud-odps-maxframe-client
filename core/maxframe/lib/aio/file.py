@@ -14,7 +14,7 @@
 
 import functools
 
-from .base import (
+from maxframe.lib.aio.base import (
     AioBase,
     delegate_to_executor,
     proxy_method_directly,

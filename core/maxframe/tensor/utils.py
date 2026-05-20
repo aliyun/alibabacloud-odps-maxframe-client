@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@ from typing import Dict, List, Union
 
 import numpy as np
 
-from ..core import ExecutableTuple
-from ..lib.mmh3 import hash_from_buffer
-from ..utils import lazy_import
+from maxframe.core import ExecutableTuple
+from maxframe.lib.mmh3 import hash_from_buffer
+from maxframe.utils import lazy_import
 
 try:
     from numpy.exceptions import AxisError
@@ -312,7 +312,7 @@ def infer_dtype(np_func, multi_outputs=False, empty=True, reverse=False, check=T
 
 
 def index_ndim(index):
-    from .core import Tensor
+    from maxframe.tensor.core import Tensor
 
     if isinstance(index, Tensor) and index.dtype == np.bool_:
         # boolean indexing will occupy the ndim
@@ -510,7 +510,7 @@ def decide_unify_split(*splits):
 
 
 def check_out_param(out, t, casting):
-    from .misc import broadcast_to
+    from maxframe.tensor.misc import broadcast_to
 
     if not hasattr(out, "shape"):
         raise TypeError("return arrays must be a tensor")
@@ -546,7 +546,7 @@ def check_random_state(seed):
     """
     from numpy import random as np_mtrand
 
-    from . import random as mtrand
+    from maxframe.tensor import random as mtrand
 
     if seed is None or seed is mtrand or seed is np_mtrand:
         return mtrand._random_state
@@ -560,7 +560,7 @@ def check_random_state(seed):
 
 
 def filter_inputs(inputs):
-    from ..core import ENTITY_TYPE
+    from maxframe.core import ENTITY_TYPE
 
     return [inp for inp in inputs if isinstance(inp, ENTITY_TYPE)]
 
@@ -582,7 +582,7 @@ def check_order(order_str, available_options="KACF", err_msg="order not understo
 def get_order(
     order_str, to_keep_order, available_options="KACF", err_msg="order not understood"
 ):
-    from .core import TensorOrder
+    from maxframe.tensor.core import TensorOrder
 
     check_order(order_str, available_options=available_options, err_msg=err_msg)
 
@@ -595,7 +595,7 @@ def get_order(
 
 
 def reverse_order(old_order):
-    from .core import TensorOrder
+    from maxframe.tensor.core import TensorOrder
 
     assert isinstance(old_order, TensorOrder)
     return (

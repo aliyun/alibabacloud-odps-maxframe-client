@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-10 19:35+0800\n"
+"POT-Creation-Date: 2026-03-02 14:19+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -264,6 +264,10 @@ msgid ""
 ":py:obj:`rechunk <maxframe.dataframe.Index.rechunk>`\\ "
 "\\(chunk\\_size\\[\\, reassign\\_worker\\]\\)"
 msgstr ""
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:60:<autosummary>:1
+msgid "Rechunk DataFrame, Series or Index data."
+msgstr "重新划分 DataFrame、Series 或 Index 数据的分片。"
 
 #: ../../source/reference/dataframe/generated/maxframe.dataframe.Index.rst:60:<autosummary>:1
 msgid ""

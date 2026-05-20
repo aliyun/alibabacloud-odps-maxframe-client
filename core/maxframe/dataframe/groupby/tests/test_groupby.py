@@ -18,14 +18,14 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from .... import dataframe as md
-from .... import opcodes
-from ....core import OutputType
-from ....errors import TypeInferWarning
-from ...core import DataFrame, DataFrameGroupBy, SeriesGroupBy
-from ..aggregation import DataFrameGroupByAgg
-from ..core import DataFrameGroupByOp
-from ..getitem import GroupByIndex
+from maxframe import dataframe as md
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.core import DataFrame, DataFrameGroupBy, SeriesGroupBy
+from maxframe.dataframe.groupby.aggregation import DataFrameGroupByAgg
+from maxframe.dataframe.groupby.core import DataFrameGroupByOp
+from maxframe.dataframe.groupby.getitem import GroupByIndex
+from maxframe.errors import TypeInferWarning
 
 
 def test_groupby():
@@ -155,7 +155,7 @@ def test_groupby_apply():
         mdf.groupby("b").apply(apply_df_with_error)
 
     for prepend_idx in [True, False]:
-        applied = mdf.groupby("b").apply(
+        applied = mdf.groupby("b")[["a", "b", "c"]].apply(
             apply_df_with_error,
             output_type="dataframe",
             dtypes=df1.dtypes,
@@ -172,7 +172,9 @@ def test_groupby_apply():
         assert applied.op._op_type_ == opcodes.APPLY
         assert applied.op.output_types[0] == OutputType.dataframe
 
-        applied = mdf.groupby("b").apply(apply_df, prepend_index_group_keys=prepend_idx)
+        applied = mdf.groupby("b")[["a", "b", "c"]].apply(
+            apply_df, prepend_index_group_keys=prepend_idx
+        )
         pd.testing.assert_series_equal(applied.dtypes, df1.dtypes)
         assert applied.shape == (np.nan, 3)
         assert list(applied.index_value.names) == ["b", None]
@@ -219,6 +221,11 @@ def test_groupby_apply_chunk_with_dtypes():
     def apply_df_with_reorder(df):
         return df.sort_index()
 
+    def apply_df_with_index(
+        df,
+    ) -> pd.DataFrame[{"inner_idx": int}, {"a": int, "c": object}]:  # noqa: F821
+        return df.sort_index()
+
     def apply_df_with_error(df):
         assert len(df) > 2
         return df.sort_index()
@@ -244,6 +251,14 @@ def test_groupby_apply_chunk_with_dtypes():
     applied = mdf.groupby("b").mf.apply_chunk(apply_df_with_reorder)
     assert applied.shape == (np.nan, 2)
     assert list(applied.index_value.names) == ["b", None]
+    assert applied.op._op_type_ == opcodes.APPLY_CHUNK
+    assert applied.op.output_types[0] == OutputType.dataframe
+
+    applied = mdf.groupby("b").mf.apply_chunk(
+        apply_df_with_index, prepend_index_group_keys=True
+    )
+    assert applied.shape == (np.nan, 2)
+    assert list(applied.index_value.names) == ["b", "inner_idx"]
     assert applied.op._op_type_ == opcodes.APPLY_CHUNK
     assert applied.op.output_types[0] == OutputType.dataframe
 

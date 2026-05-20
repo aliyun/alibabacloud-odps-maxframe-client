@@ -16,10 +16,14 @@ import logging
 from collections import OrderedDict
 from typing import List
 
-from .... import opcodes
-from ....core import ENTITY_TYPE, EntityData, OutputType
-from ....core.operator import ObjectOperator, ObjectOperatorMixin
-from ....serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData, OutputType
+from maxframe.core.operator import ObjectOperator, ObjectOperatorMixin
+from maxframe.learn.contrib.models import to_remote_model
+from maxframe.learn.contrib.utils import TrainingCallback
+from maxframe.learn.contrib.xgboost.core import Booster, BoosterData, XGBScikitLearnBase
+from maxframe.learn.contrib.xgboost.dmatrix import ToDMatrix, to_dmatrix
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
@@ -30,10 +34,6 @@ from ....serialization.serializables import (
     KeyField,
     ListField,
 )
-from ..models import to_remote_model
-from ..utils import TrainingCallback
-from .core import Booster, BoosterData, XGBScikitLearnBase
-from .dmatrix import ToDMatrix, to_dmatrix
 
 logger = logging.getLogger(__name__)
 

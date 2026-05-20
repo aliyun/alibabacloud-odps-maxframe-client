@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,18 +15,18 @@
 
 import numpy as np
 
-from ... import opcodes
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.serialization.serializables import (
     AnyField,
     FieldTypes,
     KeyField,
     StringField,
     TupleField,
 )
-from ...utils import on_deserialize_shape, on_serialize_shape
-from ..utils import get_order
-from .array import tensor
-from .core import TensorLike, TensorNoInput
+from maxframe.tensor.datasource.array import tensor
+from maxframe.tensor.datasource.core import TensorLike, TensorNoInput
+from maxframe.tensor.utils import get_order
+from maxframe.utils import on_deserialize_shape, on_serialize_shape
 
 
 class TensorZeros(TensorNoInput):

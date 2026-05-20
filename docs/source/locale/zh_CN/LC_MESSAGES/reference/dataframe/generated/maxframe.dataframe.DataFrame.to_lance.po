@@ -1,0 +1,124 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev875+gd7f92f2dd\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-09 18:48+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.DataFrame.to_lance.rst:2
+msgid "maxframe.dataframe.DataFrame.to\\_lance"
+msgstr ""
+
+#: maxframe.dataframe.datastore.to_lance.to_lance:1 of
+msgid "Write a DataFrame to a Lance dataset."
+msgstr "将 DataFrame 写入 Lance 数据集。"
+
+#: maxframe.dataframe.datastore.to_lance.to_lance:3 of
+msgid ""
+"Lance is a columnar data format optimized for ML workloads and vector "
+"search. Each chunk will be written as a fragment."
+msgstr ""
+"Lance 是一种为 ML 工作负载和向量搜索优化的列式数据格式。每个数据块将被"
+"写入为一个片段。"
+
+#: maxframe.dataframe.datastore.to_lance.to_lance of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.datastore.to_lance.to_lance:6 of
+msgid ""
+"Target path for the Lance dataset. Can be a local path, Aliyun OSS URL, "
+"or S3 URL. For Aliyun OSS URLs, the format is: "
+"``oss://<endpoint>/<bucket>/<path>``. Example: ``oss://oss-cn-"
+"beijing.aliyuncs.com/my-bucket/dataset``. For S3 URLs, the format is: "
+"``s3://<bucket>/<path>``."
+msgstr ""
+"Lance 数据集的目标路径。可以是本地路径、阿里云 OSS URL 或 S3 URL。对于"
+"阿里云 OSS URL，格式为：``oss://<endpoint>/<bucket>/<path>``。示例：``oss"
+"://oss-cn-beijing.aliyuncs.com/my-bucket/dataset``。对于 S3 URL，格式为："
+"``s3://<bucket>/<path>``。"
+
+#: maxframe.dataframe.datastore.to_lance.to_lance:12 of
+msgid ""
+"How to handle existing data: - 'create': Create a new dataset (fails if "
+"exists) - 'append': Append to existing dataset - 'overwrite': Overwrite "
+"existing dataset"
+msgstr ""
+"如何处理现有数据：- 'create'：创建新数据集（如果已存在则失败）- 'append'"
+"：追加到现有数据集 - 'overwrite'：覆盖现有数据集"
+
+#: maxframe.dataframe.datastore.to_lance.to_lance:17 of
+msgid ""
+"If True, write DataFrame index as a column. If False, do not write the "
+"index. If None (default), write the index only if it's not a simple "
+"RangeIndex (same as ``pa.Table.from_pandas`` default behavior)."
+msgstr ""
+"如果为 True，则将 DataFrame 索引作为列写入。如果为 False，则不写入索引。"
+"如果为 None（默认），则仅在索引不是简单的 RangeIndex 时写入索引（与 ``pa."
+"Table.from_pandas`` 的默认行为相同）。"
+
+#: maxframe.dataframe.datastore.to_lance.to_lance:21 of
+msgid ""
+"Column label(s) for the index column(s). If None (default) and `index` is"
+" True, the index names are used. Use this to rename the index column when"
+" writing (e.g., from '_idx_0' to 'id')."
+msgstr ""
+"索引列的列标签。如果为 None（默认）且 `index` 为 True，则使用索引名称。"
+"使用此参数可在写入时重命名索引列（例如，从 '_idx_0' 重命名为 'id'）。"
+
+#: maxframe.dataframe.datastore.to_lance.to_lance:25 of
+msgid ""
+"PyArrow schema to specify column types, compression, encoding, etc. "
+"Columns in this schema will override auto-detected types from DataFrame. "
+"Columns not specified will use types inferred from DataFrame."
+msgstr ""
+"用于指定列类型、压缩、编码等的 PyArrow 模式。此模式中的列将覆盖从 "
+"DataFrame 自动检测的类型。未指定的列将使用从 DataFrame 推断的类型。"
+
+#: maxframe.dataframe.datastore.to_lance.to_lance:29 of
+#, python-brace-format
+msgid ""
+"Options for storage connection. For Aliyun OSS with RAM role: "
+"``{'role_arn': 'acs:ram::xxx:role/name'}`` For Aliyun OSS with AK/SK: "
+"``{'access_key_id': 'xxx', 'access_key_secret': 'xxx'}`` For S3: "
+"``{'aws_access_key_id': 'xxx', 'aws_secret_access_key': 'xxx'}``"
+msgstr ""
+"存储连接选项。对于使用 RAM 角色的阿里云 OSS：``{'role_arn': 'acs:ram::xxx"
+":role/name'}`` 对于使用 AK/SK 的阿里云 OSS：``{'access_key_id': 'xxx', '"
+"access_key_secret': 'xxx'}`` 对于 S3：``{'aws_access_key_id': 'xxx', 'aws"
+"_secret_access_key': 'xxx'}``"
+
+#: maxframe.dataframe.datastore.to_lance.to_lance:34 of
+msgid "Additional keyword arguments passed to lance.fragment.write_fragments()."
+msgstr "传递给 lance.fragment.write_fragments() 的额外关键字参数。"
+
+#: maxframe.dataframe.datastore.to_lance.to_lance of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.datastore.to_lance.to_lance:36 of
+msgid "An empty DataFrame (write operation result)."
+msgstr "一个空的 DataFrame（写入操作的结果）。"
+
+#: maxframe.dataframe.datastore.to_lance.to_lance of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.datastore.to_lance.to_lance:40 of
+msgid "示例"
+msgstr ""
+

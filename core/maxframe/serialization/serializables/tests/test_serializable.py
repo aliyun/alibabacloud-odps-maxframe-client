@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,11 +19,10 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ....core import EntityData
-from ....lib.wrapped_pickle import switch_unpickle
-from ....utils import no_default
-from ... import clear_type_cache, deserialize, serialize
-from .. import (
+from maxframe.core import EntityData
+from maxframe.lib.wrapped_pickle import switch_unpickle
+from maxframe.serialization import clear_type_cache, deserialize, serialize
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     BytesField,
@@ -63,20 +62,23 @@ from .. import (
     UInt32Field,
     UInt64Field,
 )
+from maxframe.utils import no_default
 
 my_namedtuple = namedtuple("my_namedtuple", "a, b")
 
 
 @pytest.fixture
 def set_is_ci(request):
-    from .. import field
+    from maxframe.serialization.serializables import _core_c, field
 
     old_is_ci = field._is_ci
     try:
         field._is_ci = request.param
+        _core_c.set_is_ci(request.param)
         yield
     finally:
         field._is_ci = old_is_ci
+        _core_c.set_is_ci(old_is_ci)
 
 
 class MyHasKey(EntityData):

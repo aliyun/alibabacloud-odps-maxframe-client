@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ....utils import wrap_arrow_dtype
-from .core import SeriesStructMethod
+from maxframe.dataframe.accessors.struct_.core import SeriesStructMethod
+from maxframe.utils import wrap_arrow_dtype
 
 
 def struct_field(series, name_or_index):

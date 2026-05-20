@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 import numpy as np
 
-from ... import opcodes
-from ...utils import classproperty
-from .core import DataFrameBinopUfunc
+from maxframe import opcodes
+from maxframe.dataframe.arithmetic.core import DataFrameBinopUfunc
+from maxframe.utils import classproperty
 
 
 class DataFrameMaximum(DataFrameBinopUfunc):
@@ -28,6 +28,6 @@ class DataFrameMaximum(DataFrameBinopUfunc):
 
     @classproperty
     def tensor_op_type(self):
-        from ...tensor.arithmetic import TensorMaximum
+        from maxframe.tensor.arithmetic import TensorMaximum
 
         return TensorMaximum

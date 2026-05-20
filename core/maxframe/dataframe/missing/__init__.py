@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .checkna import isna, isnull, notna, notnull
-from .dropna import df_dropna, index_dropna, series_dropna
-from .fillna import bfill, ffill, fillna, index_fillna
-from .replace import df_replace, series_replace
+from maxframe.dataframe.missing.checkna import isna, isnull, notna, notnull
+from maxframe.dataframe.missing.dropna import df_dropna, index_dropna, series_dropna
+from maxframe.dataframe.missing.fillna import bfill, ffill, fillna, index_fillna
+from maxframe.dataframe.missing.replace import df_replace, series_replace
 
 
 def _install():
-    from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
+    from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
 
     for cls in DATAFRAME_TYPE + SERIES_TYPE:
         setattr(cls, "backfill", bfill)

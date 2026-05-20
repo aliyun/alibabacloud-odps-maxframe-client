@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,13 @@
 
 from collections import OrderedDict
 
-from ... import opcodes
-from ...serialization.serializables import BoolField, Int64Field
-from .aggregation import BaseDataFrameExpandingAgg
-from .core import Window
+from maxframe import opcodes
+from maxframe.dataframe.window.aggregation import BaseDataFrameExpandingAgg
+from maxframe.dataframe.window.core import Window
+from maxframe.serialization.serializables import BoolField, Int64Field
+from maxframe.utils import pd_release_version
+
+_has_axis_in_window = pd_release_version < (3, 0, 0)
 
 
 class DataFrameExpandingAgg(BaseDataFrameExpandingAgg):
@@ -41,11 +44,18 @@ class Expanding(Window):
 
     def __call__(self, df):
         try:
-            return df.expanding(**self.params)
+            params = self.params.copy()
+            # pandas 3.0 removed axis parameter from expanding
+            if not _has_axis_in_window:  # pragma: no branch
+                params.pop("axis", None)
+            return df.expanding(**params)
         except TypeError:
             params = (self.params or dict()).copy()
             for key in self._mf_specific_fields:
                 params.pop(key, None)
+            # pandas 3.0 removed axis parameter from expanding
+            if not _has_axis_in_window:  # pragma: no branch
+                params.pop("axis", None)
             return df.expanding(**params)
 
     @property

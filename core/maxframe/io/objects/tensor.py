@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@ from typing import Any, Dict
 import msgpack
 import numpy as np
 
-from ...config import options
-from ...core import OutputType
-from ...lib import wrapped_pickle as pickle
-from ...lib.version import parse as parse_version
-from ...typing_ import SlicesType, TileableType
-from ..odpsio import ODPSVolumeReader, ODPSVolumeWriter
-from .core import AbstractObjectIOHandler, register_object_io_handler
+from maxframe.config import options
+from maxframe.core import OutputType
+from maxframe.io.objects.core import AbstractObjectIOHandler, register_object_io_handler
+from maxframe.io.odpsio import ODPSVolumeReader, ODPSVolumeWriter
+from maxframe.lib import wrapped_pickle as pickle
+from maxframe.lib.version import parse as parse_version
+from maxframe.typing_ import SlicesType, TileableType
 
 try:
     from maxframe import __version__ as mf_version

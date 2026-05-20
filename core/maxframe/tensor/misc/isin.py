@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@ from typing import Union
 
 import numpy as np
 
-from ... import opcodes
-from ...serialization.serializables import BoolField
-from ...typing_ import TileableType
-from ..core import TensorOrder
-from ..datasource import tensor as astensor
-from ..operators import TensorOperator, TensorOperatorMixin
+from maxframe import opcodes
+from maxframe.serialization.serializables import BoolField
+from maxframe.tensor.core import TensorOrder
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
+from maxframe.typing_ import TileableType
 
 
 class TensorIsIn(TensorOperator, TensorOperatorMixin):

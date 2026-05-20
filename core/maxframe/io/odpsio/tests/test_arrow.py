@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pickle
+
 import numpy as np
 import pandas as pd
 import pyarrow as pa
 
-from ....lib.dtypes_extension import dict_
-from ....tests.utils import require_arrow_dtype
-from ..arrow import arrow_to_pandas, pandas_to_arrow
+from maxframe.io.odpsio.arrow import arrow_to_pandas, pandas_to_arrow
+from maxframe.lib.dtypes_extension import dict_
+from maxframe.tests.utils import require_arrow_dtype
+from maxframe.utils import wrap_arrow_dtype
 
 
 def test_dataframe_convert():
@@ -42,6 +45,19 @@ def test_dataframe_convert():
     arrow_data, meta = pandas_to_arrow(pd_data)
     pd_res = arrow_to_pandas(arrow_data, meta)
     pd.testing.assert_frame_equal(pd_data, pd_res)
+
+
+@require_arrow_dtype
+def test_dataframe_convert_with_illegal_encode():
+    """In some cases, when data source is not stored correctly, we need to be robust"""
+    pd_data = pd.DataFrame({"A": ["测试str"], "B": ["RESULT"]}).astype(
+        wrap_arrow_dtype(pa.string())
+    )
+    arrow_data, meta = pandas_to_arrow(pd_data)
+    pkl = pickle.dumps(arrow_data)
+    pkl = pkl.replace(b"RESULT", b"R\xF1SULT")
+    pd_res = arrow_to_pandas(pickle.loads(pkl), meta)
+    pd.testing.assert_series_equal(pd_data["A"], pd_res["A"])
 
 
 def test_series_convert():

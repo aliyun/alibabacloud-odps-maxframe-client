@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 from pandas.api.types import is_list_like
 
-from ..utils import validate_axis
+from maxframe.dataframe.utils import validate_axis
 
 
 def xs(df_or_series, key, axis=0, level=None, drop_level=True):

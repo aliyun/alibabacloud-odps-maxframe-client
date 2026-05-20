@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ... import opcodes
-from ...utils import classproperty
-from .core import DataFrameUnaryUfunc
+from maxframe import opcodes
+from maxframe.dataframe.arithmetic.core import DataFrameUnaryUfunc
+from maxframe.utils import classproperty
 
 
 class DataFrameFloor(DataFrameUnaryUfunc):
@@ -23,6 +23,6 @@ class DataFrameFloor(DataFrameUnaryUfunc):
 
     @classproperty
     def tensor_op_type(self):
-        from ...tensor.arithmetic import TensorFloor
+        from maxframe.tensor.arithmetic import TensorFloor
 
         return TensorFloor

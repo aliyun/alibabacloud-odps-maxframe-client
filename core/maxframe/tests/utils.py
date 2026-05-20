@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ import pytest
 from odps import ODPS
 from tornado import netutil
 
-from ..core import Tileable, TileableGraph
-from ..utils import (
+from maxframe.core import ENTITY_TYPE, Tileable, TileableGraph
+from maxframe.utils import (
     create_sync_primitive,
     is_arrow_dtype_supported,
     lazy_import,
@@ -132,6 +132,15 @@ def run_app_in_thread(app_func):
     return fixture_func
 
 
+def assert_object_list_equal(left, right, skip_order=False):
+    left_list = [(r.key if isinstance(r, ENTITY_TYPE) else r) for r in (left or ())]
+    right_list = [(r.key if isinstance(r, ENTITY_TYPE) else r) for r in (right or ())]
+    if skip_order:
+        left_list = sorted(left_list)
+        right_list = sorted(right_list)
+    assert left_list == right_list, f"Left {left_list} != Right {right_list}"
+
+
 def assert_graph_equal(
     graph: TileableGraph,
     expected_node_count: int,
@@ -147,7 +156,7 @@ def assert_graph_equal(
         assert graph.count_successors(pred_node) == len(successors)
         for successor in successors:
             assert graph.has_successor(pred_node, key_to_node[successor])
-    assert graph.results == expected_results
+    assert_object_list_equal(graph.results, expected_results)
 
 
 def require_cupy(func):
@@ -193,7 +202,7 @@ def get_test_unique_name(size=None):
 
 
 def assert_mf_index_dtype(idx_obj, dtype):
-    from ..dataframe.core import IndexValue
+    from maxframe.dataframe.core import IndexValue
 
     assert isinstance(idx_obj, IndexValue.IndexBase) and idx_obj.dtype == dtype
 

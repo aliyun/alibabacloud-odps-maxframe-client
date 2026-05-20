@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .... import tensor as mt
-from ....dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
-from ....learn.core import BaseEstimator, TransformerMixin
-from ...utils.validation import FLOAT_DTYPES, check_array, check_is_fitted
-from .utils import _get_real_sample_size, _handle_zeros_in_scale
+from maxframe import tensor as mt
+from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
+from maxframe.learn.core import BaseEstimator, TransformerMixin
+from maxframe.learn.preprocessing._data.utils import (
+    _get_real_sample_size,
+    _handle_zeros_in_scale,
+)
+from maxframe.learn.utils.validation import FLOAT_DTYPES, check_array, check_is_fitted
 
 
 class MinMaxScaler(TransformerMixin, BaseEstimator):

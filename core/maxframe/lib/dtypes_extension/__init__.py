@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .blob import (
+from maxframe.lib.dtypes_extension.blob import (
     ArrowBlobType,
     ExternalBlobDtype,
     ExternalBlobExtensionArray,
     SolidBlob,
     new_blob,
 )
-from .dtypes import (
+from maxframe.lib.dtypes_extension.dtypes import (
     ArrowDtype,
+    ArrowExtensionArray,
     dict_,
     is_list_dtype,
     is_map_dtype,

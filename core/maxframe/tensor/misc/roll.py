@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@ from collections.abc import Iterable
 
 import numpy as np
 
-from ..utils import validate_axis
-from .ravel import ravel
+from maxframe.tensor.misc.ravel import ravel
+from maxframe.tensor.utils import validate_axis
 
 
 def roll(a, shift, axis=None):
@@ -80,8 +80,8 @@ def roll(a, shift, axis=None):
            [9, 5, 6, 7, 8]])
 
     """
-    from ..datasource import tensor as astensor
-    from ..merge import concatenate
+    from maxframe.tensor.datasource import tensor as astensor
+    from maxframe.tensor.merge import concatenate
 
     a = astensor(a)
     raw = a

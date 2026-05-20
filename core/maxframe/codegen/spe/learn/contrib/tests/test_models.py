@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@ try:
 except ImportError:
     lightgbm = None
 
-from ...... import tensor as mt
-from ......learn.contrib.lightgbm import Dataset, train
-from ....core import SPECodeContext
-from ..models import ModelApplyChunkAdapter
+from maxframe import tensor as mt
+from maxframe.codegen.spe.core import SPECodeContext
+from maxframe.codegen.spe.learn.contrib.models import ModelApplyChunkAdapter
+from maxframe.learn.contrib.lightgbm import Dataset, train
 
 
 @pytest.mark.skipif(lightgbm is None, reason="requires lightgbm to run the test")

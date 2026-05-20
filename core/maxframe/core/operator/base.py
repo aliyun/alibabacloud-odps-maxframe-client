@@ -18,8 +18,14 @@ from enum import Enum
 from functools import lru_cache, partial
 from typing import Any, Dict, List, MutableMapping, Optional, Tuple, Type, Union
 
-from ...serialization.core import Placeholder
-from ...serialization.serializables import (
+from maxframe.core.base import Base
+from maxframe.core.entity.core import ENTITY_TYPE, Entity, EntityData
+from maxframe.core.entity.output_types import OutputType
+from maxframe.core.entity.tileables import Tileable
+from maxframe.core.mode import enter_mode
+from maxframe.core.operator.utils import rewrite_stop_iteration
+from maxframe.serialization.core import Placeholder
+from maxframe.serialization.serializables import (
     BoolField,
     DictField,
     FieldTypes,
@@ -32,16 +38,10 @@ from ...serialization.serializables import (
     StringField,
     TupleField,
 )
-from ...serialization.serializables.core import SerializableSerializer
-from ...typing_ import OperatorType
-from ...udf import FsMountOptions
-from ...utils import AttributeDict, classproperty, get_user_call_point, tokenize
-from ..base import Base
-from ..entity.core import ENTITY_TYPE, Entity, EntityData
-from ..entity.output_types import OutputType
-from ..entity.tileables import Tileable
-from ..mode import enter_mode
-from .utils import rewrite_stop_iteration
+from maxframe.serialization.serializables.core import SerializableSerializer
+from maxframe.typing_ import OperatorType
+from maxframe.udf import FsMountOptions
+from maxframe.utils import AttributeDict, classproperty, get_user_call_point, tokenize
 
 
 class OperatorMetaclass(SerializableMeta):
@@ -112,6 +112,9 @@ class SchedulingHint(Serializable):
     parallel_limit_num = Int32Field("parallel_limit_num", default=None)
     # Group ID for parallel limit.
     parallel_limit_group_id = StringField("parallel_limit_group_id", default=None)
+    # Network configurations for isolation execution
+    # Contains: public_network_whitelist, internal_network_whitelist, vpc_networklink
+    network_configs = DictField("network_configs", FieldTypes.any, default=None)
 
     def __init__(self, *, pure_depends=None, **kwargs):
         kwargs["_pure_depends"] = pure_depends or kwargs.get("_pure_depends") or []
@@ -455,10 +458,6 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
 
 
 class OperatorSerializer(SerializableSerializer):
-    def serial(self, obj: Serializable, context: Dict):
-        res = super().serial(obj, context)
-        return res
-
     def deserial(self, serialized: List, context: Dict, subs: List) -> Operator:
         # convert outputs back to weak-refs
         operator: Operator = super().deserial(serialized, context, subs)

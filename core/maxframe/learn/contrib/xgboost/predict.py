@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,21 +17,21 @@ from typing import List
 import numpy as np
 import pandas as pd
 
-from .... import opcodes
-from ....core import EntityData
-from ....core.entity.output_types import OutputType
-from ....core.operator.base import Operator
-from ....core.operator.core import TileableOperatorMixin
-from ....serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.core.entity.output_types import OutputType
+from maxframe.core.operator.base import Operator
+from maxframe.core.operator.core import TileableOperatorMixin
+from maxframe.learn.contrib.models import to_remote_model
+from maxframe.learn.contrib.xgboost.core import Booster, BoosterData
+from maxframe.learn.contrib.xgboost.dmatrix import check_data
+from maxframe.serialization.serializables import (
     BoolField,
     KeyField,
     ReferenceField,
     TupleField,
 )
-from ....tensor.core import TensorOrder
-from ..models import to_remote_model
-from .core import Booster, BoosterData
-from .dmatrix import check_data
+from maxframe.tensor.core import TensorOrder
 
 
 class XGBPredict(Operator, TileableOperatorMixin):

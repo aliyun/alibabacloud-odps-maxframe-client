@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import itertools
 import logging
 import warnings
 from typing import Any, Dict, List, Optional, Union
@@ -21,11 +20,15 @@ from odps import ODPS
 from odps.models import Table as ODPSTable
 from odps.types import OdpsSchema, PartitionSpec
 
-from ... import opcodes
-from ...config import options
-from ...core import OutputType
-from ...io.odpsio import build_dataframe_table_meta, odps_schema_to_pandas_dtypes
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.config import options
+from maxframe.core import OutputType
+from maxframe.dataframe.core import DATAFRAME_TYPE, DataFrame  # noqa: F401
+from maxframe.dataframe.datastore.core import DataFrameDataStore
+from maxframe.dataframe.datastore.core import get_index_mapping as _get_index_mapping
+from maxframe.dataframe.utils import parse_index
+from maxframe.io.odpsio import build_dataframe_table_meta, odps_schema_to_pandas_dtypes
+from maxframe.serialization.serializables import (
     BoolField,
     DictField,
     FieldTypes,
@@ -34,10 +37,7 @@ from ...serialization.serializables import (
     SeriesField,
     StringField,
 )
-from ...typing_ import TileableType
-from ..core import DATAFRAME_TYPE, DataFrame  # noqa: F401
-from ..utils import parse_index
-from .core import DataFrameDataStore
+from maxframe.typing_ import TileableType
 
 logger = logging.getLogger(__name__)
 
@@ -91,17 +91,8 @@ class DataFrameToODPSTable(DataFrameDataStore):
         index_label: Optional[List[str]],
         raw_index_levels: List[Any],
     ) -> List[Any]:
-        def_labels = index_label or itertools.repeat(None)
-        def_labels = itertools.chain(def_labels, itertools.repeat(None))
-        names = raw_index_levels
-        if len(names) == 1:
-            default_labels = ["index"]
-        else:
-            default_labels = [f"level_{i}" for i in range(len(names))]
-        indexes = [
-            def_label or name or label
-            for def_label, name, label in zip(def_labels, names, default_labels)
-        ]
+        # Use shared logic, then lowercase for ODPS (column names are case-insensitive)
+        indexes = _get_index_mapping(index_label, raw_index_levels)
         return [x.lower() for x in indexes]
 
 
@@ -177,7 +168,7 @@ def to_odps_table(
     --------
 
     """
-    from .. import DataFrame as MFDataFrame
+    from maxframe.dataframe import DataFrame as MFDataFrame
 
     odps_entry = ODPS.from_global() or ODPS.from_environments()
     is_schema_enabled = (

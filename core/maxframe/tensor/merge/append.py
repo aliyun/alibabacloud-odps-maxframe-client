@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..datasource.array import asarray
-from ..misc.ravel import ravel
-from .concatenate import concatenate
+from maxframe.tensor.datasource.array import asarray
+from maxframe.tensor.merge.concatenate import concatenate
+from maxframe.tensor.misc.ravel import ravel
 
 
 def append(arr, values, axis=None):

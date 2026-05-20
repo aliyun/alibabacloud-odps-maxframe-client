@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .builder import TileableGraphBuilder
-from .core import DAG, DirectedGraph, GraphContainsCycleError
-from .entity import EntityGraph, GraphSerializer, SerializableGraph, TileableGraph
+from maxframe.core.graph.builder import TileableGraphBuilder
+from maxframe.core.graph.core import DAG, DirectedGraph, GraphContainsCycleError
+from maxframe.core.graph.entity import (
+    EntityGraph,
+    GraphSerializer,
+    SerializableGraph,
+    TileableGraph,
+)
 
 try:
-    from ._internal import SubDAG
+    from maxframe.core.graph._internal import SubDAG
 except ImportError:  # pragma: no cover
     pass

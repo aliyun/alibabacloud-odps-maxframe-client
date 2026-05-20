@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .cdist import cdist
-from .pdist import pdist
-from .squareform import squareform
+from maxframe.tensor.spatial.distance.cdist import cdist
+from maxframe.tensor.spatial.distance.pdist import pdist
+from maxframe.tensor.spatial.distance.squareform import squareform

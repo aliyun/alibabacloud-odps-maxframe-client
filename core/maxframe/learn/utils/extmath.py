@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 import numpy as np
 
-from ... import tensor as mt
-from ...core import ENTITY_TYPE
-from ...dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
-from ...tensor.datasource import TensorZeros
+from maxframe import tensor as mt
+from maxframe.core import ENTITY_TYPE
+from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+from maxframe.tensor.datasource import TensorZeros
 
 
 # Use at least float64 for the accumulating functions to avoid precision issue
@@ -58,7 +58,7 @@ def _safe_accumulator_op(op, x, *args, **kwargs):
 
 def logsumexp_real(a, axis=None, keepdims=False):
     """Simplified logsumexp for real arrays without biases"""
-    from ... import tensor as mt
+    from maxframe import tensor as mt
 
     x = mt.tensor(a)
     x_max = mt.amax(a, axis=axis, keepdims=True)

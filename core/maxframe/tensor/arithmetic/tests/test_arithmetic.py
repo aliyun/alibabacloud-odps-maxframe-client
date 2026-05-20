@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@ import numpy as np
 import pytest
 import scipy.sparse as sps
 
-from ....utils import collect_leaf_operators
-from ...core import SparseTensor, Tensor
-from ...datasource import array, empty, ones, tensor
-from .. import *  # noqa: F401
-from ..core import TensorBinOp, TensorUnaryOp
+from maxframe.tensor.arithmetic import *  # noqa: F401
+from maxframe.tensor.arithmetic.core import TensorBinOp, TensorUnaryOp
+from maxframe.tensor.core import SparseTensor, Tensor
+from maxframe.tensor.datasource import array, empty, ones, tensor
+from maxframe.utils import collect_leaf_operators
 
 
 def test_add():

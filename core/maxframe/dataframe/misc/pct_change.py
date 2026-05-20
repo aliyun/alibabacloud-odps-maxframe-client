@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils import validate_axis
+from maxframe.dataframe.utils import validate_axis
 
 
 def pct_change(
@@ -57,7 +57,12 @@ def pct_change(
     if fill_method is None:
         data = df_or_series
     else:
-        data = df_or_series.fillna(method=fill_method, axis=axis, limit=limit)
+        # for fill_method is None, fill_value in kwargs can be passed
+        #  to shift directly and need no special handling
+        if fill_method in ("pad", "ffill"):
+            data = df_or_series.ffill(axis=axis, limit=limit)
+        elif fill_method in ("backfill", "bfill"):
+            data = df_or_series.bfill(axis=axis, limit=limit)
 
     rs = data.div(data.shift(periods=periods, freq=freq, axis=axis, **kwargs)) - 1
     if freq is not None:

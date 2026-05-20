@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" fill="#fbfdff"/>
+  <text x="44" y="76" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="800" fill="#0f2346">MaxFrame PDF Embedding Pipeline</text>
+  <text x="44" y="134" font-family="Arial, Helvetica, sans-serif" font-size="34" fill="#41516d">OSS PDF -> Parse -> Bailian Embedding -> ODPS Table</text>
+  <defs><marker id="arrowp" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto"><path d="M0,0 L12,4 L0,8 Z" fill="#111827"/></marker></defs>
+  <g font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <g transform="translate(104 502)">
+      <rect x="-86" y="-317" width="172" height="634" rx="14" fill="#f8fbff" stroke="#e5edf8"/>
+      <rect x="-86" y="-317" width="172" height="64" rx="14" fill="#8190ab"/><text y="-276" font-size="24" font-weight="700" fill="#fff">Source</text>
+      <path d="M-17 -36 h40 l22 22 v60 h-62z" fill="#fff" stroke="#f97316" stroke-width="4"/><path d="M23 -36 v22 h22" fill="none" stroke="#f97316" stroke-width="4"/>
+      <path d="M-42 31 c4 -37 27 -54 53 -55" fill="none" stroke="#f97316" stroke-width="5" marker-end="url(#arrowp)"/><circle cx="-38" cy="45" r="19" fill="#f97316"/>
+      <text y="97" font-size="24" font-weight="700">OSS Bucket /</text><text y="129" font-size="24" font-weight="700">PDF Files</text>
+    </g>
+    <g transform="translate(405 502)">
+      <rect x="-155" y="-317" width="310" height="634" rx="14" fill="#f8fbff" stroke="#e5edf8"/>
+      <rect x="-155" y="-317" width="310" height="64" rx="14" fill="#3182e8"/><text y="-276" font-size="24" font-weight="700" fill="#fff">MaxFrame Compute</text>
+      <rect x="-118" y="-218" width="236" height="150" rx="10" fill="#dff0ff"/><text x="36" y="-147" font-size="22" font-weight="700">MaxFrame</text><text x="36" y="-113" font-size="22" font-weight="700">reads OSS PDF</text>
+      <path d="M-82 -159 a28 28 0 1 0 1 0" fill="none" stroke="#1670ca" stroke-width="8"/><circle cx="-82" cy="-159" r="12" fill="#1670ca"/>
+      <rect x="-118" y="86" width="236" height="116" rx="10" fill="#dff0ff"/><text y="153" font-size="22" font-weight="700">PDF Text Parsing</text>
+      <path d="M0 -68 v137" stroke="#111827" stroke-width="3" marker-end="url(#arrowp)"/><text x="72" y="8" font-size="18" text-anchor="start">parsed text,</text><text x="72" y="34" font-size="18" text-anchor="start">metadata</text>
+    </g>
+    <g transform="translate(672 502)">
+      <rect x="-89" y="-317" width="178" height="634" rx="14" fill="#f8fbff" stroke="#e5edf8"/>
+      <rect x="-89" y="-317" width="178" height="64" rx="14" fill="#4d60cc"/><text y="-276" font-size="24" font-weight="700" fill="#fff">Model Service</text>
+      <rect x="-72" y="-34" width="144" height="154" rx="14" fill="#e4e4ff"/>
+      <path d="M0 -9 l32 18 v37 l-32 18 -32 -18 v-37zM0 -9 v73M-32 9 l64 37M32 9 l-64 37" fill="none" stroke="#7457e8" stroke-width="4"/>
+      <text y="94" font-size="21" font-weight="700">Bailian</text><text y="124" font-size="21" font-weight="700">Embedding</text><text y="154" font-size="21" font-weight="700">Model</text>
+    </g>
+    <g transform="translate(912 502)">
+      <rect x="-95" y="-317" width="190" height="634" rx="14" fill="#f8ffff" stroke="#d7f0f0"/>
+      <rect x="-95" y="-317" width="190" height="64" rx="14" fill="#2aa19c"/><text y="-276" font-size="24" font-weight="700" fill="#fff">Storage</text>
+      <rect x="-76" y="-82" width="152" height="336" rx="12" fill="#ffa66f"/>
+      <text y="-27" font-size="22" font-weight="700">ODPS Table</text>
+      <ellipse cy="27" rx="33" ry="14" fill="#ff7a00" stroke="#e45d00" stroke-width="4"/><path d="M-33 27 v54 c0 8 15 15 33 15s33-7 33-15V27" fill="none" stroke="#e45d00" stroke-width="4"/><path d="M-33 52 c0 8 15 15 33 15s33-7 33-15" fill="none" stroke="#e45d00" stroke-width="4"/>
+      <rect x="-58" y="141" width="116" height="96" fill="#fff3ea"/><text y="172" font-size="18" font-weight="700">doc_id,</text><text y="199" font-size="18" font-weight="700">text,</text><text y="226" font-size="18" font-weight="700">embedding</text>
+    </g>
+    <path d="M181 461 h87" stroke="#111827" stroke-width="3" marker-end="url(#arrowp)"/><text x="224" y="442" font-size="19">PDF URI</text>
+    <path d="M523 543 h73" stroke="#111827" stroke-width="3" marker-end="url(#arrowp)"/>
+    <path d="M744 543 h83" stroke="#111827" stroke-width="3" marker-end="url(#arrowp)"/><text x="786" y="491" font-size="18">embedding</text><text x="786" y="518" font-size="18">vectors</text>
+    <rect x="18" y="853" width="988" height="129" rx="16" fill="#eef8ff" stroke="#cde7ff"/>
+    <text x="100" y="903" font-size="19" font-weight="700">PDF text parsing</text><text x="100" y="934" font-size="17">Extract text and metadata</text>
+    <text x="344" y="903" font-size="19" font-weight="700">Bailian Embedding model</text><text x="344" y="934" font-size="17">Convert text to vectors</text>
+    <text x="610" y="903" font-size="19" font-weight="700">ODPS table storage</text><text x="610" y="934" font-size="17">Store vectors and metadata</text>
+    <text x="850" y="903" font-size="19" font-weight="700">Scalable processing</text><text x="850" y="934" font-size="17">Production-ready pipelines</text>
+  </g>
+</svg>

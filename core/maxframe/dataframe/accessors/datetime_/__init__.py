@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .core import SeriesDatetimeMethod, datetime_method_to_handlers
+from maxframe.dataframe.accessors.datetime_.core import (
+    SeriesDatetimeMethod,
+    datetime_method_to_handlers,
+)
 
 methods = set(datetime_method_to_handlers.keys())
 del datetime_method_to_handlers
 
 
 def _install():
-    from ....core import CachedAccessor
-    from ...core import SERIES_TYPE
-    from .accessor import DatetimeAccessor
-    from .core import datetime_method_to_handlers
+    from maxframe.core import CachedAccessor
+    from maxframe.dataframe.accessors.datetime_.accessor import DatetimeAccessor
+    from maxframe.dataframe.accessors.datetime_.core import datetime_method_to_handlers
+    from maxframe.dataframe.core import SERIES_TYPE
 
     for method in datetime_method_to_handlers:
         if not hasattr(DatetimeAccessor, method):

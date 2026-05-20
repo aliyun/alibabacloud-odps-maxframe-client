@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..datasource import tensor as astensor
-from .cholesky import cholesky
-from .lu import lu
-from .solve_triangular import solve_triangular
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.linalg.cholesky import cholesky
+from maxframe.tensor.linalg.lu import lu
+from maxframe.tensor.linalg.solve_triangular import solve_triangular
 
 
 def solve(a, b, sym_pos=False, sparse=None):

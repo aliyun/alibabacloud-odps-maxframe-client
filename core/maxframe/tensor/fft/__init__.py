@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,21 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .fft import TensorFFT, fft
-from .fft2 import TensorFFT2, fft2
-from .fftfreq import TensorFFTFreq, fftfreq
-from .fftn import TensorFFTN, fftn
-from .fftshift import TensorFFTShift, fftshift
-from .hfft import TensorHFFT, hfft
-from .ifft import TensorIFFT, ifft
-from .ifft2 import TensorIFFT2, ifft2
-from .ifftn import TensorIFFTN, ifftn
-from .ifftshift import TensorIFFTShift, ifftshift
-from .ihfft import TensorIHFFT, ihfft
-from .irfft import TensorIRFFT, irfft
-from .irfft2 import TensorIRFFT2, irfft2
-from .irfftn import TensorIRFFTN, irfftn
-from .rfft import TensorRFFT, rfft
-from .rfft2 import TensorRFFT2, rfft2
-from .rfftfreq import TensorRFFTFreq, rfftfreq
-from .rfftn import TensorRFFTN, rfftn
+from maxframe.tensor.fft.fft import TensorFFT, fft
+from maxframe.tensor.fft.fft2 import TensorFFT2, fft2
+from maxframe.tensor.fft.fftfreq import TensorFFTFreq, fftfreq
+from maxframe.tensor.fft.fftn import TensorFFTN, fftn
+from maxframe.tensor.fft.fftshift import TensorFFTShift, fftshift
+from maxframe.tensor.fft.hfft import TensorHFFT, hfft
+from maxframe.tensor.fft.ifft import TensorIFFT, ifft
+from maxframe.tensor.fft.ifft2 import TensorIFFT2, ifft2
+from maxframe.tensor.fft.ifftn import TensorIFFTN, ifftn
+from maxframe.tensor.fft.ifftshift import TensorIFFTShift, ifftshift
+from maxframe.tensor.fft.ihfft import TensorIHFFT, ihfft
+from maxframe.tensor.fft.irfft import TensorIRFFT, irfft
+from maxframe.tensor.fft.irfft2 import TensorIRFFT2, irfft2
+from maxframe.tensor.fft.irfftn import TensorIRFFTN, irfftn
+from maxframe.tensor.fft.rfft import TensorRFFT, rfft
+from maxframe.tensor.fft.rfft2 import TensorRFFT2, rfft2
+from maxframe.tensor.fft.rfftfreq import TensorRFFTFreq, rfftfreq
+from maxframe.tensor.fft.rfftn import TensorRFFTN, rfftn

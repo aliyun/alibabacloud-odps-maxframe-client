@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...utils import pd_release_version
-from ..core import CATEGORICAL_TYPE, INDEX_TYPE, SERIES_TYPE
+from maxframe.dataframe.core import CATEGORICAL_TYPE, INDEX_TYPE, SERIES_TYPE
+from maxframe.utils import pd_release_version
 
 _na_position_last = pd_release_version < (2, 0)
 
@@ -140,8 +140,8 @@ def factorize(values, sort=False, use_na_sentinel=True):
     >>> uniques.execute()
     array([ 1.,  2., nan])
     """
-    from ... import tensor as mt
-    from ..datasource.index import from_tileable as index_from_tileable
+    from maxframe import tensor as mt
+    from maxframe.dataframe.datasource.index import from_tileable as index_from_tileable
 
     uniques, indices = mt.unique(
         values,
@@ -153,6 +153,9 @@ def factorize(values, sort=False, use_na_sentinel=True):
 
     if isinstance(values, (SERIES_TYPE, INDEX_TYPE)):
         uniques = index_from_tileable(uniques)
+        if uniques.dtype != values.dtype:
+            # cast bask from tensor type to dataframe type
+            uniques = uniques.astype(values.dtype)
     elif isinstance(values, CATEGORICAL_TYPE):
         # fixme add categorical return when categorical initializers
         #  and accessors implemented

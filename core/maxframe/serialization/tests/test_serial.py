@@ -24,8 +24,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ...utils import is_arrow_dtype_supported, wrap_arrow_dtype
-from .. import PickleHookOptions
+from maxframe.serialization import PickleHookOptions
+from maxframe.utils import is_arrow_dtype_supported, wrap_arrow_dtype
 
 try:
     import pyarrow as pa
@@ -44,20 +44,20 @@ try:
 except ImportError:
     zoneinfo = None
 
-from ...lib.dtypes_extension import ArrowDtype
-from ...lib.dtypes_extension._fake_arrow_dtype import FakeArrowDtype
-from ...lib.sparse import SparseMatrix
-from ...lib.wrapped_pickle import switch_unpickle
-from ...tests.utils import require_cudf, require_cupy
-from ...utils import lazy_import, no_default
-from .. import (
+from maxframe.lib.dtypes_extension import ArrowDtype
+from maxframe.lib.dtypes_extension._fake_arrow_dtype import FakeArrowDtype
+from maxframe.lib.sparse import SparseMatrix
+from maxframe.lib.wrapped_pickle import switch_unpickle
+from maxframe.serialization import (
     PickleContainer,
     RemoteException,
     deserialize,
     serialize,
     serialize_with_spawn,
 )
-from ..core import DtypeSerializer, ListSerializer, Placeholder
+from maxframe.serialization.core import DtypeSerializer, ListSerializer, Placeholder
+from maxframe.tests.utils import require_cudf, require_cupy
+from maxframe.utils import lazy_import, no_default
 
 cupy = lazy_import("cupy")
 cudf = lazy_import("cudf")
@@ -280,7 +280,9 @@ def test_fake_arrow_dtype_serde():
 
     new_dtype = serializer.deserial(["PE", "string[pyarrow]"], dict(), list())
     if isinstance(new_dtype, pd.StringDtype):
-        assert new_dtype.storage == "pyarrow"
+        # In pandas 2.3, storage defaults to "python" even for string[pyarrow]
+        # In pandas 3.0+, storage is correctly set to "pyarrow"
+        assert new_dtype.storage in ["pyarrow", "python"]
     else:
         assert type(new_dtype) in (FakeArrowDtype, ArrowDtype)
         assert new_dtype.pyarrow_dtype == pa.string()

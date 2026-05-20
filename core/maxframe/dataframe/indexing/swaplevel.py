@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 import pandas as pd
 
-from ..utils import validate_axis
+from maxframe.dataframe.utils import validate_axis
 
 
 def _swaplevel(df_or_series, i=-2, j=-1, axis=0):

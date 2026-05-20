@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,11 +21,11 @@ from typing import List, NamedTuple, Optional, Tuple, Union
 import pandas as pd
 from pandas.api.types import is_dict_like, is_list_like
 
-from ...core import OutputType
-from ...lib.filesystem import FileSystem, get_fs
-from ...utils import make_dtypes, no_default
-from ..core import IndexValue
-from ..utils import get_index_value_by_default_index_type, parse_index
+from maxframe.core import OutputType
+from maxframe.dataframe.core import IndexValue
+from maxframe.dataframe.utils import get_index_value_by_default_index_type, parse_index
+from maxframe.lib.filesystem import FileSystem, get_fs
+from maxframe.utils import make_dtypes, no_default
 
 
 def find_partitions_and_sample_file(

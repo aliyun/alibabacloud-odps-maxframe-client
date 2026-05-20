@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 import numpy as np
 
-from ... import opcodes
-from ...serialization.serializables import AnyField, TupleField
-from .core import TensorArgReductionMixin, TensorReduction
+from maxframe import opcodes
+from maxframe.serialization.serializables import AnyField, TupleField
+from maxframe.tensor.reduction.core import TensorArgReductionMixin, TensorReduction
 
 
 class TensorNanArgmax(TensorReduction, TensorArgReductionMixin):

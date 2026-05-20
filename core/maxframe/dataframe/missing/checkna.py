@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ... import tensor as mt
-from ...core import ENTITY_TYPE, OutputType
-from ...serialization.serializables import BoolField
-from ...tensor.core import TENSOR_TYPE
-from ...utils import get_pd_option
-from ..core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE, MultiIndex
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe import opcodes
+from maxframe import tensor as mt
+from maxframe.core import ENTITY_TYPE, OutputType
+from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE, MultiIndex
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.serialization.serializables import BoolField
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.utils import get_pd_option
 
 
 class DataFrameCheckNA(DataFrameOperator, DataFrameOperatorMixin):
@@ -63,11 +63,11 @@ class DataFrameCheckNA(DataFrameOperator, DataFrameOperatorMixin):
 
 def _from_pandas(obj: Any):
     if isinstance(obj, pd.DataFrame):
-        from ..datasource.dataframe import from_pandas
+        from maxframe.dataframe.datasource.dataframe import from_pandas
 
         return from_pandas(obj)
     elif isinstance(obj, pd.Series):
-        from ..datasource.series import from_pandas
+        from maxframe.dataframe.datasource.series import from_pandas
 
         return from_pandas(obj)
     elif isinstance(obj, np.ndarray):

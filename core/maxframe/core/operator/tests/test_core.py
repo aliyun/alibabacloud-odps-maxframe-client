@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 import pytest
 
-from ....dataframe import core  # noqa: F401  # pylint: disable=unused-variable
-from ... import OutputType
-from .. import Operator, TileableOperatorMixin
+from maxframe.core import OutputType
+from maxframe.core.operator import Operator, TileableOperatorMixin
+from maxframe.dataframe import core  # noqa: F401  # pylint: disable=unused-variable
 
 
 class MyOperator(Operator, TileableOperatorMixin):

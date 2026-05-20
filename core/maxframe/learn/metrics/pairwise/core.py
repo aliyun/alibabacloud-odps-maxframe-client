@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 import numpy as np
 
-from ....serialization.serializables import Int64Field
-from ....tensor import tensor as astensor
-from ....tensor.operators import TensorOperator, TensorOperatorMixin
-from ...utils.validation import check_array
+from maxframe.learn.utils.validation import check_array
+from maxframe.serialization.serializables import Int64Field
+from maxframe.tensor import tensor as astensor
+from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
 
 
 class PairwiseDistances(TensorOperator, TensorOperatorMixin):

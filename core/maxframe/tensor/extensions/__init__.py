@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...core import CachedAccessor
-from .accessor import TensorMaxFrameAccessor
-from .apply_chunk import apply_chunk
-from .rebalance import rebalance
+from maxframe.core import CachedAccessor
+from maxframe.tensor.extensions.accessor import TensorMaxFrameAccessor
+from maxframe.tensor.extensions.apply_chunk import apply_chunk
+from maxframe.tensor.extensions.rebalance import rebalance
 
 
 def _install():
-    from ..core import TENSOR_TYPE
+    from maxframe.tensor.core import TENSOR_TYPE
 
     TensorMaxFrameAccessor._register("apply_chunk", apply_chunk)
     TensorMaxFrameAccessor._register("rebalance", rebalance)

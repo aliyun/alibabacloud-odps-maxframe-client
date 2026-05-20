@@ -1,0 +1,223 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 0.1.0.dev21+br.g2bf54307e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-29 16:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+msgid "**MaxFrame SDK version**"
+msgstr "**MaxFrame SDK 版本**"
+
+msgid "Use MaxFrame SDK **2.6.0** or above (``pip install maxframe>=2.6.0``)."
+msgstr ""
+"请使用 MaxFrame SDK **2.6.0** 及以上版本（``pip install maxframe>=2.6.0``"
+"）。"
+
+msgid "#"
+msgstr ""
+
+msgid "**Custom image with FFmpeg**"
+msgstr "**包含 FFmpeg 的自定义镜像**"
+
+msgid "**DPE enabled**"
+msgstr "**开通 DPE 引擎**"
+
+msgid "**DashScope API key**"
+msgstr "**百炼 API Key**"
+
+msgid "**MaxCompute enabled**"
+msgstr "**开通 MaxCompute**"
+
+msgid "**OSS RAM role authorization**"
+msgstr "**OSS RAM 角色授权**"
+
+msgid "**Video uploaded to OSS**"
+msgstr "**上传视频至 OSS**"
+
+msgid "1"
+msgstr ""
+
+msgid "2"
+msgstr ""
+
+msgid "3"
+msgstr ""
+
+msgid "4"
+msgstr ""
+
+msgid "5"
+msgstr ""
+
+msgid "6"
+msgstr ""
+
+msgid "A MaxCompute project with valid Access ID / Access Key."
+msgstr "需要一个已开通的 MaxCompute 项目，并具备有效的 Access ID / Access Key。"
+
+msgid "Applicable scenarios"
+msgstr "适用场景"
+
+msgid "At large scale, request higher API quotas to avoid 429/403 throttling."
+msgstr "在大规模生产场景中，建议申请更高 API 并发配额以避免 429/403 限流。"
+
+msgid "Automatic tagging and management of large video datasets."
+msgstr "海量视频数据自动打标与管理。"
+
+msgid ""
+"Autonomous driving systems continuously collect large-scale camera video "
+"across road types, traffic conditions, weather, and complex events. These"
+" raw videos are critical for model training, scenario mining, data "
+"flywheel operations, and evaluation."
+msgstr ""
+"自动驾驶车辆在研发和运营过程中会持续采集海量摄像头视频数据。这些数据覆盖"
+"不同道路类型、交通流、天气光照和复杂事件，是模型训练、场景挖掘、数据闭环"
+"和效果评测的重要基础。"
+
+msgid "Background"
+msgstr "背景信息"
+
+msgid "Cleanup"
+msgstr "资源清理"
+
+msgid "Configure Role ARN for OSS mount access."
+msgstr "配置用于 OSS 挂载访问的 Role ARN。"
+
+msgid "Custom image"
+msgstr "自定义镜像"
+
+msgid "Data preparation for training and evaluation loops."
+msgstr "训练、评测与数据闭环支撑。"
+
+msgid "Dataset clustering and distribution analysis."
+msgstr "数据聚类分析与分布评估。"
+
+msgid ""
+"Default DPE runtime includes Python but not FFmpeg. Stage-1 frame "
+"extraction requires FFmpeg binaries."
+msgstr ""
+"默认 DPE 运行时仅包含 Python，不包含 FFmpeg；阶段一抽帧依赖 FFmpeg "
+"可执行文件。"
+
+msgid ""
+"Default DPE runtime includes Python but not FFmpeg. Stage-1 frame "
+"extraction requires FFmpeg binaries. For a quick validation run, you can "
+"reuse an existing verified FFmpeg image from the same region. For "
+"production, build and publish your own image in the same region as the "
+"MaxCompute project, then set ``odps.session.image`` to that image name."
+msgstr ""
+"默认 DPE 运行时仅包含 Python，不包含 FFmpeg；阶段一抽帧依赖 FFmpeg "
+"可执行文件。快速验证时，可以复用同地域已经验证过的 FFmpeg 镜像。生产环境"
+"建议自行构建并发布与 MaxCompute 项目同地域的镜像，然后将 ``odps.session."
+"image`` 设置为该镜像名称。"
+
+msgid ""
+"Make sure the mounted OSS path is correct before submitting the job. For "
+"example, if your OSS address is ``oss://oss-cn-hangzhou.aliyuncs.com"
+"/jingxuan-oss-test-hz/``, use ``OSS_ENDPOINT = \"oss-cn-"
+"hangzhou.aliyuncs.com\"``, ``OSS_BUCKET = \"jingxuan-oss-test-hz\"``, and"
+" ``OSS_PATH = \"\"`` or the subdirectory that contains your videos."
+msgstr ""
+"提交任务前，请确认挂载的 OSS path 正确。例如，如果你的 OSS 地址是 ``oss:/"
+"/oss-cn-hangzhou.aliyuncs.com/jingxuan-oss-test-hz/``，则设置 ``OSS_"
+"ENDPOINT = \"oss-cn-hangzhou.aliyuncs.com\"``、``OSS_BUCKET = \"jingxuan-"
+"oss-test-hz\"``，并将 ``OSS_PATH`` 设为 ``\"\"`` 或实际存放视频的子目录。"
+
+msgid "Description"
+msgstr "说明"
+
+msgid "Dockerfile example:"
+msgstr "Dockerfile 示例："
+
+msgid "Environment setup"
+msgstr "环境准备与会话创建"
+
+msgid "Extract keyframes from videos with FFmpeg."
+msgstr "视频抽帧：通过 FFmpeg 按指定帧率抽取关键帧图片。"
+
+msgid "Generate scene labels using multimodal LLMs."
+msgstr "图片打标：调用百炼多模态大模型自动生成场景标签和语义描述。"
+
+msgid "Global parameters:"
+msgstr "全局参数配置："
+
+msgid "Long-tail and anomaly scenario discovery."
+msgstr "异常事件与长尾场景发现。"
+
+msgid "Prerequisites"
+msgstr "前提条件"
+
+msgid "Produce embeddings for retrieval, clustering, and sample mining."
+msgstr ""
+"向量化：提取 Embedding 向量，形成可用于检索、聚类、样本筛选和分析的统一"
+"特征底座。"
+
+msgid ""
+"Raw video data is usually unstructured and expensive to curate manually. "
+"To improve reuse and retrieval efficiency, the data pipeline should "
+"standardize frame-level processing:"
+msgstr ""
+"然而，原始视频通常缺乏结构化标签，人工筛选和整理成本高，导致高价值样本"
+"发现难、数据复用效率低。为提升海量视频数据的管理和利用效率，需要对视频"
+"进行帧级理解与标准化加工："
+
+msgid "Required for multimodal labeling and embedding calls."
+msgstr "用于多模态打标与向量化模型调用。"
+
+msgid "Requirement"
+msgstr "条件"
+
+msgid "Similar-scene retrieval and sample recall."
+msgstr "相似场景检索与样本召回。"
+
+msgid "Source videos are stored in a target OSS bucket."
+msgstr "原始视频已存储在目标 OSS Bucket 中。"
+
+msgid "Stage 1: frame extraction"
+msgstr "阶段一：视频抽帧"
+
+msgid "Stage 2: image labeling"
+msgstr "阶段二：图片打标"
+
+msgid "Stage 3: multimodal embedding"
+msgstr "阶段三：向量化"
+
+msgid "Stage-1 extraction requires FFmpeg in MaxCompute custom image."
+msgstr "阶段一抽帧需要在 MaxCompute 自定义镜像中预装 FFmpeg。"
+
+msgid ""
+"Stage-1 extraction requires FFmpeg in a MaxCompute custom image. The "
+"image must be available in the same region as the MaxCompute project."
+msgstr ""
+"阶段一抽帧需要使用包含 FFmpeg 的 MaxCompute 自定义镜像。该镜像必须和 "
+"MaxCompute 项目处于同一地域。"
+
+msgid "This tutorial shows an end-to-end distributed implementation on MaxFrame."
+msgstr ""
+"本方案依托 MaxFrame 的分布式处理能力，实现视频数据的端到端批量处理，帮助"
+"将非结构化视频数据转化为可检索、可分析、可复用的数据资产。"
+
+msgid "Video Pipeline: Frame Extraction -> Labeling -> Embedding"
+msgstr "视频处理全流程：抽帧 -> 打标 -> 向量化"
+
+msgid "Video understanding and vectorization pipeline"
+msgstr "视频理解与向量化处理流程"
+
+msgid "Why custom image?"
+msgstr "为什么需要自定义镜像？"
+
+msgid "Workflow"
+msgstr "方案核心流程"
+
+msgid "``apply_chunk`` stages run on DPE."
+msgstr "``apply_chunk`` 阶段在 DPE 上执行。"
+

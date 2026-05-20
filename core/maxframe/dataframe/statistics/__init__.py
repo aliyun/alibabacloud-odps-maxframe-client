@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,17 @@
 
 
 def _install():
-    from ..core import DATAFRAME_TYPE, SERIES_TYPE
-    from .corr import df_corr, df_corrwith, series_autocorr, series_corr
-    from .quantile import dataframe_quantile, series_quantile
+    from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+    from maxframe.dataframe.statistics.corr import (
+        df_corr,
+        df_corrwith,
+        series_autocorr,
+        series_corr,
+    )
+    from maxframe.dataframe.statistics.quantile import (
+        dataframe_quantile,
+        series_quantile,
+    )
 
     for t in SERIES_TYPE:
         t.quantile = series_quantile

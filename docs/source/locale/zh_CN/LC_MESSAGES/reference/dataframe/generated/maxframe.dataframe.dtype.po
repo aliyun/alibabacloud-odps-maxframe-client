@@ -1,0 +1,108 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.6.0.dev967+br.g9371fca33\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-27 13:57+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/dataframe/generated/maxframe.dataframe.dtype.rst:2
+msgid "maxframe.dataframe.dtype"
+msgstr ""
+
+#: maxframe.dataframe.typing_.dtype:1 of
+msgid "Recommend dtype for MaxFrame DataFrame operations."
+msgstr "MaxFrame DataFrame 操作的推荐数据类型。"
+
+#: maxframe.dataframe.typing_.dtype:3 of
+msgid ""
+"Converts various type representations into MaxFrame-compatible dtypes. "
+"Returns pd.ArrowDtype for most types and ExternalBlobDtype for blob "
+"types."
+msgstr ""
+"将各种类型表示转换为 MaxFrame 兼容的数据类型。大多数类型返回 pd."
+"ArrowDtype，blob 类型返回 ExternalBlobDtype。"
+
+#: maxframe.dataframe.typing_.dtype of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.typing_.dtype:6 of
+msgid ""
+"The type to convert to MaxFrame-compatible dtype. Supported input types: "
+"- str: Type string like 'int64', 'string', 'blob', 'list<item: int64>', "
+"etc. - np.dtype: NumPy dtype objects - pd.ExtensionDtype: Pandas "
+"extension dtypes - odps.types.DataType: ODPS data types (requires odps "
+"package) - pa.DataType: PyArrow data types - Python type classes: int, "
+"float, bool, str, bytes   (int -> int64, float -> float64, bool -> bool, "
+"str -> StringDtype(pyarrow), bytes -> binary)"
+msgstr ""
+"转换为 MaxFrame 兼容 dtype 的类型。支持的输入类型：- str: 类型字符串，如 "
+"'int64'、'string'、'blob'、'list<item: int64>' 等 - np.dtype: NumPy dtype"
+" 对象 - pd.ExtensionDtype: Pandas 扩展 dtype - odps.types.DataType: ODPS "
+"数据类型（需要 odps 包）- pa.DataType: PyArrow 数据类型 - Python 类型类："
+"int, float, bool, str, bytes   (int -> int64, float -> float64, bool -> "
+"bool, str -> StringDtype(pyarrow), bytes -> binary)"
+
+#: maxframe.dataframe.typing_.dtype:6 of
+msgid ""
+"The type to convert to MaxFrame-compatible dtype. Supported input types: "
+"- str: Type string like 'int64', 'string', 'blob', 'list<item: int64>', "
+"etc. - np.dtype: NumPy dtype objects - pd.ExtensionDtype: Pandas "
+"extension dtypes - odps.types.DataType: ODPS data types (requires odps "
+"package) - pa.DataType: PyArrow data types - Python type classes: int, "
+"float, bool, str, bytes"
+msgstr ""
+"转换为 MaxFrame 兼容 dtype 的类型。支持的输入类型：- str: 类型字符串，如 "
+"'int64'、'string'、'blob'、'list<item: int64>' 等 - np.dtype: NumPy dtype"
+" 对象 - pd.ExtensionDtype: Pandas 扩展 dtype - odps.types.DataType: ODPS "
+"数据类型（需要 odps 包）- pa.DataType: PyArrow 数据类型 - Python 类型类："
+"int, float, bool, str, bytes"
+
+#: maxframe.dataframe.typing_.dtype:14 of
+msgid ""
+"(int -> int64, float -> float64, bool -> bool, str -> "
+"StringDtype(pyarrow), bytes -> binary)"
+msgstr ""
+
+#: maxframe.dataframe.typing_.dtype of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.typing_.dtype:17 of
+msgid ""
+"Recommended dtype for use in MaxFrame operations. Returns "
+"ExternalBlobDtype for blob types, ArrowDtype for all others."
+msgstr ""
+"MaxFrame 操作中使用的推荐数据类型。对于 blob 类型返回 ExternalBlobDtype，"
+"其他类型返回 ArrowDtype。"
+
+#: maxframe.dataframe.typing_.dtype of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.typing_.dtype of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.dataframe.typing_.dtype:21 of
+msgid "If the input type is not supported or cannot be converted."
+msgstr "如果输入类型不受支持或无法转换。"
+
+#: maxframe.dataframe.typing_.dtype:24 of
+msgid "示例"
+msgstr ""
+

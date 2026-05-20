@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,9 +17,11 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData, get_output_types
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData, get_output_types
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index, validate_axis
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     Float64Field,
@@ -27,9 +29,7 @@ from ...serialization.serializables import (
     Int64Field,
     KeyField,
 )
-from ...tensor.random import RandomStateField
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index, validate_axis
+from maxframe.tensor.random import RandomStateField
 
 
 class DataFrameSample(DataFrameOperator, DataFrameOperatorMixin):

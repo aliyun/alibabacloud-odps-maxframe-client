@@ -14,9 +14,12 @@
 
 import operator
 
-from ... import opcodes
-from ...utils import classproperty
-from .core import DataFrameArithmeticTreeOp, DataFrameBinopUfunc
+from maxframe import opcodes
+from maxframe.dataframe.arithmetic.core import (
+    DataFrameArithmeticTreeOp,
+    DataFrameBinopUfunc,
+)
+from maxframe.utils import classproperty
 
 
 class DataFrameOr(DataFrameBinopUfunc):
@@ -31,7 +34,7 @@ class DataFrameOr(DataFrameBinopUfunc):
 
     @classproperty
     def tensor_op_type(self):
-        from ...tensor.arithmetic import TensorBitor
+        from maxframe.tensor.arithmetic import TensorBitor
 
         return TensorBitor
 

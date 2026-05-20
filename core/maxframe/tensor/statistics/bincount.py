@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@ from typing import List, Optional
 
 import numpy as np
 
-from ... import opcodes
-from ...serialization.serializables import Int64Field, ReferenceField
-from ...typing_ import EntityType
-from ..datasource import tensor as astensor
-from ..operators import TensorMapReduceOperator, TensorOperatorMixin
+from maxframe import opcodes
+from maxframe.serialization.serializables import Int64Field, ReferenceField
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorMapReduceOperator, TensorOperatorMixin
+from maxframe.typing_ import EntityType
 
 _DEFAULT_CHUNK_SIZE_LIMIT = 1e8
 

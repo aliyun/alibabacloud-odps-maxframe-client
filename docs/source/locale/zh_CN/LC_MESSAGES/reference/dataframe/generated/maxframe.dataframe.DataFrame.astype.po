@@ -78,7 +78,7 @@ msgstr ""
 
 #: maxframe.dataframe.misc.astype.astype:18 of
 msgid "**casted**"
-msgstr ""
+msgstr "**转换后的**"
 
 #: maxframe.dataframe.misc.astype.astype of
 msgid "返回类型"

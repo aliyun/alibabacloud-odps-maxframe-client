@@ -16,14 +16,22 @@ from typing import MutableMapping, Union
 
 import numpy as np
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import AnyField, BoolField, DictField, TupleField
-from ...udf import BuiltinFunction, MarkedFunction
-from ...utils import copy_if_possible
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..type_infer import InferredDataFrameMeta, infer_dataframe_return_value
-from ..utils import copy_func_scheduling_hints, parse_index
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.type_infer import (
+    InferredDataFrameMeta,
+    infer_dataframe_return_value,
+)
+from maxframe.dataframe.utils import copy_func_scheduling_hints, parse_index
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    DictField,
+    TupleField,
+)
+from maxframe.udf import BuiltinFunction, MarkedFunction
+from maxframe.utils import copy_if_possible
 
 
 class GroupByTransform(DataFrameOperator, DataFrameOperatorMixin):

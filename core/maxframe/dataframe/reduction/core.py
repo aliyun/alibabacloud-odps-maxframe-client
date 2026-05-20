@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,8 +21,21 @@ import msgpack
 import numpy as np
 import pandas as pd
 
-from ...core import ENTITY_TYPE, enter_mode, is_build_mode, is_kernel_mode
-from ...serialization.serializables import (
+from maxframe.core import ENTITY_TYPE, enter_mode, is_build_mode, is_kernel_mode
+from maxframe.dataframe.operators import (
+    DATAFRAME_TYPE,
+    DataFrameOperator,
+    DataFrameOperatorMixin,
+)
+from maxframe.dataframe.utils import (
+    build_df,
+    build_empty_df,
+    build_empty_series,
+    build_series,
+    parse_index,
+    validate_axis,
+)
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DataTypeField,
@@ -31,16 +44,12 @@ from ...serialization.serializables import (
     Serializable,
     StringField,
 )
-from ...typing_ import TileableType
-from ...utils import get_item_if_scalar, get_pd_option, pd_release_version, tokenize
-from ..operators import DATAFRAME_TYPE, DataFrameOperator, DataFrameOperatorMixin
-from ..utils import (
-    build_df,
-    build_empty_df,
-    build_empty_series,
-    build_series,
-    parse_index,
-    validate_axis,
+from maxframe.typing_ import TileableType
+from maxframe.utils import (
+    get_item_if_scalar,
+    get_pd_option,
+    pd_release_version,
+    tokenize,
 )
 
 # in pandas<1.3, when aggregating with multiple levels and numeric_only is True,
@@ -124,6 +133,14 @@ def _get_series_reduction_dtype(
     skipna=True,
     numeric_only=False,
 ):
+    from maxframe.dataframe.utils import _infer_decimal_agg_dtype, is_decimal128_dtype
+
+    # For decimal types, use direct calculation instead of mock inference
+    if is_decimal128_dtype(dtype):
+        result_dtype = _infer_decimal_agg_dtype(dtype, func_name)
+        return result_dtype
+
+    # For non-decimal types, use mock inference
     test_series = build_series(dtype=dtype, ensure_string=True)
     if func_name == "count":
         reduced = test_series.count()
@@ -148,6 +165,14 @@ def _get_series_reduction_dtype(
 def _get_df_reduction_dtype(
     dtype, func_name, axis=None, bool_only=False, skipna=False, numeric_only=False
 ):
+    from maxframe.dataframe.utils import _infer_decimal_agg_dtype, is_decimal128_dtype
+
+    # For decimal types, use direct calculation instead of mock inference
+    if is_decimal128_dtype(dtype):
+        result_dtype = _infer_decimal_agg_dtype(dtype, func_name)
+        return result_dtype
+
+    # For non-decimal types, use mock inference
     test_df = build_series(dtype=dtype, ensure_string=True).to_frame()
     if func_name == "count":
         reduced = getattr(test_df, func_name)(axis=axis, numeric_only=numeric_only)
@@ -389,7 +414,9 @@ class CustomReduction:
 
     def __call__(self, value):
         if isinstance(value, ENTITY_TYPE):
-            from .custom_reduction import build_custom_reduction_result
+            from maxframe.dataframe.reduction.custom_reduction import (
+                build_custom_reduction_result,
+            )
 
             return build_custom_reduction_result(value, self)
         return self.__call_agg__(value)
@@ -568,7 +595,7 @@ class ReductionCompiler:
             col_dict[key] = list(cols) if cols is not None else None
 
     def add_function(self, func, ndim, cols=None, func_name=None):
-        from .aggregation import _agg_functions
+        from maxframe.dataframe.reduction.aggregation import _agg_functions
 
         cols = cols if cols is not None and self._axis == 0 else None
 
@@ -611,8 +638,8 @@ class ReductionCompiler:
 
     @staticmethod
     def _build_mock_return_object(func, input_dtype, ndim):
-        from ..initializer import DataFrame as MaxDataFrame
-        from ..initializer import Series as MaxSeries
+        from maxframe.dataframe.initializer import DataFrame as MaxDataFrame
+        from maxframe.dataframe.initializer import Series as MaxSeries
 
         if ndim == 1:
             mock_series = build_empty_series(np.dtype(input_dtype))
@@ -629,13 +656,15 @@ class ReductionCompiler:
 
     @enter_mode(build=True)
     def _compile_function(self, func, func_name=None, ndim=1) -> ReductionSteps:
-        from ...tensor.arithmetic.core import TensorBinOp, TensorUnaryOp
-        from ...tensor.misc import TensorWhere
-        from ..arithmetic.core import DataFrameBinOp, DataFrameUnaryOp
-        from ..datasource.dataframe import DataFrameDataSource
-        from ..datasource.series import SeriesDataSource
-        from ..indexing.where import DataFrameWhere
-        from .custom_reduction import DataFrameCustomReduction
+        from maxframe.dataframe.arithmetic.core import DataFrameBinOp, DataFrameUnaryOp
+        from maxframe.dataframe.datasource.dataframe import DataFrameDataSource
+        from maxframe.dataframe.datasource.series import SeriesDataSource
+        from maxframe.dataframe.indexing.where import DataFrameWhere
+        from maxframe.dataframe.reduction.custom_reduction import (
+            DataFrameCustomReduction,
+        )
+        from maxframe.tensor.arithmetic.core import TensorBinOp, TensorUnaryOp
+        from maxframe.tensor.misc import TensorWhere
 
         func_token = tokenize(func, self._axis, func_name, ndim)
         if func_token in _func_compile_cache:
@@ -760,13 +789,13 @@ class ReductionCompiler:
             ["out_var", "output_var_name"],
         ]
         """
-        from ...tensor.arithmetic.core import TensorBinOp, TensorUnaryOp
-        from ...tensor.datasource import Scalar
-        from ...tensor.misc import TensorWhere
-        from ..arithmetic.core import DataFrameBinOp, DataFrameUnaryOp
-        from ..datasource.dataframe import DataFrameDataSource
-        from ..datasource.series import SeriesDataSource
-        from ..indexing.where import DataFrameWhere
+        from maxframe.dataframe.arithmetic.core import DataFrameBinOp, DataFrameUnaryOp
+        from maxframe.dataframe.datasource.dataframe import DataFrameDataSource
+        from maxframe.dataframe.datasource.series import SeriesDataSource
+        from maxframe.dataframe.indexing.where import DataFrameWhere
+        from maxframe.tensor.arithmetic.core import TensorBinOp, TensorUnaryOp
+        from maxframe.tensor.datasource import Scalar
+        from maxframe.tensor.misc import TensorWhere
 
         input_key_to_var = OrderedDict()
         local_key_to_var = dict()

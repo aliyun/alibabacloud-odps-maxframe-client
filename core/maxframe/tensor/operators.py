@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,15 +13,15 @@
 # limitations under the License.
 
 
-from ..core import OutputType
-from ..core.operator import (
+from maxframe.core import OutputType
+from maxframe.core.operator import (
     HasInput,
     MapReduceOperator,
     Operator,
     ShuffleProxy,
     TileableOperatorMixin,
 )
-from ..serialization.serializables import DataTypeField
+from maxframe.serialization.serializables import DataTypeField
 
 
 class TensorOperatorMixin(TileableOperatorMixin):

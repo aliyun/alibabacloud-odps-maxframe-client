@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
 import numpy as np
 from numpy.linalg import LinAlgError
 
-from ... import opcodes
-from ..core import TensorOrder
-from ..datasource import tensor as astensor
-from ..operators import TensorHasInput, TensorOperatorMixin
+from maxframe import opcodes
+from maxframe.tensor.core import TensorOrder
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorHasInput, TensorOperatorMixin
 
 
 class TensorInv(TensorHasInput, TensorOperatorMixin):

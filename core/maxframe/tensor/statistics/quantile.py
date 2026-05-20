@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,19 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData
-from ...serialization.serializables import AnyField, BoolField, KeyField, StringField
-from ...utils import check_unexpected_kwargs
-from ..core import TENSOR_TYPE, TensorOrder
-from ..datasource import tensor as astensor
-from ..operators import TensorOperator, TensorOperatorMixin
-from ..utils import check_out_param
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    KeyField,
+    StringField,
+)
+from maxframe.tensor.core import TENSOR_TYPE, TensorOrder
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
+from maxframe.tensor.utils import check_out_param
+from maxframe.utils import check_unexpected_kwargs
 
 
 def _quantile_is_valid(q):
@@ -145,9 +150,8 @@ def _quantile_unchecked(
     if handle_non_numeric and not np.issubdtype(a.dtype, np.number):
         dtype = a.dtype
     else:
-        dtype = np.quantile(
-            np.empty(1, dtype=a.dtype), q_tiny, interpolation=interpolation
-        ).dtype
+        dtype = np.quantile(np.empty(1, dtype=a.dtype), q_tiny).dtype
+
     op = TensorQuantile(
         q=q,
         axis=axis,

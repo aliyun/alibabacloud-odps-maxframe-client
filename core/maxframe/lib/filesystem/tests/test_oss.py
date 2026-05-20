@@ -19,16 +19,16 @@ from io import BytesIO
 import mock
 import pytest
 
-from .. import oss
-from .._oss_lib import glob as og
-from .._oss_lib.common import (
+from maxframe.lib.filesystem import oss
+from maxframe.lib.filesystem._oss_lib import glob as og
+from maxframe.lib.filesystem._oss_lib.common import (
     OSSFileEntry,
     _rewrite_internal_endpoint,
     build_oss_path,
     oss_path_join,
     parse_osspath,
 )
-from ..oss import HostEnforceType
+from maxframe.lib.filesystem.oss import HostEnforceType
 
 
 class OSSObjInfo:

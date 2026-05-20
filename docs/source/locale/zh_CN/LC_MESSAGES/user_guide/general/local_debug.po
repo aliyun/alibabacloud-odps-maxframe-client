@@ -1,0 +1,321 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.7.0.dev1063+br.g22042ce95.d20260511\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-15 15:56+0800\n"
+"PO-Revision-Date: 2026-05-15 16:20+0800\n"
+"Last-Translator: \n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/user_guide/general/local_debug.rst:4
+msgid "Local debug mode"
+msgstr "本地调试模式"
+
+#: ../../source/user_guide/general/local_debug.rst:6
+msgid ""
+"This page introduces the features and usage of MaxFrame Local Debug Mode."
+" Local Debug Mode allows you to debug UDF functions such as ``apply()`` "
+"and ``apply_chunk()`` directly in your local environment, without "
+"connecting to remote services."
+msgstr ""
+"本页介绍 MaxFrame Local Debug Mode 的能力和用法。Local Debug Mode 支持在"
+"本地环境直接调试 ``apply()``、``apply_chunk()`` 等 UDF 函数，无需连接远程"
+"服务。"
+
+#: ../../source/user_guide/general/local_debug.rst:12
+msgid "Background"
+msgstr "背景"
+
+#: ../../source/user_guide/general/local_debug.rst:13
+msgid ""
+"In the traditional MaxFrame UDF development workflow, debugging functions"
+" such as ``apply()`` and ``apply_chunk()`` requires submitting code to a "
+"remote cluster for execution. This makes it impossible to set breakpoints"
+" or step through code locally. Every change has to be re-submitted for "
+"remote execution, and you may have to maintain different code paths to "
+"distinguish local development and production."
+msgstr ""
+"在传统的 MaxFrame UDF 开发流程中，调试 ``apply()``、``apply_chunk()`` 等"
+"函数需要将代码提交到远程集群执行，因此无法在本地设置断点或单步调试。每次"
+"修改后都需要重新提交远程执行，并且常常需要维护不同代码路径来区分本地开发"
+"和生产运行。"
+
+#: ../../source/user_guide/general/local_debug.rst:20
+msgid ""
+"MaxFrame Local Debug Mode solves these problems. Once Local Debug Mode is"
+" enabled, UDF functions are executed directly in the local Python "
+"environment with full IDE breakpoint debugging support, work fully "
+"offline, and the same code can be switched seamlessly between local "
+"debugging and production runs."
+msgstr ""
+"MaxFrame Local Debug Mode 用来解决这些问题。启用后，UDF 函数会直接在本地 "
+"Python 环境中执行，完整支持 IDE 断点调试，可完全离线运行，并且同一份代码"
+"可以在本地调试和生产执行之间无缝切换。"
+
+#: ../../source/user_guide/general/local_debug.rst:27
+msgid "Use cases"
+msgstr "使用场景"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Scenario"
+msgstr "场景"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Description"
+msgstr "说明"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "UDF logic development"
+msgstr "UDF 逻辑开发"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Debug and verify complex business logic in real time."
+msgstr "实时调试并验证复杂业务逻辑。"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Data transformation tests"
+msgstr "数据转换测试"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Validate data cleaning and transformation rules."
+msgstr "验证数据清洗和数据转换规则。"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Issue investigation"
+msgstr "问题排查"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Locate the root cause of UDF execution failures."
+msgstr "定位 UDF 执行失败的根因。"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Offline development"
+msgstr "离线开发"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Continue development without network access."
+msgstr "在没有网络访问的情况下继续开发。"
+
+#: ../../source/user_guide/general/local_debug.rst:38
+msgid "Features"
+msgstr "功能特性"
+
+#: ../../source/user_guide/general/local_debug.rst:40
+msgid ""
+"Compared with the traditional remote debugging workflow, Local Debug Mode"
+" provides the following **advantages**:"
+msgstr "与传统远程调试流程相比，Local Debug Mode 提供以下 **优势**："
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Dimension"
+msgstr "维度"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Local Debug Mode"
+msgstr ""
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Traditional approach"
+msgstr "传统方式"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Breakpoint debugging"
+msgstr "断点调试"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "**IDE breakpoints supported**"
+msgstr "**支持 IDE 断点**"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Not supported"
+msgstr "不支持"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Remote dependency"
+msgstr "远程依赖"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "**Fully offline local debugging**"
+msgstr "**完全离线本地调试**"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Requires connection to a remote cluster"
+msgstr "需要连接远程集群"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Debug cycle"
+msgstr "调试周期"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "**Local instant execution**"
+msgstr "**本地即时执行**"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Each change must be submitted for remote execution"
+msgstr "每次修改都需要提交到远程执行"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Code modification"
+msgstr "代码修改"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "**A single code base**"
+msgstr "**单套代码**"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Multiple code paths must be maintained"
+msgstr "需要维护多套代码路径"
+
+#: ../../source/user_guide/general/local_debug.rst:51
+msgid "**Zero-configuration debugging**"
+msgstr "**零配置调试**"
+
+#: ../../source/user_guide/general/local_debug.rst:53
+msgid ""
+"Just set ``debug=True`` or ``debug=\"local\"``. No additional tools or "
+"services are required."
+msgstr "只需要设置 ``debug=True`` 或 ``debug=\"local\"``，无需额外工具或服务。"
+
+#: ../../source/user_guide/general/local_debug.rst:60
+msgid "**Fully offline**"
+msgstr "**完全离线**"
+
+#: ../../source/user_guide/general/local_debug.rst:62
+msgid "Does not depend on networking or remote cluster resources."
+msgstr "不依赖网络或远程集群资源。"
+
+#: ../../source/user_guide/general/local_debug.rst:64
+msgid "**Native IDE support**"
+msgstr "**原生 IDE 支持**"
+
+#: ../../source/user_guide/general/local_debug.rst:66
+msgid ""
+"Supports mainstream IDEs such as PyCharm and VSCode, as well as DataWorks"
+" Notebook."
+msgstr "支持 PyCharm、VSCode 等主流 IDE，也支持 DataWorks Notebook。"
+
+#: ../../source/user_guide/general/local_debug.rst:68
+msgid ""
+"Preserves the full debugging experience, including **breakpoints, "
+"variable watches, and step-by-step execution**."
+msgstr "保留完整调试体验，包括 **断点、变量查看和单步执行**。"
+
+#: ../../source/user_guide/general/local_debug.rst:70
+msgid "Provides the same debugging experience as local Python development."
+msgstr "提供与本地 Python 开发一致的调试体验。"
+
+#: ../../source/user_guide/general/local_debug.rst:72
+msgid "**Flexible data sources**"
+msgstr "**灵活的数据源**"
+
+#: ../../source/user_guide/general/local_debug.rst:74
+msgid "Supports in-memory data, local files, MaxCompute tables, and more."
+msgstr "支持内存数据、本地文件、MaxCompute 表等多种数据来源。"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Data source"
+msgstr "数据源"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "How to load"
+msgstr "加载方式"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Use case"
+msgstr "适用场景"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "In-memory data"
+msgstr "内存数据"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "``md.DataFrame(pd.DataFrame())``"
+msgstr ""
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Quick logic verification"
+msgstr "快速逻辑验证"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "MaxCompute table"
+msgstr "MaxCompute 表"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "``md.read_odps_table()``"
+msgstr ""
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Real-data testing"
+msgstr "真实数据测试"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "Local file"
+msgstr "本地文件"
+
+#: ../../source/user_guide/general/local_debug.rst:1
+msgid "``pd.read_csv()`` and other native pandas APIs"
+msgstr "``pd.read_csv()`` 等 pandas 原生 API"
+
+#: ../../source/user_guide/general/local_debug.rst:83
+msgid "**Seamless switch to production**"
+msgstr "**无缝切换到生产环境**"
+
+#: ../../source/user_guide/general/local_debug.rst:85
+msgid ""
+"Debug code is identical to production code. After you remove "
+"``debug=True`` or ``debug=\"local\"``, the code can run in production "
+"directly."
+msgstr ""
+"调试代码与生产代码保持一致。移除 ``debug=True`` 或 ``debug=\"local\"`` 后"
+"，代码即可直接在生产环境运行。"
+
+#: ../../source/user_guide/general/local_debug.rst:98
+msgid "Quick start"
+msgstr "快速开始"
+
+#: ../../source/user_guide/general/local_debug.rst:100
+msgid "**Prepare the environment**"
+msgstr "**准备环境**"
+
+#: ../../source/user_guide/general/local_debug.rst:107
+msgid "**Basic example**"
+msgstr "**基础示例**"
+
+#: ../../source/user_guide/general/local_debug.rst:146
+msgid "Notes"
+msgstr "注意事项"
+
+#: ../../source/user_guide/general/local_debug.rst:148
+msgid ""
+"**Performance differences**: Local Debug Mode is intended for development"
+" and verification. Its performance does not match the production "
+"environment."
+msgstr "**性能差异**：Local Debug Mode 面向开发和验证场景，性能不等同于生产环境。"
+
+#: ../../source/user_guide/general/local_debug.rst:151
+msgid "**Data volume limit**: Use small sample datasets when debugging."
+msgstr "**数据量限制**：调试时建议使用小规模样本数据。"
+
+#: ../../source/user_guide/general/local_debug.rst:152
+msgid ""
+"**Dependency consistency**: Make sure the local Python environment uses "
+"the same dependency versions as production."
+msgstr "**依赖一致性**：确保本地 Python 环境使用与生产环境一致的依赖版本。"
+
+#: ../../source/user_guide/general/local_debug.rst:154
+msgid ""
+"**Sensitive data**: When debugging MaxCompute tables, follow data "
+"permission and data masking requirements."
+msgstr "**敏感数据**：调试 MaxCompute 表时，请遵守数据权限和数据脱敏要求。"
+

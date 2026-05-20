@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData
-from ...serialization.serializables import KeyField, ListField
-from ..core import TENSOR_TYPE, TensorOrder
-from ..operators import TensorHasInput, TensorOperatorMixin
-from ..utils import filter_inputs
-from .core import calc_shape, process_index
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData
+from maxframe.serialization.serializables import KeyField, ListField
+from maxframe.tensor.core import TENSOR_TYPE, TensorOrder
+from maxframe.tensor.indexing.core import calc_shape, process_index
+from maxframe.tensor.operators import TensorHasInput, TensorOperatorMixin
+from maxframe.tensor.utils import filter_inputs
 
 FANCY_INDEX_TYPES = TENSOR_TYPE + (np.ndarray,)
 
@@ -45,7 +45,7 @@ class TensorIndex(TensorHasInput, TensorOperatorMixin):
         op.indexes = new_indexes
 
     def on_output_modify(self, new_output):
-        from .setitem import TensorIndexSetValue
+        from maxframe.tensor.indexing.setitem import TensorIndexSetValue
 
         if self.create_view:
             a = self.input

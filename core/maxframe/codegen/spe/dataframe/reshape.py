@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ....dataframe.reshape.melt import DataFrameMelt
-from ....dataframe.reshape.pivot import DataFramePivot
-from ....dataframe.reshape.pivot_table import DataFramePivotTable
-from ....dataframe.reshape.stack import DataFrameStack
-from ..utils import build_method_call_adapter
+from maxframe.codegen.spe.utils import build_method_call_adapter
+from maxframe.dataframe.reshape.melt import DataFrameMelt
+from maxframe.dataframe.reshape.pivot import DataFramePivot
+from maxframe.dataframe.reshape.pivot_table import DataFramePivotTable
+from maxframe.dataframe.reshape.stack import DataFrameStack
 
 DataFrameMeltAdapter = build_method_call_adapter(
     DataFrameMelt,

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,9 +16,12 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ...initializer import DataFrame
-from ..sort_index import DataFrameSortIndex, sort_index
-from ..sort_values import DataFrameSortValues, dataframe_sort_values
+from maxframe.dataframe.initializer import DataFrame
+from maxframe.dataframe.sort.sort_index import DataFrameSortIndex, sort_index
+from maxframe.dataframe.sort.sort_values import (
+    DataFrameSortValues,
+    dataframe_sort_values,
+)
 
 
 def test_sort_values():

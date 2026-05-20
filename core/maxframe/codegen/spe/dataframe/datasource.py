@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,15 +19,22 @@ import pandas as pd
 import pyarrow as pa
 from odps import ODPS
 
-from ....dataframe.datasource.dataframe import DataFrameDataSource
-from ....dataframe.datasource.date_range import DataFrameDateRange
-from ....dataframe.datasource.from_records import DataFrameFromRecords
-from ....dataframe.datasource.from_tensor import DataFrameFromTensor, SeriesFromTensor
-from ....dataframe.datasource.index import IndexDataSource
-from ....dataframe.datasource.read_odps_table import DataFrameReadODPSTable
-from ....io.odpsio import ODPSTableIO, arrow_to_pandas
-from ....protocol import DataFrameTableMeta
-from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.dataframe.datasource.dataframe import DataFrameDataSource
+from maxframe.dataframe.datasource.date_range import DataFrameDateRange
+from maxframe.dataframe.datasource.from_records import DataFrameFromRecords
+from maxframe.dataframe.datasource.from_tensor import (
+    DataFrameFromTensor,
+    SeriesFromTensor,
+)
+from maxframe.dataframe.datasource.index import IndexDataSource
+from maxframe.dataframe.datasource.read_odps_table import DataFrameReadODPSTable
+from maxframe.io.odpsio import ODPSTableIO, arrow_to_pandas
+from maxframe.protocol import DataFrameTableMeta
 
 
 @register_op_adapter(DataFrameDataSource)

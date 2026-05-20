@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .nonzero import nonzero
+from maxframe.tensor.indexing.nonzero import nonzero
 
 
 def flatnonzero(a):
@@ -53,6 +53,6 @@ def flatnonzero(a):
     >>> x.ravel()[mt.flatnonzero(x)].execute()
 
     """
-    from ..misc import ravel
+    from maxframe.tensor.misc import ravel
 
     return nonzero(ravel(a))[0]

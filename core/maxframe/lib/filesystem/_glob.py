@@ -16,7 +16,7 @@ import fnmatch
 import os
 import re
 
-from .core import FileSystem
+from maxframe.lib.filesystem.core import FileSystem
 
 magic_check = re.compile("([*?[])")
 magic_check_bytes = re.compile(b"([*?[])")

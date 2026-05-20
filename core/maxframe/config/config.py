@@ -29,8 +29,7 @@ except ImportError:
 
     available_timezones = lambda: all_timezones
 
-from ..utils import get_python_tag
-from .validators import (
+from maxframe.config.validators import (
     ValidatorType,
     all_validator,
     dtype_backend_validator,
@@ -50,6 +49,7 @@ from .validators import (
     is_string,
     is_valid_cache_path,
 )
+from maxframe.utils import get_python_tag
 
 _DEFAULT_REDIRECT_WARN = "Option {source} has been replaced by {target} and might be removed in a future release."
 _DEFAULT_MAX_ALIVE_SECONDS = 3 * 24 * 3600
@@ -517,6 +517,14 @@ default_options.register_option(
     remote=True,
 )
 
+# Decimal configuration options
+default_options.register_option(
+    "dataframe.decimal.round_mode",
+    "half_up",
+    validator=is_enum_value("maxframe.protocol#DecimalRoundMode"),
+    remote=True,
+)
+
 default_options.register_option(
     "optimize.head_optimize_threshold", 1000, validator=is_integer
 )
@@ -538,6 +546,13 @@ default_options.register_option(
     & is_notnull
     & is_less_than_or_equal_to(_DEFAULT_MAX_MEMORY_CPU_RATIO)
     & is_great_than(0),
+)
+
+##############################
+# Capture-failure Settings   #
+##############################
+default_options.register_option(
+    "capture_failure.enabled", False, validator=is_bool, remote=True
 )
 
 ################
@@ -590,6 +605,7 @@ default_options.register_option(
 default_options.register_option(
     "learn.working_memory", working_memory, validator=is_null | is_integer
 )
+
 
 _options_ctx_var = contextvars.ContextVar("_options_ctx_var")
 

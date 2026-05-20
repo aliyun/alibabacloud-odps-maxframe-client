@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 
 import numpy as np
 
-from ... import opcodes
-from ..datasource import tensor as astensor
-from ..utils import infer_dtype
-from .core import TensorBinOp
-from .utils import arithmetic_operator
+from maxframe import opcodes
+from maxframe.tensor.arithmetic.core import TensorBinOp
+from maxframe.tensor.arithmetic.utils import arithmetic_operator
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.utils import infer_dtype
 
 
 @arithmetic_operator

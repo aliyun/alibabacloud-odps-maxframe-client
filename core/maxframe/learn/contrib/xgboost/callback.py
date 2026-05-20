@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +14,15 @@
 
 from typing import Callable, Optional, Sequence, Union
 
-from ....serialization.serializables import (
+from maxframe.learn.contrib.utils import TrainingCallback
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     Float32Field,
     Int32Field,
     StringField,
 )
-from ....udf import BuiltinFunction
-from ..utils import TrainingCallback
+from maxframe.udf import BuiltinFunction
 
 try:
     from xgboost.callback import EarlyStopping as _EarlyStopping

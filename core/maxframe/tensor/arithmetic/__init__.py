@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,128 +12,133 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ...core import is_build_mode
-from .abs import TensorAbs, abs
-from .absolute import TensorAbsolute, absolute
-from .add import TensorAdd, TensorTreeAdd, add, tree_add
-from .angle import TensorAngle, angle
-from .arccos import TensorArccos, arccos
-from .arccosh import TensorArccosh, arccosh
-from .arcsin import TensorArcsin, arcsin
-from .arcsinh import TensorArcsinh, arcsinh
-from .arctan import TensorArctan, arctan
-from .arctan2 import TensorArctan2, arctan2
-from .arctanh import TensorArctanh, arctanh
-from .around import TensorAround
-from .around import around
-from .around import around as round_
-from .bitand import TensorBitand, bitand
-from .bitor import TensorBitor, bitor
-from .bitxor import TensorBitxor, bitxor
-from .cbrt import TensorCbrt, cbrt
-from .ceil import TensorCeil, ceil
-from .clip import TensorClip, clip
-from .conj import TensorConj
-from .conj import conj
-from .conj import conj as conjugate
-from .copysign import TensorCopysign, copysign
-from .cos import TensorCos, cos
-from .cosh import TensorCosh, cosh
-from .deg2rad import TensorDeg2rad, deg2rad
-from .degrees import TensorDegrees, degrees
-from .divide import TensorDivide, divide
-from .equal import TensorEqual, equal
-from .exp import TensorExp, exp
-from .exp2 import TensorExp2, exp2
-from .expm1 import TensorExpm1, expm1
-from .fabs import TensorFabs, fabs
-from .fix import TensorFix, fix
-from .float_power import TensorFloatPower, float_power
-from .floor import TensorFloor, floor
-from .floordiv import TensorFloorDiv, floordiv
-from .fmax import TensorFMax, fmax
-from .fmin import TensorFMin, fmin
-from .fmod import TensorFMod, fmod
-from .frexp import TensorFrexp, frexp
-from .greater import TensorGreaterThan, greater
-from .greater_equal import TensorGreaterEqual, greater_equal
-from .hypot import TensorHypot, hypot
-from .i0 import TensorI0, i0
-from .imag import TensorImag, imag
-from .invert import TensorInvert, invert
-from .isclose import TensorIsclose, isclose
-from .iscomplex import TensorIsComplex, iscomplex
-from .iscomplexobj import iscomplexobj
-from .isfinite import TensorIsFinite, isfinite
-from .isinf import TensorIsInf, isinf
-from .isnan import TensorIsNan, isnan
-from .isreal import TensorIsReal, isreal
-from .ldexp import TensorLdexp, ldexp
-from .less import TensorLessThan, less
-from .less_equal import TensorLessEqual, less_equal
-from .log import TensorLog, log
-from .log1p import TensorLog1p, log1p
-from .log2 import TensorLog2, log2
-from .log10 import TensorLog10, log10
-from .logaddexp import TensorLogAddExp, logaddexp
-from .logaddexp2 import TensorLogAddExp2, logaddexp2
-from .logical_and import TensorAnd, logical_and
-from .logical_not import TensorNot, logical_not
-from .logical_or import TensorOr, logical_or
-from .logical_xor import TensorXor, logical_xor
-from .lshift import TensorLshift, lshift
-from .maximum import TensorMaximum, maximum
-from .minimum import TensorMinimum, minimum
-from .mod import TensorMod
-from .mod import mod
-from .mod import mod as remainder
-from .modf import TensorModf, modf
-from .multiply import TensorMultiply, TensorTreeMultiply, multiply, tree_multiply
-from .nan_to_num import TensorNanToNum, nan_to_num
-from .negative import TensorNegative, negative
-from .nextafter import TensorNextafter, nextafter
-from .not_equal import TensorNotEqual, not_equal
-from .positive import TensorPositive, positive
-from .power import TensorPower, power
-from .rad2deg import TensorRad2deg, rad2deg
-from .radians import TensorRadians, radians
-from .real import TensorReal, real
-from .reciprocal import TensorReciprocal, reciprocal
-from .rint import TensorRint, rint
-from .rshift import TensorRshift, rshift
-from .setimag import TensorSetImag
-from .setreal import TensorSetReal
-from .sign import TensorSign, sign
-from .signbit import TensorSignbit, signbit
-from .sin import TensorSin, sin
-from .sinc import TensorSinc, sinc
-from .sinh import TensorSinh, sinh
-from .spacing import TensorSpacing, spacing
-from .sqrt import TensorSqrt, sqrt
-from .square import TensorSquare, square
-from .subtract import TensorSubtract, subtract
-from .tan import TensorTan, tan
-from .tanh import TensorTanh, tanh
-from .truediv import TensorTrueDiv, truediv
-from .trunc import TensorTrunc, trunc
+from maxframe.core import is_build_mode
+from maxframe.tensor.arithmetic.abs import TensorAbs, abs
+from maxframe.tensor.arithmetic.absolute import TensorAbsolute, absolute
+from maxframe.tensor.arithmetic.add import TensorAdd, TensorTreeAdd, add, tree_add
+from maxframe.tensor.arithmetic.angle import TensorAngle, angle
+from maxframe.tensor.arithmetic.arccos import TensorArccos, arccos
+from maxframe.tensor.arithmetic.arccosh import TensorArccosh, arccosh
+from maxframe.tensor.arithmetic.arcsin import TensorArcsin, arcsin
+from maxframe.tensor.arithmetic.arcsinh import TensorArcsinh, arcsinh
+from maxframe.tensor.arithmetic.arctan import TensorArctan, arctan
+from maxframe.tensor.arithmetic.arctan2 import TensorArctan2, arctan2
+from maxframe.tensor.arithmetic.arctanh import TensorArctanh, arctanh
+from maxframe.tensor.arithmetic.around import TensorAround
+from maxframe.tensor.arithmetic.around import around
+from maxframe.tensor.arithmetic.around import around as round_
+from maxframe.tensor.arithmetic.bitand import TensorBitand, bitand
+from maxframe.tensor.arithmetic.bitor import TensorBitor, bitor
+from maxframe.tensor.arithmetic.bitxor import TensorBitxor, bitxor
+from maxframe.tensor.arithmetic.cbrt import TensorCbrt, cbrt
+from maxframe.tensor.arithmetic.ceil import TensorCeil, ceil
+from maxframe.tensor.arithmetic.clip import TensorClip, clip
+from maxframe.tensor.arithmetic.conj import TensorConj
+from maxframe.tensor.arithmetic.conj import conj
+from maxframe.tensor.arithmetic.conj import conj as conjugate
+from maxframe.tensor.arithmetic.copysign import TensorCopysign, copysign
+from maxframe.tensor.arithmetic.cos import TensorCos, cos
+from maxframe.tensor.arithmetic.cosh import TensorCosh, cosh
+from maxframe.tensor.arithmetic.deg2rad import TensorDeg2rad, deg2rad
+from maxframe.tensor.arithmetic.degrees import TensorDegrees, degrees
+from maxframe.tensor.arithmetic.divide import TensorDivide, divide
+from maxframe.tensor.arithmetic.equal import TensorEqual, equal
+from maxframe.tensor.arithmetic.exp import TensorExp, exp
+from maxframe.tensor.arithmetic.exp2 import TensorExp2, exp2
+from maxframe.tensor.arithmetic.expm1 import TensorExpm1, expm1
+from maxframe.tensor.arithmetic.fabs import TensorFabs, fabs
+from maxframe.tensor.arithmetic.fix import TensorFix, fix
+from maxframe.tensor.arithmetic.float_power import TensorFloatPower, float_power
+from maxframe.tensor.arithmetic.floor import TensorFloor, floor
+from maxframe.tensor.arithmetic.floordiv import TensorFloorDiv, floordiv
+from maxframe.tensor.arithmetic.fmax import TensorFMax, fmax
+from maxframe.tensor.arithmetic.fmin import TensorFMin, fmin
+from maxframe.tensor.arithmetic.fmod import TensorFMod, fmod
+from maxframe.tensor.arithmetic.frexp import TensorFrexp, frexp
+from maxframe.tensor.arithmetic.greater import TensorGreaterThan, greater
+from maxframe.tensor.arithmetic.greater_equal import TensorGreaterEqual, greater_equal
+from maxframe.tensor.arithmetic.hypot import TensorHypot, hypot
+from maxframe.tensor.arithmetic.i0 import TensorI0, i0
+from maxframe.tensor.arithmetic.imag import TensorImag, imag
+from maxframe.tensor.arithmetic.invert import TensorInvert, invert
+from maxframe.tensor.arithmetic.isclose import TensorIsclose, isclose
+from maxframe.tensor.arithmetic.iscomplex import TensorIsComplex, iscomplex
+from maxframe.tensor.arithmetic.iscomplexobj import iscomplexobj
+from maxframe.tensor.arithmetic.isfinite import TensorIsFinite, isfinite
+from maxframe.tensor.arithmetic.isinf import TensorIsInf, isinf
+from maxframe.tensor.arithmetic.isnan import TensorIsNan, isnan
+from maxframe.tensor.arithmetic.isreal import TensorIsReal, isreal
+from maxframe.tensor.arithmetic.ldexp import TensorLdexp, ldexp
+from maxframe.tensor.arithmetic.less import TensorLessThan, less
+from maxframe.tensor.arithmetic.less_equal import TensorLessEqual, less_equal
+from maxframe.tensor.arithmetic.log import TensorLog, log
+from maxframe.tensor.arithmetic.log1p import TensorLog1p, log1p
+from maxframe.tensor.arithmetic.log2 import TensorLog2, log2
+from maxframe.tensor.arithmetic.log10 import TensorLog10, log10
+from maxframe.tensor.arithmetic.logaddexp import TensorLogAddExp, logaddexp
+from maxframe.tensor.arithmetic.logaddexp2 import TensorLogAddExp2, logaddexp2
+from maxframe.tensor.arithmetic.logical_and import TensorAnd, logical_and
+from maxframe.tensor.arithmetic.logical_not import TensorNot, logical_not
+from maxframe.tensor.arithmetic.logical_or import TensorOr, logical_or
+from maxframe.tensor.arithmetic.logical_xor import TensorXor, logical_xor
+from maxframe.tensor.arithmetic.lshift import TensorLshift, lshift
+from maxframe.tensor.arithmetic.maximum import TensorMaximum, maximum
+from maxframe.tensor.arithmetic.minimum import TensorMinimum, minimum
+from maxframe.tensor.arithmetic.mod import TensorMod
+from maxframe.tensor.arithmetic.mod import mod
+from maxframe.tensor.arithmetic.mod import mod as remainder
+from maxframe.tensor.arithmetic.modf import TensorModf, modf
+from maxframe.tensor.arithmetic.multiply import (
+    TensorMultiply,
+    TensorTreeMultiply,
+    multiply,
+    tree_multiply,
+)
+from maxframe.tensor.arithmetic.nan_to_num import TensorNanToNum, nan_to_num
+from maxframe.tensor.arithmetic.negative import TensorNegative, negative
+from maxframe.tensor.arithmetic.nextafter import TensorNextafter, nextafter
+from maxframe.tensor.arithmetic.not_equal import TensorNotEqual, not_equal
+from maxframe.tensor.arithmetic.positive import TensorPositive, positive
+from maxframe.tensor.arithmetic.power import TensorPower, power
+from maxframe.tensor.arithmetic.rad2deg import TensorRad2deg, rad2deg
+from maxframe.tensor.arithmetic.radians import TensorRadians, radians
+from maxframe.tensor.arithmetic.real import TensorReal, real
+from maxframe.tensor.arithmetic.reciprocal import TensorReciprocal, reciprocal
+from maxframe.tensor.arithmetic.rint import TensorRint, rint
+from maxframe.tensor.arithmetic.rshift import TensorRshift, rshift
+from maxframe.tensor.arithmetic.setimag import TensorSetImag
+from maxframe.tensor.arithmetic.setreal import TensorSetReal
+from maxframe.tensor.arithmetic.sign import TensorSign, sign
+from maxframe.tensor.arithmetic.signbit import TensorSignbit, signbit
+from maxframe.tensor.arithmetic.sin import TensorSin, sin
+from maxframe.tensor.arithmetic.sinc import TensorSinc, sinc
+from maxframe.tensor.arithmetic.sinh import TensorSinh, sinh
+from maxframe.tensor.arithmetic.spacing import TensorSpacing, spacing
+from maxframe.tensor.arithmetic.sqrt import TensorSqrt, sqrt
+from maxframe.tensor.arithmetic.square import TensorSquare, square
+from maxframe.tensor.arithmetic.subtract import TensorSubtract, subtract
+from maxframe.tensor.arithmetic.tan import TensorTan, tan
+from maxframe.tensor.arithmetic.tanh import TensorTanh, tanh
+from maxframe.tensor.arithmetic.truediv import TensorTrueDiv, truediv
+from maxframe.tensor.arithmetic.trunc import TensorTrunc, trunc
 
 
 def _install():
-    from ..core import TENSOR_TYPE, Tensor, TensorData
-    from ..datasource import tensor as astensor
-    from .add import add, radd
-    from .bitand import bitand, rbitand
-    from .bitor import bitor, rbitor
-    from .bitxor import bitxor, rbitxor
-    from .divide import divide, rdivide
-    from .floordiv import floordiv, rfloordiv
-    from .lshift import lshift, rlshift
-    from .mod import mod, rmod
-    from .multiply import multiply, rmultiply
-    from .power import power, rpower
-    from .rshift import rrshift, rshift
-    from .subtract import rsubtract, subtract
-    from .truediv import rtruediv, truediv
+    from maxframe.tensor.arithmetic.add import add, radd
+    from maxframe.tensor.arithmetic.bitand import bitand, rbitand
+    from maxframe.tensor.arithmetic.bitor import bitor, rbitor
+    from maxframe.tensor.arithmetic.bitxor import bitxor, rbitxor
+    from maxframe.tensor.arithmetic.divide import divide, rdivide
+    from maxframe.tensor.arithmetic.floordiv import floordiv, rfloordiv
+    from maxframe.tensor.arithmetic.lshift import lshift, rlshift
+    from maxframe.tensor.arithmetic.mod import mod, rmod
+    from maxframe.tensor.arithmetic.multiply import multiply, rmultiply
+    from maxframe.tensor.arithmetic.power import power, rpower
+    from maxframe.tensor.arithmetic.rshift import rrshift, rshift
+    from maxframe.tensor.arithmetic.subtract import rsubtract, subtract
+    from maxframe.tensor.arithmetic.truediv import rtruediv, truediv
+    from maxframe.tensor.core import TENSOR_TYPE, Tensor, TensorData
+    from maxframe.tensor.datasource import tensor as astensor
 
     def _wrap_equal(func):
         def eq(x1, x2, **kwargs):

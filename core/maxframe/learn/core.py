@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@ import importlib
 import inspect
 from typing import Type
 
-from ..core import ENTITY_TYPE
-from ..core.entity.objects import Object, ObjectData
-from ..core.operator import TileableOperatorMixin
-from ..session import execute as execute_tileables
-from ..session import fetch as fetch_tileables
+from maxframe.core import ENTITY_TYPE
+from maxframe.core.entity.objects import Object, ObjectData
+from maxframe.core.operator import TileableOperatorMixin
+from maxframe.session import execute as execute_tileables
+from maxframe.session import fetch as fetch_tileables
 
 try:
     from sklearn.base import BaseEstimator as SkBaseEstimator
@@ -104,7 +104,7 @@ class BaseEstimator(SkBaseEstimator):
         out : tensor or tuple of these
             The validated input. A tuple is returned if `y` is not None.
         """
-        from .utils.validation import check_array, check_X_y
+        from maxframe.learn.utils.validation import check_array, check_X_y
 
         if y is None:
             if hasattr(self, "_get_tags") and self._get_tags().get(
@@ -138,7 +138,7 @@ class BaseEstimator(SkBaseEstimator):
         return out
 
     def execute(self, session=None, run_kwargs=None, extra_tileables=None):
-        from .utils.validation import check_is_fitted
+        from maxframe.learn.utils.validation import check_is_fitted
 
         check_is_fitted(self)
 
@@ -154,7 +154,7 @@ class BaseEstimator(SkBaseEstimator):
         return self
 
     def fetch(self, session=None, run_kwargs=None):
-        from .utils.validation import check_is_fitted
+        from maxframe.learn.utils.validation import check_is_fitted
 
         check_is_fitted(self)
 
@@ -251,7 +251,7 @@ class ClassifierMixin:
         score : Tensor
             Mean accuracy of self.predict(X) wrt. y.
         """
-        from .metrics import accuracy_score
+        from maxframe.learn.metrics import accuracy_score
 
         result = accuracy_score(y, self.predict(X), sample_weight=sample_weight)
         return result
@@ -304,7 +304,7 @@ class RegressorMixin:
         :class:`~sklearn.multioutput.MultiOutputRegressor`).
         """
 
-        from .metrics import r2_score
+        from maxframe.learn.metrics import r2_score
 
         y_pred = self.predict(X)
         return r2_score(y, y_pred, sample_weight=sample_weight)

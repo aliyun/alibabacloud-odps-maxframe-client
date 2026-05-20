@@ -17,9 +17,9 @@ from typing import List, Tuple
 
 import pytest
 
-from ...lib import wrapped_pickle
-from ...serialization.core import PickleContainer
-from ..core import UserCodeMixin
+from maxframe.codegen.core import UserCodeMixin
+from maxframe.lib import wrapped_pickle
+from maxframe.serialization.core import PickleContainer
 
 
 @pytest.mark.parametrize(

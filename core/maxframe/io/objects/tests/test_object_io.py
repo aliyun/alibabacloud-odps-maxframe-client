@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@ import numpy as np
 import pytest
 from odps import ODPS
 
-from ....core import OutputType
-from ....core.operator import ObjectOperatorMixin, Operator
-from ....tensor.datasource import ArrayDataSource, scalar
-from ....tests.utils import create_test_volume, get_test_unique_name, tn
-from ...odpsio import ODPSVolumeReader, ODPSVolumeWriter
-from ..core import get_object_io_handler
+from maxframe.core import OutputType
+from maxframe.core.operator import ObjectOperatorMixin, Operator
+from maxframe.io.objects.core import get_object_io_handler
+from maxframe.io.odpsio import ODPSVolumeReader, ODPSVolumeWriter
+from maxframe.tensor.datasource import ArrayDataSource, scalar
+from maxframe.tests.utils import create_test_volume, get_test_unique_name, tn
 
 
 class TestObjectOp(Operator, ObjectOperatorMixin):

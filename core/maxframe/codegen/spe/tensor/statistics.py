@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,19 @@
 
 from typing import List
 
-from ....tensor.statistics.bincount import TensorBinCount
-from ....tensor.statistics.digitize import TensorDigitize
-from ....tensor.statistics.histogram import TensorHistogram, TensorHistogramBinEdges
-from ....tensor.statistics.quantile import TensorQuantile
-from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
-from ..utils import build_method_call_adapter
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.codegen.spe.utils import build_method_call_adapter
+from maxframe.tensor.statistics.bincount import TensorBinCount
+from maxframe.tensor.statistics.digitize import TensorDigitize
+from maxframe.tensor.statistics.histogram import (
+    TensorHistogram,
+    TensorHistogramBinEdges,
+)
+from maxframe.tensor.statistics.quantile import TensorQuantile
 
 TensorBinCountAdapter = build_method_call_adapter(
     TensorBinCount,

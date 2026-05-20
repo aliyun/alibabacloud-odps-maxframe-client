@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,18 +15,18 @@
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import OutputType
-from ...serialization.serializables import ListField
-from ..core import IndexValue
-from ..operators import DataFrameOperatorMixin
-from ..utils import (
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.dataframe.core import IndexValue
+from maxframe.dataframe.operators import DataFrameOperatorMixin
+from maxframe.dataframe.sort.core import DataFrameSortOperator
+from maxframe.dataframe.utils import (
     get_index_value_by_default_index_type,
     parse_index,
     validate_axis,
     validate_default_index_type,
 )
-from .core import DataFrameSortOperator
+from maxframe.serialization.serializables import ListField
 
 
 class DataFrameSortValues(DataFrameSortOperator, DataFrameOperatorMixin):

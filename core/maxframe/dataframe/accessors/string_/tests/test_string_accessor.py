@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ....core import OutputType
-from ....datasource.series import from_pandas as from_pandas_series
+from maxframe.dataframe.core import OutputType
+from maxframe.dataframe.datasource.series import from_pandas as from_pandas_series
 
 
 def test_string_method():

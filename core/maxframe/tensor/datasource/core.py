@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@ from typing import List
 
 import numpy as np
 
-from ...core import EntityData
-from ...serialization.serializables import FieldTypes, StringField, TupleField
-from ..core import TensorOrder
-from ..operators import TensorOperator, TensorOperatorMixin
-from ..utils import normalize_shape
+from maxframe.core import EntityData
+from maxframe.serialization.serializables import FieldTypes, StringField, TupleField
+from maxframe.tensor.core import TensorOrder
+from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
+from maxframe.tensor.utils import normalize_shape
 
 
 class TensorDataSource(TensorOperator, TensorOperatorMixin):

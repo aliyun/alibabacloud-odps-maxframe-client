@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,51 +12,68 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .beta import TensorRandBeta, beta
-from .binomial import TensorBinomial, binomial
-from .bytes import bytes
-from .chisquare import TensorChisquareDist, chisquare
-from .choice import TensorChoice, choice
-from .core import RandomState, RandomStateField, TensorDistribution, _random_state
-from .dirichlet import TensorDirichlet, dirichlet
-from .exponential import TensorExponential, exponential
-from .f import TensorFDist, f
-from .gamma import TensorRandGamma, gamma
-from .geometric import TensorGeometric, geometric
-from .gumbel import TensorGumbel, gumbel
-from .hypergeometric import TensorHypergeometric, hypergeometric
-from .laplace import TensorLaplaceDist, laplace
-from .logistic import TensorLogistic, logistic
-from .lognormal import TensorLognormal, lognormal
-from .logseries import TensorLogseries, logseries
-from .multinomial import TensorMultinomial, multinomial
-from .multivariate_normal import TensorMultivariateNormal, multivariate_normal
-from .negative_binomial import TensorNegativeBinomial, negative_binomial
-from .noncentral_chisquare import TensorNoncentralChisquare, noncentral_chisquare
-from .noncentral_f import TensorNoncentralF, noncentral_f
-from .normal import TensorNormal, normal
-from .pareto import TensorPareto, pareto
-from .permutation import TensorPermutation, permutation
-from .poisson import TensorPoisson, poisson
-from .power import TensorRandomPower, power
-from .rand import TensorRand, rand
-from .randint import TensorRandint, randint
-from .randn import TensorRandn, randn
-from .random_integers import TensorRandomIntegers, random_integers
-from .random_sample import TensorRandomSample, random_sample
-from .rayleigh import TensorRayleigh, rayleigh
-from .shuffle import shuffle
-from .standard_cauchy import TensorStandardCauchy, standard_cauchy
-from .standard_exponential import TensorStandardExponential, standard_exponential
-from .standard_gamma import TensorStandardGamma, standard_gamma
-from .standard_normal import TensorStandardNormal, standard_normal
-from .standard_t import TensorStandardT, standard_t
-from .triangular import TensorTriangular, triangular
-from .uniform import TensorUniform, uniform
-from .vonmises import TensorVonmises, vonmises
-from .wald import TensorWald, wald
-from .weibull import TensorWeibull, weibull
-from .zipf import TensorZipf, zipf
+from maxframe.tensor.random.beta import TensorRandBeta, beta
+from maxframe.tensor.random.binomial import TensorBinomial, binomial
+from maxframe.tensor.random.bytes import bytes
+from maxframe.tensor.random.chisquare import TensorChisquareDist, chisquare
+from maxframe.tensor.random.choice import TensorChoice, choice
+from maxframe.tensor.random.core import (
+    RandomState,
+    RandomStateField,
+    TensorDistribution,
+    _random_state,
+)
+from maxframe.tensor.random.dirichlet import TensorDirichlet, dirichlet
+from maxframe.tensor.random.exponential import TensorExponential, exponential
+from maxframe.tensor.random.f import TensorFDist, f
+from maxframe.tensor.random.gamma import TensorRandGamma, gamma
+from maxframe.tensor.random.geometric import TensorGeometric, geometric
+from maxframe.tensor.random.gumbel import TensorGumbel, gumbel
+from maxframe.tensor.random.hypergeometric import TensorHypergeometric, hypergeometric
+from maxframe.tensor.random.laplace import TensorLaplaceDist, laplace
+from maxframe.tensor.random.logistic import TensorLogistic, logistic
+from maxframe.tensor.random.lognormal import TensorLognormal, lognormal
+from maxframe.tensor.random.logseries import TensorLogseries, logseries
+from maxframe.tensor.random.multinomial import TensorMultinomial, multinomial
+from maxframe.tensor.random.multivariate_normal import (
+    TensorMultivariateNormal,
+    multivariate_normal,
+)
+from maxframe.tensor.random.negative_binomial import (
+    TensorNegativeBinomial,
+    negative_binomial,
+)
+from maxframe.tensor.random.noncentral_chisquare import (
+    TensorNoncentralChisquare,
+    noncentral_chisquare,
+)
+from maxframe.tensor.random.noncentral_f import TensorNoncentralF, noncentral_f
+from maxframe.tensor.random.normal import TensorNormal, normal
+from maxframe.tensor.random.pareto import TensorPareto, pareto
+from maxframe.tensor.random.permutation import TensorPermutation, permutation
+from maxframe.tensor.random.poisson import TensorPoisson, poisson
+from maxframe.tensor.random.power import TensorRandomPower, power
+from maxframe.tensor.random.rand import TensorRand, rand
+from maxframe.tensor.random.randint import TensorRandint, randint
+from maxframe.tensor.random.randn import TensorRandn, randn
+from maxframe.tensor.random.random_integers import TensorRandomIntegers, random_integers
+from maxframe.tensor.random.random_sample import TensorRandomSample, random_sample
+from maxframe.tensor.random.rayleigh import TensorRayleigh, rayleigh
+from maxframe.tensor.random.shuffle import shuffle
+from maxframe.tensor.random.standard_cauchy import TensorStandardCauchy, standard_cauchy
+from maxframe.tensor.random.standard_exponential import (
+    TensorStandardExponential,
+    standard_exponential,
+)
+from maxframe.tensor.random.standard_gamma import TensorStandardGamma, standard_gamma
+from maxframe.tensor.random.standard_normal import TensorStandardNormal, standard_normal
+from maxframe.tensor.random.standard_t import TensorStandardT, standard_t
+from maxframe.tensor.random.triangular import TensorTriangular, triangular
+from maxframe.tensor.random.uniform import TensorUniform, uniform
+from maxframe.tensor.random.vonmises import TensorVonmises, vonmises
+from maxframe.tensor.random.wald import TensorWald, wald
+from maxframe.tensor.random.weibull import TensorWeibull, weibull
+from maxframe.tensor.random.zipf import TensorZipf, zipf
 
 
 def _install():

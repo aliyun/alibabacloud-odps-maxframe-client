@@ -12,19 +12,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .image import (
+from maxframe.dataframe.multimodal.audio import (
+    AudioAccessor,
+    AudioObject,
+    SeriesAudioMethods,
+    TranscribeResult,
+    VadSegment,
+    audio_decode,
+    audio_property,
+    detect_language,
+    transcribe,
+    vad_detect,
+)
+from maxframe.dataframe.multimodal.image import (
     ImageAccessor,
     ImageObject,
     SeriesImageMethods,
     image_decode,
     image_property,
 )
-from .url import SeriesUrlMethods, UrlAccessor, url_download
+from maxframe.dataframe.multimodal.url import (
+    SeriesUrlMethods,
+    UrlAccessor,
+    url_download,
+)
 
 
 def _install():
-    from ...core import CachedAccessor
-    from ..core import SERIES_TYPE
+    from maxframe.core import CachedAccessor
+    from maxframe.dataframe.core import SERIES_TYPE
 
     # Register accessors to Series types
     if UrlAccessor._api_count:
@@ -33,6 +49,9 @@ def _install():
     if ImageAccessor._api_count:
         for t in SERIES_TYPE:
             t.image = CachedAccessor("image", ImageAccessor)
+    if AudioAccessor._api_count:
+        for t in SERIES_TYPE:
+            t.audio = CachedAccessor("audio", AudioAccessor)
 
 
 _install()

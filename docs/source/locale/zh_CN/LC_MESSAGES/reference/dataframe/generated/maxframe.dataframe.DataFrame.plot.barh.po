@@ -224,6 +224,8 @@ msgid ""
 "An ndarray is returned with one :class:`matplotlib.axes.Axes` per column "
 "when ``subplots=True``."
 msgstr ""
+"当 ``subplots=True`` 时，返回一个 ndarray，每个列对应一个 :class:`"
+"matplotlib.axes.Axes`。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:40
 #: of
@@ -232,6 +234,9 @@ msgid ""
 "DataFrame using matplotlib. matplotlib.axes.Axes.bar : Plot a vertical "
 "bar plot using matplotlib."
 msgstr ""
+"DataFrame.plot.bar：垂直条形图。DataFrame.plot：使用 matplotlib 绘制 "
+"DataFrame 的图形。matplotlib.axes.Axes.bar：使用 matplotlib 绘制垂直"
+"条形图。"
 
 #: maxframe.dataframe.accessors.plotting.core.PlotAccessor._gen_func.<locals>._inner:46
 #: of

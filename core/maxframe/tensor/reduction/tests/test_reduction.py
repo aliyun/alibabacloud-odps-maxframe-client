@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 
 import pytest
 
-from ....utils import collect_leaf_operators
-from ...datasource import ones, tensor
-from ...utils import AxisError
-from .. import *  # noqa: F401
-from ..core import TensorReduction
+from maxframe.tensor.datasource import ones, tensor
+from maxframe.tensor.reduction import *  # noqa: F401
+from maxframe.tensor.reduction.core import TensorReduction
+from maxframe.tensor.utils import AxisError
+from maxframe.utils import collect_leaf_operators
 
 
 def test_base_reduction():

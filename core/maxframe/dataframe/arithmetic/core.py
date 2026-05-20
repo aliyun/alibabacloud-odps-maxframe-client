@@ -18,21 +18,22 @@ from typing import List, MutableMapping, Union
 import numpy as np
 import pandas as pd
 
-from ...core import ENTITY_TYPE, EntityData, get_output_types
-from ...serialization.serializables import AnyField, Int32Field
-from ...tensor.core import TENSOR_TYPE
-from ...utils import classproperty, make_dtype
-from ..core import DATAFRAME_TYPE, SERIES_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..ufunc.tensor import TensorUfuncMixin
-from ..utils import (
+from maxframe.core import ENTITY_TYPE, EntityData, get_output_types
+from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.ufunc.tensor import TensorUfuncMixin
+from maxframe.dataframe.utils import (
     build_empty_df,
+    extract_scalar_dtype,
     infer_dtype,
     infer_dtypes,
     infer_index_value,
     parse_index,
     validate_axis,
 )
+from maxframe.serialization.serializables import AnyField, Int32Field
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.utils import classproperty, make_dtype
 
 
 class DataFrameBinOpMixin(DataFrameOperatorMixin):
@@ -64,8 +65,7 @@ class DataFrameBinOpMixin(DataFrameOperatorMixin):
         if isinstance(x1, SERIES_TYPE) and (
             x2 is None or pd.api.types.is_scalar(x2) or isinstance(x2, TENSOR_TYPE)
         ):
-            x2_dtype = x2.dtype if hasattr(x2, "dtype") else type(x2)
-            x2_dtype = make_dtype(x2_dtype)
+            x2_dtype = make_dtype(extract_scalar_dtype(x2))
             if hasattr(cls, "return_dtype"):
                 dtype = cls.return_dtype
             else:

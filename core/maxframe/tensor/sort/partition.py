@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, ExecutableTuple
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, ExecutableTuple
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     FieldTypes,
@@ -26,12 +26,12 @@ from ...serialization.serializables import (
     ListField,
     StringField,
 )
-from ...typing_ import EntityType
-from ...utils import check_unexpected_kwargs
-from ..core import TENSOR_TYPE, TensorOrder
-from ..datasource import tensor as astensor
-from ..operators import TensorOperator, TensorOperatorMixin
-from ..utils import validate_axis, validate_order
+from maxframe.tensor.core import TENSOR_TYPE, TensorOrder
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
+from maxframe.tensor.utils import validate_axis, validate_order
+from maxframe.typing_ import EntityType
+from maxframe.utils import check_unexpected_kwargs
 
 
 class TensorPartition(TensorOperatorMixin, TensorOperator):

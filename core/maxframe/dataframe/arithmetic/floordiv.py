@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 import operator
 
-from ... import opcodes
-from ...utils import classproperty
-from .core import DataFrameBinopUfunc
-from .docstring import bin_arithmetic_doc
+from maxframe import opcodes
+from maxframe.dataframe.arithmetic.core import DataFrameBinopUfunc
+from maxframe.dataframe.arithmetic.docstring import bin_arithmetic_doc
+from maxframe.utils import classproperty
 
 
 class DataFrameFloorDiv(DataFrameBinopUfunc):
@@ -32,7 +32,7 @@ class DataFrameFloorDiv(DataFrameBinopUfunc):
 
     @classproperty
     def tensor_op_type(self):
-        from ...tensor.arithmetic import TensorFloorDiv
+        from maxframe.tensor.arithmetic import TensorFloorDiv
 
         return TensorFloorDiv
 

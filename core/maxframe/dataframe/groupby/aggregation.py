@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,13 +18,27 @@ from typing import Dict, List
 
 import numpy as np
 import pandas as pd
-import pyarrow as pa
 
-from ... import opcodes
-from ...config import options
-from ...core import ENTITY_TYPE, EntityData, OutputType, enter_mode
-from ...serialization import PickleContainer
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.config import options
+from maxframe.core import ENTITY_TYPE, EntityData, OutputType, enter_mode
+from maxframe.dataframe.core import GROUPBY_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.reduction.aggregation import (
+    compile_reduction_funcs,
+    is_funcs_aggregate,
+    normalize_reduction_funcs,
+)
+from maxframe.dataframe.reduction.core import BuiltinReduction
+from maxframe.dataframe.utils import (
+    _infer_decimal_agg_dtype,
+    find_input_of_groupby,
+    is_cudf,
+    is_decimal128_dtype,
+    parse_index,
+)
+from maxframe.serialization import PickleContainer
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
@@ -34,23 +48,13 @@ from ...serialization.serializables import (
     ListField,
     StringField,
 )
-from ...udf import BuiltinFunction
-from ...utils import (
-    find_objects,
-    get_pd_option,
-    lazy_import,
-    pd_release_version,
-    wrap_arrow_dtype,
-)
-from ..core import GROUPBY_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..reduction.aggregation import (
-    compile_reduction_funcs,
-    is_funcs_aggregate,
-    normalize_reduction_funcs,
-)
-from ..reduction.core import BuiltinReduction
-from ..utils import MAX_DECIMAL128_PRECISION, is_cudf, is_decimal128_dtype, parse_index
+from maxframe.udf import BuiltinFunction
+from maxframe.utils import find_objects, get_pd_option, lazy_import, pd_release_version
+
+try:
+    from pandas.errors import SpecificationError
+except ImportError:
+    SpecificationError = ValueError
 
 cp = lazy_import("cupy", rename="cp")
 cudf = lazy_import("cudf")
@@ -60,6 +64,7 @@ CV_THRESHOLD = 0.2
 MEAN_RATIO_THRESHOLD = 2 / 3
 _support_get_group_without_as_index = pd_release_version[:2] > (1, 0)
 _support_multi_index_as_index = pd_release_version[:2] > (2, 0)
+_agg_callable_as_string = pd_release_version >= (2, 2, 0)
 
 
 _agg_functions = {
@@ -78,9 +83,23 @@ _agg_functions = {
     "sem": lambda x, ddof=1: x.sem(ddof=ddof),
     "skew": lambda x, bias=False: x.skew(bias=bias),
     "kurt": lambda x, bias=False: x.kurt(bias=bias),
-    "kurtosis": lambda x, bias=False: x.kurtosis(bias=bias),
+    "kurtosis": lambda x, bias=False: x.kurt(bias=bias),
     "nunique": lambda x: x.nunique(),
     "median": lambda x: x.median(),
+}
+_callable_to_func_name = {
+    min: "min",
+    max: "max",
+    sum: "sum",
+    np.min: "min",
+    np.max: "max",
+    np.sum: "sum",
+    np.prod: "prod",
+    np.mean: "mean",
+    np.std: "std",
+    np.var: "var",
+    np.median: "median",
+    len: "size",
 }
 _series_col_name = "col_name"
 
@@ -118,6 +137,18 @@ del _patch_groupby_kurt
 
 
 def _fix_decimal_dtype(agg_result, raw_func, **raw_func_kw):
+    """
+    Fix decimal dtype precision and scale for aggregation results.
+
+    Uses Hive precision rules to determine the appropriate precision
+    and scale for the result.
+    """
+    decimal_aggs = ("sum", "prod", "mean", "var", "std", "min", "max")
+
+    def get_result_dtype(input_dtype, func_name):
+        """Get the result dtype for a decimal aggregation."""
+        return _infer_decimal_agg_dtype(input_dtype, func_name)
+
     if agg_result.ndim == 2 and not any(
         is_decimal128_dtype(dt) for dt in agg_result.dtypes
     ):
@@ -130,28 +161,35 @@ def _fix_decimal_dtype(agg_result, raw_func, **raw_func_kw):
         for col, dt in agg_result.dtypes.items():
             if not is_decimal128_dtype(dt):
                 continue
-            pa_dt = dt.pyarrow_dtype
 
-            has_col_decimal = raw_func in ("sum", "prod")
-            if not has_col_decimal and isinstance(raw_func, dict):
-                has_col_decimal = raw_func.get(col) in ("sum", "prod")
-            elif not has_col_decimal and raw_func_kw:
+            dec_func = None
+
+            to_examine = [raw_func]
+            if isinstance(raw_func, dict):
+                to_examine.append(raw_func.get(col))
+            if raw_func_kw:
                 agg_def = raw_func_kw.get(col)
                 agg_def = (agg_def,) if not isinstance(agg_def, tuple) else agg_def
                 if agg_def:
-                    has_col_decimal = agg_def[-1] in ("sum", "prod")
-            if has_col_decimal or col in ("sum", "prod") or col[-1] in ("sum", "prod"):
-                astype_dict[col] = wrap_arrow_dtype(
-                    pa.decimal128(MAX_DECIMAL128_PRECISION, pa_dt.scale)
-                )
+                    to_examine.append(agg_def[-1])
+            to_examine.extend([col, col[-1]])
+            for v in to_examine:
+                if v is not None and v in decimal_aggs:
+                    dec_func = v
+                    break
+
+            if dec_func is not None:
+                result_dtype = get_result_dtype(dt, dec_func)
+                if result_dtype != dt:
+                    astype_dict[col] = result_dtype
         return agg_result.astype(astype_dict) if astype_dict else agg_result
     else:
-        if not is_decimal128_dtype(agg_result.dtype) or raw_func not in ("sum", "prod"):
+        if not is_decimal128_dtype(agg_result.dtype) or raw_func not in decimal_aggs:
             return agg_result
-        pa_dt = agg_result.dtype.pyarrow_dtype
-        return agg_result.astype(
-            wrap_arrow_dtype(pa.decimal128(MAX_DECIMAL128_PRECISION, pa_dt.scale))
-        )
+        result_dtype = get_result_dtype(agg_result.dtype, raw_func)
+        if result_dtype == agg_result.dtype:
+            return agg_result
+        return agg_result.astype(result_dtype)
 
 
 def build_mock_agg_result(
@@ -160,11 +198,13 @@ def build_mock_agg_result(
     raw_func,
     **raw_func_kw,
 ):
+    if _agg_callable_as_string and callable(raw_func):
+        raw_func = _callable_to_func_name.get(raw_func, raw_func)
+
+    mock_groupby = groupby.op.build_mock_groupby()
     try:
         with enter_mode(mock=True):
-            agg_result = groupby.op.build_mock_groupby().aggregate(
-                raw_func, **raw_func_kw
-            )
+            agg_result = mock_groupby.aggregate(raw_func, **raw_func_kw)
     except ValueError:
         if (
             groupby_params.get("as_index") or _support_get_group_without_as_index
@@ -176,6 +216,32 @@ def build_mock_agg_result(
             .to_frame()
         )
         agg_result.index.names = [None] * agg_result.index.nlevels
+    except SpecificationError:
+        # pandas 3.0+ raises SpecificationError for nested renamer patterns
+        # This happens when using agg with dict format on a series groupby with selection
+        # We need to handle this by converting to a different format
+        if getattr(mock_groupby, "_selection") is None:
+            raise
+
+        # For series with selection, use the selected column's aggregation directly
+        selection = mock_groupby._selection
+        if isinstance(selection, list) and len(selection) == 1:
+            # Single column selection
+            mock_groupby = groupby.op.build_mock_groupby(_enforce_list=True)
+            agg_result = mock_groupby.aggregate(raw_func, **raw_func_kw)
+        else:
+            # Multiple columns, try converting dict to list format
+            if isinstance(raw_func, dict):
+                # Convert dict format to list format
+                agg_funcs = list(raw_func.values())
+                agg_result = mock_groupby.aggregate(agg_funcs, **raw_func_kw)
+                # Rename trailing columns to match original dict format
+                #  and handle as_index=False case
+                agg_result.columns = list(agg_result.columns)[: -len(raw_func)] + list(
+                    raw_func.keys()
+                )
+            else:
+                raise
     return _fix_decimal_dtype(agg_result, raw_func, **raw_func_kw)
 
 
@@ -204,6 +270,7 @@ class DataFrameGroupByAgg(DataFrameOperator, DataFrameOperatorMixin):
     use_inf_as_na = BoolField("use_inf_as_na", default=None)
     input_ndim = Int8Field("input_ndim", default=1)
     append_level = BoolField("append_level", default=False)
+    output_dtypes = AnyField("output_dtypes", default=None)
 
     def has_custom_code(self) -> bool:
         callable_bys = find_objects(
@@ -348,9 +415,7 @@ class DataFrameGroupByAgg(DataFrameOperator, DataFrameOperatorMixin):
 
     def __call__(self, groupby):
         normalize_reduction_funcs(self, ndim=groupby.ndim)
-        df = groupby
-        while df.op.output_types[0] not in (OutputType.dataframe, OutputType.series):
-            df = df.inputs[0]
+        df = find_input_of_groupby(groupby)
 
         if self.raw_func == "size":
             self.output_types = [OutputType.series]

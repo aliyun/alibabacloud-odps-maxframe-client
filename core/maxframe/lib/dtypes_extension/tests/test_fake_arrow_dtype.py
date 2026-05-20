@@ -4,9 +4,9 @@ import pyarrow as pa
 import pytest
 from pandas.api.types import pandas_dtype
 
-from ....lib.version import parse as parse_version
-from ....utils import deserialize_serializable, serialize_serializable, tokenize
-from ...wrapped_pickle import switch_unpickle
+from maxframe.lib.version import parse as parse_version
+from maxframe.lib.wrapped_pickle import switch_unpickle
+from maxframe.utils import deserialize_serializable, serialize_serializable, tokenize
 
 try:
     from pandas import ArrowDtype  # noqa: F401
@@ -14,7 +14,10 @@ try:
     ArrowDtype(pa.string())
     pytestmark = pytest.mark.skip("Only test when ArrowDtype not available in pandas")
 except ImportError:
-    from .._fake_arrow_dtype import FakeArrowDtype, to_pyarrow_type
+    from maxframe.lib.dtypes_extension._fake_arrow_dtype import (
+        FakeArrowDtype,
+        to_pyarrow_type,
+    )
 
 
 def test_fake_arrow_dtype():

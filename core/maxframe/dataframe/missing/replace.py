@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,69 @@
 
 from typing import List
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData
-from ...serialization.serializables import AnyField, FieldTypes, Int32Field, ListField
-from ...utils import no_default
-from ..operators import SERIES_TYPE, DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_df, build_series
+import numpy as np
+import pandas as pd
+
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData
+from maxframe.dataframe.operators import (
+    SERIES_TYPE,
+    DataFrameOperator,
+    DataFrameOperatorMixin,
+)
+from maxframe.dataframe.utils import build_df, build_series
+from maxframe.serialization.serializables import (
+    AnyField,
+    FieldTypes,
+    Int32Field,
+    ListField,
+)
+from maxframe.utils import no_default, pd_release_version
+
+_replace_with_method = pd_release_version >= (3, 0, 0)
+
+
+def replace_compat(
+    obj, to_replace, value=no_default, method=no_default, limit=None, regex=False
+):
+    """
+    Compatibility function for pandas replace with method parameter.
+    In pandas 3.0+, the method parameter was removed from replace().
+    This function provides backward compatibility by converting replace with method
+    to the equivalent pattern: replace with NaN, then ffill/bfill.
+    """
+    if not _replace_with_method:
+        method = method or no_default
+        return obj.replace(to_replace, value, method=method, limit=limit, regex=regex)
+
+    if method not in (no_default, None):
+        if value is no_default:
+            # Replace with NaN first, then apply ffill/bfill
+            result = obj.replace(to_replace, np.nan, regex=regex)
+            if method in ("pad", "ffill"):
+                result = result.ffill(limit=limit)
+            elif method in ("backfill", "bfill"):
+                result = result.bfill(limit=limit)
+            return result
+        else:
+            # If value is specified, ignore method in pandas 3.0+
+            return obj.replace(to_replace, value, regex=regex)
+    elif (
+        pd.api.types.is_scalar(to_replace)
+        and value is no_default
+        and (method is None or method is no_default)
+    ):
+        # pandas 3.0+ requires value to be specified when to_replace is a scalar
+        # Simulate the old behavior where replace(to_replace) replaces with NaN
+        return obj.replace(to_replace, np.nan, regex=regex)
+    else:
+        # when method is not specified, use the old behavior
+        kwargs = {"regex": regex}
+        if limit is not None:
+            kwargs["limit"] = limit
+        if method is not None and method is not no_default:
+            kwargs["method"] = method
+        return obj.replace(to_replace, value, **kwargs)
 
 
 class DataFrameReplace(DataFrameOperator, DataFrameOperatorMixin):
@@ -64,8 +121,14 @@ class DataFrameReplace(DataFrameOperator, DataFrameOperatorMixin):
         else:
             mock_value = self.value
 
-        mock_result = mock_obj.replace(
-            mock_to_replace, mock_value, regex=self.regex, method=self.method
+        # Use the centralized _pandas_replace_with_method to handle pandas 3.0 compatibility
+        mock_result = replace_compat(
+            mock_obj,
+            mock_to_replace,
+            mock_value,
+            method=self.method,
+            limit=self.limit,
+            regex=self.regex,
         )
 
         if df_or_series.ndim == 2:

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,13 @@
 
 from typing import List
 
-from ....tensor.linalg import (
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.codegen.spe.utils import build_method_call_adapter
+from maxframe.tensor.linalg import (
     TensorCholesky,
     TensorEinsum,
     TensorInv,
@@ -26,8 +32,6 @@ from ....tensor.linalg import (
     TensorSVD,
     TensorTensorDot,
 )
-from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
-from ..utils import build_method_call_adapter
 
 TensorCholeskyAdapter = build_method_call_adapter(
     TensorCholesky, "cholesky", 0, kw_keys=["lower"], source_module="npl"

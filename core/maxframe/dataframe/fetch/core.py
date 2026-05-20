@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 
 from typing import MutableMapping, Union
 
-from ...core import OutputType, register_fetch_class
-from ...core.operator import Fetch, FetchMixin, FetchShuffle, Operator
-from ...serialization.serializables import FieldTypes, TupleField
-from ...utils import on_deserialize_shape, on_serialize_shape
-from ..operators import DataFrameOperatorMixin
+from maxframe.core import OutputType, register_fetch_class
+from maxframe.core.operator import Fetch, FetchMixin, FetchShuffle, Operator
+from maxframe.dataframe.operators import DataFrameOperatorMixin
+from maxframe.serialization.serializables import FieldTypes, TupleField
+from maxframe.utils import on_deserialize_shape, on_serialize_shape
 
 
 class DataFrameFetchMixin(DataFrameOperatorMixin, FetchMixin):

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
 
 import warnings
 
-from ... import opcodes
-from ...core import get_output_types
-from ...serialization import PickleContainer
-from ...serialization.serializables import AnyField, StringField
-from ..core import INDEX_TYPE, SERIES_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_df, build_series, parse_index, validate_axis
+from maxframe import opcodes
+from maxframe.core import get_output_types
+from maxframe.dataframe.core import INDEX_TYPE, SERIES_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_df, build_series, parse_index, validate_axis
+from maxframe.serialization import PickleContainer
+from maxframe.serialization.serializables import AnyField, StringField
 
 
 class DataFrameRename(DataFrameOperator, DataFrameOperatorMixin):
@@ -433,7 +433,7 @@ def index_set_names(index, names, level=None, inplace=False):
     if inplace:
         df_or_series = getattr(index, "_get_df_or_series", lambda: None)()
         if df_or_series is not None:
-            from .rename_axis import rename_axis_with_level
+            from maxframe.dataframe.indexing.rename_axis import rename_axis_with_level
 
             rename_axis_with_level(
                 df_or_series, names, axis=index._axis, level=level, inplace=True

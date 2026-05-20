@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ from tornado import httpserver, web
 from tornado.log import enable_pretty_logging
 from traitlets.config import Configurable
 
-from . import env
-from .utils import random_ports, trait_from_env
+from maxframe import env
+from maxframe.utils import random_ports, trait_from_env
 
 
 class ServiceConfigMixin(Configurable):

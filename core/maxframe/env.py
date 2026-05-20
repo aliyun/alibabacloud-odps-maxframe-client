@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,3 +35,4 @@ ODPS_ENDPOINT = "ODPS_ENDPOINT"
 ODPS_TUNNEL_ENDPOINT = "ODPS_TUNNEL_ENDPOINT"
 ODPS_NAMESPACE = "ODPS_NAMESPACE"
 ODPS_STORAGE_API_ENDPOINT = "ODPS_STORAGE_API_ENDPOINT"
+MAX_STORAGE_DATA_PROXY_CONF = "MAX_STORAGE_DATA_PROXY_CONF"

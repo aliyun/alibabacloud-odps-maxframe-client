@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,17 @@ import itertools
 import logging
 from typing import List
 
-from .... import opcodes
-from ....core import OutputType
-from ....core.operator import ObjectOperator, ObjectOperatorMixin
-from ....serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.core.operator import ObjectOperator, ObjectOperatorMixin
+from maxframe.learn.contrib.lightgbm.core import (
+    Booster,
+    BoosterData,
+    LGBMScikitLearnBase,
+)
+from maxframe.learn.contrib.models import to_remote_model
+from maxframe.learn.contrib.utils import TrainingCallback
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
@@ -30,10 +37,7 @@ from ....serialization.serializables import (
     ListField,
     StringField,
 )
-from ....typing_ import EntityType
-from ..models import to_remote_model
-from ..utils import TrainingCallback
-from .core import Booster, BoosterData, LGBMScikitLearnBase
+from maxframe.typing_ import EntityType
 
 logger = logging.getLogger(__name__)
 

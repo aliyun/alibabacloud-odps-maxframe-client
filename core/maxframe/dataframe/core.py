@@ -22,7 +22,7 @@ from typing import Any, Dict, List, Tuple, Union
 import numpy as np
 import pandas as pd
 
-from ..core import (
+from maxframe.core import (
     ENTITY_TYPE,
     HasShapeTileable,
     HasShapeTileableData,
@@ -32,9 +32,17 @@ from ..core import (
     is_build_mode,
     register_output_types,
 )
-from ..core.entity.utils import fill_chunk_slices, refresh_tileable_shape
-from ..protocol import DataFrameTableMeta, DefaultIndexType
-from ..serialization.serializables import (
+from maxframe.core.entity.utils import fill_chunk_slices, refresh_tileable_shape
+from maxframe.dataframe.typing_ import DataFrameType, IndexType, SeriesType
+from maxframe.dataframe.utils import (
+    ReprSeries,
+    apply_if_callable,
+    fetch_corner_data,
+    merge_index_value,
+    parse_index,
+)
+from maxframe.protocol import DataFrameTableMeta, DefaultIndexType
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DataTypeField,
@@ -50,8 +58,8 @@ from ..serialization.serializables import (
     SliceField,
     StringField,
 )
-from ..session import get_default_session
-from ..utils import (
+from maxframe.session import get_default_session
+from maxframe.utils import (
     calc_nsplits,
     ceildiv,
     estimate_pandas_size,
@@ -59,14 +67,6 @@ from ..utils import (
     pd_release_version,
     prevent_called_from_pandas,
     tokenize,
-)
-from .typing_ import DataFrameType, IndexType, SeriesType
-from .utils import (
-    ReprSeries,
-    apply_if_callable,
-    fetch_corner_data,
-    merge_index_value,
-    parse_index,
 )
 
 _df_with_iteritems = pd_release_version[:2] < (2, 0)
@@ -126,10 +126,11 @@ class IndexValue(Serializable):
             return None
 
         def to_pandas(self):
+            super_fields = super(type(self), self)._FIELDS
             kw = {
                 field.tag: getattr(self, attr, None)
                 for attr, field in self._FIELDS.items()
-                if attr not in super(type(self), self)._FIELDS
+                if attr not in super_fields
             }
             kw = {k: v for k, v in kw.items() if v is not None}
             if kw.get("data") is None:
@@ -203,6 +204,7 @@ class IndexValue(Serializable):
         _ambiguous = AnyField("ambiguous")
         _dayfirst = BoolField("dayfirst")
         _yearfirst = BoolField("yearfirst")
+        _unit = AnyField("unit", default=None)
 
         @property
         def inferred_type(self):
@@ -211,6 +213,18 @@ class IndexValue(Serializable):
         @property
         def freq(self):
             return getattr(self, "_freq", None)
+
+        @property
+        def unit(self):
+            return getattr(self, "_unit", None)
+
+        @classmethod
+        def _pd_initializer(cls, **kwargs):
+            unit = kwargs.pop("unit", None)
+            ret = pd.DatetimeIndex(**kwargs)
+            if unit is not None:
+                ret = ret.as_unit(unit)
+            return ret
 
     class TimedeltaIndex(IndexBase):
         _name = AnyField("name")
@@ -225,6 +239,18 @@ class IndexValue(Serializable):
         @property
         def inferred_type(self):
             return "timedelta64"
+
+        @property
+        def unit(self):
+            return getattr(self, "_unit", None)
+
+        @classmethod
+        def _pd_initializer(cls, **kwargs):
+            unit = kwargs.pop("unit", None)
+            ret = pd.DatetimeIndex(**kwargs)
+            if unit is not None:
+                ret = ret.as_unit(unit)
+            return ret
 
     class PeriodIndex(IndexBase):
         _name = AnyField("name")
@@ -324,14 +350,28 @@ class IndexValue(Serializable):
                 except TypeError:  # pragma: no cover
                     return pd.array([], dtype=dtype)
 
+            def _build_array_from_data(dtype, values):
+                """Build array with specified dtype from values."""
+                try:
+                    return np.array(values, dtype=dtype)
+                except TypeError:
+                    # For types like StringDtype that can't be used with np.array
+                    return pd.array(values, dtype=dtype)
+
             if data is None:
                 return pd.MultiIndex.from_arrays(
                     [_build_empty_array(dtype) for dtype in self._dtypes],
                     sortorder=sortorder,
                     names=self._names,
                 )
-            return pd.MultiIndex.from_tuples(
-                [tuple(d) for d in data], sortorder=sortorder, names=self._names
+
+            arrays = []
+            for i, dtype in enumerate(self._dtypes):
+                # Extract the i-th element from each tuple
+                level_values = [t[i] for t in data]
+                arrays.append(_build_array_from_data(dtype, level_values))
+            return pd.MultiIndex.from_arrays(
+                arrays, sortorder=sortorder, names=self._names
             )
 
     _index_value = OneOfField(
@@ -528,7 +568,7 @@ class _BatchedFetcher:
     __slots__ = ()
 
     def _iter(self, batch_size=None, session=None, **kw):
-        from .indexing.iloc import iloc
+        from maxframe.dataframe.indexing.iloc import iloc
 
         if batch_size is not None:
             size = self.shape[0]
@@ -574,7 +614,10 @@ class _BatchedFetcher:
         return self._iter(batch_size=batch_size, session=session)
 
     def fetch(self, session=None, **kw):
-        from .indexing.iloc import DataFrameIlocGetItem, SeriesIlocGetItem
+        from maxframe.dataframe.indexing.iloc import (
+            DataFrameIlocGetItem,
+            SeriesIlocGetItem,
+        )
 
         batch_size = kw.pop("batch_size", None)
         if isinstance(self.op, (DataFrameIlocGetItem, SeriesIlocGetItem)):
@@ -714,12 +757,12 @@ class IndexData(HasShapeTileableData, _ToPandasMixin):
         return self._index_value.inferred_type
 
     def to_tensor(self, dtype=None, extract_multi_index=False):
-        from ..tensor.datasource.from_dataframe import from_index
+        from maxframe.tensor.datasource.from_dataframe import from_index
 
         return from_index(self, dtype=dtype, extract_multi_index=extract_multi_index)
 
     def to_frame(self, index: bool = True, name=None):
-        from . import dataframe_from_tensor
+        from maxframe.dataframe import dataframe_from_tensor
 
         if isinstance(self.index_value.value, IndexValue.MultiIndex):
             old_names = self.index_value.value.names
@@ -751,7 +794,7 @@ class IndexData(HasShapeTileableData, _ToPandasMixin):
         )
 
     def to_series(self, index=None, name=None):
-        from . import series_from_index
+        from maxframe.dataframe import series_from_index
 
         return series_from_index(self, index=index, name=name)
 
@@ -1084,7 +1127,7 @@ class BaseSeriesData(HasShapeTileableData, _ToPandasMixin):
 
     @property
     def index(self):
-        from .datasource.index import from_tileable
+        from maxframe.dataframe.datasource.index import from_tileable
 
         return from_tileable(self)
 
@@ -1100,7 +1143,7 @@ class BaseSeriesData(HasShapeTileableData, _ToPandasMixin):
         return shape == (0,)
 
     def to_tensor(self, dtype=None):
-        from ..tensor.datasource.from_dataframe import from_series
+        from maxframe.tensor.datasource.from_dataframe import from_series
 
         return from_series(self, dtype=dtype)
 
@@ -1123,7 +1166,7 @@ class SeriesData(_BatchedFetcher, BaseSeriesData):
     items = iteritems
 
     def to_frame(self, name=None):
-        from . import dataframe_from_tensor
+        from maxframe.dataframe import dataframe_from_tensor
 
         name = name or self.name or 0
         return dataframe_from_tensor(self, columns=[name])
@@ -1215,7 +1258,7 @@ class Series(HasShapeTileable, _ToPandasMixin):
 
     @name.setter
     def name(self, val):
-        from .indexing.rename import DataFrameRename
+        from maxframe.dataframe.indexing.rename import DataFrameRename
 
         op = DataFrameRename(new_name=val, output_types=[OutputType.series])
         new_series = op(self)
@@ -1541,19 +1584,19 @@ class BaseDataFrameData(HasShapeTileableData, _ToPandasMixin):
         return 0 in shape
 
     def to_tensor(self, dtype=None):
-        from ..tensor.datasource.from_dataframe import from_dataframe
+        from maxframe.tensor.datasource.from_dataframe import from_dataframe
 
         return from_dataframe(self, dtype=dtype)
 
     @property
     def index(self):
-        from .datasource.index import from_tileable
+        from maxframe.dataframe.datasource.index import from_tileable
 
         return from_tileable(self)
 
     @property
     def columns(self):
-        from .datasource.index import from_pandas as from_pandas_index
+        from maxframe.dataframe.datasource.index import from_pandas as from_pandas_index
 
         return from_pandas_index(self.dtypes.index, store_data=True)
 
@@ -2351,7 +2394,7 @@ class DataFrameOrSeriesData(HasShapeTileableData, _ToPandasMixin):
         pass
 
     def ensure_data(self):
-        from .fetch.core import DataFrameFetch
+        from maxframe.dataframe.fetch.core import DataFrameFetch
 
         self.execute()
         default_sess = get_default_session()

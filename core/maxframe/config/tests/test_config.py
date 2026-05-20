@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,14 @@ import threading
 
 import pytest
 
-from ...utils import update_wlm_quota_settings
-from ..config import Config, is_integer, is_string, option_context, options
+from maxframe.config.config import (
+    Config,
+    is_integer,
+    is_string,
+    option_context,
+    options,
+)
+from maxframe.utils import update_wlm_quota_settings
 
 
 def test_config_context():

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import ExecutableTuple
-from ...lib.sparse.core import get_array_module
-from ...serialization.serializables import AnyField, Int32Field
-from ...typing_ import EntityType
-from ..core import Tensor
-from ..datasource import tensor as astensor
-from ..operators import TensorHasInput, TensorOperatorMixin
-from ..utils import calc_sliced_size
+from maxframe import opcodes
+from maxframe.core import ExecutableTuple
+from maxframe.lib.sparse.core import get_array_module
+from maxframe.serialization.serializables import AnyField, Int32Field
+from maxframe.tensor.core import Tensor
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorHasInput, TensorOperatorMixin
+from maxframe.tensor.utils import calc_sliced_size
+from maxframe.typing_ import EntityType
 
 
 class TensorSplit(TensorHasInput, TensorOperatorMixin):

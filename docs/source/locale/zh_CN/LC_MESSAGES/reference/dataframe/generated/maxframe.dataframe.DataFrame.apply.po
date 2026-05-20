@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-09 12:00+0800\n"
+"POT-Creation-Date: 2026-04-27 13:57+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -211,10 +211,19 @@ msgid "Whether infer dtypes when dtypes or output_type is not specified."
 msgstr "当未指定 dtypes 或 output_type 时是否推断数据类型。"
 
 #: maxframe.dataframe.misc.apply.df_apply:61 of
+msgid ""
+"Validation mode for output dtypes and columns: - 'ignore': No validation "
+"performed - 'warns': Validate and show warnings on mismatch (default when"
+" None) - 'raises': Validate and raise errors on mismatch"
+msgstr ""
+"输出数据类型和列的验证模式：- 'ignore'：不执行验证 - 'warns'：验证并在不"
+"匹配时显示警告（None时的默认值）- 'raises'：验证并在不匹配时引发错误"
+
+#: maxframe.dataframe.misc.apply.df_apply:66 of
 msgid "Positional arguments to pass to `func` in addition to the array/series."
 msgstr "传递给 `func` 的位置参数，除了数组/序列。"
 
-#: maxframe.dataframe.misc.apply.df_apply:64 of
+#: maxframe.dataframe.misc.apply.df_apply:69 of
 msgid "Additional keyword arguments to pass as keywords arguments to `func`."
 msgstr "传递给 `func` 的额外关键字参数。"
 
@@ -222,7 +231,7 @@ msgstr "传递给 `func` 的额外关键字参数。"
 msgid "返回"
 msgstr ""
 
-#: maxframe.dataframe.misc.apply.df_apply:67 of
+#: maxframe.dataframe.misc.apply.df_apply:72 of
 msgid "Result of applying ``func`` along the given axis of the DataFrame."
 msgstr "沿 DataFrame 给定轴应用 ``func`` 的结果。"
 
@@ -230,35 +239,35 @@ msgstr "沿 DataFrame 给定轴应用 ``func`` 的结果。"
 msgid "返回类型"
 msgstr ""
 
-#: maxframe.dataframe.misc.apply.df_apply:73 of
+#: maxframe.dataframe.misc.apply.df_apply:78 of
 msgid ":py:obj:`DataFrame.applymap`"
 msgstr ""
 
-#: maxframe.dataframe.misc.apply.df_apply:74 of
+#: maxframe.dataframe.misc.apply.df_apply:79 of
 msgid "For elementwise operations."
 msgstr "用于逐元素操作。"
 
-#: maxframe.dataframe.misc.apply.df_apply:76 of
+#: maxframe.dataframe.misc.apply.df_apply:81 of
 msgid ":py:obj:`DataFrame.aggregate`"
 msgstr ""
 
-#: maxframe.dataframe.misc.apply.df_apply:77 of
+#: maxframe.dataframe.misc.apply.df_apply:82 of
 msgid "Only perform aggregating type operations."
 msgstr "仅执行聚合类型操作。"
 
-#: maxframe.dataframe.misc.apply.df_apply:79 of
+#: maxframe.dataframe.misc.apply.df_apply:84 of
 msgid ":py:obj:`DataFrame.transform`"
 msgstr ""
 
-#: maxframe.dataframe.misc.apply.df_apply:80 of
+#: maxframe.dataframe.misc.apply.df_apply:85 of
 msgid "Only perform transforming type operations."
 msgstr "仅执行变换类型操作。"
 
-#: maxframe.dataframe.misc.apply.df_apply:83 of
+#: maxframe.dataframe.misc.apply.df_apply:88 of
 msgid "备注"
 msgstr ""
 
-#: maxframe.dataframe.misc.apply.df_apply:84 of
+#: maxframe.dataframe.misc.apply.df_apply:89 of
 msgid ""
 "When deciding output dtypes and shape of the return value, MaxFrame will "
 "try applying ``func`` onto a mock DataFrame,  and the apply call may "
@@ -269,7 +278,7 @@ msgstr ""
 "模拟的 DataFrame 上，此时 apply 调用可能会失败。发生这种情况时，你需要在 "
 "output_type 中指定 apply 调用的类型（DataFrame 或 Series）。"
 
-#: maxframe.dataframe.misc.apply.df_apply:89 of
+#: maxframe.dataframe.misc.apply.df_apply:94 of
 msgid ""
 "For DataFrame output, you need to specify a list or a pandas Series as "
 "``dtypes`` of output DataFrame. ``index`` of output can also be "
@@ -278,13 +287,13 @@ msgstr ""
 "对于 DataFrame 输出，你需要指定一个列表或 pandas Series 作为输出 "
 "DataFrame 的 ``dtypes``。还可以指定输出的 ``index``。"
 
-#: maxframe.dataframe.misc.apply.df_apply:92 of
+#: maxframe.dataframe.misc.apply.df_apply:97 of
 msgid ""
 "For Series output, you need to specify ``dtype`` and ``name`` of output "
 "Series."
 msgstr "对于 Series 输出，你需要指定输出 Series 的 ``dtype`` 和 ``name``。"
 
-#: maxframe.dataframe.misc.apply.df_apply:94 of
+#: maxframe.dataframe.misc.apply.df_apply:99 of
 msgid ""
 "For any input with data type ``pandas.ArrowDtype(pyarrow.MapType)``, it "
 "will always be converted to a Python dict. And for any output with this "
@@ -294,21 +303,21 @@ msgstr ""
 "始终被转换为 Python 字典。对于任何具有此数据类型的输出，也必须以 Python "
 "字典形式返回。"
 
-#: maxframe.dataframe.misc.apply.df_apply:99 of
+#: maxframe.dataframe.misc.apply.df_apply:104 of
 msgid "示例"
 msgstr ""
 
-#: maxframe.dataframe.misc.apply.df_apply:110 of
+#: maxframe.dataframe.misc.apply.df_apply:115 of
 msgid "Using a reducing function on either axis"
 msgstr "在任一轴上使用归约函数"
 
-#: maxframe.dataframe.misc.apply.df_apply:123 of
+#: maxframe.dataframe.misc.apply.df_apply:128 of
 msgid ""
 "Passing ``result_type='expand'`` will expand list-like results to columns"
 " of a Dataframe"
 msgstr "传递 ``result_type='expand'`` 会将类列表结果扩展为 DataFrame 的列"
 
-#: maxframe.dataframe.misc.apply.df_apply:132 of
+#: maxframe.dataframe.misc.apply.df_apply:137 of
 msgid ""
 "Returning a Series inside the function is similar to passing "
 "``result_type='expand'``. The resulting column names will be the Series "
@@ -317,7 +326,7 @@ msgstr ""
 "在函数中返回一个 Series 与传递 ``result_type='expand'`` 类似。结果列名将"
 "是 Series 的索引。"
 
-#: maxframe.dataframe.misc.apply.df_apply:142 of
+#: maxframe.dataframe.misc.apply.df_apply:147 of
 msgid ""
 "Passing ``result_type='broadcast'`` will ensure the same shape result, "
 "whether list-like or scalar is returned by the function, and broadcast it"
@@ -326,11 +335,11 @@ msgstr ""
 "传递 ``result_type='broadcast'`` 将确保结果保持相同形状，无论函数返回的是"
 "类列表还是标量，并沿轴进行广播。结果列名将保持原始列名。"
 
-#: maxframe.dataframe.misc.apply.df_apply:153 of
+#: maxframe.dataframe.misc.apply.df_apply:158 of
 msgid "Create a dataframe with a map type."
 msgstr "创建一个包含映射类型的 dataframe。"
 
-#: maxframe.dataframe.misc.apply.df_apply:174 of
+#: maxframe.dataframe.misc.apply.df_apply:179 of
 msgid "Define a function that updates the map type with a new key-value pair."
 msgstr "定义一个使用新键值对更新映射类型的函数。"
 

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,15 @@
 
 from typing import List
 
-from ....dataframe.tseries.between_time import DataFrameBetweenTime
-from ....dataframe.tseries.to_datetime import DataFrameToDatetime
-from ....utils import no_default
-from ..core import SPECodeContext, SPEOperatorAdapter, register_op_adapter
-from ..utils import build_method_call_adapter
+from maxframe.codegen.spe.core import (
+    SPECodeContext,
+    SPEOperatorAdapter,
+    register_op_adapter,
+)
+from maxframe.codegen.spe.utils import build_method_call_adapter
+from maxframe.dataframe.tseries.between_time import DataFrameBetweenTime
+from maxframe.dataframe.tseries.to_datetime import DataFrameToDatetime
+from maxframe.utils import no_default
 
 DataFrameBetweenTimeAdapter = build_method_call_adapter(
     DataFrameBetweenTime,

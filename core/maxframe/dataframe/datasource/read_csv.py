@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,17 +18,29 @@ from urllib.parse import urlparse
 import numpy as np
 import pandas as pd
 
-from ...protocol import DefaultIndexType
+from maxframe.protocol import DefaultIndexType
 
 try:
     from pyarrow import NativeFile
 except ImportError:  # pragma: no cover
     NativeFile = None
 
-from ... import opcodes
-from ...config import options
-from ...core import OutputType
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.config import options
+from maxframe.core import OutputType
+from maxframe.dataframe.datasource.core import (
+    ColumnPruneSupportedDataSourceMixin,
+    DtypeBackendCompatibleMixin,
+    LakeDataSource,
+)
+from maxframe.dataframe.datasource.utils import get_lake_output_info, iter_local_files
+from maxframe.dataframe.utils import (
+    parse_index,
+    to_arrow_dtypes,
+    validate_default_index_type,
+    validate_dtype_backend,
+)
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
@@ -37,19 +49,7 @@ from ...serialization.serializables import (
     ListField,
     StringField,
 )
-from ...utils import lazy_import, no_default
-from ..utils import (
-    parse_index,
-    to_arrow_dtypes,
-    validate_default_index_type,
-    validate_dtype_backend,
-)
-from .core import (
-    ColumnPruneSupportedDataSourceMixin,
-    DtypeBackendCompatibleMixin,
-    LakeDataSource,
-)
-from .utils import get_lake_output_info, iter_local_files
+from maxframe.utils import lazy_import, no_default
 
 cudf = lazy_import("cudf")
 
@@ -424,7 +424,7 @@ def read_csv(
     >>> md.read_csv('oss://oss-cn-hangzhou.aliyuncs.com/bucket/test.csv',
     >>>             storage_options={'role_arn': 'acs:ram::xxxxxx:role/aliyunodpsdefaultrole'})
     """
-    from .dataframe import from_pandas
+    from maxframe.dataframe.datasource.dataframe import from_pandas
 
     default_index_type = validate_default_index_type(default_index_type, **kwargs)
     local_test_mode = kwargs.pop("_local_test_mode", False)

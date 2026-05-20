@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .core import Booster
-from .dmatrix import DMatrix
-from .predict import predict
-from .train import train
+from maxframe.learn.contrib.xgboost.core import Booster
+from maxframe.learn.contrib.xgboost.dmatrix import DMatrix
+from maxframe.learn.contrib.xgboost.predict import predict
+from maxframe.learn.contrib.xgboost.train import train
 
 # isort: off
-from ..utils import config_mod_getattr as _config_mod_getattr
+from maxframe.learn.contrib.utils import config_mod_getattr as _config_mod_getattr
 
 _config_mod_getattr(
     {

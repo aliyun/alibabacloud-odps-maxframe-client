@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ def result_type(*tensors_and_dtypes):
     >>> mt.result_type(3.0, -2)
     dtype('float64')
     """
-    from ..core import Tensor
+    from maxframe.tensor.core import Tensor
 
     arrays_and_dtypes = [
         a.dtype if isinstance(a, Tensor) else a for a in tensors_and_dtypes

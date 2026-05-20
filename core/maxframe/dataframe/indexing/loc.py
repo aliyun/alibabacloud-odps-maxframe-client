@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,16 +20,16 @@ import pandas as pd
 from pandas.core.dtypes.cast import find_common_type
 from pandas.core.indexing import IndexingError
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, EntityData, OutputType
-from ...serialization.serializables import AnyField, KeyField, ListField
-from ...tensor.datasource import asarray
-from ...tensor.utils import calc_sliced_size, filter_inputs
-from ...utils import is_full_slice, lazy_import, pd_release_version
-from ..core import DATAFRAME_TYPE, IndexValue
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index, validate_axis
-from .iloc import DataFrameIlocSetItem
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, EntityData, OutputType
+from maxframe.dataframe.core import DATAFRAME_TYPE, IndexValue
+from maxframe.dataframe.indexing.iloc import DataFrameIlocSetItem
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index, validate_axis
+from maxframe.serialization.serializables import AnyField, KeyField, ListField
+from maxframe.tensor.datasource import asarray
+from maxframe.tensor.utils import calc_sliced_size, filter_inputs
+from maxframe.utils import is_full_slice, lazy_import, pd_release_version
 
 cudf = lazy_import("cudf")
 with_slice_locs_kind = pd_release_version < (1, 4, 0)

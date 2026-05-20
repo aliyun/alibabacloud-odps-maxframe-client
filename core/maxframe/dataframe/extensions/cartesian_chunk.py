@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,24 +17,24 @@ from typing import List
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import EntityData, OutputType
-from ...serialization.serializables import (
-    DictField,
-    FunctionField,
-    KeyField,
-    TupleField,
-)
-from ...udf import BuiltinFunction
-from ...utils import quiet_stdio
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import (
+from maxframe import opcodes
+from maxframe.core import EntityData, OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import (
     build_df,
     build_empty_df,
     build_series,
     parse_index,
     validate_output_types,
 )
+from maxframe.serialization.serializables import (
+    DictField,
+    FunctionField,
+    KeyField,
+    TupleField,
+)
+from maxframe.udf import BuiltinFunction
+from maxframe.utils import quiet_stdio
 
 
 class DataFrameCartesianChunk(DataFrameOperator, DataFrameOperatorMixin):

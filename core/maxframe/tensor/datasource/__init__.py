@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .arange import TensorArange, arange
-from .array import (
+from maxframe.tensor.datasource.arange import TensorArange, arange
+from maxframe.tensor.datasource.array import (
     ArrayDataSource,
     CSRMatrixDataSource,
     array,
@@ -22,19 +22,33 @@ from .array import (
     asfortranarray,
     tensor,
 )
-from .diag import TensorDiag, diag
-from .diagflat import diagflat
-from .empty import TensorEmpty, TensorEmptyLike, empty, empty_like
-from .eye import TensorEye, eye
-from .from_dataframe import from_dataframe, from_index, from_series
-from .from_dense import fromdense
-from .from_sparse import fromsparse
-from .full import full, full_like
-from .identity import identity
-from .indices import indices
-from .linspace import TensorLinspace, linspace
-from .meshgrid import meshgrid
-from .ones import TensorOnes, TensorOnesLike, ones, ones_like
-from .scalar import Scalar, scalar
-from .tri_array import TensorTril, TensorTriu, tril, triu
-from .zeros import TensorZeros, TensorZerosLike, zeros, zeros_like
+from maxframe.tensor.datasource.diag import TensorDiag, diag
+from maxframe.tensor.datasource.diagflat import diagflat
+from maxframe.tensor.datasource.empty import (
+    TensorEmpty,
+    TensorEmptyLike,
+    empty,
+    empty_like,
+)
+from maxframe.tensor.datasource.eye import TensorEye, eye
+from maxframe.tensor.datasource.from_dataframe import (
+    from_dataframe,
+    from_index,
+    from_series,
+)
+from maxframe.tensor.datasource.from_dense import fromdense
+from maxframe.tensor.datasource.from_sparse import fromsparse
+from maxframe.tensor.datasource.full import full, full_like
+from maxframe.tensor.datasource.identity import identity
+from maxframe.tensor.datasource.indices import indices
+from maxframe.tensor.datasource.linspace import TensorLinspace, linspace
+from maxframe.tensor.datasource.meshgrid import meshgrid
+from maxframe.tensor.datasource.ones import TensorOnes, TensorOnesLike, ones, ones_like
+from maxframe.tensor.datasource.scalar import Scalar, scalar
+from maxframe.tensor.datasource.tri_array import TensorTril, TensorTriu, tril, triu
+from maxframe.tensor.datasource.zeros import (
+    TensorZeros,
+    TensorZerosLike,
+    zeros,
+    zeros_like,
+)

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@ from typing import Any, Dict, Type, Union
 import msgpack
 import numpy as np
 
-from ...core import Entity, EntityData, OutputType, get_output_types
-from ...lib import wrapped_pickle as pickle
-from ...typing_ import SlicesType, TileableType
-from ...utils import deserialize_serializable, serialize_serializable
-from ..odpsio.volumeio import ODPSVolumeReader, ODPSVolumeWriter
+from maxframe.core import Entity, EntityData, OutputType, get_output_types
+from maxframe.io.odpsio.volumeio import ODPSVolumeReader, ODPSVolumeWriter
+from maxframe.lib import wrapped_pickle as pickle
+from maxframe.typing_ import SlicesType, TileableType
+from maxframe.utils import deserialize_serializable, serialize_serializable
 
 _MetaType = Dict[str, Any]
 

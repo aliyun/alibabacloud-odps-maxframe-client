@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,12 +17,17 @@ import operator
 from collections.abc import Iterable
 from functools import reduce
 
-from ...serialization.serializables import AnyField, BoolField, Int32Field, KeyField
-from ..array_utils import get_array_module
-from ..core import Tensor, TensorOrder
-from ..datasource import tensor as astensor
-from ..operators import TensorHasInput, TensorOperatorMixin
-from ..utils import check_out_param, validate_axis
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    Int32Field,
+    KeyField,
+)
+from maxframe.tensor.array_utils import get_array_module
+from maxframe.tensor.core import Tensor, TensorOrder
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorHasInput, TensorOperatorMixin
+from maxframe.tensor.utils import check_out_param, validate_axis
 
 
 def numel(x, **kwargs):

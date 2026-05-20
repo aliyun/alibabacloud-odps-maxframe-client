@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,12 +17,20 @@ from typing import List
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import EntityData
-from ...serialization.serializables import AnyField, FieldTypes, KeyField, ListField
-from ..core import SERIES_TYPE
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_df, parse_index
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.dataframe.core import SERIES_TYPE
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_df, parse_index
+from maxframe.serialization.serializables import (
+    AnyField,
+    FieldTypes,
+    KeyField,
+    ListField,
+)
+from maxframe.utils import pd_release_version
+
+_describe_always_include_medians = pd_release_version[0] <= 2
 
 
 class DataFrameDescribe(DataFrameOperator, DataFrameOperatorMixin):
@@ -61,11 +69,11 @@ class DataFrameDescribe(DataFrameOperator, DataFrameOperatorMixin):
                 include=self.include,
                 exclude=self.exclude,
             )
-            if len(self.percentiles) == 0:
+            if _describe_always_include_medians and len(self.percentiles) == 0:
                 # specify percentiles=False
-                # Note: unlike pandas that False is illegal value for percentiles,
-                # MaxFrame DataFrame allows user to specify percentiles=False
-                # to skip computation about percentiles
+                # Note: unlike pandas<3.0 that False is illegal value for
+                #  percentiles, MaxFrame DataFrame allows user to specify
+                #  percentiles=False to skip computation about percentiles
                 test_df.drop(["50%"], axis=0, inplace=True)
             return self.new_dataframe(
                 [df_or_series],
@@ -264,7 +272,7 @@ def describe(df_or_series, percentiles=None, include=None, exclude=None):
                         "Try [{0:.3f}] instead.".format(p / 100)
                     )
         # median should always be included
-        if 0.5 not in percentiles:
+        if _describe_always_include_medians and 0.5 not in percentiles:
             percentiles.append(0.5)
         percentiles = np.asarray(percentiles)
 

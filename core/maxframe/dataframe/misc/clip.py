@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@ from typing import List
 
 from pandas.api.types import is_list_like
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, get_output_types
-from ...serialization.serializables import Int8Field, TupleField
-from ...typing_ import EntityType
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import validate_axis
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, get_output_types
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import validate_axis
+from maxframe.serialization.serializables import Int8Field, TupleField
+from maxframe.typing_ import EntityType
 
 
 class DataFrameClip(DataFrameOperatorMixin, DataFrameOperator):

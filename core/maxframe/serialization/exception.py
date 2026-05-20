@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,16 @@ import logging
 import traceback
 from typing import Dict, List
 
-from ..errors import MaxFrameError
-from ..lib import wrapped_pickle as pickle
-from ..utils import combine_error_message_and_traceback
-from .core import Serializer, buffered, pickle_buffers, unpickle_buffers
+from maxframe.errors import MaxFrameError
+from maxframe.lib import wrapped_pickle as pickle
+from maxframe.serialization.core import (
+    Serializer,
+    buffered,
+    is_unpickle_allowed,
+    pickle_buffers,
+    unpickle_buffers,
+)
+from maxframe.utils import combine_error_message_and_traceback
 
 logger = logging.getLogger(__name__)
 
@@ -72,19 +78,27 @@ class ExceptionSerializer(Serializer):
             remote_exc = RemoteException.from_exception(obj)
             messages, tracebacks = remote_exc.messages, remote_exc.tracebacks
             buffers = remote_exc.get_buffers()
-        return [messages, tracebacks], buffers, True
+        failure_info = getattr(obj, "_failure_info", None)
+        return [messages, tracebacks, failure_info], buffers, True
 
     def deserial(self, serialized: List, context: Dict, subs: List):
         messages, tracebacks = serialized[:2]
-        if subs and not pickle.is_unpickle_forbidden():
+        failure_info = serialized[2] if len(serialized) > 2 else None
+        if subs and not pickle.is_unpickle_forbidden() and is_unpickle_allowed():
             try:
-                return unpickle_buffers(subs)
+                exc = unpickle_buffers(subs)
+                if failure_info and not hasattr(exc, "_failure_info"):
+                    exc._failure_info = failure_info
+                return exc
             except ImportError as ex:
                 logger.info(
                     "Failed to load error from module %s, will raise a normal error",
                     ex.name,
                 )
-        return RemoteException(messages, tracebacks, subs)
+        exc = RemoteException(messages, tracebacks, subs)
+        if failure_info:
+            exc._failure_info = failure_info
+        return exc
 
 
 ExceptionSerializer.register(Exception)

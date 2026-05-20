@@ -17,7 +17,7 @@ from abc import ABC, abstractmethod
 from typing import Any, BinaryIO, Dict, Iterator, List, TextIO, Tuple, Union
 from urllib.parse import urlparse
 
-from ...utils import stringify_path
+from maxframe.utils import stringify_path
 
 path_type = Union[str, os.PathLike]
 

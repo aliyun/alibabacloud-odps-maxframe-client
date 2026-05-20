@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import os
 import shutil
 import sys
@@ -24,9 +25,13 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from ... import utils
-from ..datatypes import is_arrow_dtype_supported, wrap_arrow_dtype
-from ..utils import parse_size_to_megabytes, validate_and_adjust_resource_ratio
+from maxframe import utils
+from maxframe.utils.datatypes import is_arrow_dtype_supported, wrap_arrow_dtype
+from maxframe.utils.utils import (
+    get_storage_api_endpoint,
+    parse_size_to_megabytes,
+    validate_and_adjust_resource_ratio,
+)
 
 
 def test_lazy_import():
@@ -115,9 +120,8 @@ def test_estimate_pandas_size():
         assert utils.estimate_pandas_size(s2) == sys.getsizeof(s2)
 
     s3 = pd.Series(np.random.choice(["abcd", "def", "gh"], size=(1000,)))
-    assert (
-        pytest.approx(utils.estimate_pandas_size(s3) / sys.getsizeof(s3), abs=0.5) == 1
-    )
+    actual_size = s3.memory_usage(deep=True)
+    assert pytest.approx(utils.estimate_pandas_size(s3) / actual_size, abs=0.5) == 1
 
     idx1 = pd.MultiIndex.from_arrays(
         [np.arange(0, 1000), np.random.choice(["abcd", "def", "gh"], size=(1000,))]
@@ -125,10 +129,9 @@ def test_estimate_pandas_size():
     assert utils.estimate_pandas_size(idx1) == sys.getsizeof(idx1)
 
     string_idx = pd.Index(np.random.choice(["a", "bb", "cc"], size=(1000,)))
+    actual_size = string_idx.memory_usage(deep=True)
     assert (
-        pytest.approx(
-            utils.estimate_pandas_size(string_idx) / sys.getsizeof(string_idx), abs=0.5
-        )
+        pytest.approx(utils.estimate_pandas_size(string_idx) / actual_size, abs=0.5)
         == 1
     )
 
@@ -144,10 +147,8 @@ def test_estimate_pandas_size():
         },
         index=idx2,
     )
-    assert (
-        pytest.approx(utils.estimate_pandas_size(df4) / sys.getsizeof(df4), abs=0.5)
-        == 1
-    )
+    actual_size = df4.memory_usage(deep=True).sum()
+    assert pytest.approx(utils.estimate_pandas_size(df4) / actual_size, abs=0.5) == 1
 
     # series with multi index
     idx3 = pd.MultiIndex.from_arrays(
@@ -301,3 +302,106 @@ def test_key_log_wrapper():
     assert ", and 5 more" in wrapped_log
     sub_strs = [s.rstrip(".").strip() for s in wrapped_log[1:-1].split(",")[:-1]]
     assert [k[:8] for k in keys[:5]] == sub_strs
+
+
+# Tests for get_storage_api_endpoint
+
+
+@pytest.fixture
+def mock_env():
+    """Fixture to mock environment variables and restore them after test."""
+    original_environ = os.environ.copy()
+    yield
+    os.environ.clear()
+    os.environ.update(original_environ)
+
+
+def test_get_storage_api_endpoint_no_config_env(mock_env):
+    """When MAX_STORAGE_DATA_PROXY_CONF env is not set, return None."""
+    os.environ.pop("MAX_STORAGE_DATA_PROXY_CONF", None)
+    os.environ["ODPS_STORAGE_API_ENDPOINT"] = "http://127.0.0.1:1234"
+    result = get_storage_api_endpoint()
+    assert result == "http://127.0.0.1:1234"
+
+
+def test_get_storage_api_endpoint_with_valid_port(mock_env, tmp_path):
+    """When both env vars are set and config file exists, return endpoint with fresh port."""
+    config_file = tmp_path / "config.json"
+    config_file.write_text(json.dumps({"MAX_STORAGE_DATA_PROXY_PORT": 5678}))
+    os.environ["MAX_STORAGE_DATA_PROXY_CONF"] = str(config_file)
+    os.environ["ODPS_STORAGE_API_ENDPOINT"] = "http://127.0.0.1:1234"
+
+    result = get_storage_api_endpoint()
+    assert result == "http://127.0.0.1:5678"
+
+
+def test_get_storage_api_endpoint_config_missing_port(mock_env, tmp_path):
+    """When config file does not have MAX_STORAGE_DATA_PROXY_PORT, raise RuntimeError."""
+    config_file = tmp_path / "config.json"
+    config_file.write_text(json.dumps({"OTHER_KEY": "value"}))
+    os.environ["MAX_STORAGE_DATA_PROXY_CONF"] = str(config_file)
+    os.environ["ODPS_STORAGE_API_ENDPOINT"] = "http://127.0.0.1:1234"
+
+    with pytest.raises(RuntimeError, match="MAX_STORAGE_DATA_PROXY_PORT not found"):
+        get_storage_api_endpoint()
+
+
+def test_get_storage_api_endpoint_config_not_exists(mock_env, tmp_path):
+    """When config file does not exist, return None."""
+    config_file = tmp_path / "nonexistent.json"
+    os.environ["MAX_STORAGE_DATA_PROXY_CONF"] = str(config_file)
+    os.environ["ODPS_STORAGE_API_ENDPOINT"] = "http://127.0.0.1:1234"
+
+    result = get_storage_api_endpoint()
+    assert result is None
+
+
+def test_get_storage_api_endpoint_invalid_json(mock_env, tmp_path):
+    """When config file has invalid JSON, raise RuntimeError."""
+    config_file = tmp_path / "invalid.json"
+    config_file.write_text("not valid json")
+    os.environ["MAX_STORAGE_DATA_PROXY_CONF"] = str(config_file)
+    os.environ["ODPS_STORAGE_API_ENDPOINT"] = "http://127.0.0.1:1234"
+
+    with pytest.raises(RuntimeError, match="Failed to read data proxy config file"):
+        get_storage_api_endpoint()
+
+
+def test_get_storage_api_endpoint_no_env_vars(mock_env):
+    """When neither ODPS_STORAGE_API_ENDPOINT nor MAX_STORAGE_DATA_PROXY_CONF is set, return None."""
+    os.environ.pop("ODPS_STORAGE_API_ENDPOINT", None)
+    os.environ.pop("MAX_STORAGE_DATA_PROXY_CONF", None)
+    result = get_storage_api_endpoint()
+    assert result is None
+
+
+def test_get_storage_api_endpoint_only_config_file(mock_env, tmp_path):
+    """When only MAX_STORAGE_DATA_PROXY_CONF is set (without ODPS_STORAGE_API_ENDPOINT), return None."""
+    os.environ.pop("ODPS_STORAGE_API_ENDPOINT", None)
+    config_file = tmp_path / "config.json"
+    config_file.write_text(json.dumps({"MAX_STORAGE_DATA_PROXY_PORT": 5678}))
+    os.environ["MAX_STORAGE_DATA_PROXY_CONF"] = str(config_file)
+
+    result = get_storage_api_endpoint()
+    assert result is None
+
+
+@pytest.mark.parametrize(
+    "original_endpoint,new_port,expected",
+    [
+        ("http://192.168.1.1:1234", 9999, "http://192.168.1.1:9999"),
+        ("https://api.example.com:443", 8080, "https://api.example.com:8080"),
+        ("http://localhost:80", 9090, "http://localhost:9090"),
+    ],
+)
+def test_get_storage_api_endpoint_various_endpoints(
+    mock_env, tmp_path, original_endpoint, new_port, expected
+):
+    """Test various endpoint formats with different ports."""
+    config_file = tmp_path / "config.json"
+    config_file.write_text(json.dumps({"MAX_STORAGE_DATA_PROXY_PORT": new_port}))
+    os.environ["MAX_STORAGE_DATA_PROXY_CONF"] = str(config_file)
+    os.environ["ODPS_STORAGE_API_ENDPOINT"] = original_endpoint
+
+    result = get_storage_api_endpoint()
+    assert result == expected

@@ -16,11 +16,19 @@ import json
 
 import pytest
 
-from .....utils.odpsio import ReadODPSModel
-from ...core import TASK_SENTENCE_EMBEDDING, TASK_TEXT_GENERATION
-from ...deploy.config import REASONING_MODEL_KEY
-from ..managed import ManagedTextEmbeddingModel, ManagedTextGenLLM
-from ..odps import (
+from maxframe.learn.contrib.llm.core import (
+    TASK_SENTENCE_EMBEDDING,
+    TASK_TEXT_GENERATION,
+)
+from maxframe.learn.contrib.llm.deploy.config import (
+    DEFAULT_ENABLE_THINKING_KEY,
+    REASONING_MODEL_KEY,
+)
+from maxframe.learn.contrib.llm.models.managed import (
+    ManagedTextEmbeddingModel,
+    ManagedTextGenLLM,
+)
+from maxframe.learn.contrib.llm.models.odps import (
     _ODPS_PROP_CPU,
     _ODPS_PROP_DEVICE,
     _ODPS_PROP_FRAMEWORK,
@@ -39,6 +47,7 @@ from ..odps import (
     ODPS_PROP_VERSION_KEY,
     ODPSLLM,
 )
+from maxframe.learn.utils.odpsio import ReadODPSModel
 
 
 def _make_op(
@@ -453,3 +462,27 @@ def test_parameter_type_coercion(
         )
     else:
         assert REASONING_MODEL_KEY not in result.deploy_config.properties
+
+
+@pytest.mark.parametrize(
+    "raw_value, expected",
+    [("true", True), ("false", False), (True, True), (False, False)],
+    ids=["string-true", "string-false", "bool-true", "bool-false"],
+)
+def test_default_enable_thinking_is_stored_in_properties(raw_value, expected):
+    op = _make_op(
+        options={
+            _SCOPE_MAXFRAME: {
+                _ODPS_PROP_GU: 1,
+                _ODPS_PROP_FRAMEWORK: "VLLM_SERVE:TEXT",
+                _ODPS_PROP_DEVICE: "cuda",
+                DEFAULT_ENABLE_THINKING_KEY: raw_value,
+            }
+        },
+        tasks=[TASK_TEXT_GENERATION],
+    )
+
+    result = ODPSLLM._build_odps_source_model(op)
+
+    assert result.deploy_config.properties[DEFAULT_ENABLE_THINKING_KEY] is expected
+    assert DEFAULT_ENABLE_THINKING_KEY not in result.deploy_config.load_params

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,16 +18,16 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa
 
-from ...core import OutputType
-from ...lib.version import parse as parse_version
-from ...protocol import DataFrameTableMeta
-from ...tensor.core import TENSOR_TYPE
-from ...typing_ import ArrowTableType, PandasObjectTypes
-from .schema import (
+from maxframe.core import OutputType
+from maxframe.io.odpsio.schema import (
     arrow_table_to_pandas_dataframe,
     build_dataframe_table_meta,
     pandas_dataframe_to_arrow_table,
 )
+from maxframe.lib.version import parse as parse_version
+from maxframe.protocol import DataFrameTableMeta
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.typing_ import ArrowTableType, PandasObjectTypes
 
 
 def _rebuild_dataframe(

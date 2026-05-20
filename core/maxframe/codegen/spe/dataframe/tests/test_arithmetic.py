@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,11 @@
 
 import maxframe.dataframe as md
 import maxframe.tensor as mt
-
-from ...core import SPECodeContext
-from ..arithmetic import DataFrameBinOpAdapter, DataFrameUnaryFuncAdapter
+from maxframe.codegen.spe.core import SPECodeContext
+from maxframe.codegen.spe.dataframe.arithmetic import (
+    DataFrameBinOpAdapter,
+    DataFrameUnaryFuncAdapter,
+)
 
 
 def test_common_unary():

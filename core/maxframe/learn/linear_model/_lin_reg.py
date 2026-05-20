@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 from numpy.linalg import LinAlgError
 
-from ... import tensor as mt
-from ..core import RegressorMixin
-from ..utils.validation import _check_sample_weight
-from ._base import LinearModel, _rescale_data
+from maxframe import tensor as mt
+from maxframe.learn.core import RegressorMixin
+from maxframe.learn.linear_model._base import LinearModel, _rescale_data
+from maxframe.learn.utils.validation import _check_sample_weight
 
 try:
     from sklearn.base import MultiOutputMixin

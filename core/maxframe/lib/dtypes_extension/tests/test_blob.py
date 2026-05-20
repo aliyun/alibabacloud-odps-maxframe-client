@@ -6,11 +6,15 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from ....lib.version import parse as parse_version
-from ....utils import deserialize_serializable, serialize_serializable, tokenize
-from ...wrapped_pickle import switch_unpickle
-from .. import ArrowDtype
-from ..blob import ArrowBlobType, ExternalBlobDtype, SolidBlob
+from maxframe.lib.dtypes_extension import ArrowDtype
+from maxframe.lib.dtypes_extension.blob import (
+    ArrowBlobType,
+    ExternalBlobDtype,
+    SolidBlob,
+)
+from maxframe.lib.version import parse as parse_version
+from maxframe.lib.wrapped_pickle import switch_unpickle
+from maxframe.utils import deserialize_serializable, serialize_serializable, tokenize
 
 
 @switch_unpickle

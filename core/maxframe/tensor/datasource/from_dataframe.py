@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ... import opcodes
-from ...serialization.serializables import BoolField, KeyField
-from ..core import TensorOrder
-from ..utils import to_numpy
-from .core import TensorHasInput
+from maxframe import opcodes
+from maxframe.serialization.serializables import BoolField, KeyField
+from maxframe.tensor.core import TensorOrder
+from maxframe.tensor.datasource.core import TensorHasInput
+from maxframe.tensor.utils import to_numpy
+from maxframe.utils import make_dtype
 
 
 class TensorFromDataFrame(TensorHasInput):
@@ -27,7 +28,7 @@ class TensorFromDataFrame(TensorHasInput):
     extract_multi_index = BoolField("extract_multi_index", default=None)
 
     def __call__(self, a, order=None):
-        from ...dataframe.core import INDEX_TYPE, IndexValue
+        from maxframe.dataframe.core import INDEX_TYPE, IndexValue
 
         if (
             self.extract_multi_index
@@ -45,7 +46,7 @@ class TensorFromDataFrame(TensorHasInput):
 
 
 def from_dataframe(in_df, dtype=None):
-    from ...dataframe.utils import build_empty_df
+    from maxframe.dataframe.utils import build_empty_df
 
     if dtype is None:
         empty_pdf = build_empty_df(in_df.dtypes)
@@ -55,13 +56,15 @@ def from_dataframe(in_df, dtype=None):
 
 
 def from_series(in_series, dtype=None):
-    op = TensorFromDataFrame(dtype=dtype or in_series.dtype, gpu=in_series.op.gpu)
+    dtype = make_dtype(dtype or in_series.dtype, return_pd_dtype=False)
+    op = TensorFromDataFrame(dtype=dtype, gpu=in_series.op.gpu)
     return op(in_series, order=TensorOrder.F_ORDER)  # return tensor with F-order always
 
 
 def from_index(in_index, dtype=None, extract_multi_index=False):
+    dtype = make_dtype(dtype or in_index.dtype, return_pd_dtype=False)
     op = TensorFromDataFrame(
-        dtype=dtype or in_index.dtype,
+        dtype=dtype,
         gpu=in_index.op.gpu,
         extract_multi_index=extract_multi_index,
     )

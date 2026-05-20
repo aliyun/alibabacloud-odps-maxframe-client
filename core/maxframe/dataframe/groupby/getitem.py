@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 
 from collections.abc import Iterable
 
-from ... import opcodes
-from ...core import ENTITY_TYPE, OutputType
-from ...serialization.serializables import AnyField
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import parse_index
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE, OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import parse_index
+from maxframe.serialization.serializables import AnyField
 
 
 class GroupByIndex(DataFrameOperatorMixin, DataFrameOperator):
@@ -39,6 +39,9 @@ class GroupByIndex(DataFrameOperatorMixin, DataFrameOperator):
     def build_mock_groupby(self, **kwargs):
         groupby_op = self.inputs[0].op
         selection = kwargs.pop("selection", None) or self.selection
+        enforce_list = kwargs.pop("_enforce_list", False)
+        if enforce_list and not isinstance(selection, list):
+            selection = [selection]
         return groupby_op.build_mock_groupby(**kwargs)[selection]
 
     def __call__(self, groupby):

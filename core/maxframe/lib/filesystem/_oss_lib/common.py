@@ -19,8 +19,8 @@ import re
 from typing import NamedTuple, Optional
 from urllib.parse import parse_qs, urlencode, urlparse
 
-from ....utils import lazy_import
-from ..base import path_type, stringify_path
+from maxframe.lib.filesystem.base import path_type, stringify_path
+from maxframe.utils import lazy_import
 
 oss2 = lazy_import("oss2", placeholder=True)
 

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,18 +14,18 @@
 
 import numpy as np
 
-from ... import opcodes
-from ...core import ENTITY_TYPE
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.core import ENTITY_TYPE
+from maxframe.serialization.serializables import (
     BoolField,
     DictField,
     FunctionField,
     TupleField,
 )
-from ...udf import BuiltinFunction
-from ...utils import find_objects, quiet_stdio, replace_objects
-from ..core import TensorOrder
-from ..operators import TensorOperator, TensorOperatorMixin
+from maxframe.tensor.core import TensorOrder
+from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
+from maxframe.udf import BuiltinFunction
+from maxframe.utils import find_objects, quiet_stdio, replace_objects
 
 
 class TensorApplyChunk(TensorOperator, TensorOperatorMixin):

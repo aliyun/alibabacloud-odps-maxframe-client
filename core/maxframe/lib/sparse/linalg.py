@@ -14,18 +14,18 @@
 
 
 def inv(m):
-    from .matrix import inv_sparse_matrix
+    from maxframe.lib.sparse.matrix import inv_sparse_matrix
 
     return inv_sparse_matrix(m)
 
 
 def lu(m):
-    from .matrix import lu_sparse_matrix
+    from maxframe.lib.sparse.matrix import lu_sparse_matrix
 
     return lu_sparse_matrix(m)
 
 
 def solve_triangular(a, b, lower=False, sparse=True):
-    from .matrix import solve_triangular_sparse_matrix
+    from maxframe.lib.sparse.matrix import solve_triangular_sparse_matrix
 
     return solve_triangular_sparse_matrix(a, b, lower=lower, sparse=sparse)

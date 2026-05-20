@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,12 +20,13 @@ from typing import Any, Dict, Generic, List, Optional, Type, TypeVar
 
 import pandas as pd
 
-from .core import OutputType, TileableGraph
-from .core.graph.entity import SerializableGraph
-from .lib import wrapped_pickle as pickle
-from .lib.tblib import pickling_support
-from .serialization import PickleContainer, RemoteException, pickle_buffers
-from .serialization.serializables import (
+from maxframe.core import OutputType, TileableGraph
+from maxframe.core.graph.entity import SerializableGraph
+from maxframe.errors import get_failure_info_from_exception
+from maxframe.lib import wrapped_pickle as pickle
+from maxframe.lib.tblib import pickling_support
+from maxframe.serialization import PickleContainer, RemoteException, pickle_buffers
+from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     BytesField,
@@ -40,7 +41,11 @@ from .serialization.serializables import (
     SeriesField,
     StringField,
 )
-from .utils import combine_error_message_and_traceback, no_default
+from maxframe.utils import (
+    combine_error_message_and_traceback,
+    deserialize_serializable,
+    no_default,
+)
 
 pickling_support.install()
 
@@ -129,6 +134,21 @@ class DefaultIndexType(enum.Enum):
     range = 0
     incremental = 1
     chunk_range = 2
+
+
+class DecimalRoundMode(enum.Enum):
+    """Decimal rounding modes, matches PyArrow round_mode options"""
+
+    down = 0  # Round towards negative infinity
+    up = 1  # Round towards positive infinity
+    towards_zero = 2  # Round towards zero
+    towards_infinity = 3  # Round towards infinity (away from zero)
+    half_down = 4  # Round half towards zero
+    half_up = 5  # Round half away from zero (default, SQL standard)
+    half_towards_zero = 6  # Round half towards zero
+    half_towards_infinity = 7  # Round half away from zero
+    half_to_even = 8  # Round half to nearest even (banker's rounding)
+    half_to_odd = 9  # Round half to nearest odd
 
 
 _result_type_to_info_cls: Dict[ResultType, Type["ResultInfo"]] = dict()
@@ -290,6 +310,39 @@ class DisplayMessage(JsonSerializable):
         )
 
 
+def _sanitize_failure_info(fi: Optional[dict]) -> Optional[dict]:
+    if not isinstance(fi, dict):
+        return None
+    table = fi.get("table")
+    if not table:
+        return None
+    table_meta = fi.get("table_meta")
+    if isinstance(table_meta, DataFrameTableMeta):
+        table_meta = table_meta.to_json()
+    elif isinstance(table_meta, (bytes, bytearray)):
+        try:
+            deserialized_meta = deserialize_serializable(table_meta)
+        except Exception:  # pragma: no cover
+            table_meta = None
+        else:
+            table_meta = (
+                deserialized_meta.to_json()
+                if isinstance(deserialized_meta, DataFrameTableMeta)
+                else None
+            )
+    elif not isinstance(table_meta, dict):
+        table_meta = None
+
+    sanitized = {"table": table}
+    if table_meta is not None:
+        sanitized["table_meta"] = table_meta
+    if fi.get("substep_id") is not None:
+        sanitized["substep_id"] = fi["substep_id"]
+    if fi.get("operator_name") is not None:
+        sanitized["operator_name"] = fi["operator_name"]
+    return sanitized
+
+
 class ErrorInfo(JsonSerializable):
     error_messages: Optional[List[str]] = ListField("error_messages", FieldTypes.string)
     error_tracebacks: Optional[List[List[str]]] = ListField(
@@ -302,28 +355,39 @@ class ErrorInfo(JsonSerializable):
     displayed_error_message: Optional[str] = StringField(
         "displayed_error_message", default=None
     )
+    failure_info: Optional[dict] = AnyField("failure_info", default=None)
 
     @classmethod
     def from_exception(cls, exc: Exception):
         remote_exc = RemoteException.from_exception(exc)
         messages, tracebacks = remote_exc.messages, remote_exc.tracebacks
-        return cls(messages, tracebacks, ErrorSource.PYTHON, exc)
+        obj = cls(messages, tracebacks, ErrorSource.PYTHON, exc)
+        obj.failure_info = _sanitize_failure_info(get_failure_info_from_exception(exc))
+        return obj
 
     def reraise(self):
+        exc = None
         if (
             self.raw_error_source == ErrorSource.PYTHON
             and self.raw_error_data is not None
         ):
-            raise self.raw_error_data
-        raise RemoteException(self.error_messages, self.error_tracebacks, [])
+            exc = self.raw_error_data
+        else:
+            exc = RemoteException(self.error_messages, self.error_tracebacks, [])
+
+        fi = _sanitize_failure_info(self.failure_info)
+        if fi:
+            exc._failure_info = fi
+        raise exc
 
     @classmethod
     def from_json(cls, serialized: dict) -> "ErrorInfo":
         kw = serialized.copy()
-        if kw.get("raw_error_source") is not None:
-            kw["raw_error_source"] = ErrorSource(serialized["raw_error_source"])
-        else:
-            kw["raw_error_source"] = None
+        kw["raw_error_source"] = (
+            ErrorSource(serialized["raw_error_source"])
+            if kw.get("raw_error_source") is not None
+            else None
+        )
 
         if kw.get("raw_error_data"):
             bufs = [base64.b64decode(s) for s in kw["raw_error_data"]]
@@ -333,7 +397,11 @@ class ErrorInfo(JsonSerializable):
                 # both error source and data shall be None to make sure
                 # RemoteException is raised.
                 kw["raw_error_source"] = kw["raw_error_data"] = None
-        return cls(**kw)
+
+        fi = kw.pop("failure_info", None)
+        obj = cls(**kw)
+        obj.failure_info = _sanitize_failure_info(fi)
+        return obj
 
     def to_json(self) -> dict:
         ret = {
@@ -356,6 +424,10 @@ class ErrorInfo(JsonSerializable):
             ret["raw_error_data"] = [
                 base64.b64encode(s).decode() for s in err_data_bufs
             ]
+
+        fi = _sanitize_failure_info(self.failure_info)
+        if fi is not None:
+            ret["failure_info"] = fi
         return ret
 
     def get_displayed_error_message(self) -> str:

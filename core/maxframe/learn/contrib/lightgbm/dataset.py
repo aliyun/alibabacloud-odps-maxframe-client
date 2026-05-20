@@ -14,18 +14,18 @@
 
 from typing import List
 
-from .... import opcodes
-from ....core import EntityData
-from ....core.entity.output_types import get_output_types
-from ....core.operator.base import Operator
-from ....core.operator.core import TileableOperatorMixin
-from ....dataframe.core import DATAFRAME_TYPE
-from ....serialization.serializables import BoolField, KeyField, ListField
-from ....serialization.serializables.field import AnyField
-from ....tensor import tensor as astensor
-from ....tensor.core import TENSOR_TYPE
-from ....typing_ import TileableType
-from ...utils import convert_to_tensor_or_dataframe
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.core.entity.output_types import get_output_types
+from maxframe.core.operator.base import Operator
+from maxframe.core.operator.core import TileableOperatorMixin
+from maxframe.dataframe.core import DATAFRAME_TYPE
+from maxframe.learn.utils import convert_to_tensor_or_dataframe
+from maxframe.serialization.serializables import BoolField, KeyField, ListField
+from maxframe.serialization.serializables.field import AnyField
+from maxframe.tensor import tensor as astensor
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.typing_ import TileableType
 
 
 class ToLGBMDataset(Operator, TileableOperatorMixin):

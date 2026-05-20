@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@ from collections.abc import Iterable
 
 import numpy as np
 
-from .arange import arange
-from .empty import empty
-from .meshgrid import meshgrid
+from maxframe.tensor.datasource.arange import arange
+from maxframe.tensor.datasource.empty import empty
+from maxframe.tensor.datasource.meshgrid import meshgrid
 
 
 def indices(dimensions, dtype=int, chunk_size=None):
@@ -83,7 +83,7 @@ def indices(dimensions, dtype=int, chunk_size=None):
     extract the required elements directly with ``x[:2, :3]``.
 
     """
-    from ..merge import stack
+    from maxframe.tensor.merge import stack
 
     dimensions = tuple(dimensions)
     dtype = np.dtype(dtype)

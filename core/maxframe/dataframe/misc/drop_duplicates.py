@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,17 +14,17 @@
 
 import numpy as np
 
-from ... import opcodes
-from ...protocol import DefaultIndexType
-from ...serialization.serializables import BoolField, EnumField, FieldTypes
-from ..core import DataFrameIndexTypeMixin
-from ..operators import OutputType
-from ..utils import (
+from maxframe import opcodes
+from maxframe.dataframe.core import DataFrameIndexTypeMixin
+from maxframe.dataframe.misc._duplicate import BaseDuplicateOp, validate_subset
+from maxframe.dataframe.operators import OutputType
+from maxframe.dataframe.utils import (
     gen_unknown_index_value,
     get_index_value_by_default_index_type,
     validate_default_index_type,
 )
-from ._duplicate import BaseDuplicateOp, validate_subset
+from maxframe.protocol import DefaultIndexType
+from maxframe.serialization.serializables import BoolField, EnumField, FieldTypes
 
 
 class DataFrameDropDuplicates(BaseDuplicateOp, DataFrameIndexTypeMixin):

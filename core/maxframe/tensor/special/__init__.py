@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,15 @@
 try:
     import scipy
 
-    from .airy import TensorAiry, TensorAirye, TensorItairy, airy, airye, itairy
-    from .bessel import (
+    from maxframe.tensor.special.airy import (
+        TensorAiry,
+        TensorAirye,
+        TensorItairy,
+        airy,
+        airye,
+        itairy,
+    )
+    from maxframe.tensor.special.bessel import (
         TensorHankel1,
         TensorHankel1e,
         TensorHankel2,
@@ -46,7 +53,7 @@ try:
         yv,
         yve,
     )
-    from .ellip_func_integrals import (
+    from maxframe.tensor.special.ellip_func_integrals import (
         TensorEllipe,
         TensorEllipeinc,
         TensorEllipk,
@@ -68,7 +75,7 @@ try:
         elliprg,
         elliprj,
     )
-    from .ellip_harm import (
+    from maxframe.tensor.special.ellip_harm import (
         TensorEllipHarm,
         TensorEllipHarm2,
         TensorEllipNormal,
@@ -76,7 +83,7 @@ try:
         ellip_harm_2,
         ellip_normal,
     )
-    from .err_fresnel import (
+    from maxframe.tensor.special.err_fresnel import (
         TensorDawsn,
         TensorErf,
         TensorErfc,
@@ -102,7 +109,7 @@ try:
         voigt_profile,
         wofz,
     )
-    from .gamma_funcs import (
+    from maxframe.tensor.special.gamma_funcs import (
         TensorBeta,
         TensorBetaInc,
         TensorBetaIncInv,
@@ -140,7 +147,7 @@ try:
         psi,
         rgamma,
     )
-    from .hypergeometric_funcs import (
+    from maxframe.tensor.special.hypergeometric_funcs import (
         TensorHYP0F1,
         TensorHYP1F1,
         TensorHYP2F1,
@@ -150,7 +157,7 @@ try:
         hyp2f1,
         hyperu,
     )
-    from .info_theory import (
+    from maxframe.tensor.special.info_theory import (
         TensorEntr,
         TensorKlDiv,
         TensorRelEntr,
@@ -158,8 +165,8 @@ try:
         kl_div,
         rel_entr,
     )
-    from .misc import TensorXLogY, softmax, softplus, xlogy
-    from .statistical import (
+    from maxframe.tensor.special.misc import TensorXLogY, softmax, softplus, xlogy
+    from maxframe.tensor.special.statistical import (
         TensorExpit,
         TensorLogExpit,
         TensorLogit,

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ...core import EntityData
-from ...serialization.serializables import KeyField, StringField
-from ..core import Tensor, TensorOrder
-from ..datasource import tensor as astensor
-from ..operators import TensorOperator, TensorOperatorMixin
-from ..utils import broadcast_shape, check_order, check_out_param
+from maxframe import opcodes
+from maxframe.core import EntityData
+from maxframe.serialization.serializables import KeyField, StringField
+from maxframe.tensor.core import Tensor, TensorOrder
+from maxframe.tensor.datasource import tensor as astensor
+from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
+from maxframe.tensor.utils import broadcast_shape, check_order, check_out_param
 
 
 class TensorMatmul(TensorOperator, TensorOperatorMixin):
@@ -58,7 +58,7 @@ class TensorMatmul(TensorOperator, TensorOperatorMixin):
             return TensorOrder.F_ORDER
 
     def __call__(self, a, b, out=None):
-        from ..misc import broadcast_to
+        from maxframe.tensor.misc import broadcast_to
 
         if a.ndim == 0 or b.ndim == 0:
             raise ValueError("Scalar operands are not allowed, use '*' instead")

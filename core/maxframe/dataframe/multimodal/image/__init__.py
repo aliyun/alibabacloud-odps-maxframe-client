@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .accessor import ImageAccessor
-from .core import SeriesImageMethods, image_decode, image_property
-from .objects import ImageObject
+from maxframe.dataframe.multimodal.image.accessor import ImageAccessor
+from maxframe.dataframe.multimodal.image.core import (
+    SeriesImageMethods,
+    image_decode,
+    image_property,
+)
+from maxframe.dataframe.multimodal.image.objects import ImageObject

@@ -26,8 +26,8 @@ from pandas.api.extensions import (
     register_extension_dtype,
 )
 
-from ...utils import tokenize
-from .dtypes import ArrowDtype
+from maxframe.lib.dtypes_extension.dtypes import ArrowDtype
+from maxframe.utils import tokenize
 
 
 class ArrowBlobType(pa.ExtensionType):
@@ -78,13 +78,16 @@ class AbstractExternalBlob(metaclass=abc.ABCMeta):
     def __repr__(self):
         return f"<{type(self).__name__} reference={self.reference}>"
 
+    def __reduce__(self):
+        raise NotImplementedError
+
     @abc.abstractmethod
     def open(self, mode: str = "r") -> ContextManager[io.IOBase]:
         raise NotImplementedError
 
-    @abc.abstractmethod
     def copy(self):
-        raise NotImplementedError
+        tp, args = self.__reduce__()
+        return tp(*args)
 
     def __copy__(self):
         return self.copy()
@@ -96,6 +99,13 @@ class AbstractExternalBlob(metaclass=abc.ABCMeta):
     @classmethod
     def get_cls_by_name(cls, cls_name: str):
         return cls._blob_types[cls_name.lower()]
+
+    def to_serializable(self):
+        """
+        Called by MaxFrame serializer to convert the blob into new objects
+        """
+        # Return the blob object itself by default for serialization
+        return self
 
 
 class SolidBlob(AbstractExternalBlob):
@@ -122,9 +132,6 @@ class SolidBlob(AbstractExternalBlob):
         else:
             if "w" in mode:
                 self._reference = sio.getvalue()
-
-    def copy(self) -> "SolidBlob":
-        return SolidBlob(self._reference)
 
     def __maxframe_tokenize__(self):
         return type(self), self._reference
@@ -187,10 +194,16 @@ class ExternalBlobExtensionArray(ExtensionArray):
     _data: List[AbstractExternalBlob]
 
     def __init__(self, values: Union[List[AbstractExternalBlob], np.ndarray]):
-        if not isinstance(values, (list, np.ndarray)):
-            raise TypeError("values must be a list or numpy array")
+        if not isinstance(
+            values, (list, np.ndarray, pd.api.extensions.ExtensionArray, pa.Array)
+        ):
+            raise TypeError(
+                "values must be a list, a numpy array, a pandas ExtensionArray or an Arrow array"
+            )
 
-        if isinstance(values, np.ndarray):
+        if isinstance(values, (pa.Array, pd.api.extensions.ExtensionArray)):
+            values = values.tolist()
+        elif isinstance(values, np.ndarray):
             if values.ndim != 1:
                 raise ValueError("values must be a 1-dimensional array")
             values = values.tolist()

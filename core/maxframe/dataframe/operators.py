@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@ import inspect
 import numpy as np
 import pandas as pd
 
-from ..core import OutputType
-from ..core.operator import Operator, ShuffleProxy, TileableOperatorMixin
-from ..core.operator.base import CallPoint
-from ..tensor.core import TENSOR_TYPE
-from ..tensor.datasource import tensor as astensor
-from .core import DATAFRAME_TYPE, SERIES_TYPE
+from maxframe.core import OutputType
+from maxframe.core.operator import Operator, ShuffleProxy, TileableOperatorMixin
+from maxframe.core.operator.base import CallPoint
+from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+from maxframe.tensor.core import TENSOR_TYPE
+from maxframe.tensor.datasource import tensor as astensor
 
 
 class DataFrameOperatorMixin(TileableOperatorMixin):
@@ -213,7 +213,7 @@ class DataFrameOperatorMixin(TileableOperatorMixin):
 
     @staticmethod
     def _process_input(x):
-        from .initializer import DataFrame, Series
+        from maxframe.dataframe.initializer import DataFrame, Series
 
         if isinstance(x, (DATAFRAME_TYPE, SERIES_TYPE)) or pd.api.types.is_scalar(x):
             return x

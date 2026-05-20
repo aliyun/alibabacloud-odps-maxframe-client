@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,15 +18,15 @@ from typing import List
 
 import pytest
 
-from ..core import (
+from maxframe.learn.contrib.llm.deploy.core import (
     ResourceNameTemplate,
     _registered_llm_models,
     clean_registered_model,
     get_registered_model_config,
     register_model_deployments,
 )
-from ..framework import InferenceFrameworkEnum
-from ..loader import (
+from maxframe.learn.contrib.llm.deploy.framework import InferenceFrameworkEnum
+from maxframe.learn.contrib.llm.deploy.loader import (
     DeploymentConfigBase,
     DeploymentConfigResourceRequirement,
     FrameworkDeploymentConfig,

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .append import append
-from .combine import DataFrameCombine, df_combine, series_combine
-from .combine_first import df_combine_first, series_combine_first
-from .compare import DataFrameCompare, df_compare, series_compare
-from .concat import DataFrameConcat, concat
-from .merge import (
+from maxframe.dataframe.merge.append import append
+from maxframe.dataframe.merge.combine import (
+    DataFrameCombine,
+    df_combine,
+    series_combine,
+)
+from maxframe.dataframe.merge.combine_first import (
+    df_combine_first,
+    series_combine_first,
+)
+from maxframe.dataframe.merge.compare import (
+    DataFrameCompare,
+    df_compare,
+    series_compare,
+)
+from maxframe.dataframe.merge.concat import DataFrameConcat, concat
+from maxframe.dataframe.merge.merge import (
     DataFrameMerge,
     DistributedMapJoinHint,
     MapJoinHint,
@@ -25,11 +36,11 @@ from .merge import (
     join,
     merge,
 )
-from .update import DataFrameUpdate, df_update, series_update
+from maxframe.dataframe.merge.update import DataFrameUpdate, df_update, series_update
 
 
 def _install():
-    from ..core import DATAFRAME_TYPE, SERIES_TYPE
+    from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
 
     for cls in DATAFRAME_TYPE:
         setattr(cls, "combine_first", df_combine_first)

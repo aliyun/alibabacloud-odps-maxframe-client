@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ def allclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False):
     True
 
     """
-    from ..arithmetic.isclose import isclose
-    from .all import all
+    from maxframe.tensor.arithmetic.isclose import isclose
+    from maxframe.tensor.reduction.all import all
 
     return all(isclose(a, b, rtol=rtol, atol=atol, equal_nan=equal_nan))

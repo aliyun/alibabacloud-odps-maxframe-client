@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,11 +29,11 @@ from weakref import ref
 
 from odps import ODPS
 
-from .config import options
-from .core import TileableType
-from .lib.aio import Isolation, get_isolation, new_isolation, stop_isolation
-from .typing_ import ClientType
-from .utils import classproperty, implements, relay_future
+from maxframe.config import options
+from maxframe.core import TileableType
+from maxframe.lib.aio import Isolation, get_isolation, new_isolation, stop_isolation
+from maxframe.typing_ import ClientType
+from maxframe.utils import classproperty, implements, relay_future
 
 logger = logging.getLogger(__name__)
 
@@ -508,7 +508,7 @@ class AbstractSyncSession(AbstractSession, metaclass=ABCMeta):
         offsets: List[int] = None,
         sizes: List[int] = None,
     ):
-        from .core.custom_log import fetch
+        from maxframe.core.custom_log import fetch
 
         return fetch(tileables, self, offsets=offsets, sizes=sizes)
 

@@ -22,11 +22,25 @@ ManagedTextEmbeddingModel instances from ODPS Model metadata.
 import json
 from typing import Any, Dict, List, Optional, Set
 
-from ....utils.odpsio import ODPSModelMixin, ReadODPSModel, register_odps_model
-from ..core import TASK_SENTENCE_EMBEDDING, TASK_TEXT_GENERATION
-from ..deploy.config import REASONING_MODEL_KEY, ModelDeploymentConfig
-from ..deploy.framework import InferenceFrameworkEnum
-from .managed import ManagedTextEmbeddingModel, ManagedTextGenLLM
+from maxframe.learn.contrib.llm.core import (
+    TASK_SENTENCE_EMBEDDING,
+    TASK_TEXT_GENERATION,
+)
+from maxframe.learn.contrib.llm.deploy.config import (
+    DEFAULT_ENABLE_THINKING_KEY,
+    REASONING_MODEL_KEY,
+    ModelDeploymentConfig,
+)
+from maxframe.learn.contrib.llm.deploy.framework import InferenceFrameworkEnum
+from maxframe.learn.contrib.llm.models.managed import (
+    ManagedTextEmbeddingModel,
+    ManagedTextGenLLM,
+)
+from maxframe.learn.utils.odpsio import (
+    ODPSModelMixin,
+    ReadODPSModel,
+    register_odps_model,
+)
 
 _SCOPE_MAXFRAME = "maxframe"
 _SCOPE_DEFAULT = "*"
@@ -65,6 +79,7 @@ _RESERVED_KEYS = {
     _ODPS_PROP_MEMORY,
     _ODPS_PROP_IMAGE,
     ODPS_PROP_REASONING_MODE,
+    DEFAULT_ENABLE_THINKING_KEY,
     ODPS_PROP_ROLE_ARN,
     ODPS_PROP_ACCESS_KEY_ID,
     ODPS_PROP_ACCESS_KEY_SECRET,
@@ -278,6 +293,15 @@ class ODPSLLM(ODPSModelMixin):
                 )
             else:
                 properties[REASONING_MODEL_KEY] = bool(reasoning_mode)
+
+        default_enable_thinking = reserved.get(DEFAULT_ENABLE_THINKING_KEY)
+        if default_enable_thinking is not None:
+            if isinstance(default_enable_thinking, str):
+                properties[DEFAULT_ENABLE_THINKING_KEY] = (
+                    default_enable_thinking.lower().strip() == "true"
+                )
+            else:
+                properties[DEFAULT_ENABLE_THINKING_KEY] = bool(default_enable_thinking)
 
         return ModelDeploymentConfig(
             model_name=model_name,

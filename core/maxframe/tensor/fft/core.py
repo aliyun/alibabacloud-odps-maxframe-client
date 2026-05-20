@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +14,15 @@
 
 from collections.abc import Iterable
 
-from ...serialization.serializables import (
+from maxframe.serialization.serializables import (
     FieldTypes,
     Int32Field,
     Int64Field,
     StringField,
     TupleField,
 )
-from ..operators import TensorHasInput, TensorOperatorMixin
-from ..utils import validate_axis
+from maxframe.tensor.operators import TensorHasInput, TensorOperatorMixin
+from maxframe.tensor.utils import validate_axis
 
 
 class TensorFFTBaseMixin(TensorOperatorMixin):

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@ from typing import List
 
 import numpy as np
 
-from ... import opcodes
-from ... import tensor as mt
-from ...config import options
-from ...core import ENTITY_TYPE, EntityData, OutputType, get_output_types
-from ...core.operator import Operator
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe import tensor as mt
+from maxframe.config import options
+from maxframe.core import ENTITY_TYPE, EntityData, OutputType, get_output_types
+from maxframe.core.operator import Operator
+from maxframe.learn.core import LearnOperatorMixin
+from maxframe.serialization.serializables import (
     BoolField,
     DataTypeField,
     KeyField,
     StringField,
 )
-from ...tensor.core import TensorOrder
-from ..core import LearnOperatorMixin
+from maxframe.tensor.core import TensorOrder
 
 try:
     from sklearn import get_config as get_sklearn_config

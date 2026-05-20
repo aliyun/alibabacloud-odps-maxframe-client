@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,14 +20,18 @@ import pandas as pd
 from pandas.core.dtypes.cast import find_common_type
 from pandas.core.indexing import IndexingError
 
-from ... import opcodes
-from ...config import options
-from ...core import ENTITY_TYPE, EntityData, OutputType
-from ...serialization.serializables import AnyField, KeyField, ListField
-from ...tensor import asarray
-from ...tensor.indexing.core import calc_shape
-from ..operators import DATAFRAME_TYPE, DataFrameOperator, DataFrameOperatorMixin
-from ..utils import indexing_index_value, validate_axis
+from maxframe import opcodes
+from maxframe.config import options
+from maxframe.core import ENTITY_TYPE, EntityData, OutputType
+from maxframe.dataframe.operators import (
+    DATAFRAME_TYPE,
+    DataFrameOperator,
+    DataFrameOperatorMixin,
+)
+from maxframe.dataframe.utils import indexing_index_value, validate_axis
+from maxframe.serialization.serializables import AnyField, KeyField, ListField
+from maxframe.tensor import asarray
+from maxframe.tensor.indexing.core import calc_shape
 
 _ILOC_ERROR_MSG = (
     "Location based indexing can only have [integer, "

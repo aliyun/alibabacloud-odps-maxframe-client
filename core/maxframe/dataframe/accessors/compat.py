@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 import logging
 
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
 
 logger = logging.getLogger(__name__)
 
@@ -27,12 +27,12 @@ class LegacySeriesMethodOperator(DataFrameOperator, DataFrameOperatorMixin):
         cls = type(self)
         local_fields = {
             f
-            for f, name_hash in cls._FIELD_TO_NAME_HASH.items()
-            if name_hash == cls._NAME_HASH
+            for f, name_hash in cls._PROPS._FIELD_TO_NAME_HASH.items()
+            if name_hash == cls._PROPS._NAME_HASH
         }
         kw = {
             f: getattr(self, f)
-            for f in cls._FIELD_TO_NAME_HASH
+            for f in cls._PROPS._FIELD_TO_NAME_HASH
             if f not in local_fields and hasattr(self, f)
         }
 

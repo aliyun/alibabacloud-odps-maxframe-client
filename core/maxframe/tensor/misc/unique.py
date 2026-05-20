@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
 
 import numpy as np
 
-from ... import opcodes
-from ...serialization.serializables import (
+from maxframe import opcodes
+from maxframe.serialization.serializables import (
     BoolField,
     Int32Field,
     Int64Field,
     StringField,
 )
-from ..core import TensorOrder
-from ..operators import TensorHasInput, TensorOperatorMixin
-from ..utils import validate_axis
+from maxframe.tensor.core import TensorOrder
+from maxframe.tensor.operators import TensorHasInput, TensorOperatorMixin
+from maxframe.tensor.utils import validate_axis
 
 
 class TensorUnique(TensorHasInput, TensorOperatorMixin):
@@ -98,7 +98,7 @@ class TensorUnique(TensorHasInput, TensorOperatorMixin):
         return kws
 
     def __call__(self, ar):
-        from .atleast_1d import atleast_1d
+        from maxframe.tensor.misc.atleast_1d import atleast_1d
 
         ar = atleast_1d(ar)
         if self.axis is None:

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-10 10:53+0800\n"
+"POT-Creation-Date: 2026-03-02 14:19+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -55,7 +55,7 @@ msgid "Parquet library to use. The default behavior is to try 'pyarrow',"
 msgstr "使用的 Parquet 库。默认行为是尝试使用 'pyarrow'，"
 
 #: maxframe.dataframe.datasource.read_parquet.read_parquet:16
-#: maxframe.dataframe.datasource.read_parquet.read_parquet:29 of
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:36 of
 msgid "Options for storage connection."
 msgstr "存储连接的选项。"
 
@@ -73,27 +73,41 @@ msgstr ""
 
 #: maxframe.dataframe.datasource.read_parquet.read_parquet:24 of
 msgid ""
+"To filter out data. Filter syntax: [[(column, op, val), …],…] where op "
+"is [==, =, >, >=, <, <=, !=, in, not in] The innermost tuples are "
+"transposed into a set of filters applied through an AND operation. The "
+"outer list combines these sets of filters through an OR operation. A "
+"single list of tuples can also be used, meaning that no OR operation "
+"between set of filters is to be conducted."
+msgstr ""
+"用于过滤数据。过滤条件语法：[[（列，操作符，值），…]，…]，其中操作符"
+"包括 [==, =, >, >=, <, <=, !=, in, not in]。最内层的元组转换为通过AND操作"
+"应用的一组过滤条件。外层列表通过OR操作组合这些过滤条件集。也可以使用单个"
+"元组列表，这意味着不需要在过滤条件集之间进行OR操作。"
+
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:31 of
+msgid ""
 "If index_col not specified, specify type of index to generate. If not "
 "specified, `options.dataframe.default_index_type` will be used."
 msgstr ""
 "如果未指定 index_col，则指定要生成的索引类型。如果未指定，将使用 `options"
 ".dataframe.default_index_type`。"
 
-#: maxframe.dataframe.datasource.read_parquet.read_parquet:27 of
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:34 of
 msgid ""
 "Back-end data type applied to the resultant DataFrame (still "
 "experimental)."
 msgstr "应用于结果 DataFrame 的后端数据类型（仍处于实验阶段）。"
 
-#: maxframe.dataframe.datasource.read_parquet.read_parquet:31 of
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:38 of
 msgid "Scale that real memory occupation divided with raw file size."
 msgstr "实际内存占用与原始文件大小的比例。"
 
-#: maxframe.dataframe.datasource.read_parquet.read_parquet:33 of
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:40 of
 msgid "Merge small files whose size is small."
 msgstr "合并尺寸较小的小文件。"
 
-#: maxframe.dataframe.datasource.read_parquet.read_parquet:35 of
+#: maxframe.dataframe.datasource.read_parquet.read_parquet:42 of
 msgid "Any additional kwargs are passed to the engine."
 msgstr "任何额外的 kwargs 都会传递给引擎。"
 

@@ -14,13 +14,13 @@
 
 import warnings
 
-from ...utils import add_survey_log
+from maxframe.utils import add_survey_log
 
 
 def warn_prepend_index_group_keys(in_groupby):
     groupby_obj = in_groupby.op.groupby_params
     if groupby_obj.get("group_keys", True):
-        from ... import __version__
+        from maxframe import __version__
 
         warnings.warn(
             "Group keys will be prepended automatically for returned "

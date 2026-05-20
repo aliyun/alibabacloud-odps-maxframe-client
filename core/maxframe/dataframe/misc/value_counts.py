@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,12 +17,17 @@ from typing import List
 import numpy as np
 import pandas as pd
 
-from ... import opcodes
-from ...core import EntityData, OutputType
-from ...serialization.serializables import BoolField, Int64Field, KeyField, StringField
-from ...utils import pd_release_version
-from ..operators import DataFrameOperator, DataFrameOperatorMixin
-from ..utils import build_df, build_series, parse_index
+from maxframe import opcodes
+from maxframe.core import EntityData, OutputType
+from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
+from maxframe.dataframe.utils import build_df, build_series, parse_index
+from maxframe.serialization.serializables import (
+    BoolField,
+    Int64Field,
+    KeyField,
+    StringField,
+)
+from maxframe.utils import pd_release_version
 
 _keep_original_order = pd_release_version >= (1, 3, 0)
 _name_count_or_proportion = pd_release_version >= (2, 0, 0)
@@ -62,7 +67,7 @@ class DataFrameValueCounts(DataFrameOperator, DataFrameOperatorMixin):
             test_series = build_series(inp).value_counts(normalize=self.normalize)
             out_name = test_series.name
         if self.bins is not None:
-            from .cut import cut
+            from maxframe.dataframe.misc.cut import cut
 
             # cut
             try:

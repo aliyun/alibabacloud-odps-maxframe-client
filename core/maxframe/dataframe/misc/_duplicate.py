@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@ from typing import List
 import pandas as pd
 from pandas.api.types import is_list_like
 
-from ...core import ENTITY_TYPE, EntityData
-from ...core.operator import MapReduceOperator
-from ...serialization.serializables import AnyField, KeyField, StringField
-from ..operators import DataFrameOperatorMixin
+from maxframe.core import ENTITY_TYPE, EntityData
+from maxframe.core.operator import MapReduceOperator
+from maxframe.dataframe.operators import DataFrameOperatorMixin
+from maxframe.serialization.serializables import AnyField, KeyField, StringField
 
 
 class BaseDuplicateOp(MapReduceOperator, DataFrameOperatorMixin):

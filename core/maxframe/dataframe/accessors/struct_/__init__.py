@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .core import SeriesStructMethod
+from maxframe.dataframe.accessors.struct_.core import SeriesStructMethod
 
 
 def _install():
-    from ....core import CachedAccessor
-    from ...core import SERIES_TYPE
-    from .accessor import StructAccessor
-    from .dtypes import struct_dtypes
-    from .field import struct_field
+    from maxframe.core import CachedAccessor
+    from maxframe.dataframe.accessors.struct_.accessor import StructAccessor
+    from maxframe.dataframe.accessors.struct_.dtypes import struct_dtypes
+    from maxframe.dataframe.accessors.struct_.field import struct_field
+    from maxframe.dataframe.core import SERIES_TYPE
 
     struct_method_to_handlers = {
         "dtypes": struct_dtypes,

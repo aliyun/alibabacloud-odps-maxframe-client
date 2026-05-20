@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@ from typing import List
 
 import numpy as np
 
-from .... import opcodes
-from .... import tensor as mt
-from ....config import options
-from ....core import EntityData
-from ....serialization.serializables import BoolField, KeyField
-from ....tensor.core import TensorOrder
-from ...utils.validation import check_array
-from .core import PairwiseDistances
+from maxframe import opcodes
+from maxframe import tensor as mt
+from maxframe.config import options
+from maxframe.core import EntityData
+from maxframe.learn.metrics.pairwise.core import PairwiseDistances
+from maxframe.learn.utils.validation import check_array
+from maxframe.serialization.serializables import BoolField, KeyField
+from maxframe.tensor.core import TensorOrder
 
 
 class EuclideanDistances(PairwiseDistances):

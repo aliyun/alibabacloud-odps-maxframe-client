@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 import numpy as np
 
-from ...... import tensor as mt
-from ......core.graph.builder.utils import build_graph
-from ......learn.model_selection import train_test_split
-from ....core import SPECodeGenerator
+from maxframe import tensor as mt
+from maxframe.codegen.spe.core import SPECodeGenerator
+from maxframe.core.graph.builder.utils import build_graph
+from maxframe.learn.model_selection import train_test_split
 
 
 def test_train_test_split_without_shuffling():

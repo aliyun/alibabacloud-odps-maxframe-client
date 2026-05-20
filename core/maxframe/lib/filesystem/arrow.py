@@ -25,8 +25,8 @@ from pyarrow.fs import FileType
 from pyarrow.fs import HadoopFileSystem as ArrowHadoopFileSystem
 from pyarrow.fs import LocalFileSystem as ArrowLocalFileSystem
 
-from ...utils import implements, stringify_path
-from .core import FileSystem, path_type
+from maxframe.lib.filesystem.core import FileSystem, path_type
+from maxframe.utils import implements, stringify_path
 
 __all__ = ("ArrowBasedLocalFileSystem", "HadoopFileSystem")
 
@@ -182,7 +182,7 @@ class ArrowBasedFileSystem(FileSystem):
 
     @implements(FileSystem.glob)
     def glob(self, path: path_type, recursive: bool = False) -> List[path_type]:
-        from ._glob import FileSystemGlob
+        from maxframe.lib.filesystem._glob import FileSystemGlob
 
         path = self._process_path(path)
         return FileSystemGlob(self).glob(path, recursive=recursive)

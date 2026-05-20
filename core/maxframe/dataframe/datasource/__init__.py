@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .core import PandasDataSourceOperator
-from .from_dict import dataframe_from_dict
-from .from_records import from_records
-from .from_tensor import dataframe_from_tensor, series_from_tensor
+from maxframe.dataframe.datasource.core import PandasDataSourceOperator
+from maxframe.dataframe.datasource.from_dict import dataframe_from_dict
+from maxframe.dataframe.datasource.from_records import from_records
+from maxframe.dataframe.datasource.from_tensor import (
+    dataframe_from_tensor,
+    series_from_tensor,
+)
 
 
 def _install():
-    from ..core import DATAFRAME_TYPE, SERIES_TYPE
+    from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
 
     for t in DATAFRAME_TYPE:
         t.from_dict = staticmethod(dataframe_from_dict)

@@ -20,7 +20,7 @@ import requests
 from odps import ODPS
 from odps import __version__ as pyodps_version
 
-from ...lib.version import Version
+from maxframe.lib.version import Version
 
 _has_replace_internal_host = Version(pyodps_version) >= Version("0.12.0")
 

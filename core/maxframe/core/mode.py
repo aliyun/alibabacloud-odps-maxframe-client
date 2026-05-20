@@ -18,7 +18,7 @@ import os
 import sys
 import threading
 
-from ..config import options
+from maxframe.config import options
 
 _internal_mode = threading.local()
 
