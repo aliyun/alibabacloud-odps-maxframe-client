@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from enum import Enum
 from typing import Any, Dict
 
 import numpy as np
@@ -21,6 +22,7 @@ from maxframe import dataframe as md
 from maxframe.core.entity.output_types import OutputType
 from maxframe.core.operator.base import Operator
 from maxframe.core.operator.core import TileableOperatorMixin
+from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
 from maxframe.dataframe.operators import DataFrameOperatorMixin
 from maxframe.dataframe.utils import parse_index
 from maxframe.serialization.serializables import Int32Field
@@ -35,13 +37,80 @@ from maxframe.serialization.serializables.field import (
 # Task type constants
 TASK_TEXT_GENERATION = "text-generation"
 TASK_SENTENCE_EMBEDDING = "sentence-embedding"
+TASK_IMAGE_TEXT_TO_TEXT = "image-text-to-text"
+TASK_MULTI_MODAL_EMBEDDING = "multi-modal-embedding"
+
+TEXT_CONTENT_PART = "text"
+IMAGE_CONTENT_PART = "image"
+IMAGE_URL_CONTENT = "image_url"
+IMAGE_BINARY_CONTENT = "binary"
+IMAGE_BASE64_CONTENT = "base64"
+IMAGE_MIME_TYPE = "mime_type"
+
+
+class ImageContentType(str, Enum):
+    IMAGE_URL = IMAGE_URL_CONTENT
+    BINARY = IMAGE_BINARY_CONTENT
+    BASE64 = IMAGE_BASE64_CONTENT
+
+
+IMAGE_CONTENT_KEYS = tuple(item.value for item in ImageContentType)
+
+
+class ContentPart(Serializable):
+    type: str = StringField("type")
+    content: Any = AnyField("content")
+    options: Dict[str, Any] = DictField("options", default_factory=dict)
+
+    @classmethod
+    def text(cls, text: Any) -> "ContentPart":
+        return cls(TEXT_CONTENT_PART, _series_as_column_template(text))
+
+    @classmethod
+    def image(
+        cls,
+        *,
+        data: Any,
+        type: ImageContentType,
+        mime_type: Any = None,
+        **options: Any,
+    ) -> "ContentPart":
+        image_type = ImageContentType(type)
+        if image_type in (ImageContentType.BINARY, ImageContentType.BASE64):
+            if mime_type is None:
+                raise ValueError(
+                    "mime_type is required for binary and base64 image content"
+                )
+        content = {
+            "type": image_type.value,
+            "data": _series_as_column_template(data),
+        }
+        if mime_type is not None:
+            content[IMAGE_MIME_TYPE] = _series_as_column_template(mime_type)
+        options = {k: _series_as_column_template(v) for k, v in options.items()}
+        return cls(IMAGE_CONTENT_PART, content, options)
+
+
+def _series_as_column_template(value: Any):
+    if isinstance(value, SERIES_TYPE):
+        return f"{{{value.name}}}"
+    return value
 
 
 class LLM(Serializable):
     name = StringField("name", default=None)
 
+    @property
+    def content_part(self):
+        return ContentPart
+
     def validate_params(self, params: Dict[str, Any]):
         pass
+
+
+def validate_llm_input_data(data):
+    if not isinstance(data, DATAFRAME_TYPE) and not isinstance(data, SERIES_TYPE):
+        raise ValueError("data must be a maxframe dataframe or series object")
 
 
 class LLMTaskOperator(Operator, DataFrameOperatorMixin):
@@ -110,6 +179,7 @@ class LLMTextGenOperator(LLMTaskOperator, TileableOperatorMixin):
 
 
 class LLMTextEmbeddingOp(LLMTaskOperator, TileableOperatorMixin):
+    input = StringField("input", default=None)
     dimensions = Int32Field("dimensions", default=None)
     encoding_format = StringField("encoding_format", default=None)
     simple_output = BoolField("simple_output", default=False)

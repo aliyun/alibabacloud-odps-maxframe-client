@@ -16,5 +16,9 @@ from maxframe.learn.contrib.llm.models.dashscope import (
     DashScopeMultiModalLLM,
     DashScopeTextLLM,
 )
+from maxframe.learn.contrib.llm.models.managed import (
+    ManagedMultiModalEmbeddingModel,
+    ManagedMultiModalGenLLM,
+)
 from maxframe.learn.contrib.llm.models.odps import ODPSLLM
 from maxframe.learn.contrib.llm.models.openai import OpenAICompatibleTextLLM

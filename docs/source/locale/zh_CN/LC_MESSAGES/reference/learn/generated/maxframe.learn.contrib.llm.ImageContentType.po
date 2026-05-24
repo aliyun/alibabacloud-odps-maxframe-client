@@ -1,0 +1,528 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.5.2.dev4+gba7d07824\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-19 16:58+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:2
+msgid "maxframe.learn.contrib.llm.ImageContentType"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`encode <maxframe.learn.contrib.llm.ImageContentType.encode>`\\ "
+"\\(\\[encoding\\, errors\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Encode the string using the codec registered for encoding."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`replace <maxframe.learn.contrib.llm.ImageContentType.replace>`\\"
+" \\(old\\, new\\[\\, count\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a copy with all occurrences of substring old replaced by new."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`split <maxframe.learn.contrib.llm.ImageContentType.split>`\\ "
+"\\(\\[sep\\, maxsplit\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+"Return a list of the substrings in the string, using sep as the separator"
+" string."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`rsplit <maxframe.learn.contrib.llm.ImageContentType.rsplit>`\\ "
+"\\(\\[sep\\, maxsplit\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`join <maxframe.learn.contrib.llm.ImageContentType.join>`\\ "
+"\\(iterable\\, \\/\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Concatenate any number of strings."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`capitalize "
+"<maxframe.learn.contrib.llm.ImageContentType.capitalize>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a capitalized version of the string."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`casefold "
+"<maxframe.learn.contrib.llm.ImageContentType.casefold>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a version of the string suitable for caseless comparisons."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`title <maxframe.learn.contrib.llm.ImageContentType.title>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a version of the string where each word is titlecased."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`center <maxframe.learn.contrib.llm.ImageContentType.center>`\\ "
+"\\(width\\[\\, fillchar\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a centered string of length width."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`count <maxframe.learn.contrib.llm.ImageContentType.count>`\\ "
+"\\(sub\\[\\, start\\[\\, end\\]\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+"Return the number of non-overlapping occurrences of substring sub in "
+"string S[start:end]."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`expandtabs "
+"<maxframe.learn.contrib.llm.ImageContentType.expandtabs>`\\ "
+"\\(\\[tabsize\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a copy where all tab characters are expanded using spaces."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`find <maxframe.learn.contrib.llm.ImageContentType.find>`\\ "
+"\\(sub\\[\\, start\\[\\, end\\]\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+"Return the lowest index in S where substring sub is found, such that sub "
+"is contained within S[start:end]."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`partition "
+"<maxframe.learn.contrib.llm.ImageContentType.partition>`\\ \\(sep\\, "
+"\\/\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Partition the string into three parts using the given separator."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`index <maxframe.learn.contrib.llm.ImageContentType.index>`\\ "
+"\\(sub\\[\\, start\\[\\, end\\]\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`ljust <maxframe.learn.contrib.llm.ImageContentType.ljust>`\\ "
+"\\(width\\[\\, fillchar\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a left-justified string of length width."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`lower <maxframe.learn.contrib.llm.ImageContentType.lower>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a copy of the string converted to lowercase."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`lstrip <maxframe.learn.contrib.llm.ImageContentType.lstrip>`\\ "
+"\\(\\[chars\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a copy of the string with leading whitespace removed."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`rfind <maxframe.learn.contrib.llm.ImageContentType.rfind>`\\ "
+"\\(sub\\[\\, start\\[\\, end\\]\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+"Return the highest index in S where substring sub is found, such that sub"
+" is contained within S[start:end]."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`rindex <maxframe.learn.contrib.llm.ImageContentType.rindex>`\\ "
+"\\(sub\\[\\, start\\[\\, end\\]\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`rjust <maxframe.learn.contrib.llm.ImageContentType.rjust>`\\ "
+"\\(width\\[\\, fillchar\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a right-justified string of length width."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`rstrip <maxframe.learn.contrib.llm.ImageContentType.rstrip>`\\ "
+"\\(\\[chars\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a copy of the string with trailing whitespace removed."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`rpartition "
+"<maxframe.learn.contrib.llm.ImageContentType.rpartition>`\\ \\(sep\\, "
+"\\/\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`splitlines "
+"<maxframe.learn.contrib.llm.ImageContentType.splitlines>`\\ "
+"\\(\\[keepends\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a list of the lines in the string, breaking at line boundaries."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`strip <maxframe.learn.contrib.llm.ImageContentType.strip>`\\ "
+"\\(\\[chars\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a copy of the string with leading and trailing whitespace removed."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`swapcase "
+"<maxframe.learn.contrib.llm.ImageContentType.swapcase>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+"Convert uppercase characters to lowercase and lowercase characters to "
+"uppercase."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`translate "
+"<maxframe.learn.contrib.llm.ImageContentType.translate>`\\ \\(table\\, "
+"\\/\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Replace each character in the string using the given translation table."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`upper <maxframe.learn.contrib.llm.ImageContentType.upper>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a copy of the string converted to uppercase."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`startswith "
+"<maxframe.learn.contrib.llm.ImageContentType.startswith>`\\ "
+"\\(prefix\\[\\, start\\[\\, end\\]\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if S starts with the specified prefix, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`endswith "
+"<maxframe.learn.contrib.llm.ImageContentType.endswith>`\\ \\(suffix\\[\\,"
+" start\\[\\, end\\]\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if S ends with the specified suffix, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`removeprefix "
+"<maxframe.learn.contrib.llm.ImageContentType.removeprefix>`\\ "
+"\\(prefix\\, \\/\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a str with the given prefix string removed if present."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`removesuffix "
+"<maxframe.learn.contrib.llm.ImageContentType.removesuffix>`\\ "
+"\\(suffix\\, \\/\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a str with the given suffix string removed if present."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`isascii <maxframe.learn.contrib.llm.ImageContentType.isascii>`\\"
+" \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if all characters in the string are ASCII, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`islower <maxframe.learn.contrib.llm.ImageContentType.islower>`\\"
+" \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if the string is a lowercase string, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`isupper <maxframe.learn.contrib.llm.ImageContentType.isupper>`\\"
+" \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if the string is an uppercase string, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`istitle <maxframe.learn.contrib.llm.ImageContentType.istitle>`\\"
+" \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if the string is a title-cased string, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`isspace <maxframe.learn.contrib.llm.ImageContentType.isspace>`\\"
+" \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if the string is a whitespace string, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`isdecimal "
+"<maxframe.learn.contrib.llm.ImageContentType.isdecimal>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if the string is a decimal string, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`isdigit <maxframe.learn.contrib.llm.ImageContentType.isdigit>`\\"
+" \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if the string is a digit string, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`isnumeric "
+"<maxframe.learn.contrib.llm.ImageContentType.isnumeric>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if the string is a numeric string, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`isalpha <maxframe.learn.contrib.llm.ImageContentType.isalpha>`\\"
+" \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if the string is an alphabetic string, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`isalnum <maxframe.learn.contrib.llm.ImageContentType.isalnum>`\\"
+" \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if the string is an alpha-numeric string, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`isidentifier "
+"<maxframe.learn.contrib.llm.ImageContentType.isidentifier>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if the string is a valid Python identifier, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`isprintable "
+"<maxframe.learn.contrib.llm.ImageContentType.isprintable>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return True if the string is printable, False otherwise."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`zfill <maxframe.learn.contrib.llm.ImageContentType.zfill>`\\ "
+"\\(width\\, \\/\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+"Pad a numeric string with zeros on the left, to fill a field of the given"
+" width."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`format <maxframe.learn.contrib.llm.ImageContentType.format>`\\ "
+"\\(\\*args\\, \\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a formatted version of S, using substitutions from args and kwargs."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`format_map "
+"<maxframe.learn.contrib.llm.ImageContentType.format_map>`\\ \\(mapping\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a formatted version of S, using substitutions from mapping."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`maketrans "
+"<maxframe.learn.contrib.llm.ImageContentType.maketrans>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid "Return a translation table usable for str.translate()."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:68:<autosummary>:1
+msgid ""
+":py:obj:`__init__ "
+"<maxframe.learn.contrib.llm.ImageContentType.__init__>`\\ \\(\\*args\\, "
+"\\*\\*kwds\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:70
+msgid "Attributes"
+msgstr "属性"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:75:<autosummary>:1
+msgid ""
+":py:obj:`IMAGE_URL "
+"<maxframe.learn.contrib.llm.ImageContentType.IMAGE_URL>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:75:<autosummary>:1
+msgid ":py:obj:`BINARY <maxframe.learn.contrib.llm.ImageContentType.BINARY>`\\"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.ImageContentType.rst:75:<autosummary>:1
+msgid ":py:obj:`BASE64 <maxframe.learn.contrib.llm.ImageContentType.BASE64>`\\"
+msgstr ""
+

@@ -55,6 +55,15 @@ def test_generate_calls_validate_params_with_default_and_forwards():
     assert model.generate.call_args.kwargs["params"] == {}
 
 
+def test_embed_dataframe_requires_string_template():
+    df = md.DataFrame({"title": ["t"], "body": ["b"]})
+
+    with pytest.raises(ValueError):
+        llm_text.embed(df, object())
+    with pytest.raises(TypeError):
+        llm_text.embed(df, object(), input=[{"type": "text", "text": "{title}"}])
+
+
 def test_summary_type_and_dtype_validation_and_forward():
     model = mock.create_autospec(llm_text.TextGenLLM, instance=True)
 

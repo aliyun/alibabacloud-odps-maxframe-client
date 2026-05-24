@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-11 15:23+0800\n"
+"POT-Creation-Date: 2026-05-19 22:53+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -86,50 +86,81 @@ msgstr ""
 msgid "Text Generate Functions"
 msgstr "文本生成函数"
 
-#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
 msgid ""
-":py:obj:`multi_modal.generate "
-"<maxframe.learn.contrib.llm.multi_modal.generate>`\\ \\(data\\, model\\, "
-"...\\[\\, params\\]\\)"
+":py:obj:`ContentPart <maxframe.learn.contrib.llm.ContentPart>`\\ "
+"\\(\\*args\\, \\*\\*kwargs\\)"
 msgstr ""
 
-#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
 msgid ""
-"Generate text with multi model llm based on given data and prompt "
-"template."
-msgstr "基于给定数据和提示模板，使用多模型大语言模型生成文本。"
+":py:obj:`ImageContentType "
+"<maxframe.learn.contrib.llm.ImageContentType>`\\ \\(value\\)"
+msgstr ""
 
-#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
+msgid ""
+":py:obj:`multi_modal.embed "
+"<maxframe.learn.contrib.llm.multi_modal.embed>`\\ \\(data\\, model\\, "
+"input\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
+msgid "Embed multimodal input with a multimodal embedding model."
+msgstr "使用多模态 embedding 模型对多模态输入生成向量。"
+
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
+msgid ""
+":py:obj:`multi_modal.generate "
+"<maxframe.learn.contrib.llm.multi_modal.generate>`\\ \\(data\\, "
+"model\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
+msgid "Generate text with a multimodal LLM from MaxFrame data."
+msgstr "基于 MaxFrame 数据，使用多模态大语言模型生成文本。"
+
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
+msgid ""
+":py:obj:`text.embed <maxframe.learn.contrib.llm.text.embed>`\\ "
+"\\(series\\, model\\[\\, dimensions\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
+msgid "Embed text content in a series using a text embedding model."
+msgstr "使用文本 embedding 模型对 Series 中的文本内容生成向量。"
+
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
 msgid ""
 ":py:obj:`text.extract <maxframe.learn.contrib.llm.text.extract>`\\ "
 "\\(series\\, model\\, schema\\[\\, ...\\]\\)"
 msgstr ""
 
-#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
 msgid ""
 "Extract structured information from text content in a series using a "
 "language model."
 msgstr "使用语言模型为 Series 中的文本内容生成结构化信息。"
 
-#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
 msgid ""
 ":py:obj:`text.generate <maxframe.learn.contrib.llm.text.generate>`\\ "
 "\\(data\\, model\\, prompt\\_template\\)"
 msgstr ""
 
-#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
 msgid ""
 "Generate text using a text language model based on given data and prompt "
 "template."
 msgstr "基于给定数据和提示模板，使用文本语言模型生成文本。"
 
-#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
 msgid ""
 ":py:obj:`text.translate <maxframe.learn.contrib.llm.text.translate>`\\ "
 "\\(series\\, model\\, ...\\[\\, index\\]\\)"
 msgstr ""
 
-#: ../../source/reference/learn/llm.rst:54:<autosummary>:1
+#: ../../source/reference/learn/llm.rst:57:<autosummary>:1
 msgid ""
 "Translate text content in a series using a language model from source "
 "language to target language."

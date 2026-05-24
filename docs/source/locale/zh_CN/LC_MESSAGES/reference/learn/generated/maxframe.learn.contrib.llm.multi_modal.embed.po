@@ -1,0 +1,81 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.5.2.dev4+gba7d07824\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-19 16:58+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.multi_modal.embed.rst:2
+msgid "maxframe.learn.contrib.llm.multi\\_modal.embed"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.embed:1 of
+msgid "Embed multimodal input with a multimodal embedding model."
+msgstr "使用多模态 embedding 模型对多模态输入生成 embedding。"
+
+#: maxframe.learn.contrib.llm.multi_modal.embed of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.embed:3 of
+msgid "Input data used to render one embedding request per row."
+msgstr "用于按行渲染 embedding 请求的输入数据。"
+
+#: maxframe.learn.contrib.llm.multi_modal.embed:5 of
+msgid "Multimodal embedding model instance."
+msgstr "多模态 embedding 模型实例。"
+
+#: maxframe.learn.contrib.llm.multi_modal.embed:7 of
+msgid ""
+"Multimodal input template. Values may contain placeholders that reference"
+" columns in ``data``. The template is rendered row by row and sent as a "
+"single multimodal embedding input for that row."
+msgstr ""
+"多模态输入模板。值可以包含引用 ``data`` 中列的占位符。模板会逐行渲染，并"
+"作为该行的一条多模态 embedding 输入发送。"
+
+#: maxframe.learn.contrib.llm.multi_modal.embed:11 of
+msgid ""
+"Whether to return embedding vectors directly when supported by the model "
+"executor, instead of the raw provider response."
+msgstr ""
+"当模型 executor 支持时，是否直接返回 embedding 向量，而不是原始 provider "
+"响应。"
+
+#: maxframe.learn.contrib.llm.multi_modal.embed:14 of
+msgid "Additional embedding parameters."
+msgstr "额外 embedding 参数。"
+
+#: maxframe.learn.contrib.llm.multi_modal.embed of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.embed:17 of
+msgid ""
+"A DataFrame with ``response`` and ``success`` columns. Failed requests "
+"store the error message in ``response``."
+msgstr ""
+"包含 ``response`` 和 ``success`` 列的 DataFrame。失败请求会将错误信息写入"
+" ``response``。"
+
+#: maxframe.learn.contrib.llm.multi_modal.embed of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.multi_modal.embed:22 of
+msgid "示例"
+msgstr ""
+

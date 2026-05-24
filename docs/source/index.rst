@@ -15,4 +15,3 @@ to utilize MaxCompute to run their code in a distributed environment.
    getting_started/index
    user_guide/index
    reference/index
-   examples/index

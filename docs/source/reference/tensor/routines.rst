@@ -16,6 +16,7 @@ The following pages describe Numpy-compatible routines. These functions cover a 
    manipulation
    binary
    fft
+   indexing
    linalg
    logic
    math

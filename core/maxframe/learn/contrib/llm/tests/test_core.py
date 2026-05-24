@@ -31,5 +31,6 @@ def test_text_embedding_operator_output_dtypes_and_defaults():
     assert dtypes["response"] == md.dtype("string")
     assert dtypes["success"] == np.dtype("bool")
     assert op.simple_output is False
+    assert op.input is None
     assert op.dimensions is None
     assert op.encoding_format is None

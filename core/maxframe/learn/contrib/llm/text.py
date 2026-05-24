@@ -18,8 +18,12 @@ import numpy as np
 
 from maxframe import dataframe as md
 from maxframe import opcodes
-from maxframe.dataframe.core import DataFrame, Series
-from maxframe.learn.contrib.llm.core import LLM, LLMTaskOperator
+from maxframe.dataframe.core import Series
+from maxframe.learn.contrib.llm.core import (
+    LLM,
+    LLMTaskOperator,
+    validate_llm_input_data,
+)
 from maxframe.serialization.serializables import (
     DictField,
     FieldTypes,
@@ -94,6 +98,7 @@ class TextGenLLM(LLM):
         data,
         prompt_template: List[Dict[str, str]],
         params: Optional[Dict[str, Any]] = None,
+        **kw,
     ):
         raise NotImplementedError
 
@@ -108,7 +113,7 @@ class TextGenLLM(LLM):
         description: Optional[str] = None,
         examples: Optional[List[Dict[str, str]]] = None,
         index=None,
-        **kw
+        **kw,
     ):
         return TextLLMTranslateOp(
             model=self,
@@ -117,7 +122,7 @@ class TextGenLLM(LLM):
             target_language=target_language,
             description=description,
             examples=examples,
-            **kw
+            **kw,
         )(series, index)
 
     def classify(
@@ -127,7 +132,7 @@ class TextGenLLM(LLM):
         description: Optional[str] = None,
         examples: Optional[List[Dict[str, str]]] = None,
         index=None,
-        **kw
+        **kw,
     ):
         return TextLLMClassifyOp(
             model=self,
@@ -135,7 +140,7 @@ class TextGenLLM(LLM):
             task="classify",
             description=description,
             examples=examples,
-            **kw
+            **kw,
         )(series, index)
 
     def extract(
@@ -145,7 +150,7 @@ class TextGenLLM(LLM):
         description: Optional[str] = None,
         examples: Optional[List[Tuple[str, str]]] = None,
         index=None,
-        **kw
+        **kw,
     ):
         import inspect
 
@@ -160,7 +165,7 @@ class TextGenLLM(LLM):
             task="extract",
             description=description,
             examples=examples,
-            **kw
+            **kw,
         )(series, index)
 
 
@@ -175,7 +180,9 @@ class TextEmbeddingModel(LLM):
         encoding_format: Optional[str] = None,
         simple_output: bool = False,
         params: Optional[Dict[str, Any]] = None,
-        **kw
+        *,
+        input: Optional[str] = None,
+        **kw,
     ):
         raise NotImplementedError
 
@@ -185,6 +192,7 @@ def generate(
     model: TextGenLLM,
     prompt_template: List[Dict[str, Any]],
     params: Optional[Dict[str, Any]] = None,
+    **kw,
 ):
     """
     Generate text using a text language model based on given data and prompt template.
@@ -233,13 +241,12 @@ def generate(
     >>> result = generate(df, llm, prompt_template=messages)
     >>> result.execute()
     """
-    if not isinstance(data, DataFrame) and not isinstance(data, Series):
-        raise ValueError("data must be a maxframe dataframe or series object")
+    validate_llm_input_data(data)
     if not isinstance(model, TextGenLLM):
         raise TypeError("model must be a TextLLM object")
     params = params if params is not None else dict()
     model.validate_params(params)
-    return model.generate(data, prompt_template=prompt_template, params=params)
+    return model.generate(data, prompt_template=prompt_template, params=params, **kw)
 
 
 def summary(series, model: TextGenLLM, index=None):
@@ -535,21 +542,27 @@ def embed(
     simple_output: bool = False,
     params: Optional[Dict[str, Any]] = None,
     index=None,
+    *,
+    input: Optional[str] = None,
+    **kw,
 ):
     """
     Embed text content in a series using a text embedding model.
 
     Parameters
     ----------
-    series : Series
-        A maxframe Series containing text data to be embedded.
-        Each element should be a text string.
+    series : Series or DataFrame
+        A maxframe Series containing text data to be embedded, or a DataFrame
+        used with ``input`` to render one text embedding request per row.
     model : TextEmbeddingModel
         Text embedding model instance used for generating embeddings.
     dimensions : int, optional
         Dimensions of the embedding vectors. If not specified, uses model default.
     encoding_format : str, optional
         Encoding format of the embedding (e.g., 'float', 'base64'). If not specified, uses model default.
+    input : str, optional
+        Text template used with DataFrame input. Use ``{col_name}`` as a
+        placeholder to reference input columns.
     simple_output : bool, optional
         Whether to return the embedding data directly without additional metadata, by default False.
     params : Dict[str, Any], optional
@@ -589,9 +602,12 @@ def embed(
       **Preview:** This API is in preview state and may be unstable.
       The interface may change in future releases.
     """
-    if not isinstance(series, Series):
+    if input is not None and not isinstance(input, str):
+        raise TypeError("input must be a string")
+    if input is None and not isinstance(series, Series):
         raise ValueError("series must be a maxframe series object")
-    if series.dtype != np.str_:
+    validate_llm_input_data(series)
+    if input is None and series.dtype != np.str_:
         raise ValueError("embed input must be a string series")
     return model.embed(
         series,
@@ -599,7 +615,9 @@ def embed(
         encoding_format=encoding_format,
         simple_output=simple_output,
         params=params,
+        input=input,
         index=index,
+        **kw,
     )
 
 
