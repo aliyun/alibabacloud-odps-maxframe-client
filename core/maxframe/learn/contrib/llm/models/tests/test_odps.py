@@ -17,6 +17,8 @@ import json
 import pytest
 
 from maxframe.learn.contrib.llm.core import (
+    TASK_IMAGE_TEXT_TO_TEXT,
+    TASK_MULTI_MODAL_EMBEDDING,
     TASK_SENTENCE_EMBEDDING,
     TASK_TEXT_GENERATION,
 )
@@ -25,6 +27,8 @@ from maxframe.learn.contrib.llm.deploy.config import (
     REASONING_MODEL_KEY,
 )
 from maxframe.learn.contrib.llm.models.managed import (
+    ManagedMultiModalEmbeddingModel,
+    ManagedMultiModalGenLLM,
     ManagedTextEmbeddingModel,
     ManagedTextGenLLM,
 )
@@ -46,6 +50,7 @@ from maxframe.learn.contrib.llm.models.odps import (
     ODPS_PROP_TYPE_KEY,
     ODPS_PROP_VERSION_KEY,
     ODPSLLM,
+    ODPSModelType,
 )
 from maxframe.learn.utils.odpsio import ReadODPSModel
 
@@ -144,9 +149,10 @@ def test_build_model_from_default_scope():
 
 
 @pytest.mark.parametrize(
-    "tasks,options,inference_parameters,expected_class,expected_image",
+    "format,tasks,options,inference_parameters,expected_class,expected_image",
     [
         (  # image string from inference metadata
+            ODPSModelType.LLM,
             [TASK_TEXT_GENERATION],
             {},
             {
@@ -159,6 +165,7 @@ def test_build_model_from_default_scope():
             {"name": "my-image:v1"},
         ),
         (  # image dict from options metadata
+            ODPSModelType.LLM,
             [TASK_TEXT_GENERATION],
             {
                 _SCOPE_MAXFRAME: {
@@ -173,6 +180,7 @@ def test_build_model_from_default_scope():
             {"name": "img:v1", "tag": "latest"},
         ),
         (  # embedding model dispatch
+            ODPSModelType.LLM,
             [TASK_SENTENCE_EMBEDDING],
             _llm_scope_options(),
             {},
@@ -180,10 +188,27 @@ def test_build_model_from_default_scope():
             None,
         ),
         (  # both tasks: text-generation takes precedence
+            ODPSModelType.LLM,
             [TASK_TEXT_GENERATION, TASK_SENTENCE_EMBEDDING],
             _llm_scope_options(),
             {},
             ManagedTextGenLLM,
+            None,
+        ),
+        (  # MLLM generation uses the generation-only managed model
+            ODPSModelType.MLLM,
+            [TASK_IMAGE_TEXT_TO_TEXT],
+            _llm_scope_options(framework="OPENAI_REMOTE:MULTIMODAL", device="cpu"),
+            {},
+            ManagedMultiModalGenLLM,
+            None,
+        ),
+        (  # MLLM embedding uses the embedding-only managed model
+            ODPSModelType.MLLM,
+            [TASK_MULTI_MODAL_EMBEDDING],
+            _llm_scope_options(framework="DASH_SCOPE:MULTIMODAL", device="cpu"),
+            {},
+            ManagedMultiModalEmbeddingModel,
             None,
         ),
     ],
@@ -192,14 +217,17 @@ def test_build_model_from_default_scope():
         "image-from-options-metadata",
         "embedding-dispatch",
         "text-generation-priority",
+        "mllm-generation-dispatch",
+        "mllm-embedding-dispatch",
     ],
 )
 def test_model_class_dispatch_and_image_parsing(
-    tasks, options, inference_parameters, expected_class, expected_image
+    format, tasks, options, inference_parameters, expected_class, expected_image
 ):
     result = ODPSLLM._build_odps_source_model(
         _make_op(
             model_name="proj.default.embed",
+            format=format,
             options=options,
             tasks=tasks,
             inference_parameters=inference_parameters,
@@ -208,14 +236,18 @@ def test_model_class_dispatch_and_image_parsing(
     assert isinstance(result, expected_class)
     if expected_image is not None:
         assert result.deploy_config.image == expected_image
+    assert result.deploy_config.properties[ODPS_PROP_TYPE_KEY] == format
+    assert result.deploy_config.tags == tasks
 
 
 @pytest.mark.parametrize(
     "format,tasks",
     [
         ("BOOSTED_TREE_CLASSIFIER", [TASK_TEXT_GENERATION]),
-        ("MLLM", [TASK_TEXT_GENERATION]),
         ("LLM", ["some-unknown-task"]),
+        ("MLLM", [TASK_TEXT_GENERATION]),
+        ("MLLM", [TASK_SENTENCE_EMBEDDING]),
+        ("MLLM", ["some-unknown-task"]),
         ("LLM", []),
     ],
 )

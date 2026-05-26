@@ -15,11 +15,14 @@
 from typing import Any, Dict
 
 from maxframe import opcodes
-from maxframe.learn.contrib.llm.core import LLMTextGenOperator
-from maxframe.learn.contrib.llm.multi_modal import MultiModalLLM
+from maxframe.learn.contrib.llm.core import TASK_IMAGE_TEXT_TO_TEXT, LLMTextGenOperator
+from maxframe.learn.contrib.llm.multi_modal import (
+    LLMMultiModalGenerationOp,
+    MultiModalGenLLM,
+)
 from maxframe.learn.contrib.llm.text import TextGenLLM
 from maxframe.serialization.serializables.core import Serializable
-from maxframe.serialization.serializables.field import StringField
+from maxframe.serialization.serializables.field import BoolField, StringField
 
 
 class DashScopeLLMMixin(Serializable):
@@ -66,7 +69,7 @@ class DashScopeTextLLM(TextGenLLM, DashScopeLLMMixin):
         )(data)
 
 
-class DashScopeMultiModalLLM(MultiModalLLM, DashScopeLLMMixin):
+class DashScopeMultiModalLLM(MultiModalGenLLM, DashScopeLLMMixin):
     """
     DashScope multi-modal LLM.
     """
@@ -89,14 +92,22 @@ class DashScopeMultiModalLLM(MultiModalLLM, DashScopeLLMMixin):
     def generate(
         self,
         data,
-        prompt_template: Dict[str, Any],
+        messages=None,
+        prompt_template: Dict[str, Any] = None,
+        simple_output: bool = False,
         params: Dict[str, Any] = None,
+        **kw,
     ):
-        # TODO add precheck here
+        prompt_template = messages if messages is not None else prompt_template
+        if prompt_template is None:
+            raise ValueError("messages or prompt_template is required")
         return DashScopeMultiModalGenerationOp(
             model=self,
             prompt_template=prompt_template,
+            simple_output=simple_output,
             params=params,
+            task=TASK_IMAGE_TEXT_TO_TEXT,
+            **kw,
         )(data)
 
 
@@ -104,10 +115,14 @@ class DashScopeTextGenerationOp(LLMTextGenOperator):
     _op_type_ = opcodes.DASHSCOPE_TEXT_GENERATION
     _legacy_name = "DashScopeTextGenerationOperator"
 
+    simple_output = BoolField("simple_output", default=False)
 
-class DashScopeMultiModalGenerationOp(LLMTextGenOperator):
+
+class DashScopeMultiModalGenerationOp(LLMMultiModalGenerationOp):
     _op_type_ = opcodes.DASHSCOPE_MULTI_MODAL_GENERATION
     _legacy_name = "DashScopeMultiModalGenerationOperator"
+
+    simple_output = BoolField("simple_output", default=False)
 
 
 DashScopeTextGenerationOperator = DashScopeTextGenerationOp

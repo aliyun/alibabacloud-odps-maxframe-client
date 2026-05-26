@@ -23,6 +23,8 @@ import json
 from typing import Any, Dict, List, Optional, Set
 
 from maxframe.learn.contrib.llm.core import (
+    TASK_IMAGE_TEXT_TO_TEXT,
+    TASK_MULTI_MODAL_EMBEDDING,
     TASK_SENTENCE_EMBEDDING,
     TASK_TEXT_GENERATION,
 )
@@ -33,6 +35,8 @@ from maxframe.learn.contrib.llm.deploy.config import (
 )
 from maxframe.learn.contrib.llm.deploy.framework import InferenceFrameworkEnum
 from maxframe.learn.contrib.llm.models.managed import (
+    ManagedMultiModalEmbeddingModel,
+    ManagedMultiModalGenLLM,
     ManagedTextEmbeddingModel,
     ManagedTextGenLLM,
 )
@@ -100,9 +104,9 @@ class ODPSLLM(ODPSModelMixin):
     Factory class for building LLM models from ODPS Model Catalog.
 
     This class is registered with the ODPS model factory and handles
-    LLM model types. When a model of this type is loaded via
+    LLM and MLLM model types. When a model of this type is loaded via
     ``read_odps_model()``, this class constructs the appropriate
-    ManagedTextGenLLM or ManagedTextEmbeddingModel instance.
+    managed model instance.
     """
 
     @staticmethod
@@ -216,13 +220,18 @@ class ODPSLLM(ODPSModelMixin):
     @classmethod
     def _determine_model_class(cls, tasks: List[str], model_type: str):
         """Return the managed model class, or None if not matched."""
-        if model_type != ODPSModelType.LLM:
-            return None
+        if model_type == ODPSModelType.LLM:
+            if TASK_TEXT_GENERATION in tasks:
+                return ManagedTextGenLLM
+            if TASK_SENTENCE_EMBEDDING in tasks:
+                return ManagedTextEmbeddingModel
 
-        if TASK_TEXT_GENERATION in tasks:
-            return ManagedTextGenLLM
-        if TASK_SENTENCE_EMBEDDING in tasks:
-            return ManagedTextEmbeddingModel
+        if model_type == ODPSModelType.MLLM:
+            if TASK_IMAGE_TEXT_TO_TEXT in tasks:
+                return ManagedMultiModalGenLLM
+            if TASK_MULTI_MODAL_EMBEDDING in tasks:
+                return ManagedMultiModalEmbeddingModel
+
         return None
 
     @classmethod
@@ -321,7 +330,8 @@ class ODPSLLM(ODPSModelMixin):
     @classmethod
     def _build_odps_source_model(cls, op: ReadODPSModel) -> Any:
         """Build a managed LLM from ODPS metadata, or None if unsupported."""
-        if op.format != ODPSModelType.LLM:
+        model_type = op.format
+        if model_type not in (ODPSModelType.LLM, ODPSModelType.MLLM):
             return None
 
         model_name = op.model_name
@@ -332,14 +342,14 @@ class ODPSLLM(ODPSModelMixin):
         inference_parameters = op.inference_parameters or {}
         tasks = op.tasks or []
 
-        model_class = cls._determine_model_class(tasks, op.format)
+        model_class = cls._determine_model_class(tasks, model_type)
         if model_class is None:
             return None
 
         deploy_config = cls._build_deployment_config(
             model_name=model_name,
             model_version=op.model_version,
-            model_type=op.format,
+            model_type=model_type,
             location=op.location,
             options=options,
             odps_inference_parameters=inference_parameters,

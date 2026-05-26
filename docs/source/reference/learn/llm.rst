@@ -48,7 +48,11 @@ Text Generate Functions
 .. autosummary::
     :toctree: generated/
 
+    ContentPart
+    ImageContentType
+    multi_modal.embed
     multi_modal.generate
+    text.embed
     text.extract
     text.generate
     text.translate

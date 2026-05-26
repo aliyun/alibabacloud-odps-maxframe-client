@@ -1,0 +1,114 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.5.2.dev4+gba7d07824\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-19 16:58+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.contrib.llm.text.embed.rst:2
+msgid "maxframe.learn.contrib.llm.text.embed"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.embed:1 of
+msgid "Embed text content in a series using a text embedding model."
+msgstr "使用文本 embedding 模型对 Series 中的文本内容生成 embedding。"
+
+#: maxframe.learn.contrib.llm.text.embed of
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.embed:3 of
+msgid ""
+"A maxframe Series containing text data to be embedded, or a DataFrame "
+"used with ``input`` to render one text embedding request per row."
+msgstr ""
+"包含待生成 embedding 文本数据的 maxframe Series，或与 ``input`` 一起使用"
+"、按行渲染文本 embedding 请求的 DataFrame。"
+
+#: maxframe.learn.contrib.llm.text.embed:6 of
+msgid "Text embedding model instance used for generating embeddings."
+msgstr "用于生成 embedding 的文本 embedding 模型实例。"
+
+#: maxframe.learn.contrib.llm.text.embed:8 of
+msgid "Dimensions of the embedding vectors. If not specified, uses model default."
+msgstr "embedding 向量维度。如未指定，则使用模型默认值。"
+
+#: maxframe.learn.contrib.llm.text.embed:10 of
+msgid ""
+"Encoding format of the embedding (e.g., 'float', 'base64'). If not "
+"specified, uses model default."
+msgstr ""
+"embedding 的编码格式，例如 'float' 或 'base64'。如未指定，则使用模型"
+"默认值。"
+
+#: maxframe.learn.contrib.llm.text.embed:12 of
+#, python-brace-format
+msgid ""
+"Text template used with DataFrame input. Use ``{col_name}`` as a "
+"placeholder to reference input columns."
+msgstr ""
+"与 DataFrame 输入一起使用的文本模板。使用 ``{col_name}`` 作为占位符引用"
+"输入列。"
+
+#: maxframe.learn.contrib.llm.text.embed:15 of
+msgid ""
+"Whether to return the embedding data directly without additional "
+"metadata, by default False."
+msgstr "是否直接返回 embedding 数据而不包含额外 metadata，默认为 False。"
+
+#: maxframe.learn.contrib.llm.text.embed:17 of
+msgid ""
+"Additional parameters for embedding configuration, by default None. Can "
+"include model-specific settings."
+msgstr "额外的 embedding 配置参数，默认为 None。可包含模型特定设置。"
+
+#: maxframe.learn.contrib.llm.text.embed:20 of
+msgid "Index for the output series, by default None, will generate new index."
+msgstr "输出 Series 的索引，默认为 None，此时会生成新的索引。"
+
+#: maxframe.learn.contrib.llm.text.embed of
+msgid "返回"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.embed:23 of
+msgid ""
+"A DataFrame containing the generated embeddings and success status. "
+"Columns include 'response' (embedding vectors) and 'success' (boolean "
+"status). If 'success' is False, the 'response' column will contain error "
+"information instead of the expected output."
+msgstr ""
+"包含生成的 embedding 和成功状态的 DataFrame。列包括 'response'（embedding"
+" 向量）和 'success'（布尔状态）。如果 'success' 为 False，'response' 列会"
+"包含错误信息，而不是预期输出。"
+
+#: maxframe.learn.contrib.llm.text.embed of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.embed:29 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.embed:48 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.contrib.llm.text.embed:49 of
+msgid ""
+"**Preview:** This API is in preview state and may be unstable. The "
+"interface may change in future releases."
+msgstr "**Preview:** 此 API 处于预览状态，可能不稳定。接口可能在后续版本中变化。"
+
