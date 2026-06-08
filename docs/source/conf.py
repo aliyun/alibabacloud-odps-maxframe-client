@@ -88,7 +88,7 @@ pygments_style = "sphinx"
 html_theme = "pydata_sphinx_theme"
 html_title = "MaxFrame"
 
-html_css_files = ["maxframe.css"]
+html_css_files = ["maxframe.css", "maxframe-home.css"]
 html_js_files = ["maxframe-docs.js"]
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -189,6 +189,7 @@ intersphinx_mapping = {
 
 locale_dirs = ["locale/"]  # path is example but recommended.
 gettext_compact = False  # optional.
+gettext_additional_targets = ["image"]
 ipython_warning_is_error = False
 
 

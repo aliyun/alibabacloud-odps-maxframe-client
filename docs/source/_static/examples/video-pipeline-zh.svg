@@ -5,9 +5,9 @@
       <path d="M0,0 L12,4 L0,8 Z" fill="#111827"/>
     </marker>
   </defs>
-  <g font-family="Arial, Helvetica, sans-serif" fill="#111827">
-    <text x="40" y="48" font-size="28" font-weight="700">Video Frame Extraction and AI FUNC Pipeline</text>
-    <text x="40" y="76" font-size="15" fill="#4b5563">One video per manifest row; DPE workers mount OSS, extract JPEG frames, then feed image_url to AI FUNC.</text>
+  <g font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" fill="#111827">
+    <text x="40" y="48" font-size="28" font-weight="700">视频处理全流程：抽帧 -> 打标 -> 向量化</text>
+    <text x="40" y="76" font-size="15" fill="#4b5563">视频清单每行一个视频；DPE 任务挂载 OSS、抽取 JPEG 帧，再把 image_url 传给 AI FUNC。</text>
 
     <g text-anchor="middle">
       <g transform="translate(86 205)">
@@ -16,23 +16,23 @@
         <path d="M14 -44 v20 h20" fill="none" stroke="#64748b" stroke-width="1.5"/>
         <rect x="-12" y="-9" width="38" height="28" fill="#ffffff" stroke="#111827" stroke-width="1.5"/>
         <polygon points="2,-3 2,13 16,5" fill="#111827"/>
-        <text y="82" font-size="14" font-weight="700">OSS Video Prefix</text>
+        <text y="82" font-size="14" font-weight="700">OSS 视频前缀</text>
         <text y="103" font-size="12" fill="#4b5563">mp4 / avi / mov / mkv</text>
       </g>
 
       <g transform="translate(280 205)">
         <rect x="-82" y="-72" width="164" height="120" rx="4" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
         <rect x="-82" y="-72" width="164" height="28" fill="#dbeafe" stroke="#64748b" stroke-width="1.5"/>
-        <text y="-52" font-size="14" font-weight="700">Stage 0</text>
+        <text y="-52" font-size="14" font-weight="700">阶段 0</text>
         <text y="-15" font-size="14" font-weight="700">PyODPS + OSS SDK</text>
-        <text y="12" font-size="12" fill="#4b5563">scan OSS prefix</text>
-        <text y="32" font-size="12" fill="#4b5563">write one row per video</text>
+        <text y="12" font-size="12" fill="#4b5563">扫描 OSS 前缀</text>
+        <text y="32" font-size="12" fill="#4b5563">每个视频写入一行</text>
       </g>
 
       <g transform="translate(486 205)">
         <rect x="-92" y="-72" width="184" height="120" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
         <rect x="-92" y="-72" width="184" height="28" fill="#ddd6fe" stroke="#64748b" stroke-width="1.5"/>
-        <text y="-52" font-size="14" font-weight="700">ODPS Video Manifest</text>
+        <text y="-52" font-size="14" font-weight="700">ODPS 视频清单</text>
         <path d="M-92 -18 h184M-46 -44 v92M0 -44 v92M46 -44 v92" stroke="#cbd5e1" stroke-width="1"/>
         <text y="-24" font-size="12" fill="#4b5563">video_path</text>
         <text y="6" font-size="12" fill="#4b5563">size_bytes</text>
@@ -42,31 +42,31 @@
       <g transform="translate(785 205)">
         <rect x="-190" y="-92" width="380" height="244" rx="4" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
         <rect x="-190" y="-92" width="380" height="32" fill="#fde68a" stroke="#334155" stroke-width="1.5"/>
-        <text y="-70" font-size="15" font-weight="700">Stage 1: MaxFrame apply_chunk on DPE</text>
+        <text y="-70" font-size="15" font-weight="700">阶段 1：DPE 上 apply_chunk 抽帧</text>
 
         <g transform="translate(-120 -20)">
           <rect x="-50" y="-22" width="100" height="44" rx="3" fill="#fffbeb" stroke="#d97706"/>
-          <text y="-4" font-size="12" font-weight="700">validate</text>
+          <text y="-4" font-size="12" font-weight="700">校验路径</text>
           <text y="14" font-size="11" fill="#4b5563">OSS_ROOT</text>
         </g>
         <g transform="translate(0 -20)">
           <rect x="-50" y="-22" width="100" height="44" rx="3" fill="#eff6ff" stroke="#2563eb"/>
           <text y="-4" font-size="12" font-weight="700">with_fs_mount</text>
-          <text y="14" font-size="11" fill="#4b5563">OSS to local</text>
+          <text y="14" font-size="11" fill="#4b5563">OSS 挂到本地</text>
         </g>
         <g transform="translate(120 -20)">
           <rect x="-50" y="-22" width="100" height="44" rx="3" fill="#f0fdf4" stroke="#16a34a"/>
           <text y="-4" font-size="12" font-weight="700">FFprobe</text>
-          <text y="14" font-size="11" fill="#4b5563">duration check</text>
+          <text y="14" font-size="11" fill="#4b5563">时长校验</text>
         </g>
         <g transform="translate(-62 64)">
           <rect x="-72" y="-25" width="144" height="50" rx="3" fill="#fff7ed" stroke="#ea580c"/>
           <text y="-5" font-size="13" font-weight="700">FFmpeg fps</text>
-          <text y="15" font-size="11" fill="#4b5563">JPEG frame extraction</text>
+          <text y="15" font-size="11" fill="#4b5563">抽取 JPEG 帧</text>
         </g>
         <g transform="translate(105 64)">
           <rect x="-78" y="-25" width="156" height="50" rx="3" fill="#f8fafc" stroke="#64748b"/>
-          <text y="-5" font-size="13" font-weight="700">write frames</text>
+          <text y="-5" font-size="13" font-weight="700">写回帧图</text>
           <text y="15" font-size="11" fill="#4b5563">&lt;OSS_ROOT&gt;/frames/</text>
         </g>
 
@@ -74,13 +74,13 @@
         <path d="M50 -20 h18" stroke="#111827" stroke-width="1.5" marker-end="url(#arrowv)"/>
         <path d="M120 3 C120 30 28 30 -34 45" fill="none" stroke="#111827" stroke-width="1.5" marker-end="url(#arrowv)"/>
         <path d="M10 64 h16" stroke="#111827" stroke-width="1.5" marker-end="url(#arrowv)"/>
-        <text y="128" font-size="12" fill="#4b5563">Failures keep lineage with status=failed and error_msg</text>
+        <text y="128" font-size="12" fill="#4b5563">失败行保留 lineage、status=failed 和 error_msg</text>
       </g>
 
       <g transform="translate(1102 205)">
         <rect x="-74" y="-72" width="148" height="120" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
         <rect x="-74" y="-72" width="148" height="28" fill="#ddd6fe" stroke="#64748b" stroke-width="1.5"/>
-        <text y="-52" font-size="14" font-weight="700">ODPS Frame Table</text>
+        <text y="-52" font-size="14" font-weight="700">ODPS 帧表</text>
         <path d="M-74 -18 h148M-37 -44 v92M0 -44 v92M37 -44 v92" stroke="#cbd5e1" stroke-width="1"/>
         <text y="-24" font-size="12" fill="#4b5563">image_id</text>
         <text y="6" font-size="12" fill="#4b5563">image_url</text>
@@ -88,27 +88,27 @@
       </g>
 
       <path d="M144 205 h43" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/>
-      <text x="166" y="190" font-size="12" fill="#4b5563">objects</text>
+      <text x="166" y="190" font-size="12" fill="#4b5563">对象</text>
       <path d="M362 205 h21" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/>
-      <text x="373" y="190" font-size="12" fill="#4b5563">rows</text>
+      <text x="373" y="190" font-size="12" fill="#4b5563">行</text>
       <path d="M578 205 h16" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/>
-      <text x="586" y="190" font-size="12" fill="#4b5563">chunks</text>
+      <text x="586" y="190" font-size="12" fill="#4b5563">chunk</text>
       <path d="M975 205 h50" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/>
-      <text x="999" y="190" font-size="12" fill="#4b5563">frames</text>
+      <text x="999" y="190" font-size="12" fill="#4b5563">帧</text>
 
       <g transform="translate(316 470)">
         <rect x="-126" y="-58" width="252" height="116" rx="4" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
         <rect x="-126" y="-58" width="252" height="30" fill="#bfdbfe" stroke="#64748b" stroke-width="1.5"/>
-        <text y="-37" font-size="14" font-weight="700">Stage 2: Image Labeling</text>
+        <text y="-37" font-size="14" font-weight="700">阶段 2：图片打标</text>
         <text y="-5" font-size="13">qwen3-vl-plus</text>
         <text y="18" font-size="12" fill="#4b5563">messages + cp.image(image_url)</text>
-        <text y="39" font-size="12" fill="#4b5563">parse label text and tokens</text>
+        <text y="39" font-size="12" fill="#4b5563">解析标签文本与 token 用量</text>
       </g>
 
       <g transform="translate(602 470)">
         <rect x="-82" y="-58" width="164" height="116" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
         <rect x="-82" y="-58" width="164" height="30" fill="#ddd6fe" stroke="#64748b" stroke-width="1.5"/>
-        <text y="-37" font-size="14" font-weight="700">ODPS Label Table</text>
+        <text y="-37" font-size="14" font-weight="700">ODPS 打标表</text>
         <path d="M-82 -10 h164M-41 -28 v86M0 -28 v86M41 -28 v86" stroke="#cbd5e1" stroke-width="1"/>
         <text y="-16" font-size="12" fill="#4b5563">label_text</text>
         <text y="13" font-size="12" fill="#4b5563">tokens</text>
@@ -118,16 +118,16 @@
       <g transform="translate(875 470)">
         <rect x="-126" y="-58" width="252" height="116" rx="4" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
         <rect x="-126" y="-58" width="252" height="30" fill="#bbf7d0" stroke="#64748b" stroke-width="1.5"/>
-        <text y="-37" font-size="14" font-weight="700">Stage 3: Image Embedding</text>
+        <text y="-37" font-size="14" font-weight="700">阶段 3：图片向量化</text>
         <text y="-5" font-size="13">qwen3-vl-embedding</text>
         <text y="18" font-size="12" fill="#4b5563">embed cp.image(image_url)</text>
-        <text y="39" font-size="12" fill="#4b5563">params dimension in params</text>
+        <text y="39" font-size="12" fill="#4b5563">维度参数放入 params</text>
       </g>
 
       <g transform="translate(1110 470)">
         <rect x="-74" y="-58" width="148" height="116" fill="#ffffff" stroke="#64748b" stroke-width="1.5"/>
         <rect x="-74" y="-58" width="148" height="30" fill="#ddd6fe" stroke="#64748b" stroke-width="1.5"/>
-        <text y="-37" font-size="14" font-weight="700">ODPS Emb Table</text>
+        <text y="-37" font-size="14" font-weight="700">ODPS 向量表</text>
         <path d="M-74 -10 h148M-37 -28 v86M0 -28 v86M37 -28 v86" stroke="#cbd5e1" stroke-width="1"/>
         <text y="-16" font-size="12" fill="#4b5563">image_embedding</text>
         <text y="13" font-size="12" fill="#4b5563">total_tokens</text>
@@ -135,7 +135,7 @@
       </g>
 
       <path d="M1102 253 V382 H435 V411" fill="none" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/>
-      <text x="760" y="374" font-size="12" fill="#4b5563">ok frame rows only</text>
+      <text x="760" y="374" font-size="12" fill="#4b5563">仅处理成功抽帧行</text>
       <path d="M442 470 h77" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/>
       <path d="M684 470 h64" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/>
       <path d="M1001 470 h34" stroke="#111827" stroke-width="2" marker-end="url(#arrowv)"/>

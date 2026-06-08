@@ -116,6 +116,9 @@ msgstr ""
 msgid "Audio processing pipeline with MaxFrame audio operators"
 msgstr "MaxFrame 音频算子处理流程"
 
+msgid ".. image:: ../_static/examples/audio-pipeline.svg"
+msgstr ".. image:: ../_static/examples/audio-pipeline-zh.svg"
+
 msgid "Background"
 msgstr "背景信息"
 
@@ -219,41 +222,37 @@ msgstr ""
 "语音识别的完整处理链路，对海量原始音频进行自动化转写，并将识别结果输出为"
 "结构化数据，便于后续分析、检索和模型训练使用。"
 
-msgid "``.url.download()`` and ``.audio.*`` operators run on DPE."
-msgstr "``.url.download()`` 与 ``.audio.*`` 算子在 DPE 上执行。"
+msgid ""
+"Submit a ticket to enable the DPE engine for your MaxCompute project before "
+"running this example."
+msgstr "运行本示例前，请提工单为当前 MaxCompute 项目开通 DPE 引擎。"
 
 msgid "Troubleshooting"
 msgstr "常见问题排查"
 
-msgid "OSS access denied"
-msgstr "OSS 访问被拒绝"
+msgid "Issue"
+msgstr "问题"
 
-msgid ""
-"**Symptom**: ``.url.download(storage_options={\"role_arn\": ...})`` fails"
-" with an access denied error."
+msgid "Cause"
+msgstr "原因"
+
+msgid "Solution"
+msgstr "解决方案"
+
+msgid "``Engine DPE not available``"
 msgstr ""
-"**现象**：调用 ``.url.download(storage_options={\"role_arn\": ...})`` 时报访"
-"问被拒绝错误。"
 
-msgid "**Cause**: Wrong or missing role permissions."
-msgstr "**原因**：角色权限配置错误或缺失。"
+msgid "DPE is not enabled."
+msgstr "未开通 DPE。"
 
-msgid "**Solution**: Verify the following:"
-msgstr "**解决方案**：请逐一确认以下事项："
+msgid "Contact the administrator to enable DPE in the project."
+msgstr "联系管理员在项目中开通 DPE。"
 
-msgid ""
-"**Role ARN is correct** — double-check the ``role_arn`` value in "
-"``storage_options`` matches the RAM role configured in the Alibaba Cloud "
-"console."
+msgid "``OSS access denied``"
 msgstr ""
-"**Role ARN 正确** — 确认 ``storage_options`` 中的 ``role_arn`` 值与阿里"
-"云控制台配置的 RAM 角色一致。"
 
-msgid ""
-"**OSS read permission** — ensure the RAM role has the "
-"``AliyunOSSReadOnlyAccess`` policy (or equivalent custom policy) "
-"attached, granting ``oss:GetObject`` permission on the target bucket."
-msgstr ""
-"**OSS 读权限** — 确认 RAM 角色已附加 ``AliyunOSSReadOnlyAccess`` 策略"
-"（或等效自定义策略），具备目标 Bucket 的 ``oss:GetObject`` 权限。"
+msgid "Wrong or missing role permissions."
+msgstr "角色权限配置错误或缺失。"
 
+msgid "Verify ``role_arn`` and confirm the RAM role has OSS read permission."
+msgstr "检查 ``role_arn``，并确认 RAM 角色已具备 OSS 读取权限。"

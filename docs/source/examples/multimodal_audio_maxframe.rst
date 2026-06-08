@@ -27,7 +27,7 @@ Use cases
 Pipeline
 --------
 
-.. image:: ../_static/examples/audio-pipeline.png
+.. image:: ../_static/examples/audio-pipeline.svg
    :alt: Audio processing pipeline with MaxFrame audio operators
    :width: 100%
 
@@ -46,7 +46,7 @@ Prerequisites
      - A MaxCompute project with valid Access ID / Access Key.
    * - 2
      - **DPE enabled**
-     - ``.url.download()`` and ``.audio.*`` operators run on DPE.
+     - Submit a ticket to enable the DPE engine for your MaxCompute project before running this example.
    * - 3
      - **Audio uploaded to OSS**
      - Source audio files are available in a target OSS bucket.
@@ -198,14 +198,16 @@ Technical highlights
 Troubleshooting
 ---------------
 
-OSS access denied
-~~~~~~~~~~~~~~~~~
+.. list-table::
+   :header-rows: 1
+   :widths: 34 33 33
 
-**Symptom**: ``.url.download(storage_options={"role_arn": ...})`` fails with an access denied error.
-
-**Cause**: Wrong or missing role permissions.
-
-**Solution**: Verify the following:
-
-1. **Role ARN is correct** — double-check the ``role_arn`` value in ``storage_options`` matches the RAM role configured in the Alibaba Cloud console.
-2. **OSS read permission** — ensure the RAM role has the ``AliyunOSSReadOnlyAccess`` policy (or equivalent custom policy) attached, granting ``oss:GetObject`` permission on the target bucket.
+   * - Issue
+     - Cause
+     - Solution
+   * - ``Engine DPE not available``
+     - DPE is not enabled.
+     - Contact the administrator to enable DPE in the project.
+   * - ``OSS access denied``
+     - Wrong or missing role permissions.
+     - Verify ``role_arn`` and confirm the RAM role has OSS read permission.

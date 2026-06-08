@@ -201,7 +201,7 @@ Step 5. Resize images in a MaxFrame UDF
 
 
    @with_python_requirements("pillow", "pandas", "cloudpickle")
-   def apply_func(row):
+   def apply_func(row) -> pd.DataFrame[{"key": "object", "data": "object"}]:
        import base64
        import io
 
@@ -228,8 +228,6 @@ Step 6. Run ``apply`` on MaxCompute
    apply_df = df.apply(
        apply_func,
        axis=1,
-       dtypes=df.dtypes,
-       output_type="dataframe",
    )
    print(apply_df.execute().fetch())
 

@@ -20,9 +20,6 @@ msgstr ""
 msgid "**DPE enabled**"
 msgstr "**开通 DPE 引擎**"
 
-msgid "**DashScope API key**"
-msgstr "**百炼 API Key**"
-
 msgid "**Images uploaded to OSS**"
 msgstr "**上传图片至 OSS**"
 
@@ -86,9 +83,6 @@ msgstr "背景信息"
 msgid "Cause"
 msgstr "原因"
 
-msgid "Check API key status in DashScope console."
-msgstr "在百炼控制台检查 API Key 状态。"
-
 msgid "Configure Role ARN for OSS read access."
 msgstr "配置用于 OSS 读取访问的 Role ARN。"
 
@@ -133,38 +127,14 @@ msgstr ""
 "bucket>/maxframe-image-demo/``。``IMAGE_FILES`` 中的文件名必须和 OSS "
 "Bucket 中的对象名完全一致。"
 
-msgid ""
-"For large-scale production workloads, request higher API concurrency "
-"limits to avoid 429/403 throttling. If the task times out, open LogView "
-"first and check whether OSS mount, image file names, RAM role "
-"permissions, and DashScope network access are all valid."
-msgstr ""
-"在大规模生产任务中，建议申请更高 API 并发配额以避免 429/403 限流。如果"
-"任务超时，请优先打开 LogView，检查 OSS 挂载、图片文件名、RAM 角色权限以及"
-"百炼网络访问是否正确。"
-
 msgid "Content understanding, moderation, and quality analysis."
 msgstr "内容理解、审核与质量分析。"
 
 msgid "Core workflow"
 msgstr "核心处理流程"
 
-msgid "Create an API key for multimodal embedding calls."
-msgstr "创建用于多模态 Embedding 调用的 API Key。"
-
-msgid ""
-"Create or manage your API key in DashScope console: `DashScope API Key "
-"management <https://bailian.console.aliyun.com/cn-beijing?tab=model#/api-"
-"key>`__."
-msgstr ""
-"前往 `百炼控制台 - API Key 管理 <https://bailian.console.aliyun.com/cn-"
-"beijing?tab=model#/api-key>`__ 创建或管理 API Key。"
-
 msgid "DPE is not enabled"
 msgstr "未开通 DPE"
-
-msgid "DashScope API key management page"
-msgstr "百炼控制台 API Key 管理页面"
 
 msgid "Data preparation for RAG, knowledge base, and agent applications."
 msgstr "为 RAG、知识库与 Agent 应用准备多模态数据。"
@@ -174,9 +144,6 @@ msgstr "基于向量相似度进行去重与聚类。"
 
 msgid "Description"
 msgstr "说明"
-
-msgid "Different embedding models were mixed"
-msgstr "混用了不同的 Embedding 模型"
 
 msgid "Embedding is ``None``"
 msgstr "Embedding 结果为 ``None``"
@@ -198,24 +165,15 @@ msgid "Feature generation for recommendation and ranking systems."
 msgstr "为推荐与排序系统生产图像特征。"
 
 msgid ""
-"For large-scale production workloads, request higher API concurrency "
-"limits to avoid 429/403 throttling."
-msgstr "在大规模生产任务中，建议申请更高 API 并发配额以避免 429/403 限流。"
-
-msgid "Get DashScope API key"
-msgstr "获取百炼 API Key"
-
-msgid "Image operators and ``apply_chunk`` run on DPE."
-msgstr "Image 算子与 ``apply_chunk`` 在 DPE 上执行。"
+"Submit a ticket to enable the DPE engine for your MaxCompute project before "
+"running this example."
+msgstr "运行本示例前，请提工单为当前 MaxCompute 项目开通 DPE 引擎。"
 
 msgid "Image processing and embedding workflow"
 msgstr "图像处理与 Embedding 流程"
 
-msgid "Inconsistent vector dimensions"
-msgstr "向量维度不一致"
-
-msgid "Invalid API key"
-msgstr "API Key 无效"
+msgid ".. image:: ../_static/examples/image-pipeline.svg"
+msgstr ".. image:: ../_static/examples/image-pipeline-zh.svg"
 
 msgid "Issue"
 msgstr "问题"
@@ -235,9 +193,9 @@ msgstr "前提条件"
 msgid "**MaxFrame SDK version**"
 msgstr "**MaxFrame SDK 版本**"
 
-msgid "Use MaxFrame SDK **2.6.0** or above (``pip install maxframe>=2.6.0``)."
+msgid "Use MaxFrame SDK **2.7.1** or above (``pip install maxframe>=2.7.1``)."
 msgstr ""
-"请使用 MaxFrame SDK **2.6.0** 及以上版本（``pip install maxframe>=2.6.0``"
+"请使用 MaxFrame SDK **2.7.1** 及以上版本（``pip install maxframe>=2.7.1``"
 "）。"
 
 msgid "Requirement"
@@ -265,9 +223,6 @@ msgstr ""
 msgid "Troubleshooting"
 msgstr "常见问题排查"
 
-msgid "Use one embedding model per batch/output table."
-msgstr "同一批次或输出表请使用同一 Embedding 模型。"
-
 msgid "Verify ``role_arn`` and OSS read permissions."
 msgstr "检查 ``role_arn`` 与 OSS 读取权限配置。"
 
@@ -280,3 +235,18 @@ msgstr "角色权限错误或缺失"
 msgid "``Engine DPE not available``"
 msgstr ""
 
+msgid "Model compute service and inference quota"
+msgstr "模型计算服务与推理配额"
+
+msgid ""
+"In MaxCompute console, purchase/enable model compute service and confirm "
+"the associated inference quota before running Bailian model inference."
+msgstr ""
+"在 MaxCompute 控制台购买或开通模型计算服务，并在运行百炼模型推理前确认已"
+"关联推理配额。"
+
+msgid "MaxCompute model compute service and inference quota page"
+msgstr "MaxCompute 模型计算服务与推理配额页面"
+
+msgid ".. image:: ../_static/examples/bailian-quota.png"
+msgstr ".. image:: ../_static/examples/bailian-quota-zh.png"

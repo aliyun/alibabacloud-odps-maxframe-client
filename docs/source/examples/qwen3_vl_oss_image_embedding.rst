@@ -5,7 +5,7 @@ Multimodal Image Feature Pipeline with MaxFrame
 
 .. raw:: html
 
-   <div class="mf-example-available-row"><span class="mf-example-available">Available at MaxFrame 2.6.0</span></div>
+   <div class="mf-example-available-row"><span class="mf-example-available">Available at MaxFrame 2.7.1</span></div>
 
 Background
 ----------
@@ -48,7 +48,7 @@ Prerequisites
      - A MaxCompute project with valid Access ID / Access Key.
    * - 2
      - **DPE enabled**
-     - Image operators and ``apply_chunk`` run on DPE.
+     - Submit a ticket to enable the DPE engine for your MaxCompute project before running this example.
    * - 3
      - **Images uploaded to OSS**
      - Create your own OSS bucket and upload the five sample images used by this tutorial.
@@ -56,11 +56,18 @@ Prerequisites
      - **OSS RAM role authorization**
      - Configure Role ARN for OSS read access.
    * - 5
-     - **DashScope API key**
-     - Create an API key for multimodal embedding calls.
-   * - 6
      - **MaxFrame SDK version**
-     - Use MaxFrame SDK **2.6.0** or above (``pip install maxframe>=2.6.0``).
+     - Use MaxFrame SDK **2.7.1** or above (``pip install maxframe>=2.7.1``).
+
+Model compute service and inference quota
+-----------------------------------------
+
+In MaxCompute console, purchase/enable model compute service and confirm the
+associated inference quota before running Bailian model inference.
+
+.. image:: ../_static/examples/bailian-quota.png
+   :alt: MaxCompute model compute service and inference quota page
+   :width: 100%
 
 Configure OSS RAM role
 ----------------------
@@ -75,16 +82,6 @@ The service-linked-role step shown in the console guide is not used by this
 example. If your MaxCompute service has already been enabled, focus on the RAM
 role and OSS permission configuration needed by ``role_arn``.
 
-Get DashScope API key
----------------------
-
-Create or manage your API key in DashScope console:
-`DashScope API Key management <https://bailian.console.aliyun.com/cn-beijing?tab=model#/api-key>`__.
-
-.. image:: ../_static/examples/bailian-api-key-zh.png
-   :alt: DashScope API key management page
-   :width: 100%
-
 Environment setup
 -----------------
 
@@ -92,8 +89,8 @@ Environment setup
 
    import maxframe
 
-   assert maxframe.__version__ >= "2.6.0", (
-       f"maxframe >= 2.6.0 is required, current version: {maxframe.__version__}. "
+   assert maxframe.__version__ >= "2.7.1", (
+       f"maxframe >= 2.7.1 is required, current version: {maxframe.__version__}. "
        f"Please run: pip install --upgrade maxframe"
    )
 
@@ -108,13 +105,6 @@ Environment setup
    pd.set_option("display.max_columns", None)
 
    options.dag.settings = {"engine_order": ["DPE", "MCSQL"]}
-   options.dpe.settings = {
-       "substep.internal_network_whitelist": [
-           "intranet-cn-beijing.dashscope.aliyuncs.com:443",
-       ],
-   }
-
-   DASHSCOPE_API_KEY = "<your_dashscope_api_key>"
    ROLE_ARN = "acs:ram::<your_account_id>:role/<your_role_name>"
    OSS_ENDPOINT = "<your_oss_endpoint>"  # for example: oss-cn-hangzhou.aliyuncs.com
    OSS_BUCKET = "<your_oss_bucket>"
@@ -160,7 +150,9 @@ the objects in your OSS bucket.
        storage_options={"role_arn": ROLE_ARN},
    )
    @with_python_requirements("Pillow==10.4.0")
-   def download_and_process(filename_series, target_size=(512, 512)):
+   def download_and_process(filename_series, target_size=(512, 512)) -> pd.DataFrame[
+       {"width": "float64", "height": "float64", "format": "object", "img_base64": "object"}
+   ]:
        import io
        import base64
        import pandas as pd
@@ -198,14 +190,6 @@ the objects in your OSS bucket.
 
    result_df = df["filename"].mf.apply_chunk(
        download_and_process,
-       output_type="dataframe",
-       dtypes={
-           "width": "float64",
-           "height": "float64",
-           "format": "object",
-           "img_base64": "object",
-       },
-       skip_infer=True,
        target_size=(512, 512),
    )
 
@@ -218,54 +202,30 @@ the objects in your OSS bucket.
 3. Multimodal embedding inference
 ---------------------------------
 
-.. note::
-
-   For large-scale production workloads, request higher API concurrency limits to avoid 429/403 throttling.
-   If the task times out, open LogView first and check whether OSS mount,
-   image file names, RAM role permissions, and DashScope network access are all valid.
-
 .. code-block:: python
 
-   @with_python_requirements("dashscope>=1.24.6")
-   def embed_images(base64_series, api_key=None, max_retries=3):
-       import time
-       import pandas as pd
-       import dashscope
-       from dashscope import MultiModalEmbedding
+   from maxframe.learn.contrib.llm import ContentPart, ImageContentType
+   from maxframe.learn.utils import read_odps_model
 
-       dashscope.api_key = api_key
-       dashscope.base_http_api_url = "https://intranet-cn-beijing.dashscope.aliyuncs.com/api/v1"
+   embedding_model = read_odps_model("qwen3-vl-embedding", project="bigdata_public_modelset")
+   print(embedding_model)
 
-       results = []
-       for b64_str in base64_series:
-           if not b64_str:
-               results.append(None)
-               continue
-           for attempt in range(max_retries):
-               resp = MultiModalEmbedding.call(
-                   model="tongyi-embedding-vision-flash-2026-03-06",
-                   input=[{"image": f"data:image/jpeg;base64,{b64_str}"}],
-               )
-               if resp.status_code == 200:
-                   results.append(resp.output["embeddings"][0]["embedding"])
-                   break
-               if attempt < max_retries - 1:
-                   time.sleep(2**attempt)
-               else:
-                   results.append(None)
-
-       return pd.Series(results, index=base64_series.index)
-
-   df["embedding"] = df["img_base64"].mf.apply_chunk(
-       embed_images,
-       output_type="series",
-       dtype="object",
-       skip_infer=True,
-       batch_rows=5,
-       index=df["img_base64"].index,
-       api_key=DASHSCOPE_API_KEY,
+   embedding_result = embedding_model.embed(
+       df,
+       input=[
+           ContentPart.image(
+               data=df["img_base64"],
+               type=ImageContentType.BASE64,
+               mime_type="image/jpeg",
+           ),
+       ],
+       simple_output=False,
+       params={"dimension": 1024},
+       running_options={"enable_real_rpm_stats": True},
    )
 
+   df["embedding"] = embedding_result["response"]
+   df["embedding_success"] = embedding_result["success"]
    df = df.execute()
    print(df.fetch())
 
@@ -307,12 +267,6 @@ Troubleshooting
    * - ``OSS access denied``
      - Wrong or missing role permissions
      - Verify ``role_arn`` and OSS read permissions.
-   * - ``dashscope API 401``
-     - Invalid API key
-     - Check API key status in DashScope console.
    * - Embedding is ``None``
      - Per-image inference failure
      - Verify image integrity and base64 generation.
-   * - Inconsistent vector dimensions
-     - Different embedding models were mixed
-     - Use one embedding model per batch/output table.

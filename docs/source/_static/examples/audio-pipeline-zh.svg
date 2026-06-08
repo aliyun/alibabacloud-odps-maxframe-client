@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="477" viewBox="0 0 1024 477">
+  <rect width="1024" height="477" fill="#fbfdff"/>
+  <defs>
+    <marker id="arrowa" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto">
+      <path d="M0,0 L12,4 L0,8 Z" fill="#334155"/>
+    </marker>
+  </defs>
+  <g font-family="Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif" fill="#111827">
+    <g text-anchor="middle">
+      <g transform="translate(118 238)">
+        <rect x="-92" y="-140" width="184" height="280" rx="12" fill="#f5fff8" stroke="#22a447" stroke-width="2"/>
+        <path d="M-42 -54 h84" stroke="#22a447" stroke-width="3" stroke-dasharray="6 5"/>
+        <path d="M-16 -106 c25 -22 62 -10 73 20 20 3 35 20 35 42 0 25 -20 44 -45 44h-94c-25 0 -45 -19 -45 -44 0 -21 15 -39 35 -42 7 -20 21 -20 41 -20z" fill="#24b74e"/>
+        <path d="M0 -84 v39" stroke="#fff" stroke-width="10" stroke-linecap="round"/>
+        <path d="M-18 -63 l18 -21 18 21" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="0" y1="-54" x2="0" y2="-8" stroke="#22a447" stroke-width="3" stroke-dasharray="6 5"/>
+        <line x1="-58" y1="-8" x2="58" y2="-8" stroke="#22a447" stroke-width="3" stroke-dasharray="6 5"/>
+        <line x1="-58" y1="-8" x2="-58" y2="22" stroke="#22a447" stroke-width="3" stroke-dasharray="6 5"/>
+        <line x1="0" y1="-8" x2="0" y2="22" stroke="#22a447" stroke-width="3" stroke-dasharray="6 5"/>
+        <line x1="58" y1="-8" x2="58" y2="22" stroke="#22a447" stroke-width="3" stroke-dasharray="6 5"/>
+        <g fill="#24b74e">
+          <rect x="-80" y="20" width="44" height="50" rx="4"/>
+          <rect x="-22" y="20" width="44" height="50" rx="4"/>
+          <rect x="36" y="20" width="44" height="50" rx="4"/>
+        </g>
+        <g fill="#fff" font-size="30" font-weight="700">
+          <text x="-58" y="58">♪</text>
+          <text x="0" y="58">♪</text>
+          <text x="58" y="58">♪</text>
+        </g>
+        <text y="105" font-size="20" font-weight="700">OSS 音频空间</text>
+        <text y="130" font-size="13" fill="#64748b">flac / wav / mp3 等</text>
+      </g>
+
+      <g transform="translate(332 238)">
+        <rect x="-88" y="-140" width="176" height="280" rx="12" fill="#f8fbff" stroke="#3182ce" stroke-width="2"/>
+        <path d="M-32 -64 c-17 -17 -17 -45 0 -62l18 -18c17 -17 45 -17 62 0 17 17 17 45 0 62l-10 10" fill="none" stroke="#1670ca" stroke-width="10" stroke-linecap="round"/>
+        <path d="M32 -56 c17 17 17 45 0 62L14 24c-17 17 -45 17 -62 0 -17 -17 -17 -45 0 -62l10 -10" fill="none" stroke="#1670ca" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="52" cy="-18" r="23" fill="#1e88e5"/>
+        <path d="M52 -34 v25" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+        <path d="M40 -18 l12 12 12 -12" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="-61" y="48" width="122" height="44" rx="8" fill="#f0f9ff" stroke="#93c5fd"/>
+        <text y="76" font-size="18" fill="#1670ca">https://...</text>
+        <text y="110" font-size="20" font-weight="700">URL 算子</text>
+        <text y="132" font-size="18">download()</text>
+      </g>
+
+      <g transform="translate(620 238)">
+        <rect x="-170" y="-140" width="340" height="280" rx="12" fill="#f8fbff" stroke="#3182ce" stroke-width="2"/>
+        <text y="-113" font-size="24" font-weight="700">Audio 算子</text>
+        <g transform="translate(-76 -6)">
+          <rect x="-62" y="-82" width="124" height="164" rx="10" fill="#fff" stroke="#94a3b8"/>
+          <text y="-52" font-size="17" font-weight="700">解码</text>
+          <path d="M-42 -2 q11 -34 22 0 q11 34 22 0 q11 -34 22 0 q11 34 22 0" fill="none" stroke="#1e88e5" stroke-width="5"/>
+          <path d="M-44 45 h16 l22 -18 v52 l-22 -18h-16z" fill="#1e88e5"/>
+          <rect x="6" y="63" width="12" height="20" fill="#1e88e5"/>
+          <rect x="27" y="47" width="12" height="36" fill="#1e88e5"/>
+          <rect x="48" y="29" width="12" height="54" fill="#1e88e5"/>
+          <text y="112" font-size="14" fill="#64748b">元数据 / 语言 / VAD</text>
+        </g>
+        <g transform="translate(84 -6)">
+          <rect x="-70" y="-82" width="140" height="164" rx="10" fill="#fff" stroke="#94a3b8"/>
+          <text y="-55" font-size="17" font-weight="700">IWHISPER</text>
+          <text y="-32" font-size="17" font-weight="700">语音转写</text>
+          <circle cx="0" cy="25" r="47" fill="#f0f9ff" stroke="#1e88e5" stroke-width="4"/>
+          <circle cx="0" cy="25" r="24" fill="#fff" stroke="#1e88e5" stroke-width="4"/>
+          <path d="M-12 25 v-16M0 25 v-25M12 25 v-12" stroke="#1e88e5" stroke-width="5" stroke-linecap="round"/>
+          <text y="111" font-size="14" fill="#64748b">转写文本</text>
+        </g>
+        <path d="M-14 -6 h26" stroke="#334155" stroke-width="3" marker-end="url(#arrowa)"/>
+      </g>
+
+      <g transform="translate(910 238)">
+        <rect x="-86" y="-140" width="172" height="280" rx="12" fill="#f7fff8" stroke="#22a447" stroke-width="2"/>
+        <rect x="-55" y="-108" width="110" height="100" rx="6" fill="#fff" stroke="#16a34a" stroke-width="2"/>
+        <rect x="-55" y="-108" width="110" height="16" fill="#22a447"/>
+        <g stroke="#16a34a" stroke-width="1">
+          <line x1="-55" y1="-76" x2="55" y2="-76"/>
+          <line x1="-55" y1="-60" x2="55" y2="-60"/>
+          <line x1="-55" y1="-44" x2="55" y2="-44"/>
+          <line x1="-55" y1="-28" x2="55" y2="-28"/>
+          <line x1="-22" y1="-108" x2="-22" y2="-8"/>
+          <line x1="18" y1="-108" x2="18" y2="-8"/>
+        </g>
+        <line x1="-55" y1="16" x2="55" y2="16" stroke="#c7e7cc" stroke-width="6"/>
+        <line x1="-55" y1="36" x2="55" y2="36" stroke="#c7e7cc" stroke-width="6"/>
+        <line x1="-55" y1="56" x2="55" y2="56" stroke="#c7e7cc" stroke-width="6"/>
+        <text y="105" font-size="21" font-weight="700">ODPS 表</text>
+        <text y="130" font-size="13" fill="#64748b">结构化转写结果</text>
+      </g>
+
+      <path d="M210 238 h33" stroke="#334155" stroke-width="4" marker-end="url(#arrowa)"/>
+      <path d="M421 238 h28" stroke="#334155" stroke-width="4" marker-end="url(#arrowa)"/>
+      <path d="M790 238 h33" stroke="#334155" stroke-width="4" marker-end="url(#arrowa)"/>
+    </g>
+  </g>
+</svg>

@@ -53,3 +53,23 @@ window.addEventListener("load", function () {
     );
     textNode.textContent = nameParts.slice(classIdx, nameParts.length).join(".");
 });
+
+function applyLocalizedText(root, attrName) {
+    var els = root.querySelectorAll("[" + attrName + "]");
+    for (var i = 0; i < els.length; i++) {
+        var text = els[i].getAttribute(attrName);
+        if (text) {
+            els[i].textContent = text;
+        }
+    }
+}
+
+// Switch hero text based on document language
+window.addEventListener("load", function () {
+    var htmlEl = document.documentElement;
+    var lang = htmlEl.getAttribute("lang") || htmlEl.lang || "";
+    if (lang.indexOf("zh") !== 0) return;
+    var heroSection = document.querySelector(".mf-home-hero--center");
+    if (!heroSection) return;
+    applyLocalizedText(heroSection, "data-zh");
+});
