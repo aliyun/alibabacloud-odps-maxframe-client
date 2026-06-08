@@ -52,7 +52,7 @@ Model compute service and inference quota
 In MaxCompute console, purchase/enable model compute service and confirm the
 associated inference quota before running Bailian model inference.
 
-.. image:: ../_static/examples/bailian-quota.png
+.. image:: ../_static/examples/bailian-quota.svg
    :alt: MaxCompute model compute service and inference quota page
    :width: 100%
 

@@ -248,5 +248,5 @@ msgstr ""
 msgid "MaxCompute model compute service and inference quota page"
 msgstr "MaxCompute 模型计算服务与推理配额页面"
 
-msgid ".. image:: ../_static/examples/bailian-quota.png"
-msgstr ".. image:: ../_static/examples/bailian-quota-zh.png"
+msgid ".. image:: ../_static/examples/bailian-quota.svg"
+msgstr ".. image:: ../_static/examples/bailian-quota-zh.svg"

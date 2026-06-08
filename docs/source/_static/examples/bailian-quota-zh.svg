@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="727" viewBox="0 0 2048 727" role="img" aria-labelledby="title desc">
+  <title id="title">MaxCompute 模型计算服务与推理配额页面</title>
+  <desc id="desc">MaxCompute 模型计算服务购买页的矢量示意图，展示商品类型、地域、推理配额和服务协议选项。</desc>
+  <defs>
+    <style>
+      .font { font-family: "PingFang SC", "Microsoft YaHei", Arial, Helvetica, sans-serif; fill: #2f3640; }
+      .title { font-size: 24px; font-weight: 700; }
+      .label { font-size: 22px; font-weight: 700; }
+      .body { font-size: 16px; }
+      .cn { font-size: 18px; }
+      .muted { fill: #737f8c; }
+      .link { fill: #0070d9; }
+      .tab { fill: #ffffff; stroke: #d8dde3; stroke-width: 1.5; }
+      .tab-active { fill: #e6f4ff; stroke: #9cccff; stroke-width: 1.5; }
+      .panel { fill: #ffffff; }
+      .badge { fill: #ff7a1a; }
+    </style>
+  </defs>
+
+  <rect width="2048" height="727" fill="#f2f3f5"/>
+  <g class="font">
+    <text x="19" y="53" class="title">MaxCompute模型计算服务</text>
+
+    <rect x="19" y="68" width="1998" height="168" class="panel"/>
+    <rect x="93" y="96" width="1854" height="101" fill="#eaf6ff"/>
+    <rect x="126" y="108" width="84" height="34" fill="#dff1ff"/>
+    <text x="139" y="131" class="body link" font-weight="700">购买说明</text>
+    <rect x="126" y="151" width="84" height="34" fill="#dff1ff"/>
+    <text x="139" y="174" class="body link" font-weight="700">计费规则</text>
+    <text x="229" y="130" class="body">开通后，您可使用MaxCompute提供的大模型推理服务进行数据标注、向量化、信息抽取等数据处理任务，每个地域仅需要开通一次，按模型实际使用量进行计费</text>
+    <text x="229" y="172" class="body">模型推理费用和地域、模型及输入输出Token有关，详见</text>
+    <text x="636" y="172" class="body link">计费文档</text>
+
+    <rect x="19" y="249" width="1998" height="100" class="panel"/>
+    <text x="60" y="311" class="label">商品类型</text>
+    <g class="cn" text-anchor="middle">
+      <rect x="279" y="278" width="150" height="44" class="tab"/>
+      <text x="354" y="306">包年包月</text>
+      <rect x="439" y="278" width="150" height="44" class="tab"/>
+      <text x="514" y="306">按量付费</text>
+      <rect x="600" y="278" width="168" height="44" class="tab"/>
+      <text x="680" y="306">AI计算资源</text>
+      <circle cx="747" cy="300" r="12" class="badge"/>
+      <text x="747" y="305" font-size="12" fill="#ffffff">新</text>
+      <rect x="778" y="278" width="183" height="44" class="tab-active"/>
+      <text x="866" y="306">模型计算服务</text>
+      <circle cx="943" cy="300" r="12" class="badge"/>
+      <text x="943" y="305" font-size="12" fill="#ffffff">新</text>
+      <rect x="971" y="278" width="199" height="44" class="tab"/>
+      <text x="1070" y="306">按量付费闲时版</text>
+      <rect x="1182" y="278" width="166" height="44" class="tab"/>
+      <text x="1265" y="306">计算抵扣包</text>
+      <rect x="1360" y="278" width="166" height="44" class="tab"/>
+      <text x="1443" y="306">存储抵扣包</text>
+      <rect x="1537" y="278" width="199" height="44" class="tab"/>
+      <text x="1637" y="306">特价抵扣包套餐</text>
+    </g>
+
+    <rect x="19" y="363" width="1998" height="332" class="panel"/>
+    <text x="60" y="423" class="label">地域</text>
+    <g class="cn" text-anchor="middle">
+      <rect x="279" y="391" width="208" height="44" class="tab"/>
+      <text x="383" y="419">华北2（北京）</text>
+      <rect x="499" y="391" width="209" height="44" class="tab"/>
+      <text x="604" y="419">华东2（上海）</text>
+      <rect x="720" y="391" width="209" height="44" class="tab"/>
+      <text x="825" y="419">华东1（杭州）</text>
+      <rect x="941" y="391" width="209" height="44" class="tab"/>
+      <text x="1046" y="419">华南1（深圳）</text>
+      <rect x="1162" y="391" width="209" height="44" class="tab-active"/>
+      <text x="1267" y="419">华北6（乌兰察布）</text>
+      <rect x="1383" y="391" width="208" height="44" class="tab"/>
+      <text x="1487" y="419">新加坡</text>
+    </g>
+
+    <text x="60" y="496" class="label">规格类型</text>
+    <rect x="279" y="462" width="208" height="44" class="tab-active"/>
+    <text x="383" y="490" class="body" text-anchor="middle">Inference Quota</text>
+    <text x="279" y="538" class="body muted">开通服务，系统将会为您创建并关联一个Inference Quota</text>
+    <text x="279" y="562" class="body muted">开通后，您即可在所选地域使用MaxCompute的大模型推理服务，该服务按量付费、按小时出账</text>
+
+    <text x="60" y="660" class="label">服务协议</text>
+    <text x="279" y="660" class="body">点击立即购买即表示您已知悉并同意</text>
+    <text x="543" y="660" class="body link">产品服务协议</text>
+    <text x="650" y="660" class="body">、</text>
+    <text x="669" y="660" class="body link">服务等级协议</text>
+    <text x="778" y="660" class="body">以及本页面中您勾选过的产品专属条款（若有）</text>
+  </g>
+</svg>

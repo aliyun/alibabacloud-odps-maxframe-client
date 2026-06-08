@@ -235,8 +235,8 @@ msgstr "MaxCompute 模型计算服务与推理配额页面"
 msgid ".. image:: ../_static/examples/pdf-embedding-workflow.svg"
 msgstr ".. image:: ../_static/examples/pdf-embedding-workflow-zh.svg"
 
-msgid ".. image:: ../_static/examples/bailian-quota.png"
-msgstr ".. image:: ../_static/examples/bailian-quota-zh.png"
+msgid ".. image:: ../_static/examples/bailian-quota.svg"
+msgstr ".. image:: ../_static/examples/bailian-quota-zh.svg"
 
 msgid "Troubleshooting"
 msgstr "常见问题排查"
