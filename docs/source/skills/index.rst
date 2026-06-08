@@ -104,7 +104,7 @@ Installation
 
 1. **Download the package**
 
-   Skill package: `maxframe-coding-skill.zip <https://help-static-aliyun-doc.aliyuncs.com/file-manage-files/zh-CN/20260424/mqanrl/maxframe-coding-skill.zip>`__
+   Skill package: `maxframe-coding-skill.zip <https://skills.aliyun.com/skills/alibabacloud-odps-maxframe-coding>`__
 
 2. **Extract it to the skills directory of your AI coding assistant**. For Claude Code:
 

@@ -17,7 +17,7 @@ Examples
 
       .. raw:: html
 
-         <span class="mf-example-available">Available at MaxFrame 2.6.0</span>
+         <span class="mf-example-available">Available at MaxFrame 2.7.1</span>
 
       Build reusable image feature assets with distributed preprocessing, DashScope multimodal embedding, and vector persistence in MaxCompute.
 
@@ -29,7 +29,7 @@ Examples
 
       .. raw:: html
 
-         <span class="mf-example-available">Available at MaxFrame 2.6.0</span>
+         <span class="mf-example-available">Available at MaxFrame 2.7.1</span>
 
       End-to-end video processing on DPE using a custom FFmpeg image: frame extraction, multimodal labeling, and embedding generation.
 

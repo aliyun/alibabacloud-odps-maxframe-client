@@ -87,9 +87,6 @@ msgid ""
 "Service to host inference traffic."
 msgstr "调用 MaxCompute 托管 Embedding 模型需要模型计算服务承载推理流量。"
 
-msgid "Cause"
-msgstr "原因"
-
 msgid ""
 "Configure ODPS credentials, OSS access, and the embedding model. Replace "
 "all placeholder values with your project-specific settings."
@@ -97,14 +94,8 @@ msgstr ""
 "配置 ODPS 凭证、OSS 访问参数和 Embedding 模型。请将所有占位符替换为你自己"
 "的项目配置。"
 
-msgid "Contact the administrator to enable the DPE engine."
-msgstr "联系管理员开通 DPE 引擎。"
-
 msgid "Core workflow"
 msgstr "核心处理流程"
-
-msgid "DPE is not enabled for the project."
-msgstr "项目未开通 DPE。"
 
 msgid "Description"
 msgstr "说明"
@@ -121,14 +112,6 @@ msgstr "企业文档分类与聚类分析。"
 msgid "Environment setup"
 msgstr "环境准备"
 
-msgid "Issue"
-msgstr "问题"
-
-msgid ""
-"Make sure ``ODPS_ENDPOINT`` and ``options.session.gu_quota_name`` use the"
-" same region."
-msgstr "确认 ``ODPS_ENDPOINT`` 和 ``options.session.gu_quota_name`` 使用同一地域。"
-
 msgid ""
 "MaxFrame reads PDFs through OSS file mount, which requires a configured "
 "Role ARN."
@@ -140,8 +123,13 @@ msgstr "在 DPE 上打开 MaxFrame session："
 msgid "PDF Text Parsing and Bailian Embedding"
 msgstr "PDF 文本解析和百炼 Embedding"
 
-msgid "PDF parsing UDFs and ``apply_chunk`` run on DPE."
-msgstr "PDF 解析 UDF 和 ``apply_chunk`` 需要在 DPE 上执行。"
+msgid "PDF parsing and Bailian embedding workflow"
+msgstr "PDF 文本解析与百炼向量化流程"
+
+msgid ""
+"Submit a ticket to enable the DPE engine for your MaxCompute project before "
+"running this example."
+msgstr "运行本示例前，请提工单为当前 MaxCompute 项目开通 DPE 引擎。"
 
 msgid ""
 "Papers, contracts, research reports, product manuals, white papers, and "
@@ -158,11 +146,6 @@ msgstr ""
 msgid "Persist the processed chunks and embeddings to MaxCompute."
 msgstr "将处理后的文本片段和 Embedding 持久化到 MaxCompute。"
 
-msgid ""
-"Pre-filter unreadable PDFs, or catch exceptions in the UDF and skip "
-"failed files."
-msgstr "预先过滤不可读 PDF，或在 UDF 中捕获异常并跳过失败文件。"
-
 msgid "Prerequisites"
 msgstr "前提条件"
 
@@ -173,17 +156,11 @@ msgstr ""
 "提供 PDF 在 OSS bucket 下的相对路径。UDF 会将 bucket 挂载到 ``/mnt/oss``"
 "，并以 ``/mnt/oss/<pdf_path>`` 的形式打开文件。"
 
-msgid "RAM role is misconfigured."
-msgstr "RAM 角色配置不正确。"
-
 msgid "Requirement"
 msgstr "条件"
 
 msgid "Semantic retrieval over papers, contracts, and research reports."
 msgstr "论文、合同、研报的语义检索。"
-
-msgid "Solution"
-msgstr "解决方案"
 
 msgid "Source PDFs are uploaded to a target OSS bucket."
 msgstr "已将原始 PDF 上传至目标 OSS bucket。"
@@ -208,9 +185,6 @@ msgid ""
 "feedback loops."
 msgstr "面向检索、分析和数据闭环的文本特征资产沉淀。"
 
-msgid "The PDF file is corrupted or encrypted."
-msgstr "PDF 文件损坏或已加密。"
-
 msgid ""
 "The UDF has a single responsibility: use ``pymupdf`` to extract page text"
 " and ``RecursiveCharacterTextSplitter`` to split by paragraph and "
@@ -220,9 +194,6 @@ msgstr ""
 "UDF 职责单一：使用 ``pymupdf`` 抽取页面文本，并通过 ``"
 "RecursiveCharacterTextSplitter`` 按段落和句子边界切分。输出 schema 为 ``"
 "pdf_path``、``page_number`` 和 ``chunk_text``。"
-
-msgid "The quota and MaxCompute project are in different regions."
-msgstr "Quota 与 MaxCompute 项目不在同一地域。"
 
 msgid ""
 "This best practice shows how to run a distributed PDF preprocessing "
@@ -235,9 +206,6 @@ msgstr ""
 "预处理流水线：抽取 PDF 正文文本、切分为语义片段、调用百炼 ``text-"
 "embedding-v4`` 模型生成句向量，并将结果特征表写回 MaxCompute。"
 
-msgid "Troubleshooting"
-msgstr "常见问题排查"
-
 msgid ""
 "Use ``read_odps_model`` to load the public Bailian ``text-embedding-v4`` "
 "model from MaxCompute and generate embeddings for the ``chunk_text`` "
@@ -248,27 +216,68 @@ msgstr ""
 " 模型，并对 ``chunk_text`` 列批量生成向量。Embedding 调用由 MaxCompute "
 "模型计算服务托管完成。"
 
-msgid "Verify ``role_arn`` and confirm the RAM role has OSS read permission."
-msgstr "检查 ``role_arn``，并确认 RAM 角色已具备 OSS 读取权限。"
-
 msgid "When the job is finished, release the MaxFrame session:"
 msgstr "作业完成后，释放 MaxFrame session："
 
-msgid "Write-table failure or column-type error"
-msgstr "写表失败或列类型报错"
+msgid "Model compute service and inference quota"
+msgstr "模型计算服务与推理配额"
 
-msgid "``Engine DPE not available``"
+msgid ""
+"In MaxCompute console, purchase/enable model compute service and confirm "
+"the associated inference quota before running Bailian model inference."
 msgstr ""
+"在 MaxCompute 控制台购买或开通模型计算服务，并在运行百炼模型推理前确认已"
+"关联推理配额。"
+
+msgid "MaxCompute model compute service and inference quota page"
+msgstr "MaxCompute 模型计算服务与推理配额页面"
+
+msgid ".. image:: ../_static/examples/pdf-embedding-workflow.svg"
+msgstr ".. image:: ../_static/examples/pdf-embedding-workflow-zh.svg"
+
+msgid ".. image:: ../_static/examples/bailian-quota.png"
+msgstr ".. image:: ../_static/examples/bailian-quota-zh.png"
+
+msgid "Troubleshooting"
+msgstr "常见问题排查"
+
+msgid "Issue"
+msgstr "问题"
+
+msgid "Cause"
+msgstr "原因"
+
+msgid "Solution"
+msgstr "解决方案"
 
 msgid "``OSS access denied``"
 msgstr ""
 
-msgid "``apply_chunk`` dtypes do not match the target schema."
-msgstr "``apply_chunk`` 的 dtypes 与目标表 schema 不一致。"
+msgid "RAM role is misconfigured."
+msgstr "RAM 角色配置不正确。"
 
-msgid "``gu_quota`` unavailable"
-msgstr "``gu_quota`` 不可用"
+msgid "Verify ``role_arn`` and confirm the RAM role has OSS read permission."
+msgstr "检查 ``role_arn``，并确认 RAM 角色已具备 OSS 读取权限。"
 
 msgid "``pymupdf`` fails to read a PDF"
 msgstr "``pymupdf`` 读取 PDF 失败"
 
+msgid "The PDF file is corrupted or encrypted."
+msgstr "PDF 文件损坏或已加密。"
+
+msgid ""
+"Pre-filter unreadable PDFs, or catch exceptions in the UDF and skip "
+"failed files."
+msgstr "预先过滤不可读 PDF，或在 UDF 中捕获异常并跳过失败文件。"
+
+msgid "Write-table failure or column-type error"
+msgstr "写表失败或列类型报错"
+
+msgid "``apply_chunk`` dtypes do not match the target schema."
+msgstr "``apply_chunk`` 的 dtypes 与目标表 schema 不一致。"
+
+msgid ""
+"Align ``pdf_path``, ``page_number``, ``chunk_text``, and ``embedding`` "
+"column types."
+msgstr ""
+"对齐 ``pdf_path``、``page_number``、``chunk_text`` 和 ``embedding`` 的列类型。"

@@ -53,7 +53,7 @@ Prerequisites
      - A MaxCompute project with valid Access ID / Access Key.
    * - 2
      - **DPE engine enabled**
-     - PDF parsing UDFs and ``apply_chunk`` run on DPE.
+     - Submit a ticket to enable the DPE engine for your MaxCompute project before running this example.
    * - 3
      - **PDFs uploaded to OSS**
      - Source PDFs are uploaded to a target OSS bucket.
@@ -66,6 +66,16 @@ Prerequisites
    * - 6
      - **MaxFrame SDK version**
      - Use MaxFrame SDK **2.6.0** or above (``pip install maxframe>=2.6.0``).
+
+Model compute service and inference quota
+-----------------------------------------
+
+In MaxCompute console, purchase/enable model compute service and confirm the
+associated inference quota before running Bailian model inference.
+
+.. image:: ../_static/examples/bailian-quota.png
+   :alt: MaxCompute model compute service and inference quota page
+   :width: 100%
 
 Environment setup
 -----------------
@@ -156,7 +166,9 @@ boundaries. The output schema is ``pdf_path``, ``page_number``, and
        "/mnt/oss",
        storage_options=OSS_STORAGE_OPTIONS,
    )
-   def extract_chunks(chunk):
+   def extract_chunks(chunk) -> pd.DataFrame[
+       {"pdf_path": "object", "page_number": "int64", "chunk_text": "object"}
+   ]:
        """Extract text and chunk each PDF into row-level records."""
        import os
 
@@ -193,14 +205,6 @@ boundaries. The output schema is ``pdf_path``, ``page_number``, and
 
    chunks_df = paths_df.mf.apply_chunk(
        extract_chunks,
-       output_type="dataframe",
-       dtypes=pd.Series(
-           {
-               "pdf_path": "object",
-               "page_number": "int64",
-               "chunk_text": "object",
-           }
-       ),
    )
 
    chunks_df.execute().fetch()
@@ -284,9 +288,6 @@ Troubleshooting
    * - Issue
      - Cause
      - Solution
-   * - ``Engine DPE not available``
-     - DPE is not enabled for the project.
-     - Contact the administrator to enable the DPE engine.
    * - ``OSS access denied``
      - RAM role is misconfigured.
      - Verify ``role_arn`` and confirm the RAM role has OSS read permission.
@@ -296,6 +297,3 @@ Troubleshooting
    * - Write-table failure or column-type error
      - ``apply_chunk`` dtypes do not match the target schema.
      - Align ``pdf_path``, ``page_number``, ``chunk_text``, and ``embedding`` column types.
-   * - ``gu_quota`` unavailable
-     - The quota and MaxCompute project are in different regions.
-     - Make sure ``ODPS_ENDPOINT`` and ``options.session.gu_quota_name`` use the same region.

@@ -214,13 +214,11 @@ msgstr "**下载安装包**"
 
 #: ../../source/skills/index.rst:107
 msgid ""
-"Skill package: `maxframe-coding-skill.zip <https://help-static-aliyun-"
-"doc.aliyuncs.com/file-manage-files/zh-CN/20260424/mqanrl/maxframe-coding-"
-"skill.zip>`__"
+"Skill package: `maxframe-coding-skill.zip "
+"<https://skills.aliyun.com/skills/alibabacloud-odps-maxframe-coding>`__"
 msgstr ""
-"Skill 安装包：`maxframe-coding-skill.zip <https://help-static-aliyun-doc."
-"aliyuncs.com/file-manage-files/zh-CN/20260424/mqanrl/maxframe-coding-"
-"skill.zip>`__"
+"Skill 安装包：`maxframe-coding-skill.zip "
+"<https://skills.aliyun.com/skills/alibabacloud-odps-maxframe-coding>`__"
 
 #: ../../source/skills/index.rst:109
 msgid ""
@@ -695,4 +693,3 @@ msgid ""
 msgstr ""
 "`MaxFrame 常见问题 <https://help.aliyun.com/zh/maxcompute/user-guide/faq-"
 "about-maxframe>`__"
-

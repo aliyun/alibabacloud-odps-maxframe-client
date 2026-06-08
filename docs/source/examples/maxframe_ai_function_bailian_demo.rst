@@ -32,7 +32,7 @@ Prerequisites
      - You need a MaxCompute project with valid Access ID / Access Key.
    * - 2
      - **DPE engine enabled**
-     - Bailian AI Function calls in this workflow run through DPE.
+     - Submit a ticket to enable the DPE engine for your MaxCompute project before running this example.
    * - 3
      - **Model compute service purchased**
      - Purchase model compute service in MaxCompute console; an inference quota is created and billed by usage.
@@ -49,9 +49,10 @@ Prerequisites
 Model compute service and inference quota
 -----------------------------------------
 
-In MaxCompute console, purchase/enable model compute service and confirm the associated inference quota before running Bailian model inference.
+In MaxCompute console, purchase/enable model compute service and confirm the
+associated inference quota before running Bailian model inference.
 
-.. image:: ../_static/examples/bailian-quota-zh.png
+.. image:: ../_static/examples/bailian-quota.png
    :alt: MaxCompute model compute service and inference quota page
    :width: 100%
 

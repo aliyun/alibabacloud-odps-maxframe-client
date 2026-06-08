@@ -83,8 +83,10 @@ msgstr "附录：百炼模型 vs 内置托管模型"
 msgid "Ask your admin to enable DPE."
 msgstr "联系管理员开通 DPE 引擎。"
 
-msgid "Bailian AI Function calls in this workflow run through DPE."
-msgstr "本流程中的百炼 AI Function 调用通过 DPE 执行。"
+msgid ""
+"Submit a ticket to enable the DPE engine for your MaxCompute project before "
+"running this example."
+msgstr "运行本示例前，请提工单为当前 MaxCompute 项目开通 DPE 引擎。"
 
 msgid "Bailian LLM Calling Tutorial"
 msgstr "百炼大模型系列调用教程"
@@ -181,7 +183,10 @@ msgid "Managed model example:"
 msgstr "内置托管模型示例："
 
 msgid "MaxCompute model compute service and inference quota page"
-msgstr "MaxCompute 模型计算服务购买页面"
+msgstr "MaxCompute 模型计算服务与推理配额页面"
+
+msgid ".. image:: ../_static/examples/bailian-quota.png"
+msgstr ".. image:: ../_static/examples/bailian-quota-zh.png"
 
 msgid "MaxFrame managed model catalog"
 msgstr "MaxFrame 托管模型目录"
@@ -291,4 +296,3 @@ msgstr ""
 
 msgid "``text-embedding-v4``, ``qwen3-max``"
 msgstr ""
-

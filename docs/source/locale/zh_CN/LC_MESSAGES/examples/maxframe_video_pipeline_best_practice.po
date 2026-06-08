@@ -17,9 +17,9 @@ msgstr ""
 msgid "**MaxFrame SDK version**"
 msgstr "**MaxFrame SDK 版本**"
 
-msgid "Use MaxFrame SDK **2.6.0** or above (``pip install maxframe>=2.6.0``)."
+msgid "Use MaxFrame SDK **2.7.1** or above (``pip install maxframe>=2.7.1``)."
 msgstr ""
-"请使用 MaxFrame SDK **2.6.0** 及以上版本（``pip install maxframe>=2.6.0``"
+"请使用 MaxFrame SDK **2.7.1** 及以上版本（``pip install maxframe>=2.7.1``"
 "）。"
 
 msgid "#"
@@ -31,11 +31,11 @@ msgstr "**包含 FFmpeg 的自定义镜像**"
 msgid "**DPE enabled**"
 msgstr "**开通 DPE 引擎**"
 
-msgid "**DashScope API key**"
-msgstr "**百炼 API Key**"
-
 msgid "**MaxCompute enabled**"
 msgstr "**开通 MaxCompute**"
+
+msgid "**Model compute service and inference quota**"
+msgstr "**模型计算服务与推理配额**"
 
 msgid "**OSS RAM role authorization**"
 msgstr "**OSS RAM 角色授权**"
@@ -61,14 +61,14 @@ msgstr ""
 msgid "6"
 msgstr ""
 
+msgid "7"
+msgstr ""
+
 msgid "A MaxCompute project with valid Access ID / Access Key."
 msgstr "需要一个已开通的 MaxCompute 项目，并具备有效的 Access ID / Access Key。"
 
 msgid "Applicable scenarios"
 msgstr "适用场景"
-
-msgid "At large scale, request higher API quotas to avoid 429/403 throttling."
-msgstr "在大规模生产场景中，建议申请更高 API 并发配额以避免 429/403 限流。"
 
 msgid "Automatic tagging and management of large video datasets."
 msgstr "海量视频数据自动打标与管理。"
@@ -156,6 +156,12 @@ msgstr "异常事件与长尾场景发现。"
 msgid "Prerequisites"
 msgstr "前提条件"
 
+msgid ""
+"Purchase/enable model compute service and confirm the associated "
+"inference quota before running Bailian model inference."
+msgstr ""
+"购买或开通模型计算服务，并在运行百炼模型推理前确认已关联推理配额。"
+
 msgid "Produce embeddings for retrieval, clustering, and sample mining."
 msgstr ""
 "向量化：提取 Embedding 向量，形成可用于检索、聚类、样本筛选和分析的统一"
@@ -170,9 +176,6 @@ msgstr ""
 "发现难、数据复用效率低。为提升海量视频数据的管理和利用效率，需要对视频"
 "进行帧级理解与标准化加工："
 
-msgid "Required for multimodal labeling and embedding calls."
-msgstr "用于多模态打标与向量化模型调用。"
-
 msgid "Requirement"
 msgstr "条件"
 
@@ -183,13 +186,13 @@ msgid "Source videos are stored in a target OSS bucket."
 msgstr "原始视频已存储在目标 OSS Bucket 中。"
 
 msgid "Stage 1: frame extraction"
-msgstr "阶段一：视频抽帧"
+msgstr "阶段 1：视频抽帧"
 
 msgid "Stage 2: image labeling"
-msgstr "阶段二：图片打标"
+msgstr "阶段 2：图片打标"
 
 msgid "Stage 3: multimodal embedding"
-msgstr "阶段三：向量化"
+msgstr "阶段 3：图像向量化"
 
 msgid "Stage-1 extraction requires FFmpeg in MaxCompute custom image."
 msgstr "阶段一抽帧需要在 MaxCompute 自定义镜像中预装 FFmpeg。"
@@ -212,12 +215,153 @@ msgstr "视频处理全流程：抽帧 -> 打标 -> 向量化"
 msgid "Video understanding and vectorization pipeline"
 msgstr "视频理解与向量化处理流程"
 
+msgid ".. image:: ../_static/examples/video-pipeline.svg"
+msgstr ".. image:: ../_static/examples/video-pipeline-zh.svg"
+
 msgid "Why custom image?"
 msgstr "为什么需要自定义镜像？"
 
 msgid "Workflow"
 msgstr "方案核心流程"
 
-msgid "``apply_chunk`` stages run on DPE."
-msgstr "``apply_chunk`` 阶段在 DPE 上执行。"
+msgid ""
+"Submit a ticket to enable the DPE engine for your MaxCompute project before "
+"running this example."
+msgstr "运行本示例前，请提工单为当前 MaxCompute 项目开通 DPE 引擎。"
 
+msgid "Model compute service and inference quota"
+msgstr "模型计算服务与推理配额"
+
+msgid ""
+"In MaxCompute console, purchase/enable model compute service and confirm "
+"the associated inference quota before running Bailian model inference."
+msgstr ""
+"在 MaxCompute 控制台购买或开通模型计算服务，并在运行百炼模型推理前确认已"
+"关联推理配额。"
+
+msgid "MaxCompute model compute service and inference quota page"
+msgstr "MaxCompute 模型计算服务与推理配额页面"
+
+msgid ".. image:: ../_static/examples/bailian-quota.png"
+msgstr ".. image:: ../_static/examples/bailian-quota-zh.png"
+
+msgid ""
+"Make sure the mounted OSS path is correct before submitting the job. For "
+"example, if your OSS address is ``oss://oss-cn-hangzhou.aliyuncs.com"
+"/jingxuan-oss-test-hz/``, use ``OSS_ENDPOINT = \"oss-cn-"
+"hangzhou.aliyuncs.com\"``, ``OSS_BUCKET = \"jingxuan-oss-test-hz\"``, and"
+" ``OSS_PREFIX`` as the subdirectory that contains your videos."
+msgstr ""
+"提交任务前，请确认挂载的 OSS 路径正确。例如，如果你的 OSS 地址是 ``oss://"
+"oss-cn-hangzhou.aliyuncs.com/jingxuan-oss-test-hz/``，请设置 ``OSS_"
+"ENDPOINT = \"oss-cn-hangzhou.aliyuncs.com\"``、``OSS_BUCKET = \"jingxuan-"
+"oss-test-hz\"``，并将 ``OSS_PREFIX`` 设为存放视频的子目录。"
+
+msgid "Stage 0: build video manifest table"
+msgstr "阶段 0：构建视频清单表"
+
+msgid ""
+"If you already have an ODPS table with a ``video_path`` column, skip this "
+"stage. Otherwise, use PyODPS and ``alibabacloud_oss_v2`` to scan the OSS "
+"prefix and write one row per video. Stage 1 reads this table directly."
+msgstr ""
+"如果已经有包含 ``video_path`` 列的 ODPS 表，可以跳过本阶段。否则，使用 "
+"PyODPS 和 ``alibabacloud_oss_v2`` 扫描 OSS 前缀，并将每个视频写入一行。"
+"阶段 1 会直接读取这张表。"
+
+msgid ""
+"The ``video_path`` value must use exactly the same prefix as ``OSS_ROOT`` "
+"(``oss://<endpoint>/<bucket>/<prefix>/...``). If the prefixes do not "
+"match, ``with_fs_mount`` path replacement may silently miss the file."
+msgstr ""
+"``video_path`` 的值必须与 ``OSS_ROOT`` 使用完全相同的前缀（``oss://"
+"<endpoint>/<bucket>/<prefix>/...``）。如果前缀不一致，``with_fs_mount`` "
+"的路径替换可能会静默找不到文件。"
+
+msgid ""
+"Stage 1 dispatches the video manifest table with ``mf.apply_chunk``. Each "
+"row represents one video. Inside the DPE worker, ``with_fs_mount`` mounts "
+"the OSS prefix locally, FFprobe validates the video duration, FFmpeg "
+"extracts JPEG frames, and the frames are written back to "
+"``<OSS_ROOT>/frames/``."
+msgstr ""
+"阶段 1 使用 ``mf.apply_chunk`` 派发视频清单表，每行代表一个视频。DPE "
+"Worker 内部通过 ``with_fs_mount`` 将 OSS 前缀挂载到本地，使用 FFprobe 校"
+"验视频时长，再用 FFmpeg 抽取 JPEG 帧，并将帧写回 ``<OSS_ROOT>/frames/``。"
+
+msgid ""
+"The output schema is aligned with the AI FUNC image input contract. "
+"Downstream stages can use ``image_id`` and ``image_url`` without renaming "
+"columns."
+msgstr ""
+"输出 schema 与 AI FUNC 图片输入契约对齐。下游阶段可直接使用 ``image_id`` "
+"和 ``image_url``，无需重命名列。"
+
+msgid "Column"
+msgstr "列"
+
+msgid "Type"
+msgstr "类型"
+
+msgid "``video_path``"
+msgstr "``video_path``"
+
+msgid "string"
+msgstr "string"
+
+msgid "Source video OSS path for lineage."
+msgstr "源视频 OSS 路径，用于 lineage 追溯。"
+
+msgid "``frame_idx``"
+msgstr "``frame_idx``"
+
+msgid "bigint"
+msgstr "bigint"
+
+msgid "Frame index. Failed rows use ``-1``."
+msgstr "帧序号。失败行使用 ``-1``。"
+
+msgid "``image_id``"
+msgstr "``image_id``"
+
+msgid "``<video_basename>_<frame_idx:04d>``."
+msgstr "``<video_basename>_<frame_idx:04d>``。"
+
+msgid "``image_url``"
+msgstr "``image_url``"
+
+msgid "Frame JPEG OSS URL, ready for AI FUNC."
+msgstr "帧 JPEG 的 OSS URL，可直接用于 AI FUNC。"
+
+msgid "``status``"
+msgstr "``status``"
+
+msgid "``ok`` or ``failed``."
+msgstr "``ok`` 或 ``failed``。"
+
+msgid "``error_stage``"
+msgstr "``error_stage``"
+
+msgid "Failed stage name."
+msgstr "失败阶段名称。"
+
+msgid "``error_msg``"
+msgstr "``error_msg``"
+
+msgid "Failed reason."
+msgstr "失败原因。"
+
+msgid ""
+"Load the multimodal model ``qwen3.6-plus`` through AI FUNC and generate a"
+" structured description for each successfully extracted frame."
+msgstr ""
+"通过 AI FUNC 加载多模态模型 ``qwen3.6-plus``，为每张抽帧成功的图片生成结"
+"构化描述。"
+
+msgid ""
+"Load the multimodal embedding model, defaulting to ``qwen3-vl-"
+"embedding``, and generate image embeddings for successfully labeled "
+"frames."
+msgstr ""
+"加载多模态向量化模型（默认 ``qwen3-vl-embedding``），为打标成功的图片生成"
+"图像向量。"
