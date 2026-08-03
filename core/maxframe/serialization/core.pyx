@@ -432,9 +432,11 @@ def unpickle_buffers(buffers):
 cdef class PickleContainer:
     cdef:
         list buffers
+        object class_name
 
-    def __init__(self, list buffers):
+    def __init__(self, list buffers, class_name=None):
         self.buffers = buffers
+        self.class_name = class_name
 
     cpdef get(self):
         if not unpickle_allowed:
@@ -451,16 +453,37 @@ cdef class PickleContainer:
         return self.buffers
 
     def __copy__(self):
-        return PickleContainer(self.buffers)
+        return PickleContainer(self.buffers, self.class_name)
 
     def __deepcopy__(self, memo=None):
-        return PickleContainer(copy.deepcopy(self.buffers, memo))
+        return PickleContainer(copy.deepcopy(self.buffers, memo), self.class_name)
 
     def __maxframe_tokenize__(self):
         return self.buffers
 
     def __reduce__(self):
-        return PickleContainer, (self.buffers, )
+        return PickleContainer, (self.buffers, self.class_name)
+
+    def __repr__(self):
+        if self.class_name is None:
+            return f"<PickleContainer id={id(self):#x}>"
+        return f"<PickleContainer id={id(self):#x} class_name={self.class_name}>"
+
+
+cdef dict _pass_through_type_to_bytes = {
+    k: (k.__module__ + "." + k.__qualname__).encode() for k in [
+        type(None),
+        bool,
+        bytes,
+        float,
+        int,
+        str,
+        object,
+    ]
+}
+cdef dict _pass_through_bytes_to_type = {
+    v: k for k, v in _pass_through_type_to_bytes.items()
+}
 
 
 cdef class PickleSerializer(Serializer):
@@ -468,7 +491,7 @@ cdef class PickleSerializer(Serializer):
 
     cpdef serial(self, obj: Any, dict context):
         cdef uint64_t obj_id
-        cdef object serial_hook
+        cdef object serial_hook, obj_class_name
 
         serial_hook = pickle_serial_hook.get()
         if serial_hook is not None:
@@ -480,13 +503,24 @@ cdef class PickleSerializer(Serializer):
         context[obj_id] = obj
 
         if type(obj) is PickleContainer:
-            return [], (<PickleContainer>obj).get_buffers(), True
-        return [], pickle_buffers(obj), True
+            return (
+                [(<PickleContainer>obj).class_name],
+                (<PickleContainer>obj).get_buffers(),
+                True,
+            )
+        elif type(obj) is type and obj in _pass_through_type_to_bytes:
+            return ["#PASS"], [_pass_through_type_to_bytes[obj]], True
+        else:
+            obj_class_name = type(obj).__module__ + "." + type(obj).__qualname__
+            return [obj_class_name], pickle_buffers(obj), True
 
     cpdef deserial(self, list serialized, dict context, list subs):
         from maxframe.serialization.deserializer import deserial_pickle
 
         cdef object deserial_hook
+
+        if len(serialized) > 0 and serialized[0] == "#PASS":
+            return _pass_through_bytes_to_type[subs[0]]
 
         deserial_hook = pickle_deserial_hook.get()
         if deserial_hook is not None:
@@ -918,9 +952,22 @@ cdef class DtypeSerializer(Serializer):
                     raise
                 return ArrowDtype(pa.string())
             except TypeError:
-                if not serialized[1].endswith("Dtype()"):
-                    raise
-                return pandas_dtype(serialized[1][:-7])
+                # repr(BooleanDtype) -> 'BooleanDtype', repr(Int32Dtype()) -> 'Int32Dtype()'
+                dtype_name = serialized[1]
+                if dtype_name.endswith("Dtype()"):
+                    # Strip 'Dtype()' suffix to get canonical name (e.g. 'Int32')
+                    return pandas_dtype(dtype_name[:-7])
+                if dtype_name.endswith("Dtype"):
+                    # repr without parens (e.g. 'BooleanDtype'): construct the class directly
+                    cls = getattr(pd, dtype_name, None)
+                    if cls is not None:
+                        return cls()
+                # pandas 3.0+ formats repr(StringDtype) as
+                # <StringDtype(na_value=nan)> or <StringDtype(na_value=<NA>)>
+                # na_value is ignored for backward compatibility
+                if isinstance(dtype_name, str) and dtype_name.startswith("<StringDtype"):
+                    return pd.StringDtype()
+                raise
         else:
             raise NotImplementedError(f"Unknown serialization type {ser_type}")
 

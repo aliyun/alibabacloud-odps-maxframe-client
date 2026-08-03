@@ -474,7 +474,7 @@ structured description for each successfully extracted frame.
                    cp.text(label_prompt),
                    cp.image(
                        data=frame_ok["image_url"],
-                       type=ImageContentType.IMAGE_URL,
+                       type=ImageContentType.URL,
                        storage_options=STORAGE_OPTIONS,
                    ),
                ]
@@ -572,7 +572,7 @@ generate image embeddings for successfully labeled frames.
        input=[
            emb_cp.image(
                data=emb_input["image_url"],
-               type=ImageContentType.IMAGE_URL,
+               type=ImageContentType.URL,
                storage_options=STORAGE_OPTIONS,
            ),
        ],

@@ -1,0 +1,268 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1093+br.gc0d626735.d20260607\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-15 11:07+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:2
+msgid "maxframe.learn.linear\\_model.LinearRegression"
+msgstr ""
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:1 of
+msgid "Ordinary least squares Linear Regression."
+msgstr "普通最小二乘线性回归。"
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:3 of
+msgid ""
+"LinearRegression fits a linear model with coefficients w = (w1, ..., wp) "
+"to minimize the residual sum of squares between the observed targets in "
+"the dataset, and the targets predicted by the linear approximation."
+msgstr ""
+"LinearRegression 使用系数 w = (w1, ..., wp) 拟合一个线性模型，以最小化"
+"数据集中观测目标与线性近似预测目标之间的残差平方和。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:7 of
+msgid ""
+"Whether to calculate the intercept for this model. If set to False, no "
+"intercept will be used in calculations (i.e. data is expected to be "
+"centered)."
+msgstr ""
+"是否为此模型计算截距。如果设置为 False，则在计算中不会使用截距（即数据"
+"预期是中心化的）。"
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:11 of
+msgid ""
+"This parameter is ignored when ``fit_intercept`` is set to False. If "
+"True, the regressors X will be normalized before regression by "
+"subtracting the mean and dividing by the l2-norm. If you wish to "
+"standardize, please use :class:`~sklearn.preprocessing.StandardScaler` "
+"before calling ``fit`` on an estimator with ``normalize=False``."
+msgstr ""
+"当 ``fit_intercept`` 设置为 False 时，此参数被忽略。如果为 True，则在回归"
+"之前通过减去均值并除以 l2 范数来标准化回归变量 X。如果您希望进行标准化，"
+"请在对 ``normalize=False`` 的估计器调用 ``fit`` 之前使用 :class:`~sklearn"
+".preprocessing.StandardScaler`。"
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:18 of
+msgid "If True, X will be copied; else, it may be overwritten."
+msgstr "如果为 True，X 将被复制；否则，它可能会被覆盖。"
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:20 of
+msgid ""
+"When set to ``True``, forces the coefficients to be positive. This option"
+" is only supported for dense arrays."
+msgstr "当设置为 ``True`` 时，强制系数为正数。此选项仅支持密集数组。"
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:26 of
+msgid ""
+"Estimated coefficients for the linear regression problem. If multiple "
+"targets are passed during the fit (y 2D), this is a 2D array of shape "
+"(n_targets, n_features), while if only one target is passed, this is a 1D"
+" array of length n_features."
+msgstr ""
+"线性回归问题的估计系数。如果在拟合期间传递了多个目标（y 为二维），这是"
+"一个形状为 (n_targets, n_features) 的二维数组，而如果只传递了一个目标，"
+"这是一个长度为 n_features 的一维数组。"
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression of
+msgid "type"
+msgstr "类型"
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:31 of
+msgid "array of shape (n_features, ) or (n_targets, n_features)"
+msgstr ""
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:35 of
+msgid "Rank of matrix `X`. Only available when `X` is dense."
+msgstr "矩阵 `X` 的秩。仅在 `X` 为密集矩阵时可用。"
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:37
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:56 of
+msgid "int"
+msgstr ""
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:41 of
+msgid "Singular values of `X`. Only available when `X` is dense."
+msgstr "`X` 的奇异值。仅在 `X` 为密集矩阵时可用。"
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:43 of
+msgid "array of shape (min(X, y),)"
+msgstr ""
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:47 of
+msgid ""
+"Independent term in the linear model. Set to 0.0 if `fit_intercept = "
+"False`."
+msgstr "线性模型中的独立项。如果 `fit_intercept = False`，则设置为 0.0。"
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:50 of
+msgid "float or array of shape (n_targets,)"
+msgstr ""
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:54 of
+msgid "Number of features seen during :term:`fit`."
+msgstr ":term:`fit` 期间看到的特征数量。"
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:60 of
+msgid ":py:obj:`Ridge`"
+msgstr ""
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:61 of
+msgid ""
+"Ridge regression addresses some of the problems of Ordinary Least Squares"
+" by imposing a penalty on the size of the coefficients with l2 "
+"regularization."
+msgstr "岭回归通过使用 l2 正则化对系数大小施加惩罚来解决普通最小二乘法的一些问题。"
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:63 of
+msgid ":py:obj:`Lasso`"
+msgstr ""
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:64 of
+msgid ""
+"The Lasso is a linear model that estimates sparse coefficients with l1 "
+"regularization."
+msgstr "Lasso 是一种使用 l1 正则化估计稀疏系数的线性模型。"
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:66 of
+msgid ":py:obj:`ElasticNet`"
+msgstr ""
+
+#: maxframe.learn.linear_model._lin_reg.LinearRegression:67 of
+msgid ""
+"Elastic-Net is a linear regression model trained with both l1 and l2 "
+"-norm regularization of the coefficients."
+msgstr "Elastic-Net 是一种线性回归模型，使用系数的 l1 和 l2 范数正则化进行训练。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`__init__ "
+"<maxframe.learn.linear_model.LinearRegression.__init__>`\\ \\(\\*\\[\\, "
+"fit\\_intercept\\, normalize\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`execute "
+"<maxframe.learn.linear_model.LinearRegression.execute>`\\ "
+"\\(\\[session\\, run\\_kwargs\\, extra\\_tileables\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`fetch <maxframe.learn.linear_model.LinearRegression.fetch>`\\ "
+"\\(\\[session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`fit <maxframe.learn.linear_model.LinearRegression.fit>`\\ "
+"\\(X\\, y\\[\\, sample\\_weight\\, session\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid "Fit linear model."
+msgstr "拟合线性模型。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`get_metadata_routing "
+"<maxframe.learn.linear_model.LinearRegression.get_metadata_routing>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid "Get metadata routing of this object."
+msgstr "获取此对象的元数据路由。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`get_params "
+"<maxframe.learn.linear_model.LinearRegression.get_params>`\\ "
+"\\(\\[deep\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid "Get parameters for this estimator."
+msgstr "获取此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`predict "
+"<maxframe.learn.linear_model.LinearRegression.predict>`\\ \\(X\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid "Predict using the linear model."
+msgstr "使用线性模型进行预测。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`score <maxframe.learn.linear_model.LinearRegression.score>`\\ "
+"\\(X\\, y\\[\\, sample\\_weight\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid "Return the coefficient of determination :math:`R^2` of the prediction."
+msgstr "返回预测的决定系数 :math:`R^2`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`set_fit_request "
+"<maxframe.learn.linear_model.LinearRegression.set_fit_request>`\\ "
+"\\(\\*\\[\\, execute\\, run\\_kwargs\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``fit`` method."
+msgstr "配置是否应请求将元数据传递给 ``fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`set_params "
+"<maxframe.learn.linear_model.LinearRegression.set_params>`\\ "
+"\\(\\*\\*params\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid "Set the parameters of this estimator."
+msgstr "设置此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`set_score_request "
+"<maxframe.learn.linear_model.LinearRegression.set_score_request>`\\ "
+"\\(\\*\\[\\, sample\\_weight\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LinearRegression.rst:26:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``score`` method."
+msgstr "配置是否应请求将元数据传递给 ``score`` 方法。"
+

@@ -23,14 +23,14 @@ from maxframe.dataframe.type_infer import (
     InferredDataFrameMeta,
     infer_dataframe_return_value,
 )
-from maxframe.dataframe.utils import copy_func_scheduling_hints, parse_index
+from maxframe.dataframe.utils import parse_index
 from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
     DictField,
     TupleField,
 )
-from maxframe.udf import BuiltinFunction, MarkedFunction
+from maxframe.udf import BuiltinFunction, MarkedFunction, copy_func_scheduling_hints
 from maxframe.utils import copy_if_possible
 
 

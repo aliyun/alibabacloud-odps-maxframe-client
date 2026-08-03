@@ -108,6 +108,9 @@ class ExecutionStatus(enum.Enum):
     def is_successful(self):
         return self == ExecutionStatus.SUCCEEDED
 
+    def is_cancel_started(self):
+        return self in (ExecutionStatus.CANCELLING, ExecutionStatus.CANCELED)
+
 
 # keep compatibility
 DagStatus = ExecutionStatus
@@ -357,11 +360,21 @@ class ErrorInfo(JsonSerializable):
     )
     failure_info: Optional[dict] = AnyField("failure_info", default=None)
 
+    @staticmethod
+    def _can_pickle_raw_error(exc: Exception) -> bool:
+        try:
+            pickle_buffers(exc)
+            return True
+        except:
+            return False
+
     @classmethod
     def from_exception(cls, exc: Exception):
         remote_exc = RemoteException.from_exception(exc)
         messages, tracebacks = remote_exc.messages, remote_exc.tracebacks
-        obj = cls(messages, tracebacks, ErrorSource.PYTHON, exc)
+        raw_error_data = exc if cls._can_pickle_raw_error(exc) else None
+        raw_error_source = ErrorSource.PYTHON if raw_error_data is not None else None
+        obj = cls(messages, tracebacks, raw_error_source, raw_error_data)
         obj.failure_info = _sanitize_failure_info(get_failure_info_from_exception(exc))
         return obj
 
@@ -407,12 +420,20 @@ class ErrorInfo(JsonSerializable):
         ret = {
             "error_messages": self.error_messages,
             "error_tracebacks": self.error_tracebacks,
-            "raw_error_source": self.raw_error_source.value,
+            "raw_error_source": (
+                self.raw_error_source.value
+                if self.raw_error_source is not None
+                else None
+            ),
             "displayed_error_message": self.displayed_error_message,
         }
         err_data_bufs = None
-        if isinstance(self.raw_error_data, (PickleContainer, RemoteException)):
+        if self.raw_error_data is None:
+            ret["raw_error_source"] = None
+        elif isinstance(self.raw_error_data, (PickleContainer, RemoteException)):
             err_data_bufs = self.raw_error_data.get_buffers()
+            if not err_data_bufs:
+                ret["raw_error_source"] = None
         elif isinstance(self.raw_error_data, BaseException):
             try:
                 err_data_bufs = pickle_buffers(self.raw_error_data)
@@ -749,3 +770,39 @@ class DataFrameTableMeta(JsonSerializable):
             }
         )
         return DataFrameTableMeta(**serialized)
+
+
+class LiteFrameTableMeta(JsonSerializable):
+    """Metadata for LiteFrame tables with optional dtypes for dynamic columns support."""
+
+    table_name: Optional[str] = StringField("table_name", default=None)
+    dtypes: Optional[pd.Series] = SeriesField("dtypes", default=None)
+
+    def __eq__(self, other: "LiteFrameTableMeta") -> bool:
+        if not isinstance(other, type(self)):
+            return False
+        for k in self._FIELDS:
+            v = getattr(self, k, None)
+            is_same = v == getattr(other, k, None)
+            if callable(getattr(is_same, "all", None)):
+                is_same = is_same.all()
+            if not is_same:
+                return False
+        return True
+
+    def to_json(self) -> dict:
+        ret = {
+            "table_name": self.table_name,
+        }
+        if self.dtypes is not None:
+            ret["dtypes"] = _base64_pickle(self.dtypes)
+        return ret
+
+    @classmethod
+    def from_json(cls, serialized: dict) -> "LiteFrameTableMeta":
+        dtypes = None
+        if "dtypes" in serialized:
+            dtypes = _base64_unpickle(serialized["dtypes"])
+        return LiteFrameTableMeta(
+            table_name=serialized.get("table_name"), dtypes=dtypes
+        )

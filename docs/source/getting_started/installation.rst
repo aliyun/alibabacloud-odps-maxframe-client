@@ -6,12 +6,6 @@ Enable MaxFrame for your MaxCompute project
 You need to setup a MaxCompute project Before using MaxFrame. Please take a look at
 `here <https://www.alibabacloud.com/zh/product/maxcompute>`_ for more information.
 
-.. note::
-
-    Currently MaxFrame is under trial. If you need to enable MaxFrame for your MaxCompute
-    project, please `fill the form to apply for trial
-    <https://survey.aliyun.com/apps/zhiliao/m40AIrxhA?spm=a2c4g.11186623.0.0.a69340f2mJENKJ>`_ here.
-
 Install MaxFrame client locally
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 After created your own MaxCompute project and enabled MaxFrame, you may install

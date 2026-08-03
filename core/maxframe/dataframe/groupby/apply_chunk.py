@@ -37,7 +37,6 @@ from maxframe.dataframe.type_infer import (
     prepend_group_keys_as_index,
 )
 from maxframe.dataframe.utils import (
-    copy_func_scheduling_hints,
     make_column_list,
     parse_index,
     validate_output_types,
@@ -50,7 +49,7 @@ from maxframe.serialization.serializables import (
     ListField,
     TupleField,
 )
-from maxframe.udf import BuiltinFunction, MarkedFunction
+from maxframe.udf import BuiltinFunction, MarkedFunction, copy_func_scheduling_hints
 from maxframe.utils import (
     copy_if_possible,
     deprecate_positional_args,

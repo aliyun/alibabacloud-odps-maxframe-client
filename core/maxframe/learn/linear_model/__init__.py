@@ -13,3 +13,4 @@
 # limitations under the License.
 
 from maxframe.learn.linear_model._lin_reg import LinearRegression
+from maxframe.learn.linear_model._logistic import LogisticRegression

@@ -30,10 +30,12 @@ from maxframe.io.odpsio.schema import (
     _cast_column_as_decimal,
     arrow_schema_to_odps_schema,
     arrow_schema_to_pandas_dtypes,
+    arrow_type_to_odps_type,
     build_dataframe_table_meta,
     build_table_column_name,
     odps_schema_to_arrow_schema,
     odps_schema_to_pandas_dtypes,
+    odps_type_to_arrow_type,
     pandas_dtypes_to_arrow_schema,
     pandas_to_odps_schema,
     pandas_types_to_arrow_schema,
@@ -47,6 +49,11 @@ from maxframe.lib.dtypes_extension import (
 )
 from maxframe.tests.utils import require_arrow_dtype
 from maxframe.utils import pd_release_version, wrap_arrow_dtype
+
+try:
+    from maxframe.lib.dtypes_extension.vector import ArrowVectorType
+except ImportError:
+    ArrowVectorType = None
 
 
 @pytest.fixture
@@ -706,3 +713,51 @@ def test_arrow_schema_to_pandas_dtypes(set_dtype_backend):
     # Test that None uses global config (which is set by fixture)
     result_none = arrow_schema_to_pandas_dtypes(schema, None)
     pd.testing.assert_series_equal(result, result_none)
+
+
+@pytest.mark.skipif(
+    not hasattr(odps_types, "Vector"),
+    reason="need pyodps to support Vector type to run this test",
+)
+@pytest.mark.parametrize(
+    "element_type,dimension",
+    [
+        (pa.float32(), 128),
+        (pa.float64(), 256),
+    ],
+)
+def test_vector_types_conversion(element_type, dimension):
+    # Test ArrowVectorType -> ODPS Vector -> ArrowVectorType round-trip
+    vector_type = ArrowVectorType(element_type, dimension)
+    odps_type = arrow_type_to_odps_type(vector_type, "vec_col")
+    assert isinstance(odps_type, odps_types.Vector)
+    assert odps_type.element_type == arrow_type_to_odps_type(element_type, "vec_col")
+    assert odps_type.dimension == dimension
+
+    # Round-trip: ODPS Vector -> ArrowVectorType
+    arrow_type = odps_type_to_arrow_type(odps_type, "vec_col")
+    assert isinstance(arrow_type, ArrowVectorType)
+    assert arrow_type.element_type == element_type
+    assert arrow_type.dimension == dimension
+
+    # Schema-level round-trip
+    odps_schema = odps_types.OdpsSchema(
+        [
+            odps_types.Column("id", "bigint"),
+            odps_types.Column(
+                "vec",
+                odps_types.Vector(
+                    arrow_type_to_odps_type(element_type, "vec_col"), dimension
+                ),
+            ),
+        ]
+    )
+    arrow_schema = odps_schema_to_arrow_schema(odps_schema)
+    assert isinstance(arrow_schema.field("vec").type, ArrowVectorType)
+    assert arrow_schema.field("vec").type.element_type == element_type
+    assert arrow_schema.field("vec").type.dimension == dimension
+
+    odps_schema2 = arrow_schema_to_odps_schema(arrow_schema)
+    assert odps_schema2.columns[0].type == odps_types.bigint
+    assert isinstance(odps_schema2.columns[1].type, odps_types.Vector)
+    assert odps_schema2.columns[1].type.dimension == dimension

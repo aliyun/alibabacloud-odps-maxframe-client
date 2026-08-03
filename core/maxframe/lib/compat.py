@@ -1,5 +1,18 @@
-import asyncio
-import functools
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import inspect
 from typing import TYPE_CHECKING, Callable, List, Sequence, Tuple, Union
 
 import numpy as np
@@ -7,6 +20,10 @@ import pandas as pd
 
 if TYPE_CHECKING:
     from pandas._typing import ArrayLike, Scalar
+
+# Sentinel for cached_property fallback
+_NOT_FOUND = object()
+_GenericAlias = type(List[int])
 
 
 def case_when(
@@ -154,31 +171,69 @@ class cached_property:
     """
     A property that is only computed once per instance and then replaces itself
     with an ordinary attribute. Deleting the attribute resets the property.
-    Source: https://github.com/bottlepy/bottle/commit/fa7733e075da0d790d809aa3d2f53071897e6f76
+    Backported from functools for Python <= 3.7.
+    Also supports async functions (coroutine functions).
     """  # noqa
 
     def __init__(self, func):
-        self.__doc__ = getattr(func, "__doc__")
         self.func = func
+        self.attrname = None
+        self.__doc__ = func.__doc__
+        self.__module__ = func.__module__
+        self._is_coroutine = inspect.iscoroutinefunction(func)
 
-    def __get__(self, obj, cls):
-        if obj is None:
+    def __set_name__(self, owner, name):
+        if self.attrname is None:
+            self.attrname = name
+        elif name != self.attrname:
+            raise TypeError(
+                "Cannot assign the same cached_property to two different names "
+                f"({self.attrname!r} and {name!r})."
+            )
+
+    def __get__(self, instance, owner=None):
+        if instance is None:
             return self
+        if self.attrname is None:
+            raise TypeError(
+                "Cannot use cached_property instance without calling __set_name__ on it."
+            )
+        try:
+            cache = instance.__dict__
+        except AttributeError:
+            msg = (
+                f"No '__dict__' attribute on {type(instance).__name__!r} "
+                f"instance to cache {self.attrname!r} property."
+            )
+            raise TypeError(msg) from None
+        val = cache.get(self.attrname, _NOT_FOUND)
+        if val is _NOT_FOUND:
+            if self._is_coroutine:
+                return self._async_get(instance, cache)
+            val = self.func(instance)
+            try:
+                cache[self.attrname] = val
+            except TypeError:
+                msg = (
+                    f"The '__dict__' attribute on {type(instance).__name__!r} instance "
+                    f"does not support item assignment for caching {self.attrname!r} property."
+                )
+                raise TypeError(msg) from None
+        return val
 
-        if asyncio.iscoroutinefunction(self.func):
-            return self._wrap_in_coroutine(obj)
+    async def _async_get(self, instance, cache):
+        val = await self.func(instance)
+        try:
+            cache[self.attrname] = val
+        except TypeError:
+            msg = (
+                f"The '__dict__' attribute on {type(instance).__name__!r} instance "
+                f"does not support item assignment for caching {self.attrname!r} property."
+            )
+            raise TypeError(msg) from None
+        return val
 
-        value = obj.__dict__[self.func.__name__] = self.func(obj)
-        return value
-
-    def _wrap_in_coroutine(self, obj):
-        @functools.wraps(obj)
-        def wrapper():
-            future = asyncio.ensure_future(self.func(obj))
-            obj.__dict__[self.func.__name__] = future
-            return future
-
-        return wrapper()
+    __class_getitem__ = classmethod(_GenericAlias)
 
 
 # isort: off

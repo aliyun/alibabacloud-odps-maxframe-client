@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import mock
 import numpy as np
 import pandas as pd
 import pyarrow as pa
@@ -24,17 +25,21 @@ from maxframe.codegen.spe.core import SPECodeContext
 from maxframe.codegen.spe.dataframe.datasource import (
     DataFrameDateRangeAdapter,
     DataFrameFromRecordsAdapter,
+    DataFrameReadODPSQueryAdapter,
     DataFrameReadODPSTableAdapter,
     IndexDataSourceAdapter,
     SeriesFromTensorAdapter,
 )
+from maxframe.config import option_context
 from maxframe.dataframe.datasource.index import from_pandas
+from maxframe.dataframe.datasource.read_odps_query import DataFrameReadODPSQuery
 from maxframe.io.odpsio import ODPSTableIO
 from maxframe.tests.utils import flaky, tn
 
 
 def _run_generated_code(code: str, ctx: SPECodeContext) -> dict:
     local_vars = ctx.constants.copy()
+    local_vars["DataFrameReadODPSQueryAdapter"] = DataFrameReadODPSQueryAdapter
     local_vars["DataFrameReadODPSTableAdapter"] = DataFrameReadODPSTableAdapter
     exec(code, local_vars, local_vars)
     return local_vars
@@ -170,6 +175,172 @@ def test_read_odps_table_with_parts():
     pd.testing.assert_frame_equal(expected, exec_results["var_0"])
 
     table.drop()
+
+
+def test_read_odps_query_generate_code():
+    query = "select a, b, c from src_table"
+    dtypes = pd.Series(
+        [np.dtype("float64"), np.dtype("object")],
+        index=["b", "c"],
+    )
+    index_dtypes = pd.Series([np.dtype("int64")], index=["a"])
+    op = DataFrameReadODPSQuery(
+        query=query,
+        dtypes=dtypes,
+        index_columns=["a"],
+        index_dtypes=index_dtypes,
+        column_renames={},
+    )
+    df = op()
+    ctx = SPECodeContext()
+    results = DataFrameReadODPSQueryAdapter().generate_code(df.op, ctx)
+    expected_results = [
+        "var_0 = DataFrameReadODPSQueryAdapter._read_as_pandas("
+        "'select a, b, c from src_table', None, ['a'], {}, None, const_0)"
+    ]
+    assert results == expected_results
+
+
+class _MockQueryReader:
+    def __init__(self, data: pd.DataFrame):
+        self._data = data
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc_info):
+        return None
+
+    def to_pandas(self):
+        return self._data.copy()
+
+
+class _MockQueryInstance:
+    def __init__(self, data: pd.DataFrame):
+        self._data = data
+
+    def open_reader(self, tunnel=True):
+        return _MockQueryReader(self._data)
+
+
+class _MockODPS:
+    def __init__(self, data: pd.DataFrame, schema_namespace_enabled: bool = False):
+        self._data = data
+        self._schema_namespace_enabled = schema_namespace_enabled
+        self.query = None
+        self.hints = None
+
+    def is_schema_namespace_enabled(self):
+        return self._schema_namespace_enabled
+
+    def execute_sql(self, query: str, **kwargs):
+        self.query = query
+        self.hints = kwargs.get("hints")
+        return _MockQueryInstance(self._data)
+
+
+@mock.patch("maxframe.codegen.spe.dataframe.datasource.ODPS")
+def test_read_odps_query_as_pandas_without_index(mock_odps):
+    query_data = pd.DataFrame({"a": [1, 2, 3], "b": [4.0, 5.0, 6.0]})
+    mock_odps_entry = _MockODPS(query_data)
+    mock_odps.from_environments.return_value = mock_odps_entry
+
+    op = DataFrameReadODPSQuery(
+        query="select a, b from src_table",
+        dtypes=query_data.dtypes,
+        column_renames={},
+    )
+    df = op()
+    table_meta = SPECodeContext().get_pandas_data_table_meta(df)
+    result = DataFrameReadODPSQueryAdapter._read_as_pandas(
+        df.op.query,
+        df.op.columns,
+        df.op.index_columns,
+        df.op.column_renames,
+        df.op.nrows,
+        table_meta,
+    )
+
+    pd.testing.assert_frame_equal(query_data, result)
+    assert mock_odps_entry.query == "select a, b from src_table"
+    assert mock_odps_entry.hints == {
+        "odps.sql.submit.mode": "script",
+        "odps.sql.object.table.split.by.object.size.enabled": "false",
+    }
+
+
+@mock.patch("maxframe.codegen.spe.dataframe.datasource.ODPS")
+def test_read_odps_query_as_pandas_with_index_and_columns(mock_odps):
+    query_data = pd.DataFrame(
+        {
+            "a": [1, 2, 3],
+            "b": [4.0, 5.0, 6.0],
+            "c": ["x", "y", "z"],
+        }
+    )
+    mock_odps.from_environments.return_value = _MockODPS(query_data)
+
+    dtypes = pd.Series([query_data.dtypes["c"]], index=["c"])
+    index_dtypes = pd.Series([query_data.dtypes["a"]], index=["a"])
+    op = DataFrameReadODPSQuery(
+        query="select a, b, c from src_table",
+        dtypes=dtypes,
+        columns=["c"],
+        index_columns=["a"],
+        index_dtypes=index_dtypes,
+        column_renames={},
+    )
+    df = op()
+    table_meta = SPECodeContext().get_pandas_data_table_meta(df)
+    result = DataFrameReadODPSQueryAdapter._read_as_pandas(
+        df.op.query,
+        df.op.columns,
+        df.op.index_columns,
+        df.op.column_renames,
+        df.op.nrows,
+        table_meta,
+    )
+
+    expected = query_data.set_index("a")[["c"]]
+    pd.testing.assert_frame_equal(expected, result)
+
+
+@mock.patch("maxframe.codegen.spe.dataframe.datasource.ODPS")
+def test_read_odps_query_as_pandas_with_nrows(mock_odps):
+    query_data = pd.DataFrame({"a": [1, 2, 3], "b": [4.0, 5.0, 6.0]})
+    mock_odps.from_environments.return_value = _MockODPS(query_data)
+
+    op = DataFrameReadODPSQuery(
+        query="select a, b from src_table",
+        dtypes=query_data.dtypes,
+        column_renames={},
+        nrows=2,
+    )
+    df = op()
+    ctx = SPECodeContext()
+    results = DataFrameReadODPSQueryAdapter().generate_code(df.op, ctx)
+    expected_results = [
+        "var_0 = DataFrameReadODPSQueryAdapter._read_as_pandas("
+        "'select a, b from src_table', None, None, {}, 2, const_0)"
+    ]
+    assert results == expected_results
+
+    exec_results = _run_generated_code(results[0], ctx)
+    pd.testing.assert_frame_equal(query_data.iloc[:2], exec_results["var_0"])
+
+
+def test_read_odps_query_build_hints_with_schema():
+    mock_odps_entry = _MockODPS(pd.DataFrame(), schema_namespace_enabled=True)
+    with option_context({"sql.settings": {"odps.sql.type.system.odps2": "true"}}):
+        hints = DataFrameReadODPSQueryAdapter._build_hints(mock_odps_entry)
+
+    assert hints == {
+        "odps.sql.type.system.odps2": "true",
+        "odps.namespace.schema": "true",
+        "odps.sql.allow.namespace.schema": "true",
+        "odps.sql.submit.mode": "script",
+        "odps.sql.object.table.split.by.object.size.enabled": "false",
+    }
 
 
 def test_index_data_source():

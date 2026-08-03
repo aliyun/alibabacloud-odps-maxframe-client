@@ -30,6 +30,7 @@ from maxframe.dataframe.utils import (
     build_series,
     call_groupby_with_params,
     find_input_of_groupby,
+    gen_unknown_index_value,
     make_column_list,
     parse_index,
 )
@@ -161,7 +162,9 @@ class DataFrameGroupByOp(MapReduceOperator, DataFrameOperatorMixin):
 
     def __call__(self, df):
         params = df.params.copy()
-        params["index_value"] = parse_index(None, df.key, df.index_value.key)
+        params["index_value"] = gen_unknown_index_value(
+            df.index_value, df.key, normalize_range_index=True
+        )
         if df.ndim == 2:
             if isinstance(self.by, list):
                 index, types = [], []

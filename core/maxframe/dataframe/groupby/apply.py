@@ -29,11 +29,7 @@ from maxframe.dataframe.type_infer import (
     InferredDataFrameMeta,
     infer_dataframe_return_value,
 )
-from maxframe.dataframe.utils import (
-    copy_func_scheduling_hints,
-    parse_index,
-    validate_output_types,
-)
+from maxframe.dataframe.utils import parse_index, validate_output_types
 from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
@@ -42,7 +38,7 @@ from maxframe.serialization.serializables import (
     StringField,
     TupleField,
 )
-from maxframe.udf import BuiltinFunction, MarkedFunction
+from maxframe.udf import BuiltinFunction, MarkedFunction, copy_func_scheduling_hints
 from maxframe.utils import (
     copy_if_possible,
     get_func_token,

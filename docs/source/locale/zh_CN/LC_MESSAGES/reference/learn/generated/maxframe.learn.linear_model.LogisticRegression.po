@@ -1,0 +1,607 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1093+br.gc0d626735.d20260607\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-17 17:10+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:2
+msgid "maxframe.learn.linear\\_model.LogisticRegression"
+msgstr ""
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:1 of
+msgid "Logistic Regression (aka logit, MaxEnt) classifier."
+msgstr "逻辑回归（又称logit、MaxEnt）分类器。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:3 of
+msgid ""
+"This class implements regularized logistic regression using the specified"
+" solver. **Note that regularization is applied by default**. It can "
+"handle both dense and sparse input. Use C-ordered arrays or CSR matrices "
+"containing 64-bit floats for optimal performance; any other input format "
+"will be converted (and copied)."
+msgstr ""
+"此类使用指定的求解器实现正则化逻辑回归。**请注意，默认情况下应用正则化**"
+"。它可以处理密集和稀疏输入。为获得最佳性能，请使用包含64位浮点数的C顺序"
+"数组或CSR矩阵；任何其他输入格式都将被转换（和复制）。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:10 of
+msgid ""
+"This is a MaxFrame distributed implementation. Supported solvers are "
+"``lbfgs``, ``newton-cg``, ``newton-cholesky``, and ``liblinear``. The "
+"``multi_class`` parameter is intentionally not provided, following "
+"scikit-learn's deprecation (removed in sklearn 1.8). Multiclass problems "
+"always use the multinomial loss. The ``liblinear`` solver supports binary"
+" classification only; use ``OneVsRestClassifier`` for OvR multiclass."
+msgstr ""
+"这是一个MaxFrame分布式实现。支持的求解器包括``lbfgs``、``newton-cg``、``"
+"newton-cholesky``和``liblinear``。``multi_class``参数故意不提供，遵循"
+"scikit-learn的弃用（在sklearn 1.8中移除）。多类问题始终使用多项式损失。``"
+"liblinear``求解器仅支持二元分类；对于OvR多类问题，请使用``"
+"OneVsRestClassifier``。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:18 of
+msgid ""
+"Used to specify the norm used in the penalization. Not all penalties are "
+"supported by all solvers:  ==========  ================================ "
+"Penalty     Supported solvers ==========  "
+"================================ l1          liblinear l2          lbfgs,"
+" newton-cg, newton-cholesky, liblinear elasticnet  lbfgs none        "
+"lbfgs, newton-cg, newton-cholesky ==========  "
+"================================  If 'none', no regularization is "
+"applied."
+msgstr ""
+"用于指定惩罚中使用的范数。并非所有求解器都支持所有惩罚：==========  ====="
+"=========================== 惩罚     支持的求解器 ==========  ==========="
+"===================== l1          liblinear l2          lbfgs, newton-cg,"
+" newton-cholesky, liblinear elasticnet  lbfgs none        lbfgs, newton-"
+"cg, newton-cholesky ==========  ================================  如果为'"
+"none'，则不应用正则化。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:18 of
+msgid ""
+"Used to specify the norm used in the penalization. Not all penalties are "
+"supported by all solvers:"
+msgstr "用于指定惩罚中使用的范数。并非所有求解器都支持所有惩罚："
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:22 of
+msgid "Penalty"
+msgstr "惩罚"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:22 of
+msgid "Supported solvers"
+msgstr "支持的求解器"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:24 of
+msgid "l1"
+msgstr ""
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:24 of
+msgid "liblinear"
+msgstr ""
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:25 of
+msgid "l2"
+msgstr ""
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:25 of
+msgid "lbfgs, newton-cg, newton-cholesky, liblinear"
+msgstr ""
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:26 of
+msgid "elasticnet"
+msgstr ""
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:26 of
+msgid "lbfgs"
+msgstr ""
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:27 of
+msgid "none"
+msgstr ""
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:27 of
+msgid "lbfgs, newton-cg, newton-cholesky"
+msgstr ""
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:30 of
+msgid "If 'none', no regularization is applied."
+msgstr "如果为'none'，则不应用正则化。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:32 of
+msgid ""
+"Inverse of regularization strength; must be a positive float. Smaller "
+"values specify stronger regularization."
+msgstr "正则化强度的倒数；必须是正浮点数。较小的值指定更强的正则化。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:35 of
+msgid ""
+"Specifies if a constant (a.k.a. bias or intercept) should be added to the"
+" decision function."
+msgstr "指定是否应向决策函数添加常数（即偏置或截距）。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:38 of
+msgid "Seed for the random number generator used to initialize coefficients."
+msgstr "用于初始化系数的随机数生成器的种子。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:40 of
+msgid ""
+"Algorithm to use in the optimization problem.  - ``lbfgs``: Uses "
+"scipy.optimize.minimize with L-BFGS-B.   Supports l1, l2, elasticnet, and"
+" none penalties.   Multiclass: multinomial. - ``newton-cg``: Newton's "
+"method with CG linear solver.   Supports l2 and none penalties only.   "
+"Multiclass: multinomial. - ``newton-cholesky``: Newton's method with "
+"Cholesky factorization.   Supports l2 and none penalties only.   "
+"Multiclass: multinomial. - ``liblinear``: Coordinate descent (wraps "
+"LIBLINEAR).   Supports l1 and l2 penalties only.   Binary classification "
+"only (raises ValueError for n_classes > 2).  .. note::    ``newton-cg`` "
+"and ``newton-cholesky`` compute the full Hessian    matrix and require it"
+" to fit into AM memory. For high-dimensional    data, ``lbfgs`` is "
+"recommended."
+msgstr ""
+"优化问题中使用的算法。  - ``lbfgs``: 使用scipy.optimize.minimize和L-BFGS-"
+"B。   支持l1、l2、elasticnet和none惩罚。   多类：多项式。 - ``newton-cg``"
+": 带CG线性求解器的牛顿法。   仅支持l2和none惩罚。   多类：多项式。 - ``"
+"newton-cholesky``: 带Cholesky分解的牛顿法。   仅支持l2和none惩罚。   多类"
+"：多项式。 - ``liblinear``: 坐标下降（包装LIBLINEAR）。   仅支持l1和l2"
+"惩罚。   仅二元分类（当n_classes > 2时引发ValueError）。  .. note::    ``"
+"newton-cg`` 和``newton-cholesky``计算完整的Hessian    矩阵并要求其适合AM"
+"内存。对于高维    数据，推荐使用``lbfgs``。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:40 of
+msgid "Algorithm to use in the optimization problem."
+msgstr "优化问题中使用的算法。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:42 of
+msgid ""
+"``lbfgs``: Uses scipy.optimize.minimize with L-BFGS-B. Supports l1, l2, "
+"elasticnet, and none penalties. Multiclass: multinomial."
+msgstr ""
+"``lbfgs``: 使用scipy.optimize.minimize和L-BFGS-B。支持l1、l2、elasticnet"
+"和none惩罚。多类：多项式。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:45 of
+msgid ""
+"``newton-cg``: Newton's method with CG linear solver. Supports l2 and "
+"none penalties only. Multiclass: multinomial."
+msgstr "``newton-cg``: 带CG线性求解器的牛顿法。仅支持l2和none惩罚。多类：多项式。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:48 of
+msgid ""
+"``newton-cholesky``: Newton's method with Cholesky factorization. "
+"Supports l2 and none penalties only. Multiclass: multinomial."
+msgstr ""
+"``newton-cholesky``: 带Cholesky分解的牛顿法。仅支持l2和none惩罚。多类："
+"多项式。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:51 of
+msgid ""
+"``liblinear``: Coordinate descent (wraps LIBLINEAR). Supports l1 and l2 "
+"penalties only. Binary classification only (raises ValueError for "
+"n_classes > 2)."
+msgstr ""
+"``liblinear``: 坐标下降（包装LIBLINEAR）。仅支持l1和l2 惩罚。仅二元分类（"
+"当n_classes > 2时引发ValueError）。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:56 of
+msgid ""
+"``newton-cg`` and ``newton-cholesky`` compute the full Hessian matrix and"
+" require it to fit into AM memory. For high-dimensional data, ``lbfgs`` "
+"is recommended."
+msgstr ""
+"``newton-cg``和``newton-cholesky``计算完整的Hessian矩阵并要求其适合AM内存"
+"。对于高维数据，推荐使用``lbfgs``。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:60 of
+msgid ""
+"Dual or primal formulation. Dual formulation is only implemented for l2 "
+"penalty with liblinear solver. Prefer dual=False when n_samples > "
+"n_features.  .. note::    This parameter is only used by the "
+"``liblinear`` solver.    For other solvers, this parameter has no effect."
+msgstr ""
+"对偶或原始公式。对偶公式仅针对使用liblinear求解器的l2惩罚实现。当n_"
+"samples > n_features时，建议使用dual=False。  .. note::    此参数仅由``"
+"liblinear``求解器使用。    对于其他求解器，此参数无效。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:60 of
+msgid ""
+"Dual or primal formulation. Dual formulation is only implemented for l2 "
+"penalty with liblinear solver. Prefer dual=False when n_samples > "
+"n_features."
+msgstr ""
+"对偶或原始公式。对偶公式仅针对使用liblinear求解器的l2惩罚实现。当n_"
+"samples > n_features时，建议使用dual=False。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:65
+#: maxframe.learn.linear_model._logistic.LogisticRegression:80 of
+msgid ""
+"This parameter is only used by the ``liblinear`` solver. For other "
+"solvers, this parameter has no effect."
+msgstr "此参数仅由``liblinear``求解器使用。对于其他求解器，此参数无效。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:68 of
+msgid ""
+"Useful only when solver='liblinear' and fit_intercept=True. In this case,"
+" the intercept term is scaled by intercept_scaling (i.e. a \"synthetic\" "
+"feature with constant value equal to intercept_scaling is added to the "
+"instance vector). The intercept becomes intercept_scaling * "
+"synthetic_feature_weight.  .. note::    The synthetic feature weight is "
+"subject to l1/l2 regularization    as all other features. To lessen the "
+"effect of regularization on    the intercept term, increase "
+"intercept_scaling.  .. note::    This parameter is only used by the "
+"``liblinear`` solver.    For other solvers, this parameter has no effect."
+msgstr ""
+"仅在solver='liblinear'和fit_intercept=True时有用。在这种情况下，截距项按"
+"intercept_scaling进行缩放（即向实例向量添加一个常数值等于intercept_"
+"scaling的\"合成\"特征）。截距变为intercept_scaling * synthetic_feature_"
+"weight。  .. note::    合成特征权重与其他所有特征一样受l1/l2正则化约束。"
+"为减轻正则化对截距项的影响，请增加intercept_scaling。  .. note::    "
+"此参数仅由``liblinear``求解器使用。    对于其他求解器，此参数无效。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:68 of
+msgid ""
+"Useful only when solver='liblinear' and fit_intercept=True. In this case,"
+" the intercept term is scaled by intercept_scaling (i.e. a \"synthetic\" "
+"feature with constant value equal to intercept_scaling is added to the "
+"instance vector). The intercept becomes intercept_scaling * "
+"synthetic_feature_weight."
+msgstr ""
+"仅在solver='liblinear'和fit_intercept=True时有用。在这种情况下，截距项按"
+"intercept_scaling进行缩放（即向实例向量添加一个常数值等于intercept_"
+"scaling的\"合成\"特征）。截距变为intercept_scaling * synthetic_feature_"
+"weight。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:75 of
+msgid ""
+"The synthetic feature weight is subject to l1/l2 regularization as all "
+"other features. To lessen the effect of regularization on the intercept "
+"term, increase intercept_scaling."
+msgstr ""
+"合成特征权重与其他所有特征一样受l1/l2正则化约束。为减轻正则化对截距项的"
+"影响，请增加intercept_scaling。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:83 of
+#, python-brace-format
+msgid ""
+"Weights associated with classes in the form ``{class_label: weight}``. If"
+" not given, all classes are supposed to have weight one.  The "
+"\"balanced\" mode uses the values of y to automatically adjust weights "
+"inversely proportional to class frequencies in the input data as "
+"``n_samples / (n_classes * np.bincount(y))``.  .. note::    class_weight "
+"is converted to per-sample weights before fitting and    combined with "
+"sample_weight if both are provided. This is equivalent    to passing "
+"class_weight directly for all solvers including liblinear."
+msgstr ""
+"以``{class_label: weight}``形式关联类别的权重。如果未给出，则假定所有类别"
+"都具有权重一。  \"balanced\"模式使用y的值自动调整权重，使其与输入数据中的"
+"类别频率成反比，即``n_samples / (n_classes * np.bincount(y))``。  .. note"
+"::    class_weight在拟合前转换为每样本权重，如果同时提供了sample_weight，"
+"则与之结合。这等效于直接为包括liblinear在内的所有求解器传递class_weight。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:83 of
+#, python-brace-format
+msgid ""
+"Weights associated with classes in the form ``{class_label: weight}``. If"
+" not given, all classes are supposed to have weight one."
+msgstr ""
+"以``{class_label: weight}``形式关联类别的权重。如果未给出，则假定所有类别"
+"都具有权重一。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:86 of
+msgid ""
+"The \"balanced\" mode uses the values of y to automatically adjust "
+"weights inversely proportional to class frequencies in the input data as "
+"``n_samples / (n_classes * np.bincount(y))``."
+msgstr ""
+"\"balanced\"模式使用y的值自动调整权重，使其与输入数据中的类别频率成反比，"
+"即``n_samples / (n_classes * np.bincount(y))``。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:91 of
+msgid ""
+"class_weight is converted to per-sample weights before fitting and "
+"combined with sample_weight if both are provided. This is equivalent to "
+"passing class_weight directly for all solvers including liblinear."
+msgstr ""
+"class_weight在拟合前转换为每样本权重，如果同时提供了sample_weight，则与之"
+"结合。这等效于直接为包括liblinear在内的所有求解器传递class_weight。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:95 of
+msgid "Maximum number of iterations taken for the solver to converge."
+msgstr "求解器收敛所需的最大迭代次数。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:97 of
+msgid ""
+"For the lbfgs solver set verbose to any positive number for verbosity.  "
+".. note:: Not yet implemented. Currently has no effect on the    "
+"optimization process."
+msgstr ""
+"对于lbfgs求解器，将verbose设置为任意正数以获得详细输出。  .. note:: 尚未"
+"实现。目前对优化过程没有影响。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:97 of
+msgid "For the lbfgs solver set verbose to any positive number for verbosity."
+msgstr "对于lbfgs求解器，将verbose设置为任意正数以获得详细输出。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:100 of
+msgid "Not yet implemented. Currently has no effect on the optimization process."
+msgstr "尚未实现。目前对优化过程没有影响。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:103 of
+msgid ""
+"When set to True, reuse the solution of the previous call to fit as "
+"initialization, otherwise, just erase the previous solution."
+msgstr ""
+"当设置为 True 时，重用上一次调用拟合的解作为初始化，否则，仅清除上一次的"
+"解。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:106 of
+msgid ""
+"The Elastic-Net mixing parameter, with ``0 <= l1_ratio <= 1``. Only used "
+"if ``penalty='elasticnet'``. Setting ``l1_ratio=0`` is equivalent to "
+"using ``penalty='l2'``, while ``l1_ratio=1`` is equivalent to using "
+"``penalty='l1'``."
+msgstr ""
+"Elastic-Net 混合参数，范围为 ``0 <= l1_ratio <= 1``。仅在 ``penalty='"
+"elasticnet'`` 时使用。设置 ``l1_ratio=0`` 等价于使用 ``penalty='l2'``，而"
+" ``l1_ratio=1`` 等价于使用 ``penalty='l1'``。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:114 of
+msgid "Coefficient of the features in the decision function."
+msgstr "决策函数中特征的系数。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:116 of
+msgid "`coef_` is of shape (1, n_features) when the given problem is binary."
+msgstr "当给定问题为二分类时，`coef_` 的形状为 (1, n_features)。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression of
+msgid "type"
+msgstr "类型"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:118 of
+msgid "ndarray of shape (1, n_features) or (n_classes, n_features)"
+msgstr "形状为(1, n_features)或(n_classes, n_features)的ndarray"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:122 of
+msgid "Intercept (a.k.a. bias) added to the decision function."
+msgstr "添加到决策函数的截距（也称为偏置）。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:124 of
+msgid ""
+"If `fit_intercept` is set to False, the intercept is set to zero. "
+"`intercept_` is of shape (1,) when the given problem is binary."
+msgstr ""
+"如果 `fit_intercept` 设置为 False，则截距被设为零。当给定问题为二分类时，"
+"`intercept_` 的形状为 (1,)。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:127 of
+msgid "ndarray of shape (1,) or (n_classes,)"
+msgstr "形状为(1,)或(n_classes,)的ndarray"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:131 of
+msgid "Actual number of iterations for all classes."
+msgstr "所有类的实际迭代次数。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:133 of
+msgid "int"
+msgstr ""
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:137 of
+msgid "A list of class labels known to the classifier."
+msgstr "分类器已知的类别标签列表。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:139 of
+msgid "ndarray of shape (n_classes,)"
+msgstr "形状为(n_classes,)的ndarray"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:143 of
+msgid ":py:obj:`SGDClassifier`"
+msgstr ""
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:144 of
+msgid ""
+"Incrementally trained logistic regression (when given the parameter "
+"``loss=\"log\"``)."
+msgstr "增量训练的逻辑回归（当给定参数 ``loss=\"log\"`` 时）。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:146 of
+msgid ":py:obj:`LogisticRegressionCV`"
+msgstr ""
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:147 of
+msgid "Logistic regression with built-in cross validation."
+msgstr "具有内置交叉验证的逻辑回归。"
+
+#: maxframe.learn.linear_model._logistic.LogisticRegression:150 of
+msgid "示例"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`__init__ "
+"<maxframe.learn.linear_model.LogisticRegression.__init__>`\\ "
+"\\(\\[penalty\\, tol\\, C\\, fit\\_intercept\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`decision_function "
+"<maxframe.learn.linear_model.LogisticRegression.decision_function>`\\ "
+"\\(X\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid "Predict confidence scores for samples."
+msgstr "预测样本的置信度得分。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`execute "
+"<maxframe.learn.linear_model.LogisticRegression.execute>`\\ "
+"\\(\\[session\\, run\\_kwargs\\, extra\\_tileables\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`fetch <maxframe.learn.linear_model.LogisticRegression.fetch>`\\ "
+"\\(\\[session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`fit <maxframe.learn.linear_model.LogisticRegression.fit>`\\ "
+"\\(X\\, y\\[\\, sample\\_weight\\, execute\\, session\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid "Fit the model according to the given training data."
+msgstr "根据给定的训练数据拟合模型。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`get_metadata_routing "
+"<maxframe.learn.linear_model.LogisticRegression.get_metadata_routing>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid "Get metadata routing of this object."
+msgstr "获取此对象的元数据路由。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`get_params "
+"<maxframe.learn.linear_model.LogisticRegression.get_params>`\\ "
+"\\(\\[deep\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid "Get parameters for this estimator."
+msgstr "获取此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`predict "
+"<maxframe.learn.linear_model.LogisticRegression.predict>`\\ \\(X\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid "Predict class labels for samples in X."
+msgstr "预测 X 中样本的类别标签。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`predict_log_proba "
+"<maxframe.learn.linear_model.LogisticRegression.predict_log_proba>`\\ "
+"\\(X\\[\\, execute\\, session\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid "Predict logarithm of probability estimates."
+msgstr "预测概率估计的对数值。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`predict_proba "
+"<maxframe.learn.linear_model.LogisticRegression.predict_proba>`\\ "
+"\\(X\\[\\, execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid "Probability estimates."
+msgstr "概率估计。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`score <maxframe.learn.linear_model.LogisticRegression.score>`\\ "
+"\\(X\\, y\\[\\, sample\\_weight\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid "Return the mean accuracy on the given test data and labels."
+msgstr "返回给定测试数据和标签上的平均准确率。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`set_fit_request "
+"<maxframe.learn.linear_model.LogisticRegression.set_fit_request>`\\ "
+"\\(\\*\\[\\, execute\\, run\\_kwargs\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``fit`` method."
+msgstr "配置是否请求将元数据传递给 ``fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`set_params "
+"<maxframe.learn.linear_model.LogisticRegression.set_params>`\\ "
+"\\(\\*\\*params\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid "Set the parameters of this estimator."
+msgstr "设置此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`set_predict_log_proba_request "
+"<maxframe.learn.linear_model.LogisticRegression.set_predict_log_proba_request>`\\"
+" \\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``predict_log_proba`` method."
+msgstr "配置是否请求将元数据传递给 ``predict_log_proba`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`set_predict_proba_request "
+"<maxframe.learn.linear_model.LogisticRegression.set_predict_proba_request>`\\"
+" \\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``predict_proba`` method."
+msgstr "配置是否请求将元数据传递给 ``predict_proba`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+":py:obj:`set_score_request "
+"<maxframe.learn.linear_model.LogisticRegression.set_score_request>`\\ "
+"\\(\\*\\[\\, sample\\_weight\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.linear_model.LogisticRegression.rst:31:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``score`` method."
+msgstr "配置是否请求将元数据传递给 ``score`` 方法。"
+

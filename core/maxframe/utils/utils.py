@@ -328,6 +328,19 @@ def estimate_pandas_size(
         return sample_size * len(pd_obj) // max_samples
 
 
+def estimate_polars_size(pl_obj) -> int:
+    """Estimate memory size of a polars DataFrame or LazyFrame (bytes).
+
+    For LazyFrame, collects it first (materializes to DataFrame).
+    Uses polars' built-in estimated_size() for DataFrame.
+    """
+    import polars as pl
+
+    if isinstance(pl_obj, pl.LazyFrame):
+        pl_obj = pl_obj.collect()
+    return pl_obj.estimated_size()
+
+
 def estimate_table_size(odps_entry, full_table_name: str, partitions: List[str] = None):
     try:
         data_src = odps_entry.get_table(full_table_name)

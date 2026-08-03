@@ -43,18 +43,58 @@ TASK_MULTI_MODAL_EMBEDDING = "multi-modal-embedding"
 TEXT_CONTENT_PART = "text"
 IMAGE_CONTENT_PART = "image"
 IMAGE_URL_CONTENT = "image_url"
-IMAGE_BINARY_CONTENT = "binary"
-IMAGE_BASE64_CONTENT = "base64"
-IMAGE_MIME_TYPE = "mime_type"
+IMAGE_BINARY_CONTENT = "image_binary"
+IMAGE_BASE64_CONTENT = "image_base64"
+
+AUDIO_CONTENT_PART = "audio"
+AUDIO_URL_CONTENT = "audio_url"
+AUDIO_BINARY_CONTENT = "audio_binary"
+AUDIO_BASE64_CONTENT = "audio_base64"
+
+VIDEO_CONTENT_PART = "video"
+VIDEO_URL_CONTENT = "video_url"
+VIDEO_BINARY_CONTENT = "video_binary"
+VIDEO_BASE64_CONTENT = "video_base64"
+
+MEDIA_MIME_TYPE = "mime_type"
 
 
 class ImageContentType(str, Enum):
-    IMAGE_URL = IMAGE_URL_CONTENT
-    BINARY = IMAGE_BINARY_CONTENT
-    BASE64 = IMAGE_BASE64_CONTENT
+    """Content type for image data."""
+
+    URL = "url"
+    BINARY = "binary"
+    BASE64 = "base64"
+    # Backward-compatible alias
+    IMAGE_URL = "url"
+
+    @classmethod
+    def content_keys(cls):
+        return tuple(f"image_{e.value}" for e in cls)
 
 
-IMAGE_CONTENT_KEYS = tuple(item.value for item in ImageContentType)
+class AudioContentType(str, Enum):
+    """Content type for audio data."""
+
+    URL = "url"
+    BINARY = "binary"
+    BASE64 = "base64"
+
+    @classmethod
+    def content_keys(cls):
+        return tuple(f"audio_{e.value}" for e in cls)
+
+
+class VideoContentType(str, Enum):
+    """Content type for video data."""
+
+    URL = "url"
+    BINARY = "binary"
+    BASE64 = "base64"
+
+    @classmethod
+    def content_keys(cls):
+        return tuple(f"video_{e.value}" for e in cls)
 
 
 class ContentPart(Serializable):
@@ -67,6 +107,33 @@ class ContentPart(Serializable):
         return cls(TEXT_CONTENT_PART, _series_as_column_template(text))
 
     @classmethod
+    def _media(
+        cls,
+        modality: str,
+        content_type_enum,
+        *,
+        data: Any,
+        type,
+        mime_type: Any = None,
+        **options: Any,
+    ) -> "ContentPart":
+        """Generic factory for image/audio/video content parts."""
+        media_type = content_type_enum(type)
+        if media_type in (content_type_enum.BINARY, content_type_enum.BASE64):
+            if mime_type is None:
+                raise ValueError(
+                    f"mime_type is required for binary and base64 {modality} content"
+                )
+        content = {
+            "type": f"{modality}_{media_type.value}",
+            "data": _series_as_column_template(data),
+        }
+        if mime_type is not None:
+            content[MEDIA_MIME_TYPE] = _series_as_column_template(mime_type)
+        options = {k: _series_as_column_template(v) for k, v in options.items()}
+        return cls(modality, content, options)
+
+    @classmethod
     def image(
         cls,
         *,
@@ -75,20 +142,50 @@ class ContentPart(Serializable):
         mime_type: Any = None,
         **options: Any,
     ) -> "ContentPart":
-        image_type = ImageContentType(type)
-        if image_type in (ImageContentType.BINARY, ImageContentType.BASE64):
-            if mime_type is None:
-                raise ValueError(
-                    "mime_type is required for binary and base64 image content"
-                )
-        content = {
-            "type": image_type.value,
-            "data": _series_as_column_template(data),
-        }
-        if mime_type is not None:
-            content[IMAGE_MIME_TYPE] = _series_as_column_template(mime_type)
-        options = {k: _series_as_column_template(v) for k, v in options.items()}
-        return cls(IMAGE_CONTENT_PART, content, options)
+        return cls._media(
+            IMAGE_CONTENT_PART,
+            ImageContentType,
+            data=data,
+            type=type,
+            mime_type=mime_type,
+            **options,
+        )
+
+    @classmethod
+    def audio(
+        cls,
+        *,
+        data: Any,
+        type: AudioContentType,
+        mime_type: Any = None,
+        **options: Any,
+    ) -> "ContentPart":
+        return cls._media(
+            AUDIO_CONTENT_PART,
+            AudioContentType,
+            data=data,
+            type=type,
+            mime_type=mime_type,
+            **options,
+        )
+
+    @classmethod
+    def video(
+        cls,
+        *,
+        data: Any,
+        type: VideoContentType,
+        mime_type: Any = None,
+        **options: Any,
+    ) -> "ContentPart":
+        return cls._media(
+            VIDEO_CONTENT_PART,
+            VideoContentType,
+            data=data,
+            type=type,
+            mime_type=mime_type,
+            **options,
+        )
 
 
 def _series_as_column_template(value: Any):

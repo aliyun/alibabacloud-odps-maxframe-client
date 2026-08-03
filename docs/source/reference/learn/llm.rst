@@ -38,7 +38,7 @@ Custom Model Configuration
 
     framework.InferenceFrameworkEnum
 
-Text Generate Functions
+Generate & Embed Functions
 ---------------------------
 
 .. automodule:: maxframe.learn.contrib.llm
@@ -50,6 +50,8 @@ Text Generate Functions
 
     ContentPart
     ImageContentType
+    AudioContentType
+    VideoContentType
     multi_modal.embed
     multi_modal.generate
     text.embed

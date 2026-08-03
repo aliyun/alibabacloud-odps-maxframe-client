@@ -22,6 +22,7 @@ from maxframe.core.entity.objects import Object, ObjectData
 from maxframe.core.operator import TileableOperatorMixin
 from maxframe.session import execute as execute_tileables
 from maxframe.session import fetch as fetch_tileables
+from maxframe.utils import find_objects, replace_objects
 
 try:
     from sklearn.base import BaseEstimator as SkBaseEstimator
@@ -168,18 +169,18 @@ class BaseEstimator(SkBaseEstimator):
         attrs = [
             (attr, getattr(self, attr, None)) for attr in self._get_data_attributes()
         ]
-        attrs = [tp for tp in attrs if tp[-1] is not None]
-        ent_attrs = [tp for tp in attrs if isinstance(tp[-1], ENTITY_TYPE)]
-        ent_attr_keys, ent_attr_vals = [list(x) for x in zip(*ent_attrs)]
+        attrs = [list(tp) for tp in attrs if tp[-1] is not None]
+        ents = find_objects(attrs, ENTITY_TYPE)
 
-        ent_attr_vals = fetch_tileables(
-            *ent_attr_vals, session=session, run_kwargs=run_kwargs
-        )
-        if len(ent_attr_keys) == 1:
-            ent_attr_vals = (ent_attr_vals,)
-
+        if ents:
+            ent_attr_vals = fetch_tileables(
+                *ents, session=session, run_kwargs=run_kwargs
+            )
+            if len(ents) == 1:
+                ent_attr_vals = [ent_attr_vals]
+            attrs = replace_objects(attrs, dict(zip(ents, ent_attr_vals)))
         attr_dict = dict(attrs)
-        attr_dict.update(zip(ent_attr_keys, ent_attr_vals))
+
         for k, v in attr_dict.items():
             setattr(regressor, k, v)
         return regressor

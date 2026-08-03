@@ -20,6 +20,7 @@ from typing import Union
 import numpy as np
 import pandas as pd
 import pyarrow as pa
+import pyarrow.compute as pc
 from pandas import DatetimeTZDtype, Timedelta, Timestamp
 from pandas.api.extensions import (
     ExtensionArray,
@@ -261,6 +262,48 @@ class FakeArrowExtensionArray(ExtensionArray, NDArrayBacked):
         """Convert myself to a pyarrow ChunkedArray."""
         return self._pa_array
 
+    def _nulls_as_bool(self, fill):
+        if fill is None:
+            return type(self)(pa.nulls(len(self), type=pa.bool_()))
+        valid = pc.is_valid(self._pa_array)
+        if hasattr(pc, "if_else"):
+            return type(self)(pc.if_else(valid, fill, None))
+        return type(self)(
+            pa.array(
+                [fill if is_valid else None for is_valid in valid.to_pylist()],
+                type=pa.bool_(),
+            )
+        )
+
+    def _cmp_method(self, other, pc_func, invalid_fill):
+        if isinstance(other, (pd.Series, pd.Index, pd.DataFrame)):
+            return NotImplemented
+        if isinstance(other, FakeArrowExtensionArray):
+            return type(self)(pc_func(self._pa_array, other._pa_array))
+        if is_scalar(other):
+            try:
+                other = pa.scalar(other, type=self._pa_array.type)
+                return type(self)(pc_func(self._pa_array, other))
+            except (pa.ArrowNotImplementedError, pa.ArrowInvalid, TypeError):
+                if pd.isna(other):
+                    return self._nulls_as_bool(None)
+                return self._nulls_as_bool(invalid_fill)
+        if isinstance(other, (np.ndarray, list)):
+            other = pa.array(other, from_pandas=True)
+            return type(self)(pc_func(self._pa_array, other))
+        return NotImplemented
+
+    def __eq__(self, other):
+        return self._cmp_method(other, pc.equal, False)
+
+    def __ne__(self, other):
+        return self._cmp_method(other, pc.not_equal, True)
+
+    def equals(self, other) -> bool:
+        if not isinstance(other, FakeArrowExtensionArray):
+            return False
+        return self._pa_array.equals(other._pa_array)
+
     def copy(self) -> "FakeArrowExtensionArray":
         return self._from_pyarrow_array(self._pa_array)
 
@@ -272,7 +315,7 @@ class FakeArrowExtensionArray(ExtensionArray, NDArrayBacked):
         elif null_count == len(self):
             return np.ones(len(self), dtype=np.bool_)
 
-        return self._pa_array.is_null().to_numpy()
+        return np.array(self._pa_array.is_null().to_pylist())
 
     def take(self, indices, allow_fill=False, fill_value=None):
         # code from ArrowExtensionArray in pandas>=1.5

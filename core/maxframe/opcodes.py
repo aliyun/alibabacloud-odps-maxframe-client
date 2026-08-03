@@ -650,6 +650,26 @@ DATAFRAME_ILOC_GET_AND_RENAME_ITEM = 100003
 COLLECT_MODEL_RESULT = 100004
 MODEL_DATA_SOURCE = 100005
 
+# LiteFrame operators
+LITEFRAME_PROJECTION = 10101
+LITEFRAME_FILTER = 10102
+LITEFRAME_FROM_LOCAL = 10103
+
+# LiteFrame expression leaf nodes
+LITEFRAME_COLUMN = 10110
+LITEFRAME_LITERAL = 10111
+LITEFRAME_NAMED_EXPR = 10112
+LITEFRAME_MULTI_COLUMN_EXPR = 10113
+LITEFRAME_MULTI_COLUMN_SUB_EXPR = 10114
+DATETIME_MULTI_METHOD = 10115
+
+# LiteFrame aliases sharing values with DATAFRAME_ opcodes
+LITEFRAME_MERGE = DATAFRAME_MERGE
+LITEFRAME_SHUFFLE_MERGE_ALIGN = DATAFRAME_SHUFFLE_MERGE_ALIGN
+LITEFRAME_ILOC_GETITEM = DATAFRAME_ILOC_GETITEM
+LITEFRAME_ILOC_SETITEM = DATAFRAME_ILOC_SETITEM
+LITEFRAME_BLOOM_FILTER = DATAFRAME_BLOOM_FILTER
+
 # fetches
 FETCH_SHUFFLE = 999998
 FETCH = 999999
@@ -659,10 +679,17 @@ _val_to_dict = dict()
 for _var_name, _var_val in globals().copy().items():
     if not isinstance(_var_val, int):
         continue
-    if _var_val in _val_to_dict:  # pragma: no cover
+    if _var_val in _val_to_dict:
+        existing_name = _val_to_dict[_var_val]
+        _one_is_df = any(v.startswith("DATAFRAME_") for v in (_var_name, existing_name))
+        _one_is_lf = any(v.startswith("LITEFRAME_") for v in (_var_name, existing_name))
+        if _one_is_df and _one_is_lf:
+            # We allow DATAFRAME_ and LITEFRAME_ opcodes to share the same value
+            continue
+        # The rest op codes (without prefixes) must have unique values
         raise ImportError(
             f"Cannot import opcode: {_var_name} and "
-            f"{_val_to_dict[_var_val]} collides with value {_var_val}"
+            f"{existing_name} collides with value {_var_val}"
         )
     _val_to_dict[_var_val] = _var_name
 del _val_to_dict, _var_name, _var_val

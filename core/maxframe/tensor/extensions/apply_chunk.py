@@ -24,7 +24,7 @@ from maxframe.serialization.serializables import (
 )
 from maxframe.tensor.core import TensorOrder
 from maxframe.tensor.operators import TensorOperator, TensorOperatorMixin
-from maxframe.udf import BuiltinFunction
+from maxframe.udf import BuiltinFunction, copy_func_scheduling_hints
 from maxframe.utils import find_objects, quiet_stdio, replace_objects
 
 
@@ -36,6 +36,13 @@ class TensorApplyChunk(TensorOperator, TensorOperatorMixin):
     args = TupleField("args", default=None)
     kwargs = DictField("kwargs", default=None)
     with_chunk_index = BoolField("with_chunk_index", default=False)
+
+    def __init__(self, output_type=None, **kw):
+        if output_type:
+            kw["_output_types"] = [output_type]
+        super().__init__(**kw)
+        if hasattr(self, "func"):
+            copy_func_scheduling_hints(self.func, self)
 
     @classmethod
     def _set_inputs(cls, op: "TensorApplyChunk", inputs):

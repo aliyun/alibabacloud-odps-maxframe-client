@@ -88,6 +88,7 @@ def test_spe_lgbm_train_script():
         ]
 
 
+@pytest.mark.slow
 def test_spe_lgbm_train_run():
     X, y = make_classification(n_features=5, n_informative=3)
     ds = lightgbm.Dataset(X, y)

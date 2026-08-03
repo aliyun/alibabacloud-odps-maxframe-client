@@ -19,6 +19,7 @@ from maxframe.learn.preprocessing._data import (
     normalize,
     scale,
 )
+from maxframe.learn.preprocessing._encoders import OneHotEncoder
 from maxframe.learn.preprocessing._label import (
     LabelBinarizer,
     LabelEncoder,

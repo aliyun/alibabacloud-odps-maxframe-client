@@ -657,7 +657,15 @@ class HaloTableIO(ODPSTableIO):
 
         session_id = resp.session_id
         status = resp.session_status
+        init_timeout = 300
+        deadline = time.monotonic() + init_timeout
         while status == SessionStatus.INIT:
+            if time.monotonic() >= deadline:
+                raise TimeoutError(
+                    f"Halo read session {session_id} for table "
+                    f"{full_table_name} did not leave INIT after "
+                    f"{init_timeout}s"
+                )
             resp = call_with_retry(client.get_read_session, SessionRequest(session_id))
             status = resp.session_status
             time.sleep(1.0)

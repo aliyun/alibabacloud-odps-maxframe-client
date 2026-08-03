@@ -20,9 +20,7 @@ from maxframe import dataframe as md
 from maxframe.learn.contrib.llm.core import (  # noqa: F401
     IMAGE_BASE64_CONTENT,
     IMAGE_BINARY_CONTENT,
-    IMAGE_CONTENT_KEYS,
     IMAGE_CONTENT_PART,
-    IMAGE_MIME_TYPE,
     IMAGE_URL_CONTENT,
     LLM,
     TEXT_CONTENT_PART,
@@ -136,7 +134,7 @@ def generate(
     ...             ContentPart.text("Analyze this image."),
     ...             ContentPart.image(
     ...                 data=df.image_url,
-    ...                 type=ImageContentType.IMAGE_URL,
+    ...                 type=ImageContentType.URL,
     ...             ),
     ...         ],
     ...     }
@@ -158,7 +156,7 @@ def generate(
     ...             ContentPart.text("Analyze this OSS image."),
     ...             ContentPart.image(
     ...                 data=df.image_url,
-    ...                 type=ImageContentType.IMAGE_URL,
+    ...                 type=ImageContentType.URL,
     ...                 storage_options=storage_options,
     ...             ),
     ...         ],
@@ -168,8 +166,8 @@ def generate(
 
     Notes
     -----
-    ``ContentPart.image`` supports ``IMAGE_URL``, ``BINARY`` and ``BASE64``
-    image content. ``BINARY`` and ``BASE64`` inputs must include ``mime_type``.
+    ``ContentPart.image`` supports ``ImageContentType.URL``, ``ImageContentType.BINARY`` and
+    ``ImageContentType.BASE64`` image content. ``ImageContentType.BINARY`` and ``ImageContentType.BASE64`` inputs must include ``mime_type``.
     """
     validate_llm_input_data(data)
     if not isinstance(model, MultiModalGenLLM):
@@ -226,7 +224,7 @@ def embed(
     ...     ContentPart.text("Represent this product image."),
     ...     ContentPart.image(
     ...         data=df.image_url,
-    ...         type=ImageContentType.IMAGE_URL,
+    ...         type=ImageContentType.URL,
     ...     ),
     ... ]
     >>> result = model.embed(df, input=input, simple_output=True)

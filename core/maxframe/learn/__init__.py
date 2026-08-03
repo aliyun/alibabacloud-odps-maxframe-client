@@ -15,6 +15,7 @@
 from maxframe.learn import (
     cluster,
     contrib,
+    decomposition,
     linear_model,
     metrics,
     model_selection,
@@ -22,4 +23,13 @@ from maxframe.learn import (
     utils,
 )
 
-del cluster, contrib, linear_model, metrics, model_selection, preprocessing, utils
+del (
+    cluster,
+    contrib,
+    decomposition,
+    linear_model,
+    metrics,
+    model_selection,
+    preprocessing,
+    utils,
+)

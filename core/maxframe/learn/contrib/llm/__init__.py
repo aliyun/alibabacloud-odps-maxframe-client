@@ -13,6 +13,11 @@
 # limitations under the License.
 
 from maxframe.learn.contrib.llm import models, multi_modal, text
-from maxframe.learn.contrib.llm.core import ContentPart, ImageContentType
+from maxframe.learn.contrib.llm.core import (
+    AudioContentType,
+    ContentPart,
+    ImageContentType,
+    VideoContentType,
+)
 
 del models

@@ -22,7 +22,7 @@ import operator
 import sys
 from contextlib import contextmanager
 from numbers import Integral
-from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple, Union
+from typing import Any, Callable, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -34,7 +34,6 @@ from maxframe.core import ENTITY_TYPE, Entity, ExecutableTuple, OutputType
 from maxframe.lib.dtypes_extension import ExternalBlobDtype, SolidBlob
 from maxframe.lib.mmh3 import hash as mmh_hash
 from maxframe.protocol import DefaultIndexType
-from maxframe.udf import discover_marked_functions
 from maxframe.utils import (
     ModulePlaceholder,
     TypeDispatcher,
@@ -43,7 +42,6 @@ from maxframe.utils import (
     pd_release_version,
     sbytes,
     tokenize,
-    validate_and_adjust_resource_ratio,
     wrap_arrow_dtype,
 )
 
@@ -58,9 +56,6 @@ try:
     from maxframe.lib.dtypes_extension import ArrowDtype
 except ImportError:
     ArrowDtype = None
-
-if TYPE_CHECKING:
-    from maxframe.dataframe.operators import DataFrameOperator
 
 MAX_DECIMAL128_PRECISION = 38
 MAX_DECIMAL128_SCALE = 18
@@ -470,6 +465,10 @@ def _generate_value(dtype, fill_value):
 
     if isinstance(dtype, pa.ListType):
         return [_generate_value(dtype.value_type, fill_value)]
+    elif isinstance(dtype, pa.ExtensionType) and isinstance(
+        dtype.storage_type, pa.ListType
+    ):
+        return [_generate_value(dtype.storage_type.value_type, fill_value)]
     elif isinstance(dtype, pa.MapType):
         return [
             (
@@ -1906,67 +1905,6 @@ def get_callable_by_name(df: Any, func_name: str) -> Callable:
     raise AttributeError(
         f"'{func_name}' is not a valid function for '{type(df).__name__}' object"
     )
-
-
-def copy_func_scheduling_hints(func, op: "DataFrameOperator") -> None:
-    from maxframe.config import options
-
-    expect_engine = None
-    expect_gpu = None
-    fs_mount = None
-    image_options = None
-    default_options = options.function.default_running_options or {}
-
-    marked_funcs = discover_marked_functions(func)
-    if len(marked_funcs) > 1:
-        raise ValueError(
-            "Multiple functions are marked with running options, "
-            "please keep only one of them"
-        )
-    elif marked_funcs:
-        marked_func = marked_funcs[0]
-        # copy from marked function
-        expect_engine = marked_func.expect_engine
-        expect_resources = marked_func.expect_resources or {}
-        expect_gpu = marked_func.gpu
-        fs_mount = marked_func.fs_mount
-        image_options = marked_func.image_options
-
-        # merge default options if not set
-        for key, value in default_options.items():
-            if key not in expect_resources or expect_resources.get(key) is None:
-                expect_resources[key] = value
-    else:
-        # copy from default options
-        expect_resources = default_options
-
-    # Validate and adjust resource ratio constraints on client side
-    expect_resources, _ = validate_and_adjust_resource_ratio(
-        expect_resources,
-        max_memory_cpu_ratio=options.function.allowed_max_memory_cpu_ratio,
-        adjust=True,
-    )
-
-    # If GPU is required but gu_quota not set, inherit from global setting
-    if expect_resources.get("gpu"):
-        expect_resources["gu_quota"] = expect_resources.get(
-            "gu_quota", [options.session.gu_quota_name]
-        )
-
-    # Use session default image if not set
-    if not image_options and options.session.image_name:
-        image_options = {"name": options.session.image_name}
-
-    if expect_engine:
-        op.expect_engine = expect_engine
-    if expect_resources:
-        op.expect_resources = expect_resources
-    if expect_gpu:
-        op.gpu = expect_gpu
-    if fs_mount:
-        op.fs_mount = fs_mount
-    if image_options:
-        op.image_options = image_options
 
 
 def make_column_list(col, dtypes_or_columns, level=None):
