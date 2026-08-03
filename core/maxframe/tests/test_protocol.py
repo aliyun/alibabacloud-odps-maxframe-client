@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import json
+import pickle
 import time
 from typing import Any
 
@@ -101,6 +102,30 @@ class CannotUnpickleException(Exception):
 
     def __reduce__(self):
         return type(self).load_from_pk, (0,)
+
+
+class GeneratorHoldingException(Exception):
+    def __init__(self):
+        super().__init__("ERR_DATA")
+        self.data_generator = (value for value in range(1))
+
+
+def test_error_info_from_exception_drops_unpickleable_raw_error():
+    try:
+        raise GeneratorHoldingException()
+    except GeneratorHoldingException as ex:
+        err_info = ErrorInfo.from_exception(ex)
+
+    assert err_info.raw_error_data is None
+    assert err_info.raw_error_source is None
+    assert err_info.error_messages == ["ERR_DATA"]
+    assert err_info.error_tracebacks[0]
+
+    restored = pickle.loads(pickle.dumps(err_info))
+    assert restored.raw_error_data is None
+    assert restored.raw_error_source is None
+    with pytest.raises(RemoteException, match="ERR_DATA"):
+        restored.reraise()
 
 
 def test_error_info_fallback_json_serialize():

@@ -20,6 +20,7 @@ import threading
 from collections import OrderedDict, defaultdict
 from typing import Any, Dict, List, NamedTuple
 
+import mock
 import numpy as np
 import pandas as pd
 import pytest
@@ -31,6 +32,20 @@ try:
     import pyarrow as pa
 except ImportError:
     pa = None
+try:
+    import polars as pl
+except ImportError:
+    pl = None
+
+
+@pytest.fixture(autouse=True)
+def patch_polars_equals():
+    if pl is None or hasattr(pl.DataFrame, "equals"):
+        return
+    pl.Series.equals = pl.Series.series_equal
+    pl.DataFrame.equals = pl.DataFrame.frame_equal
+
+
 try:
     import scipy.sparse as sps
 except ImportError:
@@ -111,6 +126,7 @@ class EnumForTest(enum.Enum):
         {"abc": 5.6, "def": [3.4], "gh": None, "ijk": {}},
         OrderedDict([("abcd", 5.6)]),
         no_default,
+        (int, str),
     ],
 )
 @switch_unpickle
@@ -234,6 +250,16 @@ def test_pandas():
         )
     pd.testing.assert_frame_equal(val, deserialize(*serialize(val)))
 
+    # DataFrame with nullable extension dtype columns
+    val = pd.DataFrame(
+        {
+            "int_nullable": pd.array([1, None, 3], dtype="Int64"),
+            "float_nullable": pd.array([1.5, None, 3.5], dtype="Float64"),
+            "bool_nullable": pd.array([True, None, False], dtype="boolean"),
+        }
+    )
+    pd.testing.assert_frame_equal(val, deserialize(*serialize(val)))
+
     # dataframe with index only
     val = pd.DataFrame([], index=pd.RangeIndex(1000))
     pd.testing.assert_frame_equal(val, deserialize(*serialize(val)))
@@ -257,6 +283,35 @@ def test_pandas():
 
     val = (pd.NA, pd.NaT)
     assert val == deserialize(*serialize(val))
+
+
+@pytest.mark.skipif(pl is None, reason="need polars to run the test")
+@switch_unpickle
+def test_polars():
+    # Series
+    val = pl.Series("col", [1, 2, 3, 4])
+    assert val.equals(deserialize(*serialize(val)))
+
+    # DataFrame with various types
+    val = pl.DataFrame(
+        {
+            "float_col": [1.0, 2.0, 3.0],
+            "str_col": ["a", "b", "c"],
+            "int_col": [10, 20, 30],
+            "null_col": [1, None, 3],
+        }
+    )
+    assert val.equals(deserialize(*serialize(val)))
+
+    # Empty DataFrame
+    val = pl.DataFrame({"a": pl.Series([], dtype=pl.Int64)})
+    assert val.equals(deserialize(*serialize(val)))
+
+    # LazyFrame
+    val = pl.DataFrame({"a": [1, 2, 3]}).lazy()
+    deserialized = deserialize(*serialize(val))
+    assert isinstance(deserialized, pl.LazyFrame)
+    assert deserialized.collect().equals(pl.DataFrame({"a": [1, 2, 3]}))
 
 
 @switch_unpickle
@@ -286,6 +341,23 @@ def test_fake_arrow_dtype_serde():
     else:
         assert type(new_dtype) in (FakeArrowDtype, ArrowDtype)
         assert new_dtype.pyarrow_dtype == pa.string()
+
+
+@switch_unpickle
+def test_string_dtype_deserial_with_na_value():
+    """Deserializing StringDtype repr with na_value from pandas 3.0+
+    should produce a plain StringDtype, ignoring na_value for compat."""
+    serializer = DtypeSerializer()
+    repr_str = "<StringDtype(na_value=nan)>"
+
+    # Mock pandas_dtype to raise TypeError, forcing entry into the
+    # except TypeError branch where the fix lives
+    with mock.patch(
+        "maxframe.serialization.core.pandas_dtype",
+        side_effect=TypeError("data type '<StringDtype(na_value=nan)>' not understood"),
+    ):
+        new_dtype = serializer.deserial(["PE", repr_str], dict(), list())
+    assert isinstance(new_dtype, pd.StringDtype)
 
 
 @pytest.mark.skipif(pa is None, reason="need pyarrow to run the cases")
@@ -371,6 +443,7 @@ def test_pickle_container():
     with switch_unpickle(forbidden=True):
         deserial = deserialize(*serialize(func_to_pk))
         assert isinstance(deserial, PickleContainer)
+        assert type(func_to_pk).__name__ in repr(deserial)
 
     with switch_unpickle(forbidden=False):
         deserial_val = deserial.get()

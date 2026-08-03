@@ -16,6 +16,7 @@ import inspect
 from typing import Any, MutableMapping, Union
 
 import numpy as np
+import pandas as pd
 from pandas import DataFrame, Series
 
 from maxframe import opcodes
@@ -30,7 +31,6 @@ from maxframe.dataframe.type_infer import (
 from maxframe.dataframe.utils import (
     build_df,
     build_series,
-    copy_func_scheduling_hints,
     pack_func_args,
     parse_index,
     validate_axis,
@@ -44,7 +44,7 @@ from maxframe.serialization.serializables import (
     StringField,
     TupleField,
 )
-from maxframe.udf import BuiltinFunction, MarkedFunction
+from maxframe.udf import BuiltinFunction, MarkedFunction, copy_func_scheduling_hints
 from maxframe.utils import (
     copy_if_possible,
     get_func_token,
@@ -169,7 +169,7 @@ class DataFrameApply(
         )
         index_value = inferred_meta.index_value
         if index_value is None:
-            index_value = parse_index(None, (df.key, df.index_value.key))
+            index_value = parse_index(pd.RangeIndex(-1), (df.key, df.index_value.key))
 
         if self.elementwise:
             shape = df.shape

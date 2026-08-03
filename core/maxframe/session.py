@@ -20,6 +20,7 @@ import string
 import threading
 import warnings
 from abc import ABC, ABCMeta, abstractmethod
+from concurrent.futures import CancelledError as SyncCancelledError
 from concurrent.futures import Future as SyncFuture
 from dataclasses import dataclass
 from functools import wraps
@@ -837,8 +838,14 @@ class SyncSession(AbstractSyncSession):
         except KeyboardInterrupt:  # pragma: no cover
             logger.warning("Cancelling running task")
             cancelled.set()
-            fut.result()
+            try:
+                fut.result()
+            except (asyncio.CancelledError, SyncCancelledError):
+                pass
             logger.warning("Cancel finished")
+
+            # IMPORTANT: Need to reraise to avoid subsequent code being executed
+            raise
 
         if wait:
             return tileable if len(tileables) == 0 else [tileable] + list(tileables)
@@ -982,8 +989,16 @@ async def _execute(
     cancelled = cancelled or asyncio.Event()
 
     if wait:
-        progress_bar = ProgressBar(show_progress)
-        if progress_bar.show_progress:
+        # Skip the progress bar when the execution is already complete
+        # (e.g. no-op executions where all tileables are already fetched).
+        if execution_info.progress() >= 1.0 - 1.0e-6:
+            progress_bar = None
+            show_progress = False
+        else:
+            progress_bar = ProgressBar(show_progress)
+            show_progress = progress_bar.show_progress
+
+        if show_progress:
             await _execute_with_progress(
                 execution_info, progress_bar, progress_update_interval, cancelled
             )
@@ -993,6 +1008,7 @@ async def _execute(
             await asyncio.wait(
                 [exec_task, cancel_task], return_when=asyncio.FIRST_COMPLETED
             )
+
         if cancelled.is_set():
             execution_info.remove_done_callback(_attach_session)
             execution_info.cancel()

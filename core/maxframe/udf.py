@@ -21,6 +21,7 @@ import numpy as np
 from odps.models import Function as ODPSFunctionObj
 from odps.models import Resource as ODPSResourceObj
 
+from maxframe.config import options
 from maxframe.config.validators import is_positive_integer
 from maxframe.core.mode import is_mock_mode
 from maxframe.serialization import load_member
@@ -34,7 +35,13 @@ from maxframe.serialization.serializables import (
     StringField,
 )
 from maxframe.typing_ import PandasDType
-from maxframe.utils import extract_class_name, make_dtype, tokenize, unwrap_function
+from maxframe.utils import (
+    extract_class_name,
+    make_dtype,
+    tokenize,
+    unwrap_function,
+    validate_and_adjust_resource_ratio,
+)
 
 
 class PythonPackOptions(Serializable):
@@ -665,3 +672,62 @@ def discover_marked_functions(func: Callable) -> List[MarkedFunction]:
 
     _discover(func)
     return list(discovered)
+
+
+def copy_func_scheduling_hints(func: Callable, op: Any) -> None:
+    expect_engine = None
+    expect_gpu = None
+    fs_mount = None
+    image_options = None
+    default_options = options.function.default_running_options or {}
+
+    marked_funcs = discover_marked_functions(func)
+    if len(marked_funcs) > 1:
+        raise ValueError(
+            "Multiple functions are marked with running options, "
+            "please keep only one of them"
+        )
+    elif marked_funcs:
+        marked_func = marked_funcs[0]
+        # copy from marked function
+        expect_engine = marked_func.expect_engine
+        expect_resources = marked_func.expect_resources or {}
+        expect_gpu = marked_func.gpu
+        fs_mount = marked_func.fs_mount
+        image_options = marked_func.image_options
+
+        # merge default options if not set
+        for key, value in default_options.items():
+            if key not in expect_resources or expect_resources.get(key) is None:
+                expect_resources[key] = value
+    else:
+        # copy from default options
+        expect_resources = default_options
+
+    # Validate and adjust resource ratio constraints on client side
+    expect_resources, _ = validate_and_adjust_resource_ratio(
+        expect_resources,
+        max_memory_cpu_ratio=options.function.allowed_max_memory_cpu_ratio,
+        adjust=True,
+    )
+
+    # If GPU is required but gu_quota not set, inherit from global setting
+    if expect_resources.get("gpu"):
+        expect_resources["gu_quota"] = expect_resources.get(
+            "gu_quota", [options.session.gu_quota_name]
+        )
+
+    # Use session default image if not set
+    if not image_options and options.session.image_name:
+        image_options = {"name": options.session.image_name}
+
+    if expect_engine:
+        op.expect_engine = expect_engine
+    if expect_resources:
+        op.expect_resources = expect_resources
+    if expect_gpu:
+        op.gpu = expect_gpu
+    if fs_mount:
+        op.fs_mount = fs_mount
+    if image_options:
+        op.image_options = image_options

@@ -63,6 +63,7 @@ def rewrite_stop_iteration():
     try:
         yield
     except StopIteration:
-        raise RuntimeError("Unexpected StopIteration happened.").with_traceback(
-            sys.exc_info()[2]
-        ) from None
+        raise RuntimeError(
+            "Unexpected StopIteration happened, usually caused by "
+            "mismatch between operator fields and inputs"
+        ).with_traceback(sys.exc_info()[2]) from None

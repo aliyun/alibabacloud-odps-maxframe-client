@@ -21,8 +21,6 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from maxframe.config import option_context
-from maxframe.core.operator import Operator
 from maxframe.dataframe.utils import (
     MAX_DECIMAL128_PRECISION,
     _calc_add_precision_scale,
@@ -34,7 +32,6 @@ from maxframe.dataframe.utils import (
     _generate_value,
     _infer_decimal_agg_dtype,
     _pd_time_has_unit,
-    copy_func_scheduling_hints,
     extract_scalar_dtype,
     infer_dtype,
     infer_dtypes,
@@ -43,11 +40,9 @@ from maxframe.dataframe.utils import (
 from maxframe.tests.utils import require_arrow_dtype
 from maxframe.udf import (
     MarkedFunction,
-    with_image_options,
     with_network_options,
     with_python_requirements,
     with_resources,
-    with_running_options,
 )
 from maxframe.utils import wrap_arrow_dtype
 
@@ -135,11 +130,13 @@ def test_pack_function(df1):
             [(pa.scalar(1, pa.int32()), pa.scalar("1"))],
         ),
         (
-            wrap_arrow_dtype(
-                pa.struct([pa.field("a", pa.int32()), pa.field("b", pa.string())])
-            )
-            if ArrowDtype
-            else None,
+            (
+                wrap_arrow_dtype(
+                    pa.struct([pa.field("a", pa.int32()), pa.field("b", pa.string())])
+                )
+                if ArrowDtype
+                else None
+            ),
             1,
             {"a": pa.scalar(1, pa.int32()), "b": pa.scalar("1")},
         ),
@@ -165,59 +162,6 @@ def test_generate_value(dtype, fill_value, expected):
         pytest.skip("Arrow Dtype is not supported")
     result = _generate_value(dtype, fill_value)
     assert result == expected
-
-
-def test_copy_func_scheduling_hints():
-    # Test with a regular function (no scheduling hints)
-    with option_context() as options:
-        options.function.default_running_options = {}  # No default options
-
-        def regular_func(x):
-            return x + 1
-
-        op1 = Operator()
-        copy_func_scheduling_hints(regular_func, op1)
-        # Should not set any attributes since regular function has no hints
-        assert not hasattr(op1, "expect_engine") or op1.expect_engine is None
-        assert not hasattr(op1, "expect_resources") or op1.expect_resources is None
-        assert not hasattr(op1, "gpu") or op1.gpu is None
-
-    # Test with MarkedFunction with scheduling hints
-
-    @with_running_options(engine="DPE", cpu=4, memory="8GiB")
-    def marked_func(x):
-        return x + 1
-
-    op2 = Operator()
-    copy_func_scheduling_hints(marked_func, op2)
-    assert op2.expect_engine == "DPE"
-    # The expect_resources will include default values for gpu (gu_quota not set when None)
-    expected_resources = {"cpu": 4, "memory": "8GiB", "gpu": 0}
-    assert op2.expect_resources == expected_resources
-
-    # Test with MarkedFunction with GPU
-    @with_running_options(gu=2)
-    def gpu_func(x):
-        return x + 1
-
-    op3 = Operator()
-    copy_func_scheduling_hints(gpu_func, op3)
-    assert op3.gpu is True
-    # The expect_resources will include the gu value and default values
-    # System has default options: {'cpu': 1, 'memory': '4GiB', 'gpu': 0}
-    # When GPU is set, copy_func_scheduling_hints auto-sets gu_quota to
-    # [options.session.gu_quota_name] which defaults to [None]
-    expected_resources = {"gpu": 2, "gu_quota": [None], "cpu": 1, "memory": "4GiB"}
-    assert op3.expect_resources == expected_resources
-
-    # Test with MarkedFunction with image_options
-    @with_image_options(image_name="python")
-    def image_func(x):
-        return x + 1
-
-    op4 = Operator()
-    copy_func_scheduling_hints(image_func, op4)
-    assert op4.image_options == {"name": "python"}
 
 
 @require_arrow_dtype

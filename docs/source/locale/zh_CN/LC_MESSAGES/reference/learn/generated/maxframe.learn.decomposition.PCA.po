@@ -1,0 +1,593 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1092+br.g71bd8844c\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-18 15:23+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:2
+msgid "maxframe.learn.decomposition.PCA"
+msgstr ""
+
+#: maxframe.learn.decomposition._pca.PCA:1 of
+msgid "Principal component analysis (PCA)"
+msgstr "主成分分析 (PCA)"
+
+#: maxframe.learn.decomposition._pca.PCA:3 of
+msgid ""
+"Linear dimensionality reduction using Singular Value Decomposition of the"
+" data to project it to a lower dimensional space. The input data is "
+"centered but not scaled for each feature before applying the SVD."
+msgstr ""
+"使用数据的奇异值分解进行线性降维，将其投影到低维空间。在应用SVD之前，输入"
+"数据被中心化但不对每个特征进行缩放。"
+
+#: maxframe.learn.decomposition._pca.PCA:7 of
+msgid ""
+"It uses the LAPACK implementation of the full SVD or a randomized "
+"truncated SVD by the method of Halko et al. 2009, depending on the shape "
+"of the input data and the number of components to extract."
+msgstr ""
+"根据输入数据的形状和要提取的组件数量，它使用完整SVD的LAPACK实现或Halko等"
+"人2009年方法的随机截断SVD。"
+
+#: maxframe.learn.decomposition._pca.PCA:11 of
+msgid ""
+"It can also use the scipy.sparse.linalg ARPACK implementation of the "
+"truncated SVD."
+msgstr "它也可以使用scipy.sparse.linalg ARPACK的截断SVD实现。"
+
+#: maxframe.learn.decomposition._pca.PCA:14 of
+msgid ""
+"Notice that this class does not support sparse input. See "
+":class:`TruncatedSVD` for an alternative with sparse data."
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.decomposition._pca.PCA:17 of
+msgid ""
+"Number of components to keep. if n_components is not set all components "
+"are kept::      n_components == min(n_samples, n_features)  If "
+"``n_components == 'mle'`` and ``svd_solver == 'full'``, Minka's MLE is "
+"used to guess the dimension. Use of ``n_components == 'mle'`` will "
+"interpret ``svd_solver == 'auto'`` as ``svd_solver == 'full'``.  If ``0 <"
+" n_components < 1`` and ``svd_solver == 'full'``, select the number of "
+"components such that the amount of variance that needs to be explained is"
+" greater than the percentage specified by n_components.  If ``svd_solver "
+"== 'arpack'``, the number of components must be strictly less than the "
+"minimum of n_features and n_samples.  Hence, the None case results in::"
+"      n_components == min(n_samples, n_features) - 1"
+msgstr ""
+"保留的组件数量。如果未设置n_components，则保留所有组件::      n_"
+"components == min(n_samples, n_features)  如果 ``n_components == 'mle'`` "
+"且 ``svd_solver == 'full'``，使用Minka的MLE来猜测维度。使用 ``n_"
+"components == 'mle'`` 将把 ``svd_solver == 'auto'`` 解释为 ``svd_solver ="
+"= 'full'``。  如果 ``0 < n_components < 1`` 且 ``svd_solver == 'full'``，"
+"选择组件数量使得需要解释的方差量大于n_components指定的百分比。  如果 ``"
+"svd_solver == 'arpack'``，组件数量必须严格小于n_features和n_samples的"
+"最小值。  因此，None情况的结果是::      n_components == min(n_samples, n_"
+"features) - 1"
+
+#: maxframe.learn.decomposition._pca.PCA:17 of
+msgid ""
+"Number of components to keep. if n_components is not set all components "
+"are kept::"
+msgstr "保留的组件数量。如果未设置n_components，则保留所有组件::"
+
+#: maxframe.learn.decomposition._pca.PCA:22 of
+msgid ""
+"If ``n_components == 'mle'`` and ``svd_solver == 'full'``, Minka's MLE is"
+" used to guess the dimension. Use of ``n_components == 'mle'`` will "
+"interpret ``svd_solver == 'auto'`` as ``svd_solver == 'full'``."
+msgstr ""
+"如果 ``n_components == 'mle'`` 且 ``svd_solver == 'full'``，使用Minka的"
+"MLE来猜测维度。使用 ``n_components == 'mle'`` 将把 ``svd_solver == 'auto'"
+"`` 解释为 ``svd_solver == 'full'``。"
+
+#: maxframe.learn.decomposition._pca.PCA:26 of
+msgid ""
+"If ``0 < n_components < 1`` and ``svd_solver == 'full'``, select the "
+"number of components such that the amount of variance that needs to be "
+"explained is greater than the percentage specified by n_components."
+msgstr ""
+"如果 ``0 < n_components < 1`` 且 ``svd_solver == 'full'``，选择组件数量"
+"使得需要解释的方差量大于n_components指定的百分比。"
+
+#: maxframe.learn.decomposition._pca.PCA:30 of
+msgid ""
+"If ``svd_solver == 'arpack'``, the number of components must be strictly "
+"less than the minimum of n_features and n_samples."
+msgstr ""
+"如果 ``svd_solver == 'arpack'``，组件数量必须严格小于n_features和n_"
+"samples的最小值。"
+
+#: maxframe.learn.decomposition._pca.PCA:33 of
+msgid "Hence, the None case results in::"
+msgstr "因此，None情况的结果是::"
+
+#: maxframe.learn.decomposition._pca.PCA:37 of
+msgid ""
+"If False, data passed to fit are overwritten and running "
+"fit(X).transform(X) will not yield the expected results, use "
+"fit_transform(X) instead."
+msgstr ""
+"如果为False，传递给fit的数据将被覆盖，运行fit(X).transform(X)不会产生预期"
+"结果，请改用fit_transform(X)。"
+
+#: maxframe.learn.decomposition._pca.PCA:41 of
+msgid ""
+"When True (False by default) the `components_` vectors are multiplied by "
+"the square root of n_samples and then divided by the singular values to "
+"ensure uncorrelated outputs with unit component-wise variances."
+msgstr ""
+"当为True时（默认为False），`components_`向量乘以n_samples的平方根然后除以"
+"奇异值，以确保具有单位组件方差的不相关输出。"
+
+#: maxframe.learn.decomposition._pca.PCA:45 of
+msgid ""
+"Whitening will remove some information from the transformed signal (the "
+"relative variance scales of the components) but can sometime improve the "
+"predictive accuracy of the downstream estimators by making their data "
+"respect some hard-wired assumptions."
+msgstr ""
+"白化将从变换信号中移除一些信息（组件的相对方差尺度），但有时可以通过使"
+"数据符合一些硬编码假设来提高下游估计器的预测准确性。"
+
+#: maxframe.learn.decomposition._pca.PCA:50 of
+#, python-format
+msgid ""
+"auto :     the solver is selected by a default policy based on `X.shape` "
+"and     `n_components`: if the input data is larger than 500x500 and the"
+"     number of components to extract is lower than 80% of the smallest"
+"     dimension of the data, then the more efficient 'randomized'     "
+"method is enabled. Otherwise the exact full SVD is computed and     "
+"optionally truncated afterwards. full :     run exact full SVD calling "
+"the standard LAPACK solver via     `scipy.linalg.svd` and select the "
+"components by postprocessing arpack :     run SVD truncated to "
+"n_components calling ARPACK solver via     `scipy.sparse.linalg.svds`. It"
+" requires strictly     0 < n_components < min(X.shape) randomized :     "
+"run randomized SVD by the method of Halko et al."
+msgstr ""
+"auto :     根据`X.shape`和`n_components`的默认策略选择求解器：如果输入"
+"数据大于500x500且要提取的组件数量低于数据最小维度的80%，则启用更高效的'"
+"randomized'方法。否则计算精确的完整SVD并可选地随后截断。 full :     通过`"
+"scipy.linalg.svd`调用标准LAPACK求解器运行精确的完整SVD，并通过后处理选择"
+"组件 arpack :     通过`scipy.sparse.linalg.svds`调用ARPACK求解器运行截断"
+"到n_components的SVD。它要求严格 0 < n_components < min(X.shape) "
+"randomized :     通过Halko等人的方法运行随机SVD"
+
+#: maxframe.learn.decomposition._pca.PCA:51 of
+msgid "auto :"
+msgstr ""
+
+#: maxframe.learn.decomposition._pca.PCA:52 of
+#, python-format
+msgid ""
+"the solver is selected by a default policy based on `X.shape` and "
+"`n_components`: if the input data is larger than 500x500 and the number "
+"of components to extract is lower than 80% of the smallest dimension of "
+"the data, then the more efficient 'randomized' method is enabled. "
+"Otherwise the exact full SVD is computed and optionally truncated "
+"afterwards."
+msgstr ""
+"根据`X.shape`和`n_components`的默认策略选择求解器：如果输入数据大于"
+"500x500且要提取的组件数量低于数据最小维度的80%，则启用更高效的'randomized"
+"'方法。否则计算精确的完整SVD并可选地随后截断。"
+
+#: maxframe.learn.decomposition._pca.PCA:58 of
+msgid "full :"
+msgstr ""
+
+#: maxframe.learn.decomposition._pca.PCA:59 of
+msgid ""
+"run exact full SVD calling the standard LAPACK solver via "
+"`scipy.linalg.svd` and select the components by postprocessing"
+msgstr ""
+"通过`scipy.linalg.svd`调用标准LAPACK求解器运行精确的完整SVD，并通过后处理"
+"选择组件"
+
+#: maxframe.learn.decomposition._pca.PCA:61 of
+msgid "arpack :"
+msgstr ""
+
+#: maxframe.learn.decomposition._pca.PCA:62 of
+msgid ""
+"run SVD truncated to n_components calling ARPACK solver via "
+"`scipy.sparse.linalg.svds`. It requires strictly 0 < n_components < "
+"min(X.shape)"
+msgstr ""
+"通过`scipy.sparse.linalg.svds`调用ARPACK求解器运行截断到n_components的SVD"
+"。它要求严格 0 < n_components < min(X.shape)"
+
+#: maxframe.learn.decomposition._pca.PCA:65 of
+msgid "randomized :"
+msgstr ""
+
+#: maxframe.learn.decomposition._pca.PCA:66 of
+msgid "run randomized SVD by the method of Halko et al."
+msgstr "通过Halko等人的方法运行随机SVD"
+
+#: maxframe.learn.decomposition._pca.PCA:68 of
+msgid "Tolerance for singular values computed by svd_solver == 'arpack'."
+msgstr "svd_solver == 'arpack'计算的奇异值容差。"
+
+#: maxframe.learn.decomposition._pca.PCA:70 of
+msgid ""
+"Number of iterations for the power method computed by svd_solver == "
+"'randomized'."
+msgstr "svd_solver == 'randomized'计算的幂方法迭代次数。"
+
+#: maxframe.learn.decomposition._pca.PCA:73 of
+msgid ""
+"If int, random_state is the seed used by the random number generator; If "
+"RandomState instance, random_state is the random number generator; If "
+"None, the random number generator is the RandomState instance used by "
+"`np.random`. Used when ``svd_solver`` == 'arpack' or 'randomized'."
+msgstr ""
+"如果是int，random_state是随机数生成器使用的种子；如果是RandomState实例，"
+"random_state是随机数生成器；如果是None，随机数生成器是`np.random`使用的"
+"RandomState实例。在``svd_solver`` == 'arpack'或'randomized'时使用。"
+
+#: maxframe.learn.decomposition._pca.PCA:81 of
+msgid ""
+"Principal axes in feature space, representing the directions of maximum "
+"variance in the data. The components are sorted by "
+"``explained_variance_``."
+msgstr ""
+"特征空间中的主轴，表示数据中方差最大的方向。组件按``explained_variance_``"
+"排序。"
+
+#: maxframe.learn.decomposition._pca.PCA of
+msgid "type"
+msgstr "类型"
+
+#: maxframe.learn.decomposition._pca.PCA:85 of
+msgid "tensor, shape (n_components, n_features)"
+msgstr "tensor, 形状 (n_components, n_features)"
+
+#: maxframe.learn.decomposition._pca.PCA:89 of
+msgid "The amount of variance explained by each of the selected components."
+msgstr "每个选定组件解释的方差量。"
+
+#: maxframe.learn.decomposition._pca.PCA:91 of
+msgid "Equal to n_components largest eigenvalues of the covariance matrix of X."
+msgstr "等于 X 协方差矩阵的 n_components 个最大特征值。"
+
+#: maxframe.learn.decomposition._pca.PCA:94
+#: maxframe.learn.decomposition._pca.PCA:103
+#: maxframe.learn.decomposition._pca.PCA:111 of
+msgid "tensor, shape (n_components,)"
+msgstr "tensor, 形状为 (n_components,)"
+
+#: maxframe.learn.decomposition._pca.PCA:98 of
+msgid "Percentage of variance explained by each of the selected components."
+msgstr "每个选定分量解释的方差百分比。"
+
+#: maxframe.learn.decomposition._pca.PCA:100 of
+msgid ""
+"If ``n_components`` is not set then all components are stored and the sum"
+" of the ratios is equal to 1.0."
+msgstr "如果未设置 ``n_components``，则存储所有分量，且比率之和等于 1.0。"
+
+#: maxframe.learn.decomposition._pca.PCA:107 of
+msgid ""
+"The singular values corresponding to each of the selected components. The"
+" singular values are equal to the 2-norms of the ``n_components`` "
+"variables in the lower-dimensional space."
+msgstr ""
+"对应于每个选定分量的奇异值。奇异值等于低维空间中 ``n_components`` 变量的 "
+"2-范数。"
+
+#: maxframe.learn.decomposition._pca.PCA:115 of
+msgid "Per-feature empirical mean, estimated from the training set."
+msgstr "从训练集估计的每特征经验均值。"
+
+#: maxframe.learn.decomposition._pca.PCA:117 of
+msgid "Equal to `X.mean(axis=0)`."
+msgstr "等于 `X.mean(axis=0)`。"
+
+#: maxframe.learn.decomposition._pca.PCA:119 of
+msgid "tensor, shape (n_features,)"
+msgstr "tensor, 形状为 (n_features,)"
+
+#: maxframe.learn.decomposition._pca.PCA:123 of
+msgid ""
+"The estimated number of components. When n_components is set to 'mle' or "
+"a number between 0 and 1 (with svd_solver == 'full') this number is "
+"estimated from input data. Otherwise it equals the parameter "
+"n_components, or the lesser value of n_features and n_samples if "
+"n_components is None."
+msgstr ""
+"估计的分量数量。当 n_components 设置为 'mle' 或 0 到 1 之间的数字时（svd_"
+"solver == 'full'），此数字从输入数据估计。否则它等于参数 n_components，"
+"或者当 n_components 为 None 时取 n_features 和 n_samples 中的较小值。"
+
+#: maxframe.learn.decomposition._pca.PCA:129 of
+msgid "int"
+msgstr ""
+
+#: maxframe.learn.decomposition._pca.PCA:133 of
+msgid ""
+"The estimated noise covariance following the Probabilistic PCA model from"
+" Tipping and Bishop 1999. See \"Pattern Recognition and Machine "
+"Learning\" by C. Bishop, 12.2.1 p. 574 or "
+"http://www.miketipping.com/papers/met-mppca.pdf. It is required to "
+"compute the estimated data covariance and score samples."
+msgstr ""
+"根据 Tipping 和 Bishop 1999 年的概率 PCA 模型估计的噪声协方差。参见 C. "
+"Bishop 的《模式识别与机器学习》，第 12.2.1 节第 574 页或 http://www."
+"miketipping.com/papers/met-mppca.pdf。需要计算估计的数据协方差和评分样本"
+"。"
+
+#: maxframe.learn.decomposition._pca.PCA:139 of
+msgid ""
+"Equal to the average of (min(n_features, n_samples) - n_components) "
+"smallest eigenvalues of the covariance matrix of X."
+msgstr ""
+"等于 X 协方差矩阵的 (min(n_features, n_samples) - n_components) 个最小"
+"特征值的平均值。"
+
+#: maxframe.learn.decomposition._pca.PCA:142 of
+msgid "float"
+msgstr ""
+
+#: maxframe.learn.decomposition._pca.PCA:146 of
+msgid ""
+"For n_components == 'mle', this class uses the method of *Minka, T. P. "
+"\"Automatic choice of dimensionality for PCA\". In NIPS, pp. 598-604*"
+msgstr ""
+"对于 n_components == 'mle'，此类使用 *Minka, T. P. \"PCA 维度的自动选择\""
+"。在 NIPS，第 598-604 页* 的方法"
+
+#: maxframe.learn.decomposition._pca.PCA:145 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.learn.decomposition._pca.PCA:149 of
+msgid ""
+"Implements the probabilistic PCA model from: Tipping, M. E., and Bishop, "
+"C. M. (1999). \"Probabilistic principal component analysis\". Journal of "
+"the Royal Statistical Society: Series B (Statistical Methodology), 61(3),"
+" 611-622. via the score and score_samples methods. See "
+"http://www.miketipping.com/papers/met-mppca.pdf"
+msgstr ""
+"实现来自：Tipping, M. E. 和 Bishop, C. M. (1999). \"概率主成分分析\"。"
+"皇家统计学会期刊：B 系列（统计方法论），61(3)，611-622 的概率 PCA 模型，"
+"通过 score 和 score_samples 方法。参见 http://www.miketipping.com/papers/"
+"met-mppca.pdf"
+
+#: maxframe.learn.decomposition._pca.PCA:156 of
+msgid "For svd_solver == 'arpack', refer to `scipy.sparse.linalg.svds`."
+msgstr "对于 svd_solver == 'arpack'，请参阅 `scipy.sparse.linalg.svds`。"
+
+#: maxframe.learn.decomposition._pca.PCA:158 of
+msgid ""
+"For svd_solver == 'randomized', see: *Halko, N., Martinsson, P. G., and "
+"Tropp, J. A. (2011). \"Finding structure with randomness: Probabilistic "
+"algorithms for constructing approximate matrix decompositions\". SIAM "
+"review, 53(2), 217-288.* and also *Martinsson, P. G., Rokhlin, V., and "
+"Tygert, M. (2011). \"A randomized algorithm for the decomposition of "
+"matrices\". Applied and Computational Harmonic Analysis, 30(1), 47-68.*"
+msgstr ""
+"对于 svd_solver == 'randomized'，参见：*Halko, N., Martinsson, P. G., 和 "
+"Tropp, J. A. (2011). \"通过随机性寻找结构：构造近似矩阵分解的概率算法\"。"
+"SIAM 评论，53(2)，217-288。* 以及 *Martinsson, P. G., Rokhlin, V., 和 "
+"Tygert, M. (2011). \"矩阵分解的随机算法\"。应用和计算谐波分析，30(1)，47-"
+"68。*"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: maxframe.learn.decomposition._pca.PCA:168 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.decomposition._pca.PCA:190 of
+msgid ""
+":py:obj:`KernelPCA`, :py:obj:`SparsePCA`, :py:obj:`TruncatedSVD`, "
+":py:obj:`IncrementalPCA`"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid "Fit the model with X."
+msgstr "使用 X 拟合模型。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`__init__ <maxframe.learn.decomposition.PCA.__init__>`\\ "
+"\\(\\[n\\_components\\, copy\\, whiten\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`execute <maxframe.learn.decomposition.PCA.execute>`\\ "
+"\\(\\[session\\, run\\_kwargs\\, extra\\_tileables\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`fetch <maxframe.learn.decomposition.PCA.fetch>`\\ "
+"\\(\\[session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`fit <maxframe.learn.decomposition.PCA.fit>`\\ \\(X\\[\\, y\\, "
+"session\\, execute\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid "Fit the model with X and apply the dimensionality reduction on X."
+msgstr "使用 X 拟合模型并对 X 应用降维。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`fit_transform "
+"<maxframe.learn.decomposition.PCA.fit_transform>`\\ \\(X\\[\\, y\\, "
+"session\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid "Compute data covariance with the generative model."
+msgstr "使用生成模型计算数据协方差。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`get_covariance "
+"<maxframe.learn.decomposition.PCA.get_covariance>`\\ \\(\\[session\\, "
+"execute\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid "Get metadata routing of this object."
+msgstr "获取此对象的元数据路由。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`get_metadata_routing "
+"<maxframe.learn.decomposition.PCA.get_metadata_routing>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid "Get parameters for this estimator."
+msgstr "获取此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`get_params <maxframe.learn.decomposition.PCA.get_params>`\\ "
+"\\(\\[deep\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid "Compute data precision matrix with the generative model."
+msgstr "使用生成模型计算数据精度矩阵。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`get_precision "
+"<maxframe.learn.decomposition.PCA.get_precision>`\\ \\(\\[session\\, "
+"execute\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid "Transform data back to its original space."
+msgstr "将数据转换回其原始空间。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`inverse_transform "
+"<maxframe.learn.decomposition.PCA.inverse_transform>`\\ \\(X\\[\\, "
+"session\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid "Return the average log-likelihood of all samples."
+msgstr "返回所有样本的平均对数似然。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`score <maxframe.learn.decomposition.PCA.score>`\\ \\(X\\[\\, "
+"y\\, session\\, execute\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid "Return the log-likelihood of each sample."
+msgstr "返回每个样本的对数似然。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`score_samples "
+"<maxframe.learn.decomposition.PCA.score_samples>`\\ \\(X\\[\\, session\\,"
+" execute\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``fit`` method."
+msgstr "配置是否应请求将元数据传递给 ``fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`set_fit_request "
+"<maxframe.learn.decomposition.PCA.set_fit_request>`\\ \\(\\*\\[\\, "
+"execute\\, run\\_kwargs\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``inverse_transform`` method."
+msgstr "配置是否应请求将元数据传递给 ``inverse_transform`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`set_inverse_transform_request "
+"<maxframe.learn.decomposition.PCA.set_inverse_transform_request>`\\ "
+"\\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid "Set the parameters of this estimator."
+msgstr "设置此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`set_params <maxframe.learn.decomposition.PCA.set_params>`\\ "
+"\\(\\*\\*params\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``score`` method."
+msgstr "配置是否应请求将元数据传递给 ``score`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`set_score_request "
+"<maxframe.learn.decomposition.PCA.set_score_request>`\\ \\(\\*\\[\\, "
+"execute\\, run\\_kwargs\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``transform`` method."
+msgstr "配置是否应请求将元数据传递给 ``transform`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`set_transform_request "
+"<maxframe.learn.decomposition.PCA.set_transform_request>`\\ \\(\\*\\[\\, "
+"execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid "Apply dimensionality reduction to X."
+msgstr "对 X 应用降维。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.decomposition.PCA.rst:33:<autosummary>:1
+msgid ""
+":py:obj:`transform <maxframe.learn.decomposition.PCA.transform>`\\ "
+"\\(X\\[\\, session\\, execute\\, run\\_kwargs\\]\\)"
+msgstr ""
+

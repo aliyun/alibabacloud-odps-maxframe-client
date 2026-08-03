@@ -19,6 +19,7 @@ from maxframe.serialization import (
     maxframe_objects,
     numpy,
     pandas,
+    polars,
     scipy,
     serializables,
 )
@@ -36,4 +37,4 @@ from maxframe.serialization.core import (
 )
 from maxframe.serialization.exception import RemoteException
 
-del arrow, blob, exception, maxframe_objects, numpy, pandas, scipy
+del arrow, blob, exception, maxframe_objects, numpy, pandas, polars, scipy

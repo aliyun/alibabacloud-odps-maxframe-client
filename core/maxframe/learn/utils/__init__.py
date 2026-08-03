@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from maxframe.learn.utils.core import convert_to_tensor_or_dataframe
+from maxframe.learn.utils.extmath import randomized_svd, svd_flip
 from maxframe.learn.utils.multiclass import check_classification_targets
 from maxframe.learn.utils.odpsio import read_odps_model, read_odps_resource
 from maxframe.learn.utils.shuffle import shuffle

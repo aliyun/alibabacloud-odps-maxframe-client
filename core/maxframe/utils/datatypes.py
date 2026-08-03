@@ -116,6 +116,25 @@ if pa:
             pass
     _arrow_type_constructors[ArrowBlobType.type_str] = ArrowBlobType
 
+try:
+    from maxframe.lib.dtypes_extension.vector import ArrowVectorType
+except ImportError:
+    ArrowVectorType = None
+
+if ArrowVectorType is not None:
+    # Register constructor for "maxframe.vector(element_type, dimension)"
+    # The parser tokenizes "maxframe.vector" as a dotted name via the "." handling
+    # When called with parenthesized args like maxframe.vector(float,128),
+    # combined=False means args are unpacked with *args
+    def _make_arrow_vector_type(*args):
+        element_type = args[0]
+        if not isinstance(element_type, pa.DataType):
+            element_type = pa.type_for_alias(str(element_type))
+        dimension = args[1] if isinstance(args[1], int) else int(args[1])
+        return ArrowVectorType(element_type, dimension)
+
+    _arrow_type_constructors["maxframe.vector"] = _make_arrow_vector_type
+
 
 def arrow_type_from_str(type_str: str) -> pa.DataType:
     """

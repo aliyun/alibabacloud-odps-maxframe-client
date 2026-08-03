@@ -34,6 +34,11 @@ from maxframe.utils.datatypes import (
     wrap_arrow_dtype,
 )
 
+try:
+    from maxframe.lib.dtypes_extension.vector import ArrowVectorType
+except ImportError:
+    ArrowVectorType = None
+
 
 def test_arrow_type_from_string():
     def _assert_arrow_type_convert(tp: pa.DataType) -> None:
@@ -55,6 +60,11 @@ def test_arrow_type_from_string():
     _assert_arrow_type_convert(
         pa.struct([("key", pa.string()), ("value", pa.list_(pa.int64()), False)])
     )
+    _assert_arrow_type_convert(ArrowBlobType())
+
+    if ArrowVectorType is not None:
+        _assert_arrow_type_convert(ArrowVectorType(pa.float32(), 128))
+        _assert_arrow_type_convert(ArrowVectorType(pa.float64(), 256))
 
 
 @pytest.mark.parametrize(
@@ -290,3 +300,23 @@ def test_validate_and_align_output():
     # Test 19: check_dtype_compatibility with non-blob to blob should fail
     with pytest.raises(OutputDtypeMismatchError):
         check_dtype_compatibility(np.dtype("int64"), blob_dtype, "int_col")
+
+
+@pytest.mark.skipif(
+    ArrowVectorType is None,
+    reason="need ArrowVectorType support to run this test",
+)
+@pytest.mark.parametrize(
+    "element_type,dimension",
+    [
+        (pa.float32(), 128),
+        (pa.float64(), 256),
+    ],
+)
+def test_arrow_type_from_str_vector(element_type, dimension):
+    vector_type = ArrowVectorType(element_type, dimension)
+    type_str = str(vector_type)
+    result = arrow_type_from_str(type_str)
+    assert isinstance(result, ArrowVectorType)
+    assert result.element_type == element_type
+    assert result.dimension == dimension

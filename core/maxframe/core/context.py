@@ -12,10 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextvars
 from abc import ABC, abstractmethod
-from typing import Any, List
+from typing import Any, List, Optional
 
 from maxframe.utils import classproperty
+
+_context_stack: contextvars.ContextVar[Optional[list]] = contextvars.ContextVar(
+    "maxframe_context_stack", default=None
+)
+
+
+def _get_context_stack() -> list:
+    stack = _context_stack.get(None)
+    if stack is None:
+        stack = []
+        _context_stack.set(stack)
+    return stack
+
+
+def reset_context():
+    """Reset context stack for the current task. Intended for tests only."""
+    _context_stack.set(None)
 
 
 class Context(ABC):
@@ -23,8 +41,6 @@ class Context(ABC):
     Context that providing API that can be
     used inside `tile` and `execute`.
     """
-
-    all_contexts = []
 
     @abstractmethod
     def get_session_id(self) -> str:
@@ -92,19 +108,21 @@ class Context(ABC):
         """
 
     def __enter__(self):
-        Context.all_contexts.append(self)
+        _get_context_stack().append(self)
+        return self
 
     def __exit__(self, *_):
-        Context.all_contexts.pop()
+        _get_context_stack().pop()
 
     @classproperty
-    def current(cls):
-        return cls.all_contexts[-1] if cls.all_contexts else None
+    def current(cls) -> Optional["Context"]:
+        stack = _context_stack.get(None)
+        return stack[-1] if stack else None
 
 
-def set_context(context: Context):
-    Context.all_contexts.append(context)
+def set_context(context: "Context"):
+    _get_context_stack().append(context)
 
 
-def get_context() -> Context:
+def get_context() -> Optional["Context"]:
     return Context.current

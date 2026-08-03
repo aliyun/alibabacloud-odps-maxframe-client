@@ -191,6 +191,30 @@ def test_simple_run_dataframe(start_mock_session):
     ensure_table_deleted(odps_entry, build_temp_table_name(start_mock_session, key))
 
 
+def test_execute_already_executed_no_submit(start_mock_session):
+    pd_df = pd.DataFrame(np.random.rand(10, 5), columns=list("ABCDE"))
+    df = md.DataFrame(pd_df)
+    df["F"] = df["A"] + df["B"]
+
+    executed = df.execute()
+    result = executed.fetch()
+
+    pd_result = pd_df.copy()
+    pd_result["F"] = pd_result["A"] + pd_result["B"]
+    pd.testing.assert_frame_equal(pd_result, result)
+
+    # Re-executing an already-executed tileable should not submit to the
+    # service. Patch submit_dag to ensure it is not called.
+    with mock.patch(
+        "maxframe_client.clients.framedriver.FrameDriverClient.submit_dag"
+    ) as mock_submit:
+        re_executed = executed.execute()
+        re_result = re_executed.fetch()
+        assert mock_submit.call_count == 0
+
+    pd.testing.assert_frame_equal(pd_result, re_result)
+
+
 def test_run_and_fetch_slice(start_mock_session):
     pd_df = pd.DataFrame(np.random.rand(1000, 5), columns=list("ABCDE"))
     df = md.DataFrame(pd_df)
@@ -322,6 +346,21 @@ def test_create_session_with_options(framedriver_app):  # noqa: F811
         options.session.max_alive_seconds = old_value
         if session is not None:
             session.destroy()
+
+
+@pytest.mark.parametrize("schema_enabled", [False, True])
+def test_settings_upload_uses_odps_schema(
+    schema_enabled,
+):
+    odps_entry = mock.Mock(quota_name=None, schema=None)
+    odps_entry.is_schema_namespace_enabled.return_value = schema_enabled
+    caller = MaxFrameRestCaller(odps_entry, None)
+
+    with option_context({"session.enable_schema": None}):
+        settings = caller.get_settings_to_upload()
+
+    assert settings["session.enable_schema"] is schema_enabled
+    assert settings["session.default_schema"] == "default"
 
 
 def test_run_and_fetch_series(start_mock_session):

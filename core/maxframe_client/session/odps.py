@@ -90,6 +90,7 @@ from maxframe_client.fetcher import get_fetcher_cls
 from maxframe_client.session.consts import (
     DEBUG_MODE_LOCAL,
     EMPTY_RESPONSE_RETRY_COUNT,
+    MAXFRAME_CANCEL_TIMEOUT,
     RESTFUL_SESSION_INSECURE_SCHEME,
     RESTFUL_SESSION_SECURE_SCHEME,
 )
@@ -142,6 +143,8 @@ class MaxFrameServiceCaller(metaclass=abc.ABCMeta):
             sql_settings.get("odps.sql.allow.namespace.schema") or "false"
         ):
             enable_schema = True
+        if enable_schema is None and odps_entry is not None:
+            enable_schema = odps_entry.is_schema_namespace_enabled()
 
         mf_settings = dict(options.to_dict(remote_only=True).items())
         mf_settings["sql.settings"] = sql_settings
@@ -513,6 +516,22 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             self, tileables, tileable_to_copied
         )
 
+        # If all tileables in the graph are Fetch ops, there is nothing to
+        # submit to the service. Just attach the session so subsequent fetch()
+        # calls can resolve the tileables from _tileable_to_infos.
+        if all(isinstance(t.op, Fetch) for t in tileable_graph):
+
+            async def _noop():
+                pass
+
+            return ExecutionInfo(
+                asyncio.create_task(_noop()),
+                Progress(value=1.0),
+                Profiling(),
+                asyncio.get_running_loop(),
+                to_execute_tileables,
+            )
+
         # In debug mode, always use local execution
         if self._debug_mode == DEBUG_MODE_LOCAL or self._is_local_executable(
             tileable_graph
@@ -630,8 +649,26 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             except asyncio.CancelledError:
                 dag_info = await self.ensure_async_call(self._caller.cancel_dag, dag_id)
                 self.display_messages(dag_info.display_messages)
-                if dag_info.status != ExecutionStatus.CANCELLED:  # pragma: no cover
+
+                cancel_check_start = time.monotonic()
+                delay_interval = 0.1
+                while (
+                    time.monotonic() - cancel_check_start < MAXFRAME_CANCEL_TIMEOUT
+                    and not dag_info.status.is_cancel_started()
+                ):
+                    await asyncio.sleep(delay_interval)
+                    dag_info = await self.ensure_async_call(
+                        self._caller.get_dag_info, dag_id
+                    )
+                    delay_interval = min(delay_interval * 2, self._pull_interval)
+
+                if not dag_info.status.is_cancel_started():  # pragma: no cover
+                    logger.warning(
+                        f"Status of DAG {dag_id} is {dag_info.status.name}. You may need to cancel your job "
+                        "manually or stop server directly."
+                    )
                     raise
+
             finally:
                 if dag_info is not None:
                     if dag_info.status == ExecutionStatus.SUCCEEDED:

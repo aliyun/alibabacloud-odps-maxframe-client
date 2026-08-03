@@ -159,6 +159,7 @@ class CategoricalSerializer(Serializer):
 
 
 _TYPE_CHAR_INTERVAL_ARRAY = "I"
+_TYPE_CHAR_MASKED_ARRAY = "M"
 
 
 class ArraySerializer(Serializer):
@@ -176,6 +177,12 @@ class ArraySerializer(Serializer):
                 data_parts = [obj.tolist()]
             else:
                 data_parts = [obj.to_numpy().tolist()]
+        elif hasattr(obj, "_data") and hasattr(obj, "_mask"):
+            # Masked extension arrays (Int8/16/32/64, UInt8/16/32/64,
+            # Float32/64, boolean): _data holds raw values with sentinel
+            # fill at masked positions, _mask indicates nulls.
+            ser_type = _TYPE_CHAR_MASKED_ARRAY
+            data_parts = [getattr(obj, "_data"), getattr(obj, "_mask")]
         elif hasattr(obj, "_data"):
             data_parts = [getattr(obj, "_data")]
         else:
@@ -186,6 +193,10 @@ class ArraySerializer(Serializer):
         if serialized[0] == _TYPE_CHAR_INTERVAL_ARRAY:
             dtype, left, right = subs
             return IntervalArray.from_arrays(left, right, dtype=dtype)
+        elif serialized[0] == _TYPE_CHAR_MASKED_ARRAY:
+            dtype, data, mask = subs
+            arr_type = dtype.construct_array_type()
+            return arr_type(data, mask)
         else:
             dtype, data = subs
             return pd.array(data, dtype)

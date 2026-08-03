@@ -18,7 +18,7 @@ import pandas as pd
 from maxframe import opcodes
 from maxframe.core import OutputType
 from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
-from maxframe.dataframe.utils import parse_index, validate_axis
+from maxframe.dataframe.utils import gen_unknown_index_value, validate_axis
 from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
@@ -56,7 +56,9 @@ class DataFrameDropNA(DataFrameOperator, DataFrameOperatorMixin):
         new_shape[0] = np.nan
 
         params = df.params.copy()
-        params["index_value"] = parse_index(None, df.key, df.index_value.key)
+        params["index_value"] = gen_unknown_index_value(
+            df.index_value, df.key, normalize_range_index=True
+        )
         params["shape"] = tuple(new_shape)
         return self.new_tileable([df], **params)
 

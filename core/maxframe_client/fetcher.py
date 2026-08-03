@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,11 +35,14 @@ from maxframe.io.odpsio import (
     TunnelTableIO,
     arrow_to_pandas,
     build_dataframe_table_meta,
+    build_liteframe_table_meta,
     odps_schema_to_pandas_dtypes,
 )
+from maxframe.liteframe.core import LITEFRAME_TYPE
 from maxframe.protocol import (
     ConstantResultInfo,
     DataFrameTableMeta,
+    LiteFrameTableMeta,
     ODPSTableResultInfo,
     ODPSVolumeResultInfo,
     ResultInfo,
@@ -268,10 +271,11 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
 
     def _read_single_source(
         self,
-        table_meta: DataFrameTableMeta,
+        table_meta: Union[DataFrameTableMeta, LiteFrameTableMeta],
         info: ODPSTableResultInfo,
         indexes: List[Union[None, Integral, slice]],
         shape: Tuple[Optional[int], ...],
+        tileable: Optional[TileableType] = None,
     ):
         table_io = ODPSTableIO(self._odps_entry)
         read_kw = {}
@@ -290,13 +294,26 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
             elif row_sel is not None:  # pragma: no cover
                 raise NotImplementedError(f"Does not support row index {row_sel!r}")
 
-            if isinstance(col_sel, (int, slice)):
-                data_cols = table_meta.table_column_names[col_sel]
-                if isinstance(col_sel, int):
-                    data_cols = [data_cols]
-                read_kw["columns"] = table_meta.table_index_column_names + data_cols
-            elif col_sel is not None:  # pragma: no cover
-                raise NotImplementedError(f"Does not support column index {row_sel!r}")
+            if col_sel is not None and not isinstance(col_sel, (int, slice)):
+                raise NotImplementedError(f"Does not support column index {col_sel!r}")
+
+            # For LiteFrame, use tileable's columns directly (no pandas-style index columns)
+            if isinstance(table_meta, LiteFrameTableMeta):
+                if isinstance(col_sel, (int, slice)):
+                    if tileable is not None and hasattr(tileable, "columns"):
+                        columns = list(tileable.columns)
+                        data_cols = columns[col_sel]
+                        if isinstance(col_sel, int):
+                            data_cols = [data_cols]
+                        read_kw["columns"] = data_cols
+                    # If tileable not provided, read all columns (will use dtypes from table)
+            else:
+                # For DataFrame, use table_meta's column structure
+                if isinstance(col_sel, (int, slice)):
+                    data_cols = table_meta.table_column_names[col_sel]
+                    if isinstance(col_sel, int):
+                        data_cols = [data_cols]
+                    read_kw["columns"] = table_meta.table_index_column_names + data_cols
 
         with table_io.open_reader(
             info.full_table_name, info.partition_specs, **read_kw
@@ -321,10 +338,23 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
         info: ODPSTableResultInfo,
         indexes: _FetchIndexType,
     ) -> PandasObjectTypes:
-        table_meta = build_dataframe_table_meta(tileable)
+        # Use build_liteframe_table_meta for LiteFrame objects
+        if isinstance(tileable, LITEFRAME_TYPE):
+            table_meta = build_liteframe_table_meta(tileable)
+        else:
+            table_meta = build_dataframe_table_meta(tileable)
         arrow_table: pa.Table = await self.to_thread(
-            self._read_single_source, table_meta, info, indexes, tileable.shape
+            self._read_single_source,
+            table_meta,
+            info,
+            indexes,
+            tileable.shape,
+            tileable,
         )
+        # For LiteFrame, convert arrow table to pandas DataFrame
+        # The pandas DataFrame will be converted to polars by LiteFrame logic
+        if isinstance(table_meta, LiteFrameTableMeta):
+            return arrow_table.to_pandas()
         return arrow_to_pandas(arrow_table, table_meta)
 
     def estimate_size(

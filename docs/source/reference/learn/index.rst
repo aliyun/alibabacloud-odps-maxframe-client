@@ -20,6 +20,7 @@ Note that some experimental features may undergo changes in future releases.
     cluster
     datasets
     lightgbm
+    linear_model
     llm
     metrics
     model_selection

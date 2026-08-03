@@ -21,18 +21,14 @@ from maxframe import opcodes
 from maxframe.core import OutputType
 from maxframe.dataframe.core import DataFrame
 from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
-from maxframe.dataframe.utils import (
-    copy_func_scheduling_hints,
-    gen_unknown_index_value,
-    parse_index,
-)
+from maxframe.dataframe.utils import gen_unknown_index_value, parse_index
 from maxframe.serialization.serializables import (
     BoolField,
     DictField,
     FunctionField,
     TupleField,
 )
-from maxframe.udf import BuiltinFunction, MarkedFunction
+from maxframe.udf import BuiltinFunction, MarkedFunction, copy_func_scheduling_hints
 from maxframe.utils import make_dtypes
 
 

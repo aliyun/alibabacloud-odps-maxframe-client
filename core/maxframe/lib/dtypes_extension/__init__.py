@@ -29,3 +29,8 @@ from maxframe.lib.dtypes_extension.dtypes import (
     list_,
     struct_,
 )
+
+try:
+    from maxframe.lib.dtypes_extension.vector import ArrowVectorType
+except ImportError:
+    ArrowVectorType = None

@@ -129,6 +129,7 @@ from maxframe.utils.utils import (
     copy_tileables,
     dataslots,
     estimate_pandas_size,
+    estimate_polars_size,
     estimate_table_size,
     extract_class_name,
     format_timeout_params,

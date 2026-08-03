@@ -29,7 +29,7 @@ from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
 from maxframe.dataframe.utils import is_decimal128_dtype
 from maxframe.lib.dtypes_extension import ArrowBlobType, ArrowDtype, ArrowExtensionArray
 from maxframe.lib.version import parse as parse_version
-from maxframe.protocol import DataFrameTableMeta
+from maxframe.protocol import DataFrameTableMeta, LiteFrameTableMeta
 from maxframe.tensor.core import TENSOR_TYPE
 from maxframe.utils import build_temp_table_name, pd_release_version, wrap_arrow_dtype
 
@@ -108,6 +108,14 @@ if hasattr(odps_types, "blob"):
     _odps_type_to_arrow[odps_types.blob] = ArrowBlobType()
 
 _based_for_pandas_pa_types = (pa.ListType, pa.MapType, pa.StructType)
+
+if hasattr(odps_types, "Vector"):
+    from maxframe.lib.dtypes_extension.vector import ArrowVectorType
+
+    _odps_has_vector = True
+else:
+    ArrowVectorType = None
+    _odps_has_vector = False
 
 
 def _cast_column_as_decimal(series: pd.Series, target_dtype: ArrowDtype) -> pd.Series:
@@ -234,6 +242,9 @@ def is_based_for_pandas_dtype(arrow_type: pa.DataType) -> bool:
     Check whether the arrow type is based for one pandas data type.
     If true, we should make sure the environment support ArrowDtype.
     """
+    if _odps_has_vector and isinstance(arrow_type, ArrowVectorType):
+        return True
+
     if not isinstance(arrow_type, _based_for_pandas_pa_types):
         return False
 
@@ -263,6 +274,11 @@ def arrow_type_to_odps_type(
 ) -> odps_types.DataType:
     if arrow_type in _arrow_to_odps_types:
         return _arrow_to_odps_types[arrow_type]
+    elif _odps_has_vector and isinstance(arrow_type, ArrowVectorType):
+        element_odps_type = arrow_type_to_odps_type(
+            arrow_type.element_type, col_name, unknown_as_string
+        )
+        return odps_types.Vector(element_odps_type, arrow_type.dimension)
     elif isinstance(arrow_type, pa.ListType):
         return odps_types.Array(
             arrow_type_to_odps_type(arrow_type.value_type, col_name, unknown_as_string)
@@ -337,6 +353,11 @@ def odps_type_to_arrow_type(
                 )
         elif isinstance(odps_type, (odps_types.Varchar, odps_types.Char)):
             col_type = pa.string()
+        elif _odps_has_vector and isinstance(odps_type, odps_types.Vector):
+            element_arrow_type = odps_type_to_arrow_type(
+                odps_type.element_type, col_name
+            )
+            col_type = ArrowVectorType(element_arrow_type, odps_type.dimension)
         else:
             raise TypeError(
                 "Unsupported type {}, column name is {}".format(odps_type, col_name)
@@ -692,6 +713,45 @@ def build_dataframe_table_meta(
         pd_column_dtypes=pd_dtypes,
         pd_column_level_names=column_index_names,
         pd_index_dtypes=pd_index_dtypes,
+    )
+
+
+def build_liteframe_table_meta(
+    liteframe_obj: Any, session_id: str = None
+) -> LiteFrameTableMeta:
+    """Build LiteFrameTableMeta from LiteFrame object.
+
+    For now, uses dtypes from LiteFrame itself for table columns and types.
+    The dtypes field is optional to support dynamic columns in the future.
+
+    Parameters
+    ----------
+    liteframe_obj : LiteFrame or LiteFrameData
+        LiteFrame object to build metadata from
+    session_id : str, optional
+        Session ID for building table name
+
+    Returns
+    -------
+    LiteFrameTableMeta
+        Metadata for LiteFrame table
+    """
+    # Import here to avoid circular dependency
+    if isinstance(liteframe_obj, TILEABLE_TYPE):
+        if not session_id:
+            table_name = _TEMP_TABLE_PREFIX + str(liteframe_obj.key)
+        else:
+            table_name = build_temp_table_name(session_id, liteframe_obj.key)
+    else:
+        table_name = None
+
+    # Use dtypes from LiteFrame itself for table columns and types
+    # Leave dtypes as None for future dynamic columns support
+    dtypes = liteframe_obj.dtypes if hasattr(liteframe_obj, "dtypes") else None
+
+    return LiteFrameTableMeta(
+        table_name=table_name,
+        dtypes=dtypes,
     )
 
 

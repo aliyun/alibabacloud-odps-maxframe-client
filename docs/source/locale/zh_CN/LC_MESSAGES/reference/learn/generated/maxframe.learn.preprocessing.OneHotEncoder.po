@@ -23,3 +23,384 @@ msgstr ""
 msgid "maxframe.learn.preprocessing.OneHotEncoder"
 msgstr ""
 
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:1 of
+msgid "Encode categorical features as a one-hot numeric array."
+msgstr "将分类特征编码为 one-hot 数值数组。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:3 of
+msgid ""
+"The input to this transformer should be an array-like of integers or "
+"strings, denoting the values taken on by categorical (discrete) features."
+" The features are encoded using a one-hot (aka 'one-of-K' or 'dummy') "
+"encoding scheme. This creates a binary column for each category and "
+"returns a sparse matrix or dense array (depending on the "
+"``sparse_output`` parameter)."
+msgstr ""
+"此转换器的输入应该是整数或字符串的类数组，表示分类（离散）特征所采用的值"
+"。特征使用 one-hot（也称为 'one-of-K' 或 'dummy'）编码方案进行编码。这会"
+"为每个类别创建一个二进制列，并返回稀疏矩阵或密集数组（取决于 ``sparse_"
+"output`` 参数）。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:10 of
+msgid ""
+"By default, the input is expected to be an array of integers or strings. "
+"If categorical features are represented as numeric data, you can use "
+"``categories='auto'`` to infer the categories from the training data."
+msgstr ""
+"默认情况下，输入应为整数或字符串数组。如果分类特征表示为数值数据，您可以"
+"使用 ``categories='auto'`` 从训练数据中推断类别。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:14 of
+msgid ""
+"Categories (unique values) per feature:  - 'auto' : Determine categories "
+"automatically from the training data. - list : ``categories[i]`` holds "
+"the categories expected in the ith   column. The passed categories should"
+" not mix strings and numeric   values within a single feature, and should"
+" be sorted in case of   numeric values."
+msgstr ""
+"每个特征的类别（唯一值）： - 'auto' : 从训练数据中自动确定类别。 - list :"
+" ``categories[i]`` 包含第 i 列中预期的类别。传递的类别不应在单个特征中"
+"混合字符串和数值，并且在数值情况下应进行排序。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:14 of
+msgid "Categories (unique values) per feature:"
+msgstr "每个特征的类别（唯一值）："
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:16 of
+msgid "'auto' : Determine categories automatically from the training data."
+msgstr "'auto' : 从训练数据中自动确定类别。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:17 of
+msgid ""
+"list : ``categories[i]`` holds the categories expected in the ith column."
+" The passed categories should not mix strings and numeric values within a"
+" single feature, and should be sorted in case of numeric values."
+msgstr ""
+"list : ``categories[i]`` 包含第 i 列中预期的类别。传递的类别不应在单个"
+"特征中混合字符串和数值，并且在数值情况下应进行排序。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:22 of
+msgid ""
+"Specifies a methodology to use to drop one of the categories per feature."
+" This is useful in situations where perfectly collinear features cause "
+"problems, such as when feeding the resulting data into an unregularized "
+"linear regression model.  However, dropping one category breaks the "
+"symmetry of the original representation and can therefore induce a bias "
+"in downstream models, for instance for penalized linear classification or"
+" regression models.  - None : retain all features (the default). - "
+"'first' : drop the first category in each feature. - 'if_binary' : drop "
+"the first category in each feature with two   categories. Features with 1"
+" or more than 2 categories are   left intact. - array : ``drop[i]`` is "
+"the category in feature ``X[:, i]`` that   should be dropped."
+msgstr ""
+"指定用于删除每个特征中一个类别的方法。在完全共线性特征引起问题的情况下，"
+"这很有用，例如将结果数据输入未正则化的线性回归模型时。但是，删除一个类别"
+"会破坏原始表示的对称性，因此可能在下游模型中引入偏差，例如对于惩罚线性"
+"分类或回归模型。 - None : 保留所有特征（默认值）。 - 'first' : 删除每个"
+"特征中的第一个类别。 - 'if_binary' : 删除每个有两个类别的特征中的第一个"
+"类别。具有 1 个或超过 2 个类别的特征保持不变。 - array : ``drop[i]`` 是"
+"特征 ``X[:, i]`` 中应该删除的类别。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:22 of
+msgid ""
+"Specifies a methodology to use to drop one of the categories per feature."
+" This is useful in situations where perfectly collinear features cause "
+"problems, such as when feeding the resulting data into an unregularized "
+"linear regression model."
+msgstr ""
+"指定用于删除每个特征中一个类别的方法。在完全共线性特征引起问题的情况下，"
+"这很有用，例如将结果数据输入未正则化的线性回归模型时。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:27 of
+msgid ""
+"However, dropping one category breaks the symmetry of the original "
+"representation and can therefore induce a bias in downstream models, for "
+"instance for penalized linear classification or regression models."
+msgstr ""
+"但是，删除一个类别会破坏原始表示的对称性，因此可能在下游模型中引入偏差，"
+"例如对于惩罚线性分类或回归模型。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:31 of
+msgid "None : retain all features (the default)."
+msgstr "None : 保留所有特征（默认值）。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:32 of
+msgid "'first' : drop the first category in each feature."
+msgstr "'first' : 删除每个特征中的第一个类别。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:33 of
+msgid ""
+"'if_binary' : drop the first category in each feature with two "
+"categories. Features with 1 or more than 2 categories are left intact."
+msgstr ""
+"'if_binary' : 删除每个有两个类别的特征中的第一个类别。具有 1 个或超过 2 "
+"个类别的特征保持不变。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:36 of
+msgid ""
+"array : ``drop[i]`` is the category in feature ``X[:, i]`` that should be"
+" dropped."
+msgstr "array : ``drop[i]`` 是特征 ``X[:, i]`` 中应该删除的类别。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:39 of
+msgid "When True, returns a sparse matrix. When False, returns a dense array."
+msgstr "当为 True 时，返回稀疏矩阵。当为 False 时，返回密集数组。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:41 of
+msgid "Desired dtype of output."
+msgstr "输出的期望数据类型。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:43 of
+msgid ""
+"Specifies the way unknown categories are handled during "
+":meth:`transform`.  - 'error' : Raise an error if an unknown category is "
+"encountered. - 'ignore' : When an unknown category is encountered, the "
+"resulting   one-hot encoded columns for this feature will be all zeros."
+msgstr ""
+"指定在 :meth:`transform` 期间处理未知类别的方式。 - 'error' : 遇到未知"
+"类别时引发错误。 - 'ignore' : 遇到未知类别时，该特征的结果 one-hot 编码列"
+"将全部为零。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:43 of
+msgid "Specifies the way unknown categories are handled during :meth:`transform`."
+msgstr "指定在 :meth:`transform` 期间处理未知类别的方式。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:45 of
+msgid "'error' : Raise an error if an unknown category is encountered."
+msgstr "'error' : 遇到未知类别时引发错误。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:46 of
+msgid ""
+"'ignore' : When an unknown category is encountered, the resulting one-hot"
+" encoded columns for this feature will be all zeros."
+msgstr "'ignore' : 遇到未知类别时，该特征的结果 one-hot 编码列将全部为零。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:52 of
+msgid ""
+"The categories of each feature determined during fitting (in order of the"
+" features in X and corresponding with the output of ``transform``). This "
+"includes the category specified in ``drop`` (if any)."
+msgstr ""
+"拟合期间确定的每个特征的类别（按照 X 中特征的顺序，并与 ``transform`` 的"
+"输出相对应）。这包括 ``drop`` 中指定的类别（如果有）。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder of
+msgid "type"
+msgstr "类型"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:57 of
+msgid "list of arrays"
+msgstr "数组列表"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:63 of
+msgid ""
+"``drop_idx_[i]`` is the index in ``categories_[i]`` of the category to be"
+" dropped for each feature."
+msgstr "``drop_idx_[i]`` 是每个特征要删除的类别在 ``categories_[i]`` 中的索引。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:65 of
+msgid ""
+"``drop_idx_[i] = None`` if no category is to be dropped from the feature "
+"with index ``i``, e.g. when `drop='if_binary'` and the feature isn't "
+"binary."
+msgstr ""
+"如果索引为 ``i`` 的特征不需要删除任何类别，则 ``drop_idx_[i] = None``，"
+"例如当 `drop='if_binary'` 且特征不是二元的时。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:68 of
+msgid "``drop_idx_ = None`` if all the transformed features will be retained."
+msgstr "如果将保留所有转换后的特征，则 ``drop_idx_ = None``。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:71 of
+msgid "array of shape (n_features,)"
+msgstr "形状为 (n_features,) 的数组"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:75 of
+msgid "Number of features seen during :term:`fit`."
+msgstr "在 :term:`fit` 期间看到的特征数量。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:77 of
+msgid "int"
+msgstr ""
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:81 of
+msgid ":py:obj:`LabelEncoder`"
+msgstr ""
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:82 of
+msgid "Encode target labels with value between 0 and n_classes-1."
+msgstr "将目标标签编码为 0 到 n_classes-1 之间的值。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:84 of
+msgid ":py:obj:`LabelBinarizer`"
+msgstr ""
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:85 of
+msgid "Binarize labels in a one-vs-all fashion."
+msgstr "以一对其余的方式将标签二值化。"
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:88 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.learn.preprocessing._encoders.OneHotEncoder:89 of
+msgid ""
+"Given a dataset with two features, we let the encoder find the unique "
+"values per feature and transform the data to a binary one-hot encoding."
+msgstr ""
+"给定一个具有两个特征的数据集，我们让编码器找到每个特征的唯一值，并将数据"
+"转换为二进制独热编码。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`__init__ "
+"<maxframe.learn.preprocessing.OneHotEncoder.__init__>`\\ \\(\\*\\[\\, "
+"categories\\, drop\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`execute <maxframe.learn.preprocessing.OneHotEncoder.execute>`\\ "
+"\\(\\[session\\, run\\_kwargs\\, extra\\_tileables\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`fetch <maxframe.learn.preprocessing.OneHotEncoder.fetch>`\\ "
+"\\(\\[session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`fit <maxframe.learn.preprocessing.OneHotEncoder.fit>`\\ "
+"\\(X\\[\\, y\\, execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid "Fit OneHotEncoder to X."
+msgstr "将 OneHotEncoder 拟合到 X。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`fit_transform "
+"<maxframe.learn.preprocessing.OneHotEncoder.fit_transform>`\\ \\(X\\[\\, "
+"y\\, execute\\, session\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid "Fit OneHotEncoder to X, then transform X."
+msgstr "将 OneHotEncoder 拟合到 X，然后转换 X。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`get_feature_names_out "
+"<maxframe.learn.preprocessing.OneHotEncoder.get_feature_names_out>`\\ "
+"\\(\\[input\\_features\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid "Get output feature names for transformation."
+msgstr "获取转换的输出特征名称。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`get_metadata_routing "
+"<maxframe.learn.preprocessing.OneHotEncoder.get_metadata_routing>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid "Get metadata routing of this object."
+msgstr "获取此对象的元数据路由。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`get_params "
+"<maxframe.learn.preprocessing.OneHotEncoder.get_params>`\\ "
+"\\(\\[deep\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid "Get parameters for this estimator."
+msgstr "获取此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`inverse_transform "
+"<maxframe.learn.preprocessing.OneHotEncoder.inverse_transform>`\\ "
+"\\(X\\[\\, execute\\, session\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid "Convert the data back to the original representation."
+msgstr "将数据转换回原始表示。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`set_fit_request "
+"<maxframe.learn.preprocessing.OneHotEncoder.set_fit_request>`\\ "
+"\\(\\*\\[\\, execute\\, run\\_kwargs\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``fit`` method."
+msgstr "配置是否应请求将元数据传递给 ``fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`set_inverse_transform_request "
+"<maxframe.learn.preprocessing.OneHotEncoder.set_inverse_transform_request>`\\"
+" \\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``inverse_transform`` method."
+msgstr "配置是否应请求将元数据传递给 ``inverse_transform`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`set_params "
+"<maxframe.learn.preprocessing.OneHotEncoder.set_params>`\\ "
+"\\(\\*\\*params\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid "Set the parameters of this estimator."
+msgstr "设置此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`set_transform_request "
+"<maxframe.learn.preprocessing.OneHotEncoder.set_transform_request>`\\ "
+"\\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``transform`` method."
+msgstr "配置是否应请求将元数据传递给 ``transform`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid ""
+":py:obj:`transform "
+"<maxframe.learn.preprocessing.OneHotEncoder.transform>`\\ \\(X\\[\\, "
+"execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.preprocessing.OneHotEncoder.rst:29:<autosummary>:1
+msgid "Transform X using one-hot encoding."
+msgstr "使用独热编码转换 X。"
+

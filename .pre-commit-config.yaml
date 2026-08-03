@@ -1,5 +1,5 @@
 minimum_pre_commit_version: 2.15.0
-exclude: ^LICENSES/|\.(html|csv|svg|png|gif|jpg|jpeg|ico|woff2)$
+exclude: ^LICENSES/|\.(html|csv|svg|png|gif|jpg|jpeg|ico|woff2|doc|docx|xls|xlsx|ppt|pptx)$
 # reserve "manual" for relatively slow hooks which we still want to run in CI
 default_stages: [
   commit,
@@ -28,6 +28,7 @@ repos:
     name: end-of-file-fixer
     entry: end-of-file-fixer
     language: python
+    exclude: \.po$
     additional_dependencies: [pre-commit-hooks==4.4.0]
   - id: trailing-whitespace
     name: trailing-whitespace
@@ -48,7 +49,7 @@ repos:
     language: python
     files: '^core/.*'
     exclude: '(core/maxframe/lib/.*|core/.*/_internal.*)'
-    types_or: [python, pyi]
+    types_or: [python, cython, pyi]
     additional_dependencies: [pyyaml]
 - repo: local
   hooks:
@@ -74,6 +75,7 @@ repos:
       additional_dependencies: [
         'flake8==5.0.4; python_version<"3.8"',
         'flake8==6.1.0; python_version>="3.8"',
+        'flake8-type-checking==2.9.1; python_version>="3.8"',
       ]
 - repo: local
   hooks:

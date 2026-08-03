@@ -36,17 +36,6 @@ msgstr ""
 "在使用MaxFrame之前，您需要设置一个MaxCompute项目。请查看`此处 <https://"
 "www.alibabacloud.com/zh/product/maxcompute>`_获取更多信息。"
 
-#: ../../source/getting_started/installation.rst:11
-msgid ""
-"Currently MaxFrame is under trial. If you need to enable MaxFrame for "
-"your MaxCompute project, please `fill the form to apply for trial "
-"<https://survey.aliyun.com/apps/zhiliao/m40AIrxhA?spm=a2c4g.11186623.0.0.a69340f2mJENKJ>`_"
-" here."
-msgstr ""
-"目前MaxFrame正处于试用阶段。如果您需要为您的MaxCompute项目启用MaxFrame，"
-"请`填写表单申请试用 <https://survey.aliyun.com/apps/zhiliao/m40AIrxhA?spm"
-"=a2c4g.11186623.0.0.a69340f2mJENKJ>`_。"
-
 #: ../../source/getting_started/installation.rst:16
 msgid "Install MaxFrame client locally"
 msgstr "在本地安装MaxFrame客户端"
@@ -104,4 +93,3 @@ msgstr ""
 "`MaxCompute Notebook <https://help.aliyun.com/zh/maxcompute/user-guide/"
 "maxcompute-notebook-instruction>`_也提供了MaxFrame包。它还在notebook的"
 "环境变量中提供了MaxCompute账户信息，因此不需要额外提供账户信息。"
-

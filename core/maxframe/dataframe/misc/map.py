@@ -22,9 +22,14 @@ from maxframe import opcodes
 from maxframe.core import EntityData, OutputType
 from maxframe.dataframe.core import SERIES_TYPE
 from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
-from maxframe.dataframe.utils import build_series, copy_func_scheduling_hints
+from maxframe.dataframe.utils import build_series
 from maxframe.serialization.serializables import AnyField, KeyField, StringField
-from maxframe.udf import BuiltinFunction, MarkedFunction, ODPSFunction
+from maxframe.udf import (
+    BuiltinFunction,
+    MarkedFunction,
+    ODPSFunction,
+    copy_func_scheduling_hints,
+)
 from maxframe.utils import make_dtype, quiet_stdio
 
 

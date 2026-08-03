@@ -15,6 +15,7 @@
 from typing import Any, MutableMapping, Union
 
 import numpy as np
+import pandas as pd
 from pandas import DataFrame, Series
 
 from maxframe import opcodes
@@ -28,7 +29,6 @@ from maxframe.dataframe.type_infer import (
 from maxframe.dataframe.utils import (
     build_df,
     build_series,
-    copy_func_scheduling_hints,
     pack_func_args,
     parse_index,
     validate_axis,
@@ -39,7 +39,7 @@ from maxframe.serialization.serializables import (
     DictField,
     TupleField,
 )
-from maxframe.udf import BuiltinFunction, MarkedFunction
+from maxframe.udf import BuiltinFunction, MarkedFunction, copy_func_scheduling_hints
 from maxframe.utils import copy_if_possible, pd_release_version
 
 _with_convert_dtype = pd_release_version < (1, 2, 0)
@@ -118,7 +118,9 @@ class DataFrameTransform(DataFrameOperator, DataFrameOperatorMixin):
 
             if self.call_agg:
                 new_shape[self.axis] = np.nan
-                new_index_value = parse_index(None, (df.key, df.index_value.key))
+                new_index_value = parse_index(
+                    pd.RangeIndex(-1), (df.key, df.index_value.key)
+                )
 
             if dtypes is None:
                 columns_value = None
@@ -345,9 +347,9 @@ def series_transform(
         convert_dtype=convert_dtype,
         args=args,
         kwds=kwargs,
-        output_types=[OutputType.series]
-        if not call_agg and not isinstance(func, list)
-        else None,
+        output_types=(
+            [OutputType.series] if not call_agg and not isinstance(func, list) else None
+        ),
         call_agg=call_agg,
     )
     return op(series, dtype=dtype, name=series.name, skip_infer=skip_infer)

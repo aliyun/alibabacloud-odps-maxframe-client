@@ -34,7 +34,6 @@ from maxframe.dataframe.type_infer import (
 )
 from maxframe.dataframe.utils import (
     build_df,
-    copy_func_scheduling_hints,
     pack_func_args,
     parse_index,
     validate_output_types,
@@ -46,7 +45,7 @@ from maxframe.serialization.serializables import (
     TupleField,
 )
 from maxframe.typing_ import TileableType
-from maxframe.udf import BuiltinFunction, MarkedFunction
+from maxframe.udf import BuiltinFunction, MarkedFunction, copy_func_scheduling_hints
 from maxframe.utils import copy_if_possible, make_dtype, make_dtypes
 from maxframe.utils.functional import check_closure_for_entities
 

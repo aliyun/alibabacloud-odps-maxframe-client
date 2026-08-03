@@ -192,16 +192,20 @@ class LinearClassifierMixin(ClassifierMixin):
 
         X = check_array(X, accept_sparse="csr")
 
-        n_features = self.coef_.shape[1]
+        coef = self.coef_
+        n_features = coef.shape[-1]
         if X.shape[1] != n_features:
             raise ValueError(
                 "X has %d features per sample; expecting %d" % (X.shape[1], n_features)
             )
 
-        scores = mt.dot(X, self.coef_.T) + self.intercept_
+        scores = mt.dot(X, coef.T) + self.intercept_
+        # For binary classification, scores is (n_samples, 1) — flatten to (n_samples,)
+        if scores.ndim > 1 and scores.shape[1] == 1:
+            scores = scores.reshape((-1,))
         return scores
 
-    def predict(self, X):
+    def predict(self, X, execute=False, session=None, run_kwargs=None):
         """
         Predict class labels for samples in X.
 
@@ -216,5 +220,12 @@ class LinearClassifierMixin(ClassifierMixin):
             Predicted class label per sample.
         """
         scores = self.decision_function(X)
-        indices = scores.argmax(axis=1)
-        return self.classes_[indices].execute()
+        if scores.ndim == 1:
+            # Binary case: positive score means class 1
+            indices = (scores > 0).astype(int)
+        else:
+            indices = scores.argmax(axis=1)
+        res = self.classes_[indices]
+        if execute:
+            res.execute(session=session, **(run_kwargs or {}))
+        return res

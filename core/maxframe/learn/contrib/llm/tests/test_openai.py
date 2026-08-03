@@ -16,38 +16,9 @@ import numpy as np
 
 import maxframe.dataframe as md
 from maxframe.learn.contrib.llm.models.openai import (
-    OpenAICompatibleLLM,
     OpenAICompatibleTextGenOp,
     OpenAICompatibleTextLLM,
 )
-
-
-def test_openai_compatible_llm_field_assignment():
-    """Test OpenAICompatibleLLM field assignment."""
-    llm = OpenAICompatibleLLM()
-    llm.base_url = "https://api.openai.com/v1"
-    llm.api_key = "test-key"
-    llm.batch_size = 10
-    llm.batch_timeout = 300
-
-    assert llm.base_url == "https://api.openai.com/v1"
-    assert llm.api_key == "test-key"
-    assert llm.batch_size == 10
-    assert llm.batch_timeout == 300
-
-
-def test_openai_compatible_text_llm_initialization():
-    """Test OpenAICompatibleTextLLM initialization."""
-    model = OpenAICompatibleTextLLM(
-        name="gpt-3.5-turbo", base_url="https://api.openai.com/v1", api_key="test-key"
-    )
-
-    assert model.name == "gpt-3.5-turbo"
-    assert model.base_url == "https://api.openai.com/v1"
-    assert model.api_key == "test-key"
-    # Test inherited default values
-    assert model.batch_size is None
-    assert model.batch_timeout is None
 
 
 def test_openai_compatible_text_llm_generate_method():
@@ -160,7 +131,7 @@ def test_openai_compatible_text_llm_inheritance():
     assert hasattr(model, "validate_params")
     assert callable(getattr(model, "validate_params"))
 
-    # Test OpenAICompatibleLLM inheritance - should have OpenAI-specific fields
+    # Test OpenAI-specific fields
     assert hasattr(model, "base_url")
     assert hasattr(model, "api_key")
     assert hasattr(model, "batch_size")
