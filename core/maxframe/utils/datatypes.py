@@ -82,6 +82,23 @@ def make_dtypes(
         return make_dtype(dtypes)
 
 
+def _dtype_equal(a, b) -> bool:
+    """Safely compare two dtypes for equality.
+
+    Under old pyarrow (FakeArrowDtype, pandas<1.5) a numpy dtype on the left
+    of ``==``/``!=`` tries to construct the ArrowDtype as a numpy dtype and
+    raises ``TypeError: data type not understood``; the ArrowDtype-side
+    ``__eq__`` handles the comparison safely, so fall back to it.
+    """
+    try:
+        return a == b
+    except TypeError:
+        try:
+            return b == a
+        except TypeError:
+            return False
+
+
 _arrow_type_constructors = {}
 if pa:
     _arrow_type_constructors = {
@@ -257,7 +274,7 @@ def wrap_arrow_dtype(arrow_type):
     if arrow_type == pa.string():
         try:
             return pd.StringDtype("pyarrow")
-        except ImportError:  # pragma: no cover
+        except (ImportError, TypeError):  # pragma: no cover
             # pyarrow might not support ArrowDtype here, fallback
             pass
     return ArrowDtype(arrow_type)
@@ -334,8 +351,11 @@ def check_dtype_compatibility(
 
     # Handle ArrowDtype
     if isinstance(actual_dtype, ArrowDtype) or isinstance(expected_dtype, ArrowDtype):
-        # For Arrow dtypes, we check if they're the same type
-        if actual_dtype == expected_dtype:
+        # For Arrow dtypes, we check if they're the same type.  Use the
+        # safe helper: under old pyarrow (FakeArrowDtype, pandas<1.5) a
+        # numpy dtype on the left of ``==`` raises ``TypeError: data type
+        # not understood``; the ArrowDtype-side ``__eq__`` is safe.
+        if _dtype_equal(actual_dtype, expected_dtype):
             return
         # Try to determine if cast is possible
         try:
@@ -505,7 +525,7 @@ def validate_and_align_output(
             check_dtype_compatibility(actual_dtype, expected_dtype, result.name)
 
             # If check passed, try to cast if dtypes differ
-            if actual_dtype != expected_dtype:
+            if not _dtype_equal(actual_dtype, expected_dtype):
                 try:
                     result = result.astype(expected_dtype)
                 except (ValueError, TypeError):
@@ -575,7 +595,7 @@ def validate_and_align_output(
             check_dtype_compatibility(actual_dtype, expected_dtype, col)
 
             # If check passed, try to cast if dtypes differ
-            if actual_dtype != expected_dtype:
+            if not _dtype_equal(actual_dtype, expected_dtype):
                 try:
                     result[col] = result[col].astype(expected_dtype)
                 except (ValueError, TypeError):
