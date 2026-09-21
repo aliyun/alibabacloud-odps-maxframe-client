@@ -449,6 +449,97 @@ def test_copy_func_scheduling_hints():
     assert op4.image_options == {"name": "python"}
 
 
+@pytest.mark.parametrize(
+    ("default_resources", "decorator_memory_limit", "expected_resources", "raises"),
+    [
+        pytest.param(
+            {
+                "cpu": 1,
+                "memory": "4GiB",
+                "gpu": 0,
+                "memory_limit": "4GiB",
+            },
+            None,
+            {"cpu": 1, "memory": "4GiB", "gpu": 0},
+            False,
+            id="default-equality",
+        ),
+        pytest.param(
+            {"cpu": 1, "memory": "4GiB", "gpu": 0},
+            "2GiB",
+            None,
+            True,
+            id="merged-lower-limit",
+        ),
+    ],
+)
+def test_copy_func_scheduling_hints_validates_merged_memory_limit(
+    default_resources, decorator_memory_limit, expected_resources, raises
+):
+    expected_default_resources = default_resources.copy()
+
+    with option_context() as options:
+        options.function.default_running_options = default_resources
+
+        def func(x):
+            return x
+
+        if decorator_memory_limit is not None:
+            func = with_running_options(memory_limit=decorator_memory_limit)(func)
+            expected_marked_resources = func.expect_resources.copy()
+
+        op = Operator()
+        if raises:
+            with pytest.raises(
+                ValueError,
+                match="memory_limit must be greater than or equal to memory",
+            ):
+                copy_func_scheduling_hints(func, op)
+        else:
+            copy_func_scheduling_hints(func, op)
+            assert op.expect_resources == expected_resources
+
+        assert options.function.default_running_options == expected_default_resources
+        if decorator_memory_limit is not None:
+            assert func.expect_resources == expected_marked_resources
+
+
+def test_copy_func_scheduling_hints_recomputes_marked_resources():
+    @with_running_options(memory_limit="4GiB")
+    def func(x):
+        return x
+
+    expected_marked_resources = func.expect_resources.copy()
+    cases = (
+        ("4GiB", {"cpu": 1, "memory": "4GiB", "gpu": 0}),
+        (
+            "2GiB",
+            {"cpu": 1, "memory": "2GiB", "gpu": 0, "memory_limit": "4GiB"},
+        ),
+    )
+
+    for memory, expected_resources in cases:
+        default_resources = {
+            "cpu": 1,
+            "memory": memory,
+            "gpu": 0,
+        }
+        expected_default_resources = default_resources.copy()
+
+        with option_context() as options:
+            options.function.default_running_options = default_resources
+
+            op = Operator()
+            copy_func_scheduling_hints(func, op)
+
+            assert op.expect_resources == expected_resources
+            assert (
+                options.function.default_running_options == expected_default_resources
+            )
+
+        assert func.expect_resources == expected_marked_resources
+
+
 # Module-level globals for testing global reference
 @with_resources("test_res")
 def _test_global_marked():
