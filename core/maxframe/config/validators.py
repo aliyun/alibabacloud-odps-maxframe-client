@@ -80,7 +80,7 @@ def is_in(vals):
 
 def is_all_dict_keys_in(*keys):
     keys_set = set(keys)
-    return Validator(lambda x: x in keys_set)
+    return Validator(lambda x: x.keys() <= keys_set)
 
 
 def is_less_than(upper_bound):

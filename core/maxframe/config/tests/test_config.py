@@ -61,6 +61,22 @@ def test_config_context():
         options.unregister_option("c.d.e")
 
 
+def test_default_running_options_validation():
+    valid_options = {
+        "cpu": 1,
+        "memory": "4GiB",
+        "gpu": 0,
+        "memory_limit": "8GiB",
+    }
+    with option_context() as ctx:
+        ctx.function.default_running_options = valid_options
+        assert ctx.function.default_running_options == valid_options
+
+        for invalid_options in ({"bogus": 1}, "invalid"):
+            with pytest.raises(ValueError, match="Cannot set value"):
+                ctx.function.default_running_options = invalid_options
+
+
 def test_multi_thread_config():
     options.register_option("a.b.c", 1)
 

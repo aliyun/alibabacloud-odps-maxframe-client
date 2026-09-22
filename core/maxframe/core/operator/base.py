@@ -98,6 +98,7 @@ class SchedulingHint(Serializable):
     priority = Int32Field("priority", default=None)
     expect_engine = StringField("expect_engine", default=None)
     expect_resources = DictField("expect_resources", FieldTypes.string, default=None)
+    enable_elastic_memory = BoolField("enable_elastic_memory", default=None)
     fs_mount = ListField(
         "fs_mount",
         FieldTypes.reference,

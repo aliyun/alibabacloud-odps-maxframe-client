@@ -536,7 +536,7 @@ default_options.register_option(
 default_options.register_option(
     "function.default_running_options",
     _DEFAULT_FUNCTION_RUNNING_OPTIONS,
-    validator=is_dict | is_all_dict_keys_in("cpu", "memory", "gpu"),
+    validator=is_dict & is_all_dict_keys_in("cpu", "memory", "gpu", "memory_limit"),
 )
 
 default_options.register_option(

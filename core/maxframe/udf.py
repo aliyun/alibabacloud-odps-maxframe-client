@@ -38,6 +38,7 @@ from maxframe.typing_ import PandasDType
 from maxframe.utils import (
     extract_class_name,
     make_dtype,
+    parse_size_to_megabytes,
     tokenize,
     unwrap_function,
     validate_and_adjust_resource_ratio,
@@ -364,6 +365,7 @@ def with_running_options(
     engine: Optional[str] = None,
     cpu: Optional[int] = None,
     memory: Optional[Union[str, int]] = None,
+    memory_limit: Optional[Union[str, int]] = None,
     gu: Optional[int] = None,
     gu_quota: Optional[Union[str, List[str]]] = None,
     **kwargs,
@@ -380,6 +382,15 @@ def with_running_options(
     memory: Optional[Union[str, int]]
         The memory to run the UDF. If it is an int, it is in GB.
         If it is a str, it is in the format of "10GiB", "30MiB", etc.
+    memory_limit: Optional[Union[str, int]]
+        The memory upper bound for elastic-memory retries of a DPE CPU UDF.
+        The effective running options must also contain ``memory``. A limit
+        smaller than the effective memory is invalid, while an equal limit
+        does not enable elastic-memory retry. After a recognized out-of-memory
+        failure, DPE retries the UDF with more memory up to the effective upper
+        bound, which may be capped by the memory available in the cluster. If
+        it is an int, it is in GB. If it is a str, it is in the format of
+        "10GiB", "30MiB", etc.
     gu: Optional[int]
         The GU number to run the UDF.
     gu_quota: Optional[Union[str, List[str]]]
@@ -399,6 +410,11 @@ def with_running_options(
             raise TypeError("memory must be an int or str")
         if isinstance(memory, int) and memory <= 0:
             raise ValueError("memory must be greater than 0")
+    if memory_limit is not None:
+        if not isinstance(memory_limit, (int, str)):
+            raise TypeError("memory_limit must be an int or str")
+        if isinstance(memory_limit, int) and memory_limit <= 0:
+            raise ValueError("memory_limit must be greater than 0")
     if gu is not None and gu <= 0:
         raise ValueError("gu must be greater than 0")
     if gu is not None and (cpu or memory):
@@ -408,6 +424,8 @@ def with_running_options(
         resources["cpu"] = cpu
     if memory:
         resources["memory"] = memory
+    if memory_limit:
+        resources["memory_limit"] = memory_limit
 
     if isinstance(gu_quota, str):
         gu_quota = [gu_quota]
@@ -420,7 +438,9 @@ def with_running_options(
     use_gpu = is_positive_integer(gu)
 
     def func_wrapper(func):
-        if not all(v is None for v in (engine, cpu, memory, gu, gu_quota)):
+        if not all(
+            v is None for v in (engine, cpu, memory, gu, gu_quota, memory_limit)
+        ):
             if isinstance(func, MarkedFunction):
                 func.expect_engine = engine
                 func.expect_resources = resources
@@ -691,7 +711,7 @@ def copy_func_scheduling_hints(func: Callable, op: Any) -> None:
         marked_func = marked_funcs[0]
         # copy from marked function
         expect_engine = marked_func.expect_engine
-        expect_resources = marked_func.expect_resources or {}
+        expect_resources = (marked_func.expect_resources or {}).copy()
         expect_gpu = marked_func.gpu
         fs_mount = marked_func.fs_mount
         image_options = marked_func.image_options
@@ -702,7 +722,19 @@ def copy_func_scheduling_hints(func: Callable, op: Any) -> None:
                 expect_resources[key] = value
     else:
         # copy from default options
-        expect_resources = default_options
+        expect_resources = default_options.copy()
+
+    memory_limit = expect_resources.get("memory_limit")
+    if memory_limit is not None:
+        memory = expect_resources.get("memory")
+        if memory is None:
+            raise ValueError("memory must be specified when memory_limit is set")
+        memory_mb = parse_size_to_megabytes(memory)
+        memory_limit_mb = parse_size_to_megabytes(memory_limit)
+        if memory_limit_mb < memory_mb:
+            raise ValueError("memory_limit must be greater than or equal to memory")
+        if memory_limit_mb == memory_mb:
+            expect_resources.pop("memory_limit")
 
     # Validate and adjust resource ratio constraints on client side
     expect_resources, _ = validate_and_adjust_resource_ratio(
