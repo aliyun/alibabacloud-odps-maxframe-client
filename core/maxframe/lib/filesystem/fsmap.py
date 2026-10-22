@@ -80,7 +80,7 @@ class FSMap(MutableMapping):
         try:
             self.fs.rm(self.root, True)
             self.fs.mkdir(self.root)
-        except:  # noqa: E722  # pragma: no cover
+        except Exception:  # pragma: no cover
             pass
 
     def _key_to_str(self, key):
@@ -103,7 +103,7 @@ class FSMap(MutableMapping):
         key = self._key_to_str(key)
         try:
             result = self.fs.cat(key)
-        except:  # noqa: E722
+        except Exception:
             if default is not None:
                 return default
             raise KeyError(key)
@@ -156,8 +156,8 @@ class FSMap(MutableMapping):
         """Remove key"""
         try:
             self.fs.rm(self._key_to_str(key))
-        except:  # noqa: E722
-            raise KeyError
+        except Exception:
+            raise KeyError(key)
 
     def __contains__(self, key):
         """Does key exist in mapping?"""

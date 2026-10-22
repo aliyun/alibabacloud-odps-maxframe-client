@@ -217,3 +217,8 @@ class OSSFileSystem(FileSystem):
     @property
     def supports_multipart_upload(self) -> bool:
         return True
+
+    @classmethod
+    def get_min_part_size(cls) -> int:
+        # OSS rejects every non-final part smaller than 100 KB.
+        return 100 * 1024

@@ -1,0 +1,1110 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 14:41+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:2
+msgid "maxframe.liteframe.LiteFrame"
+msgstr ""
+
+#: maxframe.liteframe.initializer.LiteFrame:1 of
+msgid ""
+"A performance-dedicated, lazy, distributed tabular data object with no "
+"index semantics."
+msgstr "一个专为性能设计、延迟计算、分布式处理的表格数据对象，无索引语义。"
+
+#: maxframe.liteframe.initializer.LiteFrame:3 of
+msgid ""
+"LiteFrame provides a pandas-looking DataFrame API for large-scale data "
+"processing on MaxCompute. Unlike a traditional DataFrame, LiteFrame has "
+"no row index: all operations are column-based, single-column selection "
+"returns a LiteFrame (never a Series), and there is no implicit label "
+"alignment between independent frames. Arrow dtypes are used as first-"
+"class citizens so that integer columns with nulls stay nullable integer "
+"rather than being silently promoted to float."
+msgstr ""
+"LiteFrame 为 MaxCompute 上的大规模数据处理提供了类似 pandas 的 DataFrame "
+"API。与传统 DataFrame 不同，LiteFrame 没有行索引：所有操作都是基于列的，"
+"单列选择返回 LiteFrame（而不是 Series），独立框架之间没有隐式的标签对齐。"
+"Arrow 数据类型作为一等公民使用，因此带有空值的整数列保持可空整数类型，而"
+"不会被静默提升为浮点数。"
+
+#: maxframe.liteframe.initializer.LiteFrame:11 of
+msgid ""
+"By removing index overhead and embedding element-wise expressions in a "
+"small set of fusible operators, LiteFrame achieves lower planning cost "
+"and higher execution throughput."
+msgstr ""
+"通过消除索引开销并将逐元素表达式嵌入到一组可融合算子中，LiteFrame 实现了"
+"更低的规划成本和更高的执行吞吐量。"
+
+#: maxframe.liteframe.initializer.LiteFrame:15 of
+msgid ""
+"Operations are lazy — they build a computation graph that is executed on "
+"demand via ``.execute()``. Row order is preserved through execution "
+"unless an operator explicitly reorders rows."
+msgstr "操作是延迟的——它们构建一个计算图，通过 ``.execute()`` 按需执行。除非操作符明确重新排序行，否则在执行过程中会保留行顺序。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.initializer.LiteFrame:19 of
+msgid ""
+"Input data. A ``dict`` or ``pandas.DataFrame`` is converted internally to"
+" an Arrow-backed LiteFrame. A tensor is wrapped as a single-column (or "
+"multi-column) frame. An existing LiteFrame is returned as-is."
+msgstr ""
+"输入数据。``dict`` 或 ``pandas.DataFrame`` 在内部转换为基于 Arrow 的 "
+"LiteFrame。张量被包装为单列（或多元组）框架。现有的 LiteFrame 按原样返回"
+"。"
+
+#: maxframe.liteframe.initializer.LiteFrame:24 of
+msgid ""
+"Column labels to use. When ``data`` is a dict or DataFrame, this selects "
+"and orders the output columns."
+msgstr "要使用的列标签。当 ``data`` 是字典或 DataFrame 时，这会选择并排序输出列。"
+
+#: maxframe.liteframe.initializer.LiteFrame:27 of
+msgid "Data type to force on all columns."
+msgstr "强制应用于所有列的数据类型。"
+
+#: maxframe.liteframe.initializer.LiteFrame:29 of
+msgid "Row-axis chunk size for distributed execution."
+msgstr "用于分布式执行的行轴块大小。"
+
+#: maxframe.liteframe.initializer.LiteFrame:31 of
+msgid "Whether to use GPU execution."
+msgstr "是否使用GPU执行。"
+
+#: maxframe.liteframe.initializer.LiteFrame:36 of
+msgid ":py:obj:`maxframe.liteframe.read_csv`"
+msgstr ""
+
+#: maxframe.liteframe.initializer.LiteFrame:37 of
+msgid "Read a CSV file into a LiteFrame."
+msgstr "将CSV文件读取到LiteFrame中。"
+
+#: maxframe.liteframe.initializer.LiteFrame:39 of
+msgid ":py:obj:`maxframe.liteframe.read_parquet`"
+msgstr ""
+
+#: maxframe.liteframe.initializer.LiteFrame:40 of
+msgid "Read a Parquet file into a LiteFrame."
+msgstr "将Parquet文件读取到LiteFrame中。"
+
+#: maxframe.liteframe.initializer.LiteFrame:42 of
+msgid ":py:obj:`maxframe.liteframe.concat`"
+msgstr ""
+
+#: maxframe.liteframe.initializer.LiteFrame:43 of
+msgid "Concatenate LiteFrames along the row axis."
+msgstr "沿行轴连接LiteFrames。"
+
+#: maxframe.liteframe.initializer.LiteFrame:45 of
+msgid ":py:obj:`maxframe.liteframe.LiteFrame.from_tensor`"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+#: maxframe.liteframe.initializer.LiteFrame:46 of
+msgid "Create a LiteFrame from a MaxFrame tensor."
+msgstr "从MaxFrame张量创建LiteFrame。"
+
+#: maxframe.liteframe.initializer.LiteFrame:49 of
+msgid "示例"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:14
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`__init__ <maxframe.liteframe.LiteFrame.__init__>`\\ "
+"\\(\\[data\\, columns\\, dtype\\, chunk\\_size\\, gpu\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`add <maxframe.liteframe.LiteFrame.add>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise addition of ``other`` to the LiteFrame."
+msgstr "对LiteFrame进行逐元素加法运算。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`add_prefix <maxframe.liteframe.LiteFrame.add_prefix>`\\ "
+"\\(prefix\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Prefix all column labels with *prefix*."
+msgstr "为所有列标签添加前缀。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`add_suffix <maxframe.liteframe.LiteFrame.add_suffix>`\\ "
+"\\(suffix\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Suffix all column labels with *suffix*."
+msgstr "为所有列标签添加后缀。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`agg <maxframe.liteframe.LiteFrame.agg>`\\ \\(\\[func\\, "
+"method\\, numeric\\_only\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Aggregate using one or more operations over columns."
+msgstr "使用一个或多个操作对列进行聚合。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`all <maxframe.liteframe.LiteFrame.all>`\\ \\(\\[method\\, "
+"numeric\\_only\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return whether all elements in each column are truthy."
+msgstr "返回每列中所有元素是否为真值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`any <maxframe.liteframe.LiteFrame.any>`\\ \\(\\[method\\, "
+"numeric\\_only\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return whether any element in each column is truthy."
+msgstr "返回每列中是否有任何元素为真值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`apply <maxframe.liteframe.LiteFrame.apply>`\\ \\(func\\[\\, "
+"axis\\, result\\_type\\, dtypes\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Apply ``func`` per column (axis=0) or per row (axis=1)."
+msgstr "按列（axis=0）或按行（axis=1）应用 ``func``。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`apply_chunk <maxframe.liteframe.LiteFrame.apply_chunk>`\\ "
+"\\(func\\, \\*\\[\\, dtypes\\, skip\\_infer\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Apply func per execution chunk."
+msgstr "按执行块应用函数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`assign <maxframe.liteframe.LiteFrame.assign>`\\ "
+"\\(\\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Add new columns to LiteFrame."
+msgstr "向LiteFrame添加新列。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`astype <maxframe.liteframe.LiteFrame.astype>`\\ \\(dtype\\[\\, "
+"errors\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Cast a LiteFrame to a specified dtype."
+msgstr "将LiteFrame转换为指定的数据类型。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`between <maxframe.liteframe.LiteFrame.between>`\\ \\(left\\, "
+"right\\[\\, inclusive\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+"Return boolean LiteFrame indicating whether each value is between *left* "
+"and *right*."
+msgstr "返回布尔型LiteFrame，指示每个值是否在 *left* 和 *right* 之间。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`bfill <maxframe.liteframe.LiteFrame.bfill>`\\ \\(\\[limit\\, "
+"columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Backward-fill: propagate the next non-null value backward."
+msgstr "向后填充：向后传播下一个非空值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`case_when <maxframe.liteframe.LiteFrame.case_when>`\\ "
+"\\(caselist\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Replace values where conditions are True, evaluated in order."
+msgstr "在条件为真的地方替换值，按顺序评估。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`clip <maxframe.liteframe.LiteFrame.clip>`\\ \\(\\[lower\\, "
+"upper\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Trim values at input threshold(s)."
+msgstr "在输入阈值处截断值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`copy <maxframe.liteframe.LiteFrame.copy>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`copy_from <maxframe.liteframe.LiteFrame.copy_from>`\\ \\(obj\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`copy_to <maxframe.liteframe.LiteFrame.copy_to>`\\ \\(target\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`count <maxframe.liteframe.LiteFrame.count>`\\ \\(\\[method\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the count of non-null values in each column."
+msgstr "返回每列中非空值的数量。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`cummax <maxframe.liteframe.LiteFrame.cummax>`\\ \\(\\[skipna\\, "
+"columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Cumulative max of column values, preserving row order."
+msgstr "列值的累积最大值，保持行顺序。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`cummin <maxframe.liteframe.LiteFrame.cummin>`\\ \\(\\[skipna\\, "
+"columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Cumulative min of column values, preserving row order."
+msgstr "累积最小值，保持行顺序。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`cumprod <maxframe.liteframe.LiteFrame.cumprod>`\\ "
+"\\(\\[skipna\\, columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Cumulative prod of column values, preserving row order."
+msgstr "累积乘积，保持行顺序。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`cumsum <maxframe.liteframe.LiteFrame.cumsum>`\\ \\(\\[skipna\\, "
+"columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Cumulative sum of column values, preserving row order."
+msgstr "累积和，保持行顺序。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`diff <maxframe.liteframe.LiteFrame.diff>`\\ \\(\\[periods\\, "
+"columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Compute ``x[i] - x[i-periods]`` for each row."
+msgstr "计算每行的 ``x[i] - x[i-periods]``。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`div <maxframe.liteframe.LiteFrame.div>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise true division (``lf / other``)."
+msgstr "逐元素真除法（``lf / other``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`drop <maxframe.liteframe.LiteFrame.drop>`\\ \\(columns\\[\\, "
+"errors\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Drop columns from LiteFrame."
+msgstr "从 LiteFrame 中删除列。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`drop_duplicates "
+"<maxframe.liteframe.LiteFrame.drop_duplicates>`\\ \\(\\[subset\\, keep\\,"
+" method\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return LiteFrame with duplicate rows removed."
+msgstr "返回删除重复行后的 LiteFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`dropna <maxframe.liteframe.LiteFrame.dropna>`\\ \\(\\[axis\\, "
+"how\\, subset\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Drop rows or columns with missing values."
+msgstr "删除包含缺失值的行或列。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`duplicated <maxframe.liteframe.LiteFrame.duplicated>`\\ "
+"\\(\\[subset\\, keep\\, method\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return boolean mask marking duplicate rows."
+msgstr "返回标记重复行的布尔掩码。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`eq <maxframe.liteframe.LiteFrame.eq>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise equality comparison."
+msgstr "逐元素相等比较。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`eval <maxframe.liteframe.LiteFrame.eval>`\\ \\(expr\\[\\, "
+"inplace\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Evaluate a string describing operations on LiteFrame columns."
+msgstr "执行描述 LiteFrame 列操作的字符串。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`execute <maxframe.liteframe.LiteFrame.execute>`\\ "
+"\\(\\[session\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`expanding <maxframe.liteframe.LiteFrame.expanding>`\\ "
+"\\(\\[min\\_periods\\, columns\\, order\\_by\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Provide expanding window calculations."
+msgstr "提供扩展窗口计算。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`explode <maxframe.liteframe.LiteFrame.explode>`\\ \\(column\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Explode list column(s) into multiple rows."
+msgstr "将列表列展开为多行。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`ffill <maxframe.liteframe.LiteFrame.ffill>`\\ \\(\\[limit\\, "
+"columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Forward-fill: propagate the last non-null value forward."
+msgstr "前向填充：向前传播最后一个非空值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`fillna <maxframe.liteframe.LiteFrame.fillna>`\\ \\(\\[value\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Fill missing values."
+msgstr "填充缺失值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`flat_apply <maxframe.liteframe.LiteFrame.flat_apply>`\\ "
+"\\(func\\, \\*\\[\\, dtypes\\, skip\\_infer\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Apply ``func`` to each row, expanding it to 0-N output rows."
+msgstr "对每行应用 ``func``，将其扩展为 0-N 个输出行。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`floordiv <maxframe.liteframe.LiteFrame.floordiv>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise floor division (``lf // other``)."
+msgstr "逐元素向下取整除法（``lf // other``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`from_local_df <maxframe.liteframe.LiteFrame.from_local_df>`\\ "
+"\\(df\\[\\, chunk\\_size\\, gpu\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Create a LiteFrame from a local pandas DataFrame or similar object."
+msgstr "从本地 pandas DataFrame 或类似对象创建 LiteFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`from_tensor <maxframe.liteframe.LiteFrame.from_tensor>`\\ "
+"\\(tensor\\[\\, columns\\, gpu\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`ge <maxframe.liteframe.LiteFrame.ge>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise greater-than-or-equal comparison."
+msgstr "逐元素大于等于比较。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`groupby <maxframe.liteframe.LiteFrame.groupby>`\\ \\(by\\[\\, "
+"sort\\, dropna\\, group\\_keys\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Group the LiteFrame by one or more columns."
+msgstr "按一个或多个列对 LiteFrame 进行分组。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`gt <maxframe.liteframe.LiteFrame.gt>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise greater-than comparison."
+msgstr "逐元素大于比较。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`head <maxframe.liteframe.LiteFrame.head>`\\ \\(\\[n\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the first ``n`` rows."
+msgstr "返回前 ``n`` 行。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`isna <maxframe.liteframe.LiteFrame.isna>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Detect missing values."
+msgstr "检测缺失值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`isnull <maxframe.liteframe.LiteFrame.isnull>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`kurt <maxframe.liteframe.LiteFrame.kurt>`\\ \\(\\[method\\, "
+"numeric\\_only\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the unbiased kurtosis of each column."
+msgstr "返回每列的无偏峰度。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`le <maxframe.liteframe.LiteFrame.le>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise less-than-or-equal comparison."
+msgstr "逐元素小于等于比较。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`lshift <maxframe.liteframe.LiteFrame.lshift>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise left bit shift (``lf << other``)."
+msgstr "逐元素左位移（``lf << other``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`lt <maxframe.liteframe.LiteFrame.lt>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise less-than comparison."
+msgstr "逐元素小于比较。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`map <maxframe.liteframe.LiteFrame.map>`\\ \\(func\\, \\*\\[\\, "
+"na\\_action\\, dtype\\, skip\\_infer\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Apply func element-wise to every value in the LiteFrame."
+msgstr "对 LiteFrame 中的每个值逐元素应用 func。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`mask <maxframe.liteframe.LiteFrame.mask>`\\ \\(cond\\[\\, "
+"other\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Replace values where *cond* is True with *other*."
+msgstr "在 *cond* 为 True 处用 *other* 替换值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`max <maxframe.liteframe.LiteFrame.max>`\\ \\(\\[method\\, "
+"numeric\\_only\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the maximum of each column."
+msgstr "返回每列的最大值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`mean <maxframe.liteframe.LiteFrame.mean>`\\ \\(\\[method\\, "
+"numeric\\_only\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the mean of each column."
+msgstr "返回每列的平均值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`median <maxframe.liteframe.LiteFrame.median>`\\ \\(\\[method\\, "
+"numeric\\_only\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the median of each column."
+msgstr "返回每列的中位数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`merge <maxframe.liteframe.LiteFrame.merge>`\\ \\(right\\[\\, "
+"how\\, on\\, left\\_on\\, right\\_on\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Merge LiteFrame with another LiteFrame using a database-style join."
+msgstr "使用数据库风格的连接将 LiteFrame 与另一个 LiteFrame 合并。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`min <maxframe.liteframe.LiteFrame.min>`\\ \\(\\[method\\, "
+"numeric\\_only\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the minimum of each column."
+msgstr "返回每列的最小值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`mod <maxframe.liteframe.LiteFrame.mod>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+#, python-format
+msgid "Element-wise modulo (``lf % other``)."
+msgstr "逐元素取模运算（``lf % other``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`mul <maxframe.liteframe.LiteFrame.mul>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise multiplication (``lf * other``)."
+msgstr "逐元素乘法运算（``lf * other``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`ne <maxframe.liteframe.LiteFrame.ne>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise not-equal comparison."
+msgstr "逐元素不相等比较。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`notna <maxframe.liteframe.LiteFrame.notna>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Detect non-missing values."
+msgstr "检测非缺失值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`notnull <maxframe.liteframe.LiteFrame.notnull>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`nunique <maxframe.liteframe.LiteFrame.nunique>`\\ "
+"\\(\\[method\\, numeric\\_only\\, dropna\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the number of distinct values in each column."
+msgstr "返回每列中不同值的数量。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`pct_change <maxframe.liteframe.LiteFrame.pct_change>`\\ "
+"\\(\\[periods\\, columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Compute ``(x[i] - x[i-periods]) / x[i-periods]`` for each row."
+msgstr "为每一行计算 ``(x[i] - x[i-periods]) / x[i-periods]``。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`pow <maxframe.liteframe.LiteFrame.pow>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise exponentiation (``lf ** other``)."
+msgstr "逐元素幂运算（``lf ** other``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`prod <maxframe.liteframe.LiteFrame.prod>`\\ \\(\\[method\\, "
+"numeric\\_only\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the product of each column."
+msgstr "返回每列的乘积。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`query <maxframe.liteframe.LiteFrame.query>`\\ \\(expr\\[\\, "
+"inplace\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Query the columns of a LiteFrame with a boolean expression."
+msgstr "使用布尔表达式查询 LiteFrame 的列。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`radd <maxframe.liteframe.LiteFrame.radd>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Reverse element-wise addition (``other + lf``)."
+msgstr "反向逐元素加法（``other + lf``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`rdiv <maxframe.liteframe.LiteFrame.rdiv>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Reverse element-wise true division (``other / lf``)."
+msgstr "反向逐元素真除法（``other / lf``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`rebalance <maxframe.liteframe.LiteFrame.rebalance>`\\ "
+"\\(\\[axis\\, factor\\, num\\_partitions\\, rough\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Make data more balanced across entire cluster."
+msgstr "使数据在整个集群中更加平衡。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`rechunk <maxframe.liteframe.LiteFrame.rechunk>`\\ "
+"\\(chunk\\_size\\[\\, reassign\\_worker\\, axis\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Rechunk LiteFrame data."
+msgstr "重新分块 LiteFrame 数据。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`rename <maxframe.liteframe.LiteFrame.rename>`\\ \\(columns\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Rename columns in LiteFrame."
+msgstr "重命名 LiteFrame 中的列。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`replace <maxframe.liteframe.LiteFrame.replace>`\\ "
+"\\(\\[to\\_replace\\, value\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Replace values in the LiteFrame."
+msgstr "替换 LiteFrame 中的值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`rfloordiv <maxframe.liteframe.LiteFrame.rfloordiv>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Reverse element-wise floor division (``other // lf``)."
+msgstr "反向逐元素整除（``other // lf``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`rlshift <maxframe.liteframe.LiteFrame.rlshift>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Reverse element-wise left bit shift (``other << lf``)."
+msgstr "反向逐元素左移位（``other << lf``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`rmod <maxframe.liteframe.LiteFrame.rmod>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+#, python-format
+msgid "Reverse element-wise modulo (``other % lf``)."
+msgstr "反向逐元素取模运算（``other % lf``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`rmul <maxframe.liteframe.LiteFrame.rmul>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Reverse element-wise multiplication (``other * lf``)."
+msgstr "反向逐元素乘法运算（``other * lf``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`rolling <maxframe.liteframe.LiteFrame.rolling>`\\ "
+"\\(window\\[\\, min\\_periods\\, center\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Provide rolling-window calculations."
+msgstr "提供滚动窗口计算。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`round <maxframe.liteframe.LiteFrame.round>`\\ "
+"\\(\\[decimals\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise rounding to ``decimals`` decimal places."
+msgstr "逐元素舍入到 ``decimals`` 个小数位。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`rpow <maxframe.liteframe.LiteFrame.rpow>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Reverse element-wise exponentiation (``other ** lf``)."
+msgstr "反向逐元素幂运算（``other ** lf``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`rrshift <maxframe.liteframe.LiteFrame.rrshift>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Reverse element-wise right bit shift (``other >> lf``)."
+msgstr "反向逐元素右移位（``other >> lf``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`rshift <maxframe.liteframe.LiteFrame.rshift>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise right bit shift (``lf >> other``)."
+msgstr "逐元素右移位（``lf >> other``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`rsub <maxframe.liteframe.LiteFrame.rsub>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Reverse element-wise subtraction (``other - lf``)."
+msgstr "反向逐元素减法（``other - lf``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`select <maxframe.liteframe.LiteFrame.select>`\\ \\(\\*args\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Dispatch to select or select_expr based on argument types."
+msgstr "根据参数类型分派到 select 或 select_expr。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`sem <maxframe.liteframe.LiteFrame.sem>`\\ \\(\\[method\\, "
+"numeric\\_only\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the standard error of the mean of each column."
+msgstr "返回每列均值的标准误差。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`shift <maxframe.liteframe.LiteFrame.shift>`\\ \\(\\[periods\\, "
+"fill\\_value\\, columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Shift rows by ``periods`` positions."
+msgstr "将行按 ``periods`` 位置进行移动。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`size <maxframe.liteframe.LiteFrame.size>`\\ \\(\\[method\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the total number of rows."
+msgstr "返回行的总数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`skew <maxframe.liteframe.LiteFrame.skew>`\\ \\(\\[method\\, "
+"numeric\\_only\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the unbiased skewness of each column."
+msgstr "返回每列的无偏偏度。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`sort <maxframe.liteframe.LiteFrame.sort>`\\ \\(\\[by\\, "
+"ascending\\, kind\\, na\\_position\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Sort the LiteFrame by the specified columns."
+msgstr "按指定列对 LiteFrame 进行排序。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`std <maxframe.liteframe.LiteFrame.std>`\\ \\(\\[method\\, "
+"numeric\\_only\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the sample standard deviation of each column."
+msgstr "返回每列的样本标准差。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ":py:obj:`sub <maxframe.liteframe.LiteFrame.sub>`\\ \\(other\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Element-wise subtraction (``lf - other``)."
+msgstr "逐元素减法（``lf - other``）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`sum <maxframe.liteframe.LiteFrame.sum>`\\ \\(\\[method\\, "
+"numeric\\_only\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the sum of each column."
+msgstr "返回每列的和。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`to_csv <maxframe.liteframe.LiteFrame.to_csv>`\\ \\(path\\[\\, "
+"sep\\, na\\_rep\\, float\\_format\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Write LiteFrame to a comma-separated values (csv) file."
+msgstr "将 LiteFrame 写入逗号分隔值（csv）文件。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`to_json <maxframe.liteframe.LiteFrame.to_json>`\\ \\(path\\, "
+"\\*\\[\\, lines\\, orient\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Write a LiteFrame to JSON format (line-delimited by default)."
+msgstr "将 LiteFrame 写入 JSON 格式（默认为行分隔）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`to_lance <maxframe.liteframe.LiteFrame.to_lance>`\\ \\(path\\, "
+"\\*\\[\\, mode\\, on\\, left\\_on\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Write a LiteFrame to a Lance dataset."
+msgstr "将 LiteFrame 写入 Lance 数据集。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`to_odps_table <maxframe.liteframe.LiteFrame.to_odps_table>`\\ "
+"\\(table\\[\\, partition\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Write LiteFrame object into a MaxCompute (ODPS) table."
+msgstr "将 LiteFrame 对象写入 MaxCompute（ODPS）表。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`to_pandas <maxframe.liteframe.LiteFrame.to_pandas>`\\ "
+"\\(\\[session\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Convert the LiteFrame to a pandas DataFrame."
+msgstr "将 LiteFrame 转换为 pandas DataFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`to_parquet <maxframe.liteframe.LiteFrame.to_parquet>`\\ "
+"\\(path\\[\\, engine\\, compression\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+"Write a LiteFrame to the binary parquet format, each chunk will be "
+"written to a Parquet file."
+msgstr "将 LiteFrame 写入二进制 parquet 格式，每个块将被写入一个 Parquet 文件。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`to_tensor <maxframe.liteframe.LiteFrame.to_tensor>`\\ "
+"\\(\\[dtype\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Convert the LiteFrame to a MaxFrame tensor."
+msgstr "将 LiteFrame 转换为 MaxFrame 张量。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`transform <maxframe.liteframe.LiteFrame.transform>`\\ "
+"\\(func\\[\\, axis\\, input\\_frame\\_type\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Transform per column (axis=0, default) or per row (axis=1)."
+msgstr "按列（axis=0，默认）或按行（axis=1）进行转换。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`transform_chunk "
+"<maxframe.liteframe.LiteFrame.transform_chunk>`\\ \\(func\\, \\*\\[\\, "
+"input\\_frame\\_type\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Apply func per execution block (chunk)."
+msgstr "在每个执行块（chunk）上应用函数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`var <maxframe.liteframe.LiteFrame.var>`\\ \\(\\[method\\, "
+"numeric\\_only\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Return the unbiased variance of each column."
+msgstr "返回每列的无偏方差。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid ""
+":py:obj:`where <maxframe.liteframe.LiteFrame.where>`\\ \\(cond\\[\\, "
+"other\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:125:<autosummary>:1
+msgid "Replace values where *cond* is False with *other*."
+msgstr "当 *cond* 为 False 时，用 *other* 替换值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:127
+msgid "Attributes"
+msgstr "属性"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:135:<autosummary>:1
+msgid ":py:obj:`columns <maxframe.liteframe.LiteFrame.columns>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:135:<autosummary>:1
+msgid "Return the column labels of the LiteFrame."
+msgstr "返回 LiteFrame 的列标签。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:135:<autosummary>:1
+msgid ":py:obj:`dtypes <maxframe.liteframe.LiteFrame.dtypes>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:135:<autosummary>:1
+msgid "Return the dtype of each column."
+msgstr "返回每列的数据类型。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:135:<autosummary>:1
+msgid ":py:obj:`iloc <maxframe.liteframe.LiteFrame.iloc>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:135:<autosummary>:1
+msgid ":py:obj:`ndim <maxframe.liteframe.LiteFrame.ndim>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:135:<autosummary>:1
+msgid "Return the number of dimensions of the LiteFrame."
+msgstr "返回 LiteFrame 的维度数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:135:<autosummary>:1
+msgid ":py:obj:`shape <maxframe.liteframe.LiteFrame.shape>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:135:<autosummary>:1
+msgid ":py:obj:`values <maxframe.liteframe.LiteFrame.values>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rst:135:<autosummary>:1
+msgid "Return the LiteFrame as a tensor."
+msgstr "将 LiteFrame 作为张量返回。"
+

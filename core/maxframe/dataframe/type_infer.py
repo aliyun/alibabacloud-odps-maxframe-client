@@ -290,7 +290,7 @@ def infer_dataframe_return_value(
         if prepend_index_group_keys and need_prepend_group_keys:
             ret.prepend_groupby_keys(df_obj)
         return ret
-    except:  # noqa: E722  # nosec
+    except Exception:  # noqa: E722  # nosec
         logger.info(
             "Exception raised while inferring meta of function result", exc_info=True
         )

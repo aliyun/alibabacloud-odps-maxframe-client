@@ -101,3 +101,32 @@ def test_struct_dtypes_property():
     assert list(result.index) == ["a", "b"]
     assert result["a"] == wrap_arrow_dtype(pa.int64())
     assert result["b"] == wrap_arrow_dtype(pa.string())
+
+
+def test_struct_explode_op_structure():
+    """struct.explode builds a transform(axis=1) projection with field columns.
+
+    struct.explode is 1:1 (row-preserving), so it lowers through
+    transform(axis=1) -- the expression-based per-row path -- which builds a
+    LiteFrameProjection with one per-field projection (enabling projection
+    pushdown) and carries hidden columns.  The @builtin_function UDF keeps
+    has_custom_code False (no isolation sandbox).
+    """
+    df = LiteFrame({"s": [{"a": 1, "b": "x"}, {"a": 2, "b": "y"}]}, dtype=_STRUCT_DTYPE)
+    result = df.struct.explode()
+
+    op = result.op
+    assert isinstance(op, LiteFrameProjection)
+    assert list(result.columns) == ["a", "b"]
+    assert result.dtypes["a"] == wrap_arrow_dtype(pa.int64())
+    assert result.dtypes["b"] == wrap_arrow_dtype(pa.string())
+    # Row count is preserved (1:1), not nan as under flat_apply.
+    assert result.shape[0] == 2
+    # No projection carries custom code (builtin UDF -> no isolation sandbox).
+    assert all(not p.has_custom_code for p in op.projections)
+
+
+def test_struct_explode_rejects_non_struct():
+    df = LiteFrame({"s": [1, 2]})
+    with pytest.raises(AttributeError, match="struct values"):
+        df.struct.explode()

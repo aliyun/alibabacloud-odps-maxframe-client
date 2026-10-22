@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import sys
 import warnings
 from abc import ABC, abstractmethod
@@ -38,6 +39,8 @@ from maxframe.io.odpsio import (
     build_liteframe_table_meta,
     odps_schema_to_pandas_dtypes,
 )
+from maxframe.io.odpsio.schema import decode_blob_table_comment
+from maxframe.lib import wrapped_pickle as pickle
 from maxframe.liteframe.core import LITEFRAME_TYPE
 from maxframe.protocol import (
     ConstantResultInfo,
@@ -47,21 +50,37 @@ from maxframe.protocol import (
     ODPSVolumeResultInfo,
     ResultInfo,
     ResultType,
+    TensorTableMeta,
 )
 from maxframe.tensor.core import TENSOR_TYPE
-from maxframe.typing_ import PandasObjectTypes, TileableType
+from maxframe.tensor.utils import slice_split
+from maxframe.typing_ import TileableType
 from maxframe.utils import (
     ToThreadMixin,
     estimate_pandas_size,
     estimate_table_size,
+    get_storage_api_endpoint,
     sync_pyodps_options,
 )
 
+try:
+    from odps.maxstorage import (
+        MaxStorageClient,
+        RowRangeInputSplit,
+        SplitMode,
+        SplitOptions,
+    )
+except ImportError:
+    MaxStorageClient = None
+    SplitMode = None
+    SplitOptions = None
+    RowRangeInputSplit = None
+
 _result_fetchers: Dict[ResultType, Type["ResultFetcher"]] = dict()
-
 _FetchIndexType = Optional[List[Union[None, Integral, slice]]]
-
 _VOLUME_LOAD_RETRY_TIMES = 5
+_MAX_BLOB_TABLE_ROWS = 100000
+_BLOB_READ_SESSION_READY_TIMEOUT = 300
 
 
 def register_fetcher(fetcher_cls: Type["ResultFetcher"]):
@@ -216,6 +235,23 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
         tileable: TileableType,
         info: ODPSTableResultInfo,
     ) -> None:
+        if isinstance(tileable, TENSOR_TYPE) and isinstance(
+            info.table_meta, TensorTableMeta
+        ):
+            # Tensor blob table: read metadata from TensorTableMeta
+            meta = info.table_meta
+            params = {}
+            if meta.dtype is not None:
+                params["dtype"] = np.dtype(meta.dtype)
+            if meta.shape is not None:
+                params["shape"] = tuple(meta.shape)
+            tileable.params = params
+            return
+
+        if isinstance(tileable, OBJECT_TYPE) and info.table_meta is None:
+            # Object blob table: no metadata update needed
+            return
+
         if (
             isinstance(tileable, DATAFRAME_TYPE)
             and tileable.dtypes is None
@@ -305,7 +341,12 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
                         data_cols = columns[col_sel]
                         if isinstance(col_sel, int):
                             data_cols = [data_cols]
-                        read_kw["columns"] = data_cols
+                        # The temp ODPS table may store sanitized physical
+                        # column names (e.g. `_column_0` for logical "0");
+                        # the tunnel read must select the physical names.
+                        read_kw["columns"] = self._liteframe_physical_columns(
+                            table_meta, data_cols
+                        )
                     # If tileable not provided, read all columns (will use dtypes from table)
             else:
                 # For DataFrame, use table_meta's column structure
@@ -332,12 +373,313 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
             slice_stop = None
         return result[slice_start:slice_stop:row_step]
 
+    @staticmethod
+    def _deserialize_chunk(blob_bytes: bytes, blob_format: str) -> np.ndarray:
+        """Deserialize a chunk from blob bytes based on format."""
+        buf = io.BytesIO(blob_bytes)
+        if blob_format == "npz":
+            npz_file = np.load(buf, allow_pickle=False)
+            return npz_file["data"]
+        else:
+            return pickle.load(buf)
+
+    @staticmethod
+    def _assemble_tensor_chunks(chunks: dict, nsplits: tuple) -> np.ndarray:
+        """Assemble chunk arrays into a single numpy array.
+
+        chunks: dict mapping chunk_index_tuple -> np.ndarray
+        nsplits: tuple of per-dimension split sizes
+        """
+        ndim = len(nsplits)
+        if ndim == 0:
+            # Scalar tensor: should have exactly one chunk with key ()
+            return chunks[()]
+
+        def _assemble_along_dim(dim: int, prefix: tuple) -> np.ndarray:
+            if dim == ndim - 1:
+                # Last dimension: concatenate along axis=dim
+                arrays = [chunks[prefix + (i,)] for i in range(len(nsplits[dim]))]
+                return np.concatenate(arrays, axis=dim)
+            else:
+                # Recurse along the next dimension, then concatenate along axis=dim
+                sub_arrays = [
+                    _assemble_along_dim(dim + 1, prefix + (i,))
+                    for i in range(len(nsplits[dim]))
+                ]
+                return np.concatenate(sub_arrays, axis=dim)
+
+        return _assemble_along_dim(0, ())
+
+    @staticmethod
+    def _create_blob_read_session(client, table, split_number: int):
+        """Create a read session with ROW_OFFSET split mode (required for
+        append 2.0 tables).
+
+        ``MaxStorageClient.create_table_read_session`` polls until the
+        session is ``NORMAL`` before returning.
+        """
+        split_options = SplitOptions(
+            split_mode=SplitMode.ROW_OFFSET,
+            split_number=split_number,
+        )
+        return client.create_table_read_session(
+            table,
+            split_options=split_options,
+            session_ready_timeout=_BLOB_READ_SESSION_READY_TIMEOUT,
+        )
+
+    @staticmethod
+    def _read_arrow_table(reader, max_rows: int = None) -> pa.Table:
+        """Read all batches from an ArrowReader into a pa.Table.
+
+        If *max_rows* is given, raises ValueError when the accumulated row
+        count exceeds the limit.
+        """
+        batches = []
+        total_rows = 0
+        while True:
+            batch = reader.read()
+            if batch is None:
+                break
+            batches.append(batch)
+            total_rows += batch.num_rows
+            if max_rows is not None and total_rows > max_rows:
+                raise ValueError(
+                    f"Number of rows ({total_rows}) exceeds the limit ({max_rows}). "
+                    f"Consider reducing the number of chunks."
+                )
+        return pa.Table.from_batches(batches) if batches else pa.table({})
+
+    @sync_pyodps_options
+    def _fetch_blob_table_tensor(
+        self, info: ODPSTableResultInfo, indexes: _FetchIndexType = None
+    ) -> np.ndarray:
+        """Fetch tensor data from a blob table using odps.maxstorage.
+
+        Supports slice and integer indexes to fetch only the needed portions
+        of the tensor.  When *indexes* is None or all-None the full tensor
+        is returned (backward-compatible).
+        """
+        if MaxStorageClient is None:
+            raise NotImplementedError(
+                "Tensor blob table fetch requires odps.maxstorage. "
+                "You need to install PyODPS >= 0.13.1 to enable this."
+            )
+        table = self._odps_entry.get_table(info.full_table_name)
+        client = MaxStorageClient(
+            self._odps_entry, tunnel_endpoint=get_storage_api_endpoint()
+        )
+
+        read_session = self._create_blob_read_session(
+            client, table, split_number=_MAX_BLOB_TABLE_ROWS + 1
+        )
+
+        # Read all rows to get chunk indices, format, and blob references
+        reader = read_session.open_arrow_reader(
+            RowRangeInputSplit(read_session.id, 0, _MAX_BLOB_TABLE_ROWS + 1)
+        )
+        all_data = self._read_arrow_table(reader, max_rows=_MAX_BLOB_TABLE_ROWS)
+        num_rows = all_data.num_rows
+        if num_rows == 0:
+            raise ValueError("Blob table is empty, no tensor chunks found.")
+
+        # Extract ndim from column names (idx_0, idx_1, ..., format, content)
+        ndim = len([c for c in all_data.column_names if c.startswith("idx_")])
+
+        # Use table_meta nsplits if available, otherwise decode from table comment
+        if info.table_meta and info.table_meta.nsplits:
+            nsplits = tuple(tuple(sp) for sp in info.table_meta.nsplits)
+        else:
+            tensor_meta = (
+                decode_blob_table_comment(table.comment) if table.comment else {}
+            )
+            nsplits = tuple(tuple(sp) for sp in tensor_meta.get("nsplits", []))
+
+        # Collect blob references, format, and chunk indices
+        chunk_refs = []
+        for row_idx in range(num_rows):
+            chunk_index = tuple(
+                int(all_data.column(f"idx_{i}")[row_idx].as_py()) for i in range(ndim)
+            )
+            blob_format = all_data.column("format")[row_idx].as_py()
+            blob_ref = all_data.column("content")[row_idx].as_py()
+            chunk_refs.append((chunk_index, blob_format, blob_ref))
+
+        blob_manager = client.open_blob_manager(table)
+
+        # --- Normalize indexes ---
+        no_slice = indexes is None or all(i is None for i in indexes)
+        if no_slice:
+            # Full fetch path (backward-compatible)
+            blob_refs = [ref for _, _, ref in chunk_refs]
+            blob_iter = blob_manager.read_blobs(blob_refs)
+            chunks = {}
+            for (chunk_index, blob_format, _), record in zip(chunk_refs, blob_iter):
+                chunks[chunk_index] = self._deserialize_chunk(record.data, blob_format)
+            return self._assemble_tensor_chunks(chunks, nsplits)
+
+        # Pad indexes to ndim and replace None with slice(None)
+        normalized = []
+        for d in range(ndim):
+            if d < len(indexes):
+                idx = indexes[d]
+                normalized.append(idx if idx is not None else slice(None))
+            else:
+                normalized.append(slice(None))
+
+        # --- Determine per-dimension affected chunks via slice_split ---
+        dim_splits = []
+        for d in range(ndim):
+            dim_splits.append(slice_split(normalized[d], list(nsplits[d])))
+
+        # --- Filter chunk refs: keep only chunks whose index appears in all dim_splits ---
+        filtered_refs = []
+        for chunk_index, blob_format, blob_ref in chunk_refs:
+            if all(chunk_index[d] in dim_splits[d] for d in range(ndim)):
+                filtered_refs.append((chunk_index, blob_format, blob_ref))
+
+        # --- Fetch only filtered blobs ---
+        blob_refs = [ref for _, _, ref in filtered_refs]
+        blob_iter = blob_manager.read_blobs(blob_refs)
+
+        # --- Deserialize and sub-slice each chunk ---
+        sub_chunks = {}
+        for (chunk_index, blob_format, _), record in zip(filtered_refs, blob_iter):
+            chunk_data = self._deserialize_chunk(record.data, blob_format)
+            # Build per-dim sub-index for this chunk
+            sub_idx = []
+            for d in range(ndim):
+                local = dim_splits[d][chunk_index[d]]
+                sub_idx.append(local)
+            chunk_data = chunk_data[tuple(sub_idx)]
+            sub_chunks[chunk_index] = chunk_data
+
+        # --- Separate dimensions into slice-dims (kept) and int-dims (reduced) ---
+        slice_dims = []
+        int_dims = []
+        for d in range(ndim):
+            if isinstance(normalized[d], Integral):
+                int_dims.append(d)
+            else:
+                slice_dims.append(d)
+
+        if not slice_dims:
+            # All dimensions are integer indexes -> scalar result
+            # There should be exactly one chunk
+            result = list(sub_chunks.values())[0]
+            return result.item() if hasattr(result, "item") else result
+
+        # Map original chunk index to reduced-dim key for assembly ordering.
+        # slice_dims are kept, int_dims are dropped from the key.
+        # Chunk indices are reindexed to be contiguous (0-based) so that
+        # _assemble_tensor_chunks can iterate from 0 without gaps.
+        # Preserve the order from dim_splits (which follows the slice
+        # direction) so reverse slices like [::-1] assemble correctly.
+        reduced_chunks = {}
+        dim_reindex = []
+        for d in slice_dims:
+            touched = [
+                ci
+                for ci in dim_splits[d].keys()
+                if any(sc[d] == ci for sc in sub_chunks)
+            ]
+            dim_reindex.append({orig: new for new, orig in enumerate(touched)})
+
+        reduced_nsplits_list = []
+        for idx, d in enumerate(slice_dims):
+            touched = list(dim_reindex[idx].keys())
+            reduced_nsplits_list.append(tuple(nsplits[d][i] for i in touched))
+
+        for chunk_index, chunk_data in sub_chunks.items():
+            reduced_key = tuple(
+                dim_reindex[idx][chunk_index[d]] for idx, d in enumerate(slice_dims)
+            )
+            reduced_chunks[reduced_key] = chunk_data
+
+        reduced_nsplits = tuple(reduced_nsplits_list)
+
+        # Assemble along the remaining (slice) dimensions
+        result = self._assemble_tensor_chunks(reduced_chunks, reduced_nsplits)
+
+        return result
+
+    @sync_pyodps_options
+    def _fetch_blob_table_object(self, info: ODPSTableResultInfo) -> Any:
+        """Fetch object data from a blob table using odps.maxstorage."""
+        if MaxStorageClient is None:
+            raise NotImplementedError(
+                "Object blob table fetch requires odps.maxstorage. "
+                "You need to install PyODPS >= 0.13.1 to enable this."
+            )
+        table = self._odps_entry.get_table(info.full_table_name)
+        client = MaxStorageClient(
+            self._odps_entry, tunnel_endpoint=get_storage_api_endpoint()
+        )
+
+        read_session = self._create_blob_read_session(client, table, split_number=2)
+
+        # Read the single row
+        reader = read_session.open_arrow_reader(
+            RowRangeInputSplit(read_session.id, 0, 1)
+        )
+        all_data = self._read_arrow_table(reader, max_rows=1)
+
+        if all_data.num_rows != 1:
+            raise ValueError(
+                f"Object blob table should have exactly 1 row, got {all_data.num_rows}"
+            )
+        # Get blob reference from the content column
+        blob_ref = all_data.column("content")[0].as_py()
+        # Read blob content
+        blob_manager = client.open_blob_manager(table)
+        blob_iter = blob_manager.read_blobs([blob_ref])
+        blob_bytes = next(iter(blob_iter)).data
+
+        # Unpickle the object
+        buf = io.BytesIO(blob_bytes)
+        return pickle.load(buf)
+
+    @staticmethod
+    def _liteframe_physical_columns(
+        table_meta: LiteFrameTableMeta, logical_columns: List[str]
+    ) -> List[str]:
+        """Map logical LiteFrame column names to their physical ODPS table names.
+
+        ``LiteFrameTableMeta.table_column_names`` is positionally aligned with
+        ``dtypes.index``; when the physical names differ (e.g. ``_column_0``
+        for the int-string logical name ``"0"``), the tunnel read must select
+        the physical names.  Returns the logical names unchanged when no
+        mapping is carried.
+        """
+        table_column_names = table_meta.table_column_names
+        dtypes = table_meta.dtypes
+        if table_column_names and dtypes is not None:
+            index_by_logical = {logical: i for i, logical in enumerate(dtypes.index)}
+            physical = []
+            for col in logical_columns:
+                idx = index_by_logical.get(col)
+                physical.append(
+                    table_column_names[idx]
+                    if idx is not None and idx < len(table_column_names)
+                    else col
+                )
+            return physical
+        return logical_columns
+
     async def fetch(
         self,
         tileable: TileableType,
         info: ODPSTableResultInfo,
         indexes: _FetchIndexType,
-    ) -> PandasObjectTypes:
+    ) -> Any:
+        # Handle tensor/object blob tables
+        if isinstance(tileable, TENSOR_TYPE) and isinstance(
+            info.table_meta, TensorTableMeta
+        ):
+            return await self.to_thread(self._fetch_blob_table_tensor, info, indexes)
+        if isinstance(tileable, OBJECT_TYPE) and info.table_meta is None:
+            return await self.to_thread(self._fetch_blob_table_object, info)
+
         # Use build_liteframe_table_meta for LiteFrame objects
         if isinstance(tileable, LITEFRAME_TYPE):
             table_meta = build_liteframe_table_meta(tileable)
@@ -354,7 +696,21 @@ class ODPSTableFetcher(ToThreadMixin, ResultFetcher):
         # For LiteFrame, convert arrow table to pandas DataFrame
         # The pandas DataFrame will be converted to polars by LiteFrame logic
         if isinstance(table_meta, LiteFrameTableMeta):
-            return arrow_table.to_pandas()
+            pdf = arrow_table.to_pandas()
+            # Restore user-facing (logical) column names when the temp table
+            # stored sanitized physical names (e.g. `_column_0` -> "0").
+            table_column_names = table_meta.table_column_names
+            if table_column_names and table_meta.dtypes is not None:
+                rename_map = {
+                    phys: logical
+                    for phys, logical in zip(
+                        table_column_names, table_meta.dtypes.index
+                    )
+                    if phys != logical
+                }
+                if rename_map:
+                    pdf = pdf.rename(columns=rename_map)
+            return pdf
         return arrow_to_pandas(arrow_table, table_meta)
 
     def estimate_size(

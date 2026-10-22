@@ -91,3 +91,38 @@ def test_blob_arrow_conversion():
         to_pd_ser = pa_arr.to_pandas()
         assert to_pd_ser.dtype == ExternalBlobDtype()
         pd.testing.assert_series_equal(pd_ser, to_pd_ser)
+
+
+def test_blob_null_conversion():
+    # A blob series containing None must round-trip through both the Arrow
+    # conversion (__arrow_array__) and astype(ArrowDtype(pa.binary())) without
+    # dereferencing the None slot.
+    pd_ser = pd.Series([SolidBlob(b"abcd"), None, SolidBlob(b"ijkl")], dtype="blob")
+    assert pd_ser.isna().tolist() == [False, True, False]
+
+    # __arrow_array__: None -> Arrow null
+    pa_arr = pa.Array.from_pandas(pd_ser)
+    try:
+        assert pa_arr.tolist() == [b"abcd", None, b"ijkl"]
+    except NotImplementedError:
+        assert pa_arr.storage.tolist() == [b"abcd", None, b"ijkl"]
+
+    # astype(ArrowDtype(pa.binary())): None preserved, blobs read out
+    bin_ser = pd_ser.astype(ArrowDtype(pa.binary()))
+    pd.testing.assert_series_equal(
+        bin_ser,
+        pd.Series([b"abcd", None, b"ijkl"], dtype=ArrowDtype(pa.binary())),
+    )
+
+    # __from_arrow__: null slots restore as None (not SolidBlob(None)), and
+    # non-null slots read back their original bytes.  This closes the Arrow
+    # round-trip so a blob column survives to_arrow()/from_arrow() intact.
+    # to_pylist() on an ExtensionArray requires pyarrow>=3.0 (legacy 1.0
+    # raises ArrowNotImplementedError), matching the guard in
+    # test_blob_arrow_conversion.
+    if parse_version(pa.__version__) >= parse_version("3.0"):
+        restored = ExternalBlobDtype().__from_arrow__(pa_arr)
+        assert restored.isna().tolist() == [False, True, False]
+        with restored[0].open("rb") as reader:
+            assert reader.read() == b"abcd"
+        assert restored[1] is None

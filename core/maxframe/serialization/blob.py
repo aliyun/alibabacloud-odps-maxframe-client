@@ -20,7 +20,8 @@ from maxframe.serialization.core import Serializer
 
 class ExternalBlobSerializer(Serializer):
     def serial(self, obj: AbstractExternalBlob, context: Dict):
-        tp, vals = obj.to_serializable().__reduce__()
+        serializable = obj.to_serializable()
+        tp, vals = serializable.__reduce__()
         if not issubclass(tp, AbstractExternalBlob):
             raise ValueError(
                 f"{type(obj)}.to_serializable() should produce another ExternalBlob"

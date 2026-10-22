@@ -1,0 +1,110 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 15:40+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.agg.rst:2
+msgid "maxframe.liteframe.LiteFrame.agg"
+msgstr ""
+
+#: maxframe.liteframe.reduction.agg.agg:1 of
+msgid "Aggregate using one or more operations over columns."
+msgstr "使用一个或多个操作对列进行聚合。"
+
+#: maxframe.liteframe.reduction.agg.agg:3 of
+msgid ""
+"Each column is reduced independently to a single scalar, and the results "
+"are combined into a single-row LiteFrame."
+msgstr "每列独立地减少为单个标量，并且结果被组合成单行 LiteFrame。"
+
+#: maxframe.liteframe.reduction.agg.agg of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.reduction.agg.agg:6 of
+#, python-brace-format
+msgid ""
+"Aggregation specification. A string names a single reduction (e.g. "
+"``'sum'``); a list applies several reductions to each column, producing a"
+" single row with ``{column}_{function}`` suffixed columns (e.g. "
+"``a_sum``, ``a_mean``); a dict maps column names to reductions. By "
+"default None, which supports the kwargs-only named-aggregation form (e.g."
+" ``lf.agg(a_sum=('a', 'sum'))``)."
+msgstr ""
+"聚合规范。字符串命名单个约简（例如 ``'sum'``）；列表对每列应用多个约简，"
+"生成单行并带有 ``{column}_{function}`` 后缀的列（例如 ``a_sum``、``a_mean"
+"``）；字典将列名映射到约简。默认为 None，支持仅限关键字参数的命名聚合形式"
+"（例如 ``lf.agg(a_sum=('a', 'sum'))``）。"
+
+#: maxframe.liteframe.reduction.agg.agg:14 of
+msgid "Execution strategy. ``'auto'`` selects based on data size."
+msgstr "执行策略。``'auto'`` 根据数据大小进行选择。"
+
+#: maxframe.liteframe.reduction.agg.agg:16 of
+msgid "When True, restrict to numeric columns. By default None."
+msgstr "当为 True 时，限制为数值列。默认为 None。"
+
+#: maxframe.liteframe.reduction.agg.agg:18 of
+msgid "Frame type hint for the operator."
+msgstr "操作符的框架类型提示。"
+
+#: maxframe.liteframe.reduction.agg.agg:20 of
+msgid "Additional keyword arguments forwarded to the reduction."
+msgstr "转发给归约的额外关键字参数。"
+
+#: maxframe.liteframe.reduction.agg.agg of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.reduction.agg.agg:22 of
+msgid "Single-row LiteFrame of per-column aggregate results."
+msgstr "每列聚合结果的单行 LiteFrame。"
+
+#: maxframe.liteframe.reduction.agg.agg of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.reduction.agg.agg:27 of
+msgid ":py:obj:`sum`"
+msgstr ""
+
+#: maxframe.liteframe.reduction.agg.agg:28 of
+msgid "Return the sum of each column."
+msgstr "返回每列的和。"
+
+#: maxframe.liteframe.reduction.agg.agg:30 of
+msgid ":py:obj:`mean`"
+msgstr ""
+
+#: maxframe.liteframe.reduction.agg.agg:31 of
+msgid "Return the mean of each column."
+msgstr "返回每列的平均值。"
+
+#: maxframe.liteframe.reduction.agg.agg:33 of
+msgid ":py:obj:`count`"
+msgstr ""
+
+#: maxframe.liteframe.reduction.agg.agg:34 of
+msgid "Return the count of non-null values in each column."
+msgstr "返回每列非空值的计数。"
+
+#: maxframe.liteframe.reduction.agg.agg:37 of
+msgid "示例"
+msgstr ""
+

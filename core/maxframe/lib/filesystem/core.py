@@ -68,7 +68,7 @@ def get_fs(path: path_type, storage_options: Dict = None) -> FileSystem:
 
 
 def glob(path: path_type, storage_options: Dict = None) -> List[path_type]:
-    if "*" in path:
+    if "*" in path or "?" in path:
         fs = get_fs(path, storage_options)
         return fs.glob(path)
     else:

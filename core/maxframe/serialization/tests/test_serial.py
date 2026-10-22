@@ -25,6 +25,11 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from maxframe.lib.dtypes_extension.blob import (
+    SolidBlob,
+    is_polars_blob_type,
+    make_polars_blob_type,
+)
 from maxframe.serialization import PickleHookOptions
 from maxframe.utils import is_arrow_dtype_supported, wrap_arrow_dtype
 
@@ -314,6 +319,63 @@ def test_polars():
     assert deserialized.collect().equals(pl.DataFrame({"a": [1, 2, 3]}))
 
 
+@pytest.mark.skipif(
+    pl is None or not hasattr(pl, "BaseExtension"),
+    reason="need polars with BaseExtension support",
+)
+@switch_unpickle
+def test_polars_blob_dataframe():
+    blob_dtype = make_polars_blob_type()
+
+    # DataFrame with blob column mixed with regular columns
+    df = pl.DataFrame(
+        {
+            "id": [1, 2, 3],
+            "name": ["a", "b", "c"],
+            "blob_col": pl.Series(
+                "blob_col",
+                [SolidBlob(b"\x01"), SolidBlob(b"\x02"), None],
+                dtype=blob_dtype,
+            ),
+        }
+    )
+    assert is_polars_blob_type(df["blob_col"].dtype)
+
+    result = deserialize(*serialize(df))
+    assert isinstance(result, pl.DataFrame)
+    assert list(result.columns) == ["id", "name", "blob_col"]
+    assert result["id"].to_list() == [1, 2, 3]
+    assert result["name"].to_list() == ["a", "b", "c"]
+    assert is_polars_blob_type(result["blob_col"].dtype)
+    blobs = result["blob_col"].to_list()
+    assert blobs[0].reference == b"\x01"
+    assert blobs[1].reference == b"\x02"
+    assert blobs[2] is None
+
+
+@pytest.mark.skipif(
+    pl is None or not hasattr(pl, "BaseExtension"),
+    reason="need polars with BaseExtension support",
+)
+@switch_unpickle
+def test_polars_blob_series():
+    blob_dtype = make_polars_blob_type()
+
+    s = pl.Series(
+        "blob_col",
+        [SolidBlob(b"\x01"), SolidBlob(b"\x02"), None],
+        dtype=blob_dtype,
+    )
+
+    result = deserialize(*serialize(s))
+    assert isinstance(result, pl.Series)
+    assert result.name == "blob_col"
+    blobs = result.to_list()
+    assert blobs[0].reference == b"\x01"
+    assert blobs[1].reference == b"\x02"
+    assert blobs[2] is None
+
+
 @switch_unpickle
 @pytest.mark.skipif(ArrowDtype is None, reason="ArrowDtype cannot be mocked")
 def test_fake_arrow_dtype_serde():
@@ -496,7 +558,7 @@ class UnpickleWithError:
 def test_exceptions():
     try:
         raise ValueError("val")
-    except BaseException as ex:
+    except Exception as ex:
         exc = ex
 
     deserial = deserialize(*serialize(exc))
@@ -535,13 +597,13 @@ class MockSerializerForErrors(ListSerializer):
         context: Dict,
         subs_serialized: List,
         error_index: int,
-        exc: BaseException,
+        exc: Exception,
     ):
         assert error_index == 1
         assert subs_serialized[error_index]
         try:
             raise SystemError from exc
-        except BaseException as ex:
+        except Exception as ex:
             return ex
 
     def deserial(self, serialized: List, context: Dict, subs: List[Any]):

@@ -478,3 +478,97 @@ cdef class DAG(DirectedGraph):
                     stack.append(succ)
         if len(visited) != len(self):
             raise GraphContainsCycleError
+
+    cpdef dict acyclic_color(
+        self, object can_be_grouped, object merge_nodes_hook
+    ):
+        """Cycle-aware acyclic coloring. Returns ``{node: color_id}``.
+
+        Nodes are processed in topological order. A node joins an existing
+        color iff ``can_be_grouped(node, rep)`` is True AND the quotient graph
+        stays acyclic (the candidate color is not an ancestor of any operand
+        color). ``merge_nodes_hook(node, rep)`` is called on a successful join
+        (never when a new color is opened). The caller owns all metadata; this
+        method tracks only color ids and quotient reachability.
+
+        Parameters
+        ----------
+        can_be_grouped : callable(node, rep) -> bool
+            Mergeability decision. ``rep`` is a representative member of a
+            candidate color; the caller may resolve it to the group's
+            accumulated metadata internally.
+        merge_nodes_hook : callable(node, rep) -> None
+            Notification that ``node`` was merged into ``rep``'s color, so the
+            caller can update its per-group metadata.
+        """
+        cdef:
+            dict color_of = {}      # node -> int color
+            dict rep_of = {}        # color -> representative node (first member)
+            dict reach = {}         # color -> set(colors reachable from it)
+            int next_color = 0
+            list topo
+            list preds
+            list operand_colors
+            int placed = -1
+            int cand
+            int oc
+            int c
+            bint ok
+            set r
+            list ancestors
+
+        topo = list(self.topological_iter())
+        for node in topo:
+            preds = self.predecessors(node)
+            operand_colors = []
+            for p in preds:
+                if p in color_of:
+                    cand = color_of[p]
+                    if cand not in operand_colors:
+                        operand_colors.append(cand)
+
+            placed = -1
+            for cand in list(rep_of.keys()):       # stable creation order
+                if not can_be_grouped(node, rep_of[cand]):
+                    continue
+                # Acyclicity: joining `cand` adds edge operand_color -> cand for
+                # each operand color != cand. That cycles iff `cand` already
+                # reaches that operand color. So `cand` must not be an ancestor
+                # of any operand color.
+                r = reach.get(cand)
+                ok = True
+                if r is not None:
+                    for oc in operand_colors:
+                        if oc != cand and oc in r:
+                            ok = False
+                            break
+                if ok:
+                    placed = cand
+                    break
+            if placed >= 0:
+                merge_nodes_hook(node, rep_of[placed])
+                color_of[node] = placed
+            else:
+                placed = next_color
+                next_color += 1
+                color_of[node] = placed
+                rep_of[placed] = node
+                reach[placed] = set()
+
+            # Add quotient edges operand_color -> placed (operands in other
+            # colors) and propagate transitive reachability.
+            for oc in operand_colors:
+                if oc == placed:
+                    continue
+                # colors that already reach `oc` now also reach `placed` (and
+                # everything `placed` reaches). Computed before mutating, since
+                # adding oc->placed does not create new paths *to* oc.
+                ancestors = [c for c in reach if oc in reach[c]]
+                reach[oc].add(placed)
+                if reach[placed]:
+                    reach[oc] |= reach[placed]
+                for c in ancestors:
+                    reach[c].add(placed)
+                    if reach[placed]:
+                        reach[c] |= reach[placed]
+        return color_of

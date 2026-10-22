@@ -200,6 +200,11 @@ class FakeArrowExtensionArray(ExtensionArray, NDArrayBacked):
 
     def __getitem__(self, item):
         # code from ArrowExtensionArray in pandas>=1.5
+        if isinstance(item, list):
+            # pandas <1.5 Block.iget passes a Python list (e.g. [loc]); normalize
+            # to ndarray so the integer/boolean branch below handles it instead
+            # of forwarding the list to ChunkedArray.__getitem__ (which rejects it).
+            item = np.asarray(item)
         if isinstance(item, np.ndarray):
             if not len(item):
                 pa_dtype = self._dtype.pyarrow_dtype
@@ -394,6 +399,14 @@ class FakeArrowDtype(ExtensionDtype):
     def __init__(self, pyarrow_dtype):
         super().__init__()
         self.pyarrow_dtype = pyarrow_dtype
+
+    def __reduce__(self):
+        # FakeArrowDtype instances must be picklable: LiteFrameTableMeta (and
+        # other meta) serialize pandas dtypes via pickle, and on pandas<2 the
+        # arrow dtype is this fake class.  ``type(self)`` covers the
+        # FakeDatetimeTZArrowDtype subclass, whose __init__ takes the same
+        # single pyarrow_dtype argument.
+        return type(self), (self.pyarrow_dtype,)
 
     @classmethod
     def construct_array_type(cls):

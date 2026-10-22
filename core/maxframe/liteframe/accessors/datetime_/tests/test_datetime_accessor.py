@@ -12,15 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pytest
 
 from maxframe.liteframe import LiteFrame
-from maxframe.liteframe.accessors.datetime_.core import LiteFrameDatetimeExpr
-from maxframe.liteframe.expressions import NamedExpr
+from maxframe.liteframe.accessors.datetime_.core import (
+    DATETIME_MULTI_METHOD_OUTPUT_DTYPES,
+    DatetimeMultiColumnHandler,
+    LiteFrameDatetimeExpr,
+    LiteFrameDatetimeMultiExpr,
+)
+from maxframe.liteframe.expressions import (
+    LiteFrameColumn,
+    LiteFrameMultiColumnExpr,
+    LiteFrameMultiColumnSubExpr,
+    NamedExpr,
+)
+from maxframe.liteframe.initializer import LiteFrame as LF
 from maxframe.liteframe.operators.project import LiteFrameProjection
-from maxframe.utils import wrap_arrow_dtype
+from maxframe.utils import is_arrow_dtype_supported, wrap_arrow_dtype
 
 
 def test_datetime_accessor_single_column_validation():
@@ -40,26 +52,10 @@ def test_datetime_accessor_dtype_validation():
 @pytest.mark.parametrize(
     "method,expected_dtype",
     [
+        # One representative per dtype class; per-method dtype correctness
+        # is covered by DATETIME_PROPERTY_OUTPUT_DTYPE + execution tests.
         ("year", wrap_arrow_dtype(pa.int32())),
-        ("month", wrap_arrow_dtype(pa.int32())),
-        ("day", wrap_arrow_dtype(pa.int32())),
-        ("hour", wrap_arrow_dtype(pa.int32())),
-        ("minute", wrap_arrow_dtype(pa.int32())),
-        ("second", wrap_arrow_dtype(pa.int32())),
-        ("microsecond", wrap_arrow_dtype(pa.int32())),
-        ("nanosecond", wrap_arrow_dtype(pa.int32())),
-        ("dayofweek", wrap_arrow_dtype(pa.int32())),
-        ("dayofyear", wrap_arrow_dtype(pa.int32())),
-        ("weekofyear", wrap_arrow_dtype(pa.int32())),
-        ("quarter", wrap_arrow_dtype(pa.int32())),
-        ("days_in_month", wrap_arrow_dtype(pa.int32())),
-        ("daysinmonth", wrap_arrow_dtype(pa.int32())),
         ("is_month_start", wrap_arrow_dtype(pa.bool_())),
-        ("is_month_end", wrap_arrow_dtype(pa.bool_())),
-        ("is_quarter_start", wrap_arrow_dtype(pa.bool_())),
-        ("is_quarter_end", wrap_arrow_dtype(pa.bool_())),
-        ("is_year_start", wrap_arrow_dtype(pa.bool_())),
-        ("is_year_end", wrap_arrow_dtype(pa.bool_())),
         ("date", wrap_arrow_dtype(pa.date32())),
         ("time", wrap_arrow_dtype(pa.time64("us"))),
     ],
@@ -98,24 +94,15 @@ def test_datetime_accessor_with_tz_dtype():
     assert result.dtypes.iloc[0] == wrap_arrow_dtype(pa.int32())
 
 
-from maxframe.liteframe.accessors.datetime_.core import (
-    DATETIME_MULTI_METHOD_OUTPUT_DTYPES,
-    DatetimeMultiColumnHandler,
-    LiteFrameDatetimeMultiExpr,
-)
-
-
 def test_datetime_multi_expr_construction():
     """LiteFrameDatetimeMultiExpr extends LiteFrameMultiColumnExpr with method field."""
-    from maxframe.liteframe.expressions import LiteFrameColumn, LiteFrameMultiColumnExpr
-
     col_expr = LiteFrameColumn(name="ts", dtype=pd.DatetimeTZDtype(tz="UTC"))
     multi = LiteFrameDatetimeMultiExpr(
-        operand=col_expr,
+        operands=[col_expr],
         method="isocalendar",
         is_property=False,
         output_names=["year", "week", "day"],
-        dtypes_dict={"year": "Int32", "week": "Int32", "day": "Int32"},
+        dtypes={"year": "Int32", "week": "Int32", "day": "Int32"},
     )
     assert isinstance(multi, LiteFrameMultiColumnExpr)
     assert multi.method == "isocalendar"
@@ -131,9 +118,6 @@ def test_datetime_multi_column_handler_infer_dtypes():
     assert result == DATETIME_MULTI_METHOD_OUTPUT_DTYPES["isocalendar"]
     assert list(result.keys()) == ["year", "week", "day"]
     assert all(v == wrap_arrow_dtype(pa.int32()) for v in result.values())
-
-
-from maxframe.liteframe.expressions import LiteFrameMultiColumnSubExpr
 
 
 def test_isocalendar_accessor_structure():
@@ -166,9 +150,6 @@ def test_isocalendar_accessor_structure():
 
 def test_datetime_accessor_after_projection_fuses():
     """Datetime accessor on a projection-produced column should fuse."""
-    from maxframe.liteframe.expressions import LiteFrameColumn
-    from maxframe.liteframe.initializer import LiteFrame as LF
-
     lf = LF({"ts": pd.date_range("2020-01-01", periods=2)})
     lf2 = lf.select("ts")
     result = lf2.dt.year
@@ -179,3 +160,252 @@ def test_datetime_accessor_after_projection_fuses():
     assert hasattr(expr, "operand")
     assert isinstance(expr.operand, LiteFrameColumn)
     assert result.data.inputs[0] is lf._data
+
+
+# ---------------------------------------------------------------------------
+# Timedelta / duration accessor
+# ---------------------------------------------------------------------------
+
+
+def _td_series():
+    return pd.Series(
+        pd.to_timedelta(
+            np.array([93784005006000, -129600000000000, 7], dtype="timedelta64[ns]")
+        )
+    )
+
+
+@pytest.mark.parametrize(
+    "method,expected_dtype",
+    [
+        ("days", wrap_arrow_dtype(pa.int64())),
+        ("seconds", wrap_arrow_dtype(pa.int32())),
+        ("microseconds", wrap_arrow_dtype(pa.int32())),
+        ("nanoseconds", wrap_arrow_dtype(pa.int32())),
+    ],
+)
+def test_timedelta_property_dtype_inference(method, expected_dtype):
+    """Timedelta properties infer the correct dtype without execution."""
+    df = LiteFrame({"col": _td_series()})
+    result = getattr(df.dt, method)
+
+    assert isinstance(result, LiteFrame)
+    op = result.data.op
+    assert isinstance(op, LiteFrameProjection)
+    projection = op.projections[0]
+    assert isinstance(projection.expr, LiteFrameDatetimeExpr)
+    assert projection.expr.method == method
+    assert projection.expr.is_property is True
+    assert result.dtypes.iloc[0] == expected_dtype
+    assert projection.dtype == expected_dtype
+
+
+def test_timedelta_total_seconds_is_method():
+    """.dt.total_seconds() is a method returning float64."""
+    df = LiteFrame({"col": _td_series()})
+    result = df.dt.total_seconds()
+
+    op = result.data.op
+    projection = op.projections[0]
+    assert isinstance(projection.expr, LiteFrameDatetimeExpr)
+    assert projection.expr.method == "total_seconds"
+    assert projection.expr.is_property is False
+    assert result.dtypes.iloc[0] == wrap_arrow_dtype(pa.float64())
+
+
+def test_timedelta_components_structure():
+    """.dt.components produces a 7-column int64 LiteFrame (property, not method)."""
+    df = LiteFrame({"col": _td_series()})
+    result = df.dt.components
+
+    expected_cols = [
+        "days",
+        "hours",
+        "minutes",
+        "seconds",
+        "milliseconds",
+        "microseconds",
+        "nanoseconds",
+    ]
+    assert isinstance(result, LiteFrame)
+    assert list(result.columns) == expected_cols
+    for col_name in expected_cols:
+        assert result.dtypes[col_name] == wrap_arrow_dtype(pa.int64())
+
+    op = result.data.op
+    assert isinstance(op, LiteFrameProjection)
+    assert len(op.projections) == 7
+    for proj in op.projections:
+        assert isinstance(proj.expr, LiteFrameMultiColumnSubExpr)
+
+
+def test_timedelta_accessor_accepts_arrow_duration():
+    """ArrowDtype(duration[ns]) is recognized as datetimelike."""
+    df = LiteFrame({"col": _td_series()})
+    # Should not raise; accessing .dt already validated the dtype.
+    _ = df.dt.days
+
+
+def test_timedelta_multi_column_handler_infer_dtypes():
+    """DatetimeMultiColumnHandler.infer_dtypes returns 7 int64 columns for components."""
+    result = DatetimeMultiColumnHandler.infer_dtypes("components", None)
+    assert set(result) == {
+        "days",
+        "hours",
+        "minutes",
+        "seconds",
+        "milliseconds",
+        "microseconds",
+        "nanoseconds",
+    }
+    assert all(v == wrap_arrow_dtype(pa.int64()) for v in result.values())
+    assert "components" in DATETIME_MULTI_METHOD_OUTPUT_DTYPES
+
+
+# ---------------------------------------------------------------------------
+# New method-style accessors: strftime, day_name, month_name, normalize,
+# round, floor, ceil
+# ---------------------------------------------------------------------------
+
+
+def _ts_series():
+    return pd.Series(pd.date_range("2020-01-01 10:30:45", periods=3, freq="h"))
+
+
+@pytest.mark.parametrize(
+    "method,expected_dtype",
+    [
+        ("strftime", wrap_arrow_dtype(pa.string())),
+        ("day_name", wrap_arrow_dtype(pa.string())),
+        ("month_name", wrap_arrow_dtype(pa.string())),
+    ],
+)
+def test_datetime_string_method_dtype_inference(method, expected_dtype):
+    """String-returning dt methods infer string dtype without execution."""
+    df = LiteFrame({"col": _ts_series()})
+    if method == "strftime":
+        result = df.dt.strftime("%Y-%m-%d")
+    else:
+        result = getattr(df.dt, method)()
+
+    assert isinstance(result, LiteFrame)
+    op = result.data.op
+    projection = op.projections[0]
+    assert isinstance(projection.expr, LiteFrameDatetimeExpr)
+    assert projection.expr.method == method
+    assert projection.expr.is_property is False
+    assert result.dtypes.iloc[0] == expected_dtype
+    assert projection.dtype == expected_dtype
+
+
+def test_datetime_strftime_passes_args():
+    """strftime captures the format string in expr.args."""
+    df = LiteFrame({"col": _ts_series()})
+    result = df.dt.strftime("%Y/%m/%d")
+
+    projection = result.data.op.projections[0]
+    assert projection.expr.args == ("%Y/%m/%d",)
+    assert projection.expr.kwargs == {}
+
+
+@pytest.mark.parametrize("method", ["normalize", "round", "floor", "ceil"])
+def test_datetime_preserving_method_dtype_inference(method):
+    """normalize/round/floor/ceil preserve the input datetime dtype."""
+    df = LiteFrame({"col": _ts_series()})
+    if method == "normalize":
+        result = df.dt.normalize()
+    else:
+        result = getattr(df.dt, method)("1h")
+
+    input_dtype = df.dtypes.iloc[0]
+    projection = result.data.op.projections[0]
+    assert isinstance(projection.expr, LiteFrameDatetimeExpr)
+    assert projection.expr.method == method
+    assert projection.expr.is_property is False
+    assert result.dtypes.iloc[0] == input_dtype
+    assert projection.dtype == input_dtype
+
+
+@pytest.mark.parametrize("method", ["round", "floor", "ceil"])
+def test_datetime_round_method_passes_freq(method):
+    """round/floor/ceil capture the freq string in expr.args."""
+    df = LiteFrame({"col": _ts_series()})
+    result = getattr(df.dt, method)("30min")
+
+    projection = result.data.op.projections[0]
+    assert projection.expr.args == ("30min",)
+    assert projection.expr.kwargs == {}
+
+
+# ---------------------------------------------------------------------------
+# Dtype-method gating (review #7)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("method", ["days"])
+def test_dt_duration_method_on_datetime_raises(method):
+    """timedelta-only properties raise AttributeError on a datetime column
+    at graph-construction time, matching pandas."""
+    df = LiteFrame({"col": _ts_series()})
+    with pytest.raises(AttributeError, match="timedelta"):
+        _ = getattr(df.dt, method)
+
+
+def test_dt_total_seconds_on_datetime_raises():
+    """total_seconds (timedelta-only method) raises on a datetime column."""
+    df = LiteFrame({"col": _ts_series()})
+    with pytest.raises(AttributeError, match="timedelta"):
+        _ = df.dt.total_seconds()
+
+
+def test_dt_components_on_datetime_raises():
+    """components (timedelta-only multi-column) raises on a datetime column."""
+    df = LiteFrame({"col": _ts_series()})
+    with pytest.raises(AttributeError, match="timedelta"):
+        _ = df.dt.components
+
+
+@pytest.mark.parametrize("method", ["year"])
+def test_dt_datetime_method_on_timedelta_raises(method):
+    """datetime-only properties raise AttributeError on a timedelta column,
+    matching pandas (gated both directions)."""
+    df = LiteFrame({"col": _td_series()})
+    with pytest.raises(AttributeError, match="datetimelike"):
+        _ = getattr(df.dt, method)
+
+
+def test_dt_isocalendar_on_timedelta_raises():
+    """isocalendar (datetime-only multi-column) raises on a timedelta column."""
+    df = LiteFrame({"col": _td_series()})
+    with pytest.raises(AttributeError, match="datetimelike"):
+        _ = df.dt.isocalendar()
+
+
+@pytest.mark.parametrize("method", ["round", "floor", "ceil"])
+def test_dt_round_floor_ceil_on_timedelta_succeeds(method):
+    """round/floor/ceil are shared between datetime and timedelta (pandas
+    supports both), so they must not raise on a timedelta column (review #7
+    follow-up: the coarse gate treated them as datetime-only)."""
+    df = LiteFrame({"col": _td_series()})
+    result = getattr(df.dt, method)("D")
+    # Builds a projection without raising; dtype preserved as timedelta.
+    projection = result.data.op.projections[0]
+    assert isinstance(projection.expr, LiteFrameDatetimeExpr)
+    assert projection.expr.method == method
+
+
+def test_dt_timedelta_seconds_canonicalizes_to_ms_metadata():
+    """timedelta64[s] canonicalizes to duration[ms] in the core dtype
+    owner so metadata matches the physical Polars schema (review
+    follow-up: canonicalization lived only in the executor, so metadata
+    said duration[s] while the physical result was Duration(ms))."""
+    if not is_arrow_dtype_supported():
+        pytest.skip("pyarrow>=7.0 required for pd.ArrowDtype")
+    s_dtype = pd.ArrowDtype(pa.duration("s"))
+    df = LiteFrame({"col": pd.Series([129600], dtype=s_dtype)})
+    result = df.dt.floor("D")
+    # Metadata must report duration[ms], matching the codegen's physical
+    # Duration(ms) (Polars rejects 's').
+    expected = wrap_arrow_dtype(pa.duration("ms"))
+    assert result.dtypes.iloc[0] == expected
+    assert result.data.op.projections[0].dtype == expected

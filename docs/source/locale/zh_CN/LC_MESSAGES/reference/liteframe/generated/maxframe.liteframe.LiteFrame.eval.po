@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 15:05+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.eval.rst:2
+msgid "maxframe.liteframe.LiteFrame.eval"
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_eval:1 of
+msgid "Evaluate a string describing operations on LiteFrame columns."
+msgstr "求值描述对 LiteFrame 列进行操作的字符串。"
+
+#: maxframe.liteframe.misc.eval.lf_eval:3 of
+msgid ""
+"A pure expression returns a one-column LiteFrame (the LiteFrame analogue "
+"of a pandas Series).  Assignment expressions (``C = A + B``) add or "
+"replace a column; ``inplace=True`` mutates *lf*, otherwise a copy is "
+"returned."
+msgstr ""
+"纯表达式返回一个单列 LiteFrame（pandas Series 的 LiteFrame 对应物）。赋值"
+"表达式（``C = A + B``）添加或替换列；``inplace=True`` 会就地修改 *lf*，"
+"否则返回副本。"
+
+#: maxframe.liteframe.misc.eval.lf_eval:8 of
+msgid ""
+"Supported operators: ``+ - * / // % **``, ``== != < <= > >=``, ``& | ~``,"
+" unary ``+ -``, ``abs()``, and ``in`` / ``not in`` against a constant "
+"list.  ``@local`` references caller variables and backtick quoting "
+"handles column names that are not valid identifiers."
+msgstr ""
+"支持的操作符：``+ - * / // % **``，``== != < <= > >=``，``& | ~``，一元"
+"运算符 ``+ -``，``abs()``，以及针对常量列表的 ``in`` / ``not in``。``@"
+"local`` 引用调用者变量，反引号引用处理无效标识符的列名。"
+
+#: maxframe.liteframe.misc.eval.lf_eval of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_eval:13 of
+msgid ""
+"Expression string to evaluate.  Column names resolve to "
+":func:`~maxframe.liteframe.col` expressions."
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_eval:16 of
+msgid ""
+"If ``True``, mutate *lf* in place for assignment expressions and return "
+"``None``; a pure expression with ``inplace=True`` raises ``ValueError``."
+"  If ``False``, return the resulting LiteFrame (for a pure expression) or"
+" a mutated copy (for an assignment)."
+msgstr ""
+"如果为 ``True``，就地修改 *lf* 用于赋值表达式并返回 ``None``；纯表达式"
+"使用 ``inplace=True`` 会引发 ``ValueError``。如果为 ``False``，返回结果 "
+"LiteFrame（对于纯表达式）或修改后的副本（对于赋值）。"
+
+#: maxframe.liteframe.misc.eval.lf_eval:21 of
+msgid ""
+"Additional keyword arguments forwarded to :func:`liteframe_eval`, such as"
+" ``local_dict``, ``global_dict``, and ``level``."
+msgstr ""
+"转发给 :func:`liteframe_eval` 的附加关键字参数，例如 ``local_dict``、``"
+"global_dict`` 和 ``level``。"
+
+#: maxframe.liteframe.misc.eval.lf_eval of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_eval:24 of
+msgid ""
+"A one-column LiteFrame for a pure expression, a mutated copy for a non-"
+"inplace assignment, or ``None`` for an inplace assignment."
+msgstr "纯表达式的单列 LiteFrame，非就地赋值的修改副本，或就地赋值的 ``None``。"
+
+#: maxframe.liteframe.misc.eval.lf_eval of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_eval:30 of
+msgid ":py:obj:`query`"
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_eval:31 of
+msgid "Query the columns of a LiteFrame with a boolean expression."
+msgstr "使用布尔表达式查询 LiteFrame 的列。"
+
+#: maxframe.liteframe.misc.eval.lf_eval:33 of
+msgid ":py:obj:`assign`"
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_eval:34 of
+msgid "Add new columns to LiteFrame."
+msgstr "向 LiteFrame 添加新列。"
+
+#: maxframe.liteframe.misc.eval.lf_eval:37 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_eval:41 of
+msgid "A pure expression returns a one-column LiteFrame:"
+msgstr "一个纯表达式返回一个单列的 LiteFrame："
+
+#: maxframe.liteframe.misc.eval.lf_eval:50 of
+msgid "An assignment expression adds a column:"
+msgstr "一个赋值表达式会添加一列："
+
+

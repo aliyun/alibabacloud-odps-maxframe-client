@@ -13,14 +13,25 @@
 # limitations under the License.
 
 import pandas as pd
-import pyarrow as pa
 
 from maxframe import opcodes
+from maxframe.core import OutputType
+from maxframe.liteframe.arithmetic.range_affine import (
+    RangeAnalysisResult,
+    analyze_range_affine,
+    transform_range_info,
+)
 from maxframe.liteframe.core import FrameMetadata
-from maxframe.liteframe.expressions import LiteFrameColumn, LiteFrameExpr, NamedExpr
+from maxframe.liteframe.expressions import (
+    LiteFrameBaseExpr,
+    LiteFrameColumn,
+    LiteFrameExpr,
+    LiteFrameMultiColumnSubExpr,
+    LiteFrameUDFExpr,
+    NamedExpr,
+)
 from maxframe.liteframe.operators.core import LiteFrameOperator, LiteFrameOperatorMixin
-from maxframe.serialization.serializables import BoolField, ListField
-from maxframe.utils import wrap_arrow_dtype
+from maxframe.serialization.serializables import DictField, FieldTypes, ListField
 
 
 def _projection_name(proj):
@@ -38,6 +49,17 @@ def _projection_name(proj):
 def _projection_dtype(proj):
     """Extract the output dtype from a projection expression."""
     if isinstance(proj, NamedExpr):
+        # NamedExpr inherits dtype from LiteFrameExpr.  Two cases:
+        #   1. UDF projections: NamedExpr.dtype is explicitly set to the
+        #      inferred output dtype (the inner expr may be a
+        #      LiteFrameMultiColumnSubExpr or a UDF expr without .dtype).
+        #   2. Arithmetic projections: NamedExpr.dtype is None (not passed
+        #      at construction), so we must fall through to expr.dtype.
+        # After .bind(), NamedExpr.dtype always equals expr.dtype, so
+        # the None check cleanly discriminates between the two cases.
+        own_dtype = getattr(proj, "dtype", None)
+        if own_dtype is not None:
+            return own_dtype
         return proj.expr.dtype
     if isinstance(proj, LiteFrameExpr):
         return proj.dtype
@@ -48,27 +70,82 @@ def _append_hidden_projections(lf, projections):
     """Append hidden column pass-through expressions to projections.
 
     Use this when building a LiteFrameProjection that should preserve hidden columns.
+    Hidden columns already referenced in projections (e.g. explicitly selected)
+    are skipped to avoid duplicates.
     """
     if lf._hidden_columns:
+        existing_names = {_projection_name(p) for p in projections}
         for hc in sorted(lf._hidden_columns):
-            projections.append(LiteFrameColumn(name=hc, dtype=lf._physical_dtypes[hc]))
+            if hc not in existing_names:
+                projections.append(
+                    LiteFrameColumn(name=hc, dtype=lf._physical_dtypes[hc])
+                )
+
+
+def iter_projection_udf_funcs(projections):
+    """Yield the user callable from each embedded UDF expression.
+
+    Projection UDFs (map / transform_chunk / transform_row) are embedded as
+    ``LiteFrameUDFExpr`` nodes inside the projection list, either directly
+    wrapped in ``NamedExpr`` or via ``LiteFrameMultiColumnSubExpr``.  Yields
+    each UDF's ``func`` so its ``@with_running_options`` / ``@with_resources``
+    / ``@with_python_requirements`` decorators can be propagated.
+    """
+    for proj in projections:
+        expr = proj.expr if isinstance(proj, NamedExpr) else proj
+        if isinstance(expr, LiteFrameUDFExpr):
+            yield expr.func
+        elif isinstance(expr, LiteFrameMultiColumnSubExpr) and isinstance(
+            expr.multi_expr, LiteFrameUDFExpr
+        ):
+            yield expr.multi_expr.func
 
 
 class LiteFrameProjection(LiteFrameOperatorMixin, LiteFrameOperator):
     _op_type_ = opcodes.LITEFRAME_PROJECTION
+    _output_type_ = OutputType.liteframe
 
     projections = ListField("projections")
-    # When True, the executor materializes all virtual range columns into
-    # physical Int64 columns before executing the projection expressions.
-    # This is required whenever a projection expression references a range
-    # column (e.g. cast, isna, arithmetic) — the generated pl.col(RANGE_COL_NAME)
-    # needs a physical column to reference.
-    # When False, range columns are pass-through only: they remain virtual in
-    # the output and the executor skips their projections.
-    materialize_range_cols = BoolField("materialize_range_cols", default=False)
+    # Per-projection result of range-affine analysis. Keyed by projection
+    # output name. None means no input range columns (no analysis needed).
+    # When any entry has is_affine=False, references_range=True, the
+    # executor materializes all range columns.
+    range_analysis = DictField(
+        "range_analysis",
+        key_type=FieldTypes.string,
+        value_type=FieldTypes.reference(RangeAnalysisResult),
+        default=None,
+    )
+
+    def has_custom_code(self) -> bool:
+        return any(
+            p.has_custom_code
+            for p in self.projections
+            if isinstance(p, LiteFrameBaseExpr)
+        )
 
     def __call__(self, liteframe):
         input_metadata = liteframe.frame_metadata
+
+        # Bind any projections whose dtype is still None (unbound) against
+        # the input schema, so expression dtypes resolve bottom-up. This is
+        # idempotent for already-bound projections (arithmetic fused-projection
+        # path, UDF path). It matters for the agg post-projection path
+        # (compile._build_projection_exprs), which builds expressions with
+        # dtype=None leaves referencing intermediate agg columns; without
+        # binding the output dtype stays None and the ODPS round-trip loses
+        # the correct type (e.g. mean=sum/count planned as int not float).
+        in_dtypes = getattr(liteframe, "_physical_dtypes", None)
+        if in_dtypes is None:
+            in_dtypes = getattr(
+                getattr(liteframe, "_data", None), "_physical_dtypes", None
+            )
+        if any(_projection_dtype(p) is None for p in self.projections):
+            bound = [
+                p.bind(in_dtypes) if getattr(p, "dtype", None) is None else p
+                for p in self.projections
+            ]
+            self.projections = bound
 
         # Derive output dtypes from projections (single source of truth)
         out_dtypes = pd.Series(
@@ -76,34 +153,68 @@ class LiteFrameProjection(LiteFrameOperatorMixin, LiteFrameOperator):
         )
 
         out_range_cols = None
-        materialized_dtypes = {}
 
-        if (
-            input_metadata is not None
-            and input_metadata.range_columns
-            and not self.materialize_range_cols
-        ):
+        input_range_cols = (
+            input_metadata.range_columns
+            if input_metadata and input_metadata.range_columns
+            else None
+        )
+
+        if input_range_cols:
+            # Run analyzer on each projection
+            self.range_analysis = {}
+            for proj in self.projections:
+                proj_name = _projection_name(proj)
+                inner_expr = proj.expr if isinstance(proj, NamedExpr) else proj
+                result = analyze_range_affine(inner_expr, input_range_cols)
+                self.range_analysis[proj_name] = result
+
+            # Check contiguous prefix: affine range columns must occupy
+            # positions 0..k-1. If any range-referencing projection at a
+            # non-prefix position is affine, or any is non-affine, mark all
+            # for materialization.
             out_col_names = list(out_dtypes.index)
+            need_materialize = False
+            prefix_affine = True
+            for i, name in enumerate(out_col_names):
+                result = self.range_analysis[name]
+                if result.references_range:
+                    if not result.is_affine:
+                        need_materialize = True
+                        break
+                    if not prefix_affine:
+                        need_materialize = True
+                        break
+                else:
+                    prefix_affine = False
 
-            for rc_name, rc_info in input_metadata.range_columns.items():
-                if rc_name in out_col_names:
-                    if out_col_names.index(rc_name) == 0:
+            if need_materialize:
+                for name in out_col_names:
+                    if self.range_analysis[name].references_range:
+                        self.range_analysis[name] = RangeAnalysisResult(
+                            is_affine=False, references_range=True
+                        )
+            else:
+                for name in out_col_names:
+                    result = self.range_analysis[name]
+                    if result.is_affine and result.references_range:
+                        src_info = input_range_cols[result.col_name]
+                        transformed = transform_range_info(
+                            src_info, result.scale, result.offset
+                        )
                         out_range_cols = out_range_cols or {}
-                        out_range_cols[rc_name] = rc_info
-                    else:
-                        materialized_dtypes[rc_name] = wrap_arrow_dtype(pa.int64())
+                        out_range_cols[name] = transformed
 
-            # Range columns that remain virtual must be excluded from
-            # _physical_dtypes (they are accounted for separately via
-            # frame_metadata.range_columns and n_range in shape).
-            if out_range_cols or materialized_dtypes:
-                out_dtypes = pd.Series(
-                    {
-                        col: materialized_dtypes.get(col, out_dtypes[col])
-                        for col in out_col_names
-                        if col not in (out_range_cols or {})
-                    },
-                )
+                if out_range_cols:
+                    out_dtypes = pd.Series(
+                        {
+                            col: out_dtypes[col]
+                            for col in out_col_names
+                            if col not in out_range_cols
+                        },
+                    )
+        else:
+            self.range_analysis = None
 
         # Hidden columns that pass through to the output remain hidden.
         remaining_hidden = (

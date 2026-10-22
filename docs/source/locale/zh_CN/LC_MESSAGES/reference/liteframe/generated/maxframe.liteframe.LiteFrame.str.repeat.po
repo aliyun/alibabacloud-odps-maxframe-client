@@ -1,0 +1,119 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.repeat.rst:2
+msgid "maxframe.liteframe.LiteFrame.str.repeat"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:1
+msgid "Duplicate each string in the Series or Index."
+msgstr "重复 Series 或 Index 中的每个字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:3
+msgid ""
+"Duplicates each string in the Series or Index, either by applying the "
+"same repeat count to all elements or by using different repeat values for"
+" each element."
+msgstr "将 Series 或 Index 中的每个字符串进行重复，可以通过对所有元素应用相同的重复次数，或为每个元素使用不同的重复值来实现。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.repeat.rst
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:7
+msgid "Same value for all (int) or different value per (sequence)."
+msgstr "所有值相同（整数）或每个值不同（序列）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.repeat.rst
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:10
+msgid ""
+"Series or Index of repeated string objects specified by input parameter "
+"repeats."
+msgstr "由输入参数 repeats 指定的重复字符串对象的 Series 或 Index。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.repeat.rst
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:16
+msgid ":py:obj:`LiteFrame.str.lower`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:17
+msgid "Convert all characters in each string to lowercase."
+msgstr "将每个字符串中的所有字符转换为小写。"
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:19
+msgid ":py:obj:`LiteFrame.str.upper`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:20
+msgid "Convert all characters in each string to uppercase."
+msgstr "将每个字符串中的所有字符转换为大写。"
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:22
+msgid ":py:obj:`LiteFrame.str.title`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:23
+msgid ""
+"Convert each string to title case (capitalizing the first letter of each "
+"word)."
+msgstr "将每个字符串转换为标题大小写（将每个单词的首字母大写）。"
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:25
+msgid ":py:obj:`LiteFrame.str.strip`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:26
+msgid "Remove leading and trailing whitespace from each string."
+msgstr "从每个字符串中移除前导和尾随的空白字符。"
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:28
+msgid ":py:obj:`LiteFrame.str.replace`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:29
+msgid "Replace occurrences of a substring with another substring in each string."
+msgstr "在每个字符串中用另一个子字符串替换某个子字符串的出现。"
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:31
+msgid ":py:obj:`LiteFrame.str.ljust`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:32
+msgid ""
+"Left-justify each string in the Series/Index by padding with a specified "
+"character."
+msgstr "通过用指定字符填充使 Series/Index 中的每个字符串左对齐。"
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:34
+msgid ":py:obj:`LiteFrame.str.rjust`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.repeat:35
+msgid ""
+"Right-justify each string in the Series/Index by padding with a specified"
+" character."
+msgstr "通过用指定字符填充使 Series/Index 中的每个字符串右对齐。"

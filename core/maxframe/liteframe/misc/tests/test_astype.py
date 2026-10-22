@@ -16,6 +16,7 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
+from maxframe.lib.dtypes_extension.blob import ExternalBlobDtype
 from maxframe.liteframe.core import RANGE_COL_NAME, LiteFrame
 from maxframe.liteframe.expressions import (
     LiteFrameAdd,
@@ -25,7 +26,9 @@ from maxframe.liteframe.expressions import (
     NamedExpr,
 )
 from maxframe.liteframe.initializer import LiteFrame as LF
+from maxframe.liteframe.operators.datasource import LiteFrameReadODPSTable
 from maxframe.liteframe.operators.project import LiteFrameProjection
+from maxframe.protocol import DefaultIndexType
 from maxframe.utils import wrap_arrow_dtype
 
 
@@ -112,16 +115,12 @@ def test_astype_after_arithmetic_fuses():
     assert result.data.inputs[0] is lf._data
 
 
-def test_astype_range_column_propagates_materialize_through_fusion():
-    """astype on a range column sets materialize_range_cols, and a subsequent
-    fused operation should propagate the flag to the root source projection."""
-    from maxframe.liteframe.operators.source import LiteFrameReadODPSTable
-    from maxframe.protocol import DefaultIndexType
-
+def test_astype_range_column_sets_non_affine_range_analysis():
+    """astype on a range column should produce range_analysis with
+    is_affine=False, references_range=True (since astype is not affine)."""
     dtypes = pd.Series(
         {
             "a": wrap_arrow_dtype(pa.int64()),
-            RANGE_COL_NAME: wrap_arrow_dtype(pa.int64()),
         }
     )
     op_src = LiteFrameReadODPSTable(
@@ -129,16 +128,100 @@ def test_astype_range_column_propagates_materialize_through_fusion():
         dtypes=dtypes,
         default_index_type=DefaultIndexType.range,
     )
-    lf = op_src._new_liteframe_from_source(shape=(10, 2))
+    lf = op_src._new_liteframe_from_source(shape=(10, 1))
 
-    # Cast the range column — this sets materialize_range_cols=True
+    # Cast the range column — astype is not affine, so range_analysis
+    # should mark it as non-affine with references_range=True
     casted = lf.astype({RANGE_COL_NAME: "int32"})
-    assert casted.data.op.materialize_range_cols is True
+    op = casted.data.op
+    assert isinstance(op, LiteFrameProjection)
+    assert op.range_analysis is not None
+    idx_result = op.range_analysis[RANGE_COL_NAME]
+    assert idx_result.is_affine is False
+    assert idx_result.references_range is True
 
-    # A subsequent arithmetic op should fuse and propagate the flag
+    # A subsequent arithmetic op should fuse to the root source
     result = casted + 5
     op = result.data.op
     assert isinstance(op, LiteFrameProjection)
-    assert op.materialize_range_cols is True
-    # Input should be the root source
     assert result.data.inputs[0] is lf._data
+    # range_analysis should still mark the range column as non-affine
+    # after fusion with the arithmetic op
+    assert op.range_analysis is not None
+    fused_result = op.range_analysis[RANGE_COL_NAME]
+    assert fused_result.is_affine is False
+    assert fused_result.references_range is True
+
+
+# ---------------------------------------------------------------------------
+# Blob dtype tests
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "dtype_arg,expected_dtype,use_isinstance",
+    [
+        pytest.param("blob", ExternalBlobDtype, True, id="blob_string"),
+        pytest.param(
+            "binary", wrap_arrow_dtype(pa.binary()), False, id="binary_string"
+        ),
+        pytest.param(bytes, wrap_arrow_dtype(pa.binary()), False, id="bytes_type"),
+    ],
+)
+def test_astype_blob_or_binary(dtype_arg, expected_dtype, use_isinstance):
+    """astype with 'blob'/'binary'/bytes produces the expected dtype per column."""
+    lf = LF({"a": [1, 2, 3], "b": [4, 5, 6]})
+    result = lf.astype(dtype_arg)
+
+    assert isinstance(result, LiteFrame)
+    op = result.data.op
+    assert isinstance(op, LiteFrameProjection)
+
+    for proj in op.projections:
+        assert isinstance(proj, NamedExpr)
+        assert isinstance(proj.expr, LiteFrameAstype)
+        assert isinstance(proj.expr.operand, LiteFrameColumn)
+        if use_isinstance:
+            assert isinstance(proj.expr.target_dtype, expected_dtype)
+        else:
+            assert proj.expr.target_dtype == expected_dtype
+
+    for col in ("a", "b"):
+        if use_isinstance:
+            assert isinstance(result.dtypes[col], expected_dtype)
+        else:
+            assert result.dtypes[col] == expected_dtype
+
+
+def test_astype_dict_with_blob_and_binary():
+    """Test astype with dict containing 'blob' and 'binary' for different columns."""
+    lf = LF({"a": [1, 2, 3], "b": [4, 5, 6]})
+    result = lf.astype({"a": "blob", "b": "binary"})
+
+    assert isinstance(result, LiteFrame)
+    op = result.data.op
+
+    a_proj = [p for p in op.projections if p.name == "a"][0]
+    assert isinstance(a_proj.expr, LiteFrameAstype)
+    assert isinstance(a_proj.expr.target_dtype, ExternalBlobDtype)
+
+    b_proj = [p for p in op.projections if p.name == "b"][0]
+    assert isinstance(b_proj.expr, LiteFrameAstype)
+    assert b_proj.expr.target_dtype == wrap_arrow_dtype(pa.binary())
+
+    assert isinstance(result.dtypes["a"], ExternalBlobDtype)
+    assert result.dtypes["b"] == wrap_arrow_dtype(pa.binary())
+
+
+def test_astype_external_blob_dtype_passthrough():
+    """Test that an ExternalBlobDtype instance passes through astype unchanged."""
+    lf = LF({"a": [1, 2, 3]})
+    blob_dtype = ExternalBlobDtype()
+    result = lf.astype({"a": blob_dtype})
+
+    op = result.data.op
+    a_proj = [p for p in op.projections if p.name == "a"][0]
+    assert isinstance(a_proj.expr, LiteFrameAstype)
+    assert isinstance(a_proj.expr.target_dtype, ExternalBlobDtype)
+
+    assert isinstance(result.dtypes["a"], ExternalBlobDtype)

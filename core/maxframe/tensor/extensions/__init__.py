@@ -15,7 +15,7 @@
 from maxframe.core import CachedAccessor
 from maxframe.tensor.extensions.accessor import TensorMaxFrameAccessor
 from maxframe.tensor.extensions.apply_chunk import apply_chunk
-from maxframe.tensor.extensions.rebalance import rebalance
+from maxframe.tensor.rechunk.rechunk import rebalance
 
 
 def _install():

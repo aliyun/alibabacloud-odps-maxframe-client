@@ -16,6 +16,7 @@ import mock
 import numpy as np
 import pandas as pd
 import pyarrow as pa
+import pytest
 from odps import ODPS
 
 from maxframe import dataframe as md
@@ -25,6 +26,7 @@ from maxframe.codegen.spe.core import SPECodeContext
 from maxframe.codegen.spe.dataframe.datasource import (
     DataFrameDateRangeAdapter,
     DataFrameFromRecordsAdapter,
+    DataFrameReadLanceAdapter,
     DataFrameReadODPSQueryAdapter,
     DataFrameReadODPSTableAdapter,
     IndexDataSourceAdapter,
@@ -32,9 +34,12 @@ from maxframe.codegen.spe.dataframe.datasource import (
 )
 from maxframe.config import option_context
 from maxframe.dataframe.datasource.index import from_pandas
+from maxframe.dataframe.datasource.read_lance import DataFrameReadLance
 from maxframe.dataframe.datasource.read_odps_query import DataFrameReadODPSQuery
+from maxframe.dataframe.utils import parse_index
 from maxframe.io.odpsio import ODPSTableIO
 from maxframe.tests.utils import flaky, tn
+from maxframe.utils.datatypes import is_arrow_dtype_supported
 
 
 def _run_generated_code(code: str, ctx: SPECodeContext) -> dict:
@@ -353,3 +358,68 @@ def test_index_data_source():
     expected_results = ["var_0 = const_0"]
     assert results == expected_results
     assert context.constants["const_0"] is pd_idx
+
+
+# lance requires a modern pyarrow (ArrowDtype / RecordBatchReader support);
+# skip these tests on legacy pyarrow where lance cannot be imported.
+_requires_arrow_dtype = pytest.mark.skipif(
+    not is_arrow_dtype_supported(),
+    reason="lance requires ArrowDtype support (newer pyarrow)",
+)
+
+
+@_requires_arrow_dtype
+def test_read_lance_codegen(tmp_path):
+    lance = pytest.importorskip("lance")
+    df = pd.DataFrame({"a": [1, 2, 3], "b": ["x", "y", "z"]})
+    lance.write_dataset(df, str(tmp_path / "test.lance"))
+
+    dtypes = df.dtypes
+    op = DataFrameReadLance(
+        path=str(tmp_path / "test.lance"),
+        columns=["a", "b"],
+        version=None,
+        filters=None,
+        index_col=None,
+    )
+    _t = op(  # noqa: F841
+        index_value=parse_index(pd.RangeIndex(3)),
+        columns_value=parse_index(dtypes.index, store_data=True),
+        dtypes=dtypes,
+    )
+
+    adapter = DataFrameReadLanceAdapter()
+    context = SPECodeContext()
+    codes = adapter.generate_code(op, context)
+    assert len(codes) == 1
+    assert "DataFrameReadLanceAdapter._read_as_pandas" in codes[0]
+
+
+@_requires_arrow_dtype
+def test_read_lance_execution(tmp_path):
+    lance = pytest.importorskip("lance")
+    df = pd.DataFrame({"a": [1, 2, 3], "b": ["x", "y", "z"]})
+    lance.write_dataset(df, str(tmp_path / "test.lance"))
+
+    dtypes = df.dtypes
+    op = DataFrameReadLance(
+        path=str(tmp_path / "test.lance"),
+        columns=["a", "b"],
+        version=None,
+        filters=None,
+        index_col=None,
+    )
+    _t = op(  # noqa: F841
+        index_value=parse_index(pd.RangeIndex(3)),
+        columns_value=parse_index(dtypes.index, store_data=True),
+        dtypes=dtypes,
+    )
+
+    adapter = DataFrameReadLanceAdapter()
+    context = SPECodeContext()
+    codes = adapter.generate_code(op, context)
+
+    ns = {"DataFrameReadLanceAdapter": DataFrameReadLanceAdapter}
+    exec("\n".join(codes), ns)
+    result = ns[list(ns.keys())[-1]]
+    pd.testing.assert_frame_equal(result.reset_index(drop=True), df)

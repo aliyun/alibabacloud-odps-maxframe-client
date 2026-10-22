@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from maxframe.codegen.spe import dataframe, learn, objects, remote, tensor
+from maxframe.codegen.spe import dataframe, learn, liteframe, objects, remote, tensor
 from maxframe.codegen.spe.core import SPECodeGenerator

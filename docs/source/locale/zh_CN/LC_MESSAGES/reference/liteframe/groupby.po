@@ -1,0 +1,407 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/groupby.rst:4
+msgid "GroupBy"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:7
+msgid ""
+"GroupBy objects are returned by :meth:`maxframe.liteframe.LiteFrame."
+"groupby`. Aggregation output is always column-based (equivalent to ``as_"
+"index=False``) with no MultiIndex — group keys are returned as regular "
+"columns."
+msgstr ""
+"GroupBy 对象由 :meth:`maxframe.liteframe.LiteFrame.groupby` 返回。聚合"
+"输出始终基于列（相当于 ``as_index=False``），没有多级索引——分组键作为常规"
+"列返回。"
+
+#: ../../source/reference/liteframe/groupby.rst:12
+msgid "Function application"
+msgstr "函数应用"
+
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.apply "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.apply>`\\ \\(func\\, "
+"\\*\\[\\, dtypes\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid "Apply ``func`` to each group as a whole frame."
+msgstr "将 ``func`` 应用于每个组作为一个完整框架。"
+
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.flat_apply "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.flat_apply>`\\ \\(func\\, "
+"\\*\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid "Apply ``func`` to each row within each group, expanding it to 0-N rows."
+msgstr "将 ``func`` 应用于每组内的每一行，将其扩展为 0-N 行。"
+
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.apply_chunk "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.apply_chunk>`\\ \\(func\\, "
+"\\*\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid "GroupBy.apply_chunk() -- per-group-chunk application."
+msgstr "GroupBy.apply_chunk() -- 每个分组块应用。"
+
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.transform "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.transform>`\\ \\(func\\, "
+"\\*\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid "GroupBy.transform() -- per-group column transform."
+msgstr "GroupBy.transform() -- 每个分组列转换。"
+
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.transform_chunk "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.transform_chunk>`\\ "
+"\\(func\\, \\*\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid "GroupBy.transform_chunk() -- per-group-chunk transform."
+msgstr "GroupBy.transform_chunk() -- 每个分组块转换。"
+
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.agg "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.agg>`\\ \\(\\[func\\, "
+"method\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid "Aggregate the grouped LiteFrame using one or more functions."
+msgstr "使用一个或多个函数聚合分组后的 LiteFrame。"
+
+#: ../../source/reference/liteframe/groupby.rst:24
+msgid "Computations / descriptive stats"
+msgstr "计算/描述性统计"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.all "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.all>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Return True if all values in the group are truthy."
+msgstr "如果组中的所有值都为真，则返回 True。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.any "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.any>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Return True if any value in the group is truthy."
+msgstr "如果组中的任何值为真，则返回 True。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.count "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.count>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the count of non-null values in each group."
+msgstr "计算每组中非空值的数量。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.cumcount "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.cumcount>`\\ "
+"\\(\\[ascending\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Cumulative count (0-indexed row number) within each group."
+msgstr "每组内的累积计数（从0开始索引的行号）。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.cummax "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.cummax>`\\ \\(\\[skipna\\, "
+"columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Cumulative maximum within each group."
+msgstr "每组内的累积最大值。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.cummin "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.cummin>`\\ \\(\\[skipna\\, "
+"columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Cumulative minimum within each group."
+msgstr "每组内的累积最小值。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.cumprod "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.cumprod>`\\ \\(\\[skipna\\, "
+"columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Cumulative product within each group."
+msgstr "每组内的累积乘积。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.cumsum "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.cumsum>`\\ \\(\\[skipna\\, "
+"columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Cumulative sum within each group."
+msgstr "每组内的累积和。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.max "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.max>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the maximum of each group."
+msgstr "计算每组的最大值。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.mean "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.mean>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the mean of each group."
+msgstr "计算每组的平均值。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.median "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.median>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the median of each group."
+msgstr "计算每组的中位数。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.min "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.min>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the minimum of each group."
+msgstr "计算每组的最小值。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.nunique "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.nunique>`\\ "
+"\\(\\[dropna\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the number of distinct values in each group."
+msgstr "计算每组中不同值的数量。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.prod "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.prod>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the product of each group."
+msgstr "计算每组的乘积。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.rolling "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.rolling>`\\ \\(window\\[\\, "
+"...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Provide rolling-window calculations within each group."
+msgstr "在每组内提供滚动窗口计算。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.expanding "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.expanding>`\\ "
+"\\(\\[min\\_periods\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Provide expanding window calculations within each group."
+msgstr "在每组内提供扩展窗口计算。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.sem "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.sem>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the standard error of the mean of each group."
+msgstr "计算每组平均值的标准误差。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.size "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.size>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the number of rows in each group."
+msgstr "计算每组中的行数。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.skew "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.skew>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the skewness of each group."
+msgstr "计算每组的偏度。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.kurt "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.kurt>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the kurtosis of each group."
+msgstr "计算每组的峰度。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.std "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.std>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the standard deviation of each group."
+msgstr "计算每组的标准差。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.sum "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.sum>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the sum of each group."
+msgstr "计算每组的总和。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.var "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.var>`\\ \\(\\*\\*kw\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the variance of each group."
+msgstr "计算每组的方差。"
+
+#: ../../source/reference/liteframe/groupby.rst:53
+msgid "Window transforms"
+msgstr "窗口变换"
+
+#: ../../source/reference/liteframe/groupby.rst:61:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.shift "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.shift>`\\ \\(\\[periods\\, "
+"...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:61:<autosummary>:1
+msgid "Shift rows within each group by ``periods`` positions."
+msgstr "在每组内按 ``periods`` 位置移动行。"
+
+#: ../../source/reference/liteframe/groupby.rst:61:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.diff "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.diff>`\\ \\(\\[periods\\, "
+"columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:61:<autosummary>:1
+msgid "Compute diff within each group."
+msgstr "计算每组内的差值。"
+
+#: ../../source/reference/liteframe/groupby.rst:61:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.pct_change "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.pct_change>`\\ "
+"\\(\\[periods\\, columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:61:<autosummary>:1
+msgid "Compute pct_change within each group."
+msgstr "计算每组内的百分比变化。"
+
+#: ../../source/reference/liteframe/groupby.rst:61:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.ffill "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.ffill>`\\ \\(\\[limit\\, "
+"columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:61:<autosummary>:1
+msgid "Forward-fill within each group."
+msgstr "在每组内向前填充。"
+
+#: ../../source/reference/liteframe/groupby.rst:61:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.bfill "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.bfill>`\\ \\(\\[limit\\, "
+"columns\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:61:<autosummary>:1
+msgid "Backward-fill within each group."
+msgstr "在每组内向后填充。"
+

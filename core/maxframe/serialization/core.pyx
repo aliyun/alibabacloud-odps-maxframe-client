@@ -316,12 +316,12 @@ cdef class Serializer:
             Serialized subcomponents
         error_index: int
             Index of subcomponent causing error
-        exc: BaseException
+        exc: Exception
             Exception raised
 
         Returns
         -------
-        exc: BaseException | None
+        exc: Exception | None
             Rewritten exception. If None, original exception is kept.
         """
         return None

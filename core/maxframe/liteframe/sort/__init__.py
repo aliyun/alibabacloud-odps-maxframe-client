@@ -15,11 +15,10 @@
 
 def _install():
     from maxframe.liteframe.core import LITEFRAME_TYPE
-    from maxframe.liteframe.sort.sort import sort, sort_values
+    from maxframe.liteframe.sort.sort import sort
 
     for cls in LITEFRAME_TYPE:
         setattr(cls, "sort", sort)
-        setattr(cls, "sort_values", sort_values)
 
 
 _install()

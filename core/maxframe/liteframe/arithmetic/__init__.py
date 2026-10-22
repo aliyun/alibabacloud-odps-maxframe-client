@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
+
 
 def _wrap_eq():
-    import functools
-
     from maxframe.liteframe.arithmetic.comparison import eq
 
     @functools.wraps(eq)
@@ -38,8 +38,6 @@ def _wrap_eq():
 
 
 def _wrap_comparison(func):
-    import functools
-
     @functools.wraps(func)
     def call(lf, other, **kw):
         from maxframe.liteframe.core import LITEFRAME_TYPE
@@ -52,31 +50,33 @@ def _wrap_comparison(func):
 
 
 def _install():
+    from maxframe.liteframe.arithmetic.between import between
     from maxframe.liteframe.arithmetic.binary import (
         add,
         div,
         floordiv,
+        lshift,
         mod,
         mul,
         pow,
         radd,
         rdiv,
         rfloordiv,
+        rlshift,
         rmod,
         rmul,
         rpow,
+        rrshift,
+        rshift,
         rsub,
         sub,
     )
+    from maxframe.liteframe.arithmetic.clip import clip
     from maxframe.liteframe.arithmetic.comparison import eq, ge, gt, le, lt, ne
     from maxframe.liteframe.arithmetic.logical import and_, invert, or_, xor
-    from maxframe.liteframe.arithmetic.unary import (
-        __array_ufunc__,
-        abs_,
-        neg,
-        pos,
-        round_,
-    )
+    from maxframe.liteframe.arithmetic.ufunc import __array_ufunc__
+    from maxframe.liteframe.arithmetic.unary import abs_, neg, pos, round_
+    from maxframe.liteframe.arithmetic.where import case_when, mask, where
     from maxframe.liteframe.core import LITEFRAME_TYPE, LiteFrame
 
     for cls in LITEFRAME_TYPE:
@@ -95,6 +95,11 @@ def _install():
         setattr(cls, "rmod", rmod)
         setattr(cls, "pow", pow)
         setattr(cls, "rpow", rpow)
+        # Bitwise shift
+        setattr(cls, "lshift", lshift)
+        setattr(cls, "rlshift", rlshift)
+        setattr(cls, "rshift", rshift)
+        setattr(cls, "rrshift", rrshift)
         # Operator overloads
         setattr(cls, "__add__", add)
         setattr(cls, "__radd__", radd)
@@ -110,6 +115,11 @@ def _install():
         setattr(cls, "__rmod__", rmod)
         setattr(cls, "__pow__", pow)
         setattr(cls, "__rpow__", rpow)
+        # Bitwise shift operators
+        setattr(cls, "__lshift__", lshift)
+        setattr(cls, "__rlshift__", rlshift)
+        setattr(cls, "__rshift__", rshift)
+        setattr(cls, "__rrshift__", rrshift)
         # Unary
         setattr(cls, "__neg__", neg)
         setattr(cls, "__pos__", pos)
@@ -128,6 +138,13 @@ def _install():
         setattr(cls, "__or__", or_)
         setattr(cls, "__xor__", xor)
         setattr(cls, "__invert__", invert)
+        # Elementwise transforms
+        setattr(cls, "clip", clip)
+        setattr(cls, "between", between)
+        # Conditional replacement
+        setattr(cls, "where", where)
+        setattr(cls, "mask", mask)
+        setattr(cls, "case_when", case_when)
 
     # Comparison dunder operators: only on LiteFrame, not LiteFrameData.
     # LiteFrameData is used internally by WeakSet and other collections

@@ -17,6 +17,7 @@ from maxframe.lib.dtypes_extension.blob import (
     ExternalBlobDtype,
     ExternalBlobExtensionArray,
     SolidBlob,
+    is_polars_blob_type,
     new_blob,
 )
 from maxframe.lib.dtypes_extension.dtypes import (
@@ -29,6 +30,7 @@ from maxframe.lib.dtypes_extension.dtypes import (
     list_,
     struct_,
 )
+from maxframe.utils.polars import PolarsObjectContainerType
 
 try:
     from maxframe.lib.dtypes_extension.vector import ArrowVectorType

@@ -1,0 +1,57 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.cummax.rst:2
+msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.cummax"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.cummax:1 of
+msgid "Cumulative maximum within each group."
+msgstr "每个组内的累积最大值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.cummax.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.cummax:3 of
+msgid "If True, skip null values in the cumulative computation."
+msgstr "如果为 True，在累积计算中跳过空值。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.cummax:5 of
+msgid "Column(s) to accumulate.  If None, all non-group-key columns."
+msgstr "要累积的列。如果为 None，则为所有非分组键列。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.cummax.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.cummax:8 of
+msgid ""
+"Lazy LiteFrame with the same row count as the input, containing the per-"
+"group cumulative maximum.  Call ``.execute()`` to materialize."
+msgstr ""
+"具有与输入相同行数的惰性 LiteFrame，包含每组的累积最大值。调用 ``.execute"
+"()`` 来实例化。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.cummax.rst
+msgid "返回类型"
+msgstr ""
+

@@ -13,12 +13,25 @@
 # limitations under the License.
 
 
+from maxframe.liteframe.misc.eval import lf_eval, lf_query
+from maxframe.liteframe.misc.rechunk import rebalance, rechunk
+
+
 def _install():
     from maxframe.liteframe.core import LITEFRAME_TYPE
     from maxframe.liteframe.misc.astype import astype
+    from maxframe.liteframe.misc.drop_duplicates import drop_duplicates, duplicated
+    from maxframe.liteframe.misc.explode import explode
 
     for cls in LITEFRAME_TYPE:
         setattr(cls, "astype", astype)
+        setattr(cls, "explode", explode)
+        setattr(cls, "eval", lf_eval)
+        setattr(cls, "query", lf_query)
+        setattr(cls, "drop_duplicates", drop_duplicates)
+        setattr(cls, "duplicated", duplicated)
+        setattr(cls, "rechunk", rechunk)
+        setattr(cls, "rebalance", rebalance)
 
 
 _install()

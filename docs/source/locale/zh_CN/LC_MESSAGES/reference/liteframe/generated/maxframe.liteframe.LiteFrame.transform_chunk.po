@@ -1,0 +1,118 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.transform_chunk.rst:2
+msgid "maxframe.liteframe.LiteFrame.transform\\_chunk"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:1 of
+msgid "Apply func per execution block (chunk). Output must have same row count."
+msgstr "按执行块（块）应用函数。输出必须具有相同的行数。"
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:3 of
+msgid ""
+"Unlike ``apply_chunk``, the output row count must match the input "
+"(transform semantics).  The function receives a DataFrame chunk and must "
+"return a DataFrame with the same number of rows."
+msgstr ""
+"与 ``apply_chunk`` 不同，输出行数必须与输入匹配（转换语义）。函数接收一个"
+" DataFrame 块并必须返回具有相同行数的 DataFrame。"
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:7 of
+msgid ""
+"Function taking a DataFrame chunk and returning a DataFrame with the same"
+" number of rows.  If ``func`` is a class, it is instantiated once per "
+"chunk and ``close()`` (if defined) is always called at the end of the "
+"chunk."
+msgstr ""
+"接收一个 DataFrame 块并返回具有相同行数的 DataFrame 的函数。如果 ``func``"
+" 是一个类，则每个块实例化一次，并且始终在块结束时调用 ``close()``（如果已"
+"定义）。"
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:14 of
+msgid "Frame type passed to ``func``."
+msgstr "传递给 ``func`` 的框架类型。"
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:16 of
+msgid "Expected output dtypes."
+msgstr "期望的输出数据类型。"
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:18 of
+msgid "If True, skip dtype inference."
+msgstr "如果为 True，则跳过数据类型推断。"
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:20 of
+msgid "Extra positional arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外位置参数。"
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:22 of
+msgid "Extra keyword arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外关键字参数。"
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:24 of
+msgid ""
+"Lazy LiteFrame with the same row count as the input, where each value is "
+"the per-chunk transform result.  Call ``.execute()`` to materialize."
+msgstr ""
+"具有与输入相同行数的惰性 LiteFrame，其中每个值是每块转换结果。调用 ``."
+"execute()`` 来实例化。"
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:31 of
+msgid ":py:obj:`transform`"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:32 of
+msgid "Transform per column or per row."
+msgstr "按列或按行转换。"
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:34 of
+msgid ":py:obj:`apply_chunk`"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:35 of
+msgid "Apply a function per execution chunk."
+msgstr "按执行块应用函数。"
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:38 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:42 of
+msgid "Scale every column within each chunk by a constant (row count preserved):"
+msgstr "通过常数缩放每个块中的每一列（保持行数）："
+
+#: maxframe.liteframe.functional.transform_chunk.transform_chunk:52 of
+msgid "Replace columns with a derived schema (still same row count):"
+msgstr "用派生模式替换列（仍保持相同行数）："
+
+

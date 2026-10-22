@@ -107,7 +107,7 @@ def test_merge_drops_range_columns(check_description, check_fn):
     left = _make_range_lf({"key": [1, 2], "a": [10, 20]})
     right = _make_range_lf({"key": [2, 3], "b": [200, 300]})
 
-    # Inputs have __index__ as a virtual range column
+    # Inputs have range column as a virtual range column
     assert RANGE_COL_NAME in left.frame_metadata.range_columns
     assert RANGE_COL_NAME in right.frame_metadata.range_columns
 

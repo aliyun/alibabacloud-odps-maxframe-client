@@ -1,0 +1,122 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.expanding.rst:2
+msgid "maxframe.liteframe.LiteFrame.expanding"
+msgstr ""
+
+#: maxframe.liteframe.window.expanding.expanding:1 of
+msgid "Provide expanding window calculations."
+msgstr "提供扩展窗口计算。"
+
+#: maxframe.liteframe.window.expanding.expanding:3 of
+msgid ""
+"Returns a :class:`LiteFrameExpanding` object whose aggregation methods "
+"(``.sum()``, ``.mean()``, ...) compute a growing cumulative window from "
+"the start to the current row. Unlike ``cum*``, expanding fills NaN "
+"positions with the accumulated value."
+msgstr ""
+"返回一个 :class:`LiteFrameExpanding` 对象，其聚合方法（``.sum()``、``."
+"mean()`` 等）从开始到当前行计算增长的累积窗口。与 ``cum*`` 不同，扩展会用"
+"累积值填充 NaN 位置。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.expanding.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.window.expanding.expanding:8 of
+msgid ""
+"Minimum number of observations in the window required to produce a value "
+"(otherwise null)."
+msgstr "窗口中产生值所需的最小观测数（否则为null）。"
+
+#: maxframe.liteframe.window.expanding.expanding:11 of
+msgid ""
+"Column(s) to aggregate. If None, all columns are aggregated. Non-selected"
+" columns are passed through unchanged."
+msgstr "要聚合的列。如果为None，则聚合所有列。未选择的列保持不变。"
+
+#: maxframe.liteframe.window.expanding.expanding:14 of
+msgid ""
+"Column(s) that define the order in which the window expands (equivalent "
+"to ``ORDER BY`` inside a MaxCompute ``OVER()`` clause). The output row "
+"order is unchanged; each row receives the aggregation computed over the "
+"rows that precede it in *order_by* order."
+msgstr ""
+"定义窗口扩展顺序的列（相当于 MaxCompute ``OVER()`` 子句中的 ``ORDER BY``"
+"）。输出行顺序保持不变；每行接收在 *order_by* 顺序中位于其前面的行的聚合"
+"结果。"
+
+#: maxframe.liteframe.window.expanding.expanding:19 of
+msgid ""
+"Sort direction for each *order_by* column. A single bool is broadcast to "
+"all columns."
+msgstr "*order_by* 列的排序方向。单个布尔值会广播到所有列。"
+
+#: maxframe.liteframe.window.expanding.expanding:22 of
+msgid ""
+"Offset the leading edge of the growing window by N rows. A positive value"
+" extends the window forward (the window becomes ``[0, i+shift]``), a "
+"negative value shrinks it. Matches the MaxCompute ``shift`` MF-specific "
+"window parameter."
+msgstr ""
+"将增长窗口的前缘偏移N行。正值将窗口向前扩展（窗口变为 ``[0, i+shift]``）"
+"，负值会缩小它。匹配 MaxCompute ``shift`` MF特定窗口参数。"
+
+#: maxframe.liteframe.window.expanding.expanding:27 of
+msgid ""
+"Flip the expanding window so it grows from the last row backward (a "
+"\"narrowing\" window covering ``[i, n-1]``). Matches the MaxCompute "
+"``reverse_range`` MF-specific window parameter. May be combined with "
+"``window_shift``: the window then covers ``[i+window_shift, n-1]``."
+msgstr ""
+"翻转扩展窗口，使其从最后一行向后增长（覆盖 ``[i, n-1]`` 的\"收窄\"窗口）"
+"。匹配 MaxCompute ``reverse_range`` MF特定窗口参数。可以与 ``window_shift"
+"`` 结合使用：窗口然后覆盖 ``[i+window_shift, n-1]``。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.expanding.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.window.expanding.expanding:33 of
+msgid "Intermediate object; call an aggregation method to produce a LiteFrame."
+msgstr "中间对象；调用聚合方法以生成LiteFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.expanding.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.window.expanding.expanding:38 of
+msgid ":py:obj:`rolling`"
+msgstr ""
+
+#: maxframe.liteframe.window.expanding.expanding:39 of
+msgid "Provide rolling-window calculations."
+msgstr "提供滚动窗口计算。"
+
+#: maxframe.liteframe.window.expanding.expanding:41 of
+msgid ":py:obj:`shift`"
+msgstr ""
+
+#: maxframe.liteframe.window.expanding.expanding:42 of
+msgid "Shift rows by a given number of periods."
+msgstr "按给定的周期数移动行。"
+

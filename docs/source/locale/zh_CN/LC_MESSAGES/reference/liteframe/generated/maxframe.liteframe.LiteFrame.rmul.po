@@ -1,0 +1,64 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 15:05+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rmul.rst:2
+msgid "maxframe.liteframe.LiteFrame.rmul"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.binary.rmul:1 of
+msgid "Reverse element-wise multiplication (``other * lf``)."
+msgstr "反向元素级乘法（``other * lf``）。"
+
+#: maxframe.liteframe.arithmetic.binary.rmul:3 of
+msgid ""
+"Bound to ``__rmul__``, so ``other * lf`` is equivalent to "
+"``lf.rmul(other)``."
+msgstr "绑定到 ``__rmul__``，所以 ``other * lf`` 等价于 ``lf.rmul(other)``。"
+
+#: maxframe.liteframe.arithmetic.binary.rmul of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.binary.rmul:6 of
+msgid "Value multiplied with each element of ``lf`` from the left."
+msgstr "从左侧与 ``lf`` 的每个元素相乘的值。"
+
+#: maxframe.liteframe.arithmetic.binary.rmul of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.binary.rmul:9 of
+msgid "Lazy frame with element-wise product of ``other`` and ``lf``."
+msgstr "包含 ``other`` 和 ``lf`` 元素级乘积的惰性框架。"
+
+#: maxframe.liteframe.arithmetic.binary.rmul of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.binary.rmul:13 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.binary.rmul:22 of
+msgid "Using reverse ``*``:"
+msgstr "使用反向 ``*``："
+
+

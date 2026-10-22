@@ -143,7 +143,7 @@ class UserCodeMixin:
         # Fallback to pickle
         try:
             return UserCodeMixin.generate_pickled_codes(obj, None)
-        except:
+        except Exception:
             raise ValueError(f"not support arg type {type(obj)}") from None
 
     @classmethod

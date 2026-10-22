@@ -1,0 +1,96 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 11:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/general_functions.rst:4
+msgid "General functions"
+msgstr "通用函数"
+
+#: ../../source/reference/liteframe/general_functions.rst:7
+msgid ""
+"Top-level functions for combining LiteFrames, checking for missing "
+"values, and building column expressions. These are available directly in "
+"the ``maxframe.liteframe`` namespace."
+msgstr ""
+"用于合并LiteFrame、检查缺失值和构建列表达式的顶级函数。这些函数可以直接在"
+" ``maxframe.liteframe`` 命名空间中使用。"
+
+#: ../../source/reference/liteframe/general_functions.rst:12
+msgid "Data manipulations"
+msgstr "数据操作"
+
+#: ../../source/reference/liteframe/general_functions.rst:18:<autosummary>:1
+msgid ":py:obj:`concat <maxframe.liteframe.concat>`\\ \\(objs\\[\\, axis\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/general_functions.rst:18:<autosummary>:1
+msgid "Concatenate LiteFrame objects along a particular axis."
+msgstr "沿特定轴连接LiteFrame对象。"
+
+#: ../../source/reference/liteframe/general_functions.rst:18:<autosummary>:1
+msgid ""
+":py:obj:`merge <maxframe.liteframe.merge>`\\ \\(self\\, right\\[\\, "
+"how\\, on\\, left\\_on\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/general_functions.rst:18:<autosummary>:1
+msgid "Merge LiteFrame with another LiteFrame using a database-style join."
+msgstr "使用数据库风格的连接合并 LiteFrame 与另一个 LiteFrame。"
+
+#: ../../source/reference/liteframe/general_functions.rst:20
+msgid "Top-level missing data"
+msgstr "顶级缺失数据函数"
+
+#: ../../source/reference/liteframe/general_functions.rst:28:<autosummary>:1
+msgid ":py:obj:`isna <maxframe.liteframe.isna>`\\ \\(lf\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/general_functions.rst:28:<autosummary>:1
+msgid "Detect missing values."
+msgstr "检测缺失值。"
+
+#: ../../source/reference/liteframe/general_functions.rst:28:<autosummary>:1
+msgid ":py:obj:`isnull <maxframe.liteframe.isnull>`\\ \\(lf\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/general_functions.rst:28:<autosummary>:1
+msgid ":py:obj:`notna <maxframe.liteframe.notna>`\\ \\(lf\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/general_functions.rst:28:<autosummary>:1
+msgid "Detect non-missing values."
+msgstr "检测非缺失值。"
+
+#: ../../source/reference/liteframe/general_functions.rst:28:<autosummary>:1
+msgid ":py:obj:`notnull <maxframe.liteframe.notnull>`\\ \\(lf\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/general_functions.rst:30
+msgid "Expressions"
+msgstr "表达式"
+
+#: ../../source/reference/liteframe/general_functions.rst:34:<autosummary>:1
+msgid ":py:obj:`col <maxframe.liteframe.col>`\\ \\(name\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/general_functions.rst:34:<autosummary>:1
+msgid "Create a LiteFrameColumn expression without binding dtype."
+msgstr "创建不绑定dtype的LiteFrameColumn表达式。"
+

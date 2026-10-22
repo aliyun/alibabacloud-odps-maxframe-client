@@ -1,0 +1,72 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.dt.dayofweek.rst:2
+msgid "maxframe.liteframe.LiteFrame.dt.dayofweek"
+msgstr ""
+
+#: ../../docstring maxframe.liteframe.LiteFrame.dt.dayofweek:1 of
+msgid "The day of the week with Monday=0, Sunday=6."
+msgstr "星期几，周一=0，周日=6。"
+
+#: ../../docstring maxframe.liteframe.LiteFrame.dt.dayofweek:3 of
+msgid ""
+"Return the day of the week. It is assumed the week starts on Monday, "
+"which is denoted by 0 and ends on Sunday which is denoted by 6. This "
+"method is available on both Series with datetime values (using the `dt` "
+"accessor) or DatetimeIndex."
+msgstr ""
+"返回星期几。假设一周从周一开始，用0表示，到周日结束，用6表示。此方法在"
+"具有datetime值的Series（使用`dt`访问器）或DatetimeIndex上都可用。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.dt.dayofweek.rst
+msgid "返回"
+msgstr ""
+
+#: ../../docstring maxframe.liteframe.LiteFrame.dt.dayofweek:8 of
+msgid "Containing integers indicating the day number."
+msgstr "包含表示天数的整数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.dt.dayofweek.rst
+msgid "返回类型"
+msgstr ""
+
+#: ../../docstring maxframe.liteframe.LiteFrame.dt.dayofweek:13 of
+msgid ":py:obj:`LiteFrame.dt.dayofweek`"
+msgstr ""
+
+#: ../../docstring maxframe.liteframe.LiteFrame.dt.dayofweek:14
+#: maxframe.liteframe.LiteFrame.dt.dayofweek:17 of
+msgid "Alias."
+msgstr "别名。"
+
+#: ../../docstring maxframe.liteframe.LiteFrame.dt.dayofweek:16 of
+msgid ":py:obj:`LiteFrame.dt.weekday`"
+msgstr ""
+
+#: ../../docstring maxframe.liteframe.LiteFrame.dt.dayofweek:19 of
+msgid ":py:obj:`LiteFrame.dt.day_name`"
+msgstr ""
+
+#: ../../docstring maxframe.liteframe.LiteFrame.dt.dayofweek:20 of
+msgid "Returns the name of the day of the week."
+msgstr "返回星期几的名称。"
+

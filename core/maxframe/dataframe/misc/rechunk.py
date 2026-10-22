@@ -16,15 +16,28 @@ from maxframe import opcodes
 from maxframe.core import OutputType
 from maxframe.dataframe.core import DATAFRAME_TYPE
 from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
-from maxframe.serialization.serializables import AnyField
-from maxframe.tensor.rechunk.rechunk import chunk_size_type
+from maxframe.dataframe.utils import validate_axis
+from maxframe.serialization.serializables import (
+    AnyField,
+    BoolField,
+    Float64Field,
+    Int64Field,
+)
+from maxframe.tensor.rechunk.rechunk import TensorRechunk, chunk_size_type
 from maxframe.typing_ import TileableType
 
 
 class DataFrameRechunk(DataFrameOperator, DataFrameOperatorMixin):
     _op_type_ = opcodes.RECHUNK
 
-    chunk_size = AnyField("chunk_size")
+    chunk_size = AnyField("chunk_size", default=None)
+    axis = Int64Field("axis", default=None)
+    factor = Float64Field("factor", default=None)
+    num_partitions = Int64Field("num_partitions", default=None)
+    rough = BoolField("rough", default=False)
+
+    validate_rebalance_args = staticmethod(TensorRechunk.validate_rebalance_args)
+    normalize_rechunk_axis = staticmethod(TensorRechunk.normalize_rechunk_axis)
 
     def __call__(self, x):
         if isinstance(x, DATAFRAME_TYPE):
@@ -51,7 +64,9 @@ class DataFrameRechunk(DataFrameOperator, DataFrameOperatorMixin):
             )
 
 
-def rechunk(a: TileableType, chunk_size: chunk_size_type, reassign_worker=False):
+def rechunk(
+    a: TileableType, chunk_size: chunk_size_type, reassign_worker=False, axis=None
+):
     """
     Rechunk DataFrame, Series or Index data.
 
@@ -76,6 +91,10 @@ def rechunk(a: TileableType, chunk_size: chunk_size_type, reassign_worker=False)
           chunk has size 100.
     reassign_worker : bool, default False
         Reserved for future use.
+    axis : int, optional
+        If specified, ``chunk_size`` applies only to that axis. Internally
+        normalized to the dict form ``{axis: chunk_size}``. Cannot be used
+        together with a dict ``chunk_size``.
 
     Returns
     -------
@@ -90,9 +109,69 @@ def rechunk(a: TileableType, chunk_size: chunk_size_type, reassign_worker=False)
     >>> df_rechunked = df.rechunk(100)
     >>> # Specify different chunk sizes for different dimensions
     >>> df_rechunked = df.rechunk((50, 2))
+    >>> # Rechunk only axis 0
+    >>> df_rechunked = df.rechunk(100, axis=0)
     """
+    chunk_size, _ = DataFrameRechunk.normalize_rechunk_axis(
+        axis, chunk_size, validate_axis, axis, a
+    )
     op = DataFrameRechunk(
         chunk_size=chunk_size,
         reassign_worker=reassign_worker,
     )
     return op(a)
+
+
+def rebalance(df_or_series, axis=0, factor=None, num_partitions=None, rough=False):
+    """
+    Make data more balanced across entire cluster.
+
+    Parameters
+    ----------
+    axis : int
+        The axis to rebalance.
+    factor : float
+        Specified so the number of chunks after balance along the selected
+        axis per plane is ``chunk_shape[axis] * factor``.
+    num_partitions : int
+        Specified so the number of chunks are at most
+        num_partitions.
+    rough : bool, default False
+        Hint to rebalance without first resolving unknown axis shapes.
+
+        When True, rebalance may partition the pivoting axis using a per-chunk
+        size estimate instead of waiting for real (resolved) shapes. This only
+        has an effect when the pivoting axis shape is unknown **and** the source
+        chunks carry such an estimate; currently that estimate is produced only
+        by SIZE-mode ``read_odps_table`` reads along the row axis (axis 0). The
+        rough path is therefore restricted to ``axis=0`` -- on any other axis
+        ``rough=True`` falls back to the normal path even when shapes are
+        unknown, because the row-share estimate would collapse to an
+        uninformative equal split. In every other case -- known shapes, or an
+        unknown row axis with no estimate -- ``rough=True`` silently falls back
+        to the normal path (resolving real shapes then rechunking). The estimate
+        is approximate, so the output is balanced by estimated share, not
+        exactly equal in size.
+
+        .. note:: ``rough`` is infrastructure for the upcoming SIZE-mode
+           ``read_odps_table`` -> rough rebalance pipeline. No production call
+           site in the current corpus passes ``rough=True``; it is exercised by
+           the producer + downstream-engagement tests until a consumer lands.
+
+    Returns
+    -------
+    Series or DataFrame
+        Result of DataFrame or Series after rebalanced.
+    """
+    axis = validate_axis(axis, df_or_series)
+
+    DataFrameRechunk.validate_rebalance_args(factor, num_partitions)
+
+    op = DataFrameRechunk(
+        chunk_size=None,
+        axis=axis,
+        factor=factor,
+        num_partitions=num_partitions,
+        rough=rough,
+    )
+    return op(df_or_series)

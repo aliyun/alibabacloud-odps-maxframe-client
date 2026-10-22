@@ -1,0 +1,106 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.from_local_df.rst:2
+msgid "maxframe.liteframe.LiteFrame.from\\_local\\_df"
+msgstr ""
+
+#: maxframe.liteframe.datasource.from_local.from_local_df:1 of
+msgid "Create a LiteFrame from a local pandas DataFrame or similar object."
+msgstr "从本地 pandas DataFrame 或类似对象创建 LiteFrame。"
+
+#: maxframe.liteframe.datasource.from_local.from_local_df:3 of
+msgid ""
+"Column names are normalized to lowercase to make internal storage case-"
+"insensitive, and duplicate names after normalization raise a "
+"``ValueError``. Dtypes are inferred from the input."
+msgstr ""
+"列名被规范化为小写以使内部存储不区分大小写，规范化后的重复名称会引发 ``"
+"ValueError``。数据类型从输入中推断。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.from_local_df.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.datasource.from_local.from_local_df:7 of
+msgid ""
+"Local DataFrame to wrap. Must have a ``columns`` attribute and support "
+"``.dtypes`` if not a pandas DataFrame."
+msgstr ""
+"要包装的本地 DataFrame。如果不是 pandas DataFrame，则必须具有 ``columns``"
+" 属性并支持 ``.dtypes``。"
+
+#: maxframe.liteframe.datasource.from_local.from_local_df:10 of
+msgid ""
+"Desired chunk size for the tiled result. If None, a default is chosen by "
+"the backend."
+msgstr "所需分块结果的块大小。如果为 None，则由后端选择默认值。"
+
+#: maxframe.liteframe.datasource.from_local.from_local_df:13 of
+msgid ""
+"Whether the data should be placed on GPU. If None, the backend default is"
+" used."
+msgstr "数据是否应放置在 GPU 上。如果为 None，则使用后端默认值。"
+
+#: maxframe.liteframe.datasource.from_local.from_local_df:16 of
+msgid ""
+"Session to use for execution. If None, the default session is used when "
+"available."
+msgstr "用于执行的会话。如果为 None，则在可用时使用默认会话。"
+
+#: maxframe.liteframe.datasource.from_local.from_local_df:19 of
+msgid ""
+"Index type for the resulting LiteFrame. If None, a default is chosen by "
+"the backend."
+msgstr "结果 LiteFrame 的索引类型。如果为 None，则由后端选择默认值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.from_local_df.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.datasource.from_local.from_local_df:23 of
+msgid ""
+"A lazy LiteFrame with Arrow dtypes wrapping the local data. Call "
+"``.execute()`` to materialize the results."
+msgstr ""
+"一个具有 Arrow 数据类型的惰性 LiteFrame，包装本地数据。调用 ``.execute()`"
+"` 来实例化结果。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.from_local_df.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.datasource.from_local.from_local_df:29 of
+msgid ":py:obj:`LiteFrame.from_tensor`"
+msgstr ""
+
+#: maxframe.liteframe.datasource.from_local.from_local_df:30 of
+msgid "Create a LiteFrame from a MaxFrame tensor."
+msgstr "从 MaxFrame 张量创建 LiteFrame。"
+
+#: maxframe.liteframe.datasource.from_local.from_local_df:32 of
+msgid ":py:obj:`LiteFrame`"
+msgstr ""
+
+#: maxframe.liteframe.datasource.from_local.from_local_df:33 of
+msgid "Construct a LiteFrame from dict, DataFrame, or tensor."
+msgstr "从字典、DataFrame 或张量构建 LiteFrame。"
+

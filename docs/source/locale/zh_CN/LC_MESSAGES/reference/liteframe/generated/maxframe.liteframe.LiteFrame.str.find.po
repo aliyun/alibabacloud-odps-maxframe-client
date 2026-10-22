@@ -1,0 +1,77 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.find.rst:2
+msgid "maxframe.liteframe.LiteFrame.str.find"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.find:1
+msgid "Return lowest indexes in each strings in the Series/Index."
+msgstr "返回 Series/Index 中每个字符串中的最低索引。"
+
+#: of pandas.core.strings.accessor.StringMethods.find:3
+msgid ""
+"Each of returned indexes corresponds to the position where the substring "
+"is fully contained between [start:end]. Return -1 on failure. Equivalent "
+"to standard :meth:`str.find`."
+msgstr ""
+"每个返回的索引对应于子字符串完全包含在 [start:end] 之间的位置。失败时返回"
+" -1。等价于标准的 :meth:`str.find`。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.find.rst
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.find:7
+msgid "Substring being searched."
+msgstr "正在搜索的子字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.find:9
+msgid "Left edge index."
+msgstr "左边缘索引。"
+
+#: of pandas.core.strings.accessor.StringMethods.find:11
+msgid "Right edge index."
+msgstr "右边缘索引。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.find.rst
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.find:14
+msgid ""
+"A Series (if the input is a Series) or an Index (if the input is an "
+"Index) of the lowest indexes corresponding to the positions where the "
+"substring is found in each string of the input."
+msgstr ""
+"一个 Series（如果输入是 Series）或 Index（如果输入是 Index），包含输入中每个字符串中子字符串被找到的最低索引位置。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.find.rst
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.find:21
+msgid ":py:obj:`rfind`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.find:22
+msgid "Return highest indexes in each strings."
+msgstr "返回每个字符串中的最高索引。"

@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_parquet.rst:2
+msgid "maxframe.liteframe.read\\_parquet"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:1 of
+msgid "Read a parquet file into a LiteFrame with Arrow dtypes."
+msgstr "使用 Arrow 数据类型从 parquet 文件读取到 LiteFrame 中。"
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:3 of
+msgid ""
+"Local (``file://`` or bare path) files are read with pandas and wrapped "
+"via :func:`from_local_df`. Remote paths are read in chunks by the "
+"MaxFrame backend; when a ``session`` is available the schema is inferred "
+"remotely, otherwise the tiler infers types from the Parquet file's built-"
+"in schema metadata at execution time."
+msgstr ""
+"本地（``file://`` 或裸路径）文件使用 pandas 读取并通过 :func:`from_local_"
+"df` 包装。远程路径由 MaxFrame 后端分块读取；当 ``session`` 可用时，模式会"
+"在远程推断，否则在执行时根据 Parquet 文件的内置模式元数据进行类型推断。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_parquet.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:9 of
+msgid ""
+"Path or list of paths to the parquet file(s) to read. Local paths and "
+"remote URIs are both supported."
+msgstr "要读取的 parquet 文件的路径或路径列表。支持本地路径和远程 URI。"
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:12 of
+msgid "Column names to select. If None, all columns are read."
+msgstr "要选择的列名。如果为 None，则读取所有列。"
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:14 of
+msgid "Predicate filters to apply via parquet row-group pushdown."
+msgstr "通过 parquet 行组下推应用的谓词过滤器。"
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:16 of
+msgid ""
+"Index type for the resulting LiteFrame. If None, a default is chosen by "
+"the backend."
+msgstr "结果 LiteFrame 的索引类型。如果为 None，则由后端选择默认值。"
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:19 of
+msgid "Extra options for the storage backend (e.g. credentials)."
+msgstr "存储后端的额外选项（例如凭证）。"
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:21 of
+msgid "Target chunk size in bytes for splitting remote files."
+msgstr "拆分远程文件的目标块大小（字节）。"
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:23 of
+msgid "Whether to merge small files into larger chunks."
+msgstr "是否将小文件合并为更大的块。"
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:25 of
+msgid "Whether to treat each parquet row group as a separate chunk."
+msgstr "是否将每个 parquet 行组作为单独的块处理。"
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:27 of
+msgid ""
+"Session to use for remote schema inference and execution. If None, the "
+"default session is used when available."
+msgstr "用于远程模式推断和执行的会话。如果为 None，则在可用时使用默认会话。"
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:30 of
+msgid "Additional keyword arguments forwarded to the parquet reader."
+msgstr "转发给 parquet 读取器的附加关键字参数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_parquet.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:32 of
+msgid ""
+"A lazy LiteFrame with Arrow dtypes representing the parquet data. Call "
+"``.execute()`` to materialize the results."
+msgstr ""
+"一个使用 Arrow 数据类型的惰性 LiteFrame，表示 parquet 数据。调用 ``."
+"execute()`` 来实例化结果。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_parquet.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:38 of
+msgid ":py:obj:`LiteFrame.to_parquet`"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:39 of
+msgid "Write a LiteFrame to a Parquet file."
+msgstr "将 LiteFrame 写入 Parquet 文件。"
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:41 of
+msgid ":py:obj:`read_csv`"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_parquet.read_parquet:42 of
+msgid "Read a CSV file into a LiteFrame."
+msgstr "将 CSV 文件读取到 LiteFrame 中。"
+

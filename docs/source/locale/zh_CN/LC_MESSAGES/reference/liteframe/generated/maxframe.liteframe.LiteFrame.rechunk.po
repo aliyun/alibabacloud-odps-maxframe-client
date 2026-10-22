@@ -1,0 +1,95 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rechunk.rst:2
+msgid "maxframe.liteframe.LiteFrame.rechunk"
+msgstr ""
+
+#: maxframe.liteframe.misc.rechunk.rechunk:1 of
+msgid "Rechunk LiteFrame data."
+msgstr "重新分块LiteFrame数据。"
+
+#: maxframe.liteframe.misc.rechunk.rechunk:3 of
+msgid ""
+"This function is used to reorganize the chunk structure of data, which "
+"can change how data is distributed in distributed computing. By adjusting"
+" chunk sizes, memory usage and computational performance can be "
+"optimized. LiteFrame is only ever chunked along the row axis (axis 0); "
+"the column axis always stays a single chunk. Note that this function is "
+"only effective in DPE for now."
+msgstr ""
+"此函数用于重新组织数据的块结构，这可以改变数据在分布式计算中的分布方式。"
+"通过调整块大小，可以优化内存使用和计算性能。LiteFrame仅沿行轴（轴0）进行"
+"分块；列轴始终是单个块。请注意，此函数目前仅在DPE中有效。"
+
+#: maxframe.liteframe.misc.rechunk.rechunk of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.misc.rechunk.rechunk:10 of
+#, python-brace-format
+msgid ""
+"New chunk size configuration. Can be one of the following forms:  - "
+"Integer: row chunk size, e.g. ``100`` rechunks rows into chunks of 100. -"
+" Tuple: per-dimension sizes; only the first element (rows) takes   "
+"effect. For instance, ``(100, 2)`` rechunks rows into chunks of 100. - "
+"Dictionary: chunk sizes for specific dimensions, for instance,   ``{0: "
+"100}`` rechunks dimension 0 into 100 rows per chunk, and   ``{0: (100, "
+"100, 100)}`` rechunks dimension 0 into 3 chunks where   each chunk has "
+"100 rows."
+msgstr ""
+"新的块大小配置。可以是以下形式之一： - 整数：行块大小，例如 ``100`` 将行"
+"重新分块为每块100行。 - 元组：每个维度的大小；只有第一个元素（行）生效。"
+"例如， ``(100, 2)`` 将行重新分块为每块100行。 - 字典：特定维度的块大小，"
+"例如， ``{0: 100}`` 将维度0重新分块为每块100行，而 ``{0: (100, 100, 100)}"
+"`` 将维度0重新分块为3个块，每个块有100行。"
+
+#: maxframe.liteframe.misc.rechunk.rechunk:20 of
+msgid "Reserved for future use."
+msgstr "保留供将来使用。"
+
+#: maxframe.liteframe.misc.rechunk.rechunk:22 of
+#, python-brace-format
+msgid ""
+"If specified, ``chunk_size`` applies only to that axis. Internally "
+"normalized to the dict form ``{axis: chunk_size}``. Cannot be used "
+"together with a dict ``chunk_size``."
+msgstr ""
+"如果指定，则 ``chunk_size`` 仅适用于该轴。在内部规范化为字典形式 ``{axis:"
+" chunk_size}``。不能与字典 ``chunk_size`` 一起使用。"
+
+#: maxframe.liteframe.misc.rechunk.rechunk of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.misc.rechunk.rechunk:27 of
+msgid "The rechunked LiteFrame object."
+msgstr "重新分块的LiteFrame对象。"
+
+#: maxframe.liteframe.misc.rechunk.rechunk of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.misc.rechunk.rechunk:31 of
+msgid "示例"
+msgstr ""
+
+

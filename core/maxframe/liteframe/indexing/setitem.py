@@ -19,9 +19,10 @@ import pandas as pd
 from maxframe.liteframe.arithmetic.core import (
     _build_fused_projection,
     _extract_projection_exprs,
+    _resolve_named_expr,
     _rewrite_column_refs,
 )
-from maxframe.liteframe.core import LITEFRAME_TYPE
+from maxframe.liteframe.core import LITEFRAME_TYPE, LiteFrameData
 from maxframe.liteframe.expressions import (
     LiteFrameColumn,
     LiteFrameExpr,
@@ -33,7 +34,35 @@ from maxframe.liteframe.utils import normalize_col_name
 
 
 def liteframe_setitem(lf, key, value):
-    """Add or replace a column in LiteFrame, or set rows by position."""
+    """Add or replace a column in LiteFrame, or set rows by position.
+
+    When *key* is a column name, the column is added or replaced.  The
+    *value* may be a scalar, a :class:`LiteFrameExpr`, or a single-column
+    LiteFrame; column references inside an expression are rewritten through
+    the frame's projection so the assignment is self-contained.  When *key*
+    is an integer slice, rows are set positionally via ``iloc``.
+
+    The mutation is applied in place on the owning LiteFrame.
+
+    Parameters
+    ----------
+    key : str or slice
+        Column name to add or replace, or an integer slice selecting rows
+        to set by position.
+    value : scalar, LiteFrameExpr, or LiteFrame
+        Value to assign.  A LiteFrame must have exactly one column.  When
+        *key* is a slice, only scalar values are supported.
+
+    Returns
+    -------
+    None
+        The mutation is applied in place; nothing is returned.
+    """
+    if isinstance(lf, LiteFrameData):
+        raise NotImplementedError(
+            "item assignment is not supported on a LiteFrameData; mutate via "
+            "the owning LiteFrame instead"
+        )
     if isinstance(key, slice):
         edge = key.start if key.start is not None else key.stop
         if isinstance(edge, Integral):
@@ -45,11 +74,12 @@ def liteframe_setitem(lf, key, value):
 
     # Unwrap a single-column LiteFrame projection into its LiteFrameExpr,
     # so that lf["c"] = lf["a"] + 1 preserves the operation graph.
-    if (
+    from_liteframe_projection = (
         isinstance(value, LITEFRAME_TYPE)
         and isinstance(value.op, LiteFrameProjection)
         and len(value.op.projections) == 1
-    ):
+    )
+    if from_liteframe_projection:
         value = value.op.projections[0]
 
     if isinstance(value, LiteFrameExpr):
@@ -57,10 +87,17 @@ def liteframe_setitem(lf, key, value):
         # so the final NamedExpr(name=key, ...) wrapping below is correct.
         inner = value.expr if isinstance(value, NamedExpr) else value
         expr = inner.bind(lf.dtypes)
-        # Rewrite column references through lf's projection so the
-        # expression is self-contained and safe for fusion.
-        existing = _extract_projection_exprs(lf)
-        expr = _rewrite_column_refs(expr, existing)
+        # A projection-built expression (``lf["c"] = lf["a"] + 1``) is already
+        # rooted at the root source: its column references name source
+        # columns, so the fused projection below is self-contained.  Rewriting
+        # it again against ``lf``'s projection would re-inline an
+        # already-inlined self-derived column (``price := str.replace(price)``)
+        # and duplicate its transform — ``transform(transform(col("price")))``
+        # — crashing on a str op applied to the already-numeric result
+        # (``InvalidOperationError: expected String type, got: f64``).
+        if not from_liteframe_projection:
+            existing = _extract_projection_exprs(lf)
+            expr = _rewrite_column_refs(expr, existing)
     elif isinstance(value, LITEFRAME_TYPE):
         if len(value.columns) != 1:
             raise ValueError(
@@ -74,24 +111,18 @@ def liteframe_setitem(lf, key, value):
         dtype = pd.Series([value]).dtype
         expr = LiteFrameLiteral(value=value, dtype=dtype)
 
-    # Build projections: all existing columns + new named expression
-    existing_exprs = _extract_projection_exprs(lf)
-    projections = []
-    for c in lf.columns:
-        if c != key:
-            col_expr = existing_exprs.get(
-                c, LiteFrameColumn(name=c, dtype=lf.dtypes[c])
-            )
-            # Wrap bare expressions in NamedExpr so _projection_name can extract the name
-            if not isinstance(col_expr, (NamedExpr, LiteFrameColumn)):
-                projections.append(NamedExpr(name=c, expr=col_expr))
-            else:
-                projections.append(col_expr)
+    # Build projections: all existing columns (preserving rename aliases)
+    # plus the new named expression.
+    projections = [
+        _resolve_named_expr(lf, c, lf.dtypes[c]) for c in lf.columns if c != key
+    ]
     projections.append(NamedExpr(name=key, expr=expr))
 
     result = _build_fused_projection(lf, projections)
 
-    # Detach old data and attach new data to avoid entity tracking issues
+    # Swap the underlying data on the owning LiteFrame.  LiteFrameData is
+    # rejected above — it is not directly mutable; callers mutate via the
+    # LiteFrame entity.
     lf._data.detach(lf)
     lf._data = result.data
     result.data.attach(lf)

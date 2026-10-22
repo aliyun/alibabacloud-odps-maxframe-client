@@ -30,6 +30,7 @@ from tornado import netutil
 
 from maxframe.core import ENTITY_TYPE, Tileable, TileableGraph
 from maxframe.utils import (
+    call_with_retry,
     create_sync_primitive,
     is_arrow_dtype_supported,
     lazy_import,
@@ -244,14 +245,19 @@ def create_test_volume(vol_name, oss_config):
         rolearn = oss_config.oss_rolearn
 
     oss_config.oss_bucket.put_object(oss_test_dir_name + "/", b"")
-    odps_entry.create_external_volume(vol_name, location=test_location, rolearn=rolearn)
+    call_with_retry(
+        odps_entry.create_external_volume,
+        vol_name,
+        location=test_location,
+        rolearn=rolearn,
+    )
 
     try:
         yield vol_name
     finally:
         try:
             odps_entry.delete_volume(vol_name, auto_remove_dir=True, recursive=True)
-        except:
+        except Exception:
             pass
 
 

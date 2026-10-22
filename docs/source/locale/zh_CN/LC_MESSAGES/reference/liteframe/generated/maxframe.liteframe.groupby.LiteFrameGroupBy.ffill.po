@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.ffill.rst:2
+msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.ffill"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ffill:1 of
+msgid "Forward-fill within each group."
+msgstr "在每个组内进行前向填充。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ffill:3 of
+msgid ""
+"Propagate the last non-null value forward across consecutive nulls, "
+"scoped per group.  ``limit`` caps consecutive fills per run (``None`` = "
+"unlimited); ``limit <= 0`` raises ``ValueError``."
+msgstr ""
+"在每组范围内，将最后一个非空值向前传播以填充连续的空值。``limit`` 限制"
+"每次运行中连续填充的数量（``None`` = 无限制）；当 ``limit <= 0`` 时抛出 `"
+"`ValueError``。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.ffill.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ffill:7 of
+msgid "Maximum number of consecutive nulls to fill in each run."
+msgstr "每次运行中要填充的最大连续空值数量。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ffill:9 of
+msgid "Column(s) to fill.  If None, all non-group-key columns are filled."
+msgstr "要填充的列。如果为 None，则填充所有非分组键列。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.ffill.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ffill:12 of
+msgid ""
+"Forward-filled LiteFrame with the same shape (row count preserved).  "
+"Output dtypes equal the input dtypes."
+msgstr ""
+"具有相同形状的前向填充 LiteFrame（保留行数）。输出数据类型与输入数据类型"
+"相同。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.ffill.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ffill:17 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ffill:19 of
+msgid ""
+"Grouped transforms hash-shuffle rows by group key, so the output row "
+"order follows reducer/hash-partition order and is **not** aligned with "
+"the input frame (unlike pandas).  Row count is preserved.  Intra-group "
+"row order *is* preserved (the hash shuffle is stable w.r.t. intra-group "
+"order), so the per-group fill direction follows the original input order."
+"  See ``docs/designs/liteframe/operators/window.md``."
+msgstr ""
+"分组转换通过分组键对行进行哈希洗牌，因此输出行顺序遵循 reducer/哈希分区"
+"顺序，并且与输入框架**不**对齐（与 pandas 不同）。保留行数。组内行顺序*是"
+"*保留的（哈希洗牌相对于组内顺序是稳定的），因此每组的填充方向遵循原始输入"
+"顺序。参见 ``docs/designs/liteframe/operators/window.md``。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ffill:27 of
+msgid ""
+"Null-key rows are preserved with a null result (matching pandas "
+"``groupby.ffill()`` under the default ``dropna=True``); they are not "
+"grouped together."
+msgstr ""
+"空键行以空结果保留（匹配 pandas 在默认 ``dropna=True`` 下的 ``groupby."
+"ffill()``）；它们不会被分组在一起。"
+

@@ -22,18 +22,104 @@ from maxframe.liteframe.expressions import LiteFrameAbs, LiteFrameNeg, LiteFrame
 
 
 def neg(lf):
+    """Element-wise numerical negation of all column values.
+
+    Bound to the unary ``-`` operator (``__neg__``), so ``-lf`` is
+    equivalent to ``lf.neg()``.
+
+    Returns
+    -------
+    LiteFrame
+        Lazy LiteFrame with every numeric value negated.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'a': [1, -2, 3]})
+    >>> result = -lf
+    >>> result.execute()
+       a
+    0 -1
+    1  2
+    2 -3
+    """
     return _build_unary_projection(lf, LiteFrameNeg)
 
 
 def pos(lf):
+    """Element-wise unary positive; returns the LiteFrame unchanged.
+
+    Bound to the unary ``+`` operator (``__pos__``), so ``+lf`` is
+    equivalent to ``lf.pos()``.
+
+    Returns
+    -------
+    LiteFrame
+        The same LiteFrame, unchanged.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'a': [1, -2, 3]})
+    >>> result = +lf
+    >>> result.execute()
+       a
+    0  1
+    1 -2
+    2  3
+    """
     return lf
 
 
 def abs_(lf):
+    """Element-wise absolute value of all column values.
+
+    Bound to the builtin ``abs()`` (``__abs__``), so ``abs(lf)`` is
+    equivalent to ``lf.abs_()``.
+
+    Returns
+    -------
+    LiteFrame
+        Lazy LiteFrame with absolute values.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'a': [-1, 2, -3]})
+    >>> result = abs(lf)
+    >>> result.execute()
+       a
+    0  1
+    1  2
+    2  3
+    """
     return _build_unary_projection(lf, LiteFrameAbs)
 
 
 def round_(lf, decimals=0):
+    """Element-wise rounding to ``decimals`` decimal places.
+
+    Parameters
+    ----------
+    decimals : int, default 0
+        Number of decimal places to round to.
+
+    Returns
+    -------
+    LiteFrame
+        Lazy LiteFrame with rounded values.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'a': [1.234, 2.345, 3.456]})
+    >>> result = lf.round(2)
+    >>> result.execute()
+         a
+    0 1.23
+    1 2.35
+    2 3.46
+    """
     return _build_unary_projection(lf, LiteFrameRound, decimals=decimals)
 
 

@@ -1,0 +1,76 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_tensor.rst:2
+msgid "maxframe.liteframe.LiteFrame.to\\_tensor"
+msgstr ""
+
+#: maxframe.liteframe.core.LiteFrame.to_tensor:1 of
+msgid "Convert the LiteFrame to a MaxFrame tensor."
+msgstr "将LiteFrame转换为MaxFrame张量。"
+
+#: maxframe.liteframe.core.LiteFrame.to_tensor:3 of
+msgid ""
+"All columns are combined into a single homogeneous tensor. When ``dtype``"
+" is not provided, the result dtype is the common promotion of all column "
+"dtypes."
+msgstr ""
+"所有列被合并为单个同质张量。当未提供 ``dtype``时，结果dtype是所有列dtype"
+"的公共提升。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_tensor.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.core.LiteFrame.to_tensor:7 of
+msgid ""
+"Target dtype for the resulting tensor. If None, the dtype is inferred "
+"from the column dtypes."
+msgstr "目标张量的dtype。如果为None，则从列dtype推断dtype。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_tensor.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.core.LiteFrame.to_tensor:11 of
+msgid "A MaxFrame tensor containing the LiteFrame data."
+msgstr "包含LiteFrame数据的MaxFrame张量。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_tensor.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.core.LiteFrame.to_tensor:16 of
+msgid ":py:obj:`LiteFrame.from_tensor`"
+msgstr ""
+
+#: maxframe.liteframe.core.LiteFrame.to_tensor:17 of
+msgid "Create a LiteFrame from a MaxFrame tensor."
+msgstr "从MaxFrame张量创建LiteFrame。"
+
+#: maxframe.liteframe.core.LiteFrame.to_tensor:19 of
+msgid ":py:obj:`LiteFrame.values`"
+msgstr ""
+
+#: maxframe.liteframe.core.LiteFrame.to_tensor:20 of
+msgid "Return the LiteFrame as a tensor."
+msgstr "将LiteFrame作为张量返回。"
+

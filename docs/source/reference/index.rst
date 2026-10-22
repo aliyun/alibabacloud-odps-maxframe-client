@@ -8,4 +8,5 @@ API reference
 
    tensor/routines
    dataframe/index
+   liteframe/index
    learn/index

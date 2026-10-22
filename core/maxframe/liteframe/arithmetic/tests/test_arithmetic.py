@@ -12,14 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import numpy as np
+import pandas as pd
 import pyarrow as pa
 import pytest
 
+from maxframe.io.odpsio import pandas_to_odps_schema
 from maxframe.liteframe.core import LiteFrame
 from maxframe.liteframe.expressions import (
     LiteFrameAbs,
     LiteFrameAdd,
     LiteFrameAnd,
+    LiteFrameBinUfuncExpr,
     LiteFrameColumn,
     LiteFrameDiv,
     LiteFrameEq,
@@ -29,6 +33,8 @@ from maxframe.liteframe.expressions import (
     LiteFrameInvert,
     LiteFrameLe,
     LiteFrameLiteral,
+    LiteFrameLogicalNot,
+    LiteFrameLShift,
     LiteFrameLt,
     LiteFrameMod,
     LiteFrameMul,
@@ -37,7 +43,9 @@ from maxframe.liteframe.expressions import (
     LiteFrameOr,
     LiteFramePow,
     LiteFrameRound,
+    LiteFrameRShift,
     LiteFrameSub,
+    LiteFrameUnaryUfuncExpr,
     LiteFrameXor,
     SourceCompatibilityError,
 )
@@ -300,6 +308,97 @@ def test_add_preserves_float_dtype():
     assert result.dtypes["b"] == wrap_arrow_dtype(pa.float64())
 
 
+@pytest.mark.parametrize(
+    "scalar, expected_pa_dtype, expected_odps_type",
+    [
+        (np.int64(5), pa.int64(), "bigint"),
+        (np.int32(5), pa.int64(), "bigint"),
+        (np.float64(5.0), pa.float64(), "double"),
+    ],
+    ids=["np_int64", "np_int32", "np_float64"],
+)
+def test_numpy_scalar_odps_schema_dtype(scalar, expected_pa_dtype, expected_odps_type):
+    """Arithmetic with NumPy scalars (e.g. a value fetched from a DPE result
+    via ``.iloc[0, 0]``) must preserve the numeric dtype.  Regression for the
+    yunqi demo round-trip: ``count() - total_length`` with a np.int64 scalar
+    previously inferred ``string``, so the result materialized to an ODPS temp
+    table with STRING columns and every count value came back as str."""
+    raw = pd.DataFrame(
+        {
+            "num": [1, 2, 3, None, 5],
+            "str_col": ["a", "b", None, "d", "e"],
+            "float_col": [1.5, None, 3.5, 4.5, 5.5],
+        }
+    )
+    result = LF(raw).count() - scalar
+    assert (result.dtypes == wrap_arrow_dtype(expected_pa_dtype)).all()
+
+    # DPE LiteFrameToODPSTableTiler._create_target_table infers the temp
+    # table schema from the declared dtypes with unknown_as_string=True.
+    empty_df = pd.DataFrame([], columns=result.dtypes.index).astype(result.dtypes)
+    odps_schema, _ = pandas_to_odps_schema(
+        empty_df, unknown_as_string=True, ignore_index=True
+    )
+    assert [c.type.name for c in odps_schema.columns] == [expected_odps_type] * len(
+        raw.columns
+    )
+
+
+# ---------------------------------------------------------------------------
+# Bitwise shift operators
+# ---------------------------------------------------------------------------
+
+_SHIFT_OPS = [
+    ("lshift", lambda lf: lf << 2, LiteFrameLShift),
+    ("rlshift", lambda lf: 2 << lf, LiteFrameLShift),
+    ("rshift", lambda lf: lf >> 1, LiteFrameRShift),
+    ("rrshift", lambda lf: 16 >> lf, LiteFrameRShift),
+]
+
+
+@pytest.mark.parametrize(
+    "name,op_fn,expr_cls", _SHIFT_OPS, ids=[t[0] for t in _SHIFT_OPS]
+)
+def test_shift_operator_returns_liteframe(name, op_fn, expr_cls):
+    lf = LF({"a": [1, 2, 3, 4]})
+    result = op_fn(lf)
+    assert isinstance(result, LiteFrame)
+    assert _expr_class(result) is expr_cls
+
+
+# Bitwise int ops that should preserve int64 dtype on an int64 column.
+_BITWISE_INT_DTYPE_OPS = [
+    ("lshift", lambda lf: lf["a"] << 2),
+    ("rshift", lambda lf: lf["a"] >> 1),
+    ("and", lambda lf: lf["a"] & 3),
+    ("or", lambda lf: lf["a"] | 3),
+    ("xor", lambda lf: lf["a"] ^ 1),
+    ("invert", lambda lf: ~lf["a"]),
+]
+
+
+@pytest.mark.parametrize(
+    "name,op_fn", _BITWISE_INT_DTYPE_OPS, ids=[t[0] for t in _BITWISE_INT_DTYPE_OPS]
+)
+def test_bitwise_int_preserves_int_dtype(name, op_fn):
+    """Bitwise &, |, ^, ~, <<, >> on an int64 column preserve int64 dtype."""
+    lf = LF({"a": [1, 2, 3, 4]})
+    result = op_fn(lf)
+    assert result.dtypes["a"] == wrap_arrow_dtype(pa.int64())
+
+
+def test_shift_fuses_to_root_source():
+    """(lf["a"] << 2) >> 1 should fuse into a single projection on the root."""
+    lf = LF({"a": [1, 2, 3, 4]})
+    result = (lf["a"] << 2) >> 1
+
+    op = result.data.op
+    assert isinstance(op, LiteFrameProjection)
+    assert isinstance(op.projections[0].expr, LiteFrameRShift)
+    assert isinstance(op.projections[0].expr.left, LiteFrameLShift)
+    assert result.data.inputs[0] is lf._data
+
+
 # ---------------------------------------------------------------------------
 # LiteFrame hashability (after __eq__ override)
 # ---------------------------------------------------------------------------
@@ -514,3 +613,198 @@ def test_chained_binary_liteframe_fuses_both_sides():
 
     # Input should be the root source
     assert result.data.inputs[0] is lf._data
+
+
+# ---------------------------------------------------------------------------
+# NumPy ufunc dispatch via __array_ufunc__
+# ---------------------------------------------------------------------------
+
+_DIRECT_UNARY_UFUNCS = [
+    "exp",
+    "log",
+    "log10",
+    "log1p",
+    "sqrt",
+    "cbrt",
+    "sin",
+    "cos",
+    "tan",
+    "arcsin",
+    "arccos",
+    "arctan",
+    "sinh",
+    "cosh",
+    "tanh",
+    "arcsinh",
+    "arccosh",
+    "arctanh",
+    "sign",
+    "degrees",
+    "radians",
+]
+
+_MAP_BATCH_UNARY_UFUNCS = [
+    "exp2",
+    "log2",
+    "expm1",
+    "square",
+    # floor/ceil use the map_batches path so int inputs promote to float64,
+    # matching numpy (polars .floor()/.ceil() preserve the integer dtype).
+    "floor",
+    "ceil",
+    "reciprocal",
+    "rint",
+    "trunc",
+    "spacing",
+]
+
+_BOOL_UFUNCS = ["isfinite", "isinf", "isnan"]
+
+
+@pytest.mark.parametrize(
+    "ufunc_name",
+    _DIRECT_UNARY_UFUNCS + _MAP_BATCH_UNARY_UFUNCS,
+    ids=_DIRECT_UNARY_UFUNCS + _MAP_BATCH_UNARY_UFUNCS,
+)
+def test_unary_ufunc_returns_liteframe(ufunc_name):
+    lf = LF({"a": [1.0, 2.0, 3.0]})
+    result = getattr(np, ufunc_name)(lf)
+    assert isinstance(result, LiteFrame)
+    expr = result.data.op.projections[0].expr
+    assert isinstance(expr, LiteFrameUnaryUfuncExpr)
+    assert expr.ufunc_name == ufunc_name
+
+
+@pytest.mark.parametrize("ufunc_name", _BOOL_UFUNCS, ids=_BOOL_UFUNCS)
+def test_bool_ufunc_produces_bool_dtype(ufunc_name):
+    lf = LF({"a": [1.0, 2.0, 3.0]})
+    result = getattr(np, ufunc_name)(lf)
+    assert isinstance(result, LiteFrame)
+    expr = result.data.op.projections[0].expr
+    assert isinstance(expr, LiteFrameUnaryUfuncExpr)
+    assert expr.ufunc_name == ufunc_name
+    assert result.dtypes["a"] == _BOOL_DTYPE
+
+
+# Integer-input ufuncs whose advertised dtype is version-independent.
+# floor/ceil/trunc/rint deterministically promote int64 -> float64 (classic
+# numpy 1.x contract; numpy >= 2.0 preserves int, but MaxFrame overrides to
+# keep the advertised and executor result dtypes stable). square/sign
+# preserve int64; exp/sqrt promote to float64 on every numpy version.
+_INT_INPUT_UFUNC_DTYPE_CASES = [
+    ("floor", pa.float64()),
+    ("ceil", pa.float64()),
+    ("trunc", pa.float64()),
+    ("rint", pa.float64()),
+    ("square", pa.int64()),
+    ("sign", pa.int64()),
+    ("exp", pa.float64()),
+    ("sqrt", pa.float64()),
+]
+
+
+@pytest.mark.parametrize(
+    "ufunc_name,expected_pa_dtype",
+    _INT_INPUT_UFUNC_DTYPE_CASES,
+    ids=[c[0] for c in _INT_INPUT_UFUNC_DTYPE_CASES],
+)
+def test_unary_ufunc_int_dtype_matches_numpy(ufunc_name, expected_pa_dtype):
+    """np.<ufunc>(int64 LiteFrame) advertises a deterministic dtype.
+
+    floor/ceil/trunc/rint on int64 promote to float64 regardless of the
+    installed numpy version (numpy >= 2.0 preserves int, but MaxFrame
+    follows the classic numpy 1.x contract). square/sign preserve int64;
+    exp/sqrt promote to float64.
+    """
+    lf = LF({"a": [1, 2, 3]})
+    result = getattr(np, ufunc_name)(lf)
+    assert result.dtypes["a"] == wrap_arrow_dtype(expected_pa_dtype)
+
+
+_BINARY_UFUNCS = ["arctan2", "hypot", "maximum", "minimum", "logaddexp"]
+
+
+@pytest.mark.parametrize("ufunc_name", _BINARY_UFUNCS, ids=_BINARY_UFUNCS)
+def test_binary_ufunc_returns_liteframe(ufunc_name):
+    lf = LF({"a": [1.0, 2.0, 3.0]})
+    result = getattr(np, ufunc_name)(lf, 1.0)
+    assert isinstance(result, LiteFrame)
+    expr = result.data.op.projections[0].expr
+    assert isinstance(expr, LiteFrameBinUfuncExpr)
+    assert expr.ufunc_name == ufunc_name
+
+
+def test_existing_ufuncs_still_dispatch_to_dedicated_classes():
+    """np.absolute, np.negative, np.add etc. keep their existing expression classes."""
+    lf = LF({"a": [1, -2, 3]})
+    assert _expr_class(np.absolute(lf)) is LiteFrameAbs
+    assert _expr_class(np.fabs(lf)) is LiteFrameAbs
+    assert _expr_class(np.negative(lf)) is LiteFrameNeg
+    assert _expr_class(np.add(lf, 1)) is LiteFrameAdd
+    assert _expr_class(np.subtract(lf, 1)) is LiteFrameSub
+    assert _expr_class(np.multiply(lf, 2)) is LiteFrameMul
+
+
+# np.left_shift / np.right_shift reuse the dedicated shift expression classes.
+# Regression for the AI-review note: these ufuncs previously fell through to
+# ``NotImplemented`` because they were absent from the ufunc dispatch table,
+# even though ``LiteFrameLShift`` / ``LiteFrameRShift`` and their codegen existed.
+_SHIFT_UFUNC_OPS = [
+    ("left_shift", lambda lf: np.left_shift(lf, 2), LiteFrameLShift),
+    ("right_shift", lambda lf: np.right_shift(lf, 1), LiteFrameRShift),
+    ("rleft_shift", lambda lf: np.left_shift(2, lf), LiteFrameLShift),
+    ("rright_shift", lambda lf: np.right_shift(16, lf), LiteFrameRShift),
+]
+
+
+@pytest.mark.parametrize(
+    "name,op_fn,expr_cls",
+    _SHIFT_UFUNC_OPS,
+    ids=[t[0] for t in _SHIFT_UFUNC_OPS],
+)
+def test_shift_ufunc_returns_liteframe(name, op_fn, expr_cls):
+    """np.left_shift / np.right_shift dispatch to the shift expr classes.
+
+    Covers both operand orders; the reverse cases guard against the previous
+    ``NotImplemented`` fallthrough (comment #2).
+    """
+    lf = LF({"a": [1, 2, 3]})
+    result = op_fn(lf)
+    assert isinstance(result, LiteFrame)
+    assert _expr_class(result) is expr_cls
+    # Shift preserves the left operand's integer dtype.
+    assert result.dtypes["a"] == lf.dtypes["a"]
+
+
+# np.logical_not must use LiteFrameLogicalNot (bool result), not LiteFrameInvert.
+# Regression for the AI-review correctness note (comment #1): ``np.logical_not``
+# and the ``~`` operator previously shared ``LiteFrameInvert``. Since
+# ``LiteFrameInvert`` is now dtype-aware bitwise NOT (int -> int), reusing it
+# made ``np.logical_not`` return bitwise integers instead of booleans. The
+# ``~`` operator's int-preserving behavior is covered by
+# ``test_bitwise_int_preserves_int_dtype``.
+_LOGICAL_NOT_INPUTS = [
+    ("int", {"a": [0, 1, 2]}),
+    ("bool", {"a": [True, False, True]}),
+]
+
+
+@pytest.mark.parametrize(
+    "name,data", _LOGICAL_NOT_INPUTS, ids=[t[0] for t in _LOGICAL_NOT_INPUTS]
+)
+def test_logical_not_uses_dedicated_bool_expr(name, data):
+    """np.logical_not always yields LiteFrameLogicalNot with a bool dtype."""
+    lf = LF(data)
+    result = np.logical_not(lf)
+    assert isinstance(result, LiteFrame)
+    assert _expr_class(result) is LiteFrameLogicalNot
+    assert result.dtypes["a"] == _BOOL_DTYPE
+
+
+def test_excluded_ufuncs_return_notimplemented():
+    """np.modf and np.frexp raise TypeError (multi-output, unsupported)."""
+    lf = LF({"a": [1.0, 2.0, 3.0]})
+    with pytest.raises(TypeError):
+        np.modf(lf)
+    with pytest.raises(TypeError):
+        np.frexp(lf)

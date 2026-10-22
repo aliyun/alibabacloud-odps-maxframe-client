@@ -19,11 +19,14 @@ Note that some experimental features may undergo changes in future releases.
 
     cluster
     datasets
+    decomposition
+    ensemble
     lightgbm
     linear_model
     llm
     metrics
     model_selection
     preprocessing
+    tree
     utils
     xgboost

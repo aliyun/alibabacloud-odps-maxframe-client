@@ -1,0 +1,172 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.flat_apply.rst:2
+msgid "maxframe.liteframe.LiteFrame.flat\\_apply"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:1 of
+msgid "Apply ``func`` to each row, expanding it to 0-N output rows."
+msgstr "将 ``func`` 应用于每一行，将其扩展为 0-N 个输出行。"
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:3 of
+msgid ""
+"``flat_apply`` is the LiteFrame analogue of ``mf.flatmap``: ``func`` "
+"receives one row (a ``pandas.Series`` for "
+"``input_frame_type=\"pandas\"``, a single-row ``polars.DataFrame`` for "
+"``input_frame_type=\"polars\"``) and returns / yields 0-N new rows or a "
+"new DataFrame.  Each returned row is aligned to the function-output "
+"columns (dict / named-Series by key/label, list / tuple positionally, "
+"scalar to a single column)."
+msgstr ""
+"``flat_apply`` 是 ``mf.flatmap`` 的 LiteFrame 对应物：``func`` 接收一行"
+"数据（对于 ``input_frame_type=\"pandas\"`` 是 ``pandas.Series``，对于 ``"
+"input_frame_type=\"polars\"`` 是单行 ``polars.DataFrame``）并返回/生成 0-"
+"N 个新行或一个 新的 DataFrame。每个返回的行都对齐到函数输出列（按键/标签"
+"的字典/命名 Series，按位置的列表/元组，标量到单个列）。"
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:10 of
+msgid ""
+"Columns **not** in ``subset`` are *broadcast* (repeated for every output "
+"row produced from the same input row), mirroring ``pandas.DataFrame. "
+"explode``.  The function-output columns are inserted at the position "
+"where the first ``subset`` column originally located; broadcast columns "
+"keep their relative order around the func-out block."
+msgstr ""
+"不在 ``subset`` 中的列会被 *广播*（为从同一输入行生成的每个输出行重复），"
+"类似于 ``pandas.DataFrame.explode``。函数输出列被插入到第一个 ``subset`` "
+"列原来的位置；广播列在函数输出块周围保持它们的相对顺序。"
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:16 of
+msgid ""
+"Function taking one row and returning / yielding 0-N rows (a DataFrame, "
+"generator, list-like, dict, Series, or scalar) or a tuple of such results"
+" (multiple outputs).  If ``func`` is a class, it is instantiated once per"
+" chunk, ``__call__`` is invoked per row, and ``close()`` (if defined) is "
+"always called at the end of the chunk."
+msgstr ""
+"接收一行并返回/产生 0-N 行（DataFrame、生成器、类列表、字典、Series 或"
+"标量）或此类结果的元组（多个输出）的函数。如果 ``func`` 是一个类，则每个"
+"块实例化一次，每行调用 ``__call__``，并且 ``close()``（如果定义了）总是在"
+"块结束时调用。"
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:24 of
+msgid ""
+"Expected output dtypes for the **function-output** columns only (the "
+"broadcast columns inherit their input dtypes automatically).  A list of "
+"dicts/pd.Series declares multiple outputs.  If omitted, inferred from "
+"``func``'s return annotation or a mock call."
+msgstr ""
+"仅针对**函数输出**列的预期输出数据类型（广播列自动继承其输入数据类型）。"
+"字典/pd.Series 列表声明多个输出。如果省略，则从 ``func`` 的返回注解或模拟"
+"调用中推断。"
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:29 of
+msgid "If True, skip dtype inference and produce an untyped output."
+msgstr "如果为 True，则跳过数据类型推断并产生无类型的输出。"
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:31 of
+msgid "Frame type passed to ``func``."
+msgstr "传递给 ``func`` 的框架类型。"
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:33 of
+msgid ""
+"Columns passed to ``func``.  ``None`` (default) passes all visible "
+"columns (no broadcast columns, pure flatmap behaviour).  Columns not in "
+"``subset`` are broadcast across the expanded output rows."
+msgstr ""
+"传递给 ``func`` 的列。``None``（默认值）传递所有可见列（无广播列，纯 "
+"flatmap 行为）。不在 ``subset`` 中的列在扩展的输出行上进行广播。"
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:37 of
+msgid "Extra positional arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外位置参数。"
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:39 of
+msgid "Extra keyword arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外关键字参数。"
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:41 of
+msgid ""
+"A new LiteFrame (or tuple of LiteFrames for multiple outputs) whose "
+"schema inserts the function-output columns at the position of the first "
+"``subset`` column, with broadcast columns keeping their relative order."
+msgstr ""
+"一个新的 LiteFrame（或用于多个输出的 LiteFrame 元组），其模式在第一个 ``"
+"subset`` 列的位置插入函数输出列，广播列保持它们的相对顺序。"
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:48 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:49 of
+msgid ""
+"The row count may change (1:N expansion), so -- like ``apply(axis=0)`` "
+"and ``apply_chunk`` -- hidden columns are dropped from the UDF input and "
+"not carried into the output.  Users who need a hidden column to travel "
+"through ``flat_apply`` should ``select`` it first.  Range columns are "
+"materialized to physical ``int64`` before the UDF runs; a broadcast range"
+" column becomes a regular ``int64`` column in the output."
+msgstr ""
+"行数可能会改变（1:N 扩展），所以 -- 像 ``apply(axis=0)`` 和 ``apply_chunk"
+"`` 一样 -- 隐藏列从 UDF 输入中被丢弃且不会传入输出。需要隐藏列通过 ``flat"
+"_apply`` 传输的用户应该先 ``select`` 它。范围列在 UDF 运行前被实例化为"
+"物理 ``int64``；广播范围列在输出中变为常规 ``int64`` 列。"
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:58 of
+msgid ":py:obj:`apply_chunk`"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:59 of
+msgid "Apply a function per execution chunk."
+msgstr "每个执行块应用一个函数。"
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:62 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:66 of
+msgid "Expand each row into multiple rows (1:N), like ``explode``:"
+msgstr "将每行扩展为多行（1:N），类似 ``explode``："
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:77 of
+msgid ""
+"Use ``subset`` to broadcast non-subset columns (``B`` is repeated for "
+"every expanded row):"
+msgstr "使用 ``subset`` 来广播非子集列（``B`` 在每个扩展行中重复）："
+
+#: maxframe.liteframe.functional.flat_apply.flat_apply:89 of
+msgid "Return ``None`` to drop an input row (0 output rows):"
+msgstr "返回 ``None`` 以丢弃输入行（0 输出行）："
+
+

@@ -1,0 +1,122 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.rolling.rst:2
+msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.rolling"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.rolling:1 of
+msgid "Provide rolling-window calculations within each group."
+msgstr "提供每个组内的滚动窗口计算。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.rolling:3 of
+msgid ""
+"The data is partitioned by the group key (hash shuffle) so that every "
+"group resides in a single partition; the rolling aggregation is then "
+"computed per-group. Only integer window sizes are supported."
+msgstr ""
+"数据按分组键(哈希混洗)进行分区，以便每个组都驻留在单个分区中；然后逐组"
+"计算滚动聚合。仅支持整数窗口大小。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.rolling.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.rolling:7 of
+msgid "Size of the moving window (number of rows). Must be positive."
+msgstr "移动窗口的大小(行数)。必须为正数。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.rolling:9 of
+msgid ""
+"Minimum number of observations in a window required to produce a value ("
+"otherwise null). Defaults to ``window`` (matching pandas). For ``count`` "
+"the value is the number of non-null observations, but ``min_periods`` "
+"still gates on the number of window rows (observations), not the non-null"
+" count — consistent with pandas."
+msgstr ""
+"窗口中产生值所需的最小观测数(否则为null)。默认为 ``window`` (匹配pandas)"
+"。对于 ``count`` 值是非空观测的数量，但 ``min_periods`` 仍然基于窗口行数("
+"观测数)，而不是非空计数——与pandas一致。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.rolling:15 of
+msgid "Center the window on the current row."
+msgstr "将窗口居中在当前行上。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.rolling:17 of
+msgid ""
+"Column(s) to aggregate. If None, all non-group-key columns are "
+"aggregated. Non-selected columns are passed through unchanged."
+msgstr "要聚合的列。如果为None，则聚合所有非分组键列。未选择的列保持不变。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.rolling.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.rolling:21 of
+msgid ""
+"Intermediate object; call an aggregation method (e.g. ``.sum()``) to "
+"produce a LiteFrame."
+msgstr "中间对象；调用聚合方法(例如 ``.sum()``)来生成LiteFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.rolling.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.rolling:26 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.rolling:28 of
+msgid ""
+"Grouped transforms hash-shuffle rows by group key, so the output row "
+"order follows reducer/hash-partition order and is **not** aligned with "
+"the input frame (unlike pandas, which preserves the index). Order "
+"restoration via a place-back operator (``LiteFrameIlocSetItem``) is "
+"planned; see ``docs/designs/liteframe/operators/window.md``."
+msgstr ""
+"分组变换通过分组键对行进行哈希混洗，因此输出行顺序遵循reducer/hash-"
+"partition顺序，与输入框架**不**对齐(不像pandas那样保留索引)。通过place-"
+"back操作符(``LiteFrameIlocSetItem``)恢复顺序的计划正在进行中；参见 ``docs"
+"/designs/liteframe/operators/window.md``。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.rolling:34 of
+msgid ""
+"Null-key rows are preserved with a null result (matching the other "
+"grouped transforms and the row-count-preserving transform contract); they"
+" are not grouped together. (This diverges from pandas grouped-rolling, "
+"which drops null-key rows under ``dropna=True``.)"
+msgstr ""
+"空键行以空结果保留(与其他分组变换和行数保持变换契约匹配)；它们不会被分组"
+"在一起。(这与pandas分组滚动不同，pandas在 ``dropna=True`` 下会丢弃空键行"
+"。)"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.rolling.rst
+msgid "抛出"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.rolling:39 of
+msgid "If ``window`` is not an integer."
+msgstr "如果 ``window`` 不是整数。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.rolling:40 of
+msgid "If ``window`` is not positive or ``min_periods`` is invalid."
+msgstr "如果 ``window`` 不为正数或 ``min_periods`` 无效。"
+

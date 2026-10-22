@@ -1,0 +1,102 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 15:05+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_odps_table.rst:2
+msgid "maxframe.liteframe.LiteFrame.to\\_odps\\_table"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:1 of
+msgid "Write LiteFrame object into a MaxCompute (ODPS) table."
+msgstr "将 LiteFrame 对象写入 MaxCompute (ODPS) 表。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_odps_table.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:3 of
+msgid "ODPS table or table name to write to."
+msgstr "要写入的 ODPS 表或表名。"
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:5 of
+msgid "Partition spec for the target table (e.g. \"ds=20240101\")."
+msgstr "目标表的分区规范（例如 \"ds=20240101\"）。"
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:7 of
+msgid ""
+"Column name(s) to use as partition columns. The data is partitioned by "
+"these columns."
+msgstr "用作分区列的列名。数据按这些列进行分区。"
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:10 of
+msgid "Write mode. 'overwrite' drops the existing data; 'append' adds to it."
+msgstr "写入模式。'overwrite' 删除现有数据；'append' 在其基础上追加。"
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:12 of
+msgid "If True, columns with unknown ODPS types are written as strings."
+msgstr "如果为 True，则具有未知 ODPS 类型的列将作为字符串写入。"
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:14 of
+msgid "Table lifecycle in days."
+msgstr "表生命周期（天）。"
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:16 of
+msgid "ODPS table properties."
+msgstr "ODPS 表属性。"
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:18 of
+msgid "Column name(s) to set as the table primary key."
+msgstr "设置为主键的列名。"
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:20 of
+msgid ""
+"Mapping of column name to ODPS type string, used to override auto-"
+"detected types."
+msgstr "列名到 ODPS 类型字符串的映射，用于覆盖自动检测的类型。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_odps_table.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:24 of
+msgid "Stub LiteFrame for execution."
+msgstr "用于执行的存根 LiteFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_odps_table.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:29 of
+msgid ":py:obj:`read_odps_table`"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:30 of
+msgid "Read an ODPS table into a LiteFrame."
+msgstr "将 ODPS 表读取到 LiteFrame 中。"
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:32 of
+msgid ":py:obj:`to_parquet`"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_odps.to_odps_table:33 of
+msgid "Write a LiteFrame to a Parquet file."
+msgstr "将 LiteFrame 写入 Parquet 文件。"
+
+

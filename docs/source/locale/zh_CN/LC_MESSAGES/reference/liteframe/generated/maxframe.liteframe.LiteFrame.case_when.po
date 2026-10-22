@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 11:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.case_when.rst:2
+msgid "maxframe.liteframe.LiteFrame.case\\_when"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.where.case_when:1 of
+msgid "Replace values where conditions are True, evaluated in order."
+msgstr "按顺序替换条件为 True 的值。"
+
+#: maxframe.liteframe.arithmetic.where.case_when:3 of
+msgid ""
+"Mirrors ``pandas.Series.case_when``: each ``(cond, replacement)`` pair is"
+" evaluated sequentially; the first condition that is True determines the "
+"replacement value for that row.  Rows where no condition is True keep "
+"their original value."
+msgstr ""
+"镜像 ``pandas.Series.case_when``：每个 ``(cond, replacement)`` 对按顺序"
+"求值；第一个为 True 的条件确定该行的 替换值。没有任何条件为 True 的行保留"
+"其原始值。"
+
+#: maxframe.liteframe.arithmetic.where.case_when:8 of
+msgid ""
+"Both *cond* and *replacement* may be callables; when callable they are "
+"invoked with *lf* and should return a LiteFrame (for *cond*) or a "
+"LiteFrame / scalar (for *replacement*), matching the pandas contract "
+"where callables are computed on the Series itself."
+msgstr ""
+"*cond* 和 *replacement* 都可能是可调用对象；当为可调用对象时，它们使用 *"
+"lf* 调用并应返回一个 LiteFrame（对于 *cond*）或一个 LiteFrame/标量（对于 "
+"*replacement*），符合 pandas 中可调用对象在 Series 本身上计算的约定。"
+
+#: maxframe.liteframe.arithmetic.where.case_when of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.where.case_when:13 of
+msgid ""
+"Ordered list of ``(condition, replacement)`` pairs.  *condition* is a "
+"boolean LiteFrame, or a callable returning one.  *replacement* is a "
+"scalar, a LiteFrame, or a callable returning either."
+msgstr ""
+"``(condition, replacement)`` 对的有序列表。*condition* 是一个布尔型 "
+"LiteFrame，或返回一个布尔型 LiteFrame 的 可调用对象。*replacement* 是一个"
+"标量、LiteFrame，或返回其中任一类型的可调用对象。"
+
+#: maxframe.liteframe.arithmetic.where.case_when of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.where.case_when:18 of
+msgid "A LiteFrame with the same columns as *lf*."
+msgstr "具有与 *lf* 相同列的 LiteFrame。"
+
+#: maxframe.liteframe.arithmetic.where.case_when of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.where.case_when:23 of
+msgid ":py:obj:`where`"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.where.case_when:24 of
+msgid "Replace values where a condition is False."
+msgstr "替换条件为 False 的值。"
+
+#: maxframe.liteframe.arithmetic.where.case_when:26 of
+msgid ":py:obj:`mask`"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.where.case_when:27 of
+msgid "Replace values where a condition is True."
+msgstr "替换条件为 True 的值。"
+
+#: maxframe.liteframe.arithmetic.where.case_when:30 of
+msgid "示例"
+msgstr ""
+

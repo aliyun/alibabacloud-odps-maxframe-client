@@ -33,10 +33,20 @@ from maxframe.dataframe.datasource.from_tensor import (
     SeriesFromTensor,
 )
 from maxframe.dataframe.datasource.index import IndexDataSource
+from maxframe.dataframe.datasource.read_lance import (
+    DataFrameReadLance,
+    normalize_lance_filters,
+)
 from maxframe.dataframe.datasource.read_odps_query import DataFrameReadODPSQuery
 from maxframe.dataframe.datasource.read_odps_table import DataFrameReadODPSTable
 from maxframe.io.odpsio import ODPSTableIO, arrow_to_pandas
 from maxframe.protocol import DataFrameTableMeta
+
+try:
+    import lance
+except (ImportError, AttributeError):  # pragma: no cover
+    # lance not installed or not compatible
+    lance = None
 
 
 @register_op_adapter(DataFrameDataSource)
@@ -272,3 +282,46 @@ class IndexDataSourceAdapter(SPEOperatorAdapter):
         data_var = self.translate_var(context, op.data)
         res_var = context.get_output_tileable_variable(op.outputs[0])
         return [f"{res_var} = {data_var}"]
+
+
+@register_op_adapter(DataFrameReadLance)
+class DataFrameReadLanceAdapter(SPEOperatorAdapter):
+    @staticmethod
+    def _read_as_pandas(
+        path, columns=None, version=None, filters=None, index_col=None, asof=None
+    ):
+        if lance is None:
+            raise ImportError(
+                "Please install pylance which is required to read Lance datasets"
+            )
+
+        ds = lance.dataset(path, version=version, asof=asof)
+        (
+            preserved_index_col,
+            normalized_index_col,
+        ) = DataFrameReadLance.resolve_index_columns(ds.schema, index_col, columns)
+
+        local_df = ds.to_table(
+            columns=columns, filter=normalize_lance_filters(filters)
+        ).to_pandas()
+        if index_col is not None and index_col is not False:
+            if normalized_index_col != preserved_index_col:
+                local_df = DataFrameReadLance.apply_index_col_to_df(local_df, index_col)
+        return local_df
+
+    def generate_code(
+        self, op: DataFrameReadLance, context: SPECodeContext
+    ) -> List[str]:
+        cls_name = type(self).__name__
+        context.register_import(__name__, from_item=cls_name)
+        res_var_name = context.get_output_tileable_variable(op.outputs[0])
+        args = self._translate_call_args(
+            context,
+            op.path,
+            columns=op.columns,
+            version=op.version,
+            filters=op.filters,
+            index_col=op.index_col,
+            asof=op.asof,
+        )
+        return [f"{res_var_name} = {cls_name}._read_as_pandas({', '.join(args)})"]

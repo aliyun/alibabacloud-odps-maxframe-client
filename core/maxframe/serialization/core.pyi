@@ -43,7 +43,7 @@ class Serializer:
         context: Dict,
         subs_serialized: List,
         error_index: int,
-        exc: BaseException,
+        exc: Exception,
     ): ...
     @classmethod
     def register(cls, obj_type, name: str = None): ...

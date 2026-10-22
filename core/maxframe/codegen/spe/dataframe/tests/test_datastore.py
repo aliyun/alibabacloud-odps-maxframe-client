@@ -20,10 +20,15 @@ from odps import ODPS
 
 from maxframe import dataframe as md
 from maxframe.codegen.spe.core import SPECodeContext
-from maxframe.codegen.spe.dataframe.datastore import DataFrameToODPSTableAdapter
+from maxframe.codegen.spe.dataframe.datastore import (
+    DataFrameToLanceAdapter,
+    DataFrameToODPSTableAdapter,
+)
 from maxframe.config import options
+from maxframe.dataframe.datastore.to_lance import DataFrameToLance
 from maxframe.io.odpsio import HaloTableIO
 from maxframe.tests.utils import flaky, tn
+from maxframe.utils.datatypes import is_arrow_dtype_supported
 
 
 @pytest.fixture
@@ -198,3 +203,61 @@ def test_schema_mismatch(df1, idx, col_def, pt_def):
         _run_generated_code(results[0], ctx, df1.op.get_data())
 
     odps_entry.delete_table(table_name, if_exists=True)
+
+
+# lance requires a modern pyarrow (ArrowDtype / RecordBatchReader support);
+# skip these tests on legacy pyarrow where lance cannot be imported.
+_requires_arrow_dtype = pytest.mark.skipif(
+    not is_arrow_dtype_supported(),
+    reason="lance requires ArrowDtype support (newer pyarrow)",
+)
+
+
+@_requires_arrow_dtype
+def test_to_lance_codegen(tmp_path):
+    md_df = md.DataFrame(pd.DataFrame({"a": [1, 2, 3], "b": ["x", "y", "z"]}))
+    op = DataFrameToLance(
+        path=str(tmp_path / "out.lance"),
+        mode="create",
+        index=False,
+        index_label=None,
+        schema=None,
+        lance_kwargs=None,
+    )
+    _t = op(md_df)  # noqa: F841
+
+    adapter = DataFrameToLanceAdapter()
+    context = SPECodeContext()
+    codes = adapter.generate_code(op, context)
+    assert len(codes) == 1
+    assert "DataFrameToLanceAdapter._write_as_table" in codes[0]
+
+
+@_requires_arrow_dtype
+def test_to_lance_execution(tmp_path):
+    lance = pytest.importorskip("lance")
+    pdf = pd.DataFrame({"a": [1, 2, 3], "b": ["x", "y", "z"]})
+    md_df = md.DataFrame(pdf)
+    op = DataFrameToLance(
+        path=str(tmp_path / "out.lance"),
+        mode="create",
+        index=False,
+        index_label=None,
+        schema=None,
+        lance_kwargs=None,
+    )
+    _t = op(md_df)  # noqa: F841
+
+    adapter = DataFrameToLanceAdapter()
+    context = SPECodeContext()
+    codes = adapter.generate_code(op, context)
+
+    ns = context.constants.copy()
+    ns["DataFrameToLanceAdapter"] = DataFrameToLanceAdapter
+    ns["var_0"] = pdf
+    exec("\n".join(codes), ns)
+    result = ns[list(ns.keys())[-1]]
+    assert isinstance(result, pd.DataFrame)
+
+    written = lance.dataset(str(tmp_path / "out.lance")).to_table().to_pandas()
+    pd.testing.assert_frame_equal(written.reset_index(drop=True), pdf)

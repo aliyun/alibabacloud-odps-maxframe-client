@@ -1,0 +1,105 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 15:05+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.query.rst:2
+msgid "maxframe.liteframe.LiteFrame.query"
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_query:1 of
+msgid "Query the columns of a LiteFrame with a boolean expression."
+msgstr "使用布尔表达式查询 LiteFrame 的列。"
+
+#: maxframe.liteframe.misc.eval.lf_query:3 of
+msgid ""
+"The boolean expression is evaluated with :func:`liteframe_eval` and the "
+"resulting single-column boolean LiteFrame is used to filter *lf* via "
+"``__getitem__``, reusing the existing filter fusion.  ``inplace=True`` "
+"replaces *lf*'s data with the filtered result."
+msgstr ""
+"布尔表达式通过 :func:`liteframe_eval` 进行求值，生成的单列布尔型 "
+"LiteFrame 通过 ``__getitem__`` 来过滤 *lf*，重用现有的过滤融合功能。``"
+"inplace=True`` 将 *lf* 的数据替换为过滤结果。"
+
+#: maxframe.liteframe.misc.eval.lf_query of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_query:8 of
+msgid ""
+"Boolean expression string.  Must evaluate to a single boolean column; "
+"column names resolve to :func:`~maxframe.liteframe.col` expressions."
+msgstr ""
+"布尔表达式字符串。必须求值为单个布尔列；列名解析为 :func:`~maxframe."
+"liteframe.col` 表达式。"
+
+#: maxframe.liteframe.misc.eval.lf_query:12 of
+msgid ""
+"If ``True``, replace *lf*'s underlying data with the filtered result and "
+"return ``None``.  If ``False``, return a new filtered LiteFrame."
+msgstr ""
+"如果为 ``True``，用过滤结果替换 *lf* 的底层数据并返回 ``None``。如果为 ``"
+"False``，返回一个新的过滤后的 LiteFrame。"
+
+#: maxframe.liteframe.misc.eval.lf_query:16 of
+msgid ""
+"Additional keyword arguments forwarded to :func:`liteframe_eval`, such as"
+" ``local_dict``, ``global_dict``, and ``level``."
+msgstr ""
+"转发给 :func:`liteframe_eval` 的额外关键字参数，比如 ``local_dict``、``"
+"global_dict`` 和 ``level``。"
+
+#: maxframe.liteframe.misc.eval.lf_query of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_query:19 of
+msgid ""
+"Filtered LiteFrame when ``inplace=False``; ``None`` when ``inplace=True``"
+" (the mutation is applied in place)."
+msgstr ""
+"当 ``inplace=False`` 时返回过滤后的 LiteFrame；当 ``inplace=True`` 时返回"
+" ``None``（变更在原地应用）。"
+
+#: maxframe.liteframe.misc.eval.lf_query of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_query:25 of
+msgid ":py:obj:`eval`"
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_query:26 of
+msgid "Evaluate a string expression on LiteFrame columns."
+msgstr "在 LiteFrame 列上求值字符串表达式。"
+
+#: maxframe.liteframe.misc.eval.lf_query:29 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.misc.eval.lf_query:33 of
+msgid "Filter rows where ``a`` is greater than 2:"
+msgstr "筛选 ``a`` 大于 2 的行："
+
+#: maxframe.liteframe.misc.eval.lf_query:42 of
+msgid "Compound expressions are supported:"
+msgstr "支持复合表达式："
+
+

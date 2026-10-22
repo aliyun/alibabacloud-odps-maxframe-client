@@ -15,11 +15,14 @@
 from copy import copy
 
 import numpy as np
+import pandas as pd
 import pytest
 import scipy.sparse as sps
 
 from maxframe import dataframe as md
 from maxframe.core import enter_mode
+from maxframe.liteframe.datasource.from_local import from_local_df
+from maxframe.protocol import DefaultIndexType
 from maxframe.tensor import arange, diag, full, ones, ones_like, tensor, zeros
 from maxframe.tensor.core import SparseTensor, Tensor
 from maxframe.tensor.datasource import (
@@ -283,6 +286,21 @@ def test_from_dataframe():
     tensor = from_dataframe(mdf)
     assert tensor.shape == (3, 3)
     assert np.float64 == tensor.dtype
+
+
+def test_from_liteframe():
+    raw = pd.DataFrame({"a": [0, 1, 2], "b": [3.0, 4.0, 5.0]})
+    lf = from_local_df(raw)
+    tensor = lf.to_tensor()
+    assert tensor.shape == (3, 2)
+    assert tensor.dtype == np.dtype(np.float64)
+
+
+def test_from_liteframe_with_range_columns():
+    raw = pd.DataFrame({"a": [10, 20, 30]})
+    lf = from_local_df(raw, default_index_type=DefaultIndexType.range)
+    tensor = lf.to_tensor()
+    assert tensor.shape == (3, 2)
 
 
 def test_diag():

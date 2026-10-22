@@ -20,7 +20,7 @@ from weakref import WeakKeyDictionary, WeakSet
 import numpy as np
 
 from maxframe.core.base import Base
-from maxframe.core.entity.core import Entity, EntityData
+from maxframe.core.entity.core import Entity, EntityData, get_tileable_data
 from maxframe.core.entity.executable import _ExecutableMixin
 from maxframe.core.mode import enter_mode, is_build_mode
 from maxframe.serialization.serializables import BoolField, FieldTypes, TupleField
@@ -121,7 +121,7 @@ class EntityDataModificationHandler:
 
     @staticmethod
     def _get_data(obj):
-        return obj.data if isinstance(obj, Entity) else obj
+        return get_tileable_data(obj)
 
     @enter_mode(build=True)
     def data_changed(self, old_data, new_data):

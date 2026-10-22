@@ -1,0 +1,77 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 11:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.dropna.rst:2
+msgid "maxframe.liteframe.LiteFrame.dropna"
+msgstr ""
+
+#: maxframe.liteframe.missing.drop.dropna:1 of
+msgid "Drop rows or columns with missing values."
+msgstr "删除包含缺失值的行或列。"
+
+#: maxframe.liteframe.missing.drop.dropna of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.missing.drop.dropna:3 of
+msgid "0: drop rows containing NAs. 1: not yet supported."
+msgstr "0：删除包含NA的行。1：尚未支持。"
+
+#: maxframe.liteframe.missing.drop.dropna:5 of
+msgid "\"any\": drop if any NA present. \"all\": drop only if all values are NA."
+msgstr "\"any\"：如果有任何NA则删除。\"all\"：仅当所有值都是NA时才删除。"
+
+#: maxframe.liteframe.missing.drop.dropna:7 of
+msgid "Columns to inspect for NA values (axis=0 only)."
+msgstr "检查NA值的列（仅axis=0）。"
+
+#: maxframe.liteframe.missing.drop.dropna of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.missing.drop.dropna:10 of
+msgid "LiteFrame with rows (or columns) containing missing values removed."
+msgstr "删除包含缺失值的行（或列）后的LiteFrame。"
+
+#: maxframe.liteframe.missing.drop.dropna of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.missing.drop.dropna:15 of
+msgid ":py:obj:`isna`"
+msgstr ""
+
+#: maxframe.liteframe.missing.drop.dropna:16 of
+msgid "Detect missing values."
+msgstr "检测缺失值。"
+
+#: maxframe.liteframe.missing.drop.dropna:18 of
+msgid ":py:obj:`fillna`"
+msgstr ""
+
+#: maxframe.liteframe.missing.drop.dropna:19 of
+msgid "Fill missing values."
+msgstr "填充缺失值。"
+
+#: maxframe.liteframe.missing.drop.dropna:22 of
+msgid "示例"
+msgstr ""
+

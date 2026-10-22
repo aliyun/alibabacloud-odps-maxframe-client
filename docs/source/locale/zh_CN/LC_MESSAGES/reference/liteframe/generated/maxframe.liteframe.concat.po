@@ -1,0 +1,98 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 11:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.concat.rst:2
+msgid "maxframe.liteframe.concat"
+msgstr ""
+
+#: maxframe.liteframe.merge.concat.concat:1 of
+msgid "Concatenate LiteFrame objects along a particular axis."
+msgstr "沿特定轴连接 LiteFrame 对象。"
+
+#: maxframe.liteframe.merge.concat.concat:3 of
+msgid ""
+"Stacks inputs vertically (``axis=0``) or side-by-side (``axis=1``). "
+"``None`` entries are dropped; for ``axis=0`` the union of physical "
+"columns is produced (missing columns null-filled, like "
+"``pandas.concat(..., join='outer')``); for ``axis=1`` all inputs must "
+"share identical row ``nsplits`` (LiteFrame rechunk is not yet supported),"
+" and a physical column name duplicated across inputs is rejected. Virtual"
+" range columns stay virtual when their ranges are contiguous (``axis=0``)"
+" or carried by a single input (``axis=1``); non-contiguous range columns "
+"(``axis=0``) are materialized, and a range column carried by more than "
+"one input (``axis=1``) is rejected."
+msgstr ""
+"垂直堆叠输入（``axis=0``）或并排拼接（``axis=1``）。``None`` 条目会被丢弃"
+"；对于 ``axis=0`` 生成物理列的并集（缺失列用空值填充，类似于 ``pandas."
+"concat(..., join='outer')``）；对于 ``axis=1`` 所有输入必须共享相同的行 `"
+"`nsplits``（LiteFrame 重新分块尚未支持），并且跨输入重复的物理列名会被"
+"拒绝。当虚拟范围列连续时（``axis=0``）或由单个输入承载时（``axis=1``），"
+"它们保持虚拟状态；非连续范围列（``axis=0``）会被实例化，由多个输入承载的"
+"范围列（``axis=1``）会被拒绝。"
+
+#: maxframe.liteframe.merge.concat.concat of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.merge.concat.concat:14 of
+msgid "LiteFrame objects to concatenate. ``None`` entries are silently dropped."
+msgstr "要连接的 LiteFrame 对象。``None`` 条目会静默丢弃。"
+
+#: maxframe.liteframe.merge.concat.concat:17 of
+msgid ""
+"Axis to concatenate along. ``0`` stacks rows vertically; ``1`` glues "
+"columns side-by-side."
+msgstr "连接所沿的轴。``0`` 垂直堆叠行；``1`` 并排拼接列。"
+
+#: maxframe.liteframe.merge.concat.concat of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.merge.concat.concat:21 of
+msgid ""
+"A new lazy LiteFrame containing the concatenated data. Call "
+"``.execute()`` to materialize the results."
+msgstr "包含连接数据的新懒加载 LiteFrame。调用 ``.execute()`` 来实例化结果。"
+
+#: maxframe.liteframe.merge.concat.concat of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.merge.concat.concat:27 of
+msgid ":py:obj:`merge`"
+msgstr ""
+
+#: maxframe.liteframe.merge.concat.concat:28 of
+msgid "Merge LiteFrame with another LiteFrame using a database-style join."
+msgstr "使用数据库风格的连接将 LiteFrame 与另一个 LiteFrame 合并。"
+
+#: maxframe.liteframe.merge.concat.concat:31 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.merge.concat.concat:36 of
+msgid "Stack rows vertically (``axis=0``, default):"
+msgstr "垂直堆叠行（``axis=0``，默认）："
+
+#: maxframe.liteframe.merge.concat.concat:46 of
+msgid "Glue columns side-by-side (``axis=1``):"
+msgstr "并排拼接列（``axis=1``）："
+

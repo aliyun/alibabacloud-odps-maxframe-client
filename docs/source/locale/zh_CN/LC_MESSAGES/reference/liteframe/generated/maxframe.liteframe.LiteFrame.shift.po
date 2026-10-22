@@ -1,0 +1,110 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 11:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.shift.rst:2
+msgid "maxframe.liteframe.LiteFrame.shift"
+msgstr ""
+
+#: maxframe.liteframe.window.shift.shift:1 of
+msgid "Shift rows by ``periods`` positions."
+msgstr "按 ``periods`` 位置移动行。"
+
+#: maxframe.liteframe.window.shift.shift:3 of
+msgid ""
+"Positive ``periods`` shifts data forward (down); negative shifts backward"
+" (up).  Positions introduced by the shift are filled with ``fill_value`` "
+"(default: null)."
+msgstr ""
+"正 ``periods`` 将数据向前（向下）移动；负值向后（向上）移动。移动引入的"
+"位置用 ``fill_value`` 填充（默认：null）。"
+
+#: maxframe.liteframe.window.shift.shift of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.window.shift.shift:7 of
+msgid "Number of positions to shift.  Positive = forward, negative = backward."
+msgstr "要移动的位置数。正值=向前，负值=向后。"
+
+#: maxframe.liteframe.window.shift.shift:9 of
+msgid "Value to fill positions introduced by shifting.  None produces null."
+msgstr "用于填充移动引入位置的值。None 产生 null。"
+
+#: maxframe.liteframe.window.shift.shift:11 of
+msgid ""
+"Column(s) to shift.  If None, all columns are shifted. Non-selected "
+"columns are passed through unchanged."
+msgstr "要移动的列。如果为 None，则移动所有列。未选择的列保持不变。"
+
+#: maxframe.liteframe.window.shift.shift of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.window.shift.shift:15 of
+msgid ""
+"Shifted LiteFrame with the same shape and columns. Output dtypes depend "
+"on the input dtype and ``fill_value``: when ``fill_value`` is None (the "
+"default) input dtypes are preserved; when a ``fill_value`` is supplied a "
+"column may be widened (e.g. an integer column with a float fill becomes "
+"Float64, a string fill becomes String). Boolean columns coerce numeric "
+"fills to bool; decimal columns derive precision from the fill value; a "
+"string fill on a boolean column is rejected at plan time. Non-selected "
+"(passthrough) columns keep their input dtypes."
+msgstr ""
+"具有相同形状和列的移动后 LiteFrame。输出 dtypes 取决于输入 dtype 和 ``"
+"fill_value``：当 ``fill_value`` 为 None（默认值）时，保留输入 dtypes；当"
+"提供 ``fill_value`` 时，列可能会变宽（例如，带有浮点填充的整数列变为 "
+"Float64，字符串填充变为 String）。布尔列将数值填充强制转换为 bool；十进制"
+"列从填充值获取精度；在布尔列上使用字符串填充会在计划时被拒绝。未选择的（"
+"传递）列保持其输入 dtypes。"
+
+#: maxframe.liteframe.window.shift.shift of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.window.shift.shift:28 of
+msgid ":py:obj:`diff`"
+msgstr ""
+
+#: maxframe.liteframe.window.shift.shift:29 of
+msgid "Compute the difference between consecutive rows."
+msgstr "计算连续行之间的差异。"
+
+#: maxframe.liteframe.window.shift.shift:31 of
+msgid ":py:obj:`pct_change`"
+msgstr ""
+
+#: maxframe.liteframe.window.shift.shift:32 of
+msgid "Compute percent change over given periods."
+msgstr "计算给定期间的百分比变化。"
+
+#: maxframe.liteframe.window.shift.shift:34 of
+msgid ":py:obj:`rolling`"
+msgstr ""
+
+#: maxframe.liteframe.window.shift.shift:35 of
+msgid "Provide rolling-window calculations."
+msgstr "提供滚动窗口计算。"
+
+#: maxframe.liteframe.window.shift.shift:38 of
+msgid "示例"
+msgstr ""
+

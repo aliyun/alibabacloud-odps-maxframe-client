@@ -140,7 +140,7 @@ class DataFrameApplyChunk(DataFrameOperator, DataFrameOperatorMixin):
         # if not dtypes and not skip_infer:
         try:
             packed_func = get_packed_func(df_or_series, self.func, *args, **kwargs)
-        except:
+        except Exception:
             if not skip_infer:
                 raise
             packed_func = self.func

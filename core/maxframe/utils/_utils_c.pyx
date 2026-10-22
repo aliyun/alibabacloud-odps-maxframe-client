@@ -232,7 +232,7 @@ cdef class Tokenizer(TypeDispatcher):
 
             try:
                 return cloudpickle.dumps(obj)
-            except:
+            except Exception:
                 raise TypeError(f'Cannot generate token for {obj}, type: {type(obj)}') from None
 
 
@@ -281,7 +281,7 @@ cdef inline tuple tokenize_numpy(ob):
         except TypeError:
             try:
                 data = mmh_hash_bytes(pickle.dumps(ob, pickle.HIGHEST_PROTOCOL))
-            except:
+            except Exception:
                 # nothing can do, generate random id
                 data = new_random_id(32).hex().encode()
     else:
@@ -303,11 +303,11 @@ cdef list tokenize_type(ob):
     try:
         pickle.dumps(ob)
         return [ob]
-    except:
+    except Exception:
         pass
     try:
         return [cloudpickle.dumps(ob)]
-    except:
+    except Exception:
         raise TypeError(f'Cannot generate token for {ob}, type: {type(ob)}') from None
 
 
@@ -396,11 +396,11 @@ def tokenize_function(ob):
                 return iterative_tokenize([pickle.dumps(ob, protocol=0), id(ob)])
             else:
                 return pickle.dumps(ob, protocol=0)
-        except:
+        except Exception:
             pass
         try:
             return cloudpickle.dumps(ob, protocol=0)
-        except:
+        except Exception:
             return str(ob)
 
 

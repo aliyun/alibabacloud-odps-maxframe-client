@@ -35,6 +35,7 @@ try:
 except ImportError:  # pragma: no cover
     wrap_arrow_dtype = None
 
+from maxframe.utils.datatypes import is_blob_dtype
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -56,6 +57,9 @@ def to_arrow_dtypes(dtypes):
 
     new_dtypes = {}
     for col, dtype in dtypes.items():
+        if is_blob_dtype(dtype):
+            new_dtypes[col] = dtype
+            continue
         try:
             pa_type = pa.from_numpy_dtype(dtype)
             new_dtypes[col] = ArrowDtype(pa_type)

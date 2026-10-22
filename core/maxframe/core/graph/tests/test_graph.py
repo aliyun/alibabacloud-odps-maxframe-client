@@ -203,3 +203,136 @@ def test_dag():
 #         graph16.result_tileables[0].op.logic_key
 #         == graph17.result_tileables[0].op.logic_key
 #     )
+
+
+# ---------------------------------------------------------------------------
+# DAG.acyclic_color — cycle-aware acyclic coloring (hint-agnostic)
+# ---------------------------------------------------------------------------
+
+
+def _build_dag(edges, nodes):
+    dag = DAG()
+    for n in nodes:
+        dag.add_node(n)
+    for u, v in edges:
+        dag.add_edge(u, v)
+    return dag
+
+
+def _color_with_attr(dag, attr):
+    """Color with a simple same-attr mergeability predicate."""
+    merges = []
+
+    def can_be_grouped(new, rep):
+        return attr[new] == attr[rep]
+
+    def merge_nodes_hook(new, rep):
+        merges.append((new, rep))
+
+    color_of = dag.acyclic_color(can_be_grouped, merge_nodes_hook)
+    return color_of, merges
+
+
+def _quotient_colors(color_of, edges):
+    """Return set of (producer_color, consumer_color) for cross-color edges."""
+    return {(color_of[u], color_of[v]) for u, v in edges if color_of[u] != color_of[v]}
+
+
+def _is_acyclic(colors, quotient_edges):
+    import collections
+
+    adj = collections.defaultdict(list)
+    indeg = collections.Counter()
+    nodes = set(colors)
+    for a, b in quotient_edges:
+        adj[a].append(b)
+        indeg[b] += 1
+    queue = [c for c in nodes if indeg[c] == 0]
+    seen = 0
+    while queue:
+        n = queue.pop()
+        seen += 1
+        for m in adj[n]:
+            indeg[m] -= 1
+            if indeg[m] == 0:
+                queue.append(m)
+    return seen == len(nodes)
+
+
+def test_acyclic_color_single_group_chain():
+    """A mergeable chain f2(f1(col)) collapses to one color."""
+    dag = _build_dag([("f1", "f2")], ["f1", "f2"])
+    color_of, merges = _color_with_attr(dag, {"f1": "A", "f2": "A"})
+    assert len(set(color_of.values())) == 1
+    assert ("f2", "f1") in merges
+
+
+def test_acyclic_color_incompatible_split():
+    """Two independent nodes with incompatible attrs get two colors; no merge."""
+    dag = _build_dag([], ["a", "b"])
+    color_of, merges = _color_with_attr(dag, {"a": "A", "b": "B"})
+    assert len(set(color_of.values())) == 2
+    assert merges == []
+
+
+def test_acyclic_color_cross_depth_pack():
+    """u(A) consumes v(B); w(A) is independent -> u packs with w (acyclic)."""
+    dag = _build_dag([("v", "u")], ["v", "w", "u"])
+    color_of, merges = _color_with_attr(dag, {"v": "B", "w": "A", "u": "A"})
+    assert color_of["u"] == color_of["w"]
+    assert color_of["v"] != color_of["w"]
+    assert len(set(color_of.values())) == 2
+    assert ("u", "w") in merges
+
+
+def test_acyclic_color_rejects_cycle():
+    """Cross-dependency diamond: pure 2-coloring would cycle; coloring avoids it.
+
+    Ua(G), Ub(I) leaves; Uc(I), Ud(G) each consume both. Pure coloring gives
+    {Ua,Ud},{Ub,Uc} which forms a quotient cycle. Cycle-aware coloring must
+    keep the quotient acyclic (using >=3 colors).
+    """
+    edges = [("Ua", "Uc"), ("Ub", "Uc"), ("Ua", "Ud"), ("Ub", "Ud")]
+    dag = _build_dag(edges, ["Ua", "Ub", "Uc", "Ud"])
+    attr = {"Ua": "G", "Ub": "I", "Uc": "I", "Ud": "G"}
+    color_of, _ = _color_with_attr(dag, attr)
+    # The pure 2-coloring {Ua,Ud},{Ub,Uc} is the only attr-respecting 2-coloring
+    # and it cycles, so we need at least 3 colors.
+    assert len(set(color_of.values())) >= 3
+    qe = _quotient_colors(color_of, edges)
+    assert _is_acyclic(set(color_of.values()), qe)
+
+
+def test_acyclic_color_merge_hook_never_on_new_group():
+    """merge_nodes_hook fires exactly once per successful join, never on opens."""
+    dag = _build_dag([("a", "b"), ("c", "d")], ["a", "b", "c", "d"])
+    # a,b,c mergeable (A) -> single group (2 joins, whichever is the rep);
+    # d is incompatible (B) -> opens its own group, never appears as `new`.
+    attr = {"a": "A", "b": "A", "c": "A", "d": "B"}
+    color_of, merges = _color_with_attr(dag, attr)
+    assert color_of["a"] == color_of["b"] == color_of["c"]
+    assert color_of["d"] != color_of["a"]
+    # exactly two successful joins (a,b,c in one group)
+    assert len(merges) == 2
+    # d opens its own group (incompatible) -> never passed as `new` to the hook
+    assert all(new != "d" for new, _ in merges)
+
+
+def test_acyclic_color_topological_respect():
+    """A consumer's color rep must not be its own descendant (no join-into-desc)."""
+    # chain a->b->c all mergeable -> all one color (inlined), single group
+    dag = _build_dag([("a", "b"), ("b", "c")], ["a", "b", "c"])
+    color_of, _ = _color_with_attr(dag, {"a": "A", "b": "A", "c": "A"})
+    assert len(set(color_of.values())) == 1
+
+
+def test_acyclic_color_diamond_mergeable_one_group():
+    """g(f(a), f(b)) with f,g all mergeable -> single group, no concat needed."""
+    # f(a), f(b) both consume 'a'/'b' leaves; g consumes f(a), f(b)
+    dag = _build_dag(
+        [("a", "fa"), ("b", "fb"), ("fa", "g"), ("fb", "g")],
+        ["a", "b", "fa", "fb", "g"],
+    )
+    attr = {n: "A" for n in ["a", "b", "fa", "fb", "g"]}
+    color_of, _ = _color_with_attr(dag, attr)
+    assert len(set(color_of.values())) == 1

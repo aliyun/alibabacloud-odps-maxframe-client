@@ -1,0 +1,119 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.transform.rst:2
+msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.transform"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.groupby_transform:1 of
+msgid "GroupBy.transform() -- per-group column transform."
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.groupby_transform:3 of
+msgid ""
+"Applies ``func`` to each group independently and returns a LiteFrame with"
+" the same row count as the input (transform semantics).  The output row "
+"order follows reducer/hash-partition order and is not aligned with the "
+"input frame."
+msgstr ""
+"独立地将 ``func`` 应用于每个组，并返回与输入具有相同行数的 LiteFrame（"
+"变换语义）。输出行顺序遵循 reducer/hash-partition 顺序，与输入帧不对齐。"
+
+#: maxframe.liteframe.functional.transform.groupby_transform of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.groupby_transform:8 of
+msgid ""
+"Function receiving a per-group column (Series) and returning a "
+"transformed column of the same length.  ``func`` is called once per "
+"(group, column) pair with a single-column Series, not a whole-group "
+"DataFrame.  Use ``lambda g: g - g.mean()``, not ``g['col'] - "
+"g['col'].mean()``.  If ``func`` is a class, it is instantiated once per "
+"group, ``__call__`` is invoked per (group, column), and ``close()`` (if "
+"defined) is always called at the end of each group."
+msgstr ""
+"接收每组列（Series）并返回相同长度的转换列的函数。``func`` 每个（组，列）"
+"对调用一次，传入单列 Series，而不是整个组的 DataFrame。使用 ``lambda g: g"
+" - g.mean()``，而不是 ``g['col'] - g['col'].mean()``。如果 ``func`` 是"
+"一个类，则每个组实例化一次，每个（组，列）调用 ``__call__``，并且 ``close"
+"()``（如果定义了）总是在每个组结束时调用。"
+
+#: maxframe.liteframe.functional.transform.groupby_transform:18 of
+msgid "Expected output dtypes."
+msgstr "期望的输出数据类型。"
+
+#: maxframe.liteframe.functional.transform.groupby_transform:20 of
+msgid "If True, skip dtype inference."
+msgstr "如果为 True，则跳过数据类型推断。"
+
+#: maxframe.liteframe.functional.transform.groupby_transform:22 of
+msgid "Frame type passed to ``func``."
+msgstr "传递给 ``func`` 的帧类型。"
+
+#: maxframe.liteframe.functional.transform.groupby_transform:24 of
+msgid "Extra positional arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外位置参数。"
+
+#: maxframe.liteframe.functional.transform.groupby_transform:26 of
+msgid "Extra keyword arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外关键字参数。"
+
+#: maxframe.liteframe.functional.transform.groupby_transform of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.groupby_transform:28 of
+msgid ""
+"Lazy LiteFrame with the same row count as the input, where each value is "
+"the per-group transform result.  Call ``.execute()`` to materialize."
+msgstr ""
+"与输入具有相同行数的惰性 LiteFrame，其中每个值都是每组变换结果。调用 ``."
+"execute()`` 来实例化。"
+
+#: maxframe.liteframe.functional.transform.groupby_transform of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.groupby_transform:35 of
+msgid ":py:obj:`groupby_apply`"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.groupby_transform:36 of
+msgid "Apply a function to each group as a whole frame."
+msgstr "将函数应用于每个组作为整个帧。"
+
+#: maxframe.liteframe.functional.transform.groupby_transform:38 of
+msgid ":py:obj:`groupby_transform_chunk`"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.groupby_transform:39 of
+msgid "Per-group-chunk transform."
+msgstr "每组块变换。"
+
+#: maxframe.liteframe.functional.transform.groupby_transform:42 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.groupby_transform:46 of
+msgid "Center each value by its group mean (row count preserved):"
+msgstr "通过其组均值居中每个值（保留行数）："
+

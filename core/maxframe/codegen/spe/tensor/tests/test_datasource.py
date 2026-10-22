@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import numpy as np
+import pandas as pd
 import pytest
 
 from maxframe import tensor as mt
@@ -19,6 +21,7 @@ from maxframe.codegen.spe.core import SPECodeContext
 from maxframe.codegen.spe.tensor.datasource import (
     TensorArangeAdapter,
     TensorEmptyAdapter,
+    TensorFromLiteFrameAdapter,
     TensorFullAdapter,
     TensorOnesZerosAdapter,
     TensorOnesZerosLikeAdapter,
@@ -97,3 +100,20 @@ def test_ones_zeros_like(method):
         f"var_1 = np.{method}(var_0, dtype=const_0, order='F', shape=(2, 3))"
     ]
     assert results == expected_results
+
+
+def test_tensor_from_liteframe_empty_visible_columns():
+    """C13: an explicit empty visible_columns list yields a zero-width tensor
+    (n, 0) instead of converting every column (n, m)."""
+    df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
+    # Explicit [] -> zero columns selected -> shape (3, 0).
+    arr = TensorFromLiteFrameAdapter._from_liteframe(
+        df, visible_columns=[], dtype=np.int64, range_columns=None
+    )
+    assert arr.shape == (3, 0)
+
+    # None -> all columns selected (unchanged) -> shape (3, 2).
+    arr = TensorFromLiteFrameAdapter._from_liteframe(
+        df, visible_columns=None, dtype=np.int64, range_columns=None
+    )
+    assert arr.shape == (3, 2)

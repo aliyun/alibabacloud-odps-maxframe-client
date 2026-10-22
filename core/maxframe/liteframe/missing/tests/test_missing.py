@@ -32,9 +32,9 @@ from maxframe.liteframe.expressions import (
     NamedExpr,
 )
 from maxframe.liteframe.initializer import LiteFrame as LF
+from maxframe.liteframe.operators.datasource import LiteFrameReadODPSTable
 from maxframe.liteframe.operators.filter import LiteFrameFilter
 from maxframe.liteframe.operators.project import LiteFrameProjection
-from maxframe.liteframe.operators.source import LiteFrameReadODPSTable
 from maxframe.protocol import DefaultIndexType
 from maxframe.utils import wrap_arrow_dtype
 
@@ -249,8 +249,6 @@ def test_dropna_empty_subset(how):
 
 
 def test_replace_scalar():
-    from maxframe.liteframe.expressions import LiteFrameEq, LiteFrameWhere
-
     lf = LF({"a": [1, 2, 3], "b": [4, 5, 6]})
     result = lf.replace(2, 99)
     assert isinstance(result, LiteFrame)
@@ -287,14 +285,13 @@ def test_replace_none_falls_back_to_fillna():
     assert isinstance(proj.expr, LiteFrameFillNA)
 
 
-def test_isna_on_range_column_materializes():
-    """isna() on a frame with a range index column should set
-    materialize_range_cols=True so the executor materializes the
-    virtual __index__ column before generating IsNA expressions."""
+def test_isna_on_range_column_non_affine():
+    """isna() on a frame with a range index column should produce
+    range_analysis marking the range column as non-affine
+    (is_affine=False, references_range=True)."""
     dtypes = pd.Series(
         {
             "a": wrap_arrow_dtype(pa.int64()),
-            RANGE_COL_NAME: wrap_arrow_dtype(pa.int64()),
         }
     )
     op_src = LiteFrameReadODPSTable(
@@ -302,22 +299,24 @@ def test_isna_on_range_column_materializes():
         dtypes=dtypes,
         default_index_type=DefaultIndexType.range,
     )
-    lf = op_src._new_liteframe_from_source(shape=(10, 2))
+    lf = op_src._new_liteframe_from_source(shape=(10, 1))
 
     result = lf.isna()
     op = result.data.op
     assert isinstance(op, LiteFrameProjection)
-    assert op.materialize_range_cols is True
+    assert op.range_analysis is not None
+    idx_result = op.range_analysis[RANGE_COL_NAME]
+    assert idx_result.is_affine is False
+    assert idx_result.references_range is True
 
 
-def test_replace_on_range_column_materializes():
-    """replace() on a frame with a range index column should set
-    materialize_range_cols=True so the executor materializes the
-    virtual __index__ column before generating replace expressions."""
+def test_replace_on_range_column_non_affine():
+    """replace() on a frame with a range index column should produce
+    range_analysis marking the range column as non-affine
+    (is_affine=False, references_range=True)."""
     dtypes = pd.Series(
         {
             "a": wrap_arrow_dtype(pa.int64()),
-            RANGE_COL_NAME: wrap_arrow_dtype(pa.int64()),
         }
     )
     op_src = LiteFrameReadODPSTable(
@@ -325,12 +324,15 @@ def test_replace_on_range_column_materializes():
         dtypes=dtypes,
         default_index_type=DefaultIndexType.range,
     )
-    lf = op_src._new_liteframe_from_source(shape=(10, 2))
+    lf = op_src._new_liteframe_from_source(shape=(10, 1))
 
     result = lf.replace(1, 99)
     op = result.data.op
     assert isinstance(op, LiteFrameProjection)
-    assert op.materialize_range_cols is True
+    assert op.range_analysis is not None
+    idx_result = op.range_analysis[RANGE_COL_NAME]
+    assert idx_result.is_affine is False
+    assert idx_result.references_range is True
 
 
 # ---------------------------------------------------------------------------

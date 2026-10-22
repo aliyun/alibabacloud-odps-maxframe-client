@@ -595,6 +595,24 @@ class HaloTableArrowWriter:
 
 class HaloTableIO(ODPSTableIO):
     @staticmethod
+    def get_halo_client(odps_entry, table):
+        """Create a v1 Storage API client for the given table.
+
+        This is the same client used internally by :meth:`open_reader`
+        and :meth:`open_writer`, exposed so that callers can perform
+        v1-specific operations (e.g. blob read/write) that are not
+        covered by the reader/writer context managers.
+        """
+        with sync_pyodps_options():
+            client = StorageApiArrowClient(
+                odps_entry,
+                table,
+                rest_endpoint=get_storage_api_endpoint(),
+                quota_name=options.tunnel_quota_name,
+            )
+        return client
+
+    @staticmethod
     def _convert_partitions(partitions: PartitionsType) -> Optional[List[str]]:
         if partitions is None:
             return []
@@ -627,12 +645,7 @@ class HaloTableIO(ODPSTableIO):
         with sync_pyodps_options():
             table = self._odps.get_table(full_table_name)
 
-        client = StorageApiArrowClient(
-            self._odps,
-            table,
-            rest_endpoint=get_storage_api_endpoint(),
-            quota_name=options.tunnel_quota_name,
-        )
+        client = self.get_halo_client(self._odps, table)
 
         split_option = SplitOptions.SplitMode.SIZE
         if start is not None or stop is not None:
@@ -716,12 +729,7 @@ class HaloTableIO(ODPSTableIO):
         with sync_pyodps_options():
             table = self._odps.get_table(full_table_name)
 
-        client = StorageApiArrowClient(
-            self._odps,
-            table,
-            rest_endpoint=get_storage_api_endpoint(),
-            quota_name=options.tunnel_quota_name,
-        )
+        client = self.get_halo_client(self._odps, table)
 
         part_strs = self._convert_partitions(partition)
         part_str = part_strs[0] if part_strs else None

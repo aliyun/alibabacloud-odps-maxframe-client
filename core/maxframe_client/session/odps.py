@@ -15,6 +15,7 @@
 import abc
 import asyncio
 import copy
+import io
 import logging
 import sys
 import time
@@ -26,6 +27,7 @@ from urllib.parse import urlparse
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 from odps import ODPS
 from odps import options as odps_options
 from odps.config import option_context as odps_option_context
@@ -51,9 +53,13 @@ from maxframe.io.objects import get_object_io_handler
 from maxframe.io.odpsio import (
     ODPSTableIO,
     ODPSVolumeWriter,
+    arrow_schema_to_odps_schema,
     pandas_to_arrow,
     pandas_to_odps_schema,
 )
+from maxframe.io.odpsio.schema import encode_blob_table_comment
+from maxframe.lib import wrapped_pickle as pickle
+from maxframe.lib.dtypes_extension.blob import ArrowBlobType
 from maxframe.protocol import (
     ConstantResultInfo,
     DagInfo,
@@ -64,6 +70,7 @@ from maxframe.protocol import (
     ODPSVolumeResultInfo,
     ResultInfo,
     SessionInfo,
+    TensorTableMeta,
 )
 from maxframe.session import (
     AbstractSession,
@@ -73,14 +80,17 @@ from maxframe.session import (
     Progress,
 )
 from maxframe.sperunner import SPEDagRunner
+from maxframe.tensor.core import TENSOR_TYPE
 from maxframe.tensor.datasource import ArrayDataSource
 from maxframe.typing_ import TileableType
 from maxframe.utils import (
     ToThreadMixin,
     build_session_volume_name,
     build_temp_table_name,
+    config_odps_default_options,
     estimate_pandas_size,
     get_default_table_properties,
+    get_storage_api_endpoint,
     no_default,
     str_to_bool,
     sync_pyodps_options,
@@ -96,7 +106,15 @@ from maxframe_client.session.consts import (
 )
 from maxframe_client.session.graph import gen_submit_tileable_graph
 
+try:
+    from odps.maxstorage import MaxStorageClient
+except ImportError:
+    MaxStorageClient = None
+
 logger = logging.getLogger(__name__)
+
+_BLOB_WRITE_BATCH_ROWS = 1000
+_BLOB_WRITE_BATCH_BYTES = 16 * 1024 * 1024
 
 
 class MaxFrameServiceCaller(metaclass=abc.ABCMeta):
@@ -372,6 +390,213 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
         io_handler().write_object(writer, t, data)
         return build_fetch(t).data
 
+    def _upload_and_get_blob_table_read_tileable(
+        self, t: TileableType, data: Any
+    ) -> Optional[TileableType]:
+        """Upload tensor/object data to a blob table and return a fetch tileable."""
+        if MaxStorageClient is None:
+            raise NotImplementedError(
+                "Blob table upload requires odps.maxstorage. "
+                "You need to install PyODPS >= 0.13.1 to enable this."
+            )
+
+        table_name = build_temp_table_name(self.session_id, t.key)
+        sql_hints = dict(options.sql.settings or dict())
+        sql_hints["odps.sql.type.system.odps2"] = True
+        sql_hints["odps.table.append2.enable"] = True
+        config_odps_default_options()
+
+        # Blob columns require append delta table format.
+        # Merge user/default properties first, then force the required
+        # blob-table properties so they cannot be silently overridden.
+        table_properties = (
+            options.session.temp_table_properties or get_default_table_properties()
+        ).copy()
+        table_properties.update(
+            {
+                "table.format.version": "2",
+                "transactional": "true",
+            }
+        )
+
+        if isinstance(t, TENSOR_TYPE):
+            ndim = data.ndim
+            # Treat the entire array as a single chunk for encoding
+            if t.nsplits is None:
+                t.nsplits = tuple((s,) for s in data.shape)
+            nsplits = t.nsplits
+
+            # Build schema: idx_0, ..., idx_d, format, content
+            arrow_fields = []
+            for i in range(ndim):
+                arrow_fields.append(pa.field(f"idx_{i}", pa.int64()))
+            arrow_fields.append(pa.field("format", pa.string()))
+            arrow_fields.append(pa.field("content", ArrowBlobType()))
+
+            arrow_schema = pa.schema(arrow_fields)
+            odps_schema = arrow_schema_to_odps_schema(arrow_schema)
+
+            comment = encode_blob_table_comment(
+                {
+                    "dtype": str(data.dtype),
+                    "ndim": ndim,
+                    "shape": list(data.shape),
+                    "nsplits": [list(sp) for sp in nsplits],
+                }
+            )
+
+            self._odps_entry.delete_table(table_name, if_exists=True, hints=sql_hints)
+            table = self._odps_entry.create_table(
+                table_name,
+                odps_schema,
+                comment=comment,
+                lifecycle=options.session.temp_table_lifecycle,
+                if_not_exists=True,
+                hints=sql_hints,
+                table_properties=table_properties,
+            )
+
+            use_npz = data.dtype != object and not data.dtype.names
+
+            # Serialize chunks
+            idx_arrays = {f"idx_{i}": [] for i in range(ndim)}
+            format_array = []
+            blob_byte_arrays = []
+
+            for chunk_idx in np.ndindex(*[len(sp) for sp in nsplits]):
+                slices = []
+                for dim, idx in enumerate(chunk_idx):
+                    start = sum(nsplits[dim][:idx])
+                    end = start + nsplits[dim][idx]
+                    slices.append(slice(start, end))
+                chunk_data = data[tuple(slices)]
+                buf = io.BytesIO()
+                if use_npz:
+                    np.savez(buf, data=chunk_data, allow_pickle=False)
+                    fmt = "npz"
+                else:
+                    pickle.dump(chunk_data, buf)
+                    fmt = "pickle"
+                blob_byte_arrays.append(buf.getvalue())
+                for i in range(ndim):
+                    idx_arrays[f"idx_{i}"].append(int(chunk_idx[i]))
+                format_array.append(fmt)
+
+            self._write_blob_table(
+                self._odps_entry,
+                table,
+                blob_byte_arrays,
+                idx_arrays,
+                format_array,
+                ndim,
+            )
+        else:
+            # Object type: single row with format + content
+            arrow_fields = [
+                pa.field("format", pa.string()),
+                pa.field("content", ArrowBlobType()),
+            ]
+            arrow_schema = pa.schema(arrow_fields)
+            odps_schema = arrow_schema_to_odps_schema(arrow_schema)
+
+            self._odps_entry.delete_table(table_name, if_exists=True, hints=sql_hints)
+            self._odps_entry.create_table(
+                table_name,
+                odps_schema,
+                lifecycle=options.session.temp_table_lifecycle,
+                if_not_exists=True,
+                hints=sql_hints,
+                table_properties=table_properties,
+            )
+
+            buf = io.BytesIO()
+            pickle.dump(data, buf)
+            pickled_bytes = buf.getvalue()
+
+            table = self._odps_entry.get_table(table_name)
+            self._write_blob_table(
+                self._odps_entry, table, [pickled_bytes], {}, ["pickle"], 0
+            )
+
+        return build_fetch(t).data
+
+    @staticmethod
+    def _write_blob_table(
+        odps_entry, table, blob_bytes_list, idx_arrays, format_array, ndim
+    ):
+        """Upload blobs and write rows in a single odps.maxstorage session.
+
+        With ``auto_upload_blobs=True`` the writer auto-uploads
+        blob cells and replaces them with references, so raw blob bytes
+        go directly into the content column.
+
+        Rows are accumulated into ``RecordBatch`` slices bounded by both
+        ``_BLOB_WRITE_BATCH_ROWS`` and ``_BLOB_WRITE_BATCH_BYTES`` so that
+        only one batch's worth of blob bytes is materialized in Arrow at
+        a time. This avoids a second full-payload copy on top of the
+        caller's ``blob_bytes_list`` even when there are few rows with
+        large blobs.
+        """
+        # Preserve the storage-api endpoint routing invariant used
+        # elsewhere in the repo (tableio/executors/resource): resolve
+        # ODPS_STORAGE_API_ENDPOINT / MAX_STORAGE_DATA_PROXY_CONF and
+        # hand it to the client as the tunnel endpoint.
+        client = MaxStorageClient(
+            odps_entry, tunnel_endpoint=get_storage_api_endpoint()
+        )
+        write_session = client.create_table_write_session(table)
+
+        stream_id = "stream-1"
+        stream_version = 1
+        writer = write_session.open_arrow_writer(
+            stream_id,
+            stream_version,
+            auto_upload_blobs=True,
+        )
+
+        total_rows = len(blob_bytes_list)
+        if ndim > 0:
+            col_names = [f"idx_{i}" for i in range(ndim)] + ["format", "content"]
+        else:
+            col_names = ["format", "content"]
+
+        try:
+            start = 0
+            while start < total_rows:
+                # Accumulate rows until either the row-count or the
+                # cumulative blob-byte cap is reached, so Arrow residency
+                # stays bounded regardless of blob sizes.
+                end = start
+                batch_bytes = 0
+                while end < total_rows:
+                    if end > start and (
+                        end - start >= _BLOB_WRITE_BATCH_ROWS
+                        or batch_bytes + len(blob_bytes_list[end])
+                        > _BLOB_WRITE_BATCH_BYTES
+                    ):
+                        break
+                    batch_bytes += len(blob_bytes_list[end])
+                    end += 1
+                arrays = []
+                if ndim > 0:
+                    for i in range(ndim):
+                        arrays.append(
+                            pa.array(idx_arrays[f"idx_{i}"][start:end], type=pa.int64())
+                        )
+                arrays.append(pa.array(format_array[start:end], type=pa.string()))
+                arrays.append(pa.array(blob_bytes_list[start:end], type=pa.binary()))
+                batch = pa.RecordBatch.from_arrays(arrays, names=col_names)
+                writer.write_batch(batch)
+                start = end
+            writer.flush()
+        finally:
+            writer.close()
+
+        write_session.commit(
+            stream_ids=[stream_id],
+            stream_versions=[stream_version],
+        )
+
     @enter_mode(kernel=True, build=True)
     def _get_local_data(self, t: TileableType) -> Any:
         if isinstance(t.op, (ArrayDataSource, PandasDataSourceOperator)):
@@ -390,15 +615,17 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             return src_info.data
         return no_default
 
+    @sync_pyodps_options
     def _upload_and_get_read_tileable(self, t: TileableType) -> Optional[TileableType]:
         local_data = self._get_local_data(t)
         if local_data is no_default:
             return
-        with sync_pyodps_options():
-            if isinstance(t, DATAFRAME_TYPE + SERIES_TYPE + INDEX_TYPE):
-                return self._upload_and_get_table_read_tileable(t, local_data)
-            else:
-                return self._upload_and_get_vol_read_tileable(t, local_data)
+        if isinstance(t, DATAFRAME_TYPE + SERIES_TYPE + INDEX_TYPE):
+            return self._upload_and_get_table_read_tileable(t, local_data)
+        elif bool(options.object_cache_url):
+            return self._upload_and_get_vol_read_tileable(t, local_data)
+        else:
+            return self._upload_and_get_blob_table_read_tileable(t, local_data)
 
     @enter_mode(kernel=True, build=True)
     def _scan_and_replace_local_sources(
@@ -444,9 +671,26 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
                 infos[key] = ODPSTableResultInfo(full_table_name=t.op.table_name)
             else:
                 if isinstance(t.op, Fetch):
-                    infos[key] = ODPSVolumeResultInfo(
-                        volume_name=vol_name, volume_path=t.key
-                    )
+                    if bool(options.object_cache_url):
+                        infos[key] = ODPSVolumeResultInfo(
+                            volume_name=vol_name, volume_path=t.key
+                        )
+                    else:
+                        # Blob table path: create ODPSTableResultInfo
+                        table_name = build_temp_table_name(self.session_id, t.key)
+                        if isinstance(t, TENSOR_TYPE):
+                            table_meta = TensorTableMeta(
+                                table_name=table_name,
+                                dtype=str(t.dtype),
+                                ndim=t.ndim,
+                                shape=list(t.shape),
+                                nsplits=[list(sp) for sp in t.nsplits],
+                            )
+                            infos[key] = ODPSTableResultInfo(
+                                full_table_name=table_name, table_meta=table_meta
+                            )
+                        else:
+                            infos[key] = ODPSTableResultInfo(full_table_name=table_name)
                 elif t.inputs and isinstance(t.inputs[0].op, DataFrameReadODPSTable):
                     t = t.inputs[0]
                     infos[key] = ODPSTableResultInfo(full_table_name=t.op.table_name)
@@ -472,7 +716,7 @@ class MaxFrameSession(ToThreadMixin, IsolatedAsyncSession):
             try:
                 if old_item != new_item:
                     update[k] = new_item
-            except:  # noqa: E722  # nosec  # pylint: disable=bare-except
+            except Exception:  # nosec
                 update[k] = new_item
         self._last_settings = copy.deepcopy(new_settings)
         return update

@@ -36,7 +36,7 @@ def _get_gcc_version():
     gcc_executable = os.getenv("CC", "gcc")
     try:
         proc = subprocess.run([gcc_executable, "--version"], capture_output=True)
-    except:
+    except OSError:
         return None
 
     gcc_ver_pattern = re.search(r"([\d\.]+)", proc.stdout.decode(), flags=re.I)
@@ -45,7 +45,23 @@ def _get_gcc_version():
     return parse_version(gcc_ver_pattern.group(1)).release
 
 
-def cythonize_all_pyx(repo_root, source_to_ext_include=None):
+def cythonize_all_pyx(
+    repo_root, source_to_ext_include=None, extra_cython_include_path=None
+):
+    """Cythonize all .pyx files under *repo_root*.
+
+    Parameters
+    ----------
+    repo_root : str
+        Root directory to scan for .pyx files.
+    source_to_ext_include : dict, optional
+        Maps ``"path/to/module.pyx"`` to ``[[include_dirs], [extra_sources]]``
+        for the C compiler.
+    extra_cython_include_path : list of str, optional
+        Extra directories for Cython's ``.pxd`` resolution (passed to
+        ``cythonize(include_path=...)``).  Needed when a .pyx cimports
+        declarations from another package's source tree.
+    """
     import numpy as np
     from Cython.Build import cythonize
 
@@ -89,7 +105,7 @@ def cythonize_all_pyx(repo_root, source_to_ext_include=None):
             gcc_loc = shutil.which("gcc")
             try:
                 gcc_loc = os.readlink(gcc_loc) if gcc_loc else None
-            except:
+            except OSError:
                 pass
 
             if gcc_ver:
@@ -141,6 +157,8 @@ def cythonize_all_pyx(repo_root, source_to_ext_include=None):
             )
 
     cy_extensions = list(extensions_dict.values())
+    if extra_cython_include_path:
+        cythonize_kw["include_path"] = ["."] + list(extra_cython_include_path)
     return cythonize(cy_extensions, **cythonize_kw)
 
 

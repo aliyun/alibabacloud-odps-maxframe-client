@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
+
 from maxframe.liteframe.core import LiteFrame
 from maxframe.liteframe.groupby.core import LiteFrameGroupBy
 from maxframe.liteframe.initializer import LiteFrame as LF
-from maxframe.liteframe.operators.agg import LiteFrameAgg
+from maxframe.liteframe.operators.reduction import LiteFrameAgg
 
 
 def test_groupby_returns_api_object():
@@ -24,8 +26,30 @@ def test_groupby_returns_api_object():
     gb = lf.groupby("key")
     assert isinstance(gb, LiteFrameGroupBy)
     assert gb.groupby_params["by"] == "key"
-    assert gb.groupby_params["sort"] is False
+    assert gb.groupby_params["sort"] is True
     assert gb.groupby_params["dropna"] is True
+    assert gb.groupby_params["group_keys"] is True
+
+
+def test_groupby_group_keys_param():
+    """group_keys propagates through ``groupby()`` / ``__getitem__``."""
+    lf = LF({"k": ["a", "a", "b"], "v": [1, 2, 3]})
+    assert lf.groupby("k", group_keys=False).groupby_params["group_keys"] is False
+    assert lf.groupby("k")[["v"]].groupby_params["group_keys"] is True
+    assert (
+        lf.groupby("k", group_keys=False)[["v"]].groupby_params["group_keys"] is False
+    )
+
+
+@pytest.mark.parametrize(
+    "group_keys, expected_cols", [(True, ["k", "0"]), (False, ["0"])], ids=["on", "off"]
+)
+def test_groupby_group_keys_gates_apply(group_keys, expected_cols):
+    """group_keys gates apply output: keys prepended by default (reset_index
+    shape), omitted with False -- the declared schema matches."""
+    lf = LF({"k": ["a", "a", "b"], "v": [1, 2, 3]})
+    res = lf.groupby("k", group_keys=group_keys).apply(lambda g: g["v"].sum())
+    assert list(res.dtypes.index) == expected_cols
 
 
 def test_groupby_sum():

@@ -21,7 +21,6 @@ def _install():
         any,
         count,
         kurt,
-        kurtosis,
         max,
         mean,
         median,
@@ -38,7 +37,6 @@ def _install():
 
     for cls in LITEFRAME_TYPE:
         setattr(cls, "agg", agg)
-        setattr(cls, "aggregate", agg)
         setattr(cls, "sum", sum)
         setattr(cls, "mean", mean)
         setattr(cls, "min", min)
@@ -51,7 +49,6 @@ def _install():
         setattr(cls, "sem", sem)
         setattr(cls, "skew", skew)
         setattr(cls, "kurt", kurt)
-        setattr(cls, "kurtosis", kurtosis)
         setattr(cls, "nunique", nunique)
         setattr(cls, "median", median)
         setattr(cls, "all", all)

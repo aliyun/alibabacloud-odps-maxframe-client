@@ -1,0 +1,91 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.shift.rst:2
+msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.shift"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.shift:1 of
+msgid "Shift rows within each group by ``periods`` positions."
+msgstr "在每个组内将行移动 ``periods`` 个位置。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.shift.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.shift:3 of
+msgid "Number of positions to shift within each group."
+msgstr "在每个组内移动的位置数。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.shift:5 of
+msgid "Value to fill positions introduced by shifting."
+msgstr "用于填充由移动引入的位置的值。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.shift:7 of
+msgid "Column(s) to shift.  If None, all non-group-key columns are shifted."
+msgstr "要移动的列。如果为 None，则所有非分组键列都会被移动。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.shift.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.shift:10 of
+msgid ""
+"Shifted LiteFrame with the same shape (row count preserved). Output "
+"dtypes follow the same rules as standalone ``shift``: they depend on the "
+"input dtype and ``fill_value`` (columns may be widened when a non-null "
+"``fill_value`` is supplied)."
+msgstr ""
+"具有相同形状的移动后 LiteFrame（行数保持不变）。输出数据类型遵循独立 ``"
+"shift`` 的相同规则：它们取决于输入数据类型和 ``fill_value``（当提供非空 `"
+"`fill_value`` 时，列可能会被扩展）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.shift.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.shift:17 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.shift:19 of
+msgid ""
+"Grouped transforms hash-shuffle rows by group key, so the output row "
+"order follows reducer/hash-partition order and is **not** aligned with "
+"the input frame (unlike pandas, which preserves the index). Row count is "
+"preserved. Order restoration via a place-back operator "
+"(``LiteFrameIlocSetItem``) is planned; see "
+"``docs/designs/liteframe/operators/window.md``."
+msgstr ""
+"分组转换通过分组键对行进行哈希洗牌，因此输出行顺序遵循 reducer/哈希分区"
+"顺序，并且与输入框架**不**对齐（不像 pandas 那样保留索引）。行数保持不变"
+"。计划通过 place-back 操作符（``LiteFrameIlocSetItem``）进行顺序恢复；"
+"参见 ``docs/designs/liteframe/operators/window.md``。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.shift:26 of
+msgid ""
+"Null-key rows are preserved with a null result (matching pandas "
+"``groupby.shift()`` under the default ``dropna=True``); they are not "
+"grouped together."
+msgstr ""
+"空键行会保留并产生空结果（匹配 pandas 在默认 ``dropna=True`` 下的 ``"
+"groupby.shift()``）；它们不会被分组在一起。"
+

@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_pandas.rst:2
+msgid "maxframe.liteframe.LiteFrame.to\\_pandas"
+msgstr ""
+
+#: maxframe.liteframe.core.LiteFrameToPandasMixin.to_pandas:1 of
+msgid "Convert the LiteFrame to a pandas DataFrame."
+msgstr "将LiteFrame转换为pandas DataFrame。"
+
+#: maxframe.liteframe.core.LiteFrameToPandasMixin.to_pandas:3 of
+msgid ""
+"Executes the lazy LiteFrame and collects the results into a pandas "
+"DataFrame. Blob columns are preserved with their appropriate external "
+"blob dtypes."
+msgstr ""
+"执行惰性的LiteFrame并将结果收集到pandas DataFrame中。Blob列使用其适当的"
+"外部blob数据类型进行保留。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_pandas.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.core.LiteFrameToPandasMixin.to_pandas:7 of
+msgid "Session to use for execution. If None, the default session is used."
+msgstr "用于执行的会话。如果为None，则使用默认会话。"
+
+#: maxframe.liteframe.core.LiteFrameToPandasMixin.to_pandas:10 of
+msgid "Additional keyword arguments forwarded to the execution backend."
+msgstr "转发到执行后端的附加关键字参数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_pandas.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.core.LiteFrameToPandasMixin.to_pandas:13 of
+msgid "A pandas DataFrame containing the materialized results."
+msgstr "包含实例化结果的pandas DataFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_pandas.rst
+msgid "返回类型"
+msgstr ""
+

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from maxframe.lib.filesystem._glob import has_magic
 from maxframe.lib.filesystem.base import FileSystem
 from maxframe.lib.filesystem.core import (
     file_size,

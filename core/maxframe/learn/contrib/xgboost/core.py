@@ -48,7 +48,7 @@ class BoosterData(ModelWithEvalData):
     def save_config(self) -> str:
         try:
             return self.fetch().save_config()
-        except:
+        except Exception:
             if is_kernel_mode():
                 return "{}"
             raise

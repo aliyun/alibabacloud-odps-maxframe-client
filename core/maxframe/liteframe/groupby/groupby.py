@@ -15,23 +15,24 @@
 from maxframe.liteframe.groupby.core import LiteFrameGroupBy as LiteFrameGroupByAPI
 
 
-def groupby(self, by, sort=False, dropna=True):
+def groupby(self, by, sort=True, dropna=True, group_keys=True):
     """Group the LiteFrame by one or more columns.
 
     Parameters
     ----------
     by : str or list of str
         Column name(s) to group by.
-    sort : bool, default False
+    sort : bool, default True
         Whether to sort group keys in the result.
-
-        .. note::
-            ``sort=True`` is not yet implemented. Group keys are always
-            returned in first-seen encounter order. If you need sorted
-            keys, sort the result manually after aggregation.
     dropna : bool, default True
         If True, rows with null group keys are dropped before aggregation.
         If False, null-key rows are included as a separate group.
+    group_keys : bool, default True
+        Whether ``apply`` / ``apply_chunk`` results include the grouping key
+        columns.  ``True`` (default) prepends keys the UDF did not return
+        (pandas ``group_keys=True`` + ``reset_index()`` shape); ``False``
+        omits them.  Has no effect on ``agg``, ``transform``, or the window
+        family — matching pandas.
 
     Returns
     -------
@@ -43,5 +44,12 @@ def groupby(self, by, sort=False, dropna=True):
     ------
     NotImplementedError
         If ``sort=True`` is passed.
+
+    See Also
+    --------
+    LiteFrame.agg : Aggregate using one or more operations over columns.
+    LiteFrame.sort : Sort the LiteFrame by columns.
     """
-    return LiteFrameGroupByAPI(self, by=by, sort=sort, dropna=dropna)
+    return LiteFrameGroupByAPI(
+        self, by=by, sort=sort, dropna=dropna, group_keys=group_keys
+    )

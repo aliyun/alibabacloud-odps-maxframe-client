@@ -352,7 +352,7 @@ def _get_legal_local_tz_name() -> Optional[str]:
         tz_name = str(tzlocal.get_localzone())
         if tz_name not in available_timezones():
             tz_name = None
-    except:
+    except Exception:
         pass
 
     return tz_name
@@ -440,6 +440,9 @@ default_options.register_option(
     "session.gu_quota_name", None, validator=is_null | is_string, remote=True
 )
 default_options.register_option(
+    "session.gu_type", None, validator=is_null | is_string, remote=True
+)
+default_options.register_option(
     "session.inference_quota_name", None, validator=is_null | is_string, remote=True
 )
 default_options.register_option(
@@ -522,6 +525,17 @@ default_options.register_option(
     "dataframe.decimal.round_mode",
     "half_up",
     validator=is_enum_value("maxframe.protocol#DecimalRoundMode"),
+    remote=True,
+)
+
+# Transaction options
+# Comma-separated engine names to enable transactions for (e.g. "lance",
+# "lance,odps"). Special values: "all" (all supported engines), "off" (none).
+# "odps" is accepted but not yet implemented.
+default_options.register_option(
+    "dataframe.transaction.enabled_engines",
+    "all",
+    validator=is_string,
     remote=True,
 )
 

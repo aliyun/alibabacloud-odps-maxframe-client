@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.apply.rst:2
+msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.apply"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.groupby_apply:1 of
+msgid "Apply ``func`` to each group as a whole frame."
+msgstr "将 ``func`` 应用到每个组作为一个完整框架。"
+
+#: maxframe.liteframe.functional.apply.groupby_apply:3 of
+msgid ""
+"The user function receives one DataFrame per group (not per column or "
+"row) and may return a DataFrame, Series, or scalar."
+msgstr ""
+"用户函数接收每个组的一个 DataFrame（不是每列或每行），并可以返回一个 "
+"DataFrame、Series 或标量。"
+
+#: maxframe.liteframe.functional.apply.groupby_apply:6 of
+msgid ""
+"apply may change the row count / row order, so hidden columns are not "
+"propagated -- they only survive if the UDF explicitly returns them."
+msgstr "apply 可能会改变行数/行顺序，因此隐藏列不会被传播——只有当 UDF 显式返回它们时才会保留。"
+
+#: maxframe.liteframe.functional.apply.groupby_apply of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.groupby_apply:9 of
+msgid ""
+"Function taking a group DataFrame and returning a DataFrame, Series, or "
+"scalar.  If ``func`` is a class, it is instantiated once per group, "
+"``__call__(batch, end=True)`` is invoked once with ``end=True`` (each "
+"call is a complete invocation that must flush its output), and "
+"``close()`` (if defined) is always called at the end of each group."
+msgstr ""
+"接收一个分组 DataFrame 并返回 DataFrame、Series 或标量的函数。如果 ``func"
+"`` 是一个类，则每个分组实例化一次，用 ``end=True`` 调用一次 ``__call__("
+"batch, end=True)``（每次调用都是必须刷新其输出的完整调用），并且在每个"
+"分组结束时总是调用 ``close()``（如果已定义）。"
+
+#: maxframe.liteframe.functional.apply.groupby_apply:18 of
+msgid "Expected output dtypes."
+msgstr "期望的输出数据类型。"
+
+#: maxframe.liteframe.functional.apply.groupby_apply:20 of
+msgid "If True, skip dtype inference."
+msgstr "如果为 True，则跳过数据类型推断。"
+
+#: maxframe.liteframe.functional.apply.groupby_apply:22 of
+msgid "Frame type passed to ``func``."
+msgstr "传递给 ``func`` 的框架类型。"
+
+#: maxframe.liteframe.functional.apply.groupby_apply:24 of
+msgid "Extra positional arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外位置参数。"
+
+#: maxframe.liteframe.functional.apply.groupby_apply:26 of
+msgid "Extra keyword arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外关键字参数。"
+
+#: maxframe.liteframe.functional.apply.groupby_apply of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.groupby_apply:28 of
+msgid "A new LiteFrame with the results concatenated across groups."
+msgstr "一个新的 LiteFrame，其结果在各组之间连接。"
+
+#: maxframe.liteframe.functional.apply.groupby_apply of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.groupby_apply:33 of
+msgid ":py:obj:`groupby_transform`"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.groupby_apply:34 of
+msgid "Per-group column transform."
+msgstr "每组列转换。"
+
+#: maxframe.liteframe.functional.apply.groupby_apply:36 of
+msgid ":py:obj:`groupby_apply_chunk`"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.groupby_apply:37 of
+msgid "Per-group-chunk application."
+msgstr "每组块应用。"
+
+#: maxframe.liteframe.functional.apply.groupby_apply:40 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.groupby_apply:44 of
+msgid "Return one row per group (reduction):"
+msgstr "每组返回一行（归约）："
+
+#: maxframe.liteframe.functional.apply.groupby_apply:53 of
+msgid "Return all rows of each group (identity):"
+msgstr "返回每组的所有行（恒等）："
+
+

@@ -1,0 +1,185 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:2
+msgid "maxframe.liteframe.window.rolling.LiteFrameRolling"
+msgstr ""
+
+#: maxframe.liteframe.window.rolling.LiteFrameRolling:1 of
+msgid "Intermediate object returned by ``LiteFrame.rolling()``."
+msgstr "由 ``LiteFrame.rolling()`` 返回的中间对象。"
+
+#: maxframe.liteframe.window.rolling.LiteFrameRolling:3 of
+msgid ""
+"Provides rolling-window aggregations over a fixed-size integer window. "
+"Execution uses the **sliced-data (concatenate-compute-slice)** cross-"
+"chunk strategy: for multi-chunk inputs, up to ``window - 1`` boundary "
+"rows are fetched from neighbor chunks, concatenated, the aggregation is "
+"computed over the concatenation, and the result is sliced back to the "
+"chunk's range."
+msgstr ""
+"在固定大小的整数窗口上提供滚动窗口聚合。执行使用 **切片数据（连接-计算-"
+"切片）** 跨块策略：对于多块输入，从相邻块获取最多 ``window - 1`` 个边界行"
+"，进行连接，在连接结果上计算聚合，然后将结果切片回该块的范围。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.window.rolling.LiteFrameRolling:9 of
+msgid "The frame to compute over."
+msgstr "要计算的框架。"
+
+#: maxframe.liteframe.window.rolling.LiteFrameRolling:11 of
+msgid ""
+"Size of the moving window (number of rows). Must be a positive integer. "
+"Offset/time-based windows are not yet supported."
+msgstr "移动窗口的大小（行数）。必须是正整数。尚未支持基于偏移量/时间的窗口。"
+
+#: maxframe.liteframe.window.rolling.LiteFrameRolling:14 of
+msgid ""
+"Minimum number of observations in a window required to produce a value "
+"(otherwise null). Defaults to ``window`` (matching pandas)."
+msgstr ""
+"窗口中产生值所需的最小观测数（否则为null）。默认为 ``window`` （与pandas"
+"匹配）。"
+
+#: maxframe.liteframe.window.rolling.LiteFrameRolling:17 of
+msgid "If True, the window is centered on the current row."
+msgstr "如果为True，则窗口以当前行为中心。"
+
+#: maxframe.liteframe.window.rolling.LiteFrameRolling:19 of
+msgid ""
+"Column(s) to aggregate. If None, all (non-hidden, non-group-key) columns "
+"are aggregated. Non-selected columns are passed through."
+msgstr ""
+"要聚合的列。如果为None，则聚合所有（非隐藏、非分组键）列。未选择的列会被"
+"传递通过。"
+
+#: maxframe.liteframe.window.rolling.LiteFrameRolling:22 of
+msgid ""
+"Set when created from a ``groupby.rolling()`` call so the tiler "
+"partitions data by group key before computing per-group windows."
+msgstr ""
+"从 ``groupby.rolling()`` 调用创建时设置，以便tiler在计算每组窗口之前按"
+"分组键对数据进行分区。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:14
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`__init__ "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling.__init__>`\\ "
+"\\(liteframe\\, window\\[\\, min\\_periods\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`agg <maxframe.liteframe.window.rolling.LiteFrameRolling.agg>`\\ "
+"\\(func\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid "Aggregate using one of the supported function names."
+msgstr "使用支持的函数名之一进行聚合。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`count "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling.count>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid "Rolling count of non-null observations."
+msgstr "非空观测值的滚动计数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`max <maxframe.liteframe.window.rolling.LiteFrameRolling.max>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid "Rolling maximum."
+msgstr "滚动最大值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`mean "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling.mean>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid "Rolling mean."
+msgstr "滚动均值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`median "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling.median>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid "Rolling median."
+msgstr "滚动中位数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`min <maxframe.liteframe.window.rolling.LiteFrameRolling.min>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid "Rolling minimum."
+msgstr "滚动最小值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`std <maxframe.liteframe.window.rolling.LiteFrameRolling.std>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid "Rolling standard deviation (ddof=1)."
+msgstr "滚动标准差（ddof=1）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`sum <maxframe.liteframe.window.rolling.LiteFrameRolling.sum>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid "Rolling sum."
+msgstr "滚动和。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid ""
+":py:obj:`var <maxframe.liteframe.window.rolling.LiteFrameRolling.var>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.rolling.LiteFrameRolling.rst:26:<autosummary>:1
+msgid "Rolling variance (ddof=1)."
+msgstr "滚动方差（ddof=1）。"
+

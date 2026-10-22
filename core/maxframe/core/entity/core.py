@@ -148,3 +148,16 @@ class Entity(Serializable):
 
 
 ENTITY_TYPE = (Entity, EntityData)
+
+
+def get_tileable_data(obj):
+    """Return the underlying data object for a tileable.
+
+    Entities (``LiteFrame``, ``DataFrame``, ...) return their ``.data``;
+    data objects (``LiteFrameData``, ``DataFrameData``, ...) are returned
+    unchanged.  Defined here, next to ``Entity``, so the discriminator is
+    a plain ``isinstance(obj, Entity)`` with no lazy import — ``Entity``
+    is in this module.  ``EntityDataModificationHandle._get_data`` and
+    liteframe helpers delegate to this.
+    """
+    return obj.data if isinstance(obj, Entity) else obj

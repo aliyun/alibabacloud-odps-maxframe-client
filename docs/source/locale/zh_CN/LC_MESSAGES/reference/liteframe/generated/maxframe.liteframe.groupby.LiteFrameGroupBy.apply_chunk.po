@@ -1,0 +1,118 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.apply_chunk.rst:2
+msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.apply\\_chunk"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:1 of
+msgid "GroupBy.apply_chunk() -- per-group-chunk application."
+msgstr "GroupBy.apply_chunk() -- 每组块应用。"
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:3 of
+msgid ""
+"Applies ``func`` to each group's execution chunk independently.  As with "
+"the ungrouped ``apply_chunk``, the row count and row order may change. "
+"Hidden columns are not propagated (see ``groupby_apply`` for details)."
+msgstr ""
+"独立地将 ``func`` 应用于每个组的执行块。与未分组的 ``apply_chunk`` 一样，"
+"行数和行顺序可能会改变。隐藏列不会传播（详情请参见 ``groupby_apply``）。"
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:7 of
+msgid ""
+"Function taking a per-group DataFrame chunk and returning a DataFrame (or"
+" a tuple of DataFrames for multiple outputs).  If ``func`` is a class, it"
+" is instantiated once per group, ``__call__(batch, end=True)`` is invoked"
+" once with ``end=True`` (each call is a complete invocation that must "
+"flush its output), and ``close()`` (if defined) is always called at the "
+"end of each group."
+msgstr ""
+"接收每个组的 DataFrame 块并返回一个 DataFrame（或多个输出的 DataFrame "
+"元组）的函数。如果 ``func`` 是一个类，则每个组实例化一次，在每次调用时"
+"使用 ``end=True`` 调用 ``__call__(batch, end=True)``（每次调用都是必须"
+"刷新其输出的完整调用），并且在每个组结束时总是调用 ``close()``（如果定义"
+"的话）。"
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:16 of
+msgid "Expected output dtypes."
+msgstr "期望的输出数据类型。"
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:18 of
+msgid "If True, skip dtype inference."
+msgstr "如果为 True，则跳过数据类型推断。"
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:20 of
+msgid "Frame type passed to ``func``."
+msgstr "传递给 ``func`` 的框架类型。"
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:22 of
+msgid "Extra positional arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外位置参数。"
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:24 of
+msgid "Extra keyword arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外关键字参数。"
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:26 of
+msgid ""
+"Lazy LiteFrame whose materialized output is the per-group concatenation "
+"of ``func`` results.  The row count may differ from the input.  Call "
+"``.execute()`` to materialize."
+msgstr ""
+"惰性 LiteFrame，其具体化的输出是 ``func`` 结果的按组连接。行数可能与输入"
+"不同。调用 ``.execute()`` 进行具体化。"
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:33 of
+msgid ":py:obj:`groupby_apply`"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:34 of
+msgid "Apply a function to each group as a whole frame."
+msgstr "将函数应用于每个组作为整个框架。"
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:36 of
+msgid ":py:obj:`groupby_transform_chunk`"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:37 of
+msgid "Per-group-chunk transform."
+msgstr "按组块转换。"
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:40 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.groupby_apply_chunk:44 of
+msgid "Filter rows within each group's chunk (row count may change):"
+msgstr "过滤每个组块内的行（行数可能会改变）："
+

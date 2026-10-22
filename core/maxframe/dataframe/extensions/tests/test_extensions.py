@@ -19,7 +19,9 @@ import pytest
 from maxframe import dataframe as md
 from maxframe.dataframe import DataFrame
 from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE, IndexValue
+from maxframe.dataframe.extensions.rebalance import DataFrameRebalance
 from maxframe.dataframe.extensions.reshuffle import DataFrameReshuffle
+from maxframe.dataframe.misc.rechunk import rebalance
 from maxframe.tests.utils import assert_mf_index_dtype
 
 
@@ -196,3 +198,11 @@ def test_collect_kv(df5):
     assert collect_kv_df.index_value.key == df5.index_value.key
     with pytest.raises(ValueError):
         df5.mf.collect_kv(columns=["num"])
+
+
+def test_rebalance_import_compatibility():
+    # DataFrameRebalance must remain importable from the extensions package
+    # (it was exported here at the merge base); the canonical rebalance
+    # function now lives in maxframe.dataframe.misc.rechunk.
+    assert DataFrameRebalance is not None
+    assert callable(rebalance)

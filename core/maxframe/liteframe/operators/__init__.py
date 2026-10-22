@@ -14,9 +14,13 @@
 
 from maxframe.liteframe.operators.core import LiteFrameOperator, LiteFrameOperatorMixin
 
-from . import agg  # noqa: F401
-from . import extensions  # noqa: F401
+from . import datastore  # noqa: F401
+from . import drop_duplicates  # noqa: F401
 from . import groupby  # noqa: F401
+from . import indexing  # noqa: F401
 from . import merge  # noqa: F401
+from . import misc  # noqa: F401
+from . import reduction  # noqa: F401
 from . import sort  # noqa: F401
 from . import virtual  # noqa: F401
+from . import window  # noqa: F401

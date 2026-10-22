@@ -16,6 +16,7 @@ import weakref
 
 import pyarrow as pa
 
+from maxframe.core.entity import get_tileable_data
 from maxframe.liteframe.core import LITEFRAME_TYPE, LiteFrame
 from maxframe.liteframe.datatypes import (
     infer_decimal_arithmetic_dtype,
@@ -23,23 +24,32 @@ from maxframe.liteframe.datatypes import (
 )
 from maxframe.liteframe.expressions import (
     LiteFrameBinaryExpr,
+    LiteFrameBinUfuncExpr,
     LiteFrameColumn,
     LiteFrameExpr,
     LiteFrameInvert,
     LiteFrameIsNA,
     LiteFrameLiteral,
+    LiteFrameLogicalNot,
+    LiteFrameLShift,
     LiteFrameNaryExpr,
+    LiteFrameRShift,
     LiteFrameUnaryExpr,
+    LiteFrameUnaryUfuncExpr,
     LiteFrameWhere,
     NamedExpr,
     SourceCompatibilityError,
     _infer_literal_dtype,
+    _infer_ufunc_result_dtype,
 )
 from maxframe.liteframe.operators.project import (
     LiteFrameProjection,
     _append_hidden_projections,
 )
 from maxframe.utils import wrap_arrow_dtype
+
+# Shared boolean dtype used by comparison/logical expressions.
+_BOOL = wrap_arrow_dtype(pa.bool_())
 
 # Cache for _extract_projection_exprs: LiteFrameData -> dict[col_name, LiteFrameExpr]
 _projection_expr_cache = weakref.WeakKeyDictionary()
@@ -49,9 +59,8 @@ def _extract_projection_exprs(lf):
     """Extract the per-column expressions from a LiteFrame's projection operator.
 
     Returns a dict mapping column name to the inner ``LiteFrameExpr``.
-    When the input is not a ``LiteFrameProjection``, returns an empty dict.
     """
-    data = lf._data if isinstance(lf, LiteFrame) else lf
+    data = get_tileable_data(lf)
     cached = _projection_expr_cache.get(data)
     if cached is not None:
         return cached
@@ -77,7 +86,7 @@ def _root_source_lf(lf):
     Stops at the first tileable whose op is not a LiteFrameProjection.
     If the input itself is not a projection, returns it unchanged.
     """
-    data = lf._data
+    data = get_tileable_data(lf)
     while isinstance(getattr(data, "op", None), LiteFrameProjection):
         inputs = data.inputs
         if not inputs:
@@ -108,23 +117,39 @@ def _resolve_named_expr(lf, col_name, col_dtype):
 
     Bare expressions (e.g. LiteFrameAdd) are wrapped in NamedExpr so that
     LiteFrameProjection.__call__ can extract the output name via _projection_name.
+    A LiteFrameColumn whose .name differs from col_name (e.g. after rename)
+    is also wrapped so the output column name is preserved.
     """
     expr = _resolve_column_expr(lf, col_name, col_dtype)
-    if isinstance(expr, (NamedExpr, LiteFrameColumn)):
+    if isinstance(expr, NamedExpr):
         return expr
-    return NamedExpr(name=col_name, expr=expr)
+    if isinstance(expr, LiteFrameColumn) and expr.name == col_name:
+        return expr
+    # Pass col_dtype so that UDF projections (LiteFrameUDFExpr) and other
+    # expressions without a resolved .dtype still carry the correct output
+    # dtype after fusion.
+    return NamedExpr(name=col_name, expr=expr, dtype=col_dtype)
 
 
-def _rewrite_column_refs(expr, existing_exprs):
+def _rewrite_column_refs(expr, existing_exprs, expanding=frozenset()):
     """Rewrite LiteFrameColumn leaves in an expression tree.
 
     Returns a new expression tree where each ``LiteFrameColumn`` whose ``name``
-    appears in *existing_exprs* is replaced by a copy of the corresponding
-    inner expression.  This is used when a user-provided expression (e.g.
+    appears in *existing_exprs* is replaced by the corresponding inner
+    expression.  This is used when a user-provided expression (e.g.
     ``col("a") + 1``) must be evaluated against the root source rather than
     against a projection output — the column reference is replaced by the
     projection's inner expression so the final fused projection is
     self-contained.
+
+    Each column's expression is expanded at most once per path (*expanding*
+    tracks the columns currently being inlined).  A column whose expression
+    derives from itself (e.g. ``price := str.replace(col("price"))``) keeps
+    its inner reference as a bare column: it refers to the **root source**
+    column, not the projection output, and re-expanding it would duplicate the
+    expression (``transform(transform(col("price")))``) and crash on type
+    mismatches (a str op applied to an already-numeric column: e2e
+    test_yunqi_demo ``InvalidOperationError: expected String type, got: f64``).
 
     If *existing_exprs* is empty (non-projection source), *expr* is returned
     unchanged.
@@ -132,35 +157,53 @@ def _rewrite_column_refs(expr, existing_exprs):
     if not existing_exprs:
         return expr
     if isinstance(expr, LiteFrameColumn):
-        return existing_exprs.get(expr.name, expr)
+        replacement = existing_exprs.get(expr.name)
+        if replacement is None or expr.name in expanding:
+            # Either not a projection-output reference, or the reference lies
+            # inside the (already inlined) expression of a self-derived column
+            # and therefore names the root source column — keep it as-is.
+            return expr
+        return _rewrite_column_refs(
+            replacement, existing_exprs, expanding | {expr.name}
+        )
     if isinstance(expr, LiteFrameLiteral):
         return expr
     if isinstance(expr, LiteFrameBinaryExpr):
-        return type(expr)(
-            left=_rewrite_column_refs(expr.left, existing_exprs),
-            right=_rewrite_column_refs(expr.right, existing_exprs),
+        kwargs = dict(
+            left=_rewrite_column_refs(expr.left, existing_exprs, expanding),
+            right=_rewrite_column_refs(expr.right, existing_exprs, expanding),
             dtype=expr.dtype,
         )
+        # Preserve extra fields on subclasses (e.g. ufunc_name)
+        for attr in ("ufunc_name",):
+            if hasattr(expr, attr):
+                kwargs[attr] = getattr(expr, attr)
+        return type(expr)(**kwargs)
     if isinstance(expr, LiteFrameUnaryExpr):
         new_expr = expr.copy()
-        new_expr.operand = _rewrite_column_refs(expr.operand, existing_exprs)
+        new_expr.operand = _rewrite_column_refs(expr.operand, existing_exprs, expanding)
         return new_expr
     if isinstance(expr, LiteFrameWhere):
         return type(expr)(
-            condition=_rewrite_column_refs(expr.condition, existing_exprs),
-            true_value=_rewrite_column_refs(expr.true_value, existing_exprs),
-            false_value=_rewrite_column_refs(expr.false_value, existing_exprs),
+            condition=_rewrite_column_refs(expr.condition, existing_exprs, expanding),
+            true_value=_rewrite_column_refs(expr.true_value, existing_exprs, expanding),
+            false_value=_rewrite_column_refs(
+                expr.false_value, existing_exprs, expanding
+            ),
             dtype=expr.dtype,
         )
     if isinstance(expr, LiteFrameNaryExpr):
         return type(expr)(
-            operands=[_rewrite_column_refs(o, existing_exprs) for o in expr.operands],
+            operands=[
+                _rewrite_column_refs(o, existing_exprs, expanding)
+                for o in expr.operands
+            ],
             dtype=expr.dtype,
         )
     if isinstance(expr, NamedExpr):
         return type(expr)(
             name=expr.name,
-            expr=_rewrite_column_refs(expr.expr, existing_exprs),
+            expr=_rewrite_column_refs(expr.expr, existing_exprs, expanding),
             dtype=expr.dtype,
         )
     # Fallback: return as-is (e.g. accessor expressions with extra fields)
@@ -168,16 +211,18 @@ def _rewrite_column_refs(expr, existing_exprs):
 
 
 def _needs_materialize_range_cols(lf):
-    """Check if any projection in the input chain has materialize_range_cols=True.
+    """Check if any projection in the input chain requires materialization.
 
-    When fusing through a projection that materializes range columns, the
-    fused projection must also set ``materialize_range_cols=True`` so that
-    the range columns are materialized at the root source.
+    Returns True if any predecessor's range_analysis has an entry with
+    is_affine=False, references_range=True.
     """
-    data = lf._data
+    data = get_tileable_data(lf)
     while isinstance(getattr(data, "op", None), LiteFrameProjection):
-        if getattr(data.op, "materialize_range_cols", False):
-            return True
+        ra = getattr(data.op, "range_analysis", None)
+        if ra:
+            for result in ra.values():
+                if result.references_range and not result.is_affine:
+                    return True
         inputs = data.inputs
         if not inputs:
             break
@@ -185,29 +230,25 @@ def _needs_materialize_range_cols(lf):
     return False
 
 
-def _build_fused_projection(lf, projections, materialize_range_cols=False):
+def _build_fused_projection(lf, projections):
     """Create a LiteFrameProjection rooted at the source of *lf*.
 
     Appends hidden column pass-throughs from *lf*, then builds and executes
     a LiteFrameProjection whose input is the root source of *lf* so that
     fused expression trees resolve correctly.
 
-    If any projection in the input chain has ``materialize_range_cols=True``,
-    or *materialize_range_cols* is passed as True, the flag is set on the
-    fused projection so that range columns are materialized at the root
-    source.
+    The analyzer in ``__call__`` runs on the fused expression tree to
+    populate ``range_analysis``. If any predecessor in the chain requires
+    materialization, the fused tree's analyzer will detect the same
+    condition.
     """
     _append_hidden_projections(lf, projections)
-    materialize = materialize_range_cols or _needs_materialize_range_cols(lf)
-    op = LiteFrameProjection(
-        projections=projections,
-        materialize_range_cols=materialize,
-    )
+    op = LiteFrameProjection(projections=projections)
     root_source = _root_source_lf(lf)
     return op(LiteFrame(root_source))
 
 
-def _build_binary_projection(lf, expr_class, other, reverse=False):
+def _build_binary_projection(lf, expr_class, other, reverse=False, **kwargs):
     """Build a Projection with binary expressions for all columns.
 
     Parameters
@@ -223,6 +264,9 @@ def _build_binary_projection(lf, expr_class, other, reverse=False):
         reverse ops (e.g. ``1.5 - lf``) produce
         ``LiteFrameSub(left=Literal(1.5), right=Column("a"))``.
         Ignored when *other* is a LiteFrame.
+    **kwargs
+        Additional keyword arguments passed to the expression constructor
+        (e.g. ``ufunc_name`` for :class:`LiteFrameBinUfuncExpr`).
     """
     projections = []
 
@@ -236,12 +280,34 @@ def _build_binary_projection(lf, expr_class, other, reverse=False):
         if left_root != right_root:
             raise SourceCompatibilityError(left_root, right_root)
 
-    for col_name in lf.columns:
+    # LiteFrame-vs-LiteFrame pairing follows the numpy/polars model: output
+    # takes the left operand's columns, right pairs positionally, a single
+    # right column broadcasts; mismatched counts raise.  (lf + lf is the
+    # positional case where positions match names.)
+    other_is_lf = isinstance(other, LITEFRAME_TYPE)
+    if other_is_lf:
+        n_left = len(lf.columns)
+        n_right = len(other.columns)
+        if n_right == 1:
+            # Broadcast: pair every left column with the sole right column.
+            right_names = [other.columns[0]] * n_left
+        elif n_right == n_left:
+            # Positional: left[i] with right[i].
+            right_names = list(other.columns)
+        else:
+            raise ValueError(
+                f"Cannot align LiteFrames with {n_left} and {n_right} columns "
+                f"for binary operation; right operand must have 1 column "
+                f"(broadcast) or {n_left} columns (positional)."
+            )
+
+    for i, col_name in enumerate(lf.columns):
         col_dtype = lf.dtypes[col_name]
 
-        if isinstance(other, LITEFRAME_TYPE):
+        if other_is_lf:
             left = _resolve_column_expr(lf, col_name, col_dtype)
-            right = _resolve_column_expr(other, col_name, other.dtypes[col_name])
+            right_name = right_names[i]
+            right = _resolve_column_expr(other, right_name, other.dtypes[right_name])
         else:
             lit = LiteFrameLiteral(value=other, dtype=_infer_literal_dtype(other))
             col = _resolve_column_expr(lf, col_name, col_dtype)
@@ -250,28 +316,17 @@ def _build_binary_projection(lf, expr_class, other, reverse=False):
             else:
                 left, right = col, lit
 
-        result_dtype = _infer_result_dtype(left.dtype, right.dtype, expr_class)
-        expr = expr_class(left=left, right=right, dtype=result_dtype)
+        if issubclass(expr_class, LiteFrameBinUfuncExpr):
+            result_dtype = _infer_ufunc_result_dtype(
+                kwargs.get("ufunc_name"), left.dtype, right.dtype
+            )
+        else:
+            result_dtype = _infer_result_dtype(left.dtype, right.dtype, expr_class)
+        expr = expr_class(left=left, right=right, dtype=result_dtype, **kwargs)
 
         projections.append(NamedExpr(name=col_name, expr=expr))
 
-    # When either operand is a LiteFrame whose projection chain materializes
-    # range columns, the fused binary projection must also materialize them
-    # so that range columns are physical in both inputs.
-    materialize_range_cols = _needs_materialize_range_cols(lf)
-    if isinstance(other, LITEFRAME_TYPE):
-        materialize_range_cols = (
-            materialize_range_cols or _needs_materialize_range_cols(other)
-        )
-
-    # TODO: Some binary operators (e.g. FillNA) transform visible range
-    # columns and need materialize_range_cols=True, but others (e.g. Add)
-    # can keep the range virtual. Postpone per-operator handling to a
-    # later patch.
-
-    return _build_fused_projection(
-        lf, projections, materialize_range_cols=materialize_range_cols
-    )
+    return _build_fused_projection(lf, projections)
 
 
 def _build_unary_projection(lf, expr_class, **kwargs):
@@ -283,28 +338,22 @@ def _build_unary_projection(lf, expr_class, **kwargs):
     # instead of col("a").not_()
     existing_exprs = _extract_projection_exprs(lf)
 
-    # Range columns are virtual Int64; any unary transform (e.g. isna,
-    # invert) generates pl.col(RANGE_COL_NAME).<op>(), which needs a
-    # physical column to reference.
-    range_col_names = (
-        set(lf.frame_metadata.range_columns.keys())
-        if lf.frame_metadata and lf.frame_metadata.range_columns
-        else set()
-    )
-    materialize_range_cols = bool(range_col_names & set(lf.columns))
+    is_ufunc = issubclass(expr_class, LiteFrameUnaryUfuncExpr)
+    ufunc_name = kwargs.get("ufunc_name")
 
     for col_name in lf.columns:
         col_dtype = lf.dtypes[col_name]
         operand = existing_exprs.get(
             col_name, LiteFrameColumn(name=col_name, dtype=col_dtype)
         )
-        result_dtype = _infer_unary_result_dtype(col_dtype, expr_class)
+        if is_ufunc:
+            result_dtype = _infer_ufunc_result_dtype(ufunc_name, col_dtype)
+        else:
+            result_dtype = _infer_unary_result_dtype(col_dtype, expr_class)
         expr = expr_class(operand=operand, dtype=result_dtype, **kwargs)
         projections.append(NamedExpr(name=col_name, expr=expr))
 
-    return _build_fused_projection(
-        lf, projections, materialize_range_cols=materialize_range_cols
-    )
+    return _build_fused_projection(lf, projections)
 
 
 def _infer_result_dtype(left_dtype, right_dtype, expr_class):
@@ -328,6 +377,16 @@ def _infer_result_dtype(left_dtype, right_dtype, expr_class):
     dtype
         The inferred result dtype, falling back to *left_dtype* on error.
     """
+    if isinstance(expr_class, type) and issubclass(expr_class, LiteFrameBinUfuncExpr):
+        # ufunc_name is not available here; bind() will re-infer.
+        return left_dtype
+    # Bitwise shift preserves the left operand's integer dtype. pandas Series
+    # does not implement << / >> for the mock-based inference, so short-circuit
+    # to the left dtype instead of falling back to string.
+    if isinstance(expr_class, type) and issubclass(
+        expr_class, (LiteFrameLShift, LiteFrameRShift)
+    ):
+        return left_dtype
     try:
         opr = expr_class._operator
     except (AttributeError, NotImplementedError):
@@ -343,10 +402,25 @@ def _infer_result_dtype(left_dtype, right_dtype, expr_class):
         return left_dtype
 
 
+def _is_bool_dtype(dtype):
+    """Return True if *dtype* is an Arrow-backed boolean dtype."""
+    pa_type = getattr(dtype, "pyarrow_dtype", None)
+    try:
+        return pa_type is not None and pa.types.is_boolean(pa_type)
+    except Exception:
+        return False
+
+
 def _infer_unary_result_dtype(input_dtype, expr_class):
     """Infer result dtype for unary expression."""
     if isinstance(expr_class, type) and issubclass(expr_class, LiteFrameIsNA):
-        return wrap_arrow_dtype(pa.bool_())
+        return _BOOL
+    if isinstance(expr_class, type) and issubclass(expr_class, LiteFrameLogicalNot):
+        # np.logical_not always returns booleans for any input dtype.
+        return _BOOL
     if isinstance(expr_class, type) and issubclass(expr_class, LiteFrameInvert):
-        return wrap_arrow_dtype(pa.bool_())
+        # Bitwise NOT: bool -> bool (logical not), integer -> preserve dtype.
+        if _is_bool_dtype(input_dtype):
+            return _BOOL
+        return input_dtype
     return input_dtype

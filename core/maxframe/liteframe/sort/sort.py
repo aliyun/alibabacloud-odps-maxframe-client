@@ -46,6 +46,22 @@ def sort(
     -------
     LiteFrame
         Sorted LiteFrame.
+
+    See Also
+    --------
+    drop_duplicates : Return LiteFrame with duplicate rows removed.
+    groupby : Group the LiteFrame by one or more columns.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'a': [3, 1, 2], 'b': [6, 4, 5]})
+    >>> result = lf.sort('a')
+    >>> result.execute()
+       a  b
+    1  1  4
+    2  2  5
+    0  3  6
     """
     if na_position not in ("first", "last"):
         raise ValueError(
@@ -88,6 +104,3 @@ def sort(
         psrs_kinds=psrs_kinds,
     )
     return op(self)
-
-
-sort_values = sort

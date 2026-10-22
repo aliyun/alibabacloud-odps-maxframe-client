@@ -1,0 +1,86 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 11:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.clip.rst:2
+msgid "maxframe.liteframe.LiteFrame.clip"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.clip.clip:1 of
+msgid "Trim values at input threshold(s)."
+msgstr "在输入阈值处截断数值。"
+
+#: maxframe.liteframe.arithmetic.clip.clip:3 of
+msgid ""
+"Values below *lower* are set to *lower*; values above *upper* are set to "
+"*upper*.  At least one of *lower* / *upper* must be provided."
+msgstr ""
+"低于 *lower* 的值被设置为 *lower*；高于 *upper* 的值被设置为 *upper*。"
+"必须提供至少一个 *lower* / *upper*。"
+
+#: maxframe.liteframe.arithmetic.clip.clip of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.clip.clip:6 of
+msgid ""
+"Minimum threshold.  A LiteFrame must derive from the same source as *lf* "
+"(per-column bounds are matched by column name); a scalar is broadcast to "
+"every column."
+msgstr ""
+"最小阈值。LiteFrame 必须从与 *lf* 相同的源派生 （每列边界按列名匹配）；"
+"标量会广播到每个列。"
+
+#: maxframe.liteframe.arithmetic.clip.clip:10 of
+msgid "Maximum threshold.  Same rules as *lower*."
+msgstr "最大阈值。规则与 *lower* 相同。"
+
+#: maxframe.liteframe.arithmetic.clip.clip of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.clip.clip:13 of
+msgid "A new LiteFrame with clipped values."
+msgstr "具有截断值的新 LiteFrame。"
+
+#: maxframe.liteframe.arithmetic.clip.clip of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.clip.clip:18 of
+msgid ":py:obj:`where`"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.clip.clip:19 of
+msgid "Replace values where a condition is False."
+msgstr "在条件为 False 时替换值。"
+
+#: maxframe.liteframe.arithmetic.clip.clip:21 of
+msgid ":py:obj:`between`"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.clip.clip:22 of
+msgid "Return boolean LiteFrame for values within a range."
+msgstr "返回范围内值的布尔 LiteFrame。"
+
+#: maxframe.liteframe.arithmetic.clip.clip:25 of
+msgid "示例"
+msgstr ""
+

@@ -30,9 +30,12 @@ from maxframe.io.odpsio.schema import (
     _cast_column_as_decimal,
     arrow_schema_to_odps_schema,
     arrow_schema_to_pandas_dtypes,
+    arrow_table_to_pandas_dataframe,
     arrow_type_to_odps_type,
     build_dataframe_table_meta,
+    build_liteframe_table_meta,
     build_table_column_name,
+    build_table_column_names,
     odps_schema_to_arrow_schema,
     odps_schema_to_pandas_dtypes,
     odps_type_to_arrow_type,
@@ -47,6 +50,7 @@ from maxframe.lib.dtypes_extension import (
     dict_,
     list_,
 )
+from maxframe.protocol import DataFrameTableMeta
 from maxframe.tests.utils import require_arrow_dtype
 from maxframe.utils import pd_release_version, wrap_arrow_dtype
 
@@ -761,3 +765,65 @@ def test_vector_types_conversion(element_type, dimension):
     assert odps_schema2.columns[0].type == odps_types.bigint
     assert isinstance(odps_schema2.columns[1].type, odps_types.Vector)
     assert odps_schema2.columns[1].type.dimension == dimension
+
+
+@pytest.mark.parametrize(
+    "index,expected_names",
+    [
+        # int-string logical columns are ODPS-illegal -> sanitized _column_N
+        (["0", "1", "2"], ["_column_0", "_column_1", "_column_2"]),
+        # unchanged names -> None (no mapping carried)
+        (["a", "b"], None),
+        # uppercase legal name is lowercased by the sanitizer -> mapping
+        (["A", "b"], ["a", "b"]),
+        # case-colliding logical names dedup with _N suffixes (mirror DataFrame path)
+        (["A", "a"], ["a_0", "a_1"]),
+    ],
+)
+def test_liteframe_table_meta_table_column_names(index, expected_names):
+    """LiteFrameTableMeta carries sanitized physical names only when changed.
+
+    Int-string logical columns ("0") are ODPS-illegal and are stored under
+    sanitized names (_column_0); the meta must carry the positional mapping so
+    reads can restore the user-facing names.  When names are unchanged the
+    field stays None, mirroring DataFrameTableMeta.  The json round-trip
+    preserves the mapping.
+    """
+    dtypes = pd.Series([wrap_arrow_dtype(pa.int64())] * len(index), index=index)
+    meta = build_liteframe_table_meta(_FakeLFDtypes(dtypes))
+    assert meta.table_column_names == expected_names
+    # json round-trip preserves the mapping
+    restored = type(meta).from_json(meta.to_json())
+    assert restored == meta
+    assert restored.table_column_names == meta.table_column_names
+    assert list(restored.dtypes.index) == index
+
+    # helper agrees with the meta mapping, and None stays None
+    assert build_table_column_names(dtypes) == expected_names
+    assert build_table_column_names(None) is None
+
+
+class _FakeLFDtypes:
+    def __init__(self, dtypes):
+        self.dtypes = dtypes
+
+
+@pytest.mark.parametrize("set_dtype_backend", ["numpy"], indirect=True)
+def test_arrow_table_to_pandas_dataframe_with_meta_dtype_mismatch(set_dtype_backend):
+    """Regression: converted_column_dtypes is a dict passed to
+    cast_df_with_possible_nans. On pandas <2, Series.update(dict)
+    calls dict.reindex_like(self) → AttributeError.  The caller must
+    wrap the dict in pd.Series first."""
+    table = pa.table({"a": [1, 2, 3], "b": [4, 5, 6]})
+    meta = DataFrameTableMeta(
+        type=OutputType.dataframe,
+        table_column_names=["a", "b"],
+        table_index_column_names=["_idx_0"],
+        pd_column_dtypes=pd.Series(["float64", "float64"], index=["a", "b"]),
+        pd_column_level_names=[None],
+        pd_index_dtypes=pd.Series(["int64"], index=[None]),
+    )
+    df = arrow_table_to_pandas_dataframe(table, meta)
+    assert list(df.columns) == ["a", "b"]
+    assert df["b"].dtype == np.dtype("float64")
+    assert df["b"].tolist() == [4.0, 5.0, 6.0]

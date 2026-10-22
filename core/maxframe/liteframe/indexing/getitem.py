@@ -14,56 +14,49 @@
 
 from numbers import Integral
 
+from maxframe.core.entity import get_tileable_data
 from maxframe.liteframe.arithmetic.core import (
     _build_fused_projection,
-    _resolve_named_expr,
     _root_source_key,
     _root_source_lf,
 )
 from maxframe.liteframe.core import LITEFRAME_TYPE, LiteFrame
 from maxframe.liteframe.expressions import (
-    LiteFrameAnd,
-    LiteFrameBinaryExpr,
-    LiteFrameEq,
     LiteFrameExpr,
-    LiteFrameGe,
-    LiteFrameGt,
     LiteFrameInvert,
-    LiteFrameLe,
-    LiteFrameLt,
-    LiteFrameNe,
-    LiteFrameOr,
     NamedExpr,
     SourceCompatibilityError,
+    _is_bool_arrow_dtype,
+    is_always_boolean_expr,
+)
+from maxframe.liteframe.indexing.select import (
+    _promote_hidden_in_metadata,
+    _resolve_column_for_select,
 )
 from maxframe.liteframe.operators.filter import LiteFrameFilter
 from maxframe.liteframe.operators.project import LiteFrameProjection
 from maxframe.liteframe.utils import normalize_col_name
 
-# Expression types that produce boolean results and can be used as filter predicates
-_BOOLEAN_EXPR_TYPES = (
-    LiteFrameEq,
-    LiteFrameNe,
-    LiteFrameLt,
-    LiteFrameLe,
-    LiteFrameGt,
-    LiteFrameGe,
-    LiteFrameInvert,
-)
 
-
+# Boolean predicate detection for filter masks. ``LiteFrameInvert`` (``~``)
+# is dtype-aware bitwise NOT (bool -> bool, int -> int), so it is accepted
+# only when its resolved dtype is boolean; all other boolean-producing
+# expression classes are marked with ``_boolean_result`` in
+# ``expressions.py`` and detected via ``is_always_boolean_expr``.
 def _is_boolean_expr(expr):
-    """Check if an expression tree produces a boolean result."""
-    if isinstance(expr, _BOOLEAN_EXPR_TYPES):
-        return True
-    # Recurse into NamedExpr
+    """Check if an expression tree produces a boolean result.
+
+    ``LiteFrameInvert`` (``~``) is accepted only when its resolved dtype is
+    boolean: ``~bool_col`` is a valid boolean predicate, but ``~int_col``
+    is a bitwise (integer) expression and must not be fused into a filter
+    predicate. Comparisons, ``IsInExpr``, ``LogicalNot``, and ``And``/``Or``
+    are always boolean (see ``is_always_boolean_expr``).
+    """
+    if isinstance(expr, LiteFrameInvert):
+        return _is_bool_arrow_dtype(getattr(expr, "dtype", None))
     if isinstance(expr, NamedExpr):
         return _is_boolean_expr(expr.expr)
-    # Check binary expressions that contain boolean sub-expressions (e.g., And, Or)
-    if isinstance(expr, LiteFrameBinaryExpr):
-        if isinstance(expr, (LiteFrameAnd, LiteFrameOr)):
-            return True
-    return False
+    return is_always_boolean_expr(expr)
 
 
 def _try_extract_filter_expr(mask_lf, source_lf):
@@ -122,7 +115,33 @@ def _try_extract_filter_expr(mask_lf, source_lf):
 
 
 def liteframe_getitem(lf, key):
-    """Column projection or boolean row filtering for LiteFrame."""
+    """Column projection or boolean row filtering for LiteFrame.
+
+    Supports several key types: a string selects a single column, a list of
+    strings selects multiple columns, a slice selects rows positionally
+    (delegating to ``iloc``), and a single-column boolean LiteFrame filters
+    rows.  Single-column selection returns a LiteFrame (not a Series).
+
+    Parameters
+    ----------
+    key : str, list of str, slice, or LiteFrame
+        Selection key.  A string projects one column; a list of strings
+        projects multiple columns; an integer slice selects rows by
+        position; a boolean LiteFrame (single column) filters rows where
+        the mask is ``True``.
+
+    Returns
+    -------
+    LiteFrame
+        Projected or filtered LiteFrame.  Column projection preserves row
+        order; boolean filtering preserves the relative order of surviving
+        rows.
+
+    See Also
+    --------
+    LiteFrame.select : Explicit column selection.
+    LiteFrame.iloc : Positional indexer for rows and columns.
+    """
     if isinstance(key, slice):
         # LiteFrame uses a range index, so all slices with integer or no
         # bounds are positional (matching pandas behavior on RangeIndex).
@@ -134,13 +153,19 @@ def liteframe_getitem(lf, key):
     elif isinstance(key, str):
         # Single column projection
         key = normalize_col_name(key)
-        projections = [_resolve_named_expr(lf, key, lf.dtypes[key])]
-        return _build_fused_projection(lf, projections)
+        projections = [_resolve_column_for_select(lf, key)]
+        result = _build_fused_projection(lf, projections)
+        promoted = {key} if key in lf._hidden_columns else set()
+        _promote_hidden_in_metadata(result, promoted)
+        return result
     elif isinstance(key, list):
         # Multiple column projection
         key = [normalize_col_name(k) for k in key]
-        projections = [_resolve_named_expr(lf, k, lf.dtypes[k]) for k in key]
-        return _build_fused_projection(lf, projections)
+        projections = [_resolve_column_for_select(lf, k) for k in key]
+        result = _build_fused_projection(lf, projections)
+        promoted = {k for k in key if k in lf._hidden_columns}
+        _promote_hidden_in_metadata(result, promoted)
+        return result
     elif isinstance(key, LITEFRAME_TYPE):
         # Boolean row filtering
         expr = _try_extract_filter_expr(key, lf)
@@ -152,7 +177,8 @@ def liteframe_getitem(lf, key):
             root_source = _root_source_lf(lf)
             filter_op = LiteFrameFilter(predicate=expr)
             filtered = filter_op(LiteFrame(root_source))
-            if root_source is lf._data:
+            lf_data = get_tileable_data(lf)
+            if root_source is lf_data:
                 return filtered
             # lf is a projection — re-apply it on the filtered root source
             return lf.op(filtered)

@@ -1,0 +1,702 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1156+br.gf69dcec42\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-18 15:57+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:2
+msgid "maxframe.learn.tree.DecisionTreeClassifier"
+msgstr ""
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:1 of
+msgid "A distributed decision tree classifier."
+msgstr "分布式决策树分类器。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:3 of
+msgid ""
+"This estimator implements a distributed version of the decision tree "
+"classifier using approximate split finding with feature binning, "
+"following the approach described in [1]_. The algorithm is designed for "
+"large-scale datasets that do not fit in a single machine's memory and "
+"runs on MaxCompute's distributed execution engine."
+msgstr ""
+"该估计器使用特征分箱的近似分裂查找方法实现决策树分类器的分布式版本，遵循 "
+"[1]_ 中描述的方法。该算法专为无法装入单机内存的大规模数据集设计，运行在 "
+"MaxCompute 的分布式执行引擎上。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:9 of
+msgid ""
+"Unlike scikit-learn's DecisionTreeClassifier which uses an exact greedy "
+"algorithm to find optimal split points, this implementation discretizes "
+"continuous features into bins and finds approximate splits. This trades a"
+" small amount of split quality for the ability to efficiently aggregate "
+"statistics across distributed partitions."
+msgstr ""
+"与 scikit-learn 的 DecisionTreeClassifier 使用精确贪心算法寻找最优分裂点"
+"不同，本实现将连续特征离散化为分箱并寻找近似分裂。这以少量分裂质量为代价"
+"，换取了跨分布式分区高效聚合统计信息的能力。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:15 of
+msgid ""
+"The function to measure the quality of a split. Supported criteria are "
+"\"gini\" for the Gini impurity and \"entropy\" for the information gain."
+msgstr ""
+"用于衡量分裂质量的函数。支持的判据为 \"gini\"（基尼不纯度）和 \"entropy\""
+"（信息增益）。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:19 of
+msgid ""
+"The maximum depth of the tree. If None, then nodes are expanded until all"
+" leaves are pure or until all leaves contain less than min_samples_split "
+"samples. Note that very deep trees may require many distributed "
+"communication rounds."
+msgstr ""
+"树的最大深度。如果为 None，则节点会一直展开，直到所有叶节点纯度达标，或"
+"所有叶节点包含的样本数少于 min_samples_split。注意，非常深的树可能需要"
+"多次分布式通信轮次。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:24 of
+msgid ""
+"The maximum number of bins used to discretize continuous features. Higher"
+" values improve split approximation quality at the cost of increased "
+"memory usage and communication overhead. This parameter has no equivalent"
+" in scikit-learn and is specific to the distributed binning algorithm.  "
+"Memory usage per node group is approximately ``n_features * max_bins * "
+"n_classes * 8`` bytes. When the memory budget (controlled by "
+"``max_memory_in_mb``) is exceeded, fewer nodes are processed per "
+"iteration, increasing the number of data passes required."
+msgstr ""
+"用于将连续特征离散化的最大分箱数。值越大，分裂近似质量越好，但内存占用和"
+"通信开销也越大。此参数在 scikit-learn 中没有对应项，是分布式分箱算法特有"
+"的。  每个节点组的内存使用量约为 ``n_features * max_bins * n_classes * 8`"
+"` 字节。当超出内存预算（由 ``max_memory_in_mb`` 控制）时，每次迭代处理的"
+"节点数会减少，从而增加所需的数据遍历次数。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:24 of
+msgid ""
+"The maximum number of bins used to discretize continuous features. Higher"
+" values improve split approximation quality at the cost of increased "
+"memory usage and communication overhead. This parameter has no equivalent"
+" in scikit-learn and is specific to the distributed binning algorithm."
+msgstr ""
+"用于将连续特征离散化的最大分箱数。值越大，分裂近似质量越好，但内存占用和"
+"通信开销也越大。此参数在 scikit-learn 中没有对应项，是分布式分箱算法特有"
+"的。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:30 of
+msgid ""
+"Memory usage per node group is approximately ``n_features * max_bins * "
+"n_classes * 8`` bytes. When the memory budget (controlled by "
+"``max_memory_in_mb``) is exceeded, fewer nodes are processed per "
+"iteration, increasing the number of data passes required."
+msgstr ""
+"每个节点组的内存使用量约为 ``n_features * max_bins * n_classes * 8`` 字节"
+"。当超出内存预算（由 ``max_memory_in_mb`` 控制）时，每次迭代处理的节点"
+"数会减少，从而增加所需的数据遍历次数。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:36 of
+msgid ""
+"The minimum number of samples required to split an internal node:  - If "
+"int, then consider `min_samples_split` as the minimum number. - If float,"
+" then `min_samples_split` is a fraction and   `ceil(min_samples_split * "
+"n_samples)` are the minimum   number of samples for each split."
+msgstr ""
+"分裂内部节点所需的最小样本数：  - 如果为 int，则将 `min_samples_split` "
+"视为最小数量。  - 如果为 float，则 `min_samples_split` 为比例，且 `ceil("
+"min_samples_split * n_samples)` 为每次分裂的最小样本数。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:36 of
+msgid "The minimum number of samples required to split an internal node:"
+msgstr "分裂内部节点所需的最小样本数："
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:38 of
+msgid "If int, then consider `min_samples_split` as the minimum number."
+msgstr "如果为 int，则将 `min_samples_split` 视为最小数量。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:39 of
+msgid ""
+"If float, then `min_samples_split` is a fraction and "
+"`ceil(min_samples_split * n_samples)` are the minimum number of samples "
+"for each split."
+msgstr ""
+"如果为 float，则 `min_samples_split` 为比例，且 `ceil(min_samples_split *"
+" n_samples)` 为每次分裂的最小样本数。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:43 of
+msgid ""
+"The minimum number of samples required to be at a leaf node. A split "
+"point at any depth will only be considered if it leaves at least "
+"``min_samples_leaf`` training samples in each of the left and right "
+"branches.  - If int, then consider `min_samples_leaf` as the minimum "
+"number. - If float, then `min_samples_leaf` is a fraction and   "
+"`ceil(min_samples_leaf * n_samples)` are the minimum   number of samples "
+"for each node."
+msgstr ""
+"叶节点所需的最小样本数。在任何深度，只有当分裂在左右分支中各留下至少 ``"
+"min_samples_leaf`` 个训练样本时，该分裂点才会被考虑。  - 如果为 int，则将"
+" `min_samples_leaf` 视为最小数量。  - 如果为 float，则 `min_samples_leaf`"
+" 为比例，且 `ceil(min_samples_leaf * n_samples)` 为每个节点的最小样本数。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:43 of
+msgid ""
+"The minimum number of samples required to be at a leaf node. A split "
+"point at any depth will only be considered if it leaves at least "
+"``min_samples_leaf`` training samples in each of the left and right "
+"branches."
+msgstr ""
+"叶节点所需的最小样本数。在任何深度，只有当分裂在左右分支中各留下至少 ``"
+"min_samples_leaf`` 个训练样本时，该分裂点才会被考虑。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:48 of
+msgid "If int, then consider `min_samples_leaf` as the minimum number."
+msgstr "如果为 int，则将 `min_samples_leaf` 视为最小数量。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:49 of
+msgid ""
+"If float, then `min_samples_leaf` is a fraction and "
+"`ceil(min_samples_leaf * n_samples)` are the minimum number of samples "
+"for each node."
+msgstr ""
+"如果为 float，则 `min_samples_leaf` 为比例，且 `ceil(min_samples_leaf * n"
+"_samples)` 为每个节点的最小样本数。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:53 of
+msgid ""
+"The minimum weighted fraction of the sum total of weights (of all the "
+"input samples) required to be at a leaf node. Samples have equal weight "
+"when sample_weight is not provided."
+msgstr ""
+"所有输入样本权重总和中，叶节点所需的最小加权比例。当未提供 sample_weight "
+"时，样本权重相等。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:57 of
+msgid ""
+"The number of features to consider when looking for the best split:  - If"
+" int, then consider `max_features` features at each split. - If float, "
+"then `max_features` is a fraction and   `max(1, int(max_features * "
+"n_features))` features are considered. - If \"sqrt\", then "
+"`max_features=sqrt(n_features)`. - If \"log2\", then "
+"`max_features=log2(n_features)`. - If None, then "
+"`max_features=n_features`."
+msgstr ""
+"寻找最佳分裂时考虑的特征数：  - 如果为 int，则每次分裂考虑 `max_features`"
+" 个特征。  - 如果为 float，则 `max_features` 为比例，且考虑 `max(1, int("
+"max_features * n_features))` 个特征。  - 如果为 \"sqrt\"，则 `max_"
+"features=sqrt(n_features)`。  - 如果为 \"log2\"，则 `max_features=log2(n_"
+"features)`。  - 如果为 None，则 `max_features=n_features`。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:57 of
+msgid "The number of features to consider when looking for the best split:"
+msgstr "寻找最佳分裂时考虑的特征数："
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:59 of
+msgid "If int, then consider `max_features` features at each split."
+msgstr "如果为 int，则每次分裂考虑 `max_features` 个特征。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:60 of
+msgid ""
+"If float, then `max_features` is a fraction and `max(1, int(max_features "
+"* n_features))` features are considered."
+msgstr ""
+"如果为 float，则 `max_features` 为比例，且考虑 `max(1, int(max_features *"
+" n_features))` 个特征。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:62 of
+msgid "If \"sqrt\", then `max_features=sqrt(n_features)`."
+msgstr "如果为 \"sqrt\"，则 `max_features=sqrt(n_features)`。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:63 of
+msgid "If \"log2\", then `max_features=log2(n_features)`."
+msgstr "如果为 \"log2\"，则 `max_features=log2(n_features)`。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:64 of
+msgid "If None, then `max_features=n_features`."
+msgstr "如果为 None，则 `max_features=n_features`。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:66 of
+msgid ""
+"Controls the randomness of the estimator. The features are always "
+"randomly permuted at each split. When ``max_features < n_features``, the "
+"algorithm will select ``max_features`` at random at each split before "
+"finding the best split among them. To obtain a deterministic behaviour "
+"during fitting, ``random_state`` has to be fixed to an integer."
+msgstr ""
+"控制估计器的随机性。特征在每次分裂时总是被随机排列。当 ``max_features < n"
+"_features`` 时，算法会在每次分裂时随机选择 ``max_features`` 个特征，然后"
+"从中寻找最佳分裂。要在拟合过程中获得确定性行为，需将 ``random_state`` "
+"固定为整数。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:73 of
+msgid ""
+"A node will be split if this split induces a decrease of the impurity "
+"greater than or equal to this value.  The weighted impurity decrease "
+"equation is the following::      N_t / N * (impurity - N_t_R / N_t * "
+"right_impurity                         - N_t_L / N_t * left_impurity)  "
+"where ``N`` is the total number of samples, ``N_t`` is the number of "
+"samples at the current node, ``N_t_L`` is the number of samples in the "
+"left child, and ``N_t_R`` is the number of samples in the right child.  "
+"``N``, ``N_t``, ``N_t_R`` and ``N_t_L`` all refer to the weighted sum, if"
+" ``sample_weight`` is passed."
+msgstr ""
+"如果分裂导致的不纯度减少大于或等于此值，则节点将被分裂。加权不纯度减少"
+"公式如下::      N_t / N * (impurity - N_t_R / N_t * right_impurity       "
+"                  - N_t_L / N_t * left_impurity)  其中 ``N`` 是总样本数，"
+"``N_t`` 是当前节点的样本数，``N_t_L`` 是左子节点的样本数，``N_t_R`` 是"
+"右子节点的样本数。如果传入 ``sample_weight``，则 ``N``、``N_t``、``N_t_R`"
+"` 和 ``N_t_L`` 均指加权和。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:73 of
+msgid ""
+"A node will be split if this split induces a decrease of the impurity "
+"greater than or equal to this value."
+msgstr "如果分裂导致的不纯度减少大于或等于此值，则节点将被分裂。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:76 of
+msgid "The weighted impurity decrease equation is the following::"
+msgstr "加权不纯度减少公式如下::"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:81 of
+msgid ""
+"where ``N`` is the total number of samples, ``N_t`` is the number of "
+"samples at the current node, ``N_t_L`` is the number of samples in the "
+"left child, and ``N_t_R`` is the number of samples in the right child."
+msgstr ""
+"其中 ``N`` 是总样本数，``N_t`` 是当前节点的样本数，``N_t_L`` 是左子节点的"
+"样本数，``N_t_R`` 是右子节点的样本数。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:86 of
+msgid ""
+"``N``, ``N_t``, ``N_t_R`` and ``N_t_L`` all refer to the weighted sum, if"
+" ``sample_weight`` is passed."
+msgstr ""
+"如果传入 ``sample_weight``，则 ``N``、``N_t``、``N_t_R`` 和 ``N_t_L`` 均"
+"指加权和。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:89 of
+msgid ""
+"The maximum memory in MB to use for aggregating statistics for a group of"
+" nodes during training. If the memory budget is exceeded, fewer nodes are"
+" processed per iteration, increasing the total number of data passes. "
+"This parameter has no equivalent in scikit-learn and is specific to the "
+"distributed algorithm."
+msgstr ""
+"训练期间用于聚合一组节点统计信息的最大内存（MB）。如果超出内存预算，每次"
+"迭代处理的节点数会减少，从而增加数据遍历的总次数。此参数在 scikit-learn "
+"中没有对应项，是分布式算法特有的。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:98 of
+msgid ""
+"The class labels (single output problem), or a list of arrays of class "
+"labels (multi-output problem)."
+msgstr "类别标签（单输出问题），或类别标签数组的列表（多输出问题）。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier of
+msgid "type"
+msgstr "类型"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:101 of
+msgid "ndarray of shape (n_classes,) or a list of such arrays"
+msgstr "形状为 (n_classes,) 的 ndarray 或此类数组的列表"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:105 of
+msgid ""
+"The number of classes (single output problem), or a list containing the "
+"number of classes for each output (multi-output problem)."
+msgstr "类别数（单输出问题），或包含每个输出类别数的列表（多输出问题）。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:108 of
+msgid "int or list"
+msgstr "整数或列表"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:112 of
+msgid ""
+"The impurity-based feature importances. Currently returns all zeros (not "
+"yet implemented). Tracked as a known limitation."
+msgstr "基于不纯度的特征重要性。目前返回全零（尚未实现）。作为已知限制进行跟踪。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:115 of
+msgid ""
+"Warning: impurity-based feature importances can be misleading for high "
+"cardinality features (many unique values)."
+msgstr "警告：基于不纯度的特征重要性对于高基数特征（大量唯一值）可能会产生误导。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:118 of
+msgid "ndarray of shape (n_features,)"
+msgstr "形状为 (n_features,) 的 ndarray"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:122 of
+msgid "The inferred value of max_features."
+msgstr "max_features 的推断值。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:124
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:130
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:143 of
+msgid "int"
+msgstr "整数"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:128 of
+msgid "Number of features seen during fit."
+msgstr "拟合期间见到的特征数。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:134 of
+msgid ""
+"Names of features seen during fit. Defined only when `X` has feature "
+"names that are all strings."
+msgstr "拟合期间见到的特征名称。仅在 `X` 具有全为字符串的特征名称时定义。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:137 of
+msgid "ndarray of shape (n_features_in_,)"
+msgstr "形状为 (n_features_in_,) 的 ndarray"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:141 of
+msgid "The number of outputs when fit is performed."
+msgstr "执行拟合时的输出数。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:147 of
+msgid ""
+"The underlying Tree object. Please refer to "
+"``help(maxframe.learn.tree._tree.Tree)`` for attributes of the Tree "
+"object."
+msgstr ""
+"底层的 Tree 对象。有关 Tree 对象的属性，请参阅 ``help(maxframe.learn.tree"
+"._tree.Tree)``。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:151 of
+msgid "Tree instance"
+msgstr "Tree 实例"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:155 of
+msgid ":py:obj:`DecisionTreeRegressor`"
+msgstr "DecisionTreeRegressor"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:156 of
+msgid "A distributed decision tree regressor."
+msgstr "分布式决策树回归器。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:158 of
+msgid ":py:obj:`RandomForestClassifier`"
+msgstr "RandomForestClassifier"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:159 of
+msgid "A distributed random forest classifier."
+msgstr "分布式随机森林分类器。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:162 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:163 of
+msgid "**Distributed Algorithm**"
+msgstr "**分布式算法**"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:165 of
+msgid ""
+"This implementation uses a level-wise (breadth-first) training approach "
+"with approximate split finding, following the algorithm described in "
+"[1]_:"
+msgstr ""
+"本实现采用逐层（广度优先）训练方法进行近似分裂查找，遵循 [1]_ 中描述的"
+"算法："
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:168 of
+msgid ""
+"Continuous features are discretized into ``max_bins`` bins using "
+"approximate quantile thresholds computed from a sample of the data."
+msgstr "连续特征使用从数据样本中计算的近似分位数阈值离散化为 ``max_bins`` 个分箱。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:170 of
+msgid ""
+"At each level of the tree, sufficient statistics (per-bin class counts "
+"for classification, or sum/variance for regression) are aggregated across"
+" all distributed partitions and then reduced via a shuffle operation."
+msgstr ""
+"在树的每一层，充分统计量（分类为每个分箱的类别计数，回归为每个分箱的和/"
+"方差）会在所有分布式分区上聚合，然后通过 shuffle 操作进行归约。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:174 of
+msgid ""
+"Best splits are found by evaluating impurity improvement at each bin "
+"boundary using the merged statistics."
+msgstr "使用合并后的统计信息，在每个分箱边界处评估不纯度改善以找到最佳分裂。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:176 of
+msgid ""
+"Multiple nodes at the same level are processed simultaneously, grouped to"
+" fit within the ``max_memory_in_mb`` budget."
+msgstr "同一层级的多个节点同时处理，并分组以适应 ``max_memory_in_mb`` 预算。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:179 of
+msgid "**Limitations compared to scikit-learn**"
+msgstr "**与 scikit-learn 相比的限制**"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:181 of
+msgid ""
+"The following features are **not supported** due to fundamental "
+"incompatibility with the distributed level-wise training algorithm:"
+msgstr "由于与分布式逐层训练算法存在根本性不兼容，以下功能**不受支持**："
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:184 of
+msgid ""
+"``splitter``: Only \"best\" splitting is supported. The \"random\" "
+"splitter (used by ExtraTrees) is not available because the binning "
+"approach already provides a form of discretization."
+msgstr ""
+"``splitter``：仅支持 \"best\" 分裂。\"random\" 分裂器（用于 ExtraTrees）"
+"不可用，因为分箱方法已经提供了一种离散化形式。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:187 of
+msgid ""
+"``max_leaf_nodes``: Best-first tree growth is incompatible with level-"
+"wise distributed training. Use ``max_depth`` to control tree size "
+"instead."
+msgstr ""
+"``max_leaf_nodes``：最佳优先的树生长与逐层分布式训练不兼容。请改用 ``max_"
+"depth`` 控制树的大小。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:190 of
+msgid "``ccp_alpha``: Cost-complexity pruning is not currently supported."
+msgstr "``ccp_alpha``：当前不支持代价复杂度剪枝。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:192 of
+msgid "The following features are **deferred to future versions**:"
+msgstr "以下功能**推迟到未来版本**："
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:194 of
+msgid "``monotonic_cst``: Monotonicity constraints."
+msgstr "``monotonic_cst``：单调性约束。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:195 of
+msgid "``class_weight``: Class weight balancing."
+msgstr "``class_weight``：类别权重平衡。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:196 of
+msgid "``oob_score``: Out-of-bag scoring (only applies to forests)."
+msgstr "``oob_score``：袋外评分（仅适用于森林）。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:198 of
+msgid "**Performance Considerations**"
+msgstr "**性能考量**"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:200 of
+msgid ""
+"The number of distributed communication rounds equals the tree depth. "
+"Deep trees (``max_depth > 15``) may be expensive."
+msgstr "分布式通信轮次等于树的深度。较深的树（``max_depth > 15``）可能代价较高。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:202 of
+msgid ""
+"Increasing ``max_bins`` improves split quality but increases per-round "
+"memory and communication. For most datasets, 32-64 bins are sufficient."
+msgstr ""
+"增大 ``max_bins`` 可提高分裂质量，但会增加每轮的内存和通信开销。对于"
+"大多数数据集，32-64 个分箱即可满足需求。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:204 of
+msgid ""
+"The ``max_memory_in_mb`` parameter controls how many nodes are processed "
+"per iteration. Lower values increase the number of data passes but "
+"prevent out-of-memory errors."
+msgstr ""
+"``max_memory_in_mb`` 参数控制每次迭代处理的节点数。值越小，数据遍历次数越"
+"多，但可防止内存溢出错误。"
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:209 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:210 of
+msgid ""
+"L. Breiman, J. Friedman, R. Olshen, and C. Stone, \"Classification and "
+"Regression Trees\", Wadsworth, 1984."
+msgstr ""
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:213 of
+msgid ""
+"L. Breiman, and A. Cutler, \"Random Forests\", "
+"https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm"
+msgstr ""
+
+#: maxframe.learn.tree._classes.DecisionTreeClassifier:217 of
+msgid "示例"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`__init__ "
+"<maxframe.learn.tree.DecisionTreeClassifier.__init__>`\\ \\(\\*\\[\\, "
+"criterion\\, max\\_depth\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`execute <maxframe.learn.tree.DecisionTreeClassifier.execute>`\\ "
+"\\(\\[session\\, run\\_kwargs\\, extra\\_tileables\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`fetch <maxframe.learn.tree.DecisionTreeClassifier.fetch>`\\ "
+"\\(\\[session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`fit <maxframe.learn.tree.DecisionTreeClassifier.fit>`\\ \\(X\\, "
+"y\\[\\, sample\\_weight\\, execute\\, session\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid "Fit a distributed decision tree classifier."
+msgstr "拟合分布式决策树分类器。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`get_metadata_routing "
+"<maxframe.learn.tree.DecisionTreeClassifier.get_metadata_routing>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid "Get metadata routing of this object."
+msgstr "获取此对象的元数据路由。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`get_params "
+"<maxframe.learn.tree.DecisionTreeClassifier.get_params>`\\ "
+"\\(\\[deep\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid "Get parameters for this estimator."
+msgstr "获取此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`predict <maxframe.learn.tree.DecisionTreeClassifier.predict>`\\ "
+"\\(X\\[\\, execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid "Predict class for X."
+msgstr "预测 X 的类别。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`predict_proba "
+"<maxframe.learn.tree.DecisionTreeClassifier.predict_proba>`\\ \\(X\\[\\, "
+"execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid "Predict class probabilities for X."
+msgstr "预测 X 的类别概率。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`score <maxframe.learn.tree.DecisionTreeClassifier.score>`\\ "
+"\\(X\\, y\\[\\, sample\\_weight\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid "Return the mean accuracy on the given test data and labels."
+msgstr "返回给定测试数据和标签上的平均准确率。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`set_fit_request "
+"<maxframe.learn.tree.DecisionTreeClassifier.set_fit_request>`\\ "
+"\\(\\*\\[\\, execute\\, run\\_kwargs\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``fit`` method."
+msgstr "配置是否应请求将元数据传递给 ``fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`set_params "
+"<maxframe.learn.tree.DecisionTreeClassifier.set_params>`\\ "
+"\\(\\*\\*params\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid "Set the parameters of this estimator."
+msgstr "设置此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`set_predict_proba_request "
+"<maxframe.learn.tree.DecisionTreeClassifier.set_predict_proba_request>`\\"
+" \\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``predict_proba`` method."
+msgstr "配置是否应请求将元数据传递给 ``predict_proba`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`set_predict_request "
+"<maxframe.learn.tree.DecisionTreeClassifier.set_predict_request>`\\ "
+"\\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``predict`` method."
+msgstr "配置是否应请求将元数据传递给 ``predict`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+":py:obj:`set_score_request "
+"<maxframe.learn.tree.DecisionTreeClassifier.set_score_request>`\\ "
+"\\(\\*\\[\\, sample\\_weight\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:34:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``score`` method."
+msgstr "配置是否应请求将元数据传递给 ``score`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:36
+msgid "Attributes"
+msgstr "属性"
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:39:<autosummary>:1
+msgid ":py:obj:`tree_ <maxframe.learn.tree.DecisionTreeClassifier.tree_>`"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.tree.DecisionTreeClassifier.rst:39:<autosummary>:1
+msgid "The underlying Tree object."
+msgstr "底层的 Tree 对象。"
+

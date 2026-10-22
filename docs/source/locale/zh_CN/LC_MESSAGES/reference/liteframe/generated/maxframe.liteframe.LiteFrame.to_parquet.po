@@ -1,0 +1,110 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_parquet.rst:2
+msgid "maxframe.liteframe.LiteFrame.to\\_parquet"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:1 of
+msgid ""
+"Write a LiteFrame to the binary parquet format, each chunk will be "
+"written to a Parquet file."
+msgstr "将 LiteFrame 写入二进制 parquet 格式，每个块将写入一个 Parquet 文件。"
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:4 of
+msgid "Simplified version for LiteFrame with no index semantics."
+msgstr "LiteFrame 的简化版本，没有索引语义。"
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:6 of
+msgid ""
+"If path is a string with wildcard e.g. '/to/path/out-*.parquet', "
+"`to_parquet` will try to write multiple files, for instance, chunk (0, 0)"
+" will write data into '/to/path/out-0.parquet'. If path is a string "
+"without wildcard and partition_cols is None, all data will be written "
+"into a single file. If path is a string with wildcard or partition_cols "
+"is not None, we will treat it as a directory."
+msgstr ""
+"如果路径是带有通配符的字符串，例如 '/to/path/out-*.parquet'，`to_parquet`"
+" 将尝试写入多个文件，例如，块 (0, 0) 将数据写入 '/to/path/out-0.parquet'"
+"。如果路径是不带通配符的字符串且 partition_cols 为 None，则所有数据将写入"
+"单个文件。如果路径是带有通配符的字符串或 partition_cols 不为 None，我们将"
+"将其视为目录。"
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:14 of
+msgid "Parquet library to use. Only 'pyarrow' is currently supported."
+msgstr "要使用的 Parquet 库。目前仅支持 'pyarrow'。"
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:16 of
+msgid "Name of the compression to use. Use ``None`` for no compression."
+msgstr "要使用的压缩名称。使用 ``None`` 表示无压缩。"
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:18 of
+msgid ""
+"Column names by which to partition the dataset. Columns are partitioned "
+"in the order they are given. Must be None if path is not a string."
+msgstr ""
+"用于对数据集进行分区的列名。列按给定顺序进行分区。如果路径不是字符串，则"
+"必须为 None。"
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:22 of
+msgid "Extra options that make sense for a particular storage connection."
+msgstr "对特定存储连接有意义的额外选项。"
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:24 of
+msgid "Additional arguments passed to the parquet library."
+msgstr "传递给 parquet 库的附加参数。"
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:26 of
+msgid "Returns a stub LiteFrame for execution."
+msgstr "返回用于执行的存根 LiteFrame。"
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:31 of
+msgid ":py:obj:`read_parquet`"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:32 of
+msgid "Read a Parquet file into a LiteFrame."
+msgstr "将 Parquet 文件读取到 LiteFrame 中。"
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:34 of
+msgid ":py:obj:`to_csv`"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:35 of
+msgid "Write a LiteFrame to a CSV file."
+msgstr "将 LiteFrame 写入 CSV 文件。"
+
+#: maxframe.liteframe.datastore.to_parquet.to_parquet:38 of
+msgid "示例"
+msgstr ""
+

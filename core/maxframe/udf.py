@@ -144,7 +144,14 @@ class BuiltinFunction(Serializable):
     def __init__(self, func: Optional[Callable] = None, **kw):
         self._func = func
         if func is not None:
-            func_name = extract_class_name(func)
+            # Unwrap ``MarkedFunction`` for name extraction: its
+            # ``__module__`` resolves to the class's module
+            # (``maxframe.udf``), not the raw function's, so the registered
+            # name would point at the wrong module and worker reload would
+            # recurse infinitely.  The ``MarkedFunction`` is retained in
+            # ``_func`` for client-side scheduling-hint extraction.
+            name_source = func.func if isinstance(func, MarkedFunction) else func
+            func_name = extract_class_name(name_source)
             if "<" in func_name:
                 raise ValueError("Cannot be a local or lambda function")
             kw["func_name"] = kw.get("func_name") or func_name
@@ -167,7 +174,52 @@ class BuiltinFunction(Serializable):
     def __getattr__(self, item):
         if item.startswith("_") and not item.endswith("_"):
             return super().__getattribute__(item)
-        return getattr(self.func, item)
+        attr = getattr(self.func, item)
+        # Wrap callable methods as BuiltinMethod only for a
+        # builtin-decorated *class*: BuiltinMethod.func reloads+instantiates
+        # the class, so wrapping a plain function's callable attrs (e.g.
+        # inspect.unwrap descending __wrapped__, singledispatch.register)
+        # would call the function with no args and break.
+        if (
+            callable(attr)
+            and not isinstance(attr, type)
+            and isinstance(self.func, type)
+        ):
+            return BuiltinMethod(func_name=self.func_name, method_name=item)
+        return attr
+
+    def __call__(self, *args, **kw):
+        return self.func(*args, **kw)
+
+
+class BuiltinMethod(BuiltinFunction):
+    """Wrap an instance method of a ``@builtin_function``-decorated class.
+
+    Carries the class ``func_name`` + ``method_name``.  On the worker, the
+    class is reloaded by name, instantiated, and the bound method is invoked
+    -- preserving ``self`` binding for instance methods (e.g. ``CustomAgg``
+    ``pre``/``post``) sent through ``transform_chunk``.
+
+    ``isinstance(bm, BuiltinFunction)`` is ``True`` so ``has_custom_code``
+    checks return ``False`` (no isolation sandbox).
+    """
+
+    method_name = StringField("method_name", default=None)
+
+    def __init__(self, func_name=None, method_name=None, **kw):
+        kw["func_name"] = func_name
+        kw["method_name"] = method_name
+        super().__init__(func=None, **kw)
+
+    @property
+    def func(self):
+        # Reload the @builtin_function-decorated class by name.  The module
+        # attribute IS a BuiltinFunction after decoration, so restrict_type
+        # is BuiltinFunction.
+        bf_cls = load_member(self.func_name, BuiltinFunction)
+        cls = bf_cls.func  # the original class
+        instance = cls()  # instantiate
+        return getattr(instance, self.method_name)  # bound method
 
     def __call__(self, *args, **kw):
         return self.func(*args, **kw)
@@ -205,6 +257,28 @@ class MarkedFunction(Serializable):
 
     def __call__(self, *args, **kw):
         return self.func(*args, **kw)
+
+    def __get__(self, instance, owner=None):
+        """Bind ``self`` to *instance* for method-style access.
+
+        ``@with_running_options`` / ``@with_resources`` decorate a method
+        by storing a ``MarkedFunction`` on the class.  Without a descriptor,
+        ``instance.method`` returns the *unbound* ``MarkedFunction``, so a
+        decorated ``CustomAgg.pre``/``.agg``/``.post`` (or any decorated
+        instance method) drops ``self`` and crashes on call.
+
+        Returning ``functools.partial(self, instance)`` binds the first
+        positional argument to the instance while keeping the
+        ``MarkedFunction`` discoverable via ``partial.func`` —
+        ``discover_marked_functions`` already traverses ``functools.partial``
+        into its ``.func``, so scheduling-hint extraction still finds the
+        running options on the bound method.  When accessed on the class
+        (``instance is None``) return ``self`` unchanged so class-level
+        introspection (``cls.pre is CustomAgg.pre``) keeps working.
+        """
+        if instance is None:
+            return self
+        return functools.partial(self, instance)
 
     def __repr__(self):
         return f"<MarkedFunction {self.func!r}>"
@@ -368,6 +442,7 @@ def with_running_options(
     memory_limit: Optional[Union[str, int]] = None,
     gu: Optional[int] = None,
     gu_quota: Optional[Union[str, List[str]]] = None,
+    gu_type: Optional[str] = None,
     **kwargs,
 ):
     """
@@ -395,6 +470,12 @@ def with_running_options(
         The GU number to run the UDF.
     gu_quota: Optional[Union[str, List[str]]]
         The GU quota nicknames to run the UDF. The order is the priority of the usage.
+    gu_type: Optional[str]
+        The GU specification type for Spot GU quota
+        (e.g. "gu.gu8tf-8x.spot").
+        Required for Spot quota; must be used together with ``gu_quota``.
+        When set, the UDF is marked as GPU-based and the actual GPU count is
+        resolved from this specification.
     image_name: Optional[str]
         The registered image name in MaxCompute to use for running the UDF.
     kwargs
@@ -417,8 +498,11 @@ def with_running_options(
             raise ValueError("memory_limit must be greater than 0")
     if gu is not None and gu <= 0:
         raise ValueError("gu must be greater than 0")
-    if gu is not None and (cpu or memory):
-        raise ValueError("gu can't be specified with cpu or memory")
+    if gu_type is not None and not gu_quota:
+        raise ValueError("gu_type requires gu_quota to be specified")
+    use_gpu = gu_type is not None or is_positive_integer(gu)
+    if use_gpu and (cpu or memory):
+        raise ValueError("gu or gu_type can't be specified with cpu or memory")
 
     if cpu:
         resources["cpu"] = cpu
@@ -435,7 +519,8 @@ def with_running_options(
         resources["gpu"] = gu
     if gu_quota is not None:
         resources["gu_quota"] = gu_quota
-    use_gpu = is_positive_integer(gu)
+    if gu_type is not None:
+        resources["gu_type"] = gu_type
 
     def func_wrapper(func):
         if not all(

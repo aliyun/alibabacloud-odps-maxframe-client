@@ -1,0 +1,66 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 15:05+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.mul.rst:2
+msgid "maxframe.liteframe.LiteFrame.mul"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.binary.mul:1 of
+msgid "Element-wise multiplication (``lf * other``)."
+msgstr "元素级乘法（``lf * other``）。"
+
+#: maxframe.liteframe.arithmetic.binary.mul:3 of
+msgid ""
+"Bound to the ``*`` operator (``__mul__``), so ``lf * other`` is "
+"equivalent to ``lf.mul(other)``."
+msgstr ""
+"绑定到 ``*`` 运算符（``__mul__``），因此 ``lf * other`` 等价于 ``lf.mul("
+"other)``。"
+
+#: maxframe.liteframe.arithmetic.binary.mul of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.binary.mul:6 of
+msgid "Value to multiply each element of ``lf`` by."
+msgstr "用于乘以 ``lf`` 每个元素的值。"
+
+#: maxframe.liteframe.arithmetic.binary.mul of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.binary.mul:9 of
+msgid "Lazy frame with element-wise product of ``lf`` and ``other``."
+msgstr "包含 ``lf`` 和 ``other`` 元素级乘积的惰性框架。"
+
+#: maxframe.liteframe.arithmetic.binary.mul of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.binary.mul:13 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.arithmetic.binary.mul:22 of
+msgid "Using the ``*`` operator:"
+msgstr "使用 ``*`` 运算符："
+
+

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from maxframe.core.entity.core import ENTITY_TYPE, Entity, EntityData
+from maxframe.core.entity.core import ENTITY_TYPE, Entity, EntityData, get_tileable_data
 from maxframe.core.entity.executable import ExecutableTuple, _ExecuteAndFetchMixin
 from maxframe.core.entity.objects import OBJECT_TYPE, Object, ObjectData
 from maxframe.core.entity.output_types import (

@@ -1,0 +1,160 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:2
+msgid "maxframe.liteframe.window.expanding.LiteFrameExpanding"
+msgstr ""
+
+#: maxframe.liteframe.window.expanding.LiteFrameExpanding:1 of
+msgid "Provide expanding window calculations."
+msgstr "提供扩展窗口计算。"
+
+#: maxframe.liteframe.window.expanding.LiteFrameExpanding:3 of
+msgid ""
+"Returns an intermediate object whose aggregation methods (``.sum()``, "
+"``.mean()``, ...) compute a growing cumulative window from the start of "
+"the partition to the current row.  Unlike ``cum*``, expanding fills NaN "
+"positions with the accumulated value rather than masking them to null."
+msgstr ""
+"返回一个中间对象，其聚合方法（``.sum()``、``.mean()`` 等）从分区开始到"
+"当前行计算不断增长的累积窗口。与 ``cum*`` 不同，扩展窗口用累积值填充 NaN "
+"位置，而不是将其掩码为 null。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.window.expanding.LiteFrameExpanding:8 of
+msgid "The LiteFrame to compute on."
+msgstr "要计算的 LiteFrame。"
+
+#: maxframe.liteframe.window.expanding.LiteFrameExpanding:10 of
+msgid ""
+"Minimum number of observations in the window required to produce a value "
+"(otherwise null)."
+msgstr "窗口中产生值所需的最小观测数（否则为 null）。"
+
+#: maxframe.liteframe.window.expanding.LiteFrameExpanding:13 of
+msgid ""
+"Column(s) to aggregate. If None, all columns are aggregated. Non-selected"
+" columns are passed through unchanged."
+msgstr "要聚合的列。如果为 None，则聚合所有列。未选择的列保持不变通过。"
+
+#: maxframe.liteframe.window.expanding.LiteFrameExpanding:16 of
+msgid ""
+"Set when created from a ``groupby.expanding()`` call so the tiler "
+"partitions data by group key before computing per-group windows."
+msgstr ""
+"从 ``groupby.expanding()`` 调用创建时设置，以便在计算每组窗口之前按分组键"
+"对数据进行分区。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:14
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`__init__ "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.__init__>`\\ "
+"\\(liteframe\\[\\, min\\_periods\\, columns\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`agg "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.agg>`\\ "
+"\\(func\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid "Aggregate using one of the supported function names."
+msgstr "使用支持的函数名之一进行聚合。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`count "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.count>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid "Expanding count of non-null observations."
+msgstr "非空观测值的扩展计数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`max "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.max>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid "Expanding maximum."
+msgstr "扩展最大值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`mean "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.mean>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid "Expanding mean."
+msgstr "扩展均值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`min "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.min>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid "Expanding minimum."
+msgstr "扩展最小值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`std "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.std>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid "Expanding standard deviation (ddof=1)."
+msgstr "扩展标准差（ddof=1）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`sum "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.sum>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid "Expanding sum."
+msgstr "扩展求和。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid ""
+":py:obj:`var "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.var>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.rst:25:<autosummary>:1
+msgid "Expanding variance (ddof=1)."
+msgstr "扩展方差（ddof=1）。"
+

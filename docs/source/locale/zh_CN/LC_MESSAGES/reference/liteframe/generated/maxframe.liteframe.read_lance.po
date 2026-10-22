@@ -1,0 +1,93 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_lance.rst:2
+msgid "maxframe.liteframe.read\\_lance"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:1 of
+msgid "Read a Lance dataset into a LiteFrame."
+msgstr "将 Lance 数据集读取为 LiteFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_lance.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:3 of
+msgid "Path to the Lance dataset. Supports local, OSS, and S3 URIs."
+msgstr "Lance 数据集的路径。支持本地、OSS 和 S3 URI。"
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:5 of
+msgid "Specific version of the dataset to read."
+msgstr "要读取的数据集特定版本。"
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:7 of
+msgid "ISO 8601 timestamp for point-in-time read. Cannot be used with version."
+msgstr "用于时间点读取的 ISO 8601 时间戳。不能与版本一起使用。"
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:9 of
+msgid "Column names to read. None reads all columns."
+msgstr "要读取的列名。None 表示读取所有列。"
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:11 of
+msgid "SQL filter string or CNF filter list for predicate pushdown."
+msgstr "用于谓词下推的 SQL 过滤器字符串或 CNF 过滤器列表。"
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:13 of
+msgid "If True, include Lance's ``_rowaddr`` column as a hidden column."
+msgstr "如果为 True，则将 Lance 的 ``_rowaddr`` 列作为隐藏列包含。"
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:15 of
+msgid "Storage connection options (e.g. role_arn for OSS)."
+msgstr "存储连接选项（例如 OSS 的 role_arn）。"
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:17 of
+msgid "Target chunk size for splitting fragments."
+msgstr "分割片段的目标块大小。"
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:19 of
+msgid "Whether to merge small fragments into larger chunks."
+msgstr "是否将小片段合并为更大的块。"
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:21 of
+msgid "Additional keyword arguments passed to Lance."
+msgstr "传递给 Lance 的额外关键字参数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_lance.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:27 of
+msgid ":py:obj:`LiteFrame.to_lance`"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:28 of
+msgid "Write a LiteFrame to a Lance dataset."
+msgstr "将 LiteFrame 写入 Lance 数据集。"
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:30 of
+msgid ":py:obj:`read_parquet`"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_lance.read_lance:31 of
+msgid "Read a Parquet file into a LiteFrame."
+msgstr "将 Parquet 文件读取为 LiteFrame。"
+

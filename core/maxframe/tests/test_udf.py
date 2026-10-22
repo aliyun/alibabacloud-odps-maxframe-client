@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import functools
+import inspect
 import textwrap
 
 import pytest
@@ -23,9 +24,11 @@ from maxframe.config import option_context
 from maxframe.core.operator import Operator
 from maxframe.tests.utils import tn
 from maxframe.udf import (
+    BuiltinMethod,
     FsMountOptions,
     MarkedFunction,
     ODPSFunction,
+    builtin_function,
     copy_func_scheduling_hints,
     discover_marked_functions,
     with_fs_mount,
@@ -33,6 +36,33 @@ from maxframe.udf import (
     with_resources,
     with_running_options,
 )
+
+# Module-level @builtin_function targets for attribute-access regressions.
+
+
+def _bf_inner(x):
+    return x
+
+
+@builtin_function
+@functools.wraps(_bf_inner)
+def _bf_wraps_outermost(x):
+    """``@builtin_function`` *outside* ``@functools.wraps`` so the builtin's
+    underlying func carries ``__wrapped__ -> _bf_inner``.  Exercises the
+    ``BuiltinFunction.__getattr__`` guard: the prior implementation re-wrapped
+    callable ``__wrapped__`` as a ``BuiltinMethod`` and ``inspect.unwrap``
+    failed by calling the function with no args."""
+    return _bf_inner(x)
+
+
+@builtin_function
+@functools.singledispatch
+def _bf_sd_outermost(x):
+    """``@builtin_function`` *outside* ``@functools.singledispatch`` so
+    ``.register`` reaches ``BuiltinFunction.__getattr__``.  The prior
+    implementation returned a ``BuiltinMethod`` that failed on reload.
+    """
+    return x
 
 
 def test_odps_function():
@@ -396,6 +426,21 @@ def test_with_image_options():
             return x
 
 
+def test_with_running_options_gu_type_marks_gpu_and_requires_quota():
+    with pytest.raises(ValueError, match="gu_type requires gu_quota"):
+        with_running_options(gu_type="gu.gu8tf-8x.spot")
+
+    @with_running_options(gu_type="gu.gu8tf-8x.spot", gu_quota="spot")
+    def spot_func(x):
+        return x
+
+    assert spot_func.expect_resources == {
+        "gu_quota": ["spot"],
+        "gu_type": "gu.gu8tf-8x.spot",
+    }
+    assert spot_func.gpu
+
+
 def test_copy_func_scheduling_hints():
     # Test with a regular function (no scheduling hints)
     with option_context() as options:
@@ -748,3 +793,44 @@ def test_discover_marked_functions_with_wrapped():
     result = discover_marked_functions(wrapper2)
     assert len(result) == 1
     assert result[0] is deep_inner
+
+
+def test_builtin_function_inspect_unwrap():
+    """Regression: ``inspect.unwrap`` on a ``@builtin_function``
+    function whose underlying func carries ``__wrapped__`` must
+    descend to the original function, not raise by re-wrapping
+    callable ``__wrapped__`` as a ``BuiltinMethod``.
+
+    ``@builtin_function`` is the *outermost* decorator over
+    ``@functools.wraps(_bf_inner)``, so the builtin's ``self.func`` is a
+    plain function with ``__wrapped__ -> _bf_inner``.  The prior
+    ``__getattr__`` wrapped every callable attribute as a ``BuiltinMethod``
+    and ``BuiltinMethod.func`` re-instantiated the (non-class) function with
+    no args, so ``inspect.unwrap`` raised.  Restoring the prior
+    implementation must fail this assertion; the current guard (only wrap
+    when ``self.func`` is a type) passes it.
+    """
+    unwrapped = inspect.unwrap(_bf_wraps_outermost)
+    assert (
+        unwrapped is _bf_inner
+    ), f"inspect.unwrap did not reach _bf_inner: {unwrapped!r}"
+
+
+def test_builtin_function_singledispatch_register():
+    """Regression: ``singledispatch.register`` on a ``@builtin_function``
+    singledispatch (``@builtin_function`` *outside* ``@singledispatch``)
+    must return the handler and actually dispatch.
+
+    With ``@builtin_function`` outermost, ``.register`` reaches
+    ``BuiltinFunction.__getattr__``.  The prior implementation returned a
+    ``BuiltinMethod`` whose ``func`` re-instantiated the (non-class)
+    dispatcher and failed on reload; the current guard returns the handler
+    unchanged.  Register an ``int`` handler through the builtin object and
+    assert calling it with an ``int`` returns the handler's result.
+    """
+    int_handler = _bf_sd_outermost.register(int)
+    assert callable(int_handler)
+    assert not isinstance(int_handler, BuiltinMethod)
+    # The registration must actually land on the underlying singledispatch
+    _bf_sd_outermost.register(str)(object())
+    assert int_handler(0) == 0

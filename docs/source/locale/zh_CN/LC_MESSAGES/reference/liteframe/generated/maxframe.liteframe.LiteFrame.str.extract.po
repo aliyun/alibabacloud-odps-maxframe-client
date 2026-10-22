@@ -1,0 +1,92 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.extract.rst:2
+msgid "maxframe.liteframe.LiteFrame.str.extract"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.extract:1
+msgid "Extract capture groups in the regex `pat` as columns in a DataFrame."
+msgstr "将正则表达式 `pat` 中的捕获组提取为 DataFrame 中的列。"
+
+#: of pandas.core.strings.accessor.StringMethods.extract:3
+msgid ""
+"For each subject string in the Series, extract groups from the first "
+"match of regular expression `pat`."
+msgstr "对于 Series 中的每个字符串，从正则表达式 `pat` 的第一次匹配中提取组。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.extract.rst
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.extract:6
+msgid "Regular expression pattern with capturing groups."
+msgstr "带有捕获组的正则表达式模式。"
+
+#: of pandas.core.strings.accessor.StringMethods.extract:8
+msgid ""
+"Flags from the ``re`` module, e.g. ``re.IGNORECASE``, that modify regular"
+" expression matching for things like case, spaces, etc. For more details,"
+" see :mod:`re`."
+msgstr ""
+"来自 ``re`` 模块的标志，例如 ``re.IGNORECASE``，用于修改正则表达式匹配的"
+"大小写、空格等。有关更多详细信息，请参见 :mod:`re`。"
+
+#: of pandas.core.strings.accessor.StringMethods.extract:12
+msgid ""
+"If True, return DataFrame with one column per capture group. If False, "
+"return a Series/Index if there is one capture group or DataFrame if there"
+" are multiple capture groups."
+msgstr ""
+"如果为 True，则返回每捕获组一列的 DataFrame。如果为 False，如果有单个捕获"
+"组则返回 Series/Index，如果有多个捕获组则返回 DataFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.extract.rst
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.extract:17
+msgid ""
+"A DataFrame with one row for each subject string, and one column for each"
+" group. Any capture group names in regular expression pat will be used "
+"for column names; otherwise capture group numbers will be used. The dtype"
+" of each result column is always object, even when no match is found. If "
+"``expand=False`` and pat has only one capture group, then return a Series"
+" (if subject is a Series) or Index (if subject is an Index)."
+msgstr ""
+"一个 DataFrame，每个字符串对应一行，每个组对应一列。正则表达式 pat 中的"
+"任何捕获组名称都将用作列名；否则将使用捕获组编号。即使未找到匹配项，每个"
+"结果列的数据类型始终为 object。如果 ``expand=False`` 且 pat 只有一个捕获"
+"组，则返回 Series（如果 subject 是 Series）或 Index（如果 subject 是 "
+"Index）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.extract.rst
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.extract:29
+msgid ":py:obj:`extractall`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.extract:30
+msgid "Returns all matches (not just the first match)."
+msgstr "返回所有匹配项（不仅仅是第一次匹配）。"
+

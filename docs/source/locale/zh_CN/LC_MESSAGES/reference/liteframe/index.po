@@ -1,0 +1,85 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 11:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/index.rst:4
+msgid "MaxFrame LiteFrame"
+msgstr ""
+
+#: ../../source/reference/liteframe/index.rst:6
+msgid ""
+"This page gives an overview of all public MaxFrame LiteFrame objects, "
+"functions and methods. All classes and functions exposed in "
+"``maxframe.liteframe.*`` namespace are public."
+msgstr ""
+"本页面概述了所有公共的 MaxFrame LiteFrame 对象、函数和方法。在 ``maxframe"
+".liteframe.*`` 命名空间中公开的所有类和函数都是公共的。"
+
+#: ../../source/reference/liteframe/index.rst:9
+msgid ""
+"LiteFrame is a performance-dedicated tabular data type in MaxFrame with *"
+"*no index semantics**, designed for simplified column-based operations "
+"with Arrow dtypes as first-class citizens. It provides a pandas-looking "
+"DataFrame API that eliminates the complexity of index management — no "
+"implicit label alignment, no unexpected frame stacking during aggregation"
+", and no silent type promotion when integer columns contain nulls. By "
+"removing index overhead and embedding element-wise expressions in a small"
+" set of fusible operators, LiteFrame achieves lower planning cost and "
+"higher execution throughput."
+msgstr ""
+"LiteFrame 是 MaxFrame 中专为性能设计的表格数据类型，具有**无索引语义**的"
+"特点，专为简化的基于列的操作而设计，将 Arrow 数据类型作为一等公民。它提供"
+"了一个类似 pandas 的 DataFrame API，消除了索引管理的复杂性——没有隐式标签"
+"对齐，在聚合期间没有意外的框架堆叠，当整数列包含空值时也没有静默的类型"
+"提升。通过移除索引开销并将元素级表达式嵌入到一组可融合操作符中，LiteFrame"
+" 实现了更低的规划成本和更高的执行吞吐量。"
+
+#: ../../source/reference/liteframe/index.rst:18
+msgid ""
+"LiteFrame is **not** a replacement for the existing MaxFrame DataFrame. "
+"It serves a complementary role: a simpler, index-free substrate for "
+"workflows that do not need full pandas Index behavior. Both LiteFrame and"
+" DataFrame coexist in MaxFrame — choose LiteFrame for straightforward "
+"column-oriented data processing, or use DataFrame when you need index-"
+"aware operations."
+msgstr ""
+"LiteFrame **不是**现有 MaxFrame DataFrame 的替代品。它起着互补的作用："
+"对于不需要完整 pandas 索引行为的工作流程，提供一个更简单、无索引的基础。"
+"LiteFrame 和 DataFrame 在 MaxFrame 中共存——选择 LiteFrame 进行直接的面向"
+"列的数据处理，或者在需要索引感知操作时使用 DataFrame。"
+
+#: ../../source/reference/liteframe/index.rst:24
+msgid ""
+"All operations are lazy: they return LiteFrame objects that are executed "
+"on demand via ``.execute()``. Row order is preserved through execution "
+"unless an operator explicitly reorders rows, enabling positional APIs "
+"like ``iloc``, ``head``, ``shift``, and cumulative operations."
+msgstr ""
+"所有操作都是惰性的：它们返回通过 ``.execute()`` 按需执行的 LiteFrame 对象"
+"。行顺序在执行过程中得以保留，除非操作符明确重新排序行，这使得位置 API 如"
+" ``iloc``、``head``、``shift`` 和累积操作成为可能。"
+
+#: ../../source/reference/liteframe/index.rst:31
+msgid ""
+"The LiteFrame API is currently in beta. While functional, it may evolve "
+"in future releases — method names, parameters, and behavior may change "
+"based on feedback and further development."
+msgstr "LiteFrame API 目前处于 beta 阶段。虽然功能可用，但后续版本中可能会演进——方法名、参数和行为可能会根据反馈和后续开发进行调整。"
+
