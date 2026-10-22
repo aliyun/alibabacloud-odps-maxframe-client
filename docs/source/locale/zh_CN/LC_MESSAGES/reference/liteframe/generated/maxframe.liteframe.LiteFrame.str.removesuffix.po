@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.removesuffix.rst:2
+msgid "maxframe.liteframe.LiteFrame.str.removesuffix"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.removesuffix:1
+msgid "Remove a suffix from an object series."
+msgstr "从对象序列中移除后缀。"
+
+#: of pandas.core.strings.accessor.StringMethods.removesuffix:3
+msgid "If the suffix is not present, the original string will be returned."
+msgstr "如果后缀不存在，则返回原始字符串。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.removesuffix.rst
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.removesuffix:5
+msgid "Remove the suffix of the string."
+msgstr "移除字符串的后缀。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.removesuffix.rst
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.removesuffix:8
+msgid "**Series/Index** -- The Series or Index with given suffix removed."
+msgstr "**Series/Index** -- 移除给定后缀后的 Series 或 Index。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.removesuffix.rst
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.removesuffix:13
+msgid ":py:obj:`LiteFrame.str.removeprefix`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.removesuffix:14
+msgid "Remove a prefix from an object series."
+msgstr "从对象序列中移除前缀。"
+

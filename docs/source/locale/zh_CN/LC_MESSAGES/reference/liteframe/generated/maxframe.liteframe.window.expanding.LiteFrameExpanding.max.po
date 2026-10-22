@@ -1,0 +1,45 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.max.rst:2
+msgid "maxframe.liteframe.window.expanding.LiteFrameExpanding.max"
+msgstr ""
+
+#: maxframe.liteframe.window.expanding.LiteFrameExpanding.max:1 of
+msgid "Expanding maximum."
+msgstr "扩展最大值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.max.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.window.expanding.LiteFrameExpanding.max:3 of
+msgid ""
+"Lazy LiteFrame with the cumulative (expanding) maximum from the start to "
+"the current row.  Call ``.execute()`` to materialize."
+msgstr ""
+"从开始到当前行的累积（扩展）最大值的惰性 LiteFrame。调用 ``.execute()`` "
+"来实例化。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.expanding.LiteFrameExpanding.max.rst
+msgid "返回类型"
+msgstr ""
+

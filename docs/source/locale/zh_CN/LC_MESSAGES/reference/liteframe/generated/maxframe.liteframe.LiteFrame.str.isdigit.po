@@ -1,0 +1,147 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.isdigit.rst:2
+msgid "maxframe.liteframe.LiteFrame.str.isdigit"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:1
+msgid "Check whether all characters in each string are digits."
+msgstr "检查每个字符串中的所有字符是否都是数字。"
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:3
+msgid ""
+"This is equivalent to running the Python string method "
+":meth:`str.isdigit` for each element of the Series/Index. If a string has"
+" zero characters, ``False`` is returned for that check."
+msgstr ""
+"这相当于对 Series/Index 的每个元素运行 Python 字符串方法 :meth:`str."
+"isdigit`。如果字符串没有字符，则该检查返回 ``False``。"
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:7
+msgid ""
+"Series or Index of boolean values with the same length as the original "
+"Series/Index."
+msgstr "与原始 Series/Index 长度相同的布尔值 Series 或 Index。"
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:13
+msgid ":py:obj:`LiteFrame.str.isalpha`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:14
+msgid "Check whether all characters are alphabetic."
+msgstr "检查所有字符是否都是字母。"
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:16
+msgid ":py:obj:`LiteFrame.str.isnumeric`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:17
+msgid "Check whether all characters are numeric."
+msgstr "检查所有字符是否都是数字。"
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:19
+msgid ":py:obj:`LiteFrame.str.isalnum`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:20
+msgid "Check whether all characters are alphanumeric."
+msgstr "检查所有字符是否都是字母数字。"
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:22
+msgid ":py:obj:`LiteFrame.str.isdecimal`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:23
+msgid "Check whether all characters are decimal."
+msgstr "检查所有字符是否都是十进制数。"
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:25
+msgid ":py:obj:`LiteFrame.str.isspace`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:26
+msgid "Check whether all characters are whitespace."
+msgstr "检查所有字符是否都是空白字符。"
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:28
+msgid ":py:obj:`LiteFrame.str.islower`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:29
+msgid "Check whether all characters are lowercase."
+msgstr "检查所有字符是否都是小写。"
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:31
+msgid ":py:obj:`LiteFrame.str.isascii`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:32
+msgid "Check whether all characters are ascii."
+msgstr "检查所有字符是否都是 ASCII 字符。"
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:34
+msgid ":py:obj:`LiteFrame.str.isupper`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:35
+msgid "Check whether all characters are uppercase."
+msgstr "检查所有字符是否都是大写。"
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:37
+msgid ":py:obj:`LiteFrame.str.istitle`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:38
+msgid "Check whether all characters are titlecase."
+msgstr "检查所有字符是否都是标题格式。"
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:41
+msgid "备注"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:42
+msgid ""
+"Similar to ``str.isdecimal`` but also includes special digits, like "
+"superscripted and subscripted digits in unicode."
+msgstr ""
+"类似于 ``str.isdecimal`` 但还包括特殊数字，比如 unicode 中的上标和下标数字。"
+
+#: of pandas.core.strings.accessor.StringMethods.isdigit:45
+msgid ""
+"The exact behavior of this method, i.e. which unicode characters are "
+"considered as digits, depends on the backend used for string operations, "
+"and there can be small differences. For example, Python considers the ³ "
+"superscript character as a digit, but not the ⅕ fraction character, while"
+" PyArrow considers both as digits. For simple (ascii) decimal numbers, "
+"the behaviour is consistent."
+msgstr ""
+"此方法的确切行为，即哪些 unicode 字符被视为数字，取决于用于字符串操作的后端，并且可能存在小的差异。例如，Python 将 ³ "
+"上标字符视为数字，但不将 ⅕ 分数字符视为数字，而 PyArrow 将两者都视为数字。对于简单的 (ascii) 十进制数字，行为是一致的。"
+

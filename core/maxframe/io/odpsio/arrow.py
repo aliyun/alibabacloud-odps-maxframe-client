@@ -29,6 +29,19 @@ from maxframe.protocol import DataFrameTableMeta
 from maxframe.tensor.core import TENSOR_TYPE
 from maxframe.typing_ import ArrowTableType, PandasObjectTypes
 
+_ARROW_ARRAY_TOO_LARGE_ERROR = (
+    "Failed casting from {source_type} to {target_type}: input array too large"
+)
+
+
+def _is_arrow_array_too_large_error(
+    exc: BaseException, source_type: pa.DataType, target_type: pa.DataType
+) -> bool:
+    message = _ARROW_ARRAY_TOO_LARGE_ERROR.format(
+        source_type=source_type, target_type=target_type
+    )
+    return message in str(exc)
+
 
 def _rebuild_dataframe(
     df: pd.DataFrame, table_meta: DataFrameTableMeta

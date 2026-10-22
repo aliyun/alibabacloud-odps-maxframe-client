@@ -307,6 +307,15 @@ class FileSystem(ABC):
     def supports_multipart_upload(self) -> bool:
         return False
 
+    @classmethod
+    def get_min_part_size(cls) -> int:
+        """Minimum size (bytes) of a non-final multipart part.
+
+        Returns ``0`` when the filesystem has no such minimum (or it is
+        unknown), so the caller can skip the merge-plan + size barrier.
+        """
+        return 0
+
     @staticmethod
     def parse_from_path(uri: str):
         parsed_uri = urlparse(uri)

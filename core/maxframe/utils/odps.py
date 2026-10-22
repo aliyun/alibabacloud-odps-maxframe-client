@@ -13,10 +13,10 @@
 # limitations under the License.
 
 import datetime
+import functools
 import json
 import logging
 import os
-from contextlib import contextmanager
 from typing import Any, Dict, Optional
 
 from odps import ODPS
@@ -41,17 +41,57 @@ def build_session_volume_name(session_id: str) -> str:
     return f"mf_vol_{session_id.replace('-', '_')}"
 
 
-@contextmanager
-def sync_pyodps_options():
-    from odps.config import option_context as pyodps_option_context
+class sync_pyodps_options:
+    """Sync MaxFrame options into PyODPS option context.
 
-    from maxframe.config import options
+    Can be used as a context manager::
 
-    with pyodps_option_context() as cfg:
+        with sync_pyodps_options():
+            ...
+
+    Or as a decorator on a function whose entire body should run
+    under the synced options::
+
+        @sync_pyodps_options
+        def my_func():
+            ...
+    """
+
+    def __new__(cls, func=None):
+        if func is not None and callable(func):
+            # Decorator usage without parens: @sync_pyodps_options
+            @functools.wraps(func)
+            def wrapper(*args, **kwargs):
+                with cls():
+                    return func(*args, **kwargs)
+
+            return wrapper
+        # Context manager usage: sync_pyodps_options()
+        return super().__new__(cls)
+
+    def __enter__(self):
+        from odps.config import option_context as pyodps_option_context
+
+        from maxframe.config import options
+
+        self._cm = pyodps_option_context()
+        cfg = self._cm.__enter__()
         cfg.local_timezone = options.local_timezone
         if options.session.enable_schema:
             cfg.enable_schema = options.session.enable_schema
-        yield
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return self._cm.__exit__(exc_type, exc_val, exc_tb)
+
+    def __call__(self, func):
+        # Decorator usage with parens: @sync_pyodps_options()
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            with self.__class__():
+                return func(*args, **kwargs)
+
+        return wrapper
 
 
 def update_wlm_quota_settings(session_id: str, engine_settings: Dict[str, Any]):
@@ -205,7 +245,7 @@ def submit_survey_logs(odps_entry: ODPS):
             log = log.copy()
             log.update(dw_environs)
             odps_entry.rest.put(log_url, json.dumps(log))
-    except:
+    except Exception:
         pass
 
 

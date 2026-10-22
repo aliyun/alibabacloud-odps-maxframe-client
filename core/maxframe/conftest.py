@@ -22,6 +22,7 @@ from odps import ODPS
 from odps.accounts import BearerTokenAccount
 
 from maxframe.config import options
+from maxframe.utils import call_with_retry
 
 faulthandler.enable(all_threads=True)
 _test_conf_file_name = os.path.join(
@@ -84,7 +85,11 @@ def _get_bearer_token_env(test_config: ConfigParser, section_name: str) -> ODPS:
             {"Action": ["odps:*"], "Resource": "acs:odps:*:*", "Effect": "Allow"}
         ],
     }
-    token = entry.get_project().generate_auth_token(policy, "bearer", 5)
+
+    def _get_token():
+        return entry.get_project().generate_auth_token(policy, "bearer", 5)
+
+    token = call_with_retry(_get_token)
     return ODPS(
         account=BearerTokenAccount(token, 5),
         project=entry.project,
@@ -137,7 +142,7 @@ def _enter_odps_envs(entry, drop_temp_tables=True):
             for table_name in _test_tables_to_drop:
                 try:
                     entry.delete_table(table_name, wait=False)
-                except:
+                except Exception:
                     pass
 
 
@@ -149,8 +154,15 @@ def odps_with_schema(test_config, request):
         pytest.skip("Need to specify odps_with_schema section in test.conf")
         raise
 
-    with _enter_odps_envs(entry, drop_temp_tables=False):
-        yield entry
+    prev_enable_schema = options.session.enable_schema
+    prev_default_schema = options.session.default_schema
+
+    try:
+        with _enter_odps_envs(entry, drop_temp_tables=False):
+            yield entry
+    finally:
+        options.session.enable_schema = prev_enable_schema
+        options.session.default_schema = prev_default_schema
 
 
 @pytest.fixture(scope="session", autouse=True)

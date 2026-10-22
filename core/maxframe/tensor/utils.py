@@ -270,7 +270,7 @@ def infer_dtype(np_func, multi_outputs=False, empty=True, reverse=False, check=T
                             dtype = np_func(*args, **np_kw)[0].dtype
                         else:
                             dtype = np_func(*args, **np_kw).dtype
-                except:  # noqa: E722
+                except Exception:
                     dtype = None
 
             if any(is_arg(t) and t.dtype == "O" for t in tensors):
@@ -355,6 +355,38 @@ def calc_object_length(obj, size=None):
 def slice_split(
     index: Union[int, slice], sizes: List[int]
 ) -> Dict[int, Union[int, slice]]:
+    """Split a single-dimension index across chunks.
+
+    Given an index (integer or slice) and the sizes of consecutive chunks
+    along one dimension, determine which chunks are touched and what the
+    local sub-index within each chunk is.
+
+    Parameters
+    ----------
+    index : int or slice
+        The index applied to the full (concatenated) dimension.
+        Negative integers are resolved relative to the total size.
+    sizes : List[int]
+        Lengths of each chunk along this dimension, in order.
+
+    Returns
+    -------
+    Dict[int, Union[int, slice]]
+        A mapping from chunk index to the local sub-index within that
+        chunk.  For integer *index*, the value is an ``int`` (local
+        position inside the chunk).  For slice *index*, the value is a
+        ``slice`` (relative to the chunk's own 0-based start).  Chunks
+        not touched by the index are absent from the dict.
+
+    Examples
+    --------
+    >>> slice_split(7, [5, 5, 5])
+    {1: 2}
+    >>> slice_split(slice(2, 8), [5, 5, 5])
+    {0: slice(2, 5, 1), 1: slice(0, 3, 1)}
+    >>> slice_split(slice(None), [5, 5])
+    {0: slice(None), 1: slice(None)}
+    """
     size = sum(sizes)
 
     if isinstance(index, Integral):

@@ -73,3 +73,24 @@ def test_list_methods_dtype_inference(method, args, expected_dtype):
     # Verify dtype inference
     assert result.dtypes.iloc[0] == expected_dtype
     assert projection.dtype == expected_dtype
+
+
+def test_list_flatten_op_structure():
+    """list.flatten builds a flat_apply op with value_type, no custom code."""
+    from maxframe.liteframe.operators.functional import LiteFrameFunctional
+
+    df = LiteFrame({"col": [[1, 2], [3, 4]]}, dtype=_LIST_DTYPE)
+    result = df.list.flatten()
+
+    op = result.data.op
+    assert isinstance(op, LiteFrameFunctional)
+    assert op.mode == "flat_apply"
+    assert op.has_custom_code() is False
+    assert list(result.columns) == ["col"]
+    assert result.dtypes["col"] == wrap_arrow_dtype(pa.int64())
+
+
+def test_list_flatten_rejects_non_list():
+    df = LiteFrame({"col": [1, 2, 3]})
+    with pytest.raises(AttributeError, match="list values"):
+        df.list.flatten()

@@ -12,14 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from maxframe.liteframe.datastore.to_csv import to_csv
+from maxframe.liteframe.datastore.to_json import to_json
+from maxframe.liteframe.datastore.to_lance import to_lance
 from maxframe.liteframe.datastore.to_odps import to_odps_table
+from maxframe.liteframe.datastore.to_parquet import to_parquet
 
 
 def _install():
     from maxframe.liteframe.core import LITEFRAME_TYPE
 
     for t in LITEFRAME_TYPE:
+        t.to_csv = to_csv
+        t.to_json = to_json
+        t.to_lance = to_lance
         t.to_odps_table = to_odps_table
+        t.to_parquet = to_parquet
 
 
 _install()

@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.from_tensor.rst:2
+msgid "maxframe.liteframe.LiteFrame.from\\_tensor"
+msgstr ""
+
+#: maxframe.liteframe.datasource.from_tensor.liteframe_from_tensor:1 of
+msgid "Create a LiteFrame from a MaxFrame tensor."
+msgstr "从 MaxFrame 张量创建一个 LiteFrame。"
+
+#: maxframe.liteframe.datasource.from_tensor.liteframe_from_tensor:3 of
+msgid "The tensor may be 1-d or 2-d:"
+msgstr "张量可以是 1 维或 2 维："
+
+#: maxframe.liteframe.datasource.from_tensor.liteframe_from_tensor:5 of
+msgid ""
+"1-d tensor -> a single-column LiteFrame. The column is named "
+"``columns[0]`` when *columns* is list-like, or *columns* when it is a "
+"string. When *columns* is not given, ``\"0\"`` is used."
+msgstr ""
+"1 维张量 -> 单列 LiteFrame。当 *columns* 是列表类型时，该列被命名为 ``"
+"columns[0]``，或者当它是字符串时为 *columns*。当未给出 *columns* 时，使用"
+" ``\"0\"``。"
+
+#: maxframe.liteframe.datasource.from_tensor.liteframe_from_tensor:8 of
+msgid ""
+"2-d tensor (m x n) -> an n-column LiteFrame named by *columns*. When "
+"*columns* is not given, ``[\"0\", \"1\", ..., str(n - 1)]`` is used."
+msgstr ""
+"2 维张量 (m x n) -> 由 *columns* 命名的 n 列 LiteFrame。当未给出 *columns"
+"* 时，使用 ``[\"0\", \"1\", ..., str(n - 1)]``。"
+
+#: maxframe.liteframe.datasource.from_tensor.liteframe_from_tensor:11 of
+msgid ""
+"Column names are normalized to lowercase to stay consistent with the "
+"case-insensitive storage convention used across LiteFrame."
+msgstr ""
+"列名被标准化为小写，以保持与 LiteFrame 中使用的不区分大小写的存储约定一致"
+"。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.from_tensor.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.datasource.from_tensor.liteframe_from_tensor:14 of
+msgid "1-d or 2-d MaxFrame tensor."
+msgstr "1 维或 2 维 MaxFrame 张量。"
+
+#: maxframe.liteframe.datasource.from_tensor.liteframe_from_tensor:16 of
+msgid "Column name(s) for the resulting LiteFrame."
+msgstr "结果 LiteFrame 的列名。"
+
+#: maxframe.liteframe.datasource.from_tensor.liteframe_from_tensor:18 of
+msgid "Whether the result runs on GPU. Inferred from the tensor when omitted."
+msgstr "结果是否在 GPU 上运行。省略时从张量推断。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.from_tensor.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.datasource.from_tensor.liteframe_from_tensor:21 of
+msgid "A lazy LiteFrame backed by the given tensor."
+msgstr "由给定张量支持的惰性 LiteFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.from_tensor.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.datasource.from_tensor.liteframe_from_tensor:26 of
+msgid ":py:obj:`LiteFrame.to_tensor`"
+msgstr ""
+
+#: maxframe.liteframe.datasource.from_tensor.liteframe_from_tensor:27 of
+msgid "Convert the LiteFrame to a MaxFrame tensor."
+msgstr "将 LiteFrame 转换为 MaxFrame 张量。"
+
+#: maxframe.liteframe.datasource.from_tensor.liteframe_from_tensor:29 of
+msgid ":py:obj:`LiteFrame`"
+msgstr ""
+
+#: maxframe.liteframe.datasource.from_tensor.liteframe_from_tensor:30 of
+msgid "Construct a LiteFrame from dict, DataFrame, or tensor."
+msgstr "从字典、DataFrame 或张量构建 LiteFrame。"
+

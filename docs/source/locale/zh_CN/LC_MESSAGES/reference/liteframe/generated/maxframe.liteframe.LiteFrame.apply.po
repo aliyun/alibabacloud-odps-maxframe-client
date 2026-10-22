@@ -1,0 +1,190 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.apply.rst:2
+msgid "maxframe.liteframe.LiteFrame.apply"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.apply:1 of
+msgid "Apply ``func`` per column (axis=0) or per row (axis=1)."
+msgstr "按列(axis=0)或按行(axis=1)应用``func``。"
+
+#: maxframe.liteframe.functional.apply.apply:3 of
+msgid "Mirrors ``pandas.DataFrame.apply``:"
+msgstr "镜像 ``pandas.DataFrame.apply``："
+
+#: maxframe.liteframe.functional.apply.apply:5 of
+msgid ""
+"``axis=0``: ``func`` receives each column as a Series and may return a "
+"scalar, Series, or DataFrame.  All row chunks are concatenated first so "
+"the UDF sees the whole column."
+msgstr ""
+"``axis=0``: ``func`` 将每列作为 Series 接收，并可以返回标量、Series 或 "
+"DataFrame。所有行块首先被连接，因此 UDF 可以看到整列。"
+
+#: maxframe.liteframe.functional.apply.apply:8 of
+msgid ""
+"``axis=1``: ``func`` receives each row as a Series and may return a "
+"scalar, Series, or dict.  Results are combined one output row per input "
+"row.  Because per-row UDFs are not mock-inferable from the whole frame, "
+"``axis=1`` generally requires explicit ``dtypes`` or a return type "
+"annotation."
+msgstr ""
+"``axis=1``: ``func`` 将每行作为 Series 接收，并可以返回标量、Series 或"
+"字典。结果按每输入行对应一个输出行进行组合。由于逐行 UDF 无法从整个框架中"
+"模拟推断，``axis=1`` 通常需要显式的 ``dtypes`` 或返回类型注解。"
+
+#: maxframe.liteframe.functional.apply.apply of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.apply:14 of
+msgid ""
+"Function taking a Series (a column for ``axis=0``, a row for ``axis=1``) "
+"and returning a scalar, Series, dict, or DataFrame.  If ``func`` is a "
+"class, it is instantiated once per chunk, ``__call__`` is invoked per "
+"column (``axis=0``) or per row (``axis=1``), and ``close()`` (if defined)"
+" is always called at the end of the chunk — even when ``__call__`` "
+"receives single rows/columns."
+msgstr ""
+"接收一个 Series（对于 ``axis=0`` 是一列，对于 ``axis=1`` 是一行）并返回"
+"标量、Series、字典或 DataFrame 的函数。如果 ``func`` 是一个类，则每个块"
+"实例化一次，每个列（``axis=0``）或每行（``axis=1``）调用 ``__call__``，"
+"并且在块结束时总是调用 ``close()``（如果已定义）——即使 ``__call__`` 接收"
+"单个行/列也是如此。"
+
+#: maxframe.liteframe.functional.apply.apply:23 of
+msgid "``axis=0`` iterates over columns; ``axis=1`` iterates over rows."
+msgstr "``axis=0`` 遍历列；``axis=1`` 遍历行。"
+
+#: maxframe.liteframe.functional.apply.apply:25 of
+msgid ""
+"Only applies when ``axis=1``.  Controls how list-like results (dict, list"
+", Series) are combined into the output frame:  * ``None`` (default): ``"
+"Series`` results are auto-expanded to   columns (matching pandas, where a"
+" per-row ``Series`` is combined   into a multi-column frame).  ``dict`` "
+"and ``list`` results are   kept as a single object column (one cell per "
+"row) — pandas 2.3.3   does not expand dict keys or lists unless ``result_"
+"type='expand'``   is given; declaring multiple columns for a dict / list "
+"result   raises. * ``\"expand\"``: dict / list / Series results are "
+"always expanded   to columns (dict keys / positional indices / Series "
+"index   become column names). * ``\"reduce\"``: dict / list results are "
+"kept as a single column   of objects (one cell per row), matching pandas "
+"  ``result_type='reduce'``.  ``Series`` results are still expanded   to "
+"columns (pandas behavior). * ``\"broadcast\"``: results are broadcast to "
+"the original input   shape — the output has the same column names as the "
+"input.   Requires list-like results whose length matches the input   "
+"column count."
+msgstr ""
+"仅在 ``axis=1`` 时适用。控制列表类结果（字典、列表、Series）如何合并到"
+"输出框架中：* ``None``（默认值）：``Series`` 结果自动扩展为列（匹配 "
+"pandas，其中每行的 ``Series`` 组合成多列框架）。``dict`` 和 ``list`` 结果"
+"保留为单个对象列（每行一个单元格）——pandas 2.3.3 不会展开字典键或列表，"
+"除非给出 ``result_type='expand'``；为字典/列表结果声明多个列会引发异常。*"
+" ``\"expand\"``：字典/列表/Series 结果始终扩展为列（字典键/位置索引/"
+"Series 索引成为列名）。* ``\"reduce\"``：字典/列表结果保留为单个对象列（"
+"每行一个单元格），匹配 pandas 的 ``result_type='reduce'``。``Series`` "
+"结果仍然扩展为列（pandas 行为）。* ``\"broadcast\"``：结果广播到原始输入"
+"形状——输出具有与输入相同的列名。需要长度与输入列数匹配的类列表结果。"
+
+#: maxframe.liteframe.functional.apply.apply:47 of
+msgid ""
+"Expected output dtypes.  If omitted, inferred from ``func``'s return "
+"annotation or a mock call."
+msgstr "期望的输出数据类型。如果省略，则从 ``func`` 的返回注解或模拟调用中推断。"
+
+#: maxframe.liteframe.functional.apply.apply:50 of
+msgid "If True, skip dtype inference and produce an untyped output."
+msgstr "如果为 True，跳过数据类型推断并产生无类型的输出。"
+
+#: maxframe.liteframe.functional.apply.apply:52 of
+msgid "Frame type passed to ``func``."
+msgstr "传递给 ``func`` 的框架类型。"
+
+#: maxframe.liteframe.functional.apply.apply:54 of
+msgid "Extra positional arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外位置参数。"
+
+#: maxframe.liteframe.functional.apply.apply:56 of
+msgid "Extra keyword arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外关键字参数。"
+
+#: maxframe.liteframe.functional.apply.apply of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.apply:58 of
+msgid ""
+"A new LiteFrame whose dtypes match the (inferred or explicit) output "
+"schema."
+msgstr "一个新的 LiteFrame，其数据类型匹配（推断或显式）输出模式。"
+
+#: maxframe.liteframe.functional.apply.apply of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.apply:64 of
+msgid ":py:obj:`apply_chunk`"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.apply:65 of
+msgid "Apply a function per execution chunk."
+msgstr "按执行块应用函数。"
+
+#: maxframe.liteframe.functional.apply.apply:67 of
+msgid ":py:obj:`transform`"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.apply:68 of
+msgid "Transform per column or per row."
+msgstr "按列或按行转换。"
+
+#: maxframe.liteframe.functional.apply.apply:70 of
+msgid ":py:obj:`map`"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.apply:71 of
+msgid "Apply a function element-wise."
+msgstr "按元素应用函数。"
+
+#: maxframe.liteframe.functional.apply.apply:74 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply.apply:78 of
+msgid ""
+"Apply a reduction per column (``axis=0``, default) — ``func`` receives "
+"each column as a Series:"
+msgstr "按列应用归约（``axis=0``，默认） — ``func`` 将每列作为 Series 接收："
+
+#: maxframe.liteframe.functional.apply.apply:86 of
+msgid ""
+"Apply per row (``axis=1``) — ``func`` receives each row as a Series. "
+"Declare the output schema with ``dtypes``:"
+msgstr "按行应用（``axis=1``） — ``func`` 将每行作为 Series 接收。使用 ``dtypes`` 声明输出模式："
+
+#: maxframe.liteframe.functional.apply.apply:97 of
+msgid ""
+"With ``axis=1`` and ``result_type='expand'``, dict results are expanded "
+"to columns:"
+msgstr "使用 ``axis=1`` 和 ``result_type='expand'``，字典结果扩展为列："
+
+

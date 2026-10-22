@@ -1,0 +1,161 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/io.rst:4
+msgid "Input/output"
+msgstr "输入/输出"
+
+#: ../../source/reference/liteframe/io.rst:7
+msgid ""
+"LiteFrame IO functions read and write tabular data without index-specific"
+" metadata. All read functions use Arrow dtypes "
+"(``dtype_backend=\"pyarrow\"``) by default. Write functions have no "
+"``index`` or ``index_label`` parameters because LiteFrame has no index "
+"semantics."
+msgstr ""
+"LiteFrame IO 函数读取和写入表格数据，不包含特定于索引的元数据。所有读取"
+"函数默认使用 Arrow 数据类型（``dtype_backend=\"pyarrow\"``）。写入函数"
+"没有 ``index`` 或 ``index_label`` 参数，因为 LiteFrame 没有索引语义。"
+
+#: ../../source/reference/liteframe/io.rst:13
+msgid "Flat file"
+msgstr "平面文件"
+
+#: ../../source/reference/liteframe/io.rst:19:<autosummary>:1
+msgid ""
+":py:obj:`read_csv <maxframe.liteframe.read_csv>`\\ \\(path\\[\\, "
+"usecols\\, dtype\\, names\\, sep\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:19:<autosummary>:1
+msgid "Read a CSV file into a LiteFrame with Arrow dtypes."
+msgstr "将 CSV 文件读取为具有 Arrow 数据类型的 LiteFrame。"
+
+#: ../../source/reference/liteframe/io.rst:19:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.to_csv <maxframe.liteframe.LiteFrame.to_csv>`\\ "
+"\\(path\\[\\, sep\\, na\\_rep\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:19:<autosummary>:1
+msgid "Write LiteFrame to a comma-separated values (csv) file."
+msgstr "将 LiteFrame 写入逗号分隔值 (csv) 文件。"
+
+#: ../../source/reference/liteframe/io.rst:21
+msgid "JSON"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`read_json <maxframe.liteframe.read_json>`\\ \\(path\\, \\*\\[\\,"
+" lines\\, dtype\\, usecols\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:27:<autosummary>:1
+msgid "Read a JSON file into a LiteFrame with Arrow dtypes."
+msgstr "将 JSON 文件读取为具有 Arrow 数据类型的 LiteFrame。"
+
+#: ../../source/reference/liteframe/io.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.to_json <maxframe.liteframe.LiteFrame.to_json>`\\ "
+"\\(path\\, \\*\\[\\, lines\\, orient\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:27:<autosummary>:1
+msgid "Write a LiteFrame to JSON format (line-delimited by default)."
+msgstr "将 LiteFrame 写入 JSON 格式（默认为行分隔）。"
+
+#: ../../source/reference/liteframe/io.rst:29
+msgid "MaxCompute"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:35:<autosummary>:1
+msgid ""
+":py:obj:`read_odps_table <maxframe.liteframe.read_odps_table>`\\ "
+"\\(table\\_name\\[\\, partitions\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:35:<autosummary>:1
+msgid "Read an ODPS table into a LiteFrame with Arrow dtypes."
+msgstr "将 ODPS 表读取为具有 Arrow 数据类型的 LiteFrame。"
+
+#: ../../source/reference/liteframe/io.rst:35:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.to_odps_table "
+"<maxframe.liteframe.LiteFrame.to_odps_table>`\\ \\(table\\[\\, "
+"partition\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:35:<autosummary>:1
+msgid "Write LiteFrame object into a MaxCompute (ODPS) table."
+msgstr "将 LiteFrame 对象写入 MaxCompute (ODPS) 表。"
+
+#: ../../source/reference/liteframe/io.rst:37
+msgid "Parquet"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:43:<autosummary>:1
+msgid ""
+":py:obj:`read_parquet <maxframe.liteframe.read_parquet>`\\ \\(path\\[\\, "
+"columns\\, filters\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:43:<autosummary>:1
+msgid "Read a parquet file into a LiteFrame with Arrow dtypes."
+msgstr "将 parquet 文件读取为具有 Arrow 数据类型的 LiteFrame。"
+
+#: ../../source/reference/liteframe/io.rst:43:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.to_parquet "
+"<maxframe.liteframe.LiteFrame.to_parquet>`\\ \\(path\\[\\, engine\\, "
+"...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:43:<autosummary>:1
+msgid ""
+"Write a LiteFrame to the binary parquet format, each chunk will be "
+"written to a Parquet file."
+msgstr "将 LiteFrame 写入二进制 parquet 格式，每个块将写入一个 Parquet 文件。"
+
+#: ../../source/reference/liteframe/io.rst:45
+msgid "Lance"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:50:<autosummary>:1
+msgid ""
+":py:obj:`read_lance <maxframe.liteframe.read_lance>`\\ \\(path\\[\\, "
+"version\\, asof\\, columns\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:50:<autosummary>:1
+msgid "Read a Lance dataset into a LiteFrame."
+msgstr "将 Lance 数据集读取为 LiteFrame。"
+
+#: ../../source/reference/liteframe/io.rst:50:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.to_lance <maxframe.liteframe.LiteFrame.to_lance>`\\ "
+"\\(path\\, \\*\\[\\, mode\\, on\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/io.rst:50:<autosummary>:1
+msgid "Write a LiteFrame to a Lance dataset."
+msgstr "将 LiteFrame 写入 Lance 数据集。"
+

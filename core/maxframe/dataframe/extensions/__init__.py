@@ -30,8 +30,9 @@ from maxframe.dataframe.extensions.extract_kv import extract_kv
 from maxframe.dataframe.extensions.flatjson import series_flatjson
 from maxframe.dataframe.extensions.flatmap import df_flatmap, series_flatmap
 from maxframe.dataframe.extensions.map_reduce import map_reduce
-from maxframe.dataframe.extensions.rebalance import DataFrameRebalance, rebalance
+from maxframe.dataframe.extensions.rebalance import DataFrameRebalance
 from maxframe.dataframe.extensions.reshuffle import DataFrameReshuffle, df_reshuffle
+from maxframe.dataframe.misc.rechunk import rebalance
 
 
 def _install():

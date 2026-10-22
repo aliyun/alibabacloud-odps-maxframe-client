@@ -18,52 +18,14 @@ from odps import ODPS
 from odps.models import Table as ODPSTable
 from odps.types import OdpsSchema
 
-from maxframe import opcodes
 from maxframe.config import options
-from maxframe.core import OutputType
 from maxframe.io.odpsio import odps_schema_to_pandas_dtypes
 from maxframe.liteframe.core import LITEFRAME_TYPE
 from maxframe.liteframe.core import LiteFrame as MFLiteFrame
-from maxframe.liteframe.datastore.core import LiteFrameDataStore, validate_write_mode
+from maxframe.liteframe.datastore.core import validate_write_mode
+from maxframe.liteframe.operators.datastore import LiteFrameToODPSTable
 from maxframe.liteframe.utils import normalize_col_name
-from maxframe.serialization.serializables import (
-    BoolField,
-    DictField,
-    FieldTypes,
-    Int64Field,
-    ListField,
-    SeriesField,
-    StringField,
-)
 from maxframe.typing_ import TileableType
-
-
-class LiteFrameToODPSTable(LiteFrameDataStore):
-    _op_type_ = opcodes.TO_ODPS_TABLE
-
-    dtypes = SeriesField("dtypes")
-    table_name = StringField("table_name", default=None)
-    partition_spec = StringField("partition_spec", default=None)
-    partition_columns = ListField("partition_columns", FieldTypes.string, default=None)
-    mode = StringField("mode", default=None)
-    unknown_as_string = BoolField("unknown_as_string", default=None)
-    lifecycle = Int64Field("lifecycle", default=None)
-    table_properties = DictField("table_properties", default=None)
-    primary_key = ListField("primary_key", FieldTypes.string, default=None)
-
-    def __init__(self, **kw):
-        super().__init__(_output_types=[OutputType.liteframe], **kw)
-
-    def can_fuse_with_custom_code(self) -> bool:
-        return False
-
-    def __call__(self, lf: TileableType):
-        shape = (0,) * len(lf.shape)
-        return self.new_liteframe(
-            [lf],
-            shape=shape,
-            physical_dtypes=lf._data._physical_dtypes[:0],
-        )
 
 
 def to_odps_table(
@@ -81,40 +43,45 @@ def to_odps_table(
     """
     Write LiteFrame object into a MaxCompute (ODPS) table.
 
-    Simplified version for LiteFrame with no index semantics.
-
     Parameters
     ----------
-    lf: LiteFrame
-        LiteFrame object to write
-    table: str
-        Name of the table to write LiteFrame into
-    partition: Optional[str]
-        Spec of the partition to write to, can be 'pt1=xxx,pt2=yyy'
-    partition_col: Union[None, str, List[str]]
-        Name of columns in LiteFrame as partition columns.
-    mode: str
-        Write mode. One of 'overwrite', 'append'. 'overwrite' replaces
-        existing data, 'append' adds to existing data.
-    unknown_as_string: bool
-        If True, object type in the LiteFrame will be treated as strings.
-    lifecycle: Optional[int]
-        Specify lifecycle of the output table.
-    table_properties: Optional[dict]
-        Specify properties of the output table.
-    primary_key: Union[None, str, List[str]]
-        If provided and target table does not exist, target table
-        will be a delta table with columns specified in this argument
-        as primary key.
-    odps_types: Optional[Dict[str, str]]
-        Specify ODPS column types as a dict mapping column names to ODPS type strings.
+    table : odps.models.Table or str
+        ODPS table or table name to write to.
+    partition : str, optional
+        Partition spec for the target table (e.g. "ds=20240101").
+    partition_col : str or list of str, optional
+        Column name(s) to use as partition columns. The data is partitioned
+        by these columns.
+    mode : {'overwrite', 'append'}, default 'overwrite'
+        Write mode. 'overwrite' drops the existing data; 'append' adds to it.
+    unknown_as_string : bool, default True
+        If True, columns with unknown ODPS types are written as strings.
+    lifecycle : int, optional
+        Table lifecycle in days.
+    table_properties : dict, optional
+        ODPS table properties.
+    primary_key : str or list of str, optional
+        Column name(s) to set as the table primary key.
+    odps_types : dict, optional
+        Mapping of column name to ODPS type string, used to override
+        auto-detected types.
 
     Returns
     -------
-    result: LiteFrame
+    LiteFrame
         Stub LiteFrame for execution.
+
+    See Also
+    --------
+    read_odps_table : Read an ODPS table into a LiteFrame.
+    to_parquet : Write a LiteFrame to a Parquet file.
     """
     validate_write_mode(mode)
+    if mode == "merge":
+        raise NotImplementedError(
+            "merge mode is not supported for ODPS tables; "
+            "use 'overwrite' or 'append' instead."
+        )
 
     odps_entry = ODPS.from_global() or ODPS.from_environments()
     is_schema_enabled = (

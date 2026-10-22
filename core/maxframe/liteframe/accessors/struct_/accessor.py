@@ -20,11 +20,35 @@ from maxframe.liteframe.accessors.struct_.core import (
     StructMethodBaseHandler,
     struct_method_to_handlers,
 )
+from maxframe.liteframe.accessors.struct_.explode import explode_struct_column
 from maxframe.liteframe.arithmetic.core import (
     _build_fused_projection,
     _resolve_column_expr,
 )
 from maxframe.utils import wrap_arrow_dtype
+
+_method_docs = {
+    "field": """
+    Extract a child field of each struct as a column.
+
+    Parameters
+    ----------
+    name_or_index : str | bytes | int | expression | list
+        Name or index of the child field to extract.  For list-like
+        inputs, indexes into a nested struct.
+
+    Returns
+    -------
+    LiteFrame
+        Single-column LiteFrame with the selected field's dtype.  The
+        output column is named after the selected field.
+
+    See Also
+    --------
+    LiteFrame.struct.dtypes : Return the dtype of each child field.
+    LiteFrame.struct.explode : Expand all child fields into columns.
+    """,
+}
 
 
 class StructAccessor:
@@ -34,6 +58,11 @@ class StructAccessor:
     Provides pandas-style .struct accessor for single-column LiteFrame with
     Arrow struct dtype. Multi-column LiteFrames raise ValueError on accessor
     access.
+
+    Parameters
+    ----------
+    liteframe : LiteFrame
+        Single-column LiteFrame with an Arrow struct dtype to wrap.
 
     Examples
     --------
@@ -93,6 +122,7 @@ class StructAccessor:
 
             return _build_fused_projection(self._liteframe, [named_expr])
 
+        _inner.__doc__ = _method_docs.get(method)
         return _inner
 
     @property
@@ -101,6 +131,11 @@ class StructAccessor:
 
         Returns a plain ``pandas.Series`` of dtype objects indexed by
         field names — direct metadata extraction, no LiteFrame operation.
+
+        Returns
+        -------
+        pandas.Series
+            Series of dtype objects indexed by struct field names.
         """
         pa_type = self._liteframe.dtypes.iloc[0].pyarrow_dtype
         fields = [pa_type[i] for i in range(pa_type.num_fields)]
@@ -108,6 +143,22 @@ class StructAccessor:
             [wrap_arrow_dtype(f.type) for f in fields],
             index=[f.name for f in fields],
         )
+
+    def explode(self):
+        """Expand a struct column into one column per field.
+
+        Mirrors ``pandas.Series.struct.explode``: the struct column is
+        replaced by one column per field (each with its field dtype); a
+        missing struct becomes one row of all-NA fields.  Row count is
+        unchanged.
+
+        Returns
+        -------
+        LiteFrame
+            LiteFrame with the struct column replaced by one column per
+            field, each carrying its field dtype; row count unchanged.
+        """
+        return explode_struct_column(self._liteframe)
 
     @classmethod
     def _register(cls, method):

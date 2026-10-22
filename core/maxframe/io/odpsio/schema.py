@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
 import functools
+import json
 import string
 from collections import defaultdict
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -459,7 +461,7 @@ def arrow_table_to_pandas_dataframe(
                 converted_column_dtypes[target_col] = target_dtype
 
     if converted_column_dtypes:
-        df = cast_df_with_possible_nans(df, converted_column_dtypes)
+        df = cast_df_with_possible_nans(df, pd.Series(converted_column_dtypes))
 
     return df
 
@@ -749,10 +751,61 @@ def build_liteframe_table_meta(
     # Leave dtypes as None for future dynamic columns support
     dtypes = liteframe_obj.dtypes if hasattr(liteframe_obj, "dtypes") else None
 
+    # Physical table column names use the same sanitization as the DataFrame
+    # path (``DataFrameTableMeta.table_column_names``): an ODPS-illegal
+    # logical name (e.g. int-string ``"0"``, ``"unnamed: 32"``) becomes a
+    # ``_column_N`` placeholder at table-creation time.  When the sanitized
+    # names are unchanged from the logical names the field stays ``None``;
+    # otherwise it is a positional mapping ``table_column_names[i] ->
+    # dtypes.index[i]`` so reads can restore the logical names.
+    table_column_names = build_table_column_names(dtypes)
+
     return LiteFrameTableMeta(
         table_name=table_name,
         dtypes=dtypes,
+        table_column_names=table_column_names,
     )
+
+
+def build_table_column_names(dtypes: Optional[pd.Series]) -> Optional[List[str]]:
+    """Sanitized physical ODPS column names for ``dtypes.index``.
+
+    Returns ``None`` when the table column names are unchanged from the
+    logical names in ``dtypes.index`` (the common case, avoiding
+    serialization of a redundant mapping); otherwise the positional mapping
+    ``table_column_names[i] -> dtypes.index[i]``, using the same
+    ``build_table_column_name`` sanitization as the DataFrame table meta
+    (e.g. an ODPS-illegal column ``"0"`` becomes ``_column_0``).
+    """
+    if dtypes is None:
+        return None
+    pd_col_to_col_name = dict()
+    sql_columns = [
+        build_table_column_name(i, col, pd_col_to_col_name)
+        for i, col in enumerate(dtypes.index)
+    ]
+    # Dedup case-colliding physical names: build_table_column_name lowercases
+    # (``"A"`` -> ``"a"``), so an index ``["A", "a"]`` maps to ``["a", "a"]``
+    # -- an invalid ODPS schema.  Mirror the DataFrame path
+    # (build_dataframe_table_meta) and append ``_N`` suffixes to duplicates.
+    col_to_count = defaultdict(int)
+    col_to_idx = defaultdict(int)
+    for col in sql_columns:
+        col_to_count[col] += 1
+    names = []
+    for col in sql_columns:
+        if col_to_count[col] > 1:
+            col_name = f"{col}_{col_to_idx[col]}"
+            col_to_idx[col] += 1
+            while col_name in col_to_count:
+                col_name = f"{col}_{col_to_idx[col]}"
+                col_to_idx[col] += 1
+            names.append(col_name)
+        else:
+            names.append(col)
+    if names != [str(c) for c in dtypes.index]:
+        return names
+    return None
 
 
 def arrow_schema_to_pandas_dtypes(
@@ -792,3 +845,30 @@ def arrow_schema_to_pandas_dtypes(
     df = arrow_table_to_pandas_dataframe(empty_table, dtype_backend=dtype_backend)
 
     return df.dtypes
+
+
+def encode_blob_table_comment(meta: dict) -> str:
+    """Encode a blob table metadata dict as a base64-encoded JSON string.
+
+    Uses compact JSON (no spaces) and base64 encoding to avoid issues with
+    ODPS table comment handling (e.g., character escaping, truncation).
+    """
+    json_str = json.dumps(meta, separators=(",", ":"))
+    return base64.b64encode(json_str.encode("utf-8")).decode("ascii")
+
+
+def decode_blob_table_comment(comment: str) -> dict:
+    """Decode a base64-encoded JSON comment from a blob table.
+
+    Raises ValueError with a meaningful message if the comment cannot be decoded.
+    """
+    if not comment:
+        raise ValueError("Cannot decode blob table comment: comment is None or empty.")
+    try:
+        json_str = base64.b64decode(comment).decode("utf-8")
+        return json.loads(json_str)
+    except Exception as e:
+        raise ValueError(
+            f"Failed to decode blob table comment: {e!r}. "
+            f"Comment (raw): {comment!r}"
+        ) from e

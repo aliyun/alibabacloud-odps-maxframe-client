@@ -23,6 +23,87 @@ from maxframe.liteframe.arithmetic.core import (
     _resolve_column_expr,
 )
 
+_method_docs = {
+    "len": """
+    Get the number of items in each dict in the column.
+
+    Returns
+    -------
+    LiteFrame
+        Single-column LiteFrame with ``int64`` dtype; ``None`` dicts
+        yield ``None``.
+    """,
+    "get": """
+    Get the value for a key in each dict in the column.
+
+    Returns ``default_value`` when the key is absent.
+
+    Parameters
+    ----------
+    query_key : Any
+        The key to look up, matching the dict's key type.
+    default_value : Any, optional
+        Value to return when the key is absent, by default ``None``.
+
+    Returns
+    -------
+    LiteFrame
+        Single-column LiteFrame with the dict's value dtype.
+    """,
+    "__getitem__": """
+    Get the value for a key in each dict in the column.
+
+    Raises ``KeyError`` when the key is absent.
+
+    Parameters
+    ----------
+    query_key : Any
+        The key to look up, matching the dict's key type.
+
+    Returns
+    -------
+    LiteFrame
+        Single-column LiteFrame with the dict's value dtype.
+    """,
+    "remove": """
+    Remove a key from each dict in the column.
+
+    Parameters
+    ----------
+    query_key : Any
+        The key to remove, matching the dict's key type.
+    ignore_key_error : bool, optional, default False
+        When ``True``, missing keys are silently skipped.  When
+        ``False``, a missing key raises ``KeyError``.  ``None`` dicts
+        are always skipped.
+
+    Returns
+    -------
+    LiteFrame
+        Single-column LiteFrame with the same map dtype.
+
+    Raises
+    ------
+    KeyError
+        If ``query_key`` is absent in a dict and ``ignore_key_error``
+        is ``False``.
+    """,
+    "contains": """
+    Check whether a key is present in each dict in the column.
+
+    Parameters
+    ----------
+    query_key : Any
+        The key to check, matching the dict's key type.
+
+    Returns
+    -------
+    LiteFrame
+        Single-column LiteFrame with ``bool`` dtype; ``None`` dicts
+        yield ``None``.
+    """,
+}
+
 
 class DictAccessor:
     """
@@ -31,6 +112,11 @@ class DictAccessor:
     Provides pandas-style .dict accessor for single-column LiteFrame with
     Arrow map dtype. Multi-column LiteFrames raise ValueError on accessor
     access.
+
+    Parameters
+    ----------
+    liteframe : LiteFrame
+        Single-column LiteFrame with an Arrow map dtype to wrap.
 
     Examples
     --------
@@ -71,6 +157,7 @@ class DictAccessor:
             named_expr = expr.rename(self._liteframe.columns[0])
             return _build_fused_projection(self._liteframe, [named_expr])
 
+        _inner.__doc__ = _method_docs.get(method)
         return _inner
 
     @classmethod

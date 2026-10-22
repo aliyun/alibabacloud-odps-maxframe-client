@@ -1,0 +1,120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.map.rst:2
+msgid "maxframe.liteframe.LiteFrame.map"
+msgstr ""
+
+#: maxframe.liteframe.functional.map.map_:1 of
+msgid "Apply func element-wise to every value in the LiteFrame."
+msgstr "对 LiteFrame 中的每个值逐元素应用 func。"
+
+#: maxframe.liteframe.functional.map.map_:3 of
+msgid ""
+"Each cell is transformed independently by ``func``; the output has the "
+"same shape and column names as the input.  Output dtypes are inferred by "
+"mocking ``func`` on a sample value per column unless ``dtype`` is "
+"supplied or ``skip_infer`` is set."
+msgstr ""
+"每个单元格由 ``func`` 独立转换；输出具有与输入相同的形状和列名。除非提供"
+"了 ``dtype`` 或设置了 ``skip_infer``，否则通过在每列的样本值上模拟 ``func"
+"`` 来推断输出数据类型。"
+
+#: maxframe.liteframe.functional.map.map_ of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.functional.map.map_:8 of
+msgid ""
+"Function to apply to each element.  If ``func`` is a class, it is "
+"instantiated once per chunk, ``__call__`` is invoked per element, and "
+"``close()`` (if defined) is always called at the end of the chunk."
+msgstr ""
+"应用于每个元素的函数。如果 ``func`` 是一个类，则每个分块实例化一次，对"
+"每个元素调用 ``__call__``，并在分块结束时始终调用 ``close()``（如果已定义"
+"）。"
+
+#: maxframe.liteframe.functional.map.map_:14 of
+msgid "If 'ignore', null values are propagated without calling func."
+msgstr "如果为 'ignore'，则在不调用 func 的情况下传播空值。"
+
+#: maxframe.liteframe.functional.map.map_:16 of
+msgid "Output dtype applied to all columns."
+msgstr "应用于所有列的输出数据类型。"
+
+#: maxframe.liteframe.functional.map.map_:18 of
+msgid "If True, skip mock inference when dtype is not provided."
+msgstr "如果为 True，则在未提供 dtype 时跳过模拟推断。"
+
+#: maxframe.liteframe.functional.map.map_:20 of
+msgid "Positional arguments forwarded to func."
+msgstr "转发给 func 的位置参数。"
+
+#: maxframe.liteframe.functional.map.map_:22 of
+msgid ""
+"Keyword arguments. '_check_output_dtype' is popped for output validation;"
+" all others are forwarded to func."
+msgstr ""
+"关键字参数。'_check_output_dtype' 被弹出用于输出验证；所有其他参数都"
+"转发给 func。"
+
+#: maxframe.liteframe.functional.map.map_ of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.functional.map.map_:25 of
+msgid ""
+"Lazy LiteFrame with the same shape as the input, where each value is the "
+"result of applying ``func`` to the corresponding input cell. Call "
+"``.execute()`` to materialize."
+msgstr ""
+"具有与输入相同形状的惰性 LiteFrame，其中每个值都是将 ``func`` 应用于相应"
+"输入单元格的结果。调用 ``.execute()`` 以实例化。"
+
+#: maxframe.liteframe.functional.map.map_ of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.functional.map.map_:32 of
+msgid ":py:obj:`apply`"
+msgstr ""
+
+#: maxframe.liteframe.functional.map.map_:33 of
+msgid "Apply a function per column or per row."
+msgstr "按列或按行应用函数。"
+
+#: maxframe.liteframe.functional.map.map_:35 of
+msgid ":py:obj:`transform`"
+msgstr ""
+
+#: maxframe.liteframe.functional.map.map_:36 of
+msgid "Transform per column or per row."
+msgstr "按列或按行转换。"
+
+#: maxframe.liteframe.functional.map.map_:39 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.functional.map.map_:49 of
+msgid "Specify an explicit output dtype with ``dtype``:"
+msgstr "使用 ``dtype`` 指定明确的输出数据类型："
+
+

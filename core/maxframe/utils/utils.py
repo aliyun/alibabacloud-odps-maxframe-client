@@ -49,6 +49,7 @@ from urllib.parse import urlparse
 import numpy as np
 import pandas as pd
 import traitlets
+from pandas.api.types import is_scalar
 from tornado import web
 
 from maxframe.env import MAX_STORAGE_DATA_PROXY_CONF, ODPS_STORAGE_API_ENDPOINT
@@ -137,6 +138,15 @@ def has_unknown_shape(
         if any(pd.isnull(s) for s in itertools.chain(*nsplits_iter)):
             return True
     return False
+
+
+def is_na_scalar(x) -> bool:
+    """Return True if ``x`` is a scalar NA/missing value (NaN, None, NaT, NA).
+
+    The ``is_scalar`` guard short-circuits before ``pd.isna`` so array-likes
+    (which ``pd.isna`` would broadcast over) return False instead of an array.
+    """
+    return is_scalar(x) and pd.isna(x)
 
 
 def calc_nsplits(chunk_idx_to_shape: Dict[Tuple[int], Tuple[int]]) -> Tuple[Tuple[int]]:
@@ -352,7 +362,7 @@ def estimate_table_size(odps_entry, full_table_name: str, partitions: List[str] 
             size_mul = len(partitions)
             data_src = data_src.partitions[partitions[0]]
         return size_mul * data_src.size
-    except:
+    except Exception:
         return float("inf")
 
 
@@ -602,7 +612,7 @@ def parse_size_to_megabytes(
 ) -> float:
     try:
         value = float(value)
-    except BaseException:
+    except Exception:
         pass
 
     if isinstance(value, numbers.Number):
@@ -730,7 +740,7 @@ def extract_class_name(cls):
 def copy_if_possible(obj: Any, deep=False) -> Any:
     try:
         return copy.deepcopy(obj) if deep else copy.copy(obj)
-    except:  # pragma: no cover
+    except Exception:  # pragma: no cover
         return obj
 
 
@@ -979,3 +989,40 @@ def get_storage_api_endpoint() -> Optional[str]:
     fresh_endpoint = f"{parsed.scheme}://{parsed.hostname}:{port}"
     logger.info("Storage API endpoint: %s (from config file)", fresh_endpoint)
     return fresh_endpoint
+
+
+def is_transaction_enabled_for(engine: str) -> bool:
+    """Check if transactions are enabled for *engine*.
+
+    The option ``dataframe.transaction.enabled_engines`` is a comma-separated
+    string of engine names (e.g. ``"lance"``, ``"lance,odps"``), or the special
+    values ``"all"`` (all supported engines) and ``"off"`` (none).
+    """
+    from maxframe.config import options
+
+    val = options.dataframe.transaction.enabled_engines
+    if val == "off":
+        return False
+    if val == "all":
+        return True
+    return engine in {e.strip() for e in val.split(",") if e.strip()}
+
+
+def normalize_transaction_version_info(info):
+    """Normalize transaction version info to a dict.
+
+    Returns ``{"version": int, "columns": list | None}``, or ``None`` if
+    *info* is ``None``.
+
+    Handles both the dict format (used by LiteFrame, which also tracks
+    source columns for merge add-columns) and the legacy plain-int format
+    (used by the DataFrame path).  This allows a LiteFrame read and a
+    DataFrame write — or vice-versa — within the same session to share
+    the same transaction-version store without type errors.
+    """
+    if info is None:
+        return None
+    if isinstance(info, dict):
+        return info
+    # Legacy format: plain int version
+    return {"version": info, "columns": None}

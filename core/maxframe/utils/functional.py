@@ -21,7 +21,7 @@ import types
 import warnings
 import weakref
 from contextlib import contextmanager
-from typing import Callable
+from typing import Callable, ContextManager, Iterator, Optional
 
 from maxframe.utils._utils_c import tokenize
 
@@ -460,3 +460,23 @@ def quiet_stdio():
             sys.stderr = sys.stderr.wrapped
             if not isinstance(sys.stdout, _QuietIOWrapper):
                 _io_quiet_local.is_wrapped = False
+
+
+@contextmanager
+def optional_context(context: Optional[ContextManager]) -> Iterator[None]:
+    """Enter *context* when it is given, otherwise do nothing.
+
+    Threads do not inherit contextvars, so a thread body that needs a
+    context installed on another thread (e.g. ``get_context()`` for a
+    maxframe ``Context``) must enter the context manager captured on that
+    thread.  Parameters carrying a possibly missing context manager can be
+    used directly::
+
+        with optional_context(context):
+            sign_data = get_context().get_role_sts_token(role_arn)
+    """
+    if context is None:
+        yield
+    else:
+        with context:
+            yield

@@ -12,38 +12,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import inspect
-
-from maxframe import opcodes
-from maxframe.core import OutputType
-from maxframe.core.operator import ShuffleProxy
-from maxframe.core.operator.base import CallPoint
+from maxframe.core import OutputType, register_fetch_class
+from maxframe.core.operator import Fetch, FetchMixin, FetchShuffle
+from maxframe.liteframe.core import FrameMetadata
 from maxframe.liteframe.operators.core import LiteFrameOperatorMixin
+from maxframe.serialization.serializables import ReferenceField, SeriesField
 
 
-class LiteFrameShuffleProxy(ShuffleProxy, LiteFrameOperatorMixin):
-    """
-    Virtual operator for coordinating shuffle operations in LiteFrame merge.
+class LiteFrameFetchMixin(LiteFrameOperatorMixin, FetchMixin):
+    __slots__ = ()
 
-    Acts as a graph marker for shuffle stages, enabling proper chunk
-    coordination between map and reduce phases during distributed merge.
 
-    Unlike regular operators, shuffle proxy does not execute computation
-    but coordinates data flow between mappers and reducers.
+class LiteFrameFetch(LiteFrameFetchMixin, Fetch):
+    dtypes = SeriesField("dtypes")
+    frame_metadata = ReferenceField("frame_metadata", FrameMetadata, default=None)
 
-    Notes
-    -----
-    - Inherits from ShuffleProxy for proper shuffle infrastructure integration
-    - Uses existing SHUFFLE_PROXY opcode for engine compatibility
-    - Integrated with LiteFrameMergeAlign for shuffle map/reduce stages
-    """
+    def __init__(self, output_types=None, **kw):
+        super().__init__(_output_types=output_types, **kw)
 
-    _op_type_ = opcodes.SHUFFLE_PROXY
+    def _new_tileables(self, inputs, kws=None, **kw):
+        if "_key" in kw and self.source_key is None:
+            self.source_key = kw["_key"]
+        return super()._new_tileables(inputs, kws=kws, **kw)
 
-    def __init__(self, output_types=None, **kwargs):
-        kwargs["call_points"] = kwargs.pop("call_points", None) or [
-            CallPoint.from_frame(inspect.currentframe().f_back)
-        ]
-        if output_types is None:
-            output_types = [OutputType.liteframe]
-        super().__init__(_output_types=output_types, **kwargs)
+
+class LiteFrameFetchShuffle(LiteFrameFetchMixin, FetchShuffle):
+    dtypes = SeriesField("dtypes")
+    frame_metadata = ReferenceField("frame_metadata", FrameMetadata, default=None)
+
+    def __init__(self, output_types=None, **kw):
+        super().__init__(_output_types=output_types, **kw)
+
+
+register_fetch_class(OutputType.liteframe, LiteFrameFetch, LiteFrameFetchShuffle)

@@ -1,0 +1,464 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1156+br.gf69dcec42\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-18 15:57+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:2
+msgid "maxframe.learn.ensemble.RandomForestRegressor"
+msgstr ""
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:1 of
+msgid "A distributed random forest regressor."
+msgstr "分布式随机森林回归器。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:3 of
+msgid ""
+"A random forest is a meta estimator that fits a number of decision tree "
+"regressors on various sub-samples of the dataset and uses averaging to "
+"improve the predictive accuracy and control over-fitting."
+msgstr ""
+"随机森林是一种元估计器，它在数据集的不同子样本上拟合多个决策树回归器，并"
+"通过平均来提高预测精度和控制过拟合。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:7 of
+msgid ""
+"This distributed implementation trains all trees simultaneously using a "
+"single pass over the data per tree level, which is significantly more "
+"efficient than training trees independently."
+msgstr ""
+"此分布式实现通过每个树层级对数据进行单次遍历来同时训练所有树，这比独立"
+"训练树要高效得多。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:11 of
+msgid "The number of trees in the forest."
+msgstr "森林中树的数量。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:13 of
+msgid ""
+"The function to measure the quality of a split. Only \"squared_error\" is"
+" currently supported in the distributed implementation."
+msgstr "用于衡量分裂质量的函数。分布式实现中目前仅支持 \"squared_error\"。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:16 of
+msgid ""
+"The maximum depth of the tree. If None, then nodes are expanded until all"
+" leaves contain less than min_samples_split samples."
+msgstr ""
+"树的最大深度。如果为 None，则节点会一直展开，直到所有叶节点包含的样本数"
+"少于 min_samples_split。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:19 of
+msgid ""
+"The maximum number of bins used to discretize continuous features. See "
+":class:`~maxframe.learn.tree.DecisionTreeClassifier` for details."
+msgstr ""
+"用于将连续特征离散化的最大分箱数。详情请参阅 :class:`~maxframe.learn.tree"
+".DecisionTreeClassifier`。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:23 of
+msgid "The minimum number of samples required to split an internal node."
+msgstr "分裂内部节点所需的最小样本数。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:25 of
+msgid "The minimum number of samples required to be at a leaf node."
+msgstr "叶节点所需的最小样本数。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:27 of
+msgid ""
+"The minimum weighted fraction of the sum total of weights required to be "
+"at a leaf node."
+msgstr "权重总和中叶节点所需的最小加权比例。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:30 of
+msgid ""
+"The number of features to consider when looking for the best split.  - If"
+" int, then consider `max_features` features at each split. - If float, "
+"then `max_features` is a fraction and   `max(1, int(max_features * "
+"n_features))` features are considered. - If \"sqrt\", then "
+"`max_features=sqrt(n_features)`. - If \"log2\", then "
+"`max_features=log2(n_features)`. - If 1.0, then "
+"`max_features=n_features`.  .. note::     The default of 1.0 is "
+"equivalent to bagged trees and more     randomness can be achieved by "
+"setting smaller values, e.g. 0.3."
+msgstr ""
+"寻找最佳分裂时考虑的特征数。  - 如果为 int，则每次分裂考虑 `max_features`"
+" 个特征。  - 如果为 float，则 `max_features` 为比例，且考虑 `max(1, int("
+"max_features * n_features))` 个特征。  - 如果为 \"sqrt\"，则 `max_"
+"features=sqrt(n_features)`。  - 如果为 \"log2\"，则 `max_features=log2(n_"
+"features)`。  - 如果为 1.0，则 `max_features=n_features`。  .. note::    "
+" 默认值 1.0 等同于 bagged trees，可通过设置较小的值（如 0.3）来获得更多"
+"随机性。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:30 of
+msgid "The number of features to consider when looking for the best split."
+msgstr "寻找最佳分裂时考虑的特征数。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:32 of
+msgid "If int, then consider `max_features` features at each split."
+msgstr "如果为 int，则每次分裂考虑 `max_features` 个特征。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:33 of
+msgid ""
+"If float, then `max_features` is a fraction and `max(1, int(max_features "
+"* n_features))` features are considered."
+msgstr ""
+"如果为 float，则 `max_features` 为比例，且考虑 `max(1, int(max_features *"
+" n_features))` 个特征。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:35 of
+msgid "If \"sqrt\", then `max_features=sqrt(n_features)`."
+msgstr "如果为 \"sqrt\"，则 `max_features=sqrt(n_features)`。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:36 of
+msgid "If \"log2\", then `max_features=log2(n_features)`."
+msgstr "如果为 \"log2\"，则 `max_features=log2(n_features)`。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:37 of
+msgid "If 1.0, then `max_features=n_features`."
+msgstr "如果为 1.0，则 `max_features=n_features`。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:40 of
+msgid ""
+"The default of 1.0 is equivalent to bagged trees and more randomness can "
+"be achieved by setting smaller values, e.g. 0.3."
+msgstr ""
+"默认值 1.0 等同于 bagged trees，可通过设置较小的值（如 0.3）来获得更多"
+"随机性。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:43 of
+msgid ""
+"Whether bootstrap samples are used when building trees. If False, the "
+"whole dataset is used to build each tree."
+msgstr "构建树时是否使用自助样本。如果为 False，则使用整个数据集来构建每棵树。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:46 of
+msgid ""
+"Whether to use out-of-bag samples to estimate the generalization score.  "
+".. warning::     Out-of-bag scoring is not yet implemented. Setting     "
+"``oob_score=True`` will raise ``NotImplementedError``."
+msgstr ""
+"是否使用袋外样本来估计泛化得分。  .. warning::     袋外评分尚未实现。设置"
+" ``oob_score=True`` 将引发 ``NotImplementedError``。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:46 of
+msgid "Whether to use out-of-bag samples to estimate the generalization score."
+msgstr "是否使用袋外样本来估计泛化得分。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:50 of
+msgid ""
+"Out-of-bag scoring is not yet implemented. Setting ``oob_score=True`` "
+"will raise ``NotImplementedError``."
+msgstr "袋外评分尚未实现。设置 ``oob_score=True`` 将引发 ``NotImplementedError``。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:53 of
+msgid ""
+"Controls both the randomness of the bootstrapping of the samples and the "
+"sampling of the features to consider at each node."
+msgstr "同时控制样本自助采样和每个节点考虑的特征采样的随机性。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:56 of
+msgid "Controls the verbosity when fitting and predicting."
+msgstr "控制拟合和预测时的详细程度。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:58 of
+msgid ""
+"If bootstrap is True, the number of samples to draw from X to train each "
+"base estimator."
+msgstr "如果 bootstrap 为 True，则从 X 中抽取用于训练每个基估计器的样本数。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:61 of
+msgid "The maximum memory in MB for aggregating statistics per node group."
+msgstr "每个节点组聚合统计信息的最大内存（MB）。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:63 of
+msgid ""
+"The strategy for selecting features at each node split. Default \"auto\" "
+"resolves to \"onethird\" for regression."
+msgstr "每个节点分裂时选择特征的策略。回归时默认 \"auto\" 解析为 \"onethird\"。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:69 of
+msgid "The child estimator template."
+msgstr "子估计器模板。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor of
+msgid "type"
+msgstr "类型"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:71 of
+msgid "DecisionTreeRegressor"
+msgstr ""
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:75 of
+msgid "The collection of fitted sub-estimators."
+msgstr "已拟合子估计器的集合。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:77 of
+msgid "list of DecisionTreeRegressor"
+msgstr "DecisionTreeRegressor 列表"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:81 of
+msgid ""
+"The impurity-based feature importances. Currently returns all zeros (not "
+"yet implemented). Tracked as a known limitation."
+msgstr "基于不纯度的特征重要性。目前返回全零（尚未实现）。作为已知限制进行跟踪。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:84 of
+msgid "ndarray of shape (n_features,)"
+msgstr "形状为 (n_features,) 的 ndarray"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:88 of
+msgid "Number of features seen during fit."
+msgstr "拟合期间见到的特征数。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:90
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:102 of
+msgid "int"
+msgstr "整数"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:94 of
+msgid "Names of features seen during fit."
+msgstr "拟合期间见到的特征名称。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:96 of
+msgid "ndarray of shape (n_features_in_,)"
+msgstr "形状为 (n_features_in_,) 的 ndarray"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:100 of
+msgid "The number of outputs when fit is performed."
+msgstr "执行拟合时的输出数。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:106 of
+msgid ""
+"Score of the training dataset obtained using an out-of-bag estimate. Only"
+" when ``oob_score`` is True."
+msgstr "使用袋外估计获得的训练数据集得分。仅在 ``oob_score`` 为 True 时存在。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:109 of
+msgid "float"
+msgstr "浮点数"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:113 of
+msgid ""
+"Prediction computed with out-of-bag estimate on the training set. Only "
+"when ``oob_score`` is True."
+msgstr "在训练集上使用袋外估计计算的预测。仅在 ``oob_score`` 为 True 时存在。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:116 of
+msgid "ndarray of shape (n_samples,)"
+msgstr "形状为 (n_samples,) 的 ndarray"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:120 of
+msgid ":py:obj:`DecisionTreeRegressor`"
+msgstr "DecisionTreeRegressor"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:121 of
+msgid "A distributed decision tree regressor."
+msgstr "分布式决策树回归器。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:123 of
+msgid ":py:obj:`RandomForestClassifier`"
+msgstr "RandomForestClassifier"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:124 of
+msgid "A distributed random forest classifier."
+msgstr "分布式随机森林分类器。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:127 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:128 of
+msgid "**Limitations compared to scikit-learn**"
+msgstr "**与 scikit-learn 相比的限制**"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:130 of
+msgid ""
+"In addition to the limitations documented in "
+":class:`~maxframe.learn.tree.DecisionTreeClassifier` and "
+":class:`~maxframe.learn.ensemble.RandomForestClassifier`:"
+msgstr ""
+"除了 :class:`~maxframe.learn.tree.DecisionTreeClassifier` 和 :class:`~"
+"maxframe.learn.ensemble.RandomForestClassifier` 中记录的限制之外："
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:134 of
+msgid ""
+"Only \"squared_error\" criterion is supported. \"absolute_error\", "
+"\"friedman_mse\", and \"poisson\" are not yet available."
+msgstr ""
+"仅支持 \"squared_error\" 判据。\"absolute_error\"、\"friedman_mse\" 和 \""
+"poisson\" 尚不可用。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:136 of
+msgid ""
+"The default ``max_features`` is 1.0 (all features), which differs from "
+"sklearn's original recommendation of n_features/3 [1]_ but aligns with "
+"more recent empirical findings [2]_."
+msgstr ""
+"默认 ``max_features`` 为 1.0（所有特征），这与 sklearn 原先推荐的 n_"
+"features/3 [1]_ 不同，但与较新的实证研究结果 [2]_ 一致。"
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:141 of
+msgid "引用"
+msgstr ""
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:142 of
+msgid "L. Breiman, \"Random Forests\", Machine Learning, 45(1), 5-32, 2001."
+msgstr ""
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:145 of
+msgid ""
+"P. Geurts, D. Ernst., and L. Wehenkel, \"Extremely randomized trees\", "
+"Machine Learning, 63(1), 3-42, 2006."
+msgstr ""
+
+#: maxframe.learn.ensemble._forest.RandomForestRegressor:149 of
+msgid "示例"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:13
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`__init__ "
+"<maxframe.learn.ensemble.RandomForestRegressor.__init__>`\\ \\(\\*\\[\\, "
+"n\\_estimators\\, criterion\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`execute "
+"<maxframe.learn.ensemble.RandomForestRegressor.execute>`\\ "
+"\\(\\[session\\, run\\_kwargs\\, extra\\_tileables\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`fetch <maxframe.learn.ensemble.RandomForestRegressor.fetch>`\\ "
+"\\(\\[session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`fit <maxframe.learn.ensemble.RandomForestRegressor.fit>`\\ "
+"\\(X\\, y\\[\\, sample\\_weight\\, execute\\, session\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid "Fit a distributed random forest regressor."
+msgstr "拟合分布式随机森林回归器。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`get_metadata_routing "
+"<maxframe.learn.ensemble.RandomForestRegressor.get_metadata_routing>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid "Get metadata routing of this object."
+msgstr "获取此对象的元数据路由。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`get_params "
+"<maxframe.learn.ensemble.RandomForestRegressor.get_params>`\\ "
+"\\(\\[deep\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid "Get parameters for this estimator."
+msgstr "获取此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`predict "
+"<maxframe.learn.ensemble.RandomForestRegressor.predict>`\\ \\(X\\[\\, "
+"execute\\, session\\, run\\_kwargs\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid "Predict regression target for X."
+msgstr "预测 X 的回归目标。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`score <maxframe.learn.ensemble.RandomForestRegressor.score>`\\ "
+"\\(X\\, y\\[\\, sample\\_weight\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid "Return the coefficient of determination :math:`R^2` of the prediction."
+msgstr "返回预测的决定系数 :math:`R^2`。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`set_fit_request "
+"<maxframe.learn.ensemble.RandomForestRegressor.set_fit_request>`\\ "
+"\\(\\*\\[\\, execute\\, run\\_kwargs\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``fit`` method."
+msgstr "配置是否应请求将元数据传递给 ``fit`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`set_params "
+"<maxframe.learn.ensemble.RandomForestRegressor.set_params>`\\ "
+"\\(\\*\\*params\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid "Set the parameters of this estimator."
+msgstr "设置此估计器的参数。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`set_predict_request "
+"<maxframe.learn.ensemble.RandomForestRegressor.set_predict_request>`\\ "
+"\\(\\*\\[\\, execute\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``predict`` method."
+msgstr "配置是否应请求将元数据传递给 ``predict`` 方法。"
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`set_score_request "
+"<maxframe.learn.ensemble.RandomForestRegressor.set_score_request>`\\ "
+"\\(\\*\\[\\, sample\\_weight\\]\\)"
+msgstr ""
+
+#: ../../source/reference/learn/generated/maxframe.learn.ensemble.RandomForestRegressor.rst:27:<autosummary>:1
+msgid ""
+"Configure whether metadata should be requested to be passed to the "
+"``score`` method."
+msgstr "配置是否应请求将元数据传递给 ``score`` 方法。"
+

@@ -16,7 +16,7 @@ from maxframe.liteframe import (  # noqa: F401
     arithmetic,
     datasource,
     datastore,
-    fetch,
+    functional,
     groupby,
     indexing,
     merge,
@@ -24,6 +24,7 @@ from maxframe.liteframe import (  # noqa: F401
     missing,
     reduction,
     sort,
+    window,
 )
 from maxframe.liteframe.core import (
     LITEFRAME_TYPE,
@@ -31,9 +32,15 @@ from maxframe.liteframe.core import (
     LiteFrameData,
     LiteFrameResult,
 )
+from maxframe.liteframe.datasource.read_csv import read_csv
+from maxframe.liteframe.datasource.read_json import read_json
+from maxframe.liteframe.datasource.read_lance import read_lance
 from maxframe.liteframe.datasource.read_odps_table import read_odps_table
+from maxframe.liteframe.datasource.read_parquet import read_parquet
 from maxframe.liteframe.expressions import col
 from maxframe.liteframe.initializer import LiteFrame  # noqa: F811
+from maxframe.liteframe.merge.concat import concat
+from maxframe.liteframe.merge.merge import merge
 from maxframe.liteframe.missing.check import isna, isnull, notna, notnull
 
 # isort: off

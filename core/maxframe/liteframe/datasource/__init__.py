@@ -13,7 +13,12 @@
 # limitations under the License.
 
 from maxframe.liteframe.datasource.from_local import from_local_df
+from maxframe.liteframe.datasource.from_tensor import liteframe_from_tensor
+from maxframe.liteframe.datasource.read_csv import read_csv
+from maxframe.liteframe.datasource.read_json import read_json
+from maxframe.liteframe.datasource.read_lance import read_lance
 from maxframe.liteframe.datasource.read_odps_table import read_odps_table
+from maxframe.liteframe.datasource.read_parquet import read_parquet
 
 
 def _install():
@@ -21,6 +26,7 @@ def _install():
 
     for cls in LITEFRAME_TYPE:
         setattr(cls, "from_local_df", staticmethod(from_local_df))
+        setattr(cls, "from_tensor", staticmethod(liteframe_from_tensor))
 
 
 _install()

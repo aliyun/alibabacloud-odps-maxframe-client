@@ -1,0 +1,152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_csv.rst:2
+msgid "maxframe.liteframe.read\\_csv"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:1 of
+msgid "Read a CSV file into a LiteFrame with Arrow dtypes."
+msgstr "读取一个 CSV 文件到具有 Arrow 数据类型的 LiteFrame 中。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:3 of
+msgid ""
+"Local (``file://`` or bare path) files are read with pandas and wrapped "
+"via :func:`from_local_df`. Remote paths are read in chunks by the "
+"MaxFrame backend; when a ``session`` is available the schema is inferred "
+"remotely, otherwise the tiler infers types at execution time."
+msgstr ""
+"本地（``file://`` 或裸路径）文件使用 pandas 读取并通过 :func:`from_local_"
+"df` 包装。远程路径由 MaxFrame 后端分块读取；当 ``session`` 可用时，模式会"
+"在远程推断，否则在执行时由 tiler 推断类型。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_csv.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:9 of
+msgid ""
+"Path or list of paths to the CSV file(s) to read. Local paths and remote "
+"URIs are both supported."
+msgstr "要读取的 CSV 文件的路径或路径列表。支持本地路径和远程 URI。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:12 of
+msgid "Column names to select. If None, all columns are read."
+msgstr "要选择的列名。如果为 None，则读取所有列。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:14 of
+msgid ""
+"Mapping of column name to dtype. Overrides inferred types for the given "
+"columns."
+msgstr "列名到数据类型的映射。覆盖给定列的推断类型。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:17 of
+msgid "Custom column names. Used when the file has no header."
+msgstr "自定义列名。用于文件没有头部时。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:19 of
+msgid "Field delimiter."
+msgstr "字段分隔符。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:21 of
+msgid ""
+"Row number to use as column names, or ``'infer'`` to detect "
+"automatically, or ``None`` with explicit ``names``."
+msgstr ""
+"用作列名的行号，或 ``'infer'`` 以自动检测，或带有显式 ``names`` 的 ``None"
+"``。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:24 of
+msgid ""
+"Index type for the resulting LiteFrame. If None, a default is chosen by "
+"the backend."
+msgstr "结果 LiteFrame 的索引类型。如果为 None，则由后端选择默认值。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:27 of
+msgid "Extra options for the storage backend (e.g. credentials)."
+msgstr "存储后端的额外选项（例如凭据）。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:29 of
+msgid "Target chunk size in bytes for splitting remote files."
+msgstr "分割远程文件的目标块大小（字节）。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:31 of
+msgid "Whether to merge small files into larger chunks."
+msgstr "是否将小文件合并为更大的块。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:33 of
+msgid "Compression of the input file (e.g. ``'gzip'``, ``'infer'``)."
+msgstr "输入文件的压缩方式（例如 ``'gzip'``、``'infer'``）。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:35 of
+msgid "Number of bytes to read from the file head for schema inference."
+msgstr "从文件头部读取用于模式推断的字节数。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:37 of
+msgid ""
+"Session to use for remote schema inference and execution. If None, the "
+"default session is used when available."
+msgstr "用于远程模式推断和执行的会话。如果为 None，则在可用时使用默认会话。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:40 of
+msgid "Additional keyword arguments forwarded to the CSV reader."
+msgstr "转发给 CSV 读取器的附加关键字参数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_csv.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:42 of
+msgid ""
+"A lazy LiteFrame with Arrow dtypes representing the CSV data. Call "
+"``.execute()`` to materialize the results."
+msgstr ""
+"表示 CSV 数据的惰性 LiteFrame，具有 Arrow 数据类型。调用 ``.execute()`` "
+"来实例化结果。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_csv.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:48 of
+msgid ":py:obj:`LiteFrame.to_csv`"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:49 of
+msgid "Write a LiteFrame to a CSV file."
+msgstr "将 LiteFrame 写入 CSV 文件。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:51 of
+msgid ":py:obj:`read_parquet`"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:52 of
+msgid "Read a Parquet file into a LiteFrame."
+msgstr "读取 Parquet 文件到 LiteFrame 中。"
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:54 of
+msgid ":py:obj:`read_json`"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_csv.read_csv:55 of
+msgid "Read a JSON file into a LiteFrame."
+msgstr "读取 JSON 文件到 LiteFrame 中。"
+

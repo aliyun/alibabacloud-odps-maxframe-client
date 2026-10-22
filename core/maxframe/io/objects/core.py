@@ -68,7 +68,7 @@ class AbstractObjectIOHandler(metaclass=ABCMeta):
         for k in pickled_keys:
             try:
                 meta_obj[k] = deserialize_serializable(serialized_values[k])
-            except:
+            except Exception:
                 meta_obj[k] = pickle.loads(meta_obj[k])
         return meta_obj
 

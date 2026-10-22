@@ -15,12 +15,46 @@
 import pandas as pd
 
 from maxframe.liteframe.datasource.utils import infer_dtypes_from_pandas
-from maxframe.liteframe.operators.source import LiteFrameFromLocal
+from maxframe.liteframe.operators.datasource import LiteFrameFromLocal
 from maxframe.liteframe.utils import normalize_col_name, normalize_dtypes_index
 
 
 def from_local_df(df, chunk_size=None, gpu=None, session=None, default_index_type=None):
-    """Create a LiteFrame from a local pandas DataFrame or similar object."""
+    """Create a LiteFrame from a local pandas DataFrame or similar object.
+
+    Column names are normalized to lowercase to make internal storage
+    case-insensitive, and duplicate names after normalization raise a
+    ``ValueError``. Dtypes are inferred from the input.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame or DataFrame-like
+        Local DataFrame to wrap. Must have a ``columns`` attribute and
+        support ``.dtypes`` if not a pandas DataFrame.
+    chunk_size : int, optional
+        Desired chunk size for the tiled result. If None, a default is
+        chosen by the backend.
+    gpu : bool, optional
+        Whether the data should be placed on GPU. If None, the backend
+        default is used.
+    session : Session, optional
+        Session to use for execution. If None, the default session is
+        used when available.
+    default_index_type : str, optional
+        Index type for the resulting LiteFrame. If None, a default is
+        chosen by the backend.
+
+    Returns
+    -------
+    LiteFrame
+        A lazy LiteFrame with Arrow dtypes wrapping the local data.
+        Call ``.execute()`` to materialize the results.
+
+    See Also
+    --------
+    LiteFrame.from_tensor : Create a LiteFrame from a MaxFrame tensor.
+    LiteFrame : Construct a LiteFrame from dict, DataFrame, or tensor.
+    """
     # Lowercase all column names so internal storage is case-insensitive.
     # This must be done for both pandas and non-pandas inputs.
     lowered_cols = [normalize_col_name(c) for c in df.columns]

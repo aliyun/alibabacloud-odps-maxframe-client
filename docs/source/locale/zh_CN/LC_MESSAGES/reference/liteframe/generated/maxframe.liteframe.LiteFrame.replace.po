@@ -1,0 +1,93 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 15:05+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.replace.rst:2
+msgid "maxframe.liteframe.LiteFrame.replace"
+msgstr ""
+
+#: maxframe.liteframe.missing.fill.replace:1 of
+msgid "Replace values in the LiteFrame."
+msgstr "替换 LiteFrame 中的值。"
+
+#: maxframe.liteframe.missing.fill.replace:3 of
+msgid ""
+"When ``to_replace`` is ``None``, behaves like ``fillna`` (replaces only "
+"NA/null values).  When ``to_replace`` is a scalar, replaces all "
+"occurrences of that value with ``value`` across every column."
+msgstr ""
+"当 ``to_replace`` 为 ``None`` 时，行为类似于 ``fillna``（仅替换 NA/null "
+"值）。当 ``to_replace`` 是标量时，替换每一列中该值的所有出现次数，并用 ``"
+"value`` 替换。"
+
+#: maxframe.liteframe.missing.fill.replace of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.missing.fill.replace:7 of
+msgid ""
+"Value to replace.  When ``None`` (the default), only NA/null values are "
+"replaced, behaving like :func:`fillna`.  Only scalar ``to_replace`` is "
+"supported."
+msgstr ""
+"要替换的值。当为 ``None`` 时（默认值），仅替换 NA/null 值，行为类似于 :"
+"func:`fillna`。仅支持标量 ``to_replace``。"
+
+#: maxframe.liteframe.missing.fill.replace:11 of
+msgid ""
+"Replacement value used in place of ``to_replace`` (or in place of NA when"
+" ``to_replace`` is ``None``)."
+msgstr ""
+"用于替换 ``to_replace`` 的值（或当 ``to_replace`` 为 ``None`` 时替换 NA "
+"的值）。"
+
+#: maxframe.liteframe.missing.fill.replace of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.missing.fill.replace:15 of
+msgid "LiteFrame with matching values replaced."
+msgstr "匹配值被替换后的 LiteFrame。"
+
+#: maxframe.liteframe.missing.fill.replace of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.missing.fill.replace:20 of
+msgid ":py:obj:`fillna`"
+msgstr ""
+
+#: maxframe.liteframe.missing.fill.replace:21 of
+msgid "Fill missing values."
+msgstr "填充缺失值。"
+
+#: maxframe.liteframe.missing.fill.replace:23 of
+msgid ":py:obj:`where`"
+msgstr ""
+
+#: maxframe.liteframe.missing.fill.replace:24 of
+msgid "Replace values where a condition is False."
+msgstr "在条件为 False 时替换值。"
+
+#: maxframe.liteframe.missing.fill.replace:27 of
+msgid "示例"
+msgstr ""
+
+

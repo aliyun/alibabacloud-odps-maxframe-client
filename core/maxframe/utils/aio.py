@@ -127,10 +127,10 @@ class ToThreadMixin:
                 default_task_name = unwrapped.__qualname__
                 if getattr(unwrapped, "__module__", None):
                     default_task_name = unwrapped.__module__ + "#" + default_task_name
-            except:  # noqa # pragma: no cover
+            except Exception:  # pragma: no cover
                 try:
                     default_task_name = repr(func)
-                except:  # noqa
+                except Exception:
                     pass
             debug_task_name = debug_task_name or default_task_name
 
@@ -177,7 +177,14 @@ def relay_future(
         try:
             dest.set_result(fut.result())
         except BaseException as ex:
+            # dest already receives the failure via set_exception, so re-raising
+            # ordinary exceptions here only adds event-loop callback noise.
+            # Only re-raise non-Exception BaseExceptions (SystemExit,
+            # KeyboardInterrupt, CancelledError) so control-flow signals are
+            # still surfaced.
             dest.set_exception(ex)
+            if not isinstance(ex, Exception):
+                raise
 
     src.add_done_callback(cb)
 
@@ -189,16 +196,16 @@ def call_with_retry(
     retry_timeout: TimeoutType = None,
     delay: TimeoutType = None,
     reset_func: Optional[Callable] = None,
-    exc_type: Union[
-        Type[BaseException], Tuple[Type[BaseException], ...]
-    ] = BaseException,
-    allow_interrupt: bool = True,
+    exc_type: Union[Type[Exception], Tuple[Type[Exception], ...]] = Exception,
     no_raise: bool = False,
     is_func_async: Optional[bool] = None,
     **kwargs,
 ) -> _RetryRetType:
     """
     Retry calling function given specified times or timeout.
+
+    Note that BaseException is not retried to avoid interfering with
+    the control flow.
 
     Parameters
     ----------
@@ -216,8 +223,6 @@ def call_with_retry(
         Function to call after every trial
     exc_type: Type[BaseException] | Tuple[Type[BaseException], ...]
         Exception type for retrial
-    allow_interrupt: bool
-        If True, KeyboardInterrupt will stop the retry
     no_raise: bool
         If True, no exception will be raised even if all trials failed
     is_func_async: bool
@@ -236,11 +241,9 @@ def call_with_retry(
     delay = delay if delay is not None else options.retry_delay
     start_time = time.monotonic() if retry_timeout is not None else None
 
-    def raise_or_continue(exc: BaseException):
+    def raise_or_continue(exc: Exception):
         nonlocal retry_num
         retry_num += 1
-        if allow_interrupt and isinstance(exc, KeyboardInterrupt):
-            raise exc from None
         if (retry_times is not None and retry_num > retry_times) or (
             retry_timeout is not None
             and start_time is not None

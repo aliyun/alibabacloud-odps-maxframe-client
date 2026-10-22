@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.upper.rst:2
+msgid "maxframe.liteframe.LiteFrame.str.upper"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.upper:1
+msgid "Convert strings in the Series/Index to uppercase."
+msgstr "将 Series/Index 中的字符串转换为大写。"
+
+#: of pandas.core.strings.accessor.StringMethods.upper:3
+msgid "Equivalent to :meth:`str.upper`."
+msgstr "等价于 :meth:`str.upper`。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.upper.rst
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.upper:5
+msgid "A Series or Index where the strings are modified by :meth:`str.upper`."
+msgstr "一个 Series 或 Index，其中的字符串通过 :meth:`str.upper` 进行修改。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.upper.rst
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.upper:10
+msgid ":py:obj:`LiteFrame.str.lower`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.upper:11
+msgid "Converts all characters to lowercase."
+msgstr "将所有字符转换为小写。"
+
+#: of pandas.core.strings.accessor.StringMethods.upper:13
+msgid ":py:obj:`LiteFrame.str.upper`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.upper:14
+msgid "Converts all characters to uppercase."
+msgstr "将所有字符转换为大写。"
+
+#: of pandas.core.strings.accessor.StringMethods.upper:16
+msgid ":py:obj:`LiteFrame.str.title`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.upper:17
+msgid ""
+"Converts first character of each word to uppercase and remaining to "
+"lowercase."
+msgstr "将每个单词的首字母转换为大写，其余字母转换为小写。"
+
+#: of pandas.core.strings.accessor.StringMethods.upper:19
+msgid ":py:obj:`LiteFrame.str.capitalize`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.upper:20
+msgid "Converts first character to uppercase and remaining to lowercase."
+msgstr "将首字符转换为大写，其余字符转换为小写。"
+
+#: of pandas.core.strings.accessor.StringMethods.upper:22
+msgid ":py:obj:`LiteFrame.str.swapcase`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.upper:23
+msgid "Converts uppercase to lowercase and lowercase to uppercase."
+msgstr "将大写转换为小写，小写转换为大写。"
+
+#: of pandas.core.strings.accessor.StringMethods.upper:25
+msgid ":py:obj:`LiteFrame.str.casefold`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.upper:26
+msgid "Removes all case distinctions in the string."
+msgstr "移除字符串中的所有大小写区分。"

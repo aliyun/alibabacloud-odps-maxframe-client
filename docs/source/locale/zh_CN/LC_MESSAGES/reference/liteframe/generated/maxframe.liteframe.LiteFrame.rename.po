@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 15:05+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.rename.rst:2
+msgid "maxframe.liteframe.LiteFrame.rename"
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.rename:1 of
+msgid "Rename columns in LiteFrame."
+msgstr "重命名 LiteFrame 中的列。"
+
+#: maxframe.liteframe.indexing.select.rename:3 of
+msgid ""
+"Applies a mapping of old column names to new names; columns not in the "
+"mapping keep their current name.  Row order and data are unchanged."
+msgstr ""
+"应用从旧列名到新列名的映射；不在映射中的列保持当前名称。行顺序和数据保持"
+"不变。"
+
+#: maxframe.liteframe.indexing.select.rename of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.rename:6 of
+#, python-brace-format
+msgid "Mapping ``{old_name: new_name}`` describing the renames to apply."
+msgstr "描述要应用的重命名的映射 ``{old_name: new_name}``。"
+
+#: maxframe.liteframe.indexing.select.rename of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.rename:9 of
+msgid "LiteFrame with renamed columns."
+msgstr "列已重命名的 LiteFrame。"
+
+#: maxframe.liteframe.indexing.select.rename of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.rename:14 of
+msgid ":py:obj:`LiteFrame.add_prefix`"
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.rename:15 of
+msgid "Prefix all column labels."
+msgstr "为所有列标签添加前缀。"
+
+#: maxframe.liteframe.indexing.select.rename:17 of
+msgid ":py:obj:`LiteFrame.add_suffix`"
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.rename:18 of
+msgid "Suffix all column labels."
+msgstr "为所有列标签添加后缀。"
+
+#: maxframe.liteframe.indexing.select.rename:21 of
+msgid "示例"
+msgstr ""
+
+

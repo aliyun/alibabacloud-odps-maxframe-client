@@ -62,6 +62,7 @@ from maxframe.utils.datatypes import (
     is_string_dtype,
     make_dtype,
     make_dtypes,
+    to_pandas_dtype,
     validate_and_align_output,
     wrap_arrow_dtype,
 )
@@ -79,6 +80,7 @@ from maxframe.utils.functional import (
     get_func_token,
     ignore_warning,
     implements,
+    optional_context,
     quiet_stdio,
     skip_na_call,
     unwrap_function,
@@ -141,6 +143,7 @@ from maxframe.utils.utils import (
     get_storage_api_endpoint,
     has_unknown_shape,
     is_full_slice,
+    is_na_scalar,
     lazy_import,
     new_random_id,
     no_default,

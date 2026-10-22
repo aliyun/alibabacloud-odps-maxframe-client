@@ -1,0 +1,91 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 11:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.diff.rst:2
+msgid "maxframe.liteframe.LiteFrame.diff"
+msgstr ""
+
+#: maxframe.liteframe.window.diff.diff:1 of
+msgid "Compute ``x[i] - x[i-periods]`` for each row."
+msgstr "计算每一行的 ``x[i] - x[i-periods]``。"
+
+#: maxframe.liteframe.window.diff.diff:3 of
+msgid ""
+"First ``periods`` rows (for positive periods) or last ``|periods|`` rows "
+"(for negative periods) are null."
+msgstr ""
+"前 ``periods`` 行（对于正周期）或最后 ``|periods|`` 行（对于负周期）为 "
+"null。"
+
+#: maxframe.liteframe.window.diff.diff of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.window.diff.diff:6 of
+msgid "Number of positions to diff.  Positive = forward, negative = backward."
+msgstr "差分的位置数。正数=向前，负数=向后。"
+
+#: maxframe.liteframe.window.diff.diff:8 of
+msgid ""
+"Column(s) to diff.  If None, all columns are diffed. Non-selected columns"
+" are passed through unchanged."
+msgstr "要差分的列。如果为 None，则对所有列进行差分。未选择的列保持不变。"
+
+#: maxframe.liteframe.window.diff.diff of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.window.diff.diff:12 of
+msgid "Diffed LiteFrame with same shape and columns."
+msgstr "具有相同形状和列的差分 LiteFrame。"
+
+#: maxframe.liteframe.window.diff.diff of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.window.diff.diff of
+msgid "抛出"
+msgstr ""
+
+#: maxframe.liteframe.window.diff.diff:15 of
+msgid "If any transformed column is non-numeric."
+msgstr "如果任何转换后的列是非数值型的。"
+
+#: maxframe.liteframe.window.diff.diff:19 of
+msgid ":py:obj:`shift`"
+msgstr ""
+
+#: maxframe.liteframe.window.diff.diff:20 of
+msgid "Shift rows by a given number of periods."
+msgstr "按给定的周期数移动行。"
+
+#: maxframe.liteframe.window.diff.diff:22 of
+msgid ":py:obj:`pct_change`"
+msgstr ""
+
+#: maxframe.liteframe.window.diff.diff:23 of
+msgid "Compute percent change over given periods."
+msgstr "计算给定期间的百分比变化。"
+
+#: maxframe.liteframe.window.diff.diff:26 of
+msgid "示例"
+msgstr ""
+

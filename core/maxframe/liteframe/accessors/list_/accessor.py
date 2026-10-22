@@ -18,10 +18,53 @@ from maxframe.liteframe.accessors.list_.core import (
     LiteFrameListExpr,
     list_method_to_handlers,
 )
+from maxframe.liteframe.accessors.list_.flatten import flatten_list_column
 from maxframe.liteframe.arithmetic.core import (
     _build_fused_projection,
     _resolve_column_expr,
 )
+
+_method_docs = {
+    "len": """
+    Get the length of each list in the column.
+
+    Returns
+    -------
+    LiteFrame
+        Single-column LiteFrame with ``int64`` dtype; ``None`` lists
+        yield ``None``.
+    """,
+    "get": """
+    Get the value at an index of each list in the column.
+
+    Out-of-range indices yield ``None`` rather than raising.
+
+    Parameters
+    ----------
+    query_index : int
+        The index to look up in each list.
+
+    Returns
+    -------
+    LiteFrame
+        Single-column LiteFrame with the list's value dtype.
+    """,
+    "__getitem__": """
+    Get the value at an index of each list in the column.
+
+    Raises ``IndexError`` for out-of-range indices.
+
+    Parameters
+    ----------
+    query_index : int
+        The index to look up in each list.
+
+    Returns
+    -------
+    LiteFrame
+        Single-column LiteFrame with the list's value dtype.
+    """,
+}
 
 
 class ListAccessor:
@@ -31,6 +74,11 @@ class ListAccessor:
     Provides pandas-style .list accessor for single-column LiteFrame with
     Arrow list dtype. Multi-column LiteFrames raise ValueError on accessor
     access.
+
+    Parameters
+    ----------
+    liteframe : LiteFrame
+        Single-column LiteFrame with an Arrow list dtype to wrap.
 
     Examples
     --------
@@ -72,7 +120,23 @@ class ListAccessor:
             named_expr = expr.rename(self._liteframe.columns[0])
             return _build_fused_projection(self._liteframe, [named_expr])
 
+        _inner.__doc__ = _method_docs.get(method)
         return _inner
+
+    def flatten(self):
+        """Flatten a list column into one row per element.
+
+        Mirrors ``pandas.Series.list.flatten``: each element of a list
+        becomes its own row.  Empty lists and missing values are dropped.
+        The result keeps the column name and uses the list's value type.
+
+        Returns
+        -------
+        LiteFrame
+            Single-column LiteFrame with one row per list element, using
+            the list's value dtype and keeping the original column name.
+        """
+        return flatten_list_column(self._liteframe)
 
     @classmethod
     def _register(cls, method):

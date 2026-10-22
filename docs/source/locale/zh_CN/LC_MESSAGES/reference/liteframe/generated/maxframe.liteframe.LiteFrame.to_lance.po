@@ -1,0 +1,116 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 15:05+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_lance.rst:2
+msgid "maxframe.liteframe.LiteFrame.to\\_lance"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:1 of
+msgid "Write a LiteFrame to a Lance dataset."
+msgstr "将 LiteFrame 写入 Lance 数据集。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_lance.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:3 of
+msgid "Target path for the Lance dataset. Supports local, OSS, and S3 URIs."
+msgstr "Lance 数据集的目标路径。支持本地、OSS 和 S3 URI。"
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:5 of
+msgid ""
+"Write mode. 'merge' updates existing rows and/or adds new columns in the "
+"target dataset by aligning on a join key."
+msgstr ""
+"写入模式。'merge' 通过在连接键上对齐来更新目标数据集中的现有行和/或添加"
+"新列。"
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:8 of
+msgid ""
+"Column name to align both sides on. Mutually exclusive with "
+"left_on/right_on. Defaults to '_rowaddr' when mode='merge'."
+msgstr ""
+"用于对齐两侧的列名。与 left_on/right_on 互斥。当 mode='merge' 时默认为 '_"
+"rowaddr'。"
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:11 of
+msgid ""
+"Column name in the existing dataset to align on. Mutually exclusive with "
+"on."
+msgstr "现有数据集中用于对齐的列名。与 on 互斥。"
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:14 of
+msgid "Column name in the new data to align on. Mutually exclusive with on."
+msgstr "新数据中用于对齐的列名。与 on 互斥。"
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:17 of
+msgid ""
+"PyArrow schema to override auto-detected column types for columns being "
+"written from the input. For ``mode='overwrite'``/``'append'`` this "
+"overrides types of input columns (columns not specified keep their auto-"
+"detected types). For ``mode='merge'`` the existing dataset schema is "
+"always respected first: fields naming existing dataset columns are "
+"ignored and those columns keep their stored types, so ``schema=`` only "
+"sets types for newly added columns."
+msgstr ""
+"PyArrow 模式，用于覆盖从输入写入的列的自动检测列类型。对于 ``mode='"
+"overwrite'``/``'append'``，这会覆盖输入列的类型（未指定的列保持其自动检测"
+"的类型）。对于 ``mode='merge'``，现有数据集模式始终优先：命名现有数据集列"
+"的字段被忽略，这些列保持其存储的类型，因此 ``schema=`` 仅设置新添加列的"
+"类型。"
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:25 of
+msgid "Storage connection options."
+msgstr "存储连接选项。"
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:27 of
+msgid "Additional keyword arguments passed to lance."
+msgstr "传递给 lance 的额外关键字参数。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_lance.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:29 of
+msgid "A stub LiteFrame for execution."
+msgstr "用于执行的存根 LiteFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.to_lance.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:34 of
+msgid ":py:obj:`read_lance`"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:35 of
+msgid "Read a Lance dataset into a LiteFrame."
+msgstr "将 Lance 数据集读取到 LiteFrame 中。"
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:37 of
+msgid ":py:obj:`to_parquet`"
+msgstr ""
+
+#: maxframe.liteframe.datastore.to_lance.to_lance:38 of
+msgid "Write a LiteFrame to a Parquet file."
+msgstr "将 LiteFrame 写入 Parquet 文件。"
+
+

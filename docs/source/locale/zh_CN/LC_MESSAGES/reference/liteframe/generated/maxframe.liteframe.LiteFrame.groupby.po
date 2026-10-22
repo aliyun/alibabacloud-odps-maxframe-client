@@ -1,0 +1,100 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.groupby.rst:2
+msgid "maxframe.liteframe.LiteFrame.groupby"
+msgstr ""
+
+#: maxframe.liteframe.groupby.groupby.groupby:1 of
+msgid "Group the LiteFrame by one or more columns."
+msgstr "按一列或多列对 LiteFrame 进行分组。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.groupby.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.groupby.groupby.groupby:3 of
+msgid "Column name(s) to group by."
+msgstr "用于分组的列名。"
+
+#: maxframe.liteframe.groupby.groupby.groupby:5 of
+msgid "Whether to sort group keys in the result."
+msgstr "是否在结果中对分组键进行排序。"
+
+#: maxframe.liteframe.groupby.groupby.groupby:7 of
+msgid ""
+"If True, rows with null group keys are dropped before aggregation. If "
+"False, null-key rows are included as a separate group."
+msgstr ""
+"如果为 True，在聚合前会删除具有空分组键的行。如果为 False，空键行会被包含"
+"为一个单独的组。"
+
+#: maxframe.liteframe.groupby.groupby.groupby:10 of
+msgid ""
+"Whether ``apply`` / ``apply_chunk`` results include the grouping key "
+"columns.  ``True`` (default) prepends keys the UDF did not return (pandas"
+" ``group_keys=True`` + ``reset_index()`` shape); ``False`` omits them.  "
+"Has no effect on ``agg``, ``transform``, or the window family — matching "
+"pandas."
+msgstr ""
+"``apply`` / ``apply_chunk`` 结果是否包含分组键列。``True``（默认）会在 "
+"UDF 未返回的键前面添加（pandas ``group_keys=True`` + ``reset_index()`` "
+"形状）；``False`` 则省略它们。对 ``agg``、``transform`` 或窗口族没有影响—"
+"—与 pandas 匹配。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.groupby.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.groupby.groupby.groupby:17 of
+msgid ""
+"An intermediate object supporting ``.agg()`` and shortcut methods like "
+"``.sum()``, ``.mean()``, etc."
+msgstr "支持 ``.agg()`` 和快捷方法如 ``.sum()``、``.mean()`` 等的中间对象。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.groupby.rst
+msgid "返回类型"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.groupby.rst
+msgid "抛出"
+msgstr ""
+
+#: maxframe.liteframe.groupby.groupby.groupby:21 of
+msgid "If ``sort=True`` is passed."
+msgstr "如果传递了 ``sort=True``。"
+
+#: maxframe.liteframe.groupby.groupby.groupby:25 of
+msgid ":py:obj:`LiteFrame.agg`"
+msgstr ""
+
+#: maxframe.liteframe.groupby.groupby.groupby:26 of
+msgid "Aggregate using one or more operations over columns."
+msgstr "使用一个或多个操作对列进行聚合。"
+
+#: maxframe.liteframe.groupby.groupby.groupby:28 of
+msgid ":py:obj:`LiteFrame.sort`"
+msgstr ""
+
+#: maxframe.liteframe.groupby.groupby.groupby:29 of
+msgid "Sort the LiteFrame by columns."
+msgstr "按列对 LiteFrame 进行排序。"
+

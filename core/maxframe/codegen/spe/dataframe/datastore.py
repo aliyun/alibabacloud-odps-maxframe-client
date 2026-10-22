@@ -14,6 +14,7 @@
 
 from typing import Dict, List, Optional
 
+import pandas as pd
 import pyarrow as pa
 from odps import ODPS
 from odps.types import Column, OdpsSchema, PartitionSpec
@@ -24,10 +25,17 @@ from maxframe.codegen.spe.core import (
     register_op_adapter,
 )
 from maxframe.config import options
+from maxframe.dataframe.datastore.to_lance import DataFrameToLance
 from maxframe.dataframe.datastore.to_odps import DataFrameToODPSTable
 from maxframe.io.odpsio import ODPSTableIO, pandas_to_arrow, pandas_to_odps_schema
 from maxframe.protocol import DataFrameTableMeta, ResultInfo
 from maxframe.typing_ import PandasObjectTypes
+
+try:
+    import lance
+except (ImportError, AttributeError):  # pragma: no cover
+    # lance not installed or not compatible
+    lance = None
 
 
 @register_op_adapter(DataFrameToODPSTable)
@@ -211,4 +219,80 @@ class DataFrameToODPSTableAdapter(SPEOperatorAdapter):
             f"{type(self).__name__}._write_as_table("
             f"{input_var_name}, {', '.join(args)})",
             f"{res_var_name} = None",
+        ]
+
+
+@register_op_adapter(DataFrameToLance)
+class DataFrameToLanceAdapter(SPEOperatorAdapter):
+    @classmethod
+    def _write_as_table(
+        cls,
+        df_obj,
+        path,
+        mode="create",
+        index=None,
+        index_label=None,
+        schema=None,
+        lance_kwargs=None,
+    ):
+        if lance is None:
+            raise ImportError(
+                "Please install pylance which is required to write Lance datasets"
+            )
+
+        # Apply index_label renaming
+        if index is not False and index_label is not None:
+            if isinstance(df_obj.index, pd.MultiIndex):
+                if len(index_label) == len(df_obj.index.names):
+                    df_obj.index.names = index_label
+            else:
+                label = index_label[0] if isinstance(index_label, list) else index_label
+                df_obj.index.name = label
+
+        preserve_index = index is not False
+        if preserve_index and isinstance(df_obj.index, pd.RangeIndex):
+            df_obj.index = pd.Index(df_obj.index.to_numpy(), name=df_obj.index.name)
+
+        table = pa.Table.from_pandas(df_obj, preserve_index=preserve_index)
+
+        if schema is not None:
+            user_schema = pa.ipc.read_schema(pa.BufferReader(schema))
+            merged_fields = []
+            user_fields = {f.name: f for f in user_schema}
+            for field in table.schema:
+                if field.name in user_fields:
+                    merged_fields.append(user_fields[field.name])
+                else:
+                    merged_fields.append(field)
+            table = table.cast(pa.schema(merged_fields, metadata=table.schema.metadata))
+
+        lance.write_dataset(
+            table,
+            path,
+            schema=table.schema,
+            mode=mode or "create",
+            **(lance_kwargs or {}),
+        )
+
+        return pd.DataFrame()
+
+    def generate_code(self, op: DataFrameToLance, context: SPECodeContext) -> List[str]:
+        cls_name = type(self).__name__
+        context.register_import(__name__, from_item=cls_name)
+
+        input_var_name = context.get_input_tileable_variable(op.inputs[0])
+        res_var_name = context.get_output_tileable_variable(op.outputs[0])
+
+        args = self._translate_call_args(
+            context,
+            op.path,
+            mode=op.mode,
+            index=op.index,
+            index_label=op.index_label,
+            schema=op.schema,
+            lance_kwargs=op.lance_kwargs,
+        )
+        return [
+            f"{res_var_name} = {cls_name}._write_as_table("
+            f"{input_var_name}, {', '.join(args)})"
         ]

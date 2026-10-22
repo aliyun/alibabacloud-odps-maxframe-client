@@ -1,0 +1,90 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.pct_change.rst:2
+msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.pct\\_change"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.pct_change:1 of
+msgid "Compute pct_change within each group."
+msgstr "计算每个组内的 pct_change。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.pct_change.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.pct_change:3 of
+msgid "Number of positions for pct_change within each group."
+msgstr "每个组内 pct_change 的位置数。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.pct_change:5 of
+msgid ""
+"Column(s) for pct_change.  If None, all non-group-key columns are "
+"transformed."
+msgstr "用于 pct_change 的列。如果为 None，则所有非分组键列都会被转换。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.pct_change.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.pct_change:9 of
+msgid "Pct-change LiteFrame with same shape (row count preserved)."
+msgstr "具有相同形状的 Pct-change LiteFrame（行数保持不变）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.pct_change.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.pct_change:13 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.pct_change:15 of
+msgid ""
+"Grouped transforms hash-shuffle rows by group key, so the output row "
+"order follows reducer/hash-partition order and is **not** aligned with "
+"the input frame (unlike pandas, which preserves the index). Row count is "
+"preserved. Order restoration via a place-back operator "
+"(``LiteFrameIlocSetItem``) is planned; see "
+"``docs/designs/liteframe/operators/window.md``."
+msgstr ""
+"分组转换通过分组键对行进行哈希洗牌，因此输出行顺序遵循 reducer/哈希分区"
+"顺序，并且与输入框架**不对齐**（不像 pandas 那样保留索引）。行数保持不变"
+"。计划通过 place-back 操作符（``LiteFrameIlocSetItem``）恢复顺序；参见 ``"
+"docs/designs/liteframe/operators/window.md``。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.pct_change:22 of
+msgid ""
+"Null-key rows are preserved with a null result (matching pandas "
+"``groupby.shift()`` under the default ``dropna=True``); they are not "
+"grouped together."
+msgstr ""
+"空键行会保留空结果（匹配 pandas 在默认 ``dropna=True`` 下的 ``groupby."
+"shift()``）；它们不会被分组在一起。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.pct_change.rst
+msgid "抛出"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.pct_change:26 of
+msgid "If any transformed column is non-numeric."
+msgstr "如果任何转换列是非数值的。"
+

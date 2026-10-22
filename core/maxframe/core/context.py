@@ -107,6 +107,21 @@ class Context(ABC):
             Object name.
         """
 
+    def put_transaction_version_info(self, key: str, info: Any) -> Any:
+        """Store transaction version info and return the effective version.
+
+        If a version for *key* already exists, return it without overwriting;
+        otherwise store *info* and return it. Default is no-op (returns *info*).
+        """
+        return info
+
+    def get_transaction_version_info(self, key: str) -> Any:
+        """Retrieve transaction version info. Default returns None."""
+        return None
+
+    def erase_transaction_version_info(self, key: str):
+        """Remove transaction version info after it has been consumed. Default is no-op."""
+
     def __enter__(self):
         _get_context_stack().append(self)
         return self

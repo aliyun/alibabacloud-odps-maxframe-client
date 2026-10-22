@@ -1,0 +1,168 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.flat_apply.rst:2
+msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.flat\\_apply"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:1 of
+msgid "Apply ``func`` to each row within each group, expanding it to 0-N rows."
+msgstr "对每个分组内的每一行应用 ``func``，将其扩展为 0-N 行。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:3 of
+msgid ""
+"The groupby analogue of :func:`flat_apply`: the data is partitioned by "
+"the group keys, then ``func`` is applied per row *within each group* (not"
+" per group), returning / yielding 0-N rows.  Non-subset columns are "
+"broadcast (repeated per output row) just like the non-groupby variant, "
+"and the per-group expanded frames are concatenated across groups in "
+"group-iteration order."
+msgstr ""
+":func:`flat_apply` 的 groupby 类比：数据按分组键进行分区，然后在每个分组"
+"内逐行应用 ``func``（而不是按分组），返回/产生 0-N 行。非子集列会被广播（"
+"每行输出重复），就像非 groupby 变体一样，各分组扩展的框架按分组迭代顺序跨"
+"分组合并。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:10 of
+msgid ""
+"The effective columns (the schema the UDF sees) follow groupby semantics:"
+" groupby key columns are excluded by default (pandas 3.0), and an "
+"explicit ``groupby('k')[selection]`` restricts the UDF input to "
+"``selection``. ``subset`` is normalized against those effective columns; "
+"the rest are broadcast."
+msgstr ""
+"有效列（UDF 看到的模式）遵循 groupby 语义：默认情况下排除 groupby 键列（"
+"pandas 3.0），显式的 ``groupby('k')[selection]`` 将 UDF 输入限制为 ``"
+"selection``。``subset`` 针对这些有效列进行标准化；其余列被广播。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:16 of
+msgid ""
+"Function taking one row and returning / yielding 0-N rows (a DataFrame, "
+"generator, list-like, dict, Series, or scalar) or a tuple of such results"
+" (multiple outputs).  If ``func`` is a class, it is instantiated once per"
+" group, ``__call__`` is invoked per row, and ``close()`` (if defined) is "
+"always called at the end of each group."
+msgstr ""
+"接收一行数据并返回/生成 0-N 行（DataFrame、生成器、类列表、字典、Series "
+"或标量）或此类结果的元组（多个输出）的函数。如果 ``func`` 是一个类，则"
+"每个组实例化一次，每行调用 ``__call__``，并且在每个组结束时总是调用 ``"
+"close()``（如果已定义）。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:24 of
+msgid ""
+"Expected output dtypes for the **function-output** columns only.  A list "
+"of dicts/pd.Series declares multiple outputs."
+msgstr "仅用于**函数输出**列的预期输出数据类型。字典/pd.Series 列表声明多个输出。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:27 of
+msgid "If True, skip dtype inference and produce an untyped output."
+msgstr "如果为 True，则跳过数据类型推断并生成无类型的输出。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:29 of
+msgid "Frame type passed to ``func``."
+msgstr "传递给 ``func`` 的框架类型。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:31 of
+msgid ""
+"Columns passed to ``func`` (relative to the effective groupby columns).  "
+"Columns not in ``subset`` are broadcast."
+msgstr ""
+"传递给 ``func`` 的列（相对于有效的 groupby 列）。不在 ``subset`` 中的列会"
+"被广播。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:34 of
+msgid "Extra positional arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外位置参数。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:36 of
+msgid "Extra keyword arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外关键字参数。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:38 of
+msgid ""
+"A new LiteFrame (or tuple of LiteFrames for multiple outputs) whose "
+"schema inserts the function-output columns at the position of the first "
+"``subset`` column, with broadcast columns keeping their relative order; "
+"group keys are prepended when ``group_keys=True``."
+msgstr ""
+"一个新的 LiteFrame（或用于多个输出的 LiteFrame 元组），其模式在第一个 ``"
+"subset`` 列的位置插入函数输出列，广播列保持其相对顺序；当 ``group_keys="
+"True`` 时，组键被前置。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:45 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:46 of
+msgid ""
+"The row count may change, so -- like ``groupby.apply`` -- hidden columns "
+"are dropped from the UDF input and not carried into the output.  A "
+"callable-class UDF is instantiated fresh per group and its ``end`` flag "
+"fires on the last row of each group.  Range columns follow the groupby "
+"path (they are dropped by the groupby shuffle, like other groupby "
+"functional ops)."
+msgstr ""
+"行数可能会改变，所以——像 ``groupby.apply`` 一样——隐藏列会从 UDF 输入中"
+"删除，不会带入输出。可调用类 UDF 每个分组都会重新实例化，其 ``end`` 标志"
+"在每个分组的最后一行触发。范围列遵循 groupby 路径（它们被 groupby 洗牌"
+"删除，像其他 groupby 功能操作一样）。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:55 of
+msgid ":py:obj:`flat_apply`"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:56 of
+msgid "Apply a function per row, expanding to 0-N rows."
+msgstr "逐行应用函数，扩展为 0-N 行。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:58 of
+msgid ":py:obj:`groupby_apply`"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:59 of
+msgid "Apply a function to each group as a whole frame."
+msgstr "将函数应用于每个作为完整框架的分组。"
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:62 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.functional.flat_apply.groupby_flat_apply:66 of
+msgid ""
+"Expand each row within its group (the group key ``key`` is excluded from "
+"the UDF input by default, so it is broadcast):"
+msgstr ""
+"扩展每个分组内的每一行（分组键 ``key`` 默认从 UDF 输入中排除，因此它被"
+"广播）："
+
+

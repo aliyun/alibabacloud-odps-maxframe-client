@@ -39,6 +39,25 @@ def dropna(lf, axis=0, how="any", subset=None):
         "any": drop if any NA present. "all": drop only if all values are NA.
     subset : list of column names, optional
         Columns to inspect for NA values (axis=0 only).
+
+    Returns
+    -------
+    LiteFrame
+        LiteFrame with rows (or columns) containing missing values removed.
+
+    See Also
+    --------
+    isna : Detect missing values.
+    fillna : Fill missing values.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'a': [1.0, None, 3.0], 'b': [4.0, 5.0, None]})
+    >>> result = lf.dropna()
+    >>> result.execute()
+         a    b
+    0  1.0  4.0
     """
     if axis != 0:
         raise NotImplementedError("dropna with axis=1 is not yet supported")

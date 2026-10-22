@@ -1,0 +1,198 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.split.rst:2
+msgid "maxframe.liteframe.LiteFrame.str.split"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.split:1
+#: pandas.core.strings.accessor.StringMethods.split:35
+msgid "Split strings around given separator/delimiter."
+msgstr "围绕给定分隔符拆分字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.split:3
+msgid ""
+"Splits the string in the Series/Index from the beginning, at the "
+"specified delimiter string."
+msgstr "从开头开始拆分 Series/Index 中的字符串，使用指定的分隔符字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.split
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.split:6
+msgid ""
+"String or regular expression to split on. If not specified, split on "
+"whitespace."
+msgstr "用于拆分的字符串或正则表达式。如果没有指定，则按空白字符拆分。"
+
+#: of pandas.core.strings.accessor.StringMethods.split:9
+msgid ""
+"Limit number of splits in output. ``None``, 0 and -1 will be interpreted "
+"as return all splits."
+msgstr "限制输出中的拆分数。``None``、0 和 -1 将被解释为返回所有拆分。"
+
+#: of pandas.core.strings.accessor.StringMethods.split:12
+msgid ""
+"Expand the split strings into separate columns.  - If ``True``, return "
+"DataFrame/MultiIndex expanding dimensionality. - If ``False``, return "
+"Series/Index, containing lists of strings."
+msgstr ""
+"将拆分后的字符串扩展到单独列中。- 如果为 ``True``，返回 DataFrame/"
+"MultiIndex 扩展维度。- 如果为 ``False``，返回 Series/Index，包含字符串"
+"列表。"
+
+#: of pandas.core.strings.accessor.StringMethods.split:17
+msgid ""
+"Determines if the passed-in pattern is a regular expression:  - If "
+"``True``, assumes the passed-in pattern is a regular expression - If "
+"``False``, treats the pattern as a literal string. - If ``None`` and "
+"`pat` length is 1, treats `pat` as a literal string. - If ``None`` and "
+"`pat` length is not 1, treats `pat` as a regular   expression. - Cannot "
+"be set to False if `pat` is a compiled regex"
+msgstr "确定传入的模式是否为正则表达式：- 如果 ``True``，假设传入的模式是正则表达式 - 如果 ``False``，将模式视为字面字符串。- 如果 ``None`` 且 `pat` 长度为 1，将 `pat` 视为字面字符串。- 如果 ``None`` 且 `pat` 长度不为 1，将 `pat` 视为正则表达式。- 如果 `pat` 是已编译的正则表达式，则不能设置为 False"
+
+#: of pandas.core.strings.accessor.StringMethods.split:17
+msgid "Determines if the passed-in pattern is a regular expression:"
+msgstr "确定传入的模式是否为正则表达式："
+
+#: of pandas.core.strings.accessor.StringMethods.split:19
+msgid "If ``True``, assumes the passed-in pattern is a regular expression"
+msgstr "如果为 ``True``，假设传入的模式是正则表达式"
+
+#: of pandas.core.strings.accessor.StringMethods.split:20
+msgid "If ``False``, treats the pattern as a literal string."
+msgstr "如果为 ``False``，将模式视为字面字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.split:21
+msgid "If ``None`` and `pat` length is 1, treats `pat` as a literal string."
+msgstr "如果为 ``None`` 且 `pat` 长度为 1，将 `pat` 视为字面字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.split:22
+msgid ""
+"If ``None`` and `pat` length is not 1, treats `pat` as a regular "
+"expression."
+msgstr "如果为 ``None`` 且 `pat` 长度不为 1，将 `pat` 视为正则表达式。"
+
+#: of pandas.core.strings.accessor.StringMethods.split:24
+msgid "Cannot be set to False if `pat` is a compiled regex"
+msgstr "如果 `pat` 是编译的正则表达式，则不能设置为 False"
+
+#: of pandas.core.strings.accessor.StringMethods.split
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.split:27
+msgid "Type matches caller unless ``expand=True`` (see Notes)."
+msgstr "类型匹配调用者，除非 ``expand=True``（参见注释）。"
+
+#: of pandas.core.strings.accessor.StringMethods.split
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.split
+msgid "抛出"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.split:30
+msgid "* if `regex` is False and `pat` is a compiled regex"
+msgstr "* 如果 `regex` 为 False 且 `pat` 是已编译的正则表达式"
+
+#: of pandas.core.strings.accessor.StringMethods.split:30
+msgid "if `regex` is False and `pat` is a compiled regex"
+msgstr "如果 `regex` 为 False 且 `pat` 是编译的正则表达式"
+
+#: of pandas.core.strings.accessor.StringMethods.split:34
+msgid ":py:obj:`LiteFrame.str.split`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.split:37
+msgid ":py:obj:`LiteFrame.str.rsplit`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.split:38
+msgid "Splits string around given separator/delimiter, starting from the right."
+msgstr "从右侧开始，围绕给定分隔符拆分字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.split:40
+msgid ":py:obj:`LiteFrame.str.join`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.split:41
+msgid ""
+"Join lists contained as elements in the Series/Index with passed "
+"delimiter."
+msgstr "使用传递的分隔符连接 Series/Index 中作为元素包含的列表。"
+
+#: of pandas.core.strings.accessor.StringMethods.split:43
+msgid ":py:obj:`str.split`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.split:44
+msgid "Standard library version for split."
+msgstr "标准库版本的拆分。"
+
+#: of pandas.core.strings.accessor.StringMethods.split:46
+msgid ":py:obj:`str.rsplit`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.split:47
+msgid "Standard library version for rsplit."
+msgstr "标准库版本的右拆分。"
+
+#: of pandas.core.strings.accessor.StringMethods.split:50
+msgid "备注"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.split:51
+msgid "The handling of the `n` keyword depends on the number of found splits:"
+msgstr "`n` 关键字的处理取决于找到的拆分数："
+
+#: of pandas.core.strings.accessor.StringMethods.split:53
+msgid "If found splits > `n`,  make first `n` splits only"
+msgstr "如果找到的拆分数 > `n`，仅进行前 `n` 次拆分"
+
+#: of pandas.core.strings.accessor.StringMethods.split:54
+msgid "If found splits <= `n`, make all splits"
+msgstr "如果找到的拆分数 <= `n`，进行所有拆分"
+
+#: of pandas.core.strings.accessor.StringMethods.split:55
+msgid ""
+"If for a certain row the number of found splits < `n`, append `None` for "
+"padding up to `n` if ``expand=True``"
+msgstr ""
+"如果对于某一行找到的拆分数 < `n`，如果 ``expand=True``，则追加 `None` "
+"填充至 `n`"
+
+#: of pandas.core.strings.accessor.StringMethods.split:58
+msgid ""
+"If using ``expand=True``, Series and Index callers return DataFrame and "
+"MultiIndex objects, respectively."
+msgstr ""
+"如果使用 ``expand=True``，Series 和 Index 调用者分别返回 DataFrame 和 "
+"MultiIndex 对象。"
+
+#: of pandas.core.strings.accessor.StringMethods.split:61
+msgid ""
+"Use of `regex =False` with a `pat` as a compiled regex will raise an "
+"error."
+msgstr "将 `regex=False` 与编译的正则表达式 `pat` 一起使用将引发错误。"
+

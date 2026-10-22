@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from maxframe.liteframe.operators import LiteFrameOperator, LiteFrameOperatorMixin
-
-_VALID_WRITE_MODES = ("overwrite", "append")
+_VALID_WRITE_MODES = ("overwrite", "append", "merge")
 
 
 def validate_write_mode(mode: str) -> str:
@@ -24,9 +22,3 @@ def validate_write_mode(mode: str) -> str:
             f"Invalid write mode '{mode}', must be one of {_VALID_WRITE_MODES}"
         )
     return mode
-
-
-class LiteFrameDataStore(LiteFrameOperator, LiteFrameOperatorMixin):
-    """Base class for LiteFrame datastore operators"""
-
-    pass

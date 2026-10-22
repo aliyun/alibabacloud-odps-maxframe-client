@@ -34,6 +34,7 @@ from maxframe.serialization.serializables import (
     EnumField,
     FieldTypes,
     Float64Field,
+    Int8Field,
     Int32Field,
     ListField,
     ReferenceField,
@@ -109,7 +110,7 @@ class ExecutionStatus(enum.Enum):
         return self == ExecutionStatus.SUCCEEDED
 
     def is_cancel_started(self):
-        return self in (ExecutionStatus.CANCELLING, ExecutionStatus.CANCELED)
+        return self in (ExecutionStatus.CANCELLING, ExecutionStatus.CANCELLED)
 
 
 # keep compatibility
@@ -224,9 +225,7 @@ class ODPSTableResultInfo(ResultInfo):
     partition_specs: Optional[List[str]] = ListField(
         "partition_specs", FieldTypes.string, default=None
     )
-    table_meta: Optional["DataFrameTableMeta"] = ReferenceField(
-        "table_meta", default=None
-    )
+    table_meta: Optional[JsonSerializable] = AnyField("table_meta", default=None)
 
     def __init__(self, result_type: ResultType = None, **kw):
         result_type = result_type or ResultType.ODPS_TABLE
@@ -239,13 +238,20 @@ class ODPSTableResultInfo(ResultInfo):
             ret["partition_specs"] = self.partition_specs
         if self.table_meta:
             ret["table_meta"] = self.table_meta.to_json()
+            ret["table_meta_type"] = type(self.table_meta).__name__
         return ret
 
     @classmethod
     def _json_to_kwargs(cls, serialized: dict) -> dict:
         kw = super()._json_to_kwargs(serialized)
         if "table_meta" in kw:
-            kw["table_meta"] = DataFrameTableMeta.from_json(kw["table_meta"])
+            meta_type = kw.pop("table_meta_type", "DataFrameTableMeta")
+            if meta_type == "TensorTableMeta":
+                kw["table_meta"] = TensorTableMeta.from_json(kw["table_meta"])
+            elif meta_type == "LiteFrameTableMeta":
+                kw["table_meta"] = LiteFrameTableMeta.from_json(kw["table_meta"])
+            else:
+                kw["table_meta"] = DataFrameTableMeta.from_json(kw["table_meta"])
         return kw
 
 
@@ -320,7 +326,9 @@ def _sanitize_failure_info(fi: Optional[dict]) -> Optional[dict]:
     if not table:
         return None
     table_meta = fi.get("table_meta")
-    if isinstance(table_meta, DataFrameTableMeta):
+    if isinstance(
+        table_meta, (DataFrameTableMeta, TensorTableMeta, LiteFrameTableMeta)
+    ):
         table_meta = table_meta.to_json()
     elif isinstance(table_meta, (bytes, bytearray)):
         try:
@@ -330,7 +338,10 @@ def _sanitize_failure_info(fi: Optional[dict]) -> Optional[dict]:
         else:
             table_meta = (
                 deserialized_meta.to_json()
-                if isinstance(deserialized_meta, DataFrameTableMeta)
+                if isinstance(
+                    deserialized_meta,
+                    (DataFrameTableMeta, TensorTableMeta, LiteFrameTableMeta),
+                )
                 else None
             )
     elif not isinstance(table_meta, dict):
@@ -365,11 +376,11 @@ class ErrorInfo(JsonSerializable):
         try:
             pickle_buffers(exc)
             return True
-        except:
+        except Exception:
             return False
 
     @classmethod
-    def from_exception(cls, exc: Exception):
+    def from_exception(cls, exc: BaseException):
         remote_exc = RemoteException.from_exception(exc)
         messages, tracebacks = remote_exc.messages, remote_exc.tracebacks
         raw_error_data = exc if cls._can_pickle_raw_error(exc) else None
@@ -406,7 +417,7 @@ class ErrorInfo(JsonSerializable):
             bufs = [base64.b64decode(s) for s in kw["raw_error_data"]]
             try:
                 kw["raw_error_data"] = pickle.loads(bufs[0], buffers=bufs[1:])
-            except:
+            except Exception:
                 # both error source and data shall be None to make sure
                 # RemoteException is raised.
                 kw["raw_error_source"] = kw["raw_error_data"] = None
@@ -437,7 +448,7 @@ class ErrorInfo(JsonSerializable):
         elif isinstance(self.raw_error_data, BaseException):
             try:
                 err_data_bufs = pickle_buffers(self.raw_error_data)
-            except:
+            except Exception:
                 err_data_bufs = None
                 ret["raw_error_source"] = None
 
@@ -773,10 +784,23 @@ class DataFrameTableMeta(JsonSerializable):
 
 
 class LiteFrameTableMeta(JsonSerializable):
-    """Metadata for LiteFrame tables with optional dtypes for dynamic columns support."""
+    """Metadata for LiteFrame tables with optional dtypes for dynamic columns support.
+
+    ``table_column_names`` carries the physical ODPS table column names when
+    they differ from the logical column names in ``dtypes.index`` (e.g. an
+    int-string logical column ``"0"`` is sanitized to the ODPS-legal physical
+    name ``_column_0`` at table creation).  It is ``None`` when the table
+    column names are unchanged, mirroring the ``DataFrameTableMeta`` contract.
+    The mapping is positional: ``table_column_names[i]`` is the physical name
+    of ``dtypes.index[i]``, so a reader can restore the logical (user-facing)
+    names after reading the physical table columns.
+    """
 
     table_name: Optional[str] = StringField("table_name", default=None)
     dtypes: Optional[pd.Series] = SeriesField("dtypes", default=None)
+    table_column_names: Optional[List[str]] = ListField(
+        "table_column_names", FieldTypes.string, default=None
+    )
 
     def __eq__(self, other: "LiteFrameTableMeta") -> bool:
         if not isinstance(other, type(self)):
@@ -796,6 +820,8 @@ class LiteFrameTableMeta(JsonSerializable):
         }
         if self.dtypes is not None:
             ret["dtypes"] = _base64_pickle(self.dtypes)
+        if self.table_column_names is not None:
+            ret["table_column_names"] = self.table_column_names
         return ret
 
     @classmethod
@@ -803,6 +829,45 @@ class LiteFrameTableMeta(JsonSerializable):
         dtypes = None
         if "dtypes" in serialized:
             dtypes = _base64_unpickle(serialized["dtypes"])
+        table_column_names = serialized.get("table_column_names")
         return LiteFrameTableMeta(
-            table_name=serialized.get("table_name"), dtypes=dtypes
+            table_name=serialized.get("table_name"),
+            dtypes=dtypes,
+            table_column_names=table_column_names,
         )
+
+
+class TensorTableMeta(JsonSerializable):
+    """Metadata for tensor blob tables with dtype, shape, and nsplits info."""
+
+    table_name: Optional[str] = StringField("table_name", default=None)
+    dtype: Optional[str] = StringField("dtype", default=None)
+    ndim: Optional[int] = Int8Field("ndim", default=None)
+    shape: Optional[list] = ListField("shape", FieldTypes.int64, default=None)
+    nsplits: Optional[list] = AnyField("nsplits", default=None)
+
+    def __eq__(self, other: "TensorTableMeta") -> bool:
+        if not isinstance(other, type(self)):
+            return False
+        for k in self._FIELDS:
+            v = getattr(self, k, None)
+            is_same = v == getattr(other, k, None)
+            if callable(getattr(is_same, "all", None)):
+                is_same = is_same.all()
+            if not is_same:
+                return False
+        return True
+
+    def to_json(self) -> dict:
+        ret = {
+            "table_name": self.table_name,
+            "dtype": self.dtype,
+            "ndim": self.ndim,
+            "shape": self.shape,
+            "nsplits": self.nsplits,
+        }
+        return ret
+
+    @classmethod
+    def from_json(cls, serialized: dict) -> "TensorTableMeta":
+        return TensorTableMeta(**serialized)

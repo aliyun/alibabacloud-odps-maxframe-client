@@ -1,0 +1,155 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.transform.rst:2
+msgid "maxframe.liteframe.LiteFrame.transform"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.transform:1 of
+msgid "Transform per column (axis=0, default) or per row (axis=1)."
+msgstr "按列（axis=0，默认）或按行（axis=1）进行转换。"
+
+#: maxframe.liteframe.functional.transform.transform:3 of
+msgid ""
+"``axis=0`` (default): operator-based, per-column.  Columns are "
+"concatenated and ``func`` is applied per column; the output row count "
+"must match the input (transform semantics).  Uses "
+"``LiteFrameFunctional``.  Mirrors ``pandas.DataFrame.transform`` which "
+"defaults to ``axis=0``."
+msgstr ""
+"``axis=0``（默认）：基于操作符，按列处理。列被连接起来，对每列应用 ``func"
+"``；输出的行数必须与输入匹配（转换语义）。 使用 ``LiteFrameFunctional``。"
+"镜像 ``pandas.DataFrame.transform``，其默认为 ``axis=0``。"
+
+#: maxframe.liteframe.functional.transform.transform:8 of
+msgid ""
+"``axis=1``: expression-based, per-row.  The function receives each row "
+"and may return a dict or Series with any declared schema; use ``dtypes`` "
+"to name the output columns."
+msgstr ""
+"``axis=1``：基于表达式的逐行操作。函数接收每一行并可以返回具有任何声明"
+"模式的字典或 Series；使用 ``dtypes`` 来命名输出列。"
+
+#: maxframe.liteframe.functional.transform.transform of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.transform:12 of
+msgid ""
+"Function to apply.  For ``axis=0`` it receives a column (Series) and must"
+" return a transformed column of the same length.  For ``axis=1`` it "
+"receives a single row and may return a dict or Series declaring any "
+"output schema via ``dtypes``.  If ``func`` is a class, it is instantiated"
+" once per chunk, ``__call__`` is invoked per column (``axis=0``) or per "
+"row (``axis=1``), and ``close()`` (if defined) is always called at the "
+"end of the chunk — even when ``__call__`` receives single rows/columns."
+msgstr ""
+"要应用的函数。对于 ``axis=0`` 它接收一列（Series）并必须返回相同长度的"
+"转换列。对于 ``axis=1`` 它接收单行并可以返回通过 ``dtypes`` 声明任何输出"
+"模式的字典或 Series。如果 ``func`` 是一个类，则每个块实例化一次，每列（``"
+"axis=0``）或每行（``axis=1``）调用 ``__call__``，并且始终在块结束时调用 `"
+"`close()``（如果定义了的话）——即使当 ``__call__`` 接收单行/列时也是如此。"
+
+#: maxframe.liteframe.functional.transform.transform:23 of
+msgid "Axis along which to transform.  ``0`` operates per column, ``1`` per row."
+msgstr "进行转换的轴。``0`` 按列操作，``1`` 按行操作。"
+
+#: maxframe.liteframe.functional.transform.transform:26 of
+msgid "Frame type passed to ``func``."
+msgstr "传递给 ``func`` 的框架类型。"
+
+#: maxframe.liteframe.functional.transform.transform:28 of
+msgid "Expected output dtypes."
+msgstr "期望的输出数据类型。"
+
+#: maxframe.liteframe.functional.transform.transform:30 of
+msgid "If True, skip dtype inference."
+msgstr "如果为 True，则跳过数据类型推断。"
+
+#: maxframe.liteframe.functional.transform.transform:32 of
+msgid "Extra positional arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外位置参数。"
+
+#: maxframe.liteframe.functional.transform.transform:34 of
+msgid "Extra keyword arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外关键字参数。"
+
+#: maxframe.liteframe.functional.transform.transform of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.transform:36 of
+msgid ""
+"Lazy LiteFrame with the same row count as the input (``axis=0``) or a "
+"schema declared via ``dtypes`` (``axis=1``).  Call ``.execute()`` to "
+"materialize."
+msgstr ""
+"与输入具有相同行数的惰性 LiteFrame（``axis=0``）或通过 ``dtypes`` 声明的"
+"模式（``axis=1``）。调用 ``.execute()`` 来实例化。"
+
+#: maxframe.liteframe.functional.transform.transform of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.transform:43 of
+msgid ":py:obj:`apply`"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.transform:44 of
+msgid "Apply a function per column or per row."
+msgstr "按列或按行应用函数。"
+
+#: maxframe.liteframe.functional.transform.transform:46 of
+msgid ":py:obj:`transform_chunk`"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.transform:47 of
+msgid "Transform per execution chunk."
+msgstr "按执行块进行转换。"
+
+#: maxframe.liteframe.functional.transform.transform:49 of
+msgid ":py:obj:`map`"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.transform:50 of
+msgid "Apply a function element-wise."
+msgstr "逐元素应用函数。"
+
+#: maxframe.liteframe.functional.transform.transform:53 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.functional.transform.transform:57 of
+msgid ""
+"Transform per column (``axis=0``, default) — ``func`` receives each "
+"column as a Series and must return a same-length Series:"
+msgstr "按列转换（``axis=0``，默认）—— ``func`` 将每个列作为 Series 接收，并且必须返回相同长度的 Series："
+
+#: maxframe.liteframe.functional.transform.transform:67 of
+msgid ""
+"Transform per row (``axis=1``) — ``func`` receives each row as a Series "
+"and may return a dict with any declared schema.  Declare the output "
+"schema with ``dtypes``:"
+msgstr ""
+"逐行转换（``axis=1``）—— ``func`` 将每一行作为 Series 接收，并可以返回"
+"具有任何声明模式的字典。使用 ``dtypes`` 声明输出模式："
+
+

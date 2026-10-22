@@ -381,6 +381,18 @@ def test_eval_query():
         df.eval("p, q = a + c")
     with pytest.raises(ValueError):
         df.query("p = a + c")
+    # ast.Mod (not ast.mod) must build without KeyError (backport of the
+    # long-standing _op_handlers typo fixed in the LiteFrame eval visitor).
+    r = df.eval("a % 2")
+    assert isinstance(r, (DATAFRAME_TYPE, SERIES_TYPE))
+    # ast.In/NotIn must dispatch x.isin(y) (column.isin(values)), not the
+    # reversed y.isin(x); build without KeyError and produce a bool result.
+    r_in = df.eval("a in [0.5]")
+    assert isinstance(r_in, (DATAFRAME_TYPE, SERIES_TYPE))
+    assert r_in.dtype == np.dtype("bool")
+    r_notin = df.eval("a not in [0.5]")
+    assert isinstance(r_notin, (DATAFRAME_TYPE, SERIES_TYPE))
+    assert r_notin.dtype == np.dtype("bool")
 
 
 def test_cut():

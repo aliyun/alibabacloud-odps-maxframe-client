@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_json.rst:2
+msgid "maxframe.liteframe.read\\_json"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_json.read_json:1 of
+msgid "Read a JSON file into a LiteFrame with Arrow dtypes."
+msgstr "使用 Arrow 数据类型将 JSON 文件读取到 LiteFrame 中。"
+
+#: maxframe.liteframe.datasource.read_json.read_json:3 of
+msgid ""
+"By default reads line-delimited JSON (JSONL/NDJSON) which is the natural "
+"fit for chunked distributed I/O."
+msgstr "默认读取行分隔的 JSON (JSONL/NDJSON)，这非常适合分块分布式 I/O。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_json.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_json.read_json:6 of
+msgid "File path or glob pattern. Supports local and cloud storage paths."
+msgstr "文件路径或通配符模式。支持本地和云存储路径。"
+
+#: maxframe.liteframe.datasource.read_json.read_json:8 of
+msgid "Read the file as line-delimited JSON (one JSON object per line)."
+msgstr "将文件作为行分隔的 JSON 读取（每行一个 JSON 对象）。"
+
+#: maxframe.liteframe.datasource.read_json.read_json:10 of
+msgid "Column name to dtype mapping for explicit type specification."
+msgstr "列名到数据类型的映射，用于显式类型指定。"
+
+#: maxframe.liteframe.datasource.read_json.read_json:12 of
+msgid "Return a subset of columns."
+msgstr "返回列的子集。"
+
+#: maxframe.liteframe.datasource.read_json.read_json:14 of
+msgid "Target chunk size for splitting files."
+msgstr "拆分文件的目标块大小。"
+
+#: maxframe.liteframe.datasource.read_json.read_json:16 of
+msgid "Compression type. Inferred from file extension if 'infer'."
+msgstr "压缩类型。如果是 'infer' 则从文件扩展名推断。"
+
+#: maxframe.liteframe.datasource.read_json.read_json:18 of
+msgid "Bytes to read for schema inference."
+msgstr "用于模式推断的字节数。"
+
+#: maxframe.liteframe.datasource.read_json.read_json:20 of
+msgid "Type of default index to generate."
+msgstr "要生成的默认索引类型。"
+
+#: maxframe.liteframe.datasource.read_json.read_json:22 of
+msgid "Extra options for storage connection."
+msgstr "存储连接的额外选项。"
+
+#: maxframe.liteframe.datasource.read_json.read_json:24 of
+msgid "Merge small files into larger chunks."
+msgstr "将小文件合并为更大的块。"
+
+#: maxframe.liteframe.datasource.read_json.read_json:26 of
+msgid "Execution session for remote dtype inference."
+msgstr "远程数据类型推断的执行会话。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.read_json.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_json.read_json:33 of
+msgid ":py:obj:`LiteFrame.to_json`"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_json.read_json:34 of
+msgid "Write a LiteFrame to a JSON file."
+msgstr "将 LiteFrame 写入 JSON 文件。"
+
+#: maxframe.liteframe.datasource.read_json.read_json:36 of
+msgid ":py:obj:`read_csv`"
+msgstr ""
+
+#: maxframe.liteframe.datasource.read_json.read_json:37 of
+msgid "Read a CSV file into a LiteFrame."
+msgstr "将 CSV 文件读取到 LiteFrame 中。"
+

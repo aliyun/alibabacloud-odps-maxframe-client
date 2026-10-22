@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+import decimal
+
 import numpy as np
 import pandas as pd
+import polars as pl
 import pyarrow as pa
 import pytest
 
@@ -25,19 +29,25 @@ from maxframe.liteframe.expressions import (
     LiteFrameColumn,
     LiteFrameDiv,
     LiteFrameExpr,
+    LiteFrameFloorDiv,
     LiteFrameGt,
     LiteFrameInvert,
     LiteFrameLiteral,
+    LiteFrameLShift,
     LiteFrameMul,
     LiteFrameMultiColumnExpr,
     LiteFrameMultiColumnSubExpr,
     LiteFrameNeg,
+    LiteFrameRShift,
+    LiteFrameUDFExpr,
     NamedExpr,
     _infer_literal_dtype,
+    _infer_result_dtype,
     col,
 )
 from maxframe.liteframe.initializer import LiteFrame as LF
 from maxframe.liteframe.operators.project import LiteFrameProjection
+from maxframe.udf import BuiltinFunction
 from maxframe.utils import wrap_arrow_dtype
 
 # ---------------------------------------------------------------------------
@@ -67,14 +77,84 @@ def test_col_normalizes_name_to_lowercase(input_name, expected_name):
 @pytest.mark.parametrize(
     "value, expected_dtype",
     [
+        # bool / int / float / str / bytes — one representative per family
+        # plus the numpy-scalar and Arrow-scalar coercion of each.
         (True, pa.bool_()),
+        (np.bool_(True), pa.bool_()),
         (42, pa.int64()),
+        (np.int64(42), pa.int64()),
+        (pa.scalar(42), pa.int64()),
         (3.14, pa.float64()),
+        (np.float64(3.14), pa.float64()),
+        (pa.scalar(3.14), pa.float64()),
         ("hello", pa.string()),
+        (pa.scalar("x"), pa.string()),
+        (b"x", pa.binary()),
+        (pa.scalar(b"x"), pa.binary()),
+        # Temporal / decimal / null — mirrors _literal_dispatcher.
+        (
+            datetime.datetime(2023, 6, 15, 10, 30, 0, tzinfo=datetime.timezone.utc),
+            pa.timestamp("us", tz="UTC"),
+        ),
+        (datetime.datetime(2023, 6, 15, 10, 30, 0), pa.timestamp("us")),
+        (pd.Timestamp("2023-06-15 10:30:45"), pa.timestamp("ns")),
+        (
+            pd.Timestamp("2023-06-15 10:30:45", tz="UTC"),
+            pa.timestamp("ns", tz="UTC"),
+        ),
+        (datetime.date(2023, 6, 15), pa.date32()),
+        (datetime.time(10, 30, 45), pa.time64("us")),
+        (datetime.timedelta(days=1), pa.duration("us")),
+        (decimal.Decimal("1.50"), pa.decimal128(3, 2)),
+        (decimal.Decimal("100"), pa.decimal128(3, 0)),
+        (pd.NA, pa.null()),
+        (None, pa.null()),
+        # np.datetime64/np.timedelta64: ns maps to ns, coarse units (D/h/m/s)
+        # map to us (Polars-native; polars cannot cast to 's').  Y/M are
+        # rejected as ambiguous (tested separately).
+        (np.datetime64("2023-06-15T10:30:45.123456789"), pa.timestamp("ns")),
+        (np.datetime64("2023-06-15T10:30:45"), pa.timestamp("us")),
+        (np.timedelta64(1, "ns"), pa.duration("ns")),
+        (np.timedelta64(3600, "s"), pa.duration("us")),
     ],
 )
 def test_infer_literal_dtype(value, expected_dtype):
     assert _infer_literal_dtype(value) == wrap_arrow_dtype(expected_dtype)
+
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        pa.scalar([1, 2, 3]),
+        pa.scalar({"a": 1}),
+        pa.scalar(
+            [("a", 1)],
+            type=pa.list_(
+                pa.struct([pa.field("key", pa.string()), pa.field("value", pa.int64())])
+            ),
+        ),
+    ],
+    ids=["list_scalar", "struct_scalar", "list_of_struct_scalar"],
+)
+def test_infer_literal_dtype_rejects_nested_arrow_scalar(value):
+    """Nested Arrow scalars (list/struct/map) are accepted by inference but
+    rejected by codegen (only primitive scalars serialise); reject at
+    inference too so the failure is clear and the boundary is consistent."""
+    with pytest.raises(TypeError, match="does not support nested Arrow scalar"):
+        _infer_literal_dtype(value)
+
+
+@pytest.mark.parametrize("unit", ["Y", "M"], ids=["year", "month"])
+@pytest.mark.parametrize(
+    "make_value",
+    [np.timedelta64, np.datetime64],
+    ids=["timedelta64", "datetime64"],
+)
+def test_infer_literal_dtype_rejects_ambiguous_time_units(make_value, unit):
+    """Y/M numpy temporal units are ambiguous (month/year length varies) and
+    rejected at inference — pd.Timedelta/pd.Timestamp cannot accept them."""
+    with pytest.raises(TypeError, match="ambiguous calendar unit"):
+        _infer_literal_dtype(make_value(1, unit))
 
 
 # ---------------------------------------------------------------------------
@@ -107,6 +187,54 @@ def test_binary_op_dtype_propagation(left_dtype, right_dtype, expected_result_dt
         assert result.dtype is None
     else:
         assert result.dtype is not None
+
+
+# ---------------------------------------------------------------------------
+# True division always produces float (pandas/polars/numpy semantics)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "op_cls, left_dtype, right_dtype, expected",
+    [
+        # int / int must be float64, not int64 -- otherwise groupby mean
+        # (sum/count) would be planned as int (e77ffcc60 regression).
+        (LiteFrameDiv, pa.int64(), pa.int64(), pa.float64()),
+        (LiteFrameDiv, pa.int64(), pa.float64(), pa.float64()),
+        (LiteFrameDiv, pa.float64(), pa.int64(), pa.float64()),
+        # Floor division preserves the promoted integer dtype.
+        (LiteFrameFloorDiv, pa.int64(), pa.int64(), pa.int64()),
+        (LiteFrameFloorDiv, pa.int64(), pa.float64(), pa.float64()),
+    ],
+)
+def test_true_division_infers_float_dtype(op_cls, left_dtype, right_dtype, expected):
+    """True division always produces float; floor division keeps int/int int."""
+    result = _infer_result_dtype(
+        wrap_arrow_dtype(left_dtype), wrap_arrow_dtype(right_dtype), op_cls
+    )
+    assert result == wrap_arrow_dtype(expected)
+
+
+def test_true_division_decimal_defers_to_full_promotion():
+    """Decimal division returns None (defers to the full promotion path).
+
+    No engine returns float64 for decimal division (polars -> Decimal(38, x),
+    pandas -> object Decimal); the late-bind fallback must not declare
+    float64 or the declared dtype mismatches the runtime result.
+    """
+    dec = wrap_arrow_dtype(pa.decimal128(10, 2))
+    assert _infer_result_dtype(dec, dec, LiteFrameDiv) is None
+    assert _infer_result_dtype(dec, wrap_arrow_dtype(pa.int64()), LiteFrameDiv) is None
+    assert _infer_result_dtype(wrap_arrow_dtype(pa.int64()), dec, LiteFrameDiv) is None
+
+
+def test_true_division_bind_resolves_float_dtype():
+    """Binding an untyped int/int division expression resolves to float64."""
+    lf = LF({"a": [1, 2, 3]})
+    expr = col("a") / col("a")
+    assert expr.dtype is None
+    bound = expr.bind(lf._data._physical_dtypes)
+    assert bound.dtype == wrap_arrow_dtype(pa.float64())
 
 
 # ---------------------------------------------------------------------------
@@ -301,16 +429,16 @@ def test_bind_mixed_tree_with_some_explicit_dtypes():
 
 
 def test_multi_column_expr_construction():
-    """LiteFrameMultiColumnExpr stores output_names and dtypes_dict."""
+    """LiteFrameMultiColumnExpr stores output_names and dtypes."""
     col_expr = LiteFrameColumn(name="ts", dtype=np.dtype("datetime64[ns]"))
     multi = LiteFrameMultiColumnExpr(
-        operand=col_expr,
+        operands=[col_expr],
         output_names=["year", "week", "day"],
-        dtypes_dict={"year": "Int32", "week": "Int32", "day": "Int32"},
+        dtypes={"year": "Int32", "week": "Int32", "day": "Int32"},
     )
     assert multi.output_names == ["year", "week", "day"]
-    assert multi.dtypes_dict == {"year": "Int32", "week": "Int32", "day": "Int32"}
-    assert isinstance(multi.operand, LiteFrameColumn)
+    assert multi.dtypes == {"year": "Int32", "week": "Int32", "day": "Int32"}
+    assert isinstance(multi.operands[0], LiteFrameColumn)
     assert isinstance(multi, LiteFrameBaseExpr)
     assert not isinstance(multi, LiteFrameExpr)
 
@@ -319,9 +447,9 @@ def test_multi_column_sub_expr_construction():
     """LiteFrameMultiColumnSubExpr bridges to single-column world."""
     col_expr = LiteFrameColumn(name="ts", dtype=np.dtype("datetime64[ns]"))
     multi = LiteFrameMultiColumnExpr(
-        operand=col_expr,
+        operands=[col_expr],
         output_names=["year", "week", "day"],
-        dtypes_dict={"year": "Int32", "week": "Int32", "day": "Int32"},
+        dtypes={"year": "Int32", "week": "Int32", "day": "Int32"},
     )
     sub = LiteFrameMultiColumnSubExpr(
         multi_expr=multi,
@@ -338,9 +466,9 @@ def test_multi_column_sub_expr_rename():
     """LiteFrameMultiColumnSubExpr.rename() produces a NamedExpr."""
     col_expr = LiteFrameColumn(name="ts", dtype=np.dtype("datetime64[ns]"))
     multi = LiteFrameMultiColumnExpr(
-        operand=col_expr,
+        operands=[col_expr],
         output_names=["year", "week", "day"],
-        dtypes_dict={"year": "Int32", "week": "Int32", "day": "Int32"},
+        dtypes={"year": "Int32", "week": "Int32", "day": "Int32"},
     )
     sub = LiteFrameMultiColumnSubExpr(
         multi_expr=multi,
@@ -358,26 +486,26 @@ def test_bind_multi_column_expr():
     dtypes = pd.Series({"ts": np.dtype("datetime64[ns]")})
     col_expr = col("ts")
     multi = LiteFrameMultiColumnExpr(
-        operand=col_expr,
+        operands=[col_expr],
         output_names=["year", "week", "day"],
-        dtypes_dict={"year": "Int32", "week": "Int32", "day": "Int32"},
+        dtypes={"year": "Int32", "week": "Int32", "day": "Int32"},
     )
     bound = multi.bind(dtypes)
     assert isinstance(bound, LiteFrameMultiColumnExpr)
-    assert isinstance(bound.operand, LiteFrameColumn)
-    assert bound.operand.dtype == np.dtype("datetime64[ns]")
+    assert isinstance(bound.operands[0], LiteFrameColumn)
+    assert bound.operands[0].dtype == np.dtype("datetime64[ns]")
     assert bound.output_names == ["year", "week", "day"]
-    assert bound.dtypes_dict == {"year": "Int32", "week": "Int32", "day": "Int32"}
+    assert bound.dtypes == {"year": "Int32", "week": "Int32", "day": "Int32"}
 
 
 def test_bind_multi_column_sub_expr():
-    """bind() resolves dtype from multi_expr's dtypes_dict."""
+    """bind() resolves dtype from multi_expr's dtypes."""
     dtypes = pd.Series({"ts": np.dtype("datetime64[ns]")})
     col_expr = col("ts")
     multi = LiteFrameMultiColumnExpr(
-        operand=col_expr,
+        operands=[col_expr],
         output_names=["year", "week", "day"],
-        dtypes_dict={"year": "Int32", "week": "Int32", "day": "Int32"},
+        dtypes={"year": "Int32", "week": "Int32", "day": "Int32"},
     )
     sub = LiteFrameMultiColumnSubExpr(
         multi_expr=multi,
@@ -390,14 +518,48 @@ def test_bind_multi_column_sub_expr():
     assert bound.output_name == "year"
 
 
+def test_bind_multi_column_sub_expr_polars_dtype():
+    """Regression: ``bind`` resolves a polars dtype
+    from ``dtypes`` via ``to_pandas_dtype`` instead of crashing."""
+    dtypes = pd.Series({"a": wrap_arrow_dtype(pa.int64())})
+    udf = LiteFrameUDFExpr(
+        func=lambda df: df,
+        mode="transform_chunk",
+        operands=[LiteFrameColumn(name="a", dtype="int64")],
+        output_names=["a2"],
+        dtypes={"a2": pl.Int64},
+        input_frame_type="polars",
+        check_output_dtypes="raises",
+    )
+    sub = LiteFrameMultiColumnSubExpr(multi_expr=udf, output_name="a2", dtype=pl.Int64)
+    bound = sub.bind(dtypes)
+    assert isinstance(bound, LiteFrameMultiColumnSubExpr)
+    assert bound.dtype == np.dtype("int64")
+
+
+def test_udf_expr_dtype_property_polars_dtype():
+    """Regression: the map-mode ``.dtype`` property
+    resolves a polars dtype via ``to_pandas_dtype`` instead of crashing."""
+    udf = LiteFrameUDFExpr(
+        func=lambda x: x,
+        mode="map",
+        operands=[LiteFrameColumn(name="a", dtype="int64")],
+        output_names=["a"],
+        dtypes={"a": pl.Int64},
+        input_frame_type="pandas",
+        check_output_dtypes="raises",
+    )
+    assert udf.dtype == np.dtype("int64")
+
+
 def test_bind_named_expr_with_sub_expr():
     """bind() works with NamedExpr wrapping LiteFrameMultiColumnSubExpr."""
     dtypes = pd.Series({"ts": np.dtype("datetime64[ns]")})
     col_expr = col("ts")
     multi = LiteFrameMultiColumnExpr(
-        operand=col_expr,
+        operands=[col_expr],
         output_names=["year", "week", "day"],
-        dtypes_dict={"year": "Int32", "week": "Int32", "day": "Int32"},
+        dtypes={"year": "Int32", "week": "Int32", "day": "Int32"},
     )
     sub = LiteFrameMultiColumnSubExpr(
         multi_expr=multi,
@@ -576,3 +738,276 @@ def test_composed_col_expr_tree_structure():
     assert add.left.name == "a"
     assert isinstance(add.right, LiteFrameColumn)
     assert add.right.name == "b"
+
+
+# ---------------------------------------------------------------------------
+# Bitwise shift expressions
+# ---------------------------------------------------------------------------
+
+_SHIFT_UNBOUND = [
+    # (name, op_fn, expr_cls, literal_side, literal_value)
+    ("lshift", lambda a: a << 2, LiteFrameLShift, "right", 2),
+    ("rshift", lambda a: a >> 1, LiteFrameRShift, "right", 1),
+    ("rlshift", lambda a: 2 << a, LiteFrameLShift, "left", 2),
+    ("rrshift", lambda a: 16 >> a, LiteFrameRShift, "left", 16),
+]
+
+
+@pytest.mark.parametrize(
+    "name,op_fn,expr_cls,literal_side,value",
+    _SHIFT_UNBOUND,
+    ids=[t[0] for t in _SHIFT_UNBOUND],
+)
+def test_shift_unbound_returns_shift_expr(name, op_fn, expr_cls, literal_side, value):
+    a = col("A")
+    result = op_fn(a)
+    assert isinstance(result, expr_cls)
+    assert result.dtype is None
+    lit = getattr(result, literal_side)
+    assert isinstance(lit, LiteFrameLiteral)
+    assert lit.value == value
+
+
+_SHIFT_BOUND = [
+    ("lshift", lambda a: a << 2, LiteFrameLShift),
+    ("rshift", lambda a: a >> 1, LiteFrameRShift),
+]
+
+
+@pytest.mark.parametrize(
+    "name,op_fn,expr_cls", _SHIFT_BOUND, ids=[t[0] for t in _SHIFT_BOUND]
+)
+def test_shift_bound_infers_int_dtype(name, op_fn, expr_cls):
+    dtypes = pd.Series({"a": wrap_arrow_dtype(pa.int64())})
+    bound = op_fn(col("A")).bind(dtypes)
+    assert isinstance(bound, expr_cls)
+    assert bound.left.dtype == wrap_arrow_dtype(pa.int64())
+    assert bound.right.dtype == wrap_arrow_dtype(pa.int64())
+    # Shift preserves the left operand's integer dtype.
+    assert bound.dtype == wrap_arrow_dtype(pa.int64())
+
+
+# ---------------------------------------------------------------------------
+# Bitwise And/Or/Xor/Invert are dtype-aware (int preserves, bool -> bool)
+# ---------------------------------------------------------------------------
+
+_BITWISE_DTYPE = [
+    # (name, op_fn, input_pa_dtype, expected_pa_dtype)
+    ("int_and", lambda a: a & 3, pa.int64(), pa.int64()),
+    ("bool_and", lambda a: a & True, pa.bool_(), pa.bool_()),
+    ("int_invert", lambda a: ~a, pa.int64(), pa.int64()),
+    ("bool_invert", lambda a: ~a, pa.bool_(), pa.bool_()),
+]
+
+
+@pytest.mark.parametrize(
+    "name,op_fn,input_pa,expected_pa",
+    _BITWISE_DTYPE,
+    ids=[t[0] for t in _BITWISE_DTYPE],
+)
+def test_bitwise_dtype_inference(name, op_fn, input_pa, expected_pa):
+    """Bitwise &, |, ^, ~ are dtype-aware: bool -> bool, int -> int."""
+    dtypes = pd.Series({"a": wrap_arrow_dtype(input_pa)})
+    bound = op_fn(col("A")).bind(dtypes)
+    assert bound.dtype == wrap_arrow_dtype(expected_pa)
+
+
+# LiteFrameUDFExpr tests
+# ---------------------------------------------------------------------------
+
+
+def test_udf_expr_map_mode():
+    """LiteFrameUDFExpr stores func, mode, and fields correctly."""
+    func = lambda x: x * 2
+    expr = LiteFrameUDFExpr(
+        func=func,
+        mode="map",
+        operands=[LiteFrameColumn(name="a", dtype=None)],
+        output_names=["a"],
+        dtypes={"a": wrap_arrow_dtype(pa.int64())},
+        input_frame_type=None,
+    )
+    assert expr.mode == "map"
+    assert expr.input_frame_type is None
+    assert expr.check_output_dtypes == "raises"
+
+
+def test_udf_expr_bind_preserves_fields():
+    """.bind() on LiteFrameUDFExpr preserves all UDF-specific fields."""
+    func = lambda x: x + 1
+    dtypes = pd.Series({"a": wrap_arrow_dtype(pa.int64())})
+    expr = LiteFrameUDFExpr(
+        func=func,
+        mode="transform_chunk",
+        operands=[LiteFrameColumn(name="a", dtype=None)],
+        output_names=["a"],
+        dtypes={"a": wrap_arrow_dtype(pa.int64())},
+        input_frame_type="pandas",
+        args=(1,),
+        kwargs={"scale": 2},
+    )
+    bound = expr.bind(dtypes)
+    assert isinstance(bound, LiteFrameUDFExpr)
+    assert bound.mode == "transform_chunk"
+    assert bound.input_frame_type == "pandas"
+    assert bound.args == (1,)
+    assert bound.kwargs == {"scale": 2}
+    assert bound.operands[0].dtype == wrap_arrow_dtype(pa.int64())  # dtype resolved
+
+
+def test_base_expr_has_custom_code_default():
+    """LiteFrameBaseExpr and subclasses default to has_custom_code=False."""
+    col_expr = LiteFrameColumn(name="a", dtype=None)
+    assert col_expr.has_custom_code is False
+
+
+def test_udf_expr_has_custom_code():
+    """LiteFrameUDFExpr.has_custom_code returns True for regular functions."""
+    expr = LiteFrameUDFExpr(
+        func=lambda x: x * 2,
+        mode="map",
+        operands=[LiteFrameColumn(name="a", dtype=None)],
+        output_names=["a"],
+        dtypes={"a": wrap_arrow_dtype(pa.int64())},
+    )
+    assert expr.has_custom_code is True
+
+
+def _identity(x):
+    return x
+
+
+def test_udf_expr_has_custom_code_builtin():
+    """LiteFrameUDFExpr.has_custom_code returns False for BuiltinFunction."""
+    bf = BuiltinFunction(_identity)
+    expr = LiteFrameUDFExpr(
+        func=bf,
+        mode="map",
+        operands=[LiteFrameColumn(name="a", dtype=None)],
+        output_names=["a"],
+        dtypes={"a": wrap_arrow_dtype(pa.int64())},
+    )
+    assert expr.has_custom_code is False
+
+
+def test_named_expr_delegates_has_custom_code():
+    """NamedExpr delegates has_custom_code to its inner expr."""
+    udf_expr = LiteFrameUDFExpr(
+        func=lambda x: x,
+        mode="map",
+        operands=[LiteFrameColumn(name="a", dtype=None)],
+        output_names=["a"],
+        dtypes={"a": wrap_arrow_dtype(pa.int64())},
+    )
+    named = NamedExpr(
+        name="a",
+        expr=udf_expr,
+        dtype=wrap_arrow_dtype(pa.int64()),
+    )
+    assert named.has_custom_code is True
+
+    # Plain column expression
+    named_plain = NamedExpr(
+        name="a",
+        expr=LiteFrameColumn(name="a", dtype=None),
+        dtype=wrap_arrow_dtype(pa.int64()),
+    )
+    assert named_plain.has_custom_code is False
+
+
+def test_multi_column_sub_expr_delegates_has_custom_code():
+    """LiteFrameMultiColumnSubExpr delegates to multi_expr."""
+    udf_expr = LiteFrameUDFExpr(
+        func=lambda x: x,
+        mode="transform_chunk",
+        operands=[LiteFrameColumn(name="a", dtype=None)],
+        output_names=["a"],
+        dtypes={"a": wrap_arrow_dtype(pa.int64())},
+    )
+    sub_expr = LiteFrameMultiColumnSubExpr(
+        multi_expr=udf_expr,
+        output_name="a",
+        dtype=wrap_arrow_dtype(pa.int64()),
+    )
+    assert sub_expr.has_custom_code is True
+
+
+def test_projection_has_custom_code_with_udf():
+    """LiteFrameProjection.has_custom_code() returns True when a UDF projection is present."""
+    udf_expr = LiteFrameUDFExpr(
+        func=lambda x: x,
+        mode="map",
+        operands=[LiteFrameColumn(name="a", dtype=None)],
+        output_names=["a"],
+        dtypes={"a": wrap_arrow_dtype(pa.int64())},
+    )
+    named = NamedExpr(
+        name="a",
+        expr=udf_expr,
+        dtype=wrap_arrow_dtype(pa.int64()),
+    )
+    proj_op = LiteFrameProjection(projections=[named])
+    assert proj_op.has_custom_code() is True
+
+
+def test_projection_has_custom_code_without_udf():
+    """LiteFrameProjection.has_custom_code() returns False for plain column projections."""
+    col_expr = LiteFrameColumn(name="a", dtype=wrap_arrow_dtype(pa.int64()))
+    proj_op = LiteFrameProjection(projections=[col_expr])
+    assert proj_op.has_custom_code() is False
+
+
+# ---------------------------------------------------------------------------
+# bind() preserves accessor-inferred dtypes (regression: .dt/.str accessor
+# dtypes were overwritten by the operand dtype via _infer_unary_result_dtype)
+# ---------------------------------------------------------------------------
+
+
+def _dt_lf():
+    return LF(pd.DataFrame({"dt": pd.to_datetime(["2023-01-31", "2023-04-01"])}))
+
+
+def _str_lf():
+    return LF({"s": ["hello", "world"]}, dtype=wrap_arrow_dtype(pa.string()))
+
+
+@pytest.mark.parametrize(
+    "lf_factory,accessor_fn,expected_dtype",
+    [
+        (_dt_lf, lambda lf: lf["dt"].dt.year, wrap_arrow_dtype(pa.int32())),
+        (_dt_lf, lambda lf: lf["dt"].dt.month, wrap_arrow_dtype(pa.int32())),
+        (_dt_lf, lambda lf: lf["dt"].dt.day, wrap_arrow_dtype(pa.int32())),
+        (_dt_lf, lambda lf: lf["dt"].dt.dayofweek, wrap_arrow_dtype(pa.int32())),
+        (_dt_lf, lambda lf: lf["dt"].dt.quarter, wrap_arrow_dtype(pa.int32())),
+        (_dt_lf, lambda lf: lf["dt"].dt.is_month_start, wrap_arrow_dtype(pa.bool_())),
+        (
+            _dt_lf,
+            lambda lf: lf["dt"].dt.strftime("%Y-%m-%d"),
+            wrap_arrow_dtype(pa.string()),
+        ),
+        (_str_lf, lambda lf: lf["s"].str.len(), wrap_arrow_dtype(pa.int64())),
+        (_str_lf, lambda lf: lf["s"].str.contains("o"), wrap_arrow_dtype(pa.bool_())),
+        (_str_lf, lambda lf: lf["s"].str.upper(), wrap_arrow_dtype(pa.string())),
+    ],
+    ids=[
+        "dt.year",
+        "dt.month",
+        "dt.day",
+        "dt.dayofweek",
+        "dt.quarter",
+        "dt.is_month_start",
+        "dt.strftime",
+        "str.len",
+        "str.contains",
+        "str.upper",
+    ],
+)
+def test_bind_preserves_accessor_inferred_dtype(
+    lf_factory, accessor_fn, expected_dtype
+):
+    """bind() must not overwrite a dtype already inferred by an accessor."""
+    lf = lf_factory()
+    proj = accessor_fn(lf).op.projections[0]
+    bound = proj.bind(lf.dtypes)
+    inner = bound.expr if isinstance(bound, NamedExpr) else bound
+    assert inner.dtype == expected_dtype

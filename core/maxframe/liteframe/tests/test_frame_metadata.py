@@ -12,19 +12,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pickle
+
+import mock
 import pandas as pd
 import pyarrow as pa
 import pytest
 
-from maxframe.liteframe.core import RANGE_COL_NAME, FrameMetadata, LiteFrameData
+from maxframe.lib.dtypes_extension.blob import (
+    ExternalBlobDtype,
+    SolidBlob,
+    is_polars_blob_type,
+    make_polars_blob_type,
+)
+from maxframe.lib.version import parse as parse_version
+from maxframe.liteframe.core import (
+    RANGE_COL_NAME,
+    FrameMetadata,
+    LiteFrame,
+    LiteFrameData,
+    LiteFrameResult,
+)
 from maxframe.liteframe.datasource.from_local import from_local_df
-from maxframe.liteframe.expressions import LiteFrameColumn
+from maxframe.liteframe.expressions import LiteFrameColumn, col
 from maxframe.liteframe.indexing.select import drop
+from maxframe.liteframe.operators.datasource import LiteFrameReadODPSTable
 from maxframe.liteframe.operators.groupby import LiteFrameGroupByOp
+from maxframe.liteframe.operators.indexing import LiteFrameIlocGetItem
 from maxframe.liteframe.operators.project import LiteFrameProjection
-from maxframe.liteframe.operators.source import LiteFrameReadODPSTable
 from maxframe.protocol import DefaultIndexType
 from maxframe.utils import wrap_arrow_dtype
+
+try:
+    import polars as pl
+except ImportError:
+    pl = None
+
+_PYARROW_GE_8 = parse_version(pa.__version__) >= parse_version("8.0.0")
 
 
 @pytest.mark.parametrize(
@@ -123,7 +147,7 @@ def test_projection_shape_with_range_column_at_position_0():
     # Source shape: 10 rows, 2 physical + 1 range = 3 columns
     assert lf.shape == (10, 3)
 
-    # Project: __index__ (range) at position 0, plus "a"
+    # Project: range col (range) at position 0, plus "a"
     projections = [
         LiteFrameColumn(name=RANGE_COL_NAME, dtype=wrap_arrow_dtype(pa.int64())),
         LiteFrameColumn(name="a", dtype=wrap_arrow_dtype(pa.int64())),
@@ -131,7 +155,7 @@ def test_projection_shape_with_range_column_at_position_0():
     op_proj = LiteFrameProjection(projections=projections)
     result = op_proj(lf)
 
-    # __index__ stays virtual (position 0), "a" is physical → shape = (10, 2)
+    # Range col stays virtual (position 0), "a" is physical → shape = (10, 2)
     assert result.shape == (10, 2)
     # _physical_dtypes should only contain physical column "a"
     assert RANGE_COL_NAME not in result._physical_dtypes.index
@@ -158,7 +182,7 @@ def test_projection_shape_with_range_column_materialized():
     )
     lf = op_src._new_liteframe_from_source(shape=(10, 2))
 
-    # Project: "a" first, then __index__ (not position 0 → materialized)
+    # Project: "a" first, then range col (not position 0 → materialized)
     projections = [
         LiteFrameColumn(name="a", dtype=wrap_arrow_dtype(pa.int64())),
         LiteFrameColumn(name=RANGE_COL_NAME, dtype=wrap_arrow_dtype(pa.int64())),
@@ -166,12 +190,42 @@ def test_projection_shape_with_range_column_materialized():
     op_proj = LiteFrameProjection(projections=projections)
     result = op_proj(lf)
 
-    # __index__ materialized → both are physical columns, no range, shape = (10, 2)
+    # Range col materialized → both are physical columns, no range, shape = (10, 2)
     assert result.shape == (10, 2)
     # _physical_dtypes contains both as physical
     assert list(result._physical_dtypes.index) == ["a", RANGE_COL_NAME]
     # No range columns in metadata
     assert result.frame_metadata is None or result.frame_metadata.range_columns is None
+
+
+@pytest.mark.parametrize(
+    "idx, expected_range",
+    [
+        pytest.param(1, (2, 4, 2), id="int"),
+        pytest.param(slice(1, 3), (2, 6, 2), id="slice"),
+    ],
+)
+def test_iloc_on_affine_range_preserves_transformed_step(idx, expected_range):
+    """iloc int/slice on a frame whose range column has an affine transform
+    (e.g. *2) must preserve the transformed (start, stop, step) in the
+    output frame_metadata — not rebuild a unit-step range from the row
+    position."""
+    dtypes = pd.Series({"a": wrap_arrow_dtype(pa.int64())})
+    op_src = LiteFrameReadODPSTable(
+        table_name="t",
+        dtypes=dtypes,
+        default_index_type=DefaultIndexType.range,
+    )
+    lf = op_src._new_liteframe_from_source(shape=(5, 1))
+
+    # Apply affine transform: range column * 2 → step becomes 2
+    transformed = lf.assign(
+        **{RANGE_COL_NAME: (col(RANGE_COL_NAME) * 2).rename(RANGE_COL_NAME)}
+    )
+    result = LiteFrameIlocGetItem(indexes=[idx, slice(None)])(transformed)
+
+    rc = result.frame_metadata.range_columns[RANGE_COL_NAME]
+    assert (rc.start, rc.stop, rc.step) == expected_range
 
 
 def test_hidden_columns_in_source():
@@ -243,7 +297,7 @@ def test_column_pruning_hidden(pruned_columns, expect_hc_present):
     ],
 )
 def test_column_pruning_range(pruned_columns, expect_range, expect_physical_cols):
-    """set_pruned_columns should handle range column (__index__) correctly."""
+    """set_pruned_columns should handle range column correctly."""
     dtypes = pd.Series(
         {
             "a": wrap_arrow_dtype(pa.int64()),
@@ -289,7 +343,7 @@ def test_filter_sort_preserves_hidden_columns(operation):
         result = lf[lf["a"] > 1]
     else:
         lf = _make_hidden_lf({"a": [3, 1, 2], "_hc": [30.0, 10.0, 20.0]})
-        result = lf.sort_values("a")
+        result = lf.sort("a")
     assert "_hc" in result._hidden_columns
 
 
@@ -364,7 +418,7 @@ def test_hidden_columns_through_pipeline():
     assert "_hc" in filtered._hidden_columns
 
     # Sort should preserve hidden columns
-    sorted_lf = lf.sort_values("a")
+    sorted_lf = lf.sort("a")
     assert "_hc" in sorted_lf._hidden_columns
 
     # Select visible columns should preserve hidden columns
@@ -384,3 +438,121 @@ def test_hidden_columns_not_in_user_api():
     assert "_hc" not in lf.dtypes.index
     assert "_hc" in lf._physical_dtypes.index
     assert "_hc" in lf._hidden_columns
+
+
+# --- Hidden column promotion tests (projection / indexing) ---
+
+
+def test_select_promotes_hidden_to_visible():
+    """select() promotes a hidden column to visible."""
+    lf = _make_hidden_lf({"a": [1, 2, 3], "_hc": [10.0, 20.0, 30.0]})
+    result = lf.select(["a", "_hc"])
+    assert "_hc" in result.columns
+    assert "_hc" in result.dtypes.index
+    assert "_hc" not in result._hidden_columns
+
+
+def test_getitem_string_promotes_hidden():
+    """lf["hidden_col"] promotes a hidden column to visible."""
+    lf = _make_hidden_lf({"a": [1, 2, 3], "_hc": [10.0, 20.0, 30.0]})
+    result = lf["_hc"]
+    assert "_hc" in result.columns
+    assert "_hc" not in result._hidden_columns
+
+
+def test_getitem_list_promotes_hidden():
+    """lf[["a", "hidden_col"]] promotes hidden columns to visible."""
+    lf = _make_hidden_lf({"a": [1, 2, 3], "b": [4, 5, 6], "_hc": [10.0, 20.0, 30.0]})
+    result = lf[["a", "_hc"]]
+    assert "_hc" in result.columns
+    assert "_hc" not in result._hidden_columns
+    assert "a" in result.columns
+
+
+@pytest.mark.skipif(
+    pl is None or not hasattr(pl, "BaseExtension"),
+    reason="need polars with BaseExtension support",
+)
+def test_liteframe_result_pickle_object_columns():
+    blob_dtype = make_polars_blob_type()
+
+    df = pl.DataFrame(
+        {
+            "id": [1, 2, 3],
+            "name": ["a", "b", "c"],
+            "blob_col": pl.Series(
+                "blob_col",
+                [SolidBlob(b"\x01"), SolidBlob(b"\x02"), None],
+                dtype=blob_dtype,
+            ),
+        }
+    )
+    result = LiteFrameResult(_frame=df)
+    restored = pickle.loads(pickle.dumps(result))
+
+    assert isinstance(restored, LiteFrameResult)
+    assert isinstance(restored.frame, pl.DataFrame)
+    assert list(restored.frame.columns) == ["id", "name", "blob_col"]
+    assert restored.frame["id"].to_list() == [1, 2, 3]
+    assert restored.frame["name"].to_list() == ["a", "b", "c"]
+    assert is_polars_blob_type(restored.frame["blob_col"].dtype)
+    blobs = restored.frame["blob_col"].to_list()
+    assert blobs[0].reference == b"\x01"
+    assert blobs[1].reference == b"\x02"
+    assert blobs[2] is None
+
+
+@pytest.mark.skipif(
+    pl is None or not _PYARROW_GE_8 or not hasattr(pl, "BaseExtension"),
+    reason="polars + pyarrow>=8 + BaseExtension required for blob to_pandas()",
+)
+def test_to_pandas_materializes_blob_columns():
+    """LiteFrame.to_pandas() returns ExternalBlobDtype values for blob columns.
+
+    Regression: to_pandas() unwrapped LiteFrameResult with ``result.frame``
+    and called raw ``pl.DataFrame.to_pandas()``, so blob columns came back as
+    raw Binary/pointer bytes instead of ExternalBlobDtype.  It must convert
+    through the blob-aware bridge so callers receive AbstractExternalBlob
+    values with the ``open()`` API.
+    """
+    pdf = pd.DataFrame({"a": [1, 2]})
+    lf = from_local_df(pdf)
+    blob_dtype = make_polars_blob_type()
+    pl_frame = pl.DataFrame(
+        {"b": pl.Series("b", [SolidBlob(b"x"), None], dtype=blob_dtype)}
+    ).lazy()
+    result = LiteFrameResult(_frame=pl_frame, range_columns=None)
+
+    with mock.patch.object(
+        LiteFrame, "_execute_and_fetch", lambda self, session=None, **kw: result
+    ):
+        out = lf.to_pandas()
+
+    assert isinstance(out["b"].dtype, ExternalBlobDtype)
+    assert out["b"].isna().tolist() == [False, True]
+    with out["b"][0].open("rb") as reader:
+        assert reader.read() == b"x"
+    assert out["b"][1] is None
+
+
+@pytest.mark.skipif(
+    pl is None or not _PYARROW_GE_8,
+    reason="polars + pyarrow>=8 required for to_pandas(use_pyarrow_extension_array=True)",
+)
+def test_to_pandas_materializes_virtual_range():
+    """LiteFrame.to_pandas() materializes all-virtual-range results.
+
+    Regression: when _frame is None (all columns are virtual range columns),
+    to_pandas() returned None because it never called materialize().  It must
+    materialize from range_columns so callers get a concrete DataFrame.
+    """
+    pdf = pd.DataFrame({"a": [1, 2]})
+    lf = from_local_df(pdf)
+    result = LiteFrameResult(_frame=None, range_columns={"r": (2, 8, 2)})
+
+    with mock.patch.object(
+        LiteFrame, "_execute_and_fetch", lambda self, session=None, **kw: result
+    ):
+        out = lf.to_pandas()
+
+    assert out["r"].tolist() == [2, 4, 6]

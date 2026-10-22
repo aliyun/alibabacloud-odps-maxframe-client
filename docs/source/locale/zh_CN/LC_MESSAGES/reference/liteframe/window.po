@@ -1,0 +1,234 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:36+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/window.rst:4
+msgid "Window functions"
+msgstr "窗口函数"
+
+#: ../../source/reference/liteframe/window.rst:6
+msgid ""
+"Rolling and expanding window objects are returned by "
+":meth:`maxframe.liteframe.LiteFrame.rolling` and "
+":meth:`maxframe.liteframe.LiteFrame.expanding` respectively. Call an "
+"aggregation method to produce a LiteFrame."
+msgstr ""
+"滚动和扩展窗口对象分别由 :meth:`maxframe.liteframe.LiteFrame.rolling` 和 "
+":meth:`maxframe.liteframe.LiteFrame.expanding` 返回。调用聚合方法来生成 "
+"LiteFrame。"
+
+#: ../../source/reference/liteframe/window.rst:17:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameRolling "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling>`\\ \\(liteframe\\, "
+"window\\[\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:17:<autosummary>:1
+msgid "Intermediate object returned by ``LiteFrame.rolling()``."
+msgstr "由 ``LiteFrame.rolling()`` 返回的中间对象。"
+
+#: ../../source/reference/liteframe/window.rst:19
+msgid "Rolling methods"
+msgstr "滚动方法"
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameRolling.agg "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling.agg>`\\ \\(func\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid "Aggregate using one of the supported function names."
+msgstr "使用支持的函数名之一进行聚合。"
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameRolling.sum "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling.sum>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid "Rolling sum."
+msgstr "滚动求和。"
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameRolling.mean "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling.mean>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid "Rolling mean."
+msgstr "滚动均值。"
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameRolling.min "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling.min>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid "Rolling minimum."
+msgstr "滚动最小值。"
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameRolling.max "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling.max>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid "Rolling maximum."
+msgstr "滚动最大值。"
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameRolling.std "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling.std>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid "Rolling standard deviation (ddof=1)."
+msgstr "滚动标准差 (ddof=1)。"
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameRolling.var "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling.var>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid "Rolling variance (ddof=1)."
+msgstr "滚动方差 (ddof=1)。"
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameRolling.median "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling.median>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid "Rolling median."
+msgstr "滚动中位数。"
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameRolling.count "
+"<maxframe.liteframe.window.rolling.LiteFrameRolling.count>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+msgid "Rolling count of non-null observations."
+msgstr "滚动非空观测计数。"
+
+#: ../../source/reference/liteframe/window.rst:36
+msgid "Expanding methods"
+msgstr "扩展方法"
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameExpanding "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding>`\\ "
+"\\(liteframe\\[\\, min\\_periods\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid "Provide expanding window calculations."
+msgstr "提供扩展窗口计算。"
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameExpanding.agg "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.agg>`\\ "
+"\\(func\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameExpanding.sum "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.sum>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid "Expanding sum."
+msgstr "扩展求和。"
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameExpanding.mean "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.mean>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid "Expanding mean."
+msgstr "扩展均值。"
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameExpanding.min "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.min>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid "Expanding minimum."
+msgstr "扩展最小值。"
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameExpanding.max "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.max>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid "Expanding maximum."
+msgstr "扩展最大值。"
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameExpanding.std "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.std>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid "Expanding standard deviation (ddof=1)."
+msgstr "扩展标准差 (ddof=1)。"
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameExpanding.var "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.var>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid "Expanding variance (ddof=1)."
+msgstr "扩展方差 (ddof=1)。"
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameExpanding.count "
+"<maxframe.liteframe.window.expanding.LiteFrameExpanding.count>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+msgid "Expanding count of non-null observations."
+msgstr "扩展非空观测计数。"
+

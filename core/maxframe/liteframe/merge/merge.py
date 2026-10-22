@@ -71,6 +71,21 @@ def merge(
     -------
     LiteFrame
         Merged result.
+
+    See Also
+    --------
+    concat : Concatenate LiteFrame objects along a particular axis.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'key': [1, 2, 3], 'a': [10, 20, 30]})
+    >>> other = mlf.LiteFrame({'key': [2, 3, 4], 'b': [200, 300, 400]})
+    >>> result = lf.merge(other, on='key')
+    >>> result.execute()
+       key   a    b
+    0    2  20  200
+    1    3  30  300
     """
     on = _normalize_keys(on)
     left_on = _normalize_keys(left_on)

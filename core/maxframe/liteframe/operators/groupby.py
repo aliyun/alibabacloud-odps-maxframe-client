@@ -35,7 +35,6 @@ class LiteFrameGroupByOp(LiteFrameOperatorMixin, LiteFrameOperator):
     stage = ReferenceField("stage", OperatorStage, default=None)
     groupby_params = DictField("groupby_params")
     index_shuffle_size = Int32Field("index_shuffle_size", default=None)
-    n_reducers = Int32Field("n_reducers", default=None)
 
     def __call__(self, liteframe):
         hidden_columns = None
@@ -49,6 +48,6 @@ class LiteFrameGroupByOp(LiteFrameOperatorMixin, LiteFrameOperator):
         return self.new_liteframe(
             [liteframe],
             shape=(np.nan, liteframe.shape[1]),
-            physical_dtypes=liteframe._data._physical_dtypes,
+            physical_dtypes=liteframe._physical_dtypes,
             frame_metadata=frame_metadata,
         )

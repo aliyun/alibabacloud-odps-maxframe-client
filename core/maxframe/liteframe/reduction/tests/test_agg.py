@@ -12,18 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pyarrow as pa
 import pytest
 
 from maxframe.liteframe.core import LiteFrame
 from maxframe.liteframe.expressions import LiteFrameColumn, LiteFramePow, NamedExpr
 from maxframe.liteframe.initializer import LiteFrame as LF
-from maxframe.liteframe.operators.agg import LiteFrameAgg
 from maxframe.liteframe.operators.project import LiteFrameProjection
+from maxframe.liteframe.operators.reduction import LiteFrameAgg
 from maxframe.liteframe.reduction.compile import (
+    AggCall,
+    _infer_output_column_names,
     _normalize_func,
     _normalize_func_kw,
+    _resolve_callable_names,
     compile_agg,
 )
+from maxframe.utils import wrap_arrow_dtype
 
 
 def _get_agg_op(result):
@@ -228,7 +233,7 @@ def test_shortcut_methods_create_agg_op(func):
         ("std", [2]),
         ("sem", [2]),
         ("skew", [2, 3]),
-        ("kurtosis", [2, 3, 4]),
+        ("kurt", [2, 3, 4]),
     ],
 )
 def test_compile_pre_agg_projection(func, expected_exponents):
@@ -337,8 +342,6 @@ def test_nunique_dropna(dropna, expected):
 
 def test_nunique_dropna_mixed_named_agg():
     """lf.agg with two AggCall("nunique", ...) with different dropna preserves per-call kwargs."""
-    from maxframe.liteframe.reduction.compile import AggCall
-
     lf = LF({"a": [1, None, 1]})
     result = lf.agg(
         a_drop=("a", AggCall("nunique", dropna=True)),
@@ -350,3 +353,191 @@ def test_nunique_dropna_mixed_named_agg():
     kwds_set = {tuple(sorted(d["kwds"].items())) for d in nunique_descs}
     assert (("dropna", False),) in kwds_set
     assert (("dropna", True),) in kwds_set
+
+
+# --- size naming (frame-level, pandas "size" convention) ---
+
+_SIZE_FRAME_LEVEL_CASES = [
+    ({"key": ["a", "b", "a"], "val": [1, 2, 3]}, True, ["key", "size"], ["val"]),
+    (
+        {"key": ["a", "b", "a"], "v1": [1, 2, 3], "v2": [4, 5, 6]},
+        True,
+        ["key", "size"],
+        ["v1", "v2"],
+    ),
+    ({"a": [1, 2], "b": [3, 4]}, False, ["size"], ["a", "b"]),
+]
+
+
+@pytest.mark.parametrize(
+    "data,grouped,expected_cols,size_cols",
+    _SIZE_FRAME_LEVEL_CASES,
+    ids=["grouped-single-col", "grouped-multi-col", "whole-frame"],
+)
+def test_size_single_frame_level_output(data, grouped, expected_cols, size_cols):
+    """size is frame-level: one "size" int64 column, emitted from a single
+    frame-level descriptor, regardless of the target column count."""
+    lf = LF(data)
+    result = (lf.groupby("key") if grouped else lf).size()
+    agg_op = _get_agg_op(result)
+
+    assert list(result.columns) == expected_cols
+    size_descs = [d for d in agg_op.agg_funcs if d["map_func_name"] == "size"]
+    assert len(size_descs) == 1
+    assert size_descs[0]["cols"] == size_cols
+    assert result.dtypes["size"] == wrap_arrow_dtype(pa.int64())
+
+
+@pytest.mark.parametrize(
+    "funcs,expected_cols,size_key",
+    [
+        (["size", "mean"], ["key", "size", "val_mean"], "agg_0____size__"),
+        (["mean", "size"], ["key", "val_mean", "size"], "agg_2____size__"),
+    ],
+    ids=["size-first", "mean-first"],
+)
+def test_groupby_size_mixed_with_recipe(funcs, expected_cols, size_key):
+    """size combined with a recipe function compiles and names correctly.
+
+    Regression: after size became a single frame-level descriptor (registry
+    key ``(size, None)``), the post-agg projection looked up ``(size, col)``
+    and raised KeyError during compile.
+    """
+    lf = LF({"key": ["a", "b", "a"], "val": [1, 2, 3]})
+    result = lf.groupby("key").agg(funcs)
+
+    assert list(result.columns) == expected_cols
+    assert result.dtypes["size"] == wrap_arrow_dtype(pa.int64())
+    proj_op = result.data.op
+    assert isinstance(proj_op, LiteFrameProjection)
+    size_proj = next(p for p in proj_op.projections if p.name == "size")
+    # References the executor's frame-level size intermediate (one per group).
+    assert isinstance(size_proj.expr, LiteFrameColumn)
+    assert size_proj.expr.name == size_key
+
+
+# --- Recipe output dtype binding (int input -> float output) ---
+
+
+@pytest.mark.parametrize("grouped", [True, False], ids=["grouped", "whole-frame"])
+def test_mean_int_input_infers_float(grouped):
+    """mean over int input compiles to float64 output.
+
+    The agg post-projection (sum/count) had dtype=None before the projection
+    binding fix, so int/int division was planned as int instead of float.
+    """
+    data = {"key": ["a", "b", "a"], "val": [1, 2, 3]} if grouped else {"a": [1, 2, 3]}
+    target = "val" if grouped else "a"
+    lf = LF(data)
+    result = (lf.groupby("key") if grouped else lf).mean()
+
+    proj_op = result.data.op
+    assert isinstance(proj_op, LiteFrameProjection)
+    assert result.dtypes[target] == wrap_arrow_dtype(pa.float64())
+    # The recipe expression itself resolves to float64 (int/int division).
+    mean_proj = next(p for p in proj_op.projections if p.name == target)
+    assert mean_proj.expr.dtype == wrap_arrow_dtype(pa.float64())
+
+
+# --- Callable column naming ---
+
+
+def _named(name):
+    """Create a function with a specific __name__."""
+
+    def f(x):
+        return x.sum()
+
+    f.__name__ = name
+    return f
+
+
+class _CallableInstance:
+    """Callable instance without __name__ — resolves to class name."""
+
+    def __call__(self, x):
+        return x.sum()
+
+
+@pytest.mark.parametrize(
+    "funcs,expected_names",
+    [
+        # Single callable — no index
+        ([lambda x: x.sum()], ["<lambda>"]),
+        ([_named("my_sum")], ["my_sum"]),
+        ([_CallableInstance()], ["_CallableInstance"]),
+        # Two different-named callables — no index
+        ([_named("my_sum"), _named("my_mean")], ["my_sum", "my_mean"]),
+        # Two lambdas — indexed inside angle brackets
+        (
+            [lambda x: x.sum(), lambda x: x.mean()],
+            ["<lambda_0>", "<lambda_1>"],
+        ),
+        # Three lambdas
+        (
+            [lambda x: x.sum(), lambda x: x.mean(), lambda x: x.max()],
+            ["<lambda_0>", "<lambda_1>", "<lambda_2>"],
+        ),
+        # Two same-named functions — suffix index
+        ([_named("shared"), _named("shared")], ["shared_0", "shared_1"]),
+        # Two callable instances of same class — suffix index
+        (
+            [_CallableInstance(), _CallableInstance()],
+            ["_CallableInstance_0", "_CallableInstance_1"],
+        ),
+    ],
+    ids=[
+        "single-lambda",
+        "single-named",
+        "single-callable-instance",
+        "two-different-named",
+        "two-lambdas",
+        "three-lambdas",
+        "two-same-named",
+        "two-same-class-instances",
+    ],
+)
+def test_resolve_callable_names(funcs, expected_names):
+    """_resolve_callable_names disambiguates callables sharing the same name.
+
+    Single callable keeps its original name. Multiple callables with the
+    same name are numbered: angle-bracket names use inside-bracket index
+    (<lambda_0>), plain names use suffix (shared_0).
+    """
+    assert _resolve_callable_names(funcs) == expected_names
+
+
+@pytest.mark.parametrize(
+    "raw_func,expected_columns",
+    [
+        # Single callable — no suffix
+        ([lambda x: x.sum()], ["a", "b"]),
+        # Two named callables — {col}_{func} suffix
+        (
+            [_named("my_sum"), _named("my_mean")],
+            ["a_my_sum", "a_my_mean", "b_my_sum", "b_my_mean"],
+        ),
+        # Two lambdas — {col}_{<lambda_N>}
+        (
+            [lambda x: x.sum(), lambda x: x.mean()],
+            ["a_<lambda_0>", "a_<lambda_1>", "b_<lambda_0>", "b_<lambda_1>"],
+        ),
+        # String + single lambda — no index on lambda (no collision)
+        (["sum", lambda x: x.mean()], ["a_sum", "a_<lambda>", "b_sum", "b_<lambda>"]),
+    ],
+    ids=[
+        "single-callable-no-suffix",
+        "two-named-callables-suffixed",
+        "two-lambdas-indexed",
+        "string-plus-single-lambda",
+    ],
+)
+def test_infer_output_column_names_callables(raw_func, expected_columns):
+    """_infer_output_column_names produces {col}_{func} for multiple callables.
+
+    Single callable per column keeps the column name. Multiple callables
+    get the callable's resolved name as the func component.
+    """
+    func_dict, func_rename = _normalize_func(raw_func)
+    cols = _infer_output_column_names(func_dict, func_rename, ["a", "b"], None)
+    assert cols == expected_columns

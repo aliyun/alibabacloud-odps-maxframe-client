@@ -1,0 +1,89 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 11:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.sort.rst:2
+msgid "maxframe.liteframe.LiteFrame.sort"
+msgstr ""
+
+#: maxframe.liteframe.sort.sort.sort:1 of
+msgid "Sort the LiteFrame by the specified columns."
+msgstr "按指定列对 LiteFrame 进行排序。"
+
+#: maxframe.liteframe.sort.sort.sort of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.sort.sort.sort:3 of
+msgid "Column name(s) to sort by. If None, all columns are used."
+msgstr "用于排序的列名。如果为 None，则使用所有列。"
+
+#: maxframe.liteframe.sort.sort.sort:5 of
+msgid "Sort ascending vs descending. Specify list for multiple sort orders."
+msgstr "升序或降序排序。对于多个排序顺序，请指定列表。"
+
+#: maxframe.liteframe.sort.sort.sort:7 of
+msgid "Sort algorithm hint (Polars chooses its own algorithm)."
+msgstr "排序算法提示（Polars 选择自己的算法）。"
+
+#: maxframe.liteframe.sort.sort.sort:9 of
+msgid "Where to place null values in the sort order."
+msgstr "在排序顺序中放置空值的位置。"
+
+#: maxframe.liteframe.sort.sort.sort:11 of
+msgid "Parallel sort algorithm. Only \"PSRS\" is supported."
+msgstr "并行排序算法。仅支持 \"PSRS\"。"
+
+#: maxframe.liteframe.sort.sort.sort:13 of
+msgid "Sort algorithm for each PSRS stage."
+msgstr "每个 PSRS 阶段的排序算法。"
+
+#: maxframe.liteframe.sort.sort.sort of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.sort.sort.sort:16 of
+msgid "Sorted LiteFrame."
+msgstr "已排序的 LiteFrame。"
+
+#: maxframe.liteframe.sort.sort.sort of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.sort.sort.sort:21 of
+msgid ":py:obj:`drop_duplicates`"
+msgstr ""
+
+#: maxframe.liteframe.sort.sort.sort:22 of
+msgid "Return LiteFrame with duplicate rows removed."
+msgstr "返回去重后的 LiteFrame。"
+
+#: maxframe.liteframe.sort.sort.sort:24 of
+msgid ":py:obj:`groupby`"
+msgstr ""
+
+#: maxframe.liteframe.sort.sort.sort:25 of
+msgid "Group the LiteFrame by one or more columns."
+msgstr "按一个或多个列对 LiteFrame 进行分组。"
+
+#: maxframe.liteframe.sort.sort.sort:28 of
+msgid "示例"
+msgstr ""
+

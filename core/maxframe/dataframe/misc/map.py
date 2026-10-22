@@ -87,7 +87,7 @@ class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
                             .map(self.arg, na_action=self.na_action)
                             .dtype
                         )
-                except:  # noqa: E722  # nosec
+                except Exception:  # noqa: E722  # nosec
                     pass
             else:
                 if isinstance(self.arg, MutableMapping):

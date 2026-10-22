@@ -1,0 +1,132 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.apply_chunk.rst:2
+msgid "maxframe.liteframe.LiteFrame.apply\\_chunk"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:1 of
+msgid "Apply func per execution chunk. Row count may change."
+msgstr "按执行块应用函数。行数可能会改变。"
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:3 of
+msgid ""
+"Unlike ``transform`` / ``transform_chunk``, the row count of the output "
+"is allowed to differ from the input — the function is applied once per "
+"execution chunk and the results are concatenated.  Hidden columns are "
+"dropped from the input before invocation; select them first if needed."
+msgstr ""
+"与 ``transform`` / ``transform_chunk`` 不同，输出的行数可以与输入不同——"
+"函数在每个执行块上应用一次，然后将结果连接起来。隐藏列在调用前从输入中"
+"删除；如果需要，请先选择它们。"
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:8 of
+msgid ""
+"Function taking a DataFrame chunk and returning a DataFrame (or a tuple "
+"of DataFrames for multiple outputs).  If ``func`` is a class, it is "
+"instantiated once per chunk, ``__call__(batch, end=True)`` is invoked "
+"once with ``end=True`` (each call is a complete invocation that must "
+"flush its output), and ``close()`` (if defined) is always called at the "
+"end of the chunk."
+msgstr ""
+"接收 DataFrame 块并返回 DataFrame（或多个 DataFrame 元组用于多输出）的"
+"函数。如果 ``func`` 是一个类，则每个块实例化一次，``__call__(batch, end="
+"True)`` 被调用一次且 ``end=True``（每次调用都是必须刷新其输出的完整调用）"
+"，并且 ``close()``（如果定义了）总是在块结束时被调用。"
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:17 of
+msgid "Expected output dtypes."
+msgstr "期望的输出数据类型。"
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:19 of
+msgid "If True, skip dtype inference."
+msgstr "如果为 True，则跳过数据类型推断。"
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:21 of
+msgid "Frame type passed to ``func``."
+msgstr "传递给 ``func`` 的框架类型。"
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:23 of
+msgid "Extra positional arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外位置参数。"
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:25 of
+msgid "Extra keyword arguments forwarded to ``func``."
+msgstr "转发给 ``func`` 的额外关键字参数。"
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:27 of
+msgid ""
+"Lazy LiteFrame whose materialized output is the per-chunk concatenation "
+"of ``func`` results.  The row count may differ from the input.  Call "
+"``.execute()`` to materialize."
+msgstr ""
+"惰性 LiteFrame，其具体化输出是 ``func`` 结果的按块连接。行数可能与输入"
+"不同。调用 ``.execute()`` 来具体化。"
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:34 of
+msgid ":py:obj:`apply`"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:35 of
+msgid "Apply a function per column or per row."
+msgstr "按列或按行应用函数。"
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:37 of
+msgid ":py:obj:`transform_chunk`"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:38 of
+msgid "Transform per execution chunk."
+msgstr "按执行块转换。"
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:40 of
+msgid ":py:obj:`flat_apply`"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:41 of
+msgid "Apply a function per row, expanding to 0-N rows."
+msgstr "按行应用函数，扩展到 0-N 行。"
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:44 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:48 of
+msgid "Filter rows within each chunk (row count may change):"
+msgstr "过滤每个块中的行（行数可能会改变）："
+
+#: maxframe.liteframe.functional.apply_chunk.apply_chunk:57 of
+msgid "Produce multiple outputs by returning a tuple of DataFrames:"
+msgstr "通过返回 DataFrame 元组产生多个输出："
+
+

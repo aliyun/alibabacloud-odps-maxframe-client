@@ -1,0 +1,47 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.struct.dtypes.rst:2
+msgid "maxframe.liteframe.LiteFrame.struct.dtypes"
+msgstr ""
+
+#: ../../docstring maxframe.liteframe.LiteFrame.struct.dtypes:1 of
+msgid "Return the dtype object of each child field of the struct."
+msgstr "返回结构体每个子字段的dtype对象。"
+
+#: ../../docstring maxframe.liteframe.LiteFrame.struct.dtypes:3 of
+msgid ""
+"Returns a plain ``pandas.Series`` of dtype objects indexed by field names"
+" — direct metadata extraction, no LiteFrame operation."
+msgstr "返回一个简单的 ``pandas.Series``，其索引为字段名的dtype对象——直接元数据提取，无LiteFrame操作。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.struct.dtypes.rst
+msgid "返回"
+msgstr ""
+
+#: ../../docstring maxframe.liteframe.LiteFrame.struct.dtypes:6 of
+msgid "Series of dtype objects indexed by struct field names."
+msgstr "按结构体字段名索引的dtype对象Series。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.struct.dtypes.rst
+msgid "返回类型"
+msgstr ""
+

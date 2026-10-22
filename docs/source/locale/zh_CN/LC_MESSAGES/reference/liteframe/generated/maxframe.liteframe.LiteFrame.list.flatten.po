@@ -1,0 +1,52 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.list.flatten.rst:2
+msgid "maxframe.liteframe.LiteFrame.list.flatten"
+msgstr ""
+
+#: maxframe.liteframe.accessors.list_.accessor.ListAccessor.flatten:1 of
+msgid "Flatten a list column into one row per element."
+msgstr "将列表列展平为每个元素一行。"
+
+#: maxframe.liteframe.accessors.list_.accessor.ListAccessor.flatten:3 of
+msgid ""
+"Mirrors ``pandas.Series.list.flatten``: each element of a list becomes "
+"its own row.  Empty lists and missing values are dropped. The result "
+"keeps the column name and uses the list's value type."
+msgstr ""
+"镜像 ``pandas.Series.list.flatten``：列表的每个元素都成为自己的行。空列表"
+"和缺失值被丢弃。结果保留列名并使用列表的值类型。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.list.flatten.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.accessors.list_.accessor.ListAccessor.flatten:7 of
+msgid ""
+"Single-column LiteFrame with one row per list element, using the list's "
+"value dtype and keeping the original column name."
+msgstr "单列 LiteFrame，每个列表元素一行，使用列表的值数据类型并保留原始列名。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.list.flatten.rst
+msgid "返回类型"
+msgstr ""
+

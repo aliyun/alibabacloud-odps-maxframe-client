@@ -352,7 +352,7 @@ def _check_token_in_sql(token: str, sql: str) -> bool:
             if tk_info.type == tokenize.NAME:
                 names.add(tk_info.string)
         return token in names
-    except:  # pragma: no cover
+    except Exception:  # pragma: no cover
         return False
 
 

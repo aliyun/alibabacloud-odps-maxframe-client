@@ -19,8 +19,9 @@ import pyarrow as pa
 from maxframe.liteframe.arithmetic.core import (
     _build_fused_projection,
     _resolve_column_expr,
+    _resolve_named_expr,
 )
-from maxframe.liteframe.expressions import LiteFrameAstype, LiteFrameColumn, NamedExpr
+from maxframe.liteframe.expressions import LiteFrameAstype, NamedExpr
 from maxframe.liteframe.utils import normalize_col_name, validate_errors
 from maxframe.utils import wrap_arrow_dtype
 
@@ -28,6 +29,11 @@ try:
     from maxframe.lib.dtypes_extension import ArrowDtype
 except ImportError:  # pragma: no cover
     ArrowDtype = None
+
+try:
+    from maxframe.lib.dtypes_extension.blob import ExternalBlobDtype
+except ImportError:  # pragma: no cover
+    ExternalBlobDtype = None
 
 
 def _normalize_dtype(dtype):
@@ -38,9 +44,21 @@ def _normalize_dtype(dtype):
     # pandas StringDtype("pyarrow") — pass through unchanged
     if isinstance(dtype, pd.StringDtype) and dtype.storage == "pyarrow":
         return dtype
-    # Other pandas extension dtypes — pass through unchanged
+    # Other pandas extension dtypes (including ExternalBlobDtype) — pass through unchanged
     if isinstance(dtype, pd.api.extensions.ExtensionDtype):
         return dtype
+    # bytes type → ArrowDtype(pa.binary())
+    if dtype is bytes:
+        return wrap_arrow_dtype(pa.binary())
+    # String dtype specifications
+    if isinstance(dtype, str):
+        dtype_lower = dtype.lower()
+        if dtype_lower == "blob":
+            if ExternalBlobDtype is None:
+                raise ImportError("blob dtype requires maxframe blob extension")
+            return ExternalBlobDtype()
+        if dtype_lower == "binary":
+            return wrap_arrow_dtype(pa.binary())
     # Try converting numpy dtype or string to ArrowDtype
     try:
         if isinstance(dtype, np.dtype):
@@ -80,6 +98,10 @@ def astype(lf, dtype, errors="raise"):
     -------
     LiteFrame
         Casted LiteFrame.
+
+    See Also
+    --------
+    LiteFrame.eval : Evaluate a string expression to add columns.
     """
     validate_errors(errors)
     if errors == "ignore":
@@ -100,21 +122,6 @@ def astype(lf, dtype, errors="raise"):
     else:
         dtype_map = {col: _normalize_dtype(dtype) for col in lf.columns}
 
-    # Determine whether any range column is being cast. Range columns are
-    # virtual Int64; any cast (even to Int64) requires materialization
-    # because the projection generates pl.col(RANGE_COL_NAME).cast(...),
-    # which needs a physical column to reference.
-    materialize_range_cols = False
-    range_col_names = (
-        set(lf.frame_metadata.range_columns.keys())
-        if lf.frame_metadata and lf.frame_metadata.range_columns
-        else set()
-    )
-    for rc_name in range_col_names:
-        if rc_name in dtype_map:
-            materialize_range_cols = True
-            break
-
     projections = []
 
     for col_name in lf.columns:
@@ -130,13 +137,6 @@ def astype(lf, dtype, errors="raise"):
             )
             projections.append(NamedExpr(name=col_name, expr=expr))
         else:
-            # Column not in dtype_map, keep as-is
-            operand = _resolve_column_expr(lf, col_name, col_dtype)
-            if isinstance(operand, (NamedExpr, LiteFrameColumn)):
-                projections.append(operand)
-            else:
-                projections.append(NamedExpr(name=col_name, expr=operand))
-
-    return _build_fused_projection(
-        lf, projections, materialize_range_cols=materialize_range_cols
-    )
+            # Column not in dtype_map, keep as-is (preserve rename alias)
+            projections.append(_resolve_named_expr(lf, col_name, col_dtype))
+    return _build_fused_projection(lf, projections)

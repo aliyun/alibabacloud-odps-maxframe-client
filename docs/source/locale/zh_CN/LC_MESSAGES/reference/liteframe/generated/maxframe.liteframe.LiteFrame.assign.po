@@ -1,0 +1,83 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 15:05+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.assign.rst:2
+msgid "maxframe.liteframe.LiteFrame.assign"
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.assign:1 of
+msgid "Add new columns to LiteFrame."
+msgstr "向 LiteFrame 添加新列。"
+
+#: maxframe.liteframe.indexing.select.assign:3 of
+msgid ""
+"Existing columns whose names appear in *kwargs* are replaced in place "
+"(preserving their position); new columns are appended in insertion order."
+"  Each value may be a scalar, a callable receiving the frame, a "
+":class:`LiteFrameExpr`, or a single-column LiteFrame."
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.assign of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.assign:8 of
+msgid ""
+"Column assignments as ``name=value`` pairs.  Names are normalized and "
+"used as the output column names."
+msgstr "列赋值为 ``name=value`` 对。名称被标准化并用作输出列名。"
+
+#: maxframe.liteframe.indexing.select.assign of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.assign:11 of
+msgid "LiteFrame with the new or replaced columns.  Row order is preserved."
+msgstr "包含新列或替换列的 LiteFrame。行顺序得以保留。"
+
+#: maxframe.liteframe.indexing.select.assign of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.assign:17 of
+msgid ":py:obj:`LiteFrame.select`"
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.assign:18 of
+msgid "Explicit column selection."
+msgstr "显式列选择。"
+
+#: maxframe.liteframe.indexing.select.assign:20 of
+msgid ":py:obj:`LiteFrame.eval`"
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.assign:21 of
+msgid "Evaluate a string expression to add columns."
+msgstr "求值字符串表达式以添加列。"
+
+#: maxframe.liteframe.indexing.select.assign:24 of
+msgid "示例"
+msgstr ""
+
+#: maxframe.liteframe.indexing.select.assign:34 of
+msgid "Assign with a column expression:"
+msgstr "使用列表达式进行赋值："
+

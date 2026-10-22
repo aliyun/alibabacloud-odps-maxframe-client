@@ -1,0 +1,164 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.replace.rst:2
+msgid "maxframe.liteframe.LiteFrame.str.replace"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.replace:1
+msgid "Replace each occurrence of pattern/regex in the Series/Index."
+msgstr "替换 Series/Index 中模式/正则表达式的每次出现。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace:3
+msgid ""
+"Equivalent to :meth:`str.replace` or :func:`re.sub`, depending on the "
+"regex value."
+msgstr "等价于 :meth:`str.replace` 或 :func:`re.sub`，取决于 regex 值。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.replace:6
+msgid ""
+"String can be a character sequence or regular expression. Dictionary "
+"contains <key : value> pairs of strings to be replaced along with the "
+"updated value."
+msgstr "字符串可以是字符序列或正则表达式。字典包含要替换的字符串及其更新值的<键:值>对。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace:10
+msgid ""
+"Replacement string or a callable. The callable is passed the regex match "
+"object and must return a replacement string to be used. Must have a value"
+" of None if `pat` is a dict See :func:`re.sub`."
+msgstr "替换字符串或可调用对象。可调用对象接收正则匹配对象并必须返回要使用的替换字符串。如果`pat`是字典，则必须为None值，请参见:func:`re.sub`。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace:15
+msgid "Number of replacements to make from start."
+msgstr "从开始处进行替换的次数。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace:17
+msgid ""
+"Determines if replace is case sensitive:  - If True, case sensitive (the "
+"default if `pat` is a string) - Set to False for case insensitive - "
+"Cannot be set if `pat` is a compiled regex."
+msgstr ""
+"确定替换是否区分大小写： - 如果为 True，则区分大小写（如果 `pat` 是字符串"
+"，则为默认值） - 设置为 False 表示不区分大小写 - 如果 `pat` 是已编译的"
+"正则表达式，则无法设置。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace:23
+msgid ""
+"Regex module flags, e.g. re.IGNORECASE. Cannot be set if `pat` is a "
+"compiled regex."
+msgstr ""
+"正则表达式模块标志，例如 re.IGNORECASE。如果 `pat` 是已编译的正则表达式，"
+"则无法设置。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace:26
+msgid ""
+"Determines if the passed-in pattern is a regular expression:  - If True, "
+"assumes the passed-in pattern is a regular expression. - If False, treats"
+" the pattern as a literal string - Cannot be set to False if `pat` is a "
+"compiled regex or `repl` is   a callable."
+msgstr ""
+"确定传入的模式是否为正则表达式： - 如果为 True，假定传入的模式是"
+"正则表达式。 - 如果为 False，将模式视为字面字符串 - 如果 `pat` 是已编译的"
+"正则表达式或 `repl` 是可调用对象，则无法设置为 False。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.replace:34
+msgid ""
+"A copy of the object with all matching occurrences of `pat` replaced by "
+"`repl`."
+msgstr "一个副本，其中 `pat` 的所有匹配项都被 `repl` 替换。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.replace
+msgid "抛出"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.replace:38
+msgid ""
+"* if `regex` is False and `repl` is a callable or `pat` is a compiled"
+"       regex     * if `pat` is a compiled regex and `case` or `flags` is "
+"set     * if `pat` is a dictionary and `repl` is not None."
+msgstr "* 如果`regex`为False且`repl`是可调用对象或`pat`是已编译的正则表达式     * 如果`pat`是已编译的正则表达式且设置了`case`或`flags`     * 如果`pat`是字典且`repl`不为None。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace:38
+msgid ""
+"if `regex` is False and `repl` is a callable or `pat` is a compiled"
+"       regex     * if `pat` is a compiled regex and `case` or `flags` is "
+"set     * if `pat` is a dictionary and `repl` is not None."
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.replace:42
+msgid ":py:obj:`LiteFrame.str.replace`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.replace:43
+msgid "Method to replace occurrences of a substring with another substring."
+msgstr "将子字符串的出现替换为另一个子字符串的方法。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace:45
+msgid ":py:obj:`LiteFrame.str.extract`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.replace:46
+msgid "Extract substrings using a regular expression."
+msgstr "使用正则表达式提取子字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace:48
+msgid ":py:obj:`LiteFrame.str.findall`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.replace:49
+msgid "Find all occurrences of a pattern or regex in each string."
+msgstr "查找每个字符串中模式或正则表达式的所有出现。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace:51
+msgid ":py:obj:`LiteFrame.str.split`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.replace:52
+msgid "Split each string by a specified delimiter or pattern."
+msgstr "按指定分隔符或模式拆分每个字符串。"
+
+#: of pandas.core.strings.accessor.StringMethods.replace:55
+msgid "备注"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.replace:56
+msgid ""
+"When `pat` is a compiled regex, all flags should be included in the "
+"compiled regex. Use of `case`, `flags`, or `regex=False` with a compiled "
+"regex will raise an error."
+msgstr ""
+"当 `pat` 是已编译的正则表达式时，所有标志都应包含在已编译的正则表达式中。"
+"使用 `case`、`flags` 或 `regex=False` 与已编译的正则表达式一起使用会引发"
+"错误。"
+

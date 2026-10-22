@@ -1,0 +1,66 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.expanding.rst:2
+msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.expanding"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.expanding:1 of
+msgid "Provide expanding window calculations within each group."
+msgstr "提供每个组内的扩展窗口计算。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.expanding.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.expanding:3 of
+msgid "Minimum observations in the window to produce a value."
+msgstr "窗口中产生值所需的最小观测数。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.expanding:5 of
+msgid "Column(s) to aggregate. If None, all non-group-key columns."
+msgstr "要聚合的列。如果为None，则为所有非分组键列。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.expanding.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.expanding:8 of
+msgid "Intermediate object; call an aggregation method to produce a LiteFrame."
+msgstr "中间对象；调用聚合方法来生成LiteFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.expanding.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.expanding:13 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.expanding:15 of
+msgid ""
+"Grouped transforms hash-shuffle rows by group key, so the output row "
+"order follows reducer/hash-partition order and is **not** aligned with "
+"the input frame. Row count is preserved."
+msgstr ""
+"分组转换通过分组键对行进行哈希重排，因此输出行顺序遵循reducer/哈希分区"
+"顺序，并且与输入帧**不**对齐。行数得以保留。"
+

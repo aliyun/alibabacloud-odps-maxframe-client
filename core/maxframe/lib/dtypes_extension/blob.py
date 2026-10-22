@@ -28,6 +28,15 @@ from pandas.api.extensions import (
 
 from maxframe.lib.dtypes_extension.dtypes import ArrowDtype
 from maxframe.utils import tokenize
+from maxframe.utils.polars import (
+    PolarsObjectContainerType,
+    is_polars_object_container_type,
+)
+
+try:
+    import polars as pl
+except ImportError:
+    pl = None
 
 
 class ArrowBlobType(pa.ExtensionType):
@@ -140,6 +149,26 @@ class SolidBlob(AbstractExternalBlob):
 SolidBlob.register()
 
 
+def ensure_blob_value(v):
+    """Convert a single value to an AbstractExternalBlob or None.
+
+    - None → None
+    - AbstractExternalBlob → as-is
+    - str → SolidBlob(v.encode("utf-8"))
+    - bytes/bytearray → SolidBlob(bytes(v))
+    - else → SolidBlob(bytes(v))
+    """
+    if v is None:
+        return None
+    if isinstance(v, AbstractExternalBlob):
+        return v
+    if isinstance(v, str):
+        return SolidBlob(v.encode("utf-8"))
+    if isinstance(v, (bytes, bytearray)):
+        return SolidBlob(bytes(v))
+    return SolidBlob(bytes(v))
+
+
 def new_blob(content: Optional[bytes] = None):
     # todo this function currently maps directly to SolidBlob. It should
     #  provide appropriate instance base on running envs.
@@ -181,8 +210,15 @@ class ExternalBlobDtype(ExtensionDtype):
         return self.name
 
     def __from_arrow__(self, array):
+        # ``array`` is a pa.ExtensionArray whose storage is pa.binary(); null
+        # slots are Arrow ``None``.  ``blob_from_reference(None)`` would yield
+        # ``SolidBlob(None)`` (a non-null blob wrapping empty content), losing
+        # the null, so map null slots to ``None`` directly.
         return ExternalBlobExtensionArray(
-            [blob_from_reference(a) for a in array.to_pylist()]
+            [
+                blob_from_reference(a) if a is not None else None
+                for a in array.to_pylist()
+            ]
         )
 
 
@@ -312,14 +348,115 @@ class ExternalBlobExtensionArray(ExtensionArray):
     def __arrow_array__(self, type=None):
         return pa.ExtensionArray.from_storage(
             ArrowBlobType(),
-            pa.array([x.reference for x in self._data], type=pa.binary()),
+            pa.array(
+                [x.reference if x is not None else None for x in self._data],
+                type=pa.binary(),
+            ),
         )
 
     def astype(self, dtype, copy=True):
         if isinstance(dtype, ArrowDtype) and dtype.pyarrow_dtype == pa.binary():
-            blobs = [None] * len(self)
-            for i, blob in enumerate(self._data):
-                with blob.open("rb") as reader:
-                    blobs[i] = reader.read()
+            blobs = []
+            for blob in self._data:
+                if blob is None:
+                    blobs.append(None)
+                else:
+                    with blob.open("rb") as reader:
+                        blobs.append(reader.read())
             return pd.array(blobs, dtype=dtype)
         return super().astype(dtype, copy=copy)
+
+
+# ---------------------------------------------------------------------------
+# Polars object-container type for blob columns in LiteFrame
+# ---------------------------------------------------------------------------
+
+_BLOB_ARROW_TYPE_STR = ArrowBlobType.type_str
+
+
+def make_polars_blob_type():
+    """Construct the PolarsObjectContainerType instance for blob columns.
+
+    The metadata is the stringified Arrow type ("maxframe.blob") of the
+    AbstractExternalBlob objects stored in the column.
+    """
+    if PolarsObjectContainerType is None:
+        return None
+    return PolarsObjectContainerType(
+        "maxframe.object_container", pl.Object, _BLOB_ARROW_TYPE_STR
+    )
+
+
+def is_polars_blob_type(dtype):
+    """Check if a Polars dtype is a blob object-container column.
+
+    A blob column is an object-container extension whose metadata equals
+    the blob Arrow type string ("maxframe.blob").
+    """
+    if not is_polars_object_container_type(dtype):
+        return False
+    return dtype.ext_metadata() == _BLOB_ARROW_TYPE_STR
+
+
+# ---------------------------------------------------------------------------
+# Core-safe blob-aware pandas <--> polars converters
+# ---------------------------------------------------------------------------
+# These live here (in core/) so ``LiteFrame.to_pandas()`` and the type
+# inference mock builder can convert blob columns in a layering-safe
+# way.  The executor layer re-exports them for its own import path.
+
+
+def polars_to_pandas_with_blobs(pl_df):
+    """Convert a Polars DataFrame to pandas, handling blob columns.
+
+    Blob columns (``PolarsObjectContainerType`` carrying
+    ``AbstractExternalBlob`` objects) are wrapped in
+    ``ExternalBlobExtensionArray`` so callers receive proper blob dtype
+    values with the ``open()`` API.  Non-blob columns convert normally.
+    """
+    blob_cols = [c for c in pl_df.columns if is_polars_blob_type(pl_df[c].dtype)]
+    if not blob_cols:
+        return pl_df.to_pandas(use_pyarrow_extension_array=True)
+
+    non_blob_cols = [c for c in pl_df.columns if c not in blob_cols]
+    if non_blob_cols:
+        pdf = pl_df.select(non_blob_cols).to_pandas(use_pyarrow_extension_array=True)
+    else:
+        pdf = pd.DataFrame(index=range(len(pl_df)))
+
+    for col in blob_cols:
+        blobs = pl_df[col].to_list()
+        pdf[col] = ExternalBlobExtensionArray(blobs)
+
+    return pdf[list(pl_df.columns)]
+
+
+def pandas_to_polars_with_blobs(pdf):
+    """Convert a pandas DataFrame to Polars, handling blob columns.
+
+    ``ExternalBlobExtensionArray`` columns become
+    ``PolarsObjectContainerType`` Series (``pl.from_pandas`` cannot handle
+    them directly); other columns convert normally.
+    """
+    needs_conversion = any(isinstance(dt, ExternalBlobDtype) for dt in pdf.dtypes)
+    if not needs_conversion:
+        return pl.from_pandas(pdf)
+
+    blob_dtype = make_polars_blob_type()
+    blob_series = {}
+    for col in pdf.columns:
+        if isinstance(pdf[col].dtype, ExternalBlobDtype):
+            objects = pdf[col].values._data
+            blob_series[col] = pl.Series(col, list(objects), dtype=blob_dtype)
+
+    non_blob_col_names = [c for c in pdf.columns if c not in blob_series]
+    non_blob_pdf = pdf[non_blob_col_names] if non_blob_col_names else None
+    if non_blob_pdf is not None and len(non_blob_pdf.columns) > 0:
+        result = pl.from_pandas(non_blob_pdf)
+    else:
+        result = pl.DataFrame()
+
+    for name, series in blob_series.items():
+        result = result.with_columns(series)
+
+    return result.select(list(pdf.columns))

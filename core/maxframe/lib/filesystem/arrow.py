@@ -22,11 +22,16 @@ import pyarrow as pa
 from pyarrow.fs import FileInfo, FileSelector
 from pyarrow.fs import FileSystem as ArrowFileSystem
 from pyarrow.fs import FileType
-from pyarrow.fs import HadoopFileSystem as ArrowHadoopFileSystem
 from pyarrow.fs import LocalFileSystem as ArrowLocalFileSystem
 
+from maxframe.lib.filesystem._glob import FileSystemGlob
 from maxframe.lib.filesystem.core import FileSystem, path_type
 from maxframe.utils import implements, stringify_path
+
+try:
+    from pyarrow.fs import HadoopFileSystem as ArrowHadoopFileSystem
+except ImportError:
+    ArrowHadoopFileSystem = None
 
 __all__ = ("ArrowBasedLocalFileSystem", "HadoopFileSystem")
 
@@ -182,8 +187,6 @@ class ArrowBasedFileSystem(FileSystem):
 
     @implements(FileSystem.glob)
     def glob(self, path: path_type, recursive: bool = False) -> List[path_type]:
-        from maxframe.lib.filesystem._glob import FileSystemGlob
-
         path = self._process_path(path)
         return FileSystemGlob(self).glob(path, recursive=recursive)
 
@@ -218,6 +221,8 @@ class HadoopFileSystem(ArrowBasedFileSystem):
                 stdout=subprocess.PIPE,
             )
             os.environ["CLASSPATH"] = classpath_proc.stdout.decode().strip()
+        if ArrowHadoopFileSystem is None:  # pragma: no cover
+            raise ImportError("arrow.fs.HadoopFileSystem is not available")
         arrow_fs = ArrowHadoopFileSystem(
             host=host,
             port=port,

@@ -79,7 +79,7 @@ class DataFrameCartesianChunk(DataFrameOperator, DataFrameOperatorMixin):
         try:
             with np.errstate(all="ignore"), quiet_stdio():
                 obj = self.func(test_left, test_right, *self.args, **self.kwargs)
-        except:  # noqa: E722  # nosec  # pylint: disable=bare-except
+        except Exception:  # noqa: E722  # nosec  # pylint: disable=bare-except
             if output_type == OutputType.series:
                 obj = pd.Series([], dtype=np.dtype(object))
             elif output_type == OutputType.dataframe and dtypes is not None:

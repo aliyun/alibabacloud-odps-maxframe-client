@@ -30,7 +30,7 @@ def create_volume(request, oss_config):
     def create_parted_volume():
         try:
             odps_entry.delete_volume(test_vol_name)
-        except:
+        except Exception:
             pass
         try:
             odps_entry.create_parted_volume(test_vol_name)
@@ -38,7 +38,7 @@ def create_volume(request, oss_config):
         finally:
             try:
                 odps_entry.delete_volume(test_vol_name)
-            except BaseException:
+            except Exception:
                 pass
 
     if request.param == "parted":

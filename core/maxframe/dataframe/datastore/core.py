@@ -86,3 +86,7 @@ class LakeDataStore(DataFrameDataStore):
     partition_cols = ListField("partition_cols", default=None)
     storage_options = DictField("storage_options", default=None)
     write_stage = StringField("write_stage", default=None)
+
+    def __init__(self, *args, output_types=None, **kwargs):
+        kwargs["_output_types"] = kwargs.get("_output_types") or output_types
+        super().__init__(*args, **kwargs)

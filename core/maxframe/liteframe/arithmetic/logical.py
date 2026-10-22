@@ -23,43 +23,30 @@ from maxframe.liteframe.arithmetic.core import (
 from maxframe.liteframe.core import LITEFRAME_TYPE
 from maxframe.liteframe.expressions import (
     LiteFrameAnd,
-    LiteFrameEq,
     LiteFrameExpr,
-    LiteFrameGe,
-    LiteFrameGt,
     LiteFrameInvert,
-    LiteFrameLe,
-    LiteFrameLt,
-    LiteFrameNe,
+    LiteFrameLogicalNot,
     LiteFrameOr,
     LiteFrameXor,
     NamedExpr,
     SourceCompatibilityError,
+    is_always_boolean_expr,
 )
 from maxframe.liteframe.operators.project import LiteFrameProjection
 from maxframe.utils import wrap_arrow_dtype
 
-# Expression types that produce boolean results
-_BOOLEAN_EXPR_TYPES = (
-    LiteFrameEq,
-    LiteFrameNe,
-    LiteFrameLt,
-    LiteFrameLe,
-    LiteFrameGt,
-    LiteFrameGe,
-    LiteFrameInvert,
-    LiteFrameAnd,
-    LiteFrameOr,
-)
-
 
 def _is_boolean_expr(expr):
-    """Check if an expression tree produces a boolean result."""
-    if isinstance(expr, _BOOLEAN_EXPR_TYPES):
-        return True
+    """Check if an expression tree produces a boolean result.
+
+    ``LiteFrameInvert`` (``~``) is accepted unconditionally here: this
+    helper gates cross-column ``&``/``|`` fusion, where a ``~bool_col``
+    operand is a valid boolean input. (Dtype-conditional handling of
+    ``Invert`` for filter predicates lives in ``indexing/getitem.py``.)
+    """
     if isinstance(expr, NamedExpr):
         return _is_boolean_expr(expr.expr)
-    return False
+    return is_always_boolean_expr(expr) or isinstance(expr, LiteFrameInvert)
 
 
 def _try_cross_column_logical(lf, other, expr_class):
@@ -131,6 +118,29 @@ def _try_cross_column_logical(lf, other, expr_class):
 
 
 def and_(lf, other):
+    """Element-wise bitwise AND.
+
+    Parameters
+    ----------
+    other : scalar, LiteFrame, or LiteFrame column expression
+        Value or LiteFrame to AND with.
+
+    Returns
+    -------
+    LiteFrame
+        Lazy LiteFrame with element-wise bitwise AND results.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'a': [0b1100, 0b1010, 0b0011]})
+    >>> result = lf & 0b0110
+    >>> result.execute()
+          a
+    0     4
+    1     2
+    2     2
+    """
     result = _try_cross_column_logical(lf, other, LiteFrameAnd)
     if result is not None:
         return result
@@ -138,6 +148,29 @@ def and_(lf, other):
 
 
 def or_(lf, other):
+    """Element-wise bitwise OR.
+
+    Parameters
+    ----------
+    other : scalar, LiteFrame, or LiteFrame column expression
+        Value or LiteFrame to OR with.
+
+    Returns
+    -------
+    LiteFrame
+        Lazy LiteFrame with element-wise bitwise OR results.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'a': [0b1100, 0b1010, 0b0011]})
+    >>> result = lf | 0b0110
+    >>> result.execute()
+          a
+    0    14
+    1    14
+    2     7
+    """
     result = _try_cross_column_logical(lf, other, LiteFrameOr)
     if result is not None:
         return result
@@ -145,8 +178,60 @@ def or_(lf, other):
 
 
 def xor(lf, other):
+    """Element-wise bitwise XOR.
+
+    Parameters
+    ----------
+    other : scalar, LiteFrame, or LiteFrame column expression
+        Value or LiteFrame to XOR with.
+
+    Returns
+    -------
+    LiteFrame
+        Lazy LiteFrame with element-wise bitwise XOR results.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'a': [0b1100, 0b1010, 0b0011]})
+    >>> result = lf ^ 0b0110
+    >>> result.execute()
+          a
+    0    10
+    1    12
+    2     5
+    """
     return _build_binary_projection(lf, LiteFrameXor, other)
 
 
 def invert(lf):
+    """Element-wise bitwise NOT (inversion).
+
+    Returns
+    -------
+    LiteFrame
+        Lazy LiteFrame with inverted bit values.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'a': [0b1100, 0b1010, 0b0011]}, dtype='int8')
+    >>> result = ~lf
+    >>> result.execute()
+         a
+    0  -13
+    1  -11
+    2   -4
+    """
     return _build_unary_projection(lf, LiteFrameInvert)
+
+
+def logical_not(lf):
+    """Logical NOT for ``np.logical_not``; always yields a boolean result.
+
+    Unlike :func:`invert` (the ``~`` operator, dtype-aware bitwise NOT),
+    NumPy's ``logical_not`` must return booleans for both integer and
+    boolean inputs, so it builds a :class:`LiteFrameLogicalNot` projection
+    whose result dtype is forced to ``bool``.
+    """
+    return _build_unary_projection(lf, LiteFrameLogicalNot)

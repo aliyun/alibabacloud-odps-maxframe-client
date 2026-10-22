@@ -1,0 +1,73 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.dt.total_seconds.rst:2
+msgid "maxframe.liteframe.LiteFrame.dt.total_seconds"
+msgstr ""
+
+#: of pandas.core.arrays.timedeltas.TimedeltaArray.total_seconds:1
+msgid "Return total duration of each element expressed in seconds."
+msgstr "返回每个元素以秒表示的总持续时间。"
+
+#: of pandas.core.arrays.timedeltas.TimedeltaArray.total_seconds:3
+msgid ""
+"This method is available directly on TimedeltaArray, TimedeltaIndex and "
+"on Series containing timedelta values under the ``.dt`` namespace."
+msgstr ""
+"此方法可直接在 TimedeltaArray、TimedeltaIndex 以及包含 timedelta 值的 "
+"Series 上使用，在 ``.dt`` 命名空间下。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.dt.total_seconds.rst
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.arrays.timedeltas.TimedeltaArray.total_seconds:6
+msgid ""
+"When the calling object is a TimedeltaArray, the return type is ndarray."
+"  When the calling object is a TimedeltaIndex, the return type is an "
+"Index with a float64 dtype. When the calling object is a Series, the "
+"return type is Series of type `float64` whose index is the same as the "
+"original."
+msgstr ""
+"当调用对象是 TimedeltaArray 时，返回类型是 ndarray。当调用对象是 "
+"TimedeltaIndex 时，返回类型是具有 float64 dtype 的 Index。当调用对象是 "
+"Series 时，返回类型是 `float64` 类型的 Series，其索引与原始 Series 相同。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.dt.total_seconds.rst
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.arrays.timedeltas.TimedeltaArray.total_seconds:15
+msgid ":py:obj:`datetime.timedelta.total_seconds`"
+msgstr ""
+
+#: of pandas.core.arrays.timedeltas.TimedeltaArray.total_seconds:16
+msgid "Standard library version of this method."
+msgstr "此方法的标准库版本。"
+
+#: of pandas.core.arrays.timedeltas.TimedeltaArray.total_seconds:18
+msgid ":py:obj:`TimedeltaIndex.components`"
+msgstr ""
+
+#: of pandas.core.arrays.timedeltas.TimedeltaArray.total_seconds:19
+msgid "Return a DataFrame with components of each Timedelta."
+msgstr "返回一个包含每个 Timedelta 组件的 DataFrame。"
+

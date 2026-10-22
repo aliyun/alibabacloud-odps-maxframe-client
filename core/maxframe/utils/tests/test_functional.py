@@ -16,9 +16,11 @@ import warnings
 from functools import partial
 
 import maxframe.dataframe as md
+from maxframe.core.context import get_context, reset_context
 from maxframe.utils.functional import (
     check_closure_for_entities,
     deprecate_positional_args,
+    optional_context,
 )
 
 
@@ -163,3 +165,23 @@ def test_check_closure_integration():
         check_closure_for_entities(func_with_closure, "apply")
         assert len(w) == 1
         assert "apply" in str(w[0].message)
+
+
+def test_optional_context():
+    class _Recorder:
+        entered = exited = False
+
+        def __enter__(self):
+            self.entered = True
+
+        def __exit__(self, *_):
+            self.exited = True
+
+    reset_context()
+    with optional_context(None):
+        assert get_context() is None
+
+    recorder = _Recorder()
+    with optional_context(recorder):
+        assert recorder.entered and not recorder.exited
+    assert recorder.exited

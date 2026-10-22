@@ -1,0 +1,1031 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:46+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/accessors.rst:4
+msgid "Accessors"
+msgstr "访问器"
+
+#: ../../source/reference/liteframe/accessors.rst:7
+msgid ""
+"LiteFrame provides dtype-specific methods under various accessors. These "
+"are separate namespaces within :class:`LiteFrame` that only apply to "
+"specific data types."
+msgstr ""
+"LiteFrame 在各种访问器下提供特定数据类型的方法。这些是 :class:`LiteFrame`"
+" 内的独立命名空间，仅适用于特定数据类型。"
+
+#: ../../source/reference/liteframe/accessors.rst:12
+msgid "Data Type"
+msgstr "数据类型"
+
+#: ../../source/reference/liteframe/accessors.rst:12
+msgid "Accessor"
+msgstr "访问器"
+
+#: ../../source/reference/liteframe/accessors.rst:14
+msgid "Datetime, Timedelta"
+msgstr "日期时间、时间差"
+
+#: ../../source/reference/liteframe/accessors.rst:14
+msgid ":ref:`dt <generated.liteframe.dt>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:15
+msgid "String"
+msgstr "字符串"
+
+#: ../../source/reference/liteframe/accessors.rst:15
+msgid ":ref:`str <generated.liteframe.str>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:16
+msgid "List"
+msgstr "列表"
+
+#: ../../source/reference/liteframe/accessors.rst:16
+msgid ":ref:`list <generated.liteframe.list>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:17
+msgid "Dict"
+msgstr "字典"
+
+#: ../../source/reference/liteframe/accessors.rst:17
+msgid ":ref:`dict <generated.liteframe.dict>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:18
+msgid "Struct"
+msgstr "结构体"
+
+#: ../../source/reference/liteframe/accessors.rst:18
+msgid ":ref:`struct <generated.liteframe.struct>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:24
+msgid "String handling"
+msgstr "字符串处理"
+
+#: ../../source/reference/liteframe/accessors.rst:26
+msgid ""
+"``LiteFrame.str`` can be used to access the values of the columns as "
+"strings and apply several methods to it. These can be accessed like "
+"``LiteFrame.str.<function/property>``."
+msgstr ""
+"``LiteFrame.str`` 可用于将列的值作为字符串进行访问并对它们应用多种方法。"
+"这些可以通过 ``LiteFrame.str.<function/property>`` 这样的方式来访问。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.capitalize "
+"<maxframe.liteframe.LiteFrame.str.capitalize>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Convert strings in the Series/Index to be capitalized."
+msgstr "将 Series/Index 中的字符串转换为首字母大写。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.center "
+"<maxframe.liteframe.LiteFrame.str.center>`\\ \\(width\\[\\, "
+"fillchar\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Pad left and right side of strings in the Series/Index."
+msgstr "填充 Series/Index 中字符串的左侧和右侧。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.contains "
+"<maxframe.liteframe.LiteFrame.str.contains>`\\ \\(pat\\, case\\, "
+"flags\\[\\, na\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+"Test if pattern or regex is contained within a string of a Series or "
+"Index."
+msgstr "测试 Series 或 Index 中的字符串是否包含指定模式或正则表达式。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.count <maxframe.liteframe.LiteFrame.str.count>`\\ "
+"\\(pat\\[\\, flags\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Count occurrences of pattern in each string of the Series/Index."
+msgstr "计算 Series/Index 中每个字符串中模式出现的次数。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.endswith "
+"<maxframe.liteframe.LiteFrame.str.endswith>`\\ \\(pat\\, ...\\]\\, na\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Test if the end of each string element matches a pattern."
+msgstr "测试每个字符串元素的末尾是否匹配指定模式。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.extract "
+"<maxframe.liteframe.LiteFrame.str.extract>`\\ \\(pat\\[\\, flags\\, "
+"expand\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Extract capture groups in the regex `pat` as columns in a DataFrame."
+msgstr "将正则表达式 `pat` 中的捕获组提取为 DataFrame 中的列。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.find <maxframe.liteframe.LiteFrame.str.find>`\\ "
+"\\(sub\\[\\, start\\, end\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Return lowest indexes in each strings in the Series/Index."
+msgstr "返回 Series/Index 中每个字符串中的最小索引。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.fullmatch "
+"<maxframe.liteframe.LiteFrame.str.fullmatch>`\\ \\(pat\\, case\\, "
+"flags\\[\\, na\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Determine if each string entirely matches a regular expression."
+msgstr "确定每个字符串是否完全匹配正则表达式。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.isalnum "
+"<maxframe.liteframe.LiteFrame.str.isalnum>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Check whether all characters in each string are alphanumeric."
+msgstr "检查每个字符串中的所有字符是否都是字母数字。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.isalpha "
+"<maxframe.liteframe.LiteFrame.str.isalpha>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Check whether all characters in each string are alphabetic."
+msgstr "检查每个字符串中的所有字符是否都是字母。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.isdecimal "
+"<maxframe.liteframe.LiteFrame.str.isdecimal>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Check whether all characters in each string are decimal."
+msgstr "检查每个字符串中的所有字符是否都是十进制数。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.isdigit "
+"<maxframe.liteframe.LiteFrame.str.isdigit>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Check whether all characters in each string are digits."
+msgstr "检查每个字符串中的所有字符是否都是数字。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.islower "
+"<maxframe.liteframe.LiteFrame.str.islower>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Check whether all characters in each string are lowercase."
+msgstr "检查每个字符串中的所有字符是否都是小写字母。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.isnumeric "
+"<maxframe.liteframe.LiteFrame.str.isnumeric>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Check whether all characters in each string are numeric."
+msgstr "检查每个字符串中的所有字符是否都是数值。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.isspace "
+"<maxframe.liteframe.LiteFrame.str.isspace>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Check whether all characters in each string are whitespace."
+msgstr "检查每个字符串中的所有字符是否都是空白字符。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.istitle "
+"<maxframe.liteframe.LiteFrame.str.istitle>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Check whether all characters in each string are titlecase."
+msgstr "检查每个字符串中的所有字符是否都是标题大小写。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.isupper "
+"<maxframe.liteframe.LiteFrame.str.isupper>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Check whether all characters in each string are uppercase."
+msgstr "检查每个字符串中的所有字符是否都是大写。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.len <maxframe.liteframe.LiteFrame.str.len>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Compute the length of each element in the Series/Index."
+msgstr "计算 Series/Index 中每个元素的长度。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.ljust <maxframe.liteframe.LiteFrame.str.ljust>`\\ "
+"\\(width\\[\\, fillchar\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Pad right side of strings in the Series/Index."
+msgstr "填充 Series/Index 中字符串的右侧。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.lower <maxframe.liteframe.LiteFrame.str.lower>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Convert strings in the Series/Index to lowercase."
+msgstr "将 Series/Index 中的字符串转换为小写。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.lstrip "
+"<maxframe.liteframe.LiteFrame.str.lstrip>`\\ \\(\\[to\\_strip\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Remove leading characters."
+msgstr "移除前导字符。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.match <maxframe.liteframe.LiteFrame.str.match>`\\ "
+"\\(pat\\, case\\, flags\\[\\, na\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Determine if each string starts with a match of a regular expression."
+msgstr "确定每个字符串是否以正则表达式的匹配开始。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.pad <maxframe.liteframe.LiteFrame.str.pad>`\\ "
+"\\(width\\[\\, side\\, fillchar\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Pad strings in the Series/Index up to width."
+msgstr "将 Series/Index 中的字符串填充到指定宽度。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.partition "
+"<maxframe.liteframe.LiteFrame.str.partition>`\\ \\(\\[sep\\, expand\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Split the string at the first occurrence of `sep`."
+msgstr "在第一个 `sep` 出现处分割字符串。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.removeprefix "
+"<maxframe.liteframe.LiteFrame.str.removeprefix>`\\ \\(prefix\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Remove a prefix from an object series."
+msgstr "从对象系列中移除前缀。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.removesuffix "
+"<maxframe.liteframe.LiteFrame.str.removesuffix>`\\ \\(suffix\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Remove a suffix from an object series."
+msgstr "从对象系列中移除后缀。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.repeat "
+"<maxframe.liteframe.LiteFrame.str.repeat>`\\ \\(repeats\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Duplicate each string in the Series or Index."
+msgstr "复制 Series 或 Index 中的每个字符串。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.replace "
+"<maxframe.liteframe.LiteFrame.str.replace>`\\ \\(pat\\[\\, repl\\, n\\, "
+"case\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Replace each occurrence of pattern/regex in the Series/Index."
+msgstr "替换 Series/Index 中模式/正则表达式的每次出现。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.rjust <maxframe.liteframe.LiteFrame.str.rjust>`\\ "
+"\\(width\\[\\, fillchar\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Pad left side of strings in the Series/Index."
+msgstr "填充 Series/Index 中字符串的左侧。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.rpartition "
+"<maxframe.liteframe.LiteFrame.str.rpartition>`\\ \\(\\[sep\\, "
+"expand\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Split the string at the last occurrence of `sep`."
+msgstr "在最后一个 `sep` 出现处分割字符串。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.rstrip "
+"<maxframe.liteframe.LiteFrame.str.rstrip>`\\ \\(\\[to\\_strip\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Remove trailing characters."
+msgstr "移除尾随字符。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.rsplit "
+"<maxframe.liteframe.LiteFrame.str.rsplit>`\\ \\(\\[pat\\, n\\, "
+"expand\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Split strings around given separator/delimiter."
+msgstr "围绕给定分隔符/定界符分割字符串。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.slice <maxframe.liteframe.LiteFrame.str.slice>`\\ "
+"\\(\\[start\\, stop\\, step\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Slice substrings from each element in the Series or Index."
+msgstr "从 Series 或 Index 中的每个元素切片子字符串。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.split <maxframe.liteframe.LiteFrame.str.split>`\\ "
+"\\(\\[pat\\, n\\, expand\\, regex\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.startswith "
+"<maxframe.liteframe.LiteFrame.str.startswith>`\\ \\(pat\\, ...\\]\\, "
+"na\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Test if the start of each string element matches a pattern."
+msgstr "测试每个字符串元素的开头是否匹配某种模式。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.strip <maxframe.liteframe.LiteFrame.str.strip>`\\ "
+"\\(\\[to\\_strip\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Remove leading and trailing characters."
+msgstr "移除前导和尾随字符。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.title <maxframe.liteframe.LiteFrame.str.title>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Convert strings in the Series/Index to titlecase."
+msgstr "将 Series/Index 中的字符串转换为标题大小写。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.upper <maxframe.liteframe.LiteFrame.str.upper>`\\ "
+"\\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Convert strings in the Series/Index to uppercase."
+msgstr "将 Series/Index 中的字符串转换为大写。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.zfill <maxframe.liteframe.LiteFrame.str.zfill>`\\ "
+"\\(width\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Pad strings in the Series/Index by prepending '0' characters."
+msgstr "通过前置 '0' 字符来填充 Series/Index 中的字符串。"
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.str.normalize "
+"<maxframe.liteframe.LiteFrame.str.normalize>`\\ \\(form\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:74:<autosummary>:1
+msgid "Return the Unicode normal form for the strings in the Series/Index."
+msgstr "返回 Series/Index 中字符串的 Unicode 标准形式。"
+
+#: ../../source/reference/liteframe/accessors.rst:78
+msgid "Datetimelike handling"
+msgstr "类日期时间处理"
+
+#: ../../source/reference/liteframe/accessors.rst:80
+msgid ""
+"``LiteFrame.dt`` can be used to access the values of the columns as "
+"datetimelike and return several properties. These can be accessed like "
+"``LiteFrame.dt.<property>``."
+msgstr ""
+"``LiteFrame.dt`` 可用于将列的值作为类日期时间访问并返回多个属性。这些属性"
+"可以通过 ``LiteFrame.dt.<property>`` 这种方式访问。"
+
+#: ../../source/reference/liteframe/accessors.rst:85
+msgid "Datetime properties"
+msgstr "日期时间属性"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ":py:obj:`LiteFrame.dt.date <maxframe.liteframe.LiteFrame.dt.date>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "Returns numpy array of python :class:`datetime.date` objects."
+msgstr "返回包含 python :class:`datetime.date` 对象的 numpy 数组。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ":py:obj:`LiteFrame.dt.time <maxframe.liteframe.LiteFrame.dt.time>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "Returns numpy array of :class:`datetime.time` objects."
+msgstr "返回包含 :class:`datetime.time` 对象的 numpy 数组。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ":py:obj:`LiteFrame.dt.year <maxframe.liteframe.LiteFrame.dt.year>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "The year of the datetime."
+msgstr "datetime 的年份。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ":py:obj:`LiteFrame.dt.month <maxframe.liteframe.LiteFrame.dt.month>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "The month as January=1, December=12."
+msgstr "月份，一月=1，十二月=12。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ":py:obj:`LiteFrame.dt.day <maxframe.liteframe.LiteFrame.dt.day>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "The day of the datetime."
+msgstr "datetime 的日期。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ":py:obj:`LiteFrame.dt.hour <maxframe.liteframe.LiteFrame.dt.hour>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "The hours of the datetime."
+msgstr "datetime 的小时。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ":py:obj:`LiteFrame.dt.minute <maxframe.liteframe.LiteFrame.dt.minute>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "The minutes of the datetime."
+msgstr "datetime 的分钟。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ":py:obj:`LiteFrame.dt.second <maxframe.liteframe.LiteFrame.dt.second>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "The seconds of the datetime."
+msgstr "datetime 的秒数。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.microsecond "
+"<maxframe.liteframe.LiteFrame.dt.microsecond>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "The microseconds of the datetime."
+msgstr "datetime 的微秒。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.nanosecond "
+"<maxframe.liteframe.LiteFrame.dt.nanosecond>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "The nanoseconds of the datetime."
+msgstr "datetime 的纳秒。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.dayofweek "
+"<maxframe.liteframe.LiteFrame.dt.dayofweek>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "The day of the week with Monday=0, Sunday=6."
+msgstr "星期几，周一=0，周日=6。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.dayofyear "
+"<maxframe.liteframe.LiteFrame.dt.dayofyear>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "The ordinal day of the year."
+msgstr "一年中的第几天。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.weekofyear "
+"<maxframe.liteframe.LiteFrame.dt.weekofyear>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "The week ordinal of the year."
+msgstr "一年中的第几周。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ":py:obj:`LiteFrame.dt.quarter <maxframe.liteframe.LiteFrame.dt.quarter>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "The quarter of the date."
+msgstr "日期的季度。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.days_in_month "
+"<maxframe.liteframe.LiteFrame.dt.days_in_month>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "The number of days in the month."
+msgstr "月份的天数。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.daysinmonth "
+"<maxframe.liteframe.LiteFrame.dt.daysinmonth>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.is_month_start "
+"<maxframe.liteframe.LiteFrame.dt.is_month_start>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "Indicates whether the date is the first day of the month."
+msgstr "指示日期是否为该月的第一天。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.is_month_end "
+"<maxframe.liteframe.LiteFrame.dt.is_month_end>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "Indicates whether the date is the last day of the month."
+msgstr "指示日期是否为该月的最后一天。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.is_quarter_start "
+"<maxframe.liteframe.LiteFrame.dt.is_quarter_start>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "Indicator for whether the date is the first day of a quarter."
+msgstr "指示日期是否为季度的第一天。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.is_quarter_end "
+"<maxframe.liteframe.LiteFrame.dt.is_quarter_end>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "Indicator for whether the date is the last day of a quarter."
+msgstr "指示日期是否为季度的最后一天。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.is_year_start "
+"<maxframe.liteframe.LiteFrame.dt.is_year_start>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "Indicate whether the date is the first day of a year."
+msgstr "指示日期是否为该年的第一天。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.is_year_end "
+"<maxframe.liteframe.LiteFrame.dt.is_year_end>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "Indicate whether the date is the last day of the year."
+msgstr "指示日期是否为该年的最后一天。"
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.is_leap_year "
+"<maxframe.liteframe.LiteFrame.dt.is_leap_year>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:114:<autosummary>:1
+msgid "Boolean indicator if the date belongs to a leap year."
+msgstr "布尔值指示器，表示日期是否属于闰年。"
+
+#: ../../source/reference/liteframe/accessors.rst:116
+msgid "Timedelta properties"
+msgstr "时间差属性"
+
+#: ../../source/reference/liteframe/accessors.rst:127:<autosummary>:1
+msgid ":py:obj:`LiteFrame.dt.days <maxframe.liteframe.LiteFrame.dt.days>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:127:<autosummary>:1
+msgid "Number of days for each element."
+msgstr "每个元素的天数。"
+
+#: ../../source/reference/liteframe/accessors.rst:127:<autosummary>:1
+msgid ":py:obj:`LiteFrame.dt.seconds <maxframe.liteframe.LiteFrame.dt.seconds>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:127:<autosummary>:1
+msgid "Number of seconds (>= 0 and less than 1 day) for each element."
+msgstr "每个元素的秒数（>= 0 且小于 1 天）。"
+
+#: ../../source/reference/liteframe/accessors.rst:127:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.microseconds "
+"<maxframe.liteframe.LiteFrame.dt.microseconds>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:127:<autosummary>:1
+msgid "Number of microseconds (>= 0 and less than 1 second) for each element."
+msgstr "每个元素的微秒数（>= 0 且小于 1 秒）。"
+
+#: ../../source/reference/liteframe/accessors.rst:127:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.nanoseconds "
+"<maxframe.liteframe.LiteFrame.dt.nanoseconds>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:127:<autosummary>:1
+msgid "Number of nanoseconds (>= 0 and less than 1 microsecond) for each element."
+msgstr "每个元素的纳秒数（>= 0 且小于 1 微秒）。"
+
+#: ../../source/reference/liteframe/accessors.rst:127:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.components "
+"<maxframe.liteframe.LiteFrame.dt.components>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:127:<autosummary>:1
+msgid "Return a Dataframe of the components of the Timedeltas."
+msgstr "返回 Timedelta 组件的 DataFrame。"
+
+#: ../../source/reference/liteframe/accessors.rst:129
+msgid "Datetime methods"
+msgstr "日期时间方法"
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.strftime "
+"<maxframe.liteframe.LiteFrame.dt.strftime>`\\ \\(date\\_format\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid "Convert to Index using specified date_format."
+msgstr "使用指定的 date_format 转换为索引。"
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.day_name "
+"<maxframe.liteframe.LiteFrame.dt.day_name>`\\ \\(\\[locale\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid "Return the day names with specified locale."
+msgstr "返回指定语言环境的星期名称。"
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.month_name "
+"<maxframe.liteframe.LiteFrame.dt.month_name>`\\ \\(\\[locale\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid "Return the month names with specified locale."
+msgstr "返回指定语言环境的月份名称。"
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.normalize "
+"<maxframe.liteframe.LiteFrame.dt.normalize>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid "Convert times to midnight."
+msgstr "将时间转换为午夜。"
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.round <maxframe.liteframe.LiteFrame.dt.round>`\\ "
+"\\(freq\\[\\, ambiguous\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid "Perform round operation on the data to the specified `freq`."
+msgstr "对数据执行舍入操作到指定的 `freq`。"
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.floor <maxframe.liteframe.LiteFrame.dt.floor>`\\ "
+"\\(freq\\[\\, ambiguous\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid "Perform floor operation on the data to the specified `freq`."
+msgstr "对数据执行向下取整操作到指定的 `freq`。"
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.ceil <maxframe.liteframe.LiteFrame.dt.ceil>`\\ "
+"\\(freq\\[\\, ambiguous\\, nonexistent\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid "Perform ceil operation on the data to the specified `freq`."
+msgstr "对数据执行向上取整操作到指定的 `freq`。"
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.total_seconds "
+"<maxframe.liteframe.LiteFrame.dt.total_seconds>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid "Return total duration of each element expressed in seconds."
+msgstr "返回每个元素以秒表示的总持续时间。"
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dt.isocalendar "
+"<maxframe.liteframe.LiteFrame.dt.isocalendar>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:144:<autosummary>:1
+msgid "Calculate year, week, and day according to the ISO 8601 standard."
+msgstr "根据 ISO 8601 标准计算年、周和日。"
+
+#: ../../source/reference/liteframe/accessors.rst:148
+msgid "List handling"
+msgstr "列表处理"
+
+#: ../../source/reference/liteframe/accessors.rst:150
+msgid ""
+"``LiteFrame.list`` can be used to access the methods of the columns with "
+"list values. These can be accessed like ``LiteFrame.list.<method>``."
+msgstr ""
+"``LiteFrame.list`` 可用于访问具有列表值的列的方法。这些方法可以通过 ``"
+"LiteFrame.list.<method>`` 进行访问。"
+
+#: ../../source/reference/liteframe/accessors.rst:154
+msgid "List methods"
+msgstr "列表方法"
+
+#: ../../source/reference/liteframe/accessors.rst:164:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.list.__getitem__ "
+"<maxframe.liteframe.LiteFrame.list.__getitem__>`\\ \\(\\*args\\, "
+"\\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:164:<autosummary>:1
+msgid "Get the value at an index of each list in the column."
+msgstr "获取列中每个列表在索引处的值。"
+
+#: ../../source/reference/liteframe/accessors.rst:164:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.list.get <maxframe.liteframe.LiteFrame.list.get>`\\ "
+"\\(\\*args\\, \\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:164:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.list.len <maxframe.liteframe.LiteFrame.list.len>`\\ "
+"\\(\\*args\\, \\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:164:<autosummary>:1
+msgid "Get the length of each list in the column."
+msgstr "获取列中每个列表的长度。"
+
+#: ../../source/reference/liteframe/accessors.rst:164:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.list.flatten "
+"<maxframe.liteframe.LiteFrame.list.flatten>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:164:<autosummary>:1
+msgid "Flatten a list column into one row per element."
+msgstr "将列表列展平为每个元素一行。"
+
+#: ../../source/reference/liteframe/accessors.rst:168
+msgid "Dict handling"
+msgstr "字典处理"
+
+#: ../../source/reference/liteframe/accessors.rst:170
+msgid ""
+"``LiteFrame.dict`` can be used to access the methods of the columns with "
+"dict values. These can be accessed like ``LiteFrame.dict.<method>``."
+msgstr ""
+"``LiteFrame.dict`` 可用于访问具有字典值的列的方法。这些方法可以通过 ``"
+"LiteFrame.dict.<method>`` 进行访问。"
+
+#: ../../source/reference/liteframe/accessors.rst:174
+msgid "Dict methods"
+msgstr "字典方法"
+
+#: ../../source/reference/liteframe/accessors.rst:185:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dict.__getitem__ "
+"<maxframe.liteframe.LiteFrame.dict.__getitem__>`\\ \\(\\*args\\, "
+"\\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:185:<autosummary>:1
+msgid "Get the value for a key in each dict in the column."
+msgstr "获取列中每个字典中键对应的值。"
+
+#: ../../source/reference/liteframe/accessors.rst:185:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dict.contains "
+"<maxframe.liteframe.LiteFrame.dict.contains>`\\ \\(\\*args\\, "
+"\\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:185:<autosummary>:1
+msgid "Check whether a key is present in each dict in the column."
+msgstr "检查列中每个字典是否包含某个键。"
+
+#: ../../source/reference/liteframe/accessors.rst:185:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dict.get <maxframe.liteframe.LiteFrame.dict.get>`\\ "
+"\\(\\*args\\, \\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:185:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dict.len <maxframe.liteframe.LiteFrame.dict.len>`\\ "
+"\\(\\*args\\, \\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:185:<autosummary>:1
+msgid "Get the number of items in each dict in the column."
+msgstr "获取列中每个字典中的项目数量。"
+
+#: ../../source/reference/liteframe/accessors.rst:185:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.dict.remove "
+"<maxframe.liteframe.LiteFrame.dict.remove>`\\ \\(\\*args\\, "
+"\\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:185:<autosummary>:1
+msgid "Remove a key from each dict in the column."
+msgstr "从列中每个字典中移除一个键。"
+
+#: ../../source/reference/liteframe/accessors.rst:189
+msgid "Struct handling"
+msgstr "结构体处理"
+
+#: ../../source/reference/liteframe/accessors.rst:193
+msgid "Struct properties"
+msgstr "结构体属性"
+
+#: ../../source/reference/liteframe/accessors.rst:200:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.struct.dtypes "
+"<maxframe.liteframe.LiteFrame.struct.dtypes>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:200:<autosummary>:1
+msgid "Return the dtype object of each child field of the struct."
+msgstr "返回结构体每个子字段的 dtype 对象。"
+
+#: ../../source/reference/liteframe/accessors.rst:202
+msgid "Struct methods"
+msgstr "结构体方法"
+
+#: ../../source/reference/liteframe/accessors.rst:209:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.struct.field "
+"<maxframe.liteframe.LiteFrame.struct.field>`\\ \\(\\*args\\, "
+"\\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:209:<autosummary>:1
+msgid "Extract a child field of each struct as a column."
+msgstr "将每个结构体的子字段提取为一列。"
+
+#: ../../source/reference/liteframe/accessors.rst:209:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrame.struct.explode "
+"<maxframe.liteframe.LiteFrame.struct.explode>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/accessors.rst:209:<autosummary>:1
+msgid "Expand a struct column into one column per field."
+msgstr "将结构体列展开为每个字段一列。"
+

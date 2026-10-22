@@ -39,10 +39,10 @@ class RemoteException(MaxFrameError):
         self.buffers = buffers
 
     @classmethod
-    def from_exception(cls, exc: Exception):
+    def from_exception(cls, exc: BaseException):
         try:
             buffers = pickle_buffers(exc)
-        except:
+        except Exception:
             if isinstance(exc, (IndexError, KeyError, ValueError)):
                 new_exc = type(exc)(*(str(a) for a in exc.args)).with_traceback(
                     exc.__traceback__
@@ -62,7 +62,7 @@ class RemoteException(MaxFrameError):
     def get_buffers(self) -> List[bytes]:
         return self.buffers
 
-    def get(self) -> Exception:
+    def get(self) -> BaseException:
         return unpickle_buffers(self.buffers) if self.buffers else self
 
     def __str__(self):

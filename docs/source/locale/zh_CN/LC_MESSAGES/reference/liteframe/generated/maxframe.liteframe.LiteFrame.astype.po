@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.astype.rst:2
+msgid "maxframe.liteframe.LiteFrame.astype"
+msgstr ""
+
+#: maxframe.liteframe.misc.astype.astype:1 of
+msgid "Cast a LiteFrame to a specified dtype."
+msgstr "将 LiteFrame 转换为指定的数据类型。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.astype.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.misc.astype.astype:3 of
+#, python-brace-format
+msgid ""
+"Use a numpy.dtype or Python type to cast entire LiteFrame to the same "
+"type. Alternatively, use {col: dtype, ...}, where col is a column label "
+"and dtype is a numpy.dtype or Python type to cast one or more of the "
+"DataFrame's columns to column-specific types."
+msgstr ""
+"使用 numpy.dtype 或 Python 类型将整个 LiteFrame 转换为相同类型。或者，"
+"使用 {col: dtype, ...}，其中 col 是列标签，dtype 是 numpy.dtype 或 Python"
+" 类型，用于将一个或多个 DataFrame 列转换为特定列类型。"
+
+#: maxframe.liteframe.misc.astype.astype:8 of
+msgid ""
+"Control raising of exceptions on invalid data for provided dtype.  - "
+"``raise`` : allow exceptions to be raised - ``coerce`` : uncastable "
+"values become null and the output dtype   changes to the target type.  "
+"``'ignore'`` is not supported by LiteFrame astype; use ``'coerce'`` for "
+"null-on-failure semantics."
+msgstr ""
+"控制对提供的数据类型无效数据引发异常的操作。- ``raise``：允许引发异常 - `"
+"`coerce``：不可转换的值变为null，输出数据类型更改为目标类型。LiteFrame "
+"astype不支持``'ignore'``；使用``'coerce'``来实现失败时为null的语义。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.astype.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.misc.astype.astype:18 of
+msgid "Casted LiteFrame."
+msgstr "已转换的 LiteFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.astype.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.misc.astype.astype:23 of
+msgid ":py:obj:`LiteFrame.eval`"
+msgstr ""
+
+#: maxframe.liteframe.misc.astype.astype:24 of
+msgid "Evaluate a string expression to add columns."
+msgstr "计算字符串表达式以添加列。"
+
+

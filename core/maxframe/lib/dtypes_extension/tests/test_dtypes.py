@@ -28,7 +28,7 @@ from maxframe.utils import is_arrow_dtype_supported
 
 try:
     from pandas import ArrowDtype
-except:
+except Exception:
     ArrowDtype = None
 
 pytestmark = pytest.mark.skipif(

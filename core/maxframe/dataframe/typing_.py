@@ -177,7 +177,7 @@ def get_function_output_meta(
         ret_type = (func_argspec.annotations or {}).get("return")
         if ret_type is None:
             return None
-    except:
+    except Exception:
         return None
 
     dtypes = dtype = name = None
@@ -211,7 +211,7 @@ def get_function_output_meta(
         output_type = OutputType.scalar
         try:
             dtype = make_dtype(ret_type)
-        except:
+        except Exception:
             return None
 
     if index_fields is not None:

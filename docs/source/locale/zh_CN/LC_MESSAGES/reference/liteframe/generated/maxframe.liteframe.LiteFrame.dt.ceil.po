@@ -1,0 +1,174 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.dt.ceil.rst:2
+msgid "maxframe.liteframe.LiteFrame.dt.ceil"
+msgstr ""
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:1
+msgid "Perform ceil operation on the data to the specified `freq`."
+msgstr "对数据执行向上取整操作到指定的 `freq`。"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:3
+msgid ""
+"The frequency level to ceil the index to. Must be a fixed frequency like "
+"'s' (second) not 'ME' (month end). See :ref:`frequency aliases "
+"<timeseries.offset_aliases>` for a list of possible `freq` values."
+msgstr ""
+"向上取整索引到的频率级别。必须是固定频率，比如 's'（秒）而不是 'ME'（月末）。参见 :ref:`频率别名 "
+"<timeseries.offset_aliases>` 获取可能的 `freq` 值列表。"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:8
+msgid ""
+"Only relevant for DatetimeIndex:  - 'infer' will attempt to infer fall "
+"dst-transition hours based on   order - bool-ndarray where True signifies"
+" a DST time, False designates   a non-DST time (note that this flag is "
+"only applicable for   ambiguous times) - 'NaT' will return NaT where "
+"there are ambiguous times - 'raise' will raise a ValueError if there are "
+"ambiguous   times."
+msgstr ""
+"仅对 DatetimeIndex 有效：- 'infer' 将根据顺序尝试推断秋季 dst 转换小时 - bool-ndarray "
+"其中 True 表示夏令时时间，False 表示非夏令时时间（注意此标志仅适用于模糊时间）- 'NaT' "
+"将在存在模糊时间时返回 NaT - 'raise' 将在存在模糊时间时引发 ValueError。"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:8
+msgid "Only relevant for DatetimeIndex:"
+msgstr "仅对 DatetimeIndex 有意义："
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:10
+msgid "'infer' will attempt to infer fall dst-transition hours based on order"
+msgstr "'infer' 将根据顺序尝试推断秋季夏令时转换小时"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:12
+msgid ""
+"bool-ndarray where True signifies a DST time, False designates a non-DST "
+"time (note that this flag is only applicable for ambiguous times)"
+msgstr ""
+"bool-ndarray 其中 True 表示夏令时，False 表示非夏令时（注意此标志仅适用于"
+"模糊时间）"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:15
+msgid "'NaT' will return NaT where there are ambiguous times"
+msgstr "'NaT' 在存在模糊时间时返回 NaT"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:16
+msgid "'raise' will raise a ValueError if there are ambiguous times."
+msgstr "'raise' 将在存在模糊时间时引发 ValueError。"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:19
+msgid ""
+"A nonexistent time does not exist in a particular timezone where clocks "
+"moved forward due to DST.  - 'shift_forward' will shift the nonexistent "
+"time forward to the   closest existing time - 'shift_backward' will shift"
+" the nonexistent time backward to the   closest existing time - 'NaT' "
+"will return NaT where there are nonexistent times - timedelta objects "
+"will shift nonexistent times by the timedelta - 'raise' will raise a "
+"ValueError if there are   nonexistent times."
+msgstr ""
+"不存在的时间是指在特定时区中由于夏令时导致时钟向前移动而不存在的时间。- 'shift_forward' "
+"将不存在的时间向前移动到最近的现有时间 - 'shift_backward' 将不存在的时间向后移动到最近的现有时间 "
+"- 'NaT' 将在存在不存在的时间时返回 NaT - timedelta 对象将通过 timedelta 移动不存在的时间 "
+"- 'raise' 将在存在不存在的时间时引发 ValueError。"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:19
+msgid ""
+"A nonexistent time does not exist in a particular timezone where clocks "
+"moved forward due to DST."
+msgstr "不存在的时间是指在由于夏令时导致时钟向前移动的特定时区中不存在的时间。"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:22
+msgid ""
+"'shift_forward' will shift the nonexistent time forward to the closest "
+"existing time"
+msgstr "'shift_forward' 将不存在的时间向前移至最接近的存在时间"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:24
+msgid ""
+"'shift_backward' will shift the nonexistent time backward to the closest "
+"existing time"
+msgstr "'shift_backward' 将不存在的时间向后移至最接近的存在时间"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:26
+msgid "'NaT' will return NaT where there are nonexistent times"
+msgstr "'NaT' 在存在不存在的时间时返回 NaT"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:27
+msgid "timedelta objects will shift nonexistent times by the timedelta"
+msgstr "timedelta 对象将通过 timedelta 移动不存在的时间"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:28
+msgid "'raise' will raise a ValueError if there are nonexistent times."
+msgstr "'raise' 将在存在不存在的时间时引发 ValueError。"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:32
+msgid ""
+"Index of the same type for a DatetimeIndex or TimedeltaIndex, or a Series"
+" with the same index for a LiteFrame."
+msgstr ""
+"DatetimeIndex 或 TimedeltaIndex 的相同类型索引，或 LiteFrame 的具有相同"
+"索引的 Series。"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil
+msgid "抛出"
+msgstr ""
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:40
+msgid ":py:obj:`DatetimeIndex.floor`"
+msgstr ""
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:41
+msgid "Perform floor operation on the data to the specified `freq`."
+msgstr "对数据执行向下取整操作到指定的 `freq`。"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:43
+msgid ":py:obj:`DatetimeIndex.snap`"
+msgstr ""
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:44
+msgid "Snap time stamps to nearest occurring frequency."
+msgstr "将时间戳捕捉到最近出现的频率。"
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:47
+msgid "备注"
+msgstr ""
+
+#: of pandas.core.arrays.datetimelike.TimelikeOps.ceil:48
+msgid ""
+"If the timestamps have a timezone, ceiling will take place relative to "
+"the local (\"wall\") time and re-localized to the same timezone. When "
+"ceiling near daylight savings time, use ``nonexistent`` and ``ambiguous``"
+" to control the re-localization behavior."
+msgstr ""
+"如果时间戳有时区，向上取整将相对于本地（\"墙\"）时间进行并重新定位到"
+"同一时区。在接近夏令时进行向上取整时，使用 ``nonexistent`` 和 ``ambiguous"
+"`` 来控制重新定位行为。"

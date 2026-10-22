@@ -1,0 +1,77 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 15:05+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.isna.rst:2
+msgid "maxframe.liteframe.isna"
+msgstr ""
+
+#: maxframe.liteframe.missing.check.isna:1 of
+msgid "Detect missing values."
+msgstr "检测缺失值。"
+
+#: maxframe.liteframe.missing.check.isna:3 of
+msgid ""
+"Returns a boolean LiteFrame of the same shape where each cell is ``True``"
+" where the corresponding value is null (NA) and ``False`` otherwise."
+msgstr ""
+"返回一个相同形状的布尔型 LiteFrame，其中每个单元格在对应值为 null (NA) "
+"时为 ``True``，否则为 ``False``。"
+
+#: maxframe.liteframe.missing.check.isna of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.missing.check.isna:7 of
+msgid "Boolean LiteFrame marking null positions with ``True``."
+msgstr "用 ``True`` 标记空值位置的布尔型 LiteFrame。"
+
+#: maxframe.liteframe.missing.check.isna of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.missing.check.isna:12 of
+msgid ":py:obj:`notna`"
+msgstr ""
+
+#: maxframe.liteframe.missing.check.isna:13 of
+msgid "Detect non-missing values."
+msgstr "检测非缺失值。"
+
+#: maxframe.liteframe.missing.check.isna:15 of
+msgid ":py:obj:`dropna`"
+msgstr ""
+
+#: maxframe.liteframe.missing.check.isna:16 of
+msgid "Drop rows with missing values."
+msgstr "删除包含缺失值的行。"
+
+#: maxframe.liteframe.missing.check.isna:18 of
+msgid ":py:obj:`fillna`"
+msgstr ""
+
+#: maxframe.liteframe.missing.check.isna:19 of
+msgid "Fill missing values."
+msgstr "填充缺失值。"
+
+#: maxframe.liteframe.missing.check.isna:22 of
+msgid "示例"
+msgstr ""
+

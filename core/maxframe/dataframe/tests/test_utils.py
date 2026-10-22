@@ -48,7 +48,8 @@ from maxframe.utils import wrap_arrow_dtype
 
 try:
     from pandas import ArrowDtype
-except:
+except Exception:
+    # When pandas encounters legacy pyarrow, it may raise errors other than ImportError
     ArrowDtype = None
 
 

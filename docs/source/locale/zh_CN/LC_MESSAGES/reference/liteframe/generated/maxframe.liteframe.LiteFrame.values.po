@@ -1,0 +1,57 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-24 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.values.rst:2
+msgid "maxframe.liteframe.LiteFrame.values"
+msgstr ""
+
+#: maxframe.liteframe.LiteFrame.values:1 of
+msgid "Return the LiteFrame as a tensor."
+msgstr "将LiteFrame作为张量返回。"
+
+#: maxframe.liteframe.LiteFrame.values:3 of
+msgid ""
+"The LiteFrame data is converted to a homogeneous MaxFrame tensor whose "
+"dtype is the common promotion of all column dtypes."
+msgstr ""
+"LiteFrame数据被转换为同质的MaxFrame张量，其dtype是所有列dtype的公共提升"
+"类型。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.values.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.LiteFrame.values:6 of
+msgid "A MaxFrame tensor containing the LiteFrame data."
+msgstr "包含LiteFrame数据的MaxFrame张量。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.values.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.LiteFrame.values:11 of
+msgid ":py:obj:`LiteFrame.to_tensor`"
+msgstr ""
+
+#: maxframe.liteframe.LiteFrame.values:12 of
+msgid "Convert the LiteFrame to a MaxFrame tensor."
+msgstr "将LiteFrame转换为MaxFrame张量。"
+

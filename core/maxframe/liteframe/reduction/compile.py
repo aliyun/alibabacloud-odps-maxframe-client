@@ -79,7 +79,6 @@ _DECOMPOSITION_RECIPES = {
     "std": ["sum", "sum_sq", "count"],
     "sem": ["sum", "sum_sq", "count"],
     "skew": ["sum", "sum_sq", "sum_cube", "count"],
-    "kurtosis": ["sum", "sum_sq", "sum_cube", "sum_fourth", "count"],
     "kurt": ["sum", "sum_sq", "sum_cube", "sum_fourth", "count"],
 }
 
@@ -100,6 +99,9 @@ class CompileAggResult(NamedTuple):
     out_shape: Tuple[int, int]
     projection_exprs: list
     pre_agg_projection_exprs: list
+    # Custom agg: pre/post projection exprs (empty for non-custom aggs)
+    custom_pre_projection: list = []
+    custom_post_projection: list = []
 
 
 # Map power-sum primitive names to their exponents for pre-agg projection.
@@ -185,6 +187,53 @@ def _normalize_func_kw(raw_func_kw):
     return func_dict, func_rename
 
 
+def _get_callable_name(func):
+    """Return the name of a callable for column-naming purposes.
+
+    Mirrors ``pandas.core.common.get_callable_name``: prefer ``__name__``,
+    fall back to the class name for callable instances, then ``"<custom>"``.
+    """
+    if hasattr(func, "__name__"):
+        return func.__name__
+    return type(func).__name__ if callable(func) else "<custom>"
+
+
+def _resolve_callable_names(funcs):
+    """Return unique display names for a list of callable aggs.
+
+    Disambiguates callables that share the same name, mirroring the
+    intent of pandas' ``_managle_lambda_list`` but with one uniform
+    rule: when the same base name appears more than once, every
+    occurrence is numbered with a zero-based index — inside the angle
+    brackets for angle-bracket names (``<lambda_0>``, ``<lambda_1>``,
+    ``<custom_0>``, …) or as an ``_N`` suffix for plain names
+    (``my_func_0``, ``my_func_1``). A single callable keeps its
+    original name unchanged.
+    """
+    counts: dict[str, int] = {}
+    for f in funcs:
+        if callable(f):
+            base = _get_callable_name(f)
+            counts[base] = counts.get(base, 0) + 1
+    idx: dict[str, int] = {}
+    names = []
+    for f in funcs:
+        if not callable(f):
+            names.append(None)
+            continue
+        base = _get_callable_name(f)
+        if counts[base] > 1:
+            n = idx.get(base, 0)
+            idx[base] = n + 1
+            if base.startswith("<") and base.endswith(">"):
+                names.append(f"<{base[1:-1]}_{n}>")
+            else:
+                names.append(f"{base}_{n}")
+        else:
+            names.append(base)
+    return names
+
+
 def _infer_output_column_names(func_dict, func_rename, columns, groupby_params):
     """Compute output column names following LiteFrame naming rules.
 
@@ -219,29 +268,49 @@ def _infer_output_column_names(func_dict, func_rename, columns, groupby_params):
 
     for col, funcs in func_dict.items():
         target_cols = [col] if col is not None else list(columns)
+        # Pre-resolve unique names for callable funcs so that two
+        # callables sharing the same __name__ (e.g. two lambdas, or two
+        # callable instances) produce distinct columns. Mirrors pandas'
+        # _managle_lambda_list.
+        callable_names = _resolve_callable_names(funcs)
 
         if col is None and len(target_cols) > 1:
-            # Column-first ordering for multi-column, multi-func case
+            # Column-first ordering for multi-column, multi-func case.
+            # size is frame-level (one count per group / whole frame), not
+            # per-column; it is emitted once for the single agg descriptor
+            # (see _build_agg_funcs) regardless of target column count.
+            size_emitted = False
             for tc in target_cols:
-                for func in funcs:
+                for i, func in enumerate(funcs):
                     if func_rename and rename_idx < len(func_rename):
                         output_cols.append(func_rename[rename_idx])
                         rename_idx += 1
+                    elif isinstance(func, str) and func == "size":
+                        if not size_emitted:
+                            output_cols.append("size")
+                            size_emitted = True
                     elif isinstance(func, str):
                         if has_multiple or len(funcs) > 1:
                             output_cols.append(f"{tc}_{func}")
                         else:
                             output_cols.append(tc)
                     else:
-                        # Callable -- single column name
-                        output_cols.append(tc)
+                        # Callable
+                        func_name = callable_names[i]
+                        if has_multiple or len(funcs) > 1:
+                            output_cols.append(f"{tc}_{func_name}")
+                        else:
+                            output_cols.append(tc)
         else:
             # Single target column or single func: natural func-first order
-            for func in funcs:
+            for i, func in enumerate(funcs):
                 if func_rename and rename_idx < len(func_rename):
                     # Named aggregation -- use the provided name
                     output_cols.append(func_rename[rename_idx])
                     rename_idx += 1
+                elif isinstance(func, str) and func == "size":
+                    # size is frame-level; pandas names the result "size".
+                    output_cols.append("size")
                 elif isinstance(func, str):
                     for tc in target_cols:
                         if has_multiple or len(funcs) > 1:
@@ -249,9 +318,13 @@ def _infer_output_column_names(func_dict, func_rename, columns, groupby_params):
                         else:
                             output_cols.append(tc)
                 else:
-                    # Callable -- single column name
+                    # Callable
+                    func_name = callable_names[i]
                     for tc in target_cols:
-                        output_cols.append(tc)
+                        if has_multiple or len(funcs) > 1:
+                            output_cols.append(f"{tc}_{func_name}")
+                        else:
+                            output_cols.append(tc)
 
     return output_cols
 
@@ -320,11 +393,33 @@ def _build_agg_funcs(func_dict, columns, groupby_params):
                         _register_primitive(primitive, tc)
 
             elif func_name in _DIRECTLY_DECOMPOSABLE_FUNCS:
-                for tc in target_cols:
-                    direct_requests[(func_name, tc)] = (
-                        direct_requests.get((func_name, tc), 0) + 1
-                    )
-                    _register_primitive(func_name, tc)
+                if func_name == "size":
+                    # size is frame-level (one count per group / whole frame),
+                    # not per-column. Register a single descriptor carrying
+                    # all target columns so the executor emits one pl.len()
+                    # column, and name the output "size" (see
+                    # _infer_output_column_names).
+                    if not any(d["raw_func_name"] == "size" for d in agg_funcs):
+                        output_key = f"agg_{key_counter[0]}"
+                        agg_func = _COMBINE_FUNC_MAP.get(func_name, func_name)
+                        agg_funcs.append(
+                            {
+                                "raw_func_name": func_name,
+                                "map_func_name": func_name,
+                                "agg_func_name": agg_func,
+                                "cols": list(target_cols),
+                                "output_key": output_key,
+                                "kwds": {},
+                            }
+                        )
+                        registry[(func_name, None)] = output_key
+                        key_counter[0] += 1
+                else:
+                    for tc in target_cols:
+                        direct_requests[(func_name, tc)] = (
+                            direct_requests.get((func_name, tc), 0) + 1
+                        )
+                        _register_primitive(func_name, tc)
 
             elif func_name in _NON_DECOMPOSABLE_FUNCS or callable(func):
                 output_key = f"agg_{key_counter[0]}"
@@ -539,6 +634,20 @@ def _widen_decimal_agg_dtypes(
     return widened
 
 
+def _size_intermediate_name(output_key_prefix: str = "") -> str:
+    """Executor alias of the frame-level size intermediate column.
+
+    The size descriptor is frame-level (one ``pl.len()`` per group / whole
+    frame, see ``_build_agg_funcs``); the DPE/SPE executors alias the single
+    emitted column ``{prefix}__size__`` where ``prefix`` is ``{output_key}__``
+    when a prefix is used (empty for the single-descriptor case).  Consumers
+    of the agg output (post-agg projection references, intermediate dtype
+    dicts, the DPE combine stage) must use the same name -- this helper is
+    the single owner of the convention.
+    """
+    return f"{output_key_prefix}__size__"
+
+
 def _build_projection_exprs(
     func_dict,
     columns,
@@ -620,7 +729,7 @@ def _build_projection_exprs(
             skew_pop = m3 / (m2 * m2.sqrt())
             adj = (n * (n - one)).sqrt() / (n - two)
             return skew_pop * adj
-        elif func_name in ("kurtosis", "kurt"):
+        elif func_name == "kurt":
             sq = _ref("sum_sq", col)
             cu = _ref("sum_cube", col)
             sm4 = _ref("sum_fourth", col)
@@ -659,6 +768,12 @@ def _build_projection_exprs(
                 for tc in target_cols:
                     items.append((tc, func))
 
+        # size is frame-level: one "size" output name (see
+        # _infer_output_column_names) even though the column-first iteration
+        # yields one (tc, "size") item per target column -- emit the single
+        # rename expression once and skip the rest.
+        size_projection_emitted = False
+
         for tc, func in items:
             if isinstance(func, str):
                 func_name = func
@@ -666,6 +781,20 @@ def _build_projection_exprs(
                 func_name = getattr(func, "__name__", repr(func))
             else:
                 func_name = str(func)
+
+            if func_name == "size":
+                if size_projection_emitted:
+                    continue
+                size_projection_emitted = True
+                out_name = output_column_names[out_name_idx]
+                out_name_idx += 1
+                size_key = registry[("size", None)]
+                projection_exprs.append(
+                    LiteFrameColumn(
+                        name=_size_intermediate_name(f"{size_key}__"), dtype=None
+                    ).rename(out_name)
+                )
+                continue
 
             # Use the pre-computed output column name (handles named agg,
             # multi-func suffixes, etc.) instead of recomputing here.
@@ -741,6 +870,11 @@ def compile_agg(op, liteframe):
     groupby_params = op.groupby_params
     input_dtypes = liteframe.dtypes
     all_input_dtypes = input_dtypes  # preserve unfiltered dtypes for group key lookup
+    # Detect custom agg (callable or CustomAgg) and delegate
+    from maxframe.liteframe.reduction.custom_agg import CustomAgg, compile_custom_agg
+
+    if raw_func is not None and (callable(raw_func) or isinstance(raw_func, CustomAgg)):
+        return compile_custom_agg(op, liteframe)
     numeric_only = op.numeric_only
 
     # Compute group key columns (before filtering)
@@ -759,11 +893,19 @@ def compile_agg(op, liteframe):
         input_cols = list(input_dtypes.index)
 
     # For groupby: exclude group key columns from the agg target columns
-    # so that the aggregation is only applied to non-key columns.
+    # so that the aggregation is only applied to non-key columns.  When an
+    # explicit selection is present (``groupby("key")[["a"]]``), further
+    # restrict to only the selected columns — unselected columns are not
+    # aggregated and do not appear in the output.
     if group_key_cols:
         agg_cols = [c for c in input_cols if c not in group_key_cols]
     else:
         agg_cols = input_cols
+    if groupby_params:
+        selection = groupby_params.get("selection")
+        if selection is not None:
+            sel_set = set(selection)
+            agg_cols = [c for c in agg_cols if c in sel_set]
 
     # Normalize function spec
     func_dict, _ = _normalize_func(raw_func)

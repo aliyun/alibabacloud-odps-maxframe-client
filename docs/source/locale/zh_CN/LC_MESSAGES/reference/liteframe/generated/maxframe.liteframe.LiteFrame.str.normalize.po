@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.normalize.rst:2
+msgid "maxframe.liteframe.LiteFrame.str.normalize"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:1
+msgid "Return the Unicode normal form for the strings in the Series/Index."
+msgstr "返回 Series/Index 中字符串的 Unicode 标准形式。"
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:3
+msgid "For more information on the forms, see the :func:`unicodedata.normalize`."
+msgstr "有关表单的更多信息，请参见 :func:`unicodedata.normalize`。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.normalize.rst
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:6
+msgid "Unicode form."
+msgstr "Unicode 形式。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.normalize.rst
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:9
+msgid ""
+"A Series or Index of strings in the same Unicode form specified by "
+"`form`. The returned object retains the same type as the input (Series or"
+" Index), and contains the normalized strings."
+msgstr "一个字符串的 Series 或 Index，其 Unicode 形式由 `form` 指定。返回的对象保留与输入相同的类型（Series 或 Index），并包含标准化后的字符串。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.normalize.rst
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:16
+msgid ":py:obj:`LiteFrame.str.upper`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:17
+msgid "Convert all characters in each string to uppercase."
+msgstr "将每个字符串中的所有字符转换为大写。"
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:19
+msgid ":py:obj:`LiteFrame.str.lower`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:20
+msgid "Convert all characters in each string to lowercase."
+msgstr "将每个字符串中的所有字符转换为小写。"
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:22
+msgid ":py:obj:`LiteFrame.str.title`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:23
+msgid ""
+"Convert each string to title case (capitalizing the first letter of each "
+"word)."
+msgstr "将每个字符串转换为首字母大写形式（每个单词的首字母大写）。"
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:25
+msgid ":py:obj:`LiteFrame.str.strip`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:26
+msgid "Remove leading and trailing whitespace from each string."
+msgstr "移除每个字符串开头和结尾的空白字符。"
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:28
+msgid ":py:obj:`LiteFrame.str.replace`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.normalize:29
+msgid "Replace occurrences of a substring with another substring in each string."
+msgstr "在每个字符串中用另一个子字符串替换某个子字符串的出现。"

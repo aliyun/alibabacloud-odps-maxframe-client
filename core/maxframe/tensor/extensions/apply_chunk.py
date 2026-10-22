@@ -69,7 +69,7 @@ class TensorApplyChunk(TensorOperator, TensorOperatorMixin):
                         *(self.args or ()),
                         **kwargs
                     )
-            except:
+            except Exception:
                 raise TypeError("Cannot estimate output type of apply_chunk call")
             dtype = mock_result.dtype
             order = (

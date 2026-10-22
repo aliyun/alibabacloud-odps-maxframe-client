@@ -1,0 +1,85 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 14:44+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.lstrip.rst:2
+msgid "maxframe.liteframe.LiteFrame.str.lstrip"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.lstrip:1
+msgid "Remove leading characters."
+msgstr "移除前导字符。"
+
+#: of pandas.core.strings.accessor.StringMethods.lstrip:3
+msgid ""
+"Strip whitespaces (including newlines) or a set of specified characters "
+"from each string in the Series/Index from left side. Replaces any non-"
+"strings in Series with NaNs. Equivalent to :meth:`str.lstrip`."
+msgstr ""
+"从 Series/Index 中每个字符串的左侧剥离空白字符（包括换行符）或一组指定"
+"字符。将 Series 中的非字符串替换为 NaNs。等效于 :meth:`str.lstrip`。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.lstrip.rst
+msgid "参数"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.lstrip:8
+msgid ""
+"Specifying the set of characters to be removed. All combinations of this "
+"set of characters will be stripped. If None then whitespaces are removed."
+msgstr ""
+"指定要移除的字符集。该字符集的所有组合都将被剥离。如果为 None 则移除空白"
+"字符。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.lstrip.rst
+msgid "返回"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.lstrip:13
+msgid "Series or Index with the strings being stripped from the left side."
+msgstr "Series 或 Index，其中的字符串从左侧被去除空白字符。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.str.lstrip.rst
+msgid "返回类型"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.lstrip:18
+msgid ":py:obj:`LiteFrame.str.strip`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.lstrip:19
+msgid "Remove leading and trailing characters in Series/Index."
+msgstr "移除 Series/Index 中的前导和尾随字符。"
+
+#: of pandas.core.strings.accessor.StringMethods.lstrip:21
+msgid ":py:obj:`LiteFrame.str.lstrip`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.lstrip:22
+msgid "Remove leading characters in Series/Index."
+msgstr "移除 Series/Index 中的前导字符。"
+
+#: of pandas.core.strings.accessor.StringMethods.lstrip:24
+msgid ":py:obj:`LiteFrame.str.rstrip`"
+msgstr ""
+
+#: of pandas.core.strings.accessor.StringMethods.lstrip:25
+msgid "Remove trailing characters in Series/Index."
+msgstr "移除 Series/Index 中的尾随字符。"

@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-26 11:26+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.merge.rst:2
+msgid "maxframe.liteframe.merge"
+msgstr ""
+
+#: maxframe.liteframe.merge.merge.merge:1 of
+msgid "Merge LiteFrame with another LiteFrame using a database-style join."
+msgstr "使用数据库风格的连接将 LiteFrame 与另一个 LiteFrame 合并。"
+
+#: maxframe.liteframe.merge.merge.merge of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.merge.merge.merge:3 of
+msgid "Object to merge with."
+msgstr "要合并的对象。"
+
+#: maxframe.liteframe.merge.merge.merge:5 of
+msgid "Type of merge to perform."
+msgstr "要执行的合并类型。"
+
+#: maxframe.liteframe.merge.merge.merge:7 of
+msgid "Column(s) to join on. Must exist in both LiteFrames."
+msgstr "用于连接的列。必须在两个 LiteFrame 中都存在。"
+
+#: maxframe.liteframe.merge.merge.merge:9 of
+msgid "Column(s) from left LiteFrame to join on."
+msgstr "来自左侧 LiteFrame 的连接列。"
+
+#: maxframe.liteframe.merge.merge.merge:11 of
+msgid "Column(s) from right LiteFrame to join on."
+msgstr "来自右侧 LiteFrame 的连接列。"
+
+#: maxframe.liteframe.merge.merge.merge:13 of
+msgid "Suffixes for overlapping column names."
+msgstr "重叠列名的后缀。"
+
+#: maxframe.liteframe.merge.merge.merge:15 of
+msgid "Merge execution strategy."
+msgstr "合并执行策略。"
+
+#: maxframe.liteframe.merge.merge.merge:17 of
+msgid "Auto merge small chunks before/after merge."
+msgstr "在合并前后自动合并小块。"
+
+#: maxframe.liteframe.merge.merge.merge:19 of
+msgid "Chunk count threshold for triggering auto-merge."
+msgstr "触发自动合并的块数阈值。"
+
+#: maxframe.liteframe.merge.merge.merge:21 of
+msgid "Whether to use bloom filter optimization."
+msgstr "是否使用布隆过滤器优化。"
+
+#: maxframe.liteframe.merge.merge.merge:23 of
+msgid "Bloom filter configuration."
+msgstr "布隆过滤器配置。"
+
+#: maxframe.liteframe.merge.merge.merge of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.merge.merge.merge:26 of
+msgid "Merged result."
+msgstr "合并结果。"
+
+#: maxframe.liteframe.merge.merge.merge of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.merge.merge.merge:31 of
+msgid ":py:obj:`concat`"
+msgstr ""
+
+#: maxframe.liteframe.merge.merge.merge:32 of
+msgid "Concatenate LiteFrame objects along a particular axis."
+msgstr "沿特定轴连接 LiteFrame 对象。"
+
+#: maxframe.liteframe.merge.merge.merge:35 of
+msgid "示例"
+msgstr ""
+

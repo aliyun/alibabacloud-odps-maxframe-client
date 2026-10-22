@@ -20,6 +20,7 @@ from maxframe.codegen.spe.core import (
     SPEOperatorAdapter,
     register_op_adapter,
 )
+from maxframe.codegen.spe.liteframe.expressions import _materialize_range_columns
 from maxframe.codegen.spe.utils import build_method_call_adapter
 from maxframe.tensor.datasource import (
     Scalar,
@@ -35,6 +36,7 @@ from maxframe.tensor.datasource import (
 )
 from maxframe.tensor.datasource.array import ArrayDataSource
 from maxframe.tensor.datasource.from_dataframe import TensorFromDataFrame
+from maxframe.tensor.datasource.from_liteframe import TensorFromLiteFrame
 from maxframe.tensor.datasource.full import TensorFull
 from maxframe.tensor.datasource.ones import TensorOnes
 from maxframe.tensor.datasource.tri_array import TensorTriArray
@@ -101,6 +103,52 @@ class TensorFullAdapter(SPEOperatorAdapter):
 
 
 TensorFromDataFrameAdapter = build_method_call_adapter(TensorFromDataFrame, "to_numpy")
+
+
+@register_op_adapter(TensorFromLiteFrame)
+class TensorFromLiteFrameAdapter(SPEOperatorAdapter):
+    """SPE adapter for ``TensorFromLiteFrame``.
+
+    Mirrors the DPE executor: virtual range columns are materialized into
+    physical Int64 columns, the visible columns are selected in order, and
+    the result is converted to a numpy array cast to ``dtype`` in F order.
+    """
+
+    @staticmethod
+    def _from_liteframe(df, visible_columns, dtype, range_columns):
+        work_df = df
+        if range_columns:
+            work_df = _materialize_range_columns(work_df, range_columns)
+        if visible_columns is not None and list(work_df.columns) != list(
+            visible_columns
+        ):
+            work_df = work_df[list(visible_columns)]
+        return work_df.to_numpy().astype(dtype, order="F")
+
+    def generate_code(self, op, context: SPECodeContext) -> List[str]:
+        cls_name = type(self).__name__
+        context.register_import(__name__, from_item=cls_name)
+        input_var = context.get_input_tileable_variable(op.inputs[0])
+        res_var_name = context.get_output_tileable_variable(op.outputs[0])
+
+        in_tileable = op.inputs[0]
+        range_columns = None
+        metadata = getattr(in_tileable, "frame_metadata", None)
+        if metadata and metadata.range_columns:
+            range_columns = {
+                name: (info.start, info.stop, info.step)
+                for name, info in metadata.range_columns.items()
+            }
+
+        vis_var = context.register_operator_constants(op.visible_columns)
+        dtype_var = context.register_operator_constants(op.outputs[0].dtype)
+        range_cols_var = context.register_operator_constants(range_columns)
+        return [
+            f"{res_var_name} = {cls_name}._from_liteframe("
+            f"{input_var}, {vis_var}, {dtype_var}, {range_cols_var})"
+        ]
+
+
 TensorLinspaceAdapter = build_method_call_adapter(
     TensorLinspace,
     "linspace",

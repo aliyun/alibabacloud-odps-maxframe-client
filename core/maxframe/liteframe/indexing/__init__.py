@@ -16,12 +16,15 @@
 def _install():
     from maxframe.liteframe.core import LITEFRAME_TYPE
     from maxframe.liteframe.indexing.getitem import liteframe_getitem
-    from maxframe.liteframe.indexing.iloc import (
-        LiteFrameIloc,
-        LiteFrameIlocGetItem,
-        LiteFrameIlocSetItem,
+    from maxframe.liteframe.indexing.iloc import LiteFrameIloc
+    from maxframe.liteframe.indexing.select import (
+        add_prefix,
+        add_suffix,
+        assign,
+        drop,
+        rename,
+        select_dispatch,
     )
-    from maxframe.liteframe.indexing.select import assign, drop, rename, select_dispatch
     from maxframe.liteframe.indexing.setitem import liteframe_setitem
 
     for cls in LITEFRAME_TYPE:
@@ -30,6 +33,8 @@ def _install():
         setattr(cls, "select", select_dispatch)
         setattr(cls, "drop", drop)
         setattr(cls, "rename", rename)
+        setattr(cls, "add_prefix", add_prefix)
+        setattr(cls, "add_suffix", add_suffix)
         setattr(cls, "assign", assign)
         setattr(cls, "iloc", property(fget=lambda self: LiteFrameIloc(self)))
 

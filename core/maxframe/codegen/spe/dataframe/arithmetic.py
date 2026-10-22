@@ -28,7 +28,11 @@ from maxframe.dataframe.arithmetic import (
     DataFrameRound,
     DataFrameXor,
 )
-from maxframe.dataframe.arithmetic.core import DataFrameBinOp, DataFrameUnaryOp
+from maxframe.dataframe.arithmetic.core import (
+    DataFrameArithmeticTreeOp,
+    DataFrameBinOp,
+    DataFrameUnaryOp,
+)
 from maxframe.dataframe.core import SERIES_TYPE
 
 
@@ -91,3 +95,20 @@ class DataFrameBitwiseBinOpAdapter(SPEOperatorAdapter):
 
 
 DataFrameDotAdapter = build_method_call_adapter(DataFrameDot, "dot", "rhs")
+
+
+@register_op_adapter(DataFrameArithmeticTreeOp)
+class DataFrameArithmeticTreeOpAdapter(SPEOperatorAdapter):
+    def generate_code(
+        self, op: DataFrameArithmeticTreeOp, context: SPECodeContext
+    ) -> List[str]:
+        context.register_import("functools")
+        context.register_import("operator")
+
+        input_vars = [context.get_input_tileable_variable(inp) for inp in op.inputs]
+        res_var = context.get_output_tileable_variable(op.outputs[0])
+        inputs_list = ", ".join(input_vars)
+        # type(op)._operator is a classproperty returning operator.and_ or operator.or_
+        op_func = type(op)._operator
+        op_name = op_func.__name__  # 'and_' or 'or_'
+        return [f"{res_var} = functools.reduce(operator.{op_name}, [{inputs_list}])"]

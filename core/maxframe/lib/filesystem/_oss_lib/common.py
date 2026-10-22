@@ -317,7 +317,7 @@ def oss_copy_file(src_path: path_type, dest_path: path_type):
     try:
         if oss_isdir(src_path):
             raise NotImplementedError("Copying directories not implemented yet")
-    except:
+    except Exception:
         # fixme currently we cannot handle error with iterating files with STS token
         logger.exception("Failed to judge if src is a directory, ignored")
 

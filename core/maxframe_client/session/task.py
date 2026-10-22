@@ -129,7 +129,7 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
                 raise ValueError(
                     f"Serialization format {self._output_format} not supported"
                 )
-        except:
+        except Exception:
             # todo change to a better logic when it is possible
             #  to judge if server side returns success or fail
             raise parse_instance_error(encoded_result)
@@ -188,7 +188,7 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
         result_data = self._instance.get_task_result(self._task_name)
         try:
             info = self._deserial_task_info_result({"result": result_data}, SessionInfo)
-        except:
+        except Exception:
             raise parse_instance_error(result_data)
         info.error_info.reraise()
 
