@@ -24,6 +24,7 @@ from maxframe.config import option_context
 from maxframe.core.operator import Operator
 from maxframe.tests.utils import tn
 from maxframe.udf import (
+    BuiltinFunction,
     BuiltinMethod,
     FsMountOptions,
     MarkedFunction,
@@ -105,257 +106,204 @@ def test_odps_function():
         _cleanup()
 
 
-class TestWithFsMount:
-    def test_single_fs_mount_with_role_arn(self):
-        @with_fs_mount(
+@pytest.mark.parametrize(
+    ("path", "mount_path", "storage_options"),
+    [
+        pytest.param(
             "oss://oss-cn-shanghai-internal.aliyuncs.com/my-bucket/prefix/",
             "/mnt/oss_data",
-            storage_options={"role_arn": "acs:ram::123456:role/test-role"},
-        )
-        def my_func(df):
-            return df
-
-        assert isinstance(my_func, MarkedFunction)
-        assert len(my_func.fs_mount) == 1
-
-        config = my_func.fs_mount[0]
-        assert isinstance(config, FsMountOptions)
-        assert (
-            config.path
-            == "oss://oss-cn-shanghai-internal.aliyuncs.com/my-bucket/prefix/"
-        )
-        assert config.mount_path == "/mnt/oss_data"
-        assert config.storage_options == {"role_arn": "acs:ram::123456:role/test-role"}
-
-    def test_single_fs_mount_with_ak_sk(self):
-        @with_fs_mount(
+            {"role_arn": "acs:ram::123456:role/test-role"},
+            id="role-arn",
+        ),
+        pytest.param(
             "oss://oss-cn-hangzhou.aliyuncs.com/another-bucket/",
             "/mnt/data",
-            storage_options={
-                "access_key_id": "test_ak",
-                "access_key_secret": "test_sk",
-            },
-        )
-        def my_func(df):
-            return df
-
-        assert isinstance(my_func, MarkedFunction)
-        assert len(my_func.fs_mount) == 1
-
-        config = my_func.fs_mount[0]
-        assert isinstance(config, FsMountOptions)
-        assert config.path == "oss://oss-cn-hangzhou.aliyuncs.com/another-bucket/"
-        assert config.mount_path == "/mnt/data"
-        assert config.storage_options["access_key_id"] == "test_ak"
-        assert config.storage_options["access_key_secret"] == "test_sk"
-
-    def test_multiple_fs_mount_same_role_arn(self):
-        @with_fs_mount(
-            "oss://oss-cn-shanghai.aliyuncs.com/bucket1/prefix1/",
-            "/mnt/data1",
-            storage_options={"role_arn": "same_role"},
-        )
-        @with_fs_mount(
-            "oss://oss-cn-hangzhou.aliyuncs.com/bucket2/prefix2/",
-            "/mnt/data2",
-            storage_options={"role_arn": "same_role"},
-        )
-        def my_func(df):
-            return df
-
-        assert isinstance(my_func, MarkedFunction)
-        assert len(my_func.fs_mount) == 2
-
-        # First decorator applied last (outer), second decorator applied first (inner)
-        # So the order in fs_mount list should be: inner first, outer second
-        config1 = my_func.fs_mount[0]
-        assert config1.mount_path == "/mnt/data2"
-        assert "bucket2" in config1.path
-
-        config2 = my_func.fs_mount[1]
-        assert config2.mount_path == "/mnt/data1"
-        assert "bucket1" in config2.path
-
-    def test_multiple_fs_mount_same_ak_sk(self):
-        @with_fs_mount(
-            "oss://ep1.aliyuncs.com/b1/p1/",
-            "/mnt/d1",
-            storage_options={
-                "access_key_id": "same_ak",
-                "access_key_secret": "same_sk",
-            },
-        )
-        @with_fs_mount(
-            "oss://ep2.aliyuncs.com/b2/p2/",
-            "/mnt/d2",
-            storage_options={
-                "access_key_id": "same_ak",
-                "access_key_secret": "same_sk",
-            },
-        )
-        @with_fs_mount(
-            "oss://ep3.aliyuncs.com/b3/p3/",
-            "/mnt/d3",
-            storage_options={
-                "access_key_id": "same_ak",
-                "access_key_secret": "same_sk",
-            },
-        )
-        def my_func(df):
-            return df
-
-        assert isinstance(my_func, MarkedFunction)
-        assert len(my_func.fs_mount) == 3
-
-        # Check all three configs exist with correct data
-        mount_paths = [c.mount_path for c in my_func.fs_mount]
-        assert "/mnt/d1" in mount_paths
-        assert "/mnt/d2" in mount_paths
-        assert "/mnt/d3" in mount_paths
-
-    def test_multiple_fs_mount_different_role_arn_raises(self):
-        with pytest.raises(ValueError, match="must use identical storage_options"):
-
-            @with_fs_mount(
-                "oss://ep1.aliyuncs.com/b1/p1/",
-                "/mnt/d1",
-                storage_options={"role_arn": "role1"},
-            )
-            @with_fs_mount(
-                "oss://ep2.aliyuncs.com/b2/p2/",
-                "/mnt/d2",
-                storage_options={"role_arn": "role2"},
-            )
-            def my_func(df):
-                return df
-
-    def test_fs_mount_without_prefix(self):
-        @with_fs_mount(
+            {"access_key_id": "test_ak", "access_key_secret": "test_sk"},
+            id="ak-sk",
+        ),
+        # Bucket-level path without a prefix component is valid too
+        pytest.param(
             "oss://oss-cn-beijing.aliyuncs.com/my-bucket/",
             "/mnt/root",
-            storage_options={"role_arn": "role"},
+            {"role_arn": "role"},
+            id="without-prefix",
+        ),
+    ],
+)
+def test_single_fs_mount(path, mount_path, storage_options):
+    @with_fs_mount(path, mount_path, storage_options=storage_options)
+    def my_func(df):
+        return df
+
+    assert isinstance(my_func, MarkedFunction)
+    assert len(my_func.fs_mount) == 1
+
+    config = my_func.fs_mount[0]
+    assert isinstance(config, FsMountOptions)
+    assert config.path == path
+    assert config.mount_path == mount_path
+    assert config.storage_options == storage_options
+
+
+@pytest.mark.parametrize(
+    ("mount_specs", "storage_options"),
+    [
+        pytest.param(
+            [
+                ("oss://oss-cn-shanghai.aliyuncs.com/bucket1/prefix1/", "/mnt/data1"),
+                ("oss://oss-cn-hangzhou.aliyuncs.com/bucket2/prefix2/", "/mnt/data2"),
+            ],
+            {"role_arn": "same_role"},
+            id="same-role-arn",
+        ),
+        pytest.param(
+            [
+                ("oss://ep1.aliyuncs.com/b1/p1/", "/mnt/d1"),
+                ("oss://ep2.aliyuncs.com/b2/p2/", "/mnt/d2"),
+                ("oss://ep3.aliyuncs.com/b3/p3/", "/mnt/d3"),
+            ],
+            {"access_key_id": "same_ak", "access_key_secret": "same_sk"},
+            id="same-ak-sk",
+        ),
+    ],
+)
+def test_multiple_fs_mount(mount_specs, storage_options):
+    def my_func(df):
+        return df
+
+    for path, mount_path in mount_specs:
+        my_func = with_fs_mount(path, mount_path, storage_options=storage_options)(
+            my_func
         )
+
+    assert isinstance(my_func, MarkedFunction)
+    assert len(my_func.fs_mount) == len(mount_specs)
+
+    # Mounts accumulate in application order (with stacked decorators that
+    # is inner-most first, i.e. bottom-up)
+    assert [c.mount_path for c in my_func.fs_mount] == [
+        mount_path for _, mount_path in mount_specs
+    ]
+    assert all(c.storage_options == storage_options for c in my_func.fs_mount)
+
+
+def test_fs_mount_preserves_other_marked_function_attrs():
+    @with_resources("my_project/resources/my_resource.py")
+    @with_fs_mount(
+        "oss://ep.aliyuncs.com/bucket/prefix/",
+        "/mnt/data",
+        storage_options={"role_arn": "role"},
+    )
+    def my_func(df):
+        return df
+
+    assert isinstance(my_func, MarkedFunction)
+    assert len(my_func.fs_mount) == 1
+    assert len(my_func.file_resources) == 1
+    assert "my_resource.py" in my_func.file_resources[0]
+
+
+def test_fs_mount_options_to_dict_and_repr():
+    @with_fs_mount(
+        "oss://ep.aliyuncs.com/bucket/prefix/",
+        "/mnt/data",
+        storage_options={"role_arn": "test_role"},
+    )
+    def my_func(df):
+        return df
+
+    config = my_func.fs_mount[0]
+
+    # to_dict returns raw fields for backend to parse
+    config_dict = config.to_dict()
+    assert isinstance(config_dict, dict)
+    assert config_dict["path"] == "oss://ep.aliyuncs.com/bucket/prefix/"
+    assert config_dict["mount_path"] == "/mnt/data"
+    assert config_dict["storage_options"] == {"role_arn": "test_role"}
+
+    # repr includes the class name and both fields
+    repr_str = repr(config)
+    assert "FsMountOptions" in repr_str
+    assert "oss://ep.aliyuncs.com/bucket/prefix/" in repr_str
+    assert "/mnt/data" in repr_str
+
+
+@pytest.mark.parametrize(
+    ("mounts", "match"),
+    [
+        # (path, mount_path, storage_options) triples applied in sequence
+        pytest.param(
+            [("", "/mnt/data", {"role_arn": "role"})],  # Empty path
+            "A valid path string is required",
+            id="empty-path",
+        ),
+        pytest.param(
+            [("oss://ep.aliyuncs.com/bucket/prefix/", "/mnt/data", {})],  # No auth
+            "Authentication credentials required",
+            id="no-auth",
+        ),
+        pytest.param(
+            [
+                ("oss://ep1.aliyuncs.com/b1/p1/", "/mnt/d1", {"role_arn": "role1"}),
+                ("oss://ep2.aliyuncs.com/b2/p2/", "/mnt/d2", {"role_arn": "role2"}),
+            ],  # Conflicting credentials across stacked mounts
+            "must use identical storage_options",
+            id="different-storage-options",
+        ),
+    ],
+)
+def test_fs_mount_invalid_configuration_raises(mounts, match):
+    with pytest.raises(ValueError, match=match):
+
         def my_func(df):
             return df
 
-        config = my_func.fs_mount[0]
-        assert config.path == "oss://oss-cn-beijing.aliyuncs.com/my-bucket/"
-        assert config.mount_path == "/mnt/root"
-
-    def test_fs_mount_preserves_other_marked_function_attrs(self):
-        from maxframe.udf import with_resources
-
-        @with_resources("my_project/resources/my_resource.py")
-        @with_fs_mount(
-            "oss://ep.aliyuncs.com/bucket/prefix/",
-            "/mnt/data",
-            storage_options={"role_arn": "role"},
-        )
-        def my_func(df):
-            return df
-
-        assert isinstance(my_func, MarkedFunction)
-        assert len(my_func.fs_mount) == 1
-        assert len(my_func.file_resources) == 1
-        assert "my_resource.py" in my_func.file_resources[0]
-
-    def test_fs_mount_options_to_dict(self):
-        @with_fs_mount(
-            "oss://ep.aliyuncs.com/bucket/prefix/",
-            "/mnt/data",
-            storage_options={"role_arn": "test_role"},
-        )
-        def my_func(df):
-            return df
-
-        config = my_func.fs_mount[0]
-        config_dict = config.to_dict()
-
-        # to_dict returns raw fields for backend to parse
-        assert isinstance(config_dict, dict)
-        assert config_dict["path"] == "oss://ep.aliyuncs.com/bucket/prefix/"
-        assert config_dict["mount_path"] == "/mnt/data"
-        assert config_dict["storage_options"] == {"role_arn": "test_role"}
-
-    def test_fs_mount_options_repr(self):
-        @with_fs_mount(
-            "oss://ep.aliyuncs.com/bucket/prefix/",
-            "/mnt/data",
-            storage_options={"role_arn": "role"},
-        )
-        def my_func(df):
-            return df
-
-        config = my_func.fs_mount[0]
-        repr_str = repr(config)
-        assert "FsMountOptions" in repr_str
-        assert "oss://ep.aliyuncs.com/bucket/prefix/" in repr_str
-        assert "/mnt/data" in repr_str
-
-    def test_fs_mount_invalid_path_raises(self):
-        with pytest.raises(ValueError, match="A valid path string is required"):
-
-            @with_fs_mount(
-                "",  # Empty path
-                "/mnt/data",
-                storage_options={"role_arn": "role"},
+        for path, mount_path, storage_options in mounts:
+            my_func = with_fs_mount(path, mount_path, storage_options=storage_options)(
+                my_func
             )
-            def my_func(df):
-                return df
 
-    def test_fs_mount_no_auth_raises(self):
-        with pytest.raises(ValueError, match="Authentication credentials required"):
 
-            @with_fs_mount(
-                "oss://ep.aliyuncs.com/bucket/prefix/",
-                "/mnt/data",
-                storage_options={},  # No auth
-            )
-            def my_func(df):
-                return df
+@pytest.mark.parametrize(
+    ("legacy_config", "expected_path", "expected_storage_options"),
+    [
+        (
+            {
+                "protocol": "oss",
+                "oss_endpoint": "oss-cn-hangzhou.aliyuncs.com",
+                "oss_bucket": "test-bucket",
+                "oss_bucket_prefix": "data/path/",
+                "role_arn": "acs:ram::123456789:role/test-role",
+                "auth_mode": "role_arn",
+                "mount_path": "/mnt/oss",
+            },
+            "oss://oss-cn-hangzhou.aliyuncs.com/test-bucket/data/path/",
+            {"role_arn": "acs:ram::123456789:role/test-role"},
+        ),
+        (
+            {
+                "protocol": "oss",
+                "oss_endpoint": "oss-cn-shanghai.aliyuncs.com",
+                "oss_bucket": "my-bucket",
+                "access_key_id": "test_ak",
+                "access_key_secret": "test_sk",
+                "auth_mode": "ak_sk",
+                "mount_path": "/mnt/data",
+            },
+            "oss://oss-cn-shanghai.aliyuncs.com/my-bucket",
+            {"access_key_id": "test_ak", "access_key_secret": "test_sk"},
+        ),
+    ],
+)
+def test_fs_mount_options_from_legacy_dict(
+    legacy_config, expected_path, expected_storage_options
+):
+    result = FsMountOptions.from_legacy_dict(legacy_config)
 
-    def test_fs_mount_options_from_legacy_dict_with_role_arn(self):
-        legacy_config = {
-            "protocol": "oss",
-            "oss_endpoint": "oss-cn-hangzhou.aliyuncs.com",
-            "oss_bucket": "test-bucket",
-            "oss_bucket_prefix": "data/path/",
-            "role_arn": "acs:ram::123456789:role/test-role",
-            "auth_mode": "role_arn",
-            "mount_path": "/mnt/oss",
-        }
-
-        result = FsMountOptions.from_legacy_dict(legacy_config)
-
-        assert isinstance(result, FsMountOptions)
-        assert (
-            result.path == "oss://oss-cn-hangzhou.aliyuncs.com/test-bucket/data/path/"
-        )
-        assert result.mount_path == "/mnt/oss"
-        assert result.storage_options == {
-            "role_arn": "acs:ram::123456789:role/test-role"
-        }
-
-    def test_fs_mount_options_from_legacy_dict_with_ak_sk(self):
-        legacy_config = {
-            "protocol": "oss",
-            "oss_endpoint": "oss-cn-shanghai.aliyuncs.com",
-            "oss_bucket": "my-bucket",
-            "access_key_id": "test_ak",
-            "access_key_secret": "test_sk",
-            "auth_mode": "ak_sk",
-            "mount_path": "/mnt/data",
-        }
-
-        result = FsMountOptions.from_legacy_dict(legacy_config)
-
-        assert isinstance(result, FsMountOptions)
-        assert result.path == "oss://oss-cn-shanghai.aliyuncs.com/my-bucket"
-        assert result.mount_path == "/mnt/data"
-        assert result.storage_options == {
-            "access_key_id": "test_ak",
-            "access_key_secret": "test_sk",
-        }
+    assert isinstance(result, FsMountOptions)
+    assert result.path == expected_path
+    assert result.mount_path == legacy_config["mount_path"]
+    assert result.storage_options == expected_storage_options
 
 
 def test_deserialize_fs_mount():
@@ -817,20 +765,100 @@ def test_builtin_function_inspect_unwrap():
 
 
 def test_builtin_function_singledispatch_register():
-    """Regression: ``singledispatch.register`` on a ``@builtin_function``
-    singledispatch (``@builtin_function`` *outside* ``@singledispatch``)
-    must return the handler and actually dispatch.
+    """Regression: ``register`` delegates to the wrapped ``singledispatch``.
 
-    With ``@builtin_function`` outermost, ``.register`` reaches
-    ``BuiltinFunction.__getattr__``.  The prior implementation returned a
-    ``BuiltinMethod`` whose ``func`` re-instantiated the (non-class)
-    dispatcher and failed on reload; the current guard returns the handler
-    unchanged.  Register an ``int`` handler through the builtin object and
-    assert calling it with an ``int`` returns the handler's result.
+    ``@builtin_function`` must not shadow the dispatcher's ``register``.
     """
     int_handler = _bf_sd_outermost.register(int)
     assert callable(int_handler)
     assert not isinstance(int_handler, BuiltinMethod)
-    # The registration must actually land on the underlying singledispatch
     _bf_sd_outermost.register(str)(object())
-    assert int_handler(0) == 0
+    assert _bf_sd_outermost(0) == 0
+
+
+@pytest.fixture
+def builtin_registry():
+    """Isolate the ``BuiltinFunction`` registration registry around a test."""
+    registered = BuiltinFunction._registered.copy()
+    yield BuiltinFunction._registered
+    BuiltinFunction._registered.clear()
+    BuiltinFunction._registered.update(registered)
+
+
+def test_builtin_function_register_unimportable_callable(builtin_registry):
+    """A registered callable resolves without being importable by name."""
+    func_name = "maxframe.tests._unimportable_module#_private_func"
+
+    def _private_func(x):
+        return x * 2
+
+    # Referencing by name does not require the function to be registered.
+    bf = BuiltinFunction(func_name=func_name)
+    assert bf.func_name == func_name
+
+    BuiltinFunction.register_function_body(func_name, _private_func)
+    # No module named ``maxframe.tests._unimportable_module`` exists, so
+    # resolution can only succeed through the registration.
+    assert bf.func is _private_func
+    assert bf(3) == 6
+
+
+def test_builtin_function_register_takes_precedence_over_import(builtin_registry):
+    """The registration is checked before the import mechanism."""
+    func_name = _bf_sd_outermost.func_name
+
+    def _override(x):
+        return x
+
+    BuiltinFunction.register_function_body(func_name, _override)
+    assert BuiltinFunction(func_name=func_name).func is _override
+
+    # Unregistered again -> the importable builtin is reloaded by name.
+    del builtin_registry[func_name]
+    assert BuiltinFunction(func_name=func_name).func is _bf_sd_outermost.func
+
+
+def test_builtin_method_registered_class(builtin_registry):
+    """``BuiltinMethod`` resolves a class available only via registration."""
+
+    class _RegisteredClass:
+        def get(self):
+            return 42
+
+    func_name = "maxframe.tests._unimportable_module#_RegisteredClass"
+    BuiltinFunction.register_function_body(func_name, _RegisteredClass)
+    assert BuiltinMethod(func_name=func_name, method_name="get")() == 42
+
+
+@pytest.mark.parametrize(
+    "probe", ["__wrapped__", "__closure__", "__globals__", "__code__"]
+)
+def test_builtin_function_body_absent_probes_are_opaque(probe, builtin_registry):
+    """Callable inspection must not import a body-absent logical name.
+
+    ``unwrap_function`` and the closure-entity checks probe these dunders while
+    the client builds a graph, where the private backend module is not
+    importable -- answering them by import would fail the graph construction.
+    """
+    bf = BuiltinFunction(func_name="myapp#scale")
+
+    assert not hasattr(bf, probe)
+    # the body stays genuinely unresolved: explicit access still reports the
+    # unimportable module rather than returning a placeholder
+    with pytest.raises(ValueError, match="not trusted"):
+        bf.func
+
+
+def test_builtin_function_registered_body_still_answers_probes(builtin_registry):
+    """A registered body keeps being inspected (backend/worker processes)."""
+    func_name = "maxframe.tests._unimportable_module#_private_func"
+
+    def _private_func(x):
+        return x
+
+    bf = BuiltinFunction(func_name=func_name)
+    BuiltinFunction.register_function_body(func_name, _private_func)
+
+    assert bf.func is _private_func
+    assert hasattr(bf, "__code__")
+    assert bf(3) == 3

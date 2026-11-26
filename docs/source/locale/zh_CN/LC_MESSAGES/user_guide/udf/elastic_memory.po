@@ -1,0 +1,724 @@
+# Chinese translations for the maxframe package.
+# Copyright (C) 1999-2026, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: MaxFrame \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-30 12:34+0800\n"
+"PO-Revision-Date: 2026-10-28 00:00+0800\n"
+"Last-Translator: \n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:4
+msgid "Using elastic memory"
+msgstr "弹性内存使用说明"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:6
+msgid ""
+"Elastic memory lets DPE retry a CPU UDF task with more memory after an out-"
+"of-memory (OOM) failure. It is useful when most tasks need little memory but"
+" a few process much larger inputs."
+msgstr ""
+"弹性内存用于处理 DPE CPU UDF "
+"的内存不足（OOM）：任务失败后，可以申请更大的内存重试。它适合大多数任务用较小内存就能完成、少数任务需要处理更大输入的情况。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:11
+msgid "When to use elastic memory"
+msgstr "什么时候使用弹性内存"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:13
+msgid ""
+"Variable-length payloads and large groups can make memory use uneven. Giving"
+" every task the largest allocation reserves extra memory for ordinary "
+"inputs. With a fixed quota, this can reduce the number of tasks running at "
+"once. A large memory request can also increase the CPU request to meet the "
+"memory-per-CPU ratio."
+msgstr ""
+"变长数据和大小不一的分组，会让各个任务的内存需求差很多。如果所有任务都按最大需求分配内存，普通任务也会预留这部分资源。在固定 Quota "
+"下，能同时运行的任务数可能因此减少。内存申请较大时，CPU 申请量也会按内存与 CPU 的比例限制上调。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:19
+msgid ""
+"Use elastic memory for occasional OOM failures. If nearly every task needs "
+"more memory, raise the starting ``memory`` or reduce the input size first. "
+"Reducing ``batch_rows`` lowers temporary memory per function call, but does "
+"not shrink the input chunk already held by the task. See :ref:`udf_tuning`."
+msgstr ""
+"弹性内存适合偶发的 OOM。如果几乎每个任务都需要更多内存，应先调大起始 ``memory``，或减少输入数据量。调小 ``batch_rows`` "
+"可以减少单次函数调用的临时内存，但不会缩小任务已经持有的输入 Chunk。调整方法见 :ref:`udf_tuning`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:27
+msgid "Supported tasks"
+msgstr "支持哪些任务"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:29
+msgid ""
+"The SDK and DPE runtime must support elastic memory, and the task must allow"
+" retries. GU tasks, tasks with concurrency limits, and tasks scheduled "
+"together through gang scheduling do not support it. It is also disabled when"
+" ``options.dpe.settings[\"step.skip_task_resources\"] = True``."
+msgstr ""
+"SDK 和 DPE 运行环境需要支持弹性内存，任务本身也需要允许重试。GU 任务、设置了并发限制的任务，以及通过 gang scheduling "
+"要求一起调度的任务，不支持弹性内存。设置 ``options.dpe.settings[\"step.skip_task_resources\"] = "
+"True`` 时，也不会开启该功能。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:34
+msgid ""
+"Elastic memory can be used with CPU UDFs running on DPE, including the "
+"following interfaces:"
+msgstr "弹性内存适用于在 DPE 上用 CPU 运行的 UDF，包括以下接口："
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:41
+msgid "Operation"
+msgstr "处理方式"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:42
+msgid "Interface"
+msgstr "接口"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:43
+msgid "Process DataFrame rows or columns"
+msgstr "对 DataFrame 的行或列执行函数"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:44
+msgid "``DataFrame.apply``"
+msgstr "``DataFrame.apply``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:45
+msgid "Process Series elements"
+msgstr "对 Series 的元素执行函数"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:46
+msgid "``Series.apply``"
+msgstr "``Series.apply``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:47
+msgid "Process each DataFrame element"
+msgstr "对 DataFrame 的每个元素执行函数"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:48
+msgid "``DataFrame.map`` / ``DataFrame.applymap``"
+msgstr "``DataFrame.map`` / ``DataFrame.applymap``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:49
+msgid "Process a DataFrame in batches"
+msgstr "分批处理 DataFrame"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:50
+msgid "``DataFrame.mf.apply_chunk``"
+msgstr "``DataFrame.mf.apply_chunk``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:51
+msgid "Process a Series in batches"
+msgstr "分批处理 Series"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:52
+msgid "``Series.mf.apply_chunk``"
+msgstr "``Series.mf.apply_chunk``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:53
+msgid "Process grouped data in batches"
+msgstr "分组后分批处理"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:54
+msgid "``DataFrameGroupBy.mf.apply_chunk``"
+msgstr "``DataFrameGroupBy.mf.apply_chunk``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:55
+msgid "Process a tensor in chunks"
+msgstr "分块处理 Tensor"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:56
+msgid "``Tensor.mf.apply_chunk``"
+msgstr "``Tensor.mf.apply_chunk``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:59
+msgid "Configure memory"
+msgstr "配置内存"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:61
+msgid ""
+"Set the starting ``memory`` and retry limit ``memory_limit`` in the same "
+"``with_running_options`` decorator. For example, this UDF expands JSON "
+"arrays stored in a ``payload`` column. Longer arrays produce more rows and "
+"temporary objects, so batches can need different amounts of memory."
+msgstr ""
+"在同一个 ``with_running_options`` 装饰器中设置起始内存 ``memory`` 和重试上限 "
+"``memory_limit``。例如，下面的 UDF 将 ``payload`` 列中的 JSON "
+"数组展开成表。数组越长，展开后的行数和临时对象越多，不同批次需要的内存也会不同。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:78
+msgid ""
+"These sizes illustrate the configuration; a short payload will not trigger "
+"OOM. Size memory from representative inputs. To start at 8 GiB and allow up "
+"to 32 GiB, change the decorator to ``memory=\"8GiB\", "
+"memory_limit=\"32GiB\"``. Omitting ``memory`` uses the shared default, "
+"initially 4 GiB."
+msgstr ""
+"这里的数值用于说明配置方法，较短的输入不会触发 OOM。实际取值需要根据有代表性的输入确定。如果要从 8 GiB 开始、最多增加到 32 "
+"GiB，将装饰器中的参数改为 ``memory=\"8GiB\", memory_limit=\"32GiB\"``。省略 ``memory`` "
+"时使用共享默认值，初始为 4 GiB。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:83
+msgid ""
+"``memory_limit`` must be at least ``memory``. Equal values are valid and "
+"disable expansion; a smaller limit raises an error. The cluster's available "
+"resources also constrain the effective limit."
+msgstr "``memory_limit`` 不能小于 ``memory``。两者相等是合法配置，此时不扩容；上限更小时会报错。实际扩容还受到集群可用资源的限制。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:88
+msgid "Shared defaults and per-function overrides"
+msgstr "共享默认值和单个函数的配置"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:90
+msgid ""
+"To use the same elastic-memory settings for multiple DPE CPU UDFs, include "
+"both ``memory`` and ``memory_limit`` in the shared defaults:"
+msgstr "多个 DPE CPU UDF 需要使用相同的弹性内存配置时，可以在默认资源中同时设置 ``memory`` 和 ``memory_limit``："
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:103
+msgid ""
+"Eligible DPE CPU UDF tasks then start with 4 GiB and can retry with up to 16"
+" GiB. This setting does not select the execution engine. Assigning a new "
+"dict replaces the previous defaults, so keep ``memory`` in the dict when "
+"setting ``memory_limit``; otherwise each affected UDF must provide it in its"
+" decorator."
+msgstr ""
+"符合条件的 DPE CPU UDF 任务会从 4 GiB 开始，重试时最多增加到 16 GiB。这个设置不会改变执行引擎。给 "
+"``default_running_options`` 赋一个新字典会替换原来的默认值，因此设置 ``memory_limit`` 时要保留 "
+"``memory``，或在各个 UDF 的装饰器中单独指定起始内存。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:112
+msgid "Override or disable a shared memory limit"
+msgstr "单个函数覆盖或关闭共用的内存上限"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:114
+msgid ""
+"``memory`` and ``memory_limit`` are inherited separately. With shared "
+"defaults of ``memory=\"4GiB\"`` and ``memory_limit=\"16GiB\"``:"
+msgstr ""
+"``memory`` 和 ``memory_limit`` 分别继承默认值。假设默认设置为 "
+"``memory=\"4GiB\"``、``memory_limit=\"16GiB\"``："
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:117
+msgid ""
+"``@with_running_options(memory=\"8GiB\")`` starts at 8 GiB and keeps the 16 "
+"GiB limit."
+msgstr "``@with_running_options(memory=\"8GiB\")`` 从 8 GiB 开始，上限仍是 16 GiB。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:119
+msgid ""
+"``@with_running_options(memory=\"8GiB\", memory_limit=\"8GiB\")`` uses 8 GiB"
+" without elastic-memory retries for that UDF. Ordinary retries are "
+"unchanged."
+msgstr ""
+"``@with_running_options(memory=\"8GiB\", memory_limit=\"8GiB\")`` 使用 8 "
+"GiB，为这个 UDF 关闭弹性内存重试，普通重试不受影响。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:121
+msgid ""
+"``@with_running_options(memory=\"32GiB\")`` fails validation because the "
+"inherited 16 GiB limit is below the new starting memory. Set a larger limit "
+"in the same decorator, or set ``memory_limit=\"32GiB\"`` to disable "
+"expansion."
+msgstr ""
+"``@with_running_options(memory=\"32GiB\")`` 会报错，因为继承的 16 GiB "
+"上限小于新的起始内存。需要在同一个装饰器中调高上限，或设置 ``memory_limit=\"32GiB\"`` 关闭扩容。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:125
+msgid ""
+"Passing ``memory_limit=None`` leaves the shared limit in effect. To remove a"
+" shared limit for subsequent expressions, remove the key before building "
+"them:"
+msgstr "传入 ``memory_limit=None`` 会继续沿用共用的上限。如果希望后续构建的表达式不再继承这个上限，应先从默认配置中移除该项："
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:135
+msgid "Configuration errors"
+msgstr "配置报错时怎么处理"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:137
+msgid ""
+"``memory must be specified when memory_limit is set``: set the starting "
+"``memory`` in the decorator or shared defaults. Replacing the defaults with "
+"a dictionary containing only ``memory_limit`` removes the built-in memory."
+msgstr ""
+"``memory must be specified when memory_limit is set``：在装饰器或共享默认值中补上起始 "
+"``memory``。如果用只包含 ``memory_limit`` 的字典替换共享默认值，原有的默认内存也会被移除。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:140
+msgid ""
+"``memory_limit must be greater than or equal to memory``: check the merged "
+"settings. Raising ``memory`` can leave an inherited limit below it. Set a "
+"supported limit at least as large as the starting memory."
+msgstr ""
+"``memory_limit must be greater than or equal to memory``：检查合并后的配置。单独调大 "
+"``memory``，可能使继承的上限低于起始内存。应同时设置不小于起始内存、且运行环境支持的上限。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:143
+msgid ""
+"If a valid limit does not lead to expansion, follow "
+":ref:`udf_elastic_memory_not_expanding`."
+msgstr "配置合法但没有扩容时，按 :ref:`udf_elastic_memory_not_expanding` 排查。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:147
+msgid "How retries work"
+msgstr "开启功能后表现"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:149
+msgid ""
+"When DPE classifies a failure as OOM, the next attempt requests "
+"``min(current_memory * 2, memory_limit)``. A task that still runs out of "
+"memory at the limit fails. Other errors follow ordinary retry rules and keep"
+" the current memory allocation."
+msgstr ""
+"DPE 将失败识别为 OOM 后，下次尝试会申请 ``min(current_memory * 2, memory_limit)`` "
+"的内存。达到上限后仍然 OOM，任务就会失败。其他错误按普通重试规则处理，继续使用当前的内存分配。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:154
+msgid ""
+"DPE doubles memory after OOM, stops at the limit, and keeps memory for "
+"ordinary retries"
+msgstr "DPE 遇到 OOM 后将内存翻倍，到达上限后停止扩容；普通重试保持当前内存"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:154
+msgid ".. image:: ../../_static/user_guide/elastic_memory/retry-flow.svg"
+msgstr ""
+".. image:: ../../_static/user_guide/elastic_memory/retry-flow.svg\n"
+"   :alt: DPE 遇到 OOM 后将内存翻倍，到达上限后停止扩容；普通重试保持当前内存"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:158
+msgid ""
+"An error such as ``ExitError: signal: killed`` is a clue, not proof by "
+"itself. Correlate the failure, memory metrics, and the next attempt's "
+"allocation. See :ref:`udf_faqs` for OOM diagnosis."
+msgstr ""
+"``ExitError: signal: killed`` 这类报错只能作为线索，不能单独证明发生了 "
+"OOM。需要结合失败记录、内存指标和下一次尝试的内存分配判断，排查方法见 :ref:`udf_faqs`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:162
+msgid ""
+"Suppose the starting memory is 4 GiB and the limit is 16 GiB. The following "
+"examples show how OOM retries and ordinary retries work together."
+msgstr "假设初始内存为 4 GiB，上限为 16 GiB。下面举两个例子，看看 OOM 扩容重试和普通重试分别会怎么处理。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:166
+msgid "Example 1: a network error after memory expansion"
+msgstr "例一：扩容后遇到网络错误"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:168
+msgid ""
+"This UDF needs 16 GiB to finish. The first two attempts run out of memory. "
+"The third has enough memory, but fails with a retryable network error. There"
+" are still ordinary retries available, so the task is tried again."
+msgstr ""
+"这个 UDF 需要 16 GiB "
+"内存才能跑完。前两次因为内存不足失败；第三次内存够了，却遇到一次可重试的网络错误。此时普通重试次数还未用完，因此会再试一次。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:176
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:205
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:357
+msgid "Attempt"
+msgstr "执行次数"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:177
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:206
+msgid "Allocated memory"
+msgstr "分配内存"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:178
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:207
+msgid "Result"
+msgstr "执行结果"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:179
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:208
+msgid "1st"
+msgstr "第 1 次"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:180
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:209
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:362
+msgid "4 GiB"
+msgstr "4 GiB"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:181
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:210
+msgid "OOM; retry with 8 GiB."
+msgstr "OOM，增加到 8 GiB 重试。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:182
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:211
+msgid "2nd"
+msgstr "第 2 次"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:183
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:212
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:366
+msgid "8 GiB"
+msgstr "8 GiB"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:184
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:213
+msgid "OOM; retry with 16 GiB."
+msgstr "OOM，增加到 16 GiB 重试。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:185
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:214
+msgid "3rd"
+msgstr "第 3 次"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:186
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:189
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:215
+msgid "16 GiB"
+msgstr "16 GiB"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:187
+msgid "Retryable network error; retry with the same memory."
+msgstr "网络错误，保持 16 GiB 进行普通重试。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:188
+msgid "4th"
+msgstr "第 4 次"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:190
+msgid "Success; the task finishes."
+msgstr "执行成功，任务结束。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:192
+msgid ""
+"The two OOM retries do not count toward the ordinary retry limit. The "
+"network error causes one ordinary retry. That retry keeps the increased "
+"memory of 16 GiB: it neither falls back to 4 GiB nor increases it further."
+msgstr ""
+"前两次 OOM 扩容重试不占用普通重试次数，网络错误触发的重试占用一次。普通重试会保留已经加大的内存，所以第四次仍用 16 GiB，不会退回 4 "
+"GiB，也不会继续增加内存。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:197
+msgid "Example 2: the memory limit is still not enough"
+msgstr "例二：加到上限仍然不够"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:199
+msgid "This UDF needs 32 GiB to finish, but the configured limit is only 16 GiB."
+msgstr "这个 UDF 需要 32 GiB 内存才能跑完，但设置的上限只有 16 GiB。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:216
+msgid "OOM at the limit; the task fails."
+msgstr "OOM，已经达到上限，任务失败。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:218
+msgid ""
+"The third attempt has reached the 16 GiB limit and still runs out of memory."
+" The task fails instead of increasing memory to 32 GiB, even if ordinary "
+"retries are still available."
+msgstr "第三次已经用到 16 GiB 上限，仍然 OOM，任务就会失败，不会继续增加到 32 GiB。即使还有普通重试次数，也不会因此继续重试。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:222
+msgid ""
+"These examples assume that enough resources are available and platform "
+"protection rules do not stop retries earlier. Keep ordinary retries enabled "
+"to handle temporary network or disk errors."
+msgstr "以上例子假设平台资源充足，也没有触发保护规则；实际运行中，重试可能因为这些限制提前停止。建议保留原来的普通重试，避免偶发的网络、磁盘错误导致整个任务失败。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:227
+msgid "Resource use and repeated execution"
+msgstr "资源变化和重复执行"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:229
+msgid ""
+"Only the failed UDF task requests more resources. With the default maximum "
+"ratio of 12 GiB per CPU, a task requesting one CPU and 16 GiB or 24 GiB is "
+"adjusted to two CPUs. See :ref:`udf_tuning_resources` for the calculation "
+"and the separate MCSQL CU setting."
+msgstr ""
+"只有失败的 UDF 任务会申请更多资源。默认每个 CPU 最多对应 12 GiB 内存，因此一个申请了 1 个 CPU 的任务，使用 16 GiB 或 "
+"24 GiB 内存时，CPU 会增加到 2 个。计算方式以及 MCSQL 单独的 CU 设置见 :ref:`udf_tuning_resources`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:234
+msgid ""
+"A retry runs the function again. File writes, appended records, and external"
+" requests must tolerate repeated execution. Expansion and retries consume "
+"extra time and resources; they do not fix memory leaks or arbitrarily large "
+"inputs."
+msgstr "重试会重新执行函数。写文件、追加记录或请求外部服务时，需要能够处理重复执行。扩容和重试会增加耗时和资源消耗，不能解决内存泄漏，也不能处理任意大的输入。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:242
+msgid "Verify the retry and choose memory sizes"
+msgstr "验证扩容并选择内存大小"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:244
+msgid ""
+"Open ``session.get_logview_address()`` and find the UDF in DPE's "
+"**SubSteps** list; the navigation is described in :ref:`udf_debugging_dpe`. "
+"After expansion, **Description** includes a label such as ``[2.0x memory]``."
+" The label compares the new allocation with the starting memory. Check "
+"**Rerun**, task status, and the failed and successful attempt records "
+"together."
+msgstr ""
+"打开 ``session.get_logview_address()`` 返回的链接，在 DPE 的 **SubSteps** 列表中找到 "
+"UDF，具体路径见 :ref:`udf_debugging_dpe`。扩容后，**Description** 中会出现 ``[2.0x "
+"memory]`` 这样的标签，表示当前分配的内存是起始内存的几倍。还需要一起查看 **Rerun**、任务状态，以及失败和成功的尝试记录。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:250
+msgid ""
+"The ratio can be fractional: expanding from 4 GiB to a 10 GiB limit produces"
+" ``[2.5x memory]``."
+msgstr "倍率也可以是小数。例如，从 4 GiB 扩到 10 GiB 上限时，标签为 ``[2.5x memory]``。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:254
+msgid "Run a deliberate OOM example"
+msgstr "运行一个故意触发 OOM 的示例"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:256
+msgid ""
+"The following one-row, one-partition example holds twelve 512 MiB arrays. It"
+" starts with 4 GiB and allows 8 GiB, so the first attempt cannot hold all 6 "
+"GiB. The retry completes when the runtime and quota can supply enough "
+"memory."
+msgstr ""
+"下面的示例只有一行数据、一个分区，会持有十二个 512 MiB 的数组。起始内存为 4 GiB，上限为 8 GiB，因此第一次尝试无法容纳全部 6 "
+"GiB 数据。运行环境和 Quota 能提供足够内存时，扩容后的重试可以完成。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:262
+msgid ""
+"This example deliberately allocates 6 GiB and triggers an OOM. Run it in a "
+"test environment with capacity for an 8 GiB DPE task. Do not run it in Local"
+" Debug Mode."
+msgstr ""
+"这个示例会主动申请 6 GiB 内存并触发 OOM。应在能为单个 DPE 任务分配 8 GiB 的测试环境中运行，不要使用 Local Debug "
+"Mode。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:266
+msgid ""
+"Set the four connection environment variables before running the example. "
+"Inside the UDF, DPE provides ``MAXFRAME_SUBSTEP_ATTEMPT`` as the zero-based "
+"attempt number. Local Debug Mode does not provide this variable or run "
+"elastic-memory retries."
+msgstr ""
+"运行前需要设置上面的四个连接环境变量。在 UDF 内，DPE 会提供 ``MAXFRAME_SUBSTEP_ATTEMPT``，表示从 0 "
+"开始的运行次数。Local Debug 模式不提供这个变量，也不执行弹性内存重试。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:333
+msgid ""
+"The UDF keeps twelve 512 MiB arrays in ``buffers`` and writes to every array"
+" with ``fill(1)``. This uses real memory. It waits 20 seconds before "
+"allocation, five seconds between arrays, and 20 seconds after allocation so "
+"that Sensor can sample the growth. ``skip_infer=True`` prevents MaxFrame "
+"from calling the UDF on the client to infer its output. Run this example on "
+"DPE, without local debug mode."
+msgstr ""
+"UDF 将 12 个 512 MiB 数组保存在 ``buffers`` 中，并通过 ``fill(1)`` 写入每个数组，实际占用内存。分配前等待 "
+"20 秒，每次分配间隔 5 秒，分配完成后再保留 20 秒，便于 Sensor 采样观察内存增长。``skip_infer=True`` 可避免 "
+"MaxFrame 为推断结果类型而在客户端调用 UDF。这个示例需要在 DPE 上运行，不使用 Local Debug 模式。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:340
+msgid ""
+"The ``option_context`` block disables automatic local execution for this "
+"submission. This keeps the small sample on DPE, where elastic retries run. "
+"The verified run returned:"
+msgstr "``option_context`` 代码块关闭了这次提交的自动本地执行，确保这个小样本在 DPE 上运行，才能触发弹性重试。本次实际运行的结果如下："
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:349
+msgid ""
+"The task detail recorded the following attempts for SubStep "
+"``c1e52ae8127f_0``. Attempt numbers start at zero. The memory column lists "
+"the configured allocation for each attempt."
+msgstr "任务详情记录了 SubStep ``c1e52ae8127f_0`` 的以下两次运行。运行次数从 0 开始计数，内存列表示每次运行对应的配置值。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:358
+msgid "Configured memory"
+msgstr "配置内存"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:359
+msgid "Status"
+msgstr "状态"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:360
+msgid "StdOut"
+msgstr "StdOut"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:361
+msgid "0"
+msgstr "0"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:363
+msgid "``FAILED``"
+msgstr "``FAILED``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:364
+msgid "``attempt=0, allocating 6 GiB``; no allocation-complete message."
+msgstr "``attempt=0, allocating 6 GiB``；没有打印分配完成的消息。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:365
+msgid "1"
+msgstr "1"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:367
+msgid "``TERMINATED``"
+msgstr "``TERMINATED``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:368
+msgid "``attempt=1, allocating 6 GiB`` followed by ``attempt=1, allocated_gib=6``."
+msgstr "先打印 ``attempt=1, allocating 6 GiB``，随后打印 ``attempt=1, allocated_gib=6``。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:371
+msgid ""
+"The successful row has ``[2.0x memory]`` and **Rerun** ``1``. Together with "
+"the failed attempt and the returned result, these verify the expansion from "
+"4 GiB to 8 GiB. The attempt number alone does not identify an OOM retry."
+msgstr ""
+"成功任务显示 ``[2.0x memory]``，**Rerun** 为 ``1``。结合第一次失败的记录和最终返回结果，可以确认任务从 4 GiB "
+"扩容到了 8 GiB。单看尝试编号，不能判断是否因 OOM 重试。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:375
+msgid ""
+"One DataFrameApplyChunk task with doubled memory and Rerun 1 in the user "
+"Logview"
+msgstr "用户版 Logview 中，单个 DataFrameApplyChunk 任务显示内存翻倍，Rerun 为 1"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:375
+msgid ".. image:: ../../_static/user_guide/elastic_memory/logview-memory-label.jpg"
+msgstr ""
+".. image:: ../../_static/user_guide/elastic_memory/logview-memory-label.jpg\n"
+"   :alt: 用户版 Logview 中，单个 DataFrameApplyChunk 任务显示内存翻倍，Rerun 为 1"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:379
+msgid ""
+"The image combines the task and retry columns from the same row. The gap "
+"marks omitted columns."
+msgstr "图中保留了同一行的任务信息和重试次数，空隙处省略了中间的其他列。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:383
+msgid "Choose the starting memory and limit"
+msgstr "选择起始内存和上限"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:385
+msgid ""
+"Open **Sensor** on the UDF task's row. Under **Resource Basic Metrics**, "
+"compare ``mem_usage`` with ``mem_plan``. **Mem Metrics** shows ``mem_rss`` "
+"and ``mem_cache`` separately. Check the task ID and time range so the curve "
+"matches the attempt under investigation. See :ref:`logview_fuxi_sensor` for "
+"metric meanings and the MCSQL entry point."
+msgstr ""
+"打开 UDF 任务所在行的 **Sensor**，在 **Resource Basic Metrics** 中对比 ``mem_usage`` 和 "
+"``mem_plan``。**Mem Metrics** 会分别显示 ``mem_rss`` 和 ``mem_cache``。同时核对任务 ID "
+"和时间范围，确保曲线对应正在排查的那次尝试。指标含义和 MCSQL 的查看入口见 :ref:`logview_fuxi_sensor`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:391
+msgid ""
+"The following charts show the two attempts of this example in the user "
+"Logview. The first is from the failed attempt, configured with 4 GiB. Its "
+"last sample precedes the failure by about 12 seconds, so it does not show "
+"memory usage at the moment of failure."
+msgstr ""
+"下面两张图来自本示例的用户版 Logview。第一张对应配置为 4 GiB 的首次运行。最后一个采样点比失败时间早约 12 "
+"秒，因此没有记录到失败瞬间的内存用量。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:396
+msgid ""
+"Sensor formats axis labels automatically, including MB and GB labels on the "
+"same chart. Read each value together with its unit. The screenshots retain "
+"the units displayed by Sensor; the configuration examples use GiB."
+msgstr ""
+"Sensor 会自动格式化坐标轴刻度，同一张图中可能同时出现 MB 和 GB。读取数值时需要一起看单位。截图保留了 Sensor "
+"实际显示的单位，文中的配置示例使用 GiB。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:400
+msgid "User Logview Sensor samples before the first attempt failed"
+msgstr "用户版 Logview Sensor 中首次运行失败前的内存采样"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:400
+msgid ".. image:: ../../_static/user_guide/elastic_memory/sensor-memory-initial.jpg"
+msgstr ""
+".. image:: ../../_static/user_guide/elastic_memory/sensor-memory-initial.jpg"
+"\n"
+"   :alt: 用户版 Logview Sensor 中首次运行失败前的内存采样"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:404
+msgid ""
+"The second chart is from the successful retry, configured with 8 GiB. Usage "
+"rises as the arrays are allocated, then levels off during the 20-second "
+"hold. The ``[2.0x memory]`` label reports an allocation ratio; it is not a "
+"measured memory peak."
+msgstr ""
+"第二张对应配置为 8 GiB 的成功重试。内存用量随数组分配逐渐上升，在最后保留数组的 20 秒内保持平稳。``[2.0x memory]`` "
+"表示内存分配倍数，不是实测峰值。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:409
+msgid ""
+"User Logview Sensor showing memory usage and requested memory for the "
+"successful retry"
+msgstr "用户版 Logview Sensor 中成功重试的实际内存用量和申请内存"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:409
+msgid ".. image:: ../../_static/user_guide/elastic_memory/sensor-memory.jpg"
+msgstr ""
+".. image:: ../../_static/user_guide/elastic_memory/sensor-memory.jpg\n"
+"   :alt: 用户版 Logview Sensor 中成功重试的实际内存用量和申请内存"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:413
+msgid ""
+"Use representative inputs, including the largest payloads or groups. Choose "
+"starting memory that covers normal tasks, then leave room for input, models,"
+" intermediate objects, and output. Use larger successful tasks to estimate "
+"the limit, within the available quota. A killed process's final sample can "
+"miss its peak, so do not size the limit from that sample alone."
+msgstr ""
+"选择有代表性的输入，也要包含最大的 payload "
+"或分组。起始内存应能覆盖普通任务，并为输入、模型、临时对象和输出留出空间。再参考较大任务成功运行时的用量，在可用 Quota "
+"范围内确定上限。进程被终止前的最后一个采样点可能没有记录到峰值，不能只凭这个值设置上限。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:419
+msgid ""
+"For example, suppose measurements across representative inputs show a 95th-"
+"percentile task peak of 3 GiB and a largest successful task peak of 6 GiB. "
+"Starting at 4 GiB with an 8 GiB limit leaves 1 GiB and 2 GiB of headroom, "
+"respectively. These are trial settings for that workload, not a fixed "
+"multiplier for every UDF. Validate them with larger inputs and the actual "
+"runtime before using them for a full job."
+msgstr ""
+"例如，假设用有代表性的输入测得：95% 的任务峰值不超过 3 GiB，最大的成功任务峰值为 6 GiB。这种情况下，可以先设初始内存 4 GiB、上限 "
+"8 GiB，分别留出 1 GiB 和 2 GiB 余量。这只是该工作负载的起始选值，并不是所有 UDF "
+"都适用的固定倍数；正式运行前，还需要用更大的输入和实际运行环境验证。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:426
+msgid ""
+"With the default limit of 12 GiB per CPU, this 4-to-8 GiB example can keep "
+"one CPU. A 16 GiB allocation needs at least ``ceil(16 / 12) = 2`` CPUs. Both"
+" the starting allocation and retry limit must fit the available quota. See "
+":ref:`udf_tuning_resources`."
+msgstr ""
+"按默认每个 CPU 最多配置 12 GiB 内存计算，4 GiB 扩到 8 GiB 时可以保持 1 个 CPU；分配 16 GiB 时，至少需要 "
+"``ceil(16 / 12) = 2`` 个 CPU。初始资源和重试上限都需要在 Quota 可提供的范围内，具体见 "
+":ref:`udf_tuning_resources`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:431
+msgid ""
+"The deliberate OOM example above always holds 6 GiB of arrays. For a "
+"workload where every task needs that much memory, start with a measured "
+"sufficient allocation, such as 8 GiB for the verified run, instead of making"
+" every task fail once at 4 GiB."
+msgstr ""
+"上面的故意 OOM 示例固定持有 6 GiB 数组。如果实际作业中每个任务都需要这么多内存，应直接设置经测量足够的初始内存，例如这次验证使用的 8 "
+"GiB，避免每个任务先在 4 GiB 下失败一次。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/elastic_memory.rst:436
+msgid ""
+"If most tasks need a retry, raise the starting memory or reduce their input."
+" If only a few keep failing at the limit, inspect those inputs for skew or a"
+" memory leak before increasing the limit again. Repeated OOM failures at the"
+" limit also warrant checking whether smaller chunks or batches reduce the "
+"peak; see :ref:`udf_tuning`. A missing Sensor chart does not establish low "
+"memory use."
+msgstr ""
+"如果大多数任务都需要重试，应提高初始内存或减少任务输入。如果只有少数任务持续在上限处失败，先检查输入是否倾斜、函数是否泄漏内存，再决定是否继续提高上限。反复在上限处"
+" OOM 时，也需要检查减小 chunk 或 batch 能否降低峰值，具体见 :ref:`udf_tuning`。没有 Sensor "
+"曲线并不代表内存占用低。"

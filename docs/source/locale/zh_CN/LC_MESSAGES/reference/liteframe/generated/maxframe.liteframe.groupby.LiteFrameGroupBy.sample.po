@@ -1,0 +1,85 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-20 10:21+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.sample.rst:2
+msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.sample"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.sample:1 of
+msgid "Return a random sample of rows from each group."
+msgstr "从每个组中随机采样行。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.sample:3 of
+msgid ""
+"After groupby shuffle, each group's data is fully collected on a single "
+"node, so sampling is always exact regardless of the ``exact`` parameter. "
+"The ``exact`` parameter is accepted solely for API consistency with "
+":meth:`LiteFrame.sample`."
+msgstr ""
+"经过 groupby shuffle 后，每组数据已完整收集到单个节点上，因此无论 ``exact`` "
+"参数取值如何，采样始终是精确的。``exact`` 参数仅为与 :meth:`LiteFrame.sample` "
+"保持 API 一致性而保留。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.sample.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.sample:8 of
+msgid "Number of rows to return per group. Cannot be used with ``frac``."
+msgstr "每组返回的行数。不能与 ``frac`` 同时使用。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.sample:11 of
+msgid "Fraction of rows to return per group. Cannot be used with ``n``."
+msgstr "每组返回行的比例。不能与 ``n`` 同时使用。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.sample:14 of
+msgid "Allow sampling the same row more than once."
+msgstr "是否允许同一行被多次采样。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.sample:16 of
+msgid ""
+"Column name (str) for column-based weights, or a single-column LiteFrame "
+"aligned with the data."
+msgstr "用于基于列权重的列名（str），或与数据对齐的单列 LiteFrame。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.sample:19 of
+msgid "Seed for reproducibility."
+msgstr "用于可复现性的随机种子。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.sample:21 of
+msgid ""
+"Accepted for API consistency with :meth:`LiteFrame.sample`. Has no effect"
+" — groupby sampling is always exact."
+msgstr ""
+"为与 :meth:`LiteFrame.sample` 保持 API 一致性而接受。无实际效果——groupby "
+"采样始终是精确的。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.sample.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.sample:25 of
+msgid "Sampled frame with one or more rows per group."
+msgstr "采样后的帧，每组包含一行或多行。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.sample.rst
+msgid "返回类型"
+msgstr ""

@@ -27,7 +27,9 @@ from maxframe.codegen.spe.core import (
     SPEOperatorAdapter,
     register_op_adapter,
 )
+from maxframe.lib.dtypes_extension.blob import polars_to_pandas_with_blobs
 from maxframe.liteframe.operators.reduction import LiteFrameAgg
+from maxframe.liteframe.reduction.compile import _ROW_POS_COLUMN
 from maxframe.liteframe.reduction.custom_agg import CustomAgg
 from maxframe.udf import BuiltinFunction
 from maxframe.utils import validate_and_align_output
@@ -54,9 +56,9 @@ def _to_input_df(df, input_frame_type):
 def _from_polars_result(result):
     """Normalize a custom-agg result back to pandas (SPE's storage form)."""
     if _pl is not None and isinstance(result, _pl.DataFrame):
-        return result.to_pandas(use_pyarrow_extension_array=True)
+        return polars_to_pandas_with_blobs(result)
     if _pl is not None and isinstance(result, _pl.Series):
-        return result.to_frame().to_pandas(use_pyarrow_extension_array=True)
+        return polars_to_pandas_with_blobs(result.to_frame())
     return result
 
 
@@ -103,10 +105,14 @@ class LiteFrameAggAdapter(SPEOperatorAdapter):
         custom_func,
         input_frame_type: str,
         agg_output_dtypes=None,
+        needs_row_pos: bool = False,
     ) -> pd.DataFrame:
         """Apply a custom agg to the whole (non-grouped) frame."""
         actual_func = _resolve_custom_func(custom_func)
         input_df = _to_input_df(df, input_frame_type)
+        if needs_row_pos:
+            input_df = input_df.copy()
+            input_df[_ROW_POS_COLUMN] = range(len(input_df))
         result = _call_custom_agg(actual_func, input_df, agg_output_dtypes)
         result = _from_polars_result(result)
         if isinstance(result, pd.Series):
@@ -121,6 +127,7 @@ class LiteFrameAggAdapter(SPEOperatorAdapter):
         input_frame_type: str,
         agg_output_dtypes=None,
         agg_cols=None,
+        needs_row_pos: bool = False,
     ) -> pd.DataFrame:
         """Apply a custom agg per group.
 
@@ -133,6 +140,10 @@ class LiteFrameAggAdapter(SPEOperatorAdapter):
         by_cols = [by] if isinstance(by, str) else list(by)
         dropna = groupby_params.get("dropna", True)
         sort = groupby_params.get("sort", True)
+
+        if needs_row_pos:
+            df = df.copy()
+            df[_ROW_POS_COLUMN] = range(len(df))
 
         actual_func = _resolve_custom_func(custom_func)
         grouped = df.groupby(by_cols, dropna=dropna, sort=sort)
@@ -147,6 +158,8 @@ class LiteFrameAggAdapter(SPEOperatorAdapter):
                 input_cols = [c for c in group_df.columns if c not in by_cols]
             else:
                 input_cols = [c for c in agg_cols if c in group_df.columns]
+            if needs_row_pos:
+                input_cols = input_cols + [_ROW_POS_COLUMN]
             group_input = group_df[input_cols] if input_cols else group_df.iloc[:, :0]
             group_input = _to_input_df(group_input, input_frame_type)
 
@@ -198,6 +211,7 @@ class LiteFrameAggAdapter(SPEOperatorAdapter):
         input_frame_type = desc.get("input_frame_type", "pandas")
         agg_output_dtypes = desc.get("agg_output_dtypes")
         agg_cols = desc.get("cols")
+        needs_row_pos = desc.get("needs_row_pos", False)
 
         if groupby_params:
             return LiteFrameAggAdapter._run_custom_groupby_agg(
@@ -207,9 +221,14 @@ class LiteFrameAggAdapter(SPEOperatorAdapter):
                 input_frame_type,
                 agg_output_dtypes,
                 agg_cols,
+                needs_row_pos=needs_row_pos,
             )
         return LiteFrameAggAdapter._run_custom_whole_frame_agg(
-            df, custom_func, input_frame_type, agg_output_dtypes
+            df,
+            custom_func,
+            input_frame_type,
+            agg_output_dtypes,
+            needs_row_pos=needs_row_pos,
         )
 
     @staticmethod
@@ -225,7 +244,9 @@ class LiteFrameAggAdapter(SPEOperatorAdapter):
         if any(d.get("custom_func") for d in agg_funcs):
             return LiteFrameAggAdapter._run_custom_agg(df, agg_funcs, groupby_params)
 
-        use_prefix = len(agg_funcs) > 1
+        use_prefix = len(agg_funcs) > 1 or any(
+            d.get("raw_func_name") == "quantile" for d in agg_funcs
+        )
 
         if groupby_params:
             by = groupby_params["by"]
@@ -261,6 +282,36 @@ class LiteFrameAggAdapter(SPEOperatorAdapter):
                         col_name = f"{prefix}{c}_{func_name}" if prefix else c
                         column_names.append(col_name)
                         result_series.append(grouped[c].nunique(dropna=dropna_kw))
+                elif func_name in ("quantile", "quantile_sketch"):
+                    # quantile: exact via pandas. quantile_sketch (approx):
+                    # SPE computes exact (approximation may be exact).
+                    # Column name must match compile's intermediate naming:
+                    # {output_key}__{c}_quantile or {output_key}__{c}_quantile_sketch
+                    q = kwds.get("q", 0.5)
+                    interp = kwds.get("interpolation", "linear")
+                    for c in cols:
+                        col_name = f"{prefix}{c}_{func_name}" if prefix else c
+                        column_names.append(col_name)
+                        result_series.append(
+                            grouped[c].quantile(q=q, interpolation=interp)
+                        )
+                elif func_name in ("first", "last"):
+                    skipna = kwds.get("skipna", True)
+                    pos = 0 if func_name == "first" else -1
+                    for c in cols:
+                        col_name = f"{prefix}{c}_{func_name}" if prefix else c
+                        column_names.append(col_name)
+                        # GroupBy.first/last(skipna=...) is pandas>=2.1 only.
+                        # skipna=True (pandas default): call without kwarg.
+                        # skipna=False: use apply to pick the literal pos row.
+                        if skipna:
+                            result_series.append(getattr(grouped[c], func_name)())
+                        else:
+                            result_series.append(
+                                grouped[c].apply(
+                                    lambda s: s.iloc[pos] if len(s) > 0 else None
+                                )
+                            )
                 else:
                     for c in cols:
                         col_name = f"{prefix}{c}_{func_name}" if prefix else c
@@ -291,6 +342,23 @@ class LiteFrameAggAdapter(SPEOperatorAdapter):
                     for c in cols:
                         col_name = f"{prefix}{c}_{func_name}" if prefix else c
                         result_data[col_name] = [df[c].nunique(dropna=dropna_kw)]
+                elif func_name in ("quantile", "quantile_sketch"):
+                    q = kwds.get("q", 0.5)
+                    interp = kwds.get("interpolation", "linear")
+                    for c in cols:
+                        col_name = f"{prefix}{c}_{func_name}" if prefix else c
+                        result_data[col_name] = [
+                            df[c].quantile(q=q, interpolation=interp)
+                        ]
+                elif func_name in ("first", "last"):
+                    skipna = kwds.get("skipna", True)
+                    pos = 0 if func_name == "first" else -1
+                    for c in cols:
+                        col_name = f"{prefix}{c}_{func_name}" if prefix else c
+                        s = df[c]
+                        if skipna:
+                            s = s.dropna()
+                        result_data[col_name] = [s.iloc[pos] if len(s) > 0 else None]
                 else:
                     for c in cols:
                         col_name = f"{prefix}{c}_{func_name}" if prefix else c

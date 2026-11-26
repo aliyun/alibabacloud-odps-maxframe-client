@@ -20,10 +20,11 @@ def _install():
         all,
         any,
         count,
+        idxmax,
+        idxmin,
         kurt,
         max,
         mean,
-        median,
         min,
         nunique,
         prod,
@@ -34,6 +35,11 @@ def _install():
         sum,
         var,
     )
+    from maxframe.liteframe.reduction.cov_corr import corr, cov
+    from maxframe.liteframe.reduction.describe import describe
+    from maxframe.liteframe.reduction.mode import mode
+    from maxframe.liteframe.reduction.quantile import median, quantile
+    from maxframe.liteframe.reduction.value_counts import value_counts
 
     for cls in LITEFRAME_TYPE:
         setattr(cls, "agg", agg)
@@ -50,9 +56,17 @@ def _install():
         setattr(cls, "skew", skew)
         setattr(cls, "kurt", kurt)
         setattr(cls, "nunique", nunique)
+        setattr(cls, "idxmin", idxmin)
+        setattr(cls, "idxmax", idxmax)
+        setattr(cls, "quantile", quantile)
         setattr(cls, "median", median)
         setattr(cls, "all", all)
         setattr(cls, "any", any)
+        setattr(cls, "describe", describe)
+        setattr(cls, "mode", mode)
+        setattr(cls, "value_counts", value_counts)
+        setattr(cls, "cov", cov)
+        setattr(cls, "corr", corr)
 
 
 _install()

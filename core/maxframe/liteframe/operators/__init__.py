@@ -21,6 +21,7 @@ from . import indexing  # noqa: F401
 from . import merge  # noqa: F401
 from . import misc  # noqa: F401
 from . import reduction  # noqa: F401
+from . import sample  # noqa: F401
 from . import sort  # noqa: F401
 from . import virtual  # noqa: F401
 from . import window  # noqa: F401

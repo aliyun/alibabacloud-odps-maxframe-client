@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-09 11:00+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.corr.rst:2
+msgid "maxframe.liteframe.LiteFrame.corr"
+msgstr ""
+
+#: maxframe.liteframe.reduction.cov_corr.corr:1 of
+msgid "Compute pairwise Pearson correlation of columns."
+msgstr "计算列之间的成对 Pearson 相关系数。"
+
+#: maxframe.liteframe.reduction.cov_corr.corr:2 of
+msgid ""
+"Returns an N×N matrix via flat_apply, with a ``columns`` string "
+"column as the row label (matching pandas' index).  When a data "
+"column or group key is named ``columns``, the label probes to "
+"``columns_1``, ``columns_2``, … to avoid collision.  The diagonal "
+"is always 1.0."
+msgstr ""
+"通过 flat_apply 返回 N×N 矩阵，包含一个 ``columns`` 字符串列作为行标签"
+"（与 pandas 的索引一致）。当数据列或组键名为 ``columns`` 时，"
+"行标签会探测到 ``columns_1``、``columns_2``…以避免碰撞。"
+"对角线始终为 1.0。"
+
+#: maxframe.liteframe.reduction.cov_corr.corr:3 of
+msgid ""
+"Correlation is computed pairwise-complete: each pair (i, j) uses "
+"only rows where both columns are non-null, matching pandas."
+msgstr ""
+"相关系数按成对完整方式计算：每对 (i, j) 仅使用两列都非空的行，与 pandas 一致。"
+
+#: maxframe.liteframe.reduction.cov_corr.corr of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.reduction.cov_corr.corr:4 of
+msgid "Execution strategy.  ``'auto'`` selects based on data size."
+msgstr "执行策略。``'auto'`` 根据数据大小进行选择。"
+
+#: maxframe.liteframe.reduction.cov_corr.corr:5 of
+msgid ""
+"If True, only numeric columns are included.  If False (the pandas "
+"2.0+ default), non-numeric columns cause a TypeError."
+msgstr ""
+"如果为 True，仅包含数值列。如果为 False（pandas 2.0+ 默认值），"
+"非数值列会引发 TypeError。"
+
+#: maxframe.liteframe.reduction.cov_corr.corr:6 of
+msgid "Minimum non-null observations per pair; below this, NaN."
+msgstr "每对非空观测值的最小数量；低于此值返回 NaN。"
+
+#: maxframe.liteframe.reduction.cov_corr.corr:7 of
+msgid "Delta degrees of freedom.  Divides by ``n - ddof``."
+msgstr "自由度增量。除以 ``n - ddof``。"
+
+#: maxframe.liteframe.reduction.cov_corr.corr:8 of
+msgid "Additional keyword arguments forwarded to the aggregation."
+msgstr "转发给聚合的额外关键字参数。"
+
+#: maxframe.liteframe.reduction.cov_corr.corr of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.reduction.cov_corr.corr:9 of
+msgid ""
+"N×N matrix with a ``columns`` string column and one column per "
+"numeric column."
+msgstr "N×N 矩阵，包含一个 ``columns`` 字符串列和每个数值列一个列。"
+
+#: maxframe.liteframe.reduction.cov_corr.corr of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.reduction.cov_corr.corr of
+msgid "示例"
+msgstr ""

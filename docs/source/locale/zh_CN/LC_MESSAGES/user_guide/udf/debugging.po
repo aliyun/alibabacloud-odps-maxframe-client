@@ -1,0 +1,310 @@
+# Simplified Chinese translations for the MaxFrame UDF documentation.
+# Copyright (C) 1999-2026, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.10.0.dev32+gdddd31a5f\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-30 12:34+0800\n"
+"PO-Revision-Date: 2026-10-23 12:00+0800\n"
+"Last-Translator: MaxFrame contributors\n"
+"Language: zh_CN\n"
+"Language-Team: Chinese (Simplified)\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:4
+msgid "Debugging UDFs"
+msgstr "调试 UDF"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:7
+msgid "Viewing remote logs"
+msgstr "查看远程日志"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:9
+msgid ""
+"View UDF execution logs in Logview. **StdOut** shows text printed by the "
+"function, and **StdErr** shows errors and warnings. To record input, "
+"intermediate values, or output, use ``print(..., flush=True)`` inside the "
+"UDF so printed messages are written immediately."
+msgstr ""
+"UDF 的执行日志可以在 Logview 中查看。**StdOut** 显示函数打印的内容，**StdErr** "
+"可用来查看错误和警告。需要记录输入、中间结果或输出时，可以在 UDF 中使用 ``print(..., "
+"flush=True)``，让打印内容及时写入日志。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:14
+msgid ""
+"Find the DAG containing the UDF in Logview and click its **Detail** icon. "
+"The next steps depend on the Sub DAG's execution engine: follow "
+":ref:`udf_debugging_dpe` or :ref:`udf_debugging_mcsql` below. The navigation"
+" screenshots were captured in the MaxCompute console's Logview, using this "
+"example on each engine. Log text is shown below the code."
+msgstr ""
+"在 Logview 中找到包含 UDF 的 DAG，点击 **Detail** 图标。接下来根据 Sub DAG 的执行引擎，分别按下方的 "
+":ref:`udf_debugging_dpe` 或 :ref:`udf_debugging_mcsql` 操作。导航截图来自 MaxCompute "
+"控制台的用户版 Logview，分别运行了本页对应引擎的示例；日志文字列在代码下方。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:20
+msgid "For the Logview hierarchy and controls, see :doc:`../general/logview`."
+msgstr "Logview 的页面层级和操作方式见 :doc:`../general/logview`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:22
+msgid ""
+"The following example uses three orders to show how to find invalid input. "
+"Order ``1002`` has the price ``\"invalid\"``, which cannot be converted to a"
+" number. The function prints the input types, the number of invalid rows, "
+"and up to three affected order IDs."
+msgstr ""
+"以三条订单为例：订单 ``1002`` 的价格是 "
+"``\"invalid\"``，无法转换成数字。为了找出这条数据，示例在函数中打印输入类型、异常行数，以及最多三个异常订单 ID。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:94
+msgid ""
+"Set the connection environment variables before running the example. The "
+"``option_context`` block disables automatic local execution so that "
+"``execute`` submits this small sample and the UDF to the remote session. The"
+" previous setting is restored when the block exits. Otherwise, if automatic "
+"local execution is enabled, the sample can run on the client and its logs "
+"will not appear in Logview. Open the printed Logview URL to inspect the "
+"logs. If all three rows arrive in one call, StdOut contains lines like "
+"these:"
+msgstr ""
+"运行前设置连接环境变量。``option_context`` 代码块暂时关闭自动本地执行，让 ``execute`` 将这份小样本和 UDF "
+"提交到远端会话；退出代码块后恢复原设置。如果开启自动本地执行，小样本可能在客户端运行，日志就不会出现在 Logview 中。打开打印出的 Logview"
+" 链接查看日志。如果三行数据在同一次调用中传入，StdOut 会包含以下内容："
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:109
+msgid ""
+"The engine can split the sample into several calls. This changes the "
+"``rows`` and ``output_rows`` values and the number of log groups. Find the "
+"call that reports ``sample_order_ids=[1002]``. The displayed dtypes can also"
+" vary with the runtime's pandas version and data conversion. In the runs "
+"shown here, ``price`` has dtype ``object``."
+msgstr ""
+"引擎可以把样本拆成多次调用，因此 ``rows``、``output_rows`` 的值和日志组数会变化。查找包含 "
+"``sample_order_ids=[1002]`` 的那次调用即可。显示的数据类型也会随运行环境中的 pandas "
+"版本和数据转换方式变化；这里展示的运行中，``price`` 的类型为 ``object``。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:115
+msgid ""
+"This example uses ``pd.to_numeric(..., errors=\"coerce\")`` to turn invalid "
+"values into ``NaN`` and marks those rows with ``valid=False``. Orders "
+"``1001`` and ``1003`` have totals of ``25.0`` and ``24.0``; order ``1002`` "
+"has a total of ``NaN``. The invalid row is retained so it can be checked "
+"later."
+msgstr ""
+"代码用 ``pd.to_numeric(..., errors=\"coerce\")`` 将异常值转成 ``NaN``，并将这一行标记为 "
+"``valid=False``。因此，订单 ``1001`` 和 ``1003`` 的总额分别是 ``25.0`` 和 ``24.0``，订单 "
+"``1002`` 的总额是 ``NaN``。这条异常订单仍保留在结果中，便于后续检查。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:123
+msgid "DPE: Step and SubSteps"
+msgstr "DPE：进入 Step 和 SubSteps 查看日志"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:125
+msgid ""
+"In **Sub DAG List**, select the Sub DAG containing the UDF, such as "
+"``STAGE_1``. In **Instance of Sub DAG**, find the ``DPE SubDAG instance`` "
+"row and click its **Detail** icon. This opens the DPE details in a new tab."
+msgstr ""
+"在 **Sub DAG List** 中选择 UDF 所在的 Sub DAG，例如 ``STAGE_1``。在下方的 **Instance of Sub"
+" DAG** 列表中找到 ``DPE SubDAG instance``，点击这一行的 **Detail** 图标，在新标签页打开 DPE 详情。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:129
+msgid "DPE SubDAG instance and its Detail icon in the MaxCompute console"
+msgstr "MaxCompute 控制台中 DPE SubDAG instance 的 Detail 入口"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:129
+msgid ".. image:: ../../_static/user_guide/udf/dpe-subdag-entry.jpg"
+msgstr ""
+".. image:: ../../_static/user_guide/udf/dpe-subdag-entry.jpg\n"
+"   :alt: MaxCompute 控制台中 DPE SubDAG instance 的 Detail 入口"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:133
+msgid ""
+"Select the relevant Step in **Step List**. In its **SubSteps** list, find "
+"the row whose **Description** contains ``DataFrameApplyChunk``. Open "
+"**StdOut** or **StdErr** on that row. The read-table and write-table rows "
+"have their own logs and do not contain this function's output."
+msgstr ""
+"在 **Step List** 中选择对应的 Step，然后在 **SubSteps** 列表中找到 **Description** 包含 "
+"``DataFrameApplyChunk`` 的那一行，点击该行的 **StdOut** 或 "
+"**StdErr**。读表和写表任务的日志中没有这个函数的打印内容。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:138
+msgid "DataFrameApplyChunk row with StdOut and StdErr in DPE SubSteps"
+msgstr "DPE SubSteps 中 DataFrameApplyChunk 任务的 StdOut 和 StdErr 入口"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:138
+msgid ".. image:: ../../_static/user_guide/udf/dpe-substeps-logs.jpg"
+msgstr ""
+".. image:: ../../_static/user_guide/udf/dpe-substeps-logs.jpg\n"
+"   :alt: DPE SubSteps 中 DataFrameApplyChunk 任务的 StdOut 和 StdErr 入口"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:142
+msgid ""
+"In **StdOut**, find ``invalid_rows=1, sample_order_ids=[1002]``. This "
+"identifies the order with an invalid price. ``output_rows=3`` shows that the"
+" function retains that order."
+msgstr ""
+"在 **StdOut** 中查找 ``invalid_rows=1, "
+"sample_order_ids=[1002]``，可以定位到价格无效的订单。``output_rows=3`` 表示函数保留了这条订单。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:146
+msgid ""
+"This run has no retries, so **Rerun** is ``0``. When investigating a retried"
+" task, check the task ID, status, and execution time to distinguish "
+"attempts. For a DPE UDF that uses elastic memory, also check the SubSteps "
+"**Description** column. A label such as ``[2.0x memory]`` means the task was"
+" retried with twice its starting memory; it does not report measured peak "
+"usage. Compare it with the failed attempt's logs to identify the OOM. See "
+":ref:`udf_elastic_memory_observation` for an example screenshot."
+msgstr ""
+"这次运行没有重试，**Rerun** 为 ``0``。排查重试任务时，可以结合任务 ID、状态和执行时间区分各次尝试。如果 DPE UDF "
+"使用了弹性内存，还需要查看 SubSteps 的 **Description** 列。``[2.0x memory]`` "
+"表示重试时分配的内存是初始值的两倍，不是实测内存峰值。结合失败尝试的日志确认是否发生 OOM，示例截图见 "
+":ref:`udf_elastic_memory_observation`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:154
+msgid ""
+"Ratios can be fractional, such as ``[2.5x memory]`` for 4 GiB expanded to 10"
+" GiB."
+msgstr "倍率也可以是小数，例如 4 GiB 扩到 10 GiB 时显示为 ``[2.5x memory]``。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:160
+msgid "MCSQL: SQL job and Fuxi Instance"
+msgstr "MCSQL：进入 SQL 子作业查看日志"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:162
+msgid ""
+"In **Instance of Sub DAG**, find the SQL job that runs the computation and "
+"click its **Detail** icon. In this run, the job is described as ``Run SQL "
+"for DISABLE_MCQA``. The ``TEMP_TABLE_CREATE`` entry only creates a temporary"
+" table and does not run the UDF."
+msgstr ""
+"在 **Instance of Sub DAG** 中找到执行计算的 SQL 作业，点击它的 **Detail** 图标。本次运行中，这条记录的说明是 "
+"``Run SQL for DISABLE_MCQA``。``TEMP_TABLE_CREATE`` 对应的记录只负责创建临时表，不会执行 UDF。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:167
+msgid "SQL child jobs and their Detail icons in the MCSQL Instance list"
+msgstr "MCSQL Instance 列表中的 SQL 子作业及 Detail 入口"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:167
+msgid ".. image:: ../../_static/user_guide/udf/mcsql-subdag-entry.jpg"
+msgstr ""
+".. image:: ../../_static/user_guide/udf/mcsql-subdag-entry.jpg\n"
+"   :alt: MCSQL Instance 列表中的 SQL 子作业及 Detail 入口"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:171
+msgid ""
+"In the SQL job's Logview, select the relevant **Fuxi Task** under **Fuxi "
+"Jobs**. This example has one task, ``M1``. In **Fuxi Instance of Fuxi "
+"Task**, open **StdOut** or **StdErr** for the worker, here ``M1#0_0``. Task "
+"names and worker IDs can differ in other jobs."
+msgstr ""
+"进入 SQL 作业的 Logview 后，在 **Fuxi Jobs** 中选择对应的 **Fuxi Task**。本例只有一个任务 "
+"``M1``，在下方的 **Fuxi Instance of Fuxi Task** 列表中，点击 ``M1#0_0`` 这一行的 **StdOut**"
+" 或 **StdErr**。其他作业的任务名称和 Worker ID 可能不同。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:176
+msgid "M1 worker with StdOut and StdErr in the SQL job's Fuxi Instance list"
+msgstr "SQL 作业的 Fuxi Instance 列表中 M1 Worker 的 StdOut 和 StdErr 入口"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:176
+msgid ".. image:: ../../_static/user_guide/udf/mcsql-worker-logs.jpg"
+msgstr ""
+".. image:: ../../_static/user_guide/udf/mcsql-worker-logs.jpg\n"
+"   :alt: SQL 作业的 Fuxi Instance 列表中 M1 Worker 的 StdOut 和 StdErr 入口"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:180
+msgid ""
+"In **StdOut**, find the same three messages: ``rows=3``, ``invalid_rows=1, "
+"sample_order_ids=[1002]``, and ``output_rows=3``. SQL runtime messages can "
+"appear before and after the UDF output. **StdErr** was empty in this run."
+msgstr ""
+"在 **StdOut** 中查找相同的三条信息：``rows=3``、``invalid_rows=1, "
+"sample_order_ids=[1002]`` 和 ``output_rows=3``。UDF 输出前后还可能出现 SQL 运行时日志。这次运行的 "
+"**StdErr** 为空。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:188
+msgid "Local Debug Mode"
+msgstr "本地调试模式"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:190
+msgid ""
+"Local Debug Mode requires MaxFrame SDK 2.5.0 or later. With "
+"``debug=\"local\"`` or ``debug=True``, the UDF runs in the local Python "
+"process and can be stepped through with an IDE debugger. The following "
+"example includes the connection and sample data; set the environment "
+"variables before running it. See :doc:`../general/local_debug` for the "
+"mode's setup and limitations."
+msgstr ""
+"本地调试模式需要 MaxFrame SDK 2.5.0 或更高版本。设置 ``debug=\"local\"`` 或 ``debug=True`` "
+"后，UDF 会在本地 Python 进程中执行，可以使用 IDE "
+"断点逐步调试。下面的示例包含连接配置和样例数据，运行前需要设置对应的环境变量。环境准备和使用限制见 "
+":doc:`../general/local_debug`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:243
+msgid ""
+"In the IDE, set a breakpoint at ``result = chunk.copy()`` and start "
+"debugging. Inspect ``chunk`` to check the input values and types."
+msgstr ""
+"在 IDE 中给 ``result = chunk.copy()`` 这一行打上断点，然后启动调试。程序停在断点时，先看 ``chunk`` "
+"中的输入值和类型是否正确。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:245
+msgid ""
+"Step through the function and watch ``result[\"rate\"]``. Sales up to 5,000 "
+"use ``0.05``, sales above 5,000 use ``0.10``, and sales above 10,000 use "
+"``0.15``."
+msgstr ""
+"逐行执行，观察 ``result[\"rate\"]`` 的值：销售额不超过 5,000 时应为 ``0.05``，超过 5,000 时应为 "
+"``0.10``，超过 10,000 时应为 ``0.15``。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:248
+msgid ""
+"Pause at ``return result`` and check the result values, columns, and dtypes."
+" The expected commissions are ``250.0``, ``800.0``, ``1800.0``, and "
+"``150.0``."
+msgstr ""
+"停在 ``return result`` 处，检查结果值、列名和数据类型。四条佣金的预期值为 "
+"``250.0``、``800.0``、``1800.0`` 和 ``150.0``。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:252
+msgid ""
+"In PyCharm, select **View as DataFrame** for ``result`` to open the table "
+"below. The debugger is paused at ``return result`` after all four columns "
+"are computed."
+msgstr ""
+"在 PyCharm 中，点击 ``result`` 旁的 **View as DataFrame**，即可查看下图中的结果表。此时程序停在 "
+"``return result``，四列数据均已计算完成。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:255
+msgid ""
+"PyCharm paused at return result, with sales, region, rate, and commission "
+"for East, West, North, and South"
+msgstr ""
+"PyCharm 停在 return result，结果表显示 East、West、North、South 四行的 sales、region、rate 和"
+" commission"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:255
+msgid ".. image:: ../../_static/user_guide/udf/local-debug-commission-breakpoint.jpg"
+msgstr ""
+".. image:: ../../_static/user_guide/udf/local-debug-commission-"
+"breakpoint.jpg\n"
+"   :alt: PyCharm 停在 return result，结果表显示 East、West、North、South 四行的 "
+"sales、region、rate 和 commission"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:259
+msgid "After continuing past the breakpoint, the example prints:"
+msgstr "继续执行断点后的代码，示例会打印以下结果："
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/debugging.rst:269
+msgid ""
+"Once the sample produces the expected result, run the function with a remote"
+" session and real data. Local Debug Mode checks function logic; the remote "
+"job still has its own input and package environment."
+msgstr "样本得到预期结果后，再通过远程会话和真实数据运行函数。Local Debug Mode 用于检查函数逻辑；远程作业仍使用其自身的输入和依赖包环境。"

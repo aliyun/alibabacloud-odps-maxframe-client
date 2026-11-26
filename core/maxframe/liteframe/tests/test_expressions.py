@@ -21,6 +21,9 @@ import polars as pl
 import pyarrow as pa
 import pytest
 
+from maxframe.lib.dtypes_extension._fake_arrow_dtype import FakeArrowDtype
+from maxframe.liteframe import expressions as expressions_module
+from maxframe.liteframe.accessors.string_.core import LiteFrameStrMultiExpr
 from maxframe.liteframe.core import LITEFRAME_TYPE
 from maxframe.liteframe.datasource.from_local import from_local_df  # noqa: F401
 from maxframe.liteframe.expressions import (
@@ -496,6 +499,69 @@ def test_bind_multi_column_expr():
     assert bound.operands[0].dtype == np.dtype("datetime64[ns]")
     assert bound.output_names == ["year", "week", "day"]
     assert bound.dtypes == {"year": "Int32", "week": "Int32", "day": "Int32"}
+
+
+@pytest.mark.parametrize(
+    "method,args,kwargs,output_names",
+    [
+        pytest.param("partition", (",",), {}, ["0", "1", "2"], id="partition"),
+        pytest.param("split", (",",), {"n": 1, "expand": True}, ["0", "1"], id="split"),
+        pytest.param("extract", ("(a)(b)",), {}, ["0", "1"], id="extract"),
+    ],
+)
+def test_bind_multi_column_str_expr_keeps_arguments(method, args, kwargs, output_names):
+    """bind() must keep method/args/kwargs, not just the operands.
+
+    Losing ``args`` makes a bound ``str.partition`` raise
+    ``UnsupportedExpression: ... needs 'sep'`` and the whole projection is
+    denied, so these assertions are what protect the projection path.
+    """
+    dtypes = pd.Series({"s": "string"})
+    multi = LiteFrameStrMultiExpr(
+        operands=[col("s")],
+        method=method,
+        args=args,
+        kwargs=kwargs,
+        output_names=output_names,
+        dtypes={name: "string" for name in output_names},
+    )
+
+    bound = multi.bind(dtypes)
+
+    assert isinstance(bound, LiteFrameStrMultiExpr)
+    assert bound.method == method
+    assert bound.args == args
+    assert bound.kwargs == kwargs
+    assert bound.output_names == output_names
+
+
+def test_bind_multi_column_sub_expr_keeps_concrete_dtype(monkeypatch):
+    """bind() must not re-resolve a dtype that is already concrete.
+
+    Round-tripping a pyarrow-backed string dtype through pandas' string
+    registry yields ``StringDtype(storage="pyarrow")``, which raises
+    ImportError when pyarrow < 7 (the legacy CI legs).
+    """
+
+    def _must_not_resolve(_):
+        raise AssertionError("bind() must not re-resolve a concrete dtype")
+
+    monkeypatch.setattr(expressions_module, "to_pandas_dtype", _must_not_resolve)
+
+    # The dtype the legacy pyarrow<7 legs produce for a string column.
+    dtype = FakeArrowDtype(pa.string())
+    multi = LiteFrameStrMultiExpr(
+        operands=[col("s")],
+        method="partition",
+        args=(",",),
+        output_names=["0", "1", "2"],
+        dtypes={"0": dtype, "1": dtype, "2": dtype},
+    )
+    sub = LiteFrameMultiColumnSubExpr(multi_expr=multi, output_name="0", dtype=None)
+
+    bound = sub.bind(pd.Series({"s": "string"}))
+
+    assert bound.dtype is dtype
 
 
 def test_bind_multi_column_sub_expr():

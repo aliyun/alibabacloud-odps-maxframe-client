@@ -14,6 +14,7 @@
 
 from maxframe import opcodes
 from maxframe.core import OutputType
+from maxframe.core.operator.base import WorkLoadType
 from maxframe.liteframe.operators.core import (
     LiteFrameDataFormat,
     LiteFrameOperator,
@@ -36,7 +37,11 @@ from maxframe.typing_ import TileableType
 class LiteFrameDataStore(LiteFrameOperator, LiteFrameOperatorMixin):
     """Base class for LiteFrame datastore operators"""
 
-    pass
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        # _parse_kwargs guarantees a private (fresh or copied) hint here.
+        if self.scheduling_hint.work_load_type is None:
+            self.scheduling_hint.work_load_type = WorkLoadType.IO
 
 
 class LiteFrameLakeDataStore(LiteFrameDataStore):
@@ -119,8 +124,11 @@ class LiteFrameToODPSTable(LiteFrameDataStore):
 
     def __call__(self, lf: TileableType):
         shape = (0,) * len(lf.shape)
+        physical_dtypes = lf._data._physical_dtypes
+        if physical_dtypes is not None:
+            physical_dtypes = physical_dtypes[:0]
         return self.new_liteframe(
             [lf],
             shape=shape,
-            physical_dtypes=lf._data._physical_dtypes[:0],
+            physical_dtypes=physical_dtypes,
         )

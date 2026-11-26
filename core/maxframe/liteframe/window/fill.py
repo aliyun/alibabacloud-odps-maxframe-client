@@ -15,7 +15,7 @@
 from maxframe.liteframe.operators.window import LiteFrameWindowTransform
 
 
-def ffill(self, limit=None, columns=None):
+def ffill(self, limit=None, columns=None, placeback=True):
     """Forward-fill: propagate the last non-null value forward.
 
     Consecutive nulls are replaced with the most recent non-null value
@@ -29,6 +29,14 @@ def ffill(self, limit=None, columns=None):
     columns : str, list of str, or None, default None
         Column(s) to fill.  If None, all visible columns are filled.
         Non-selected columns are passed through unchanged.
+    placeback : bool, default True
+        With ``True`` (default), the output stays row-aligned with the input
+        so aligned frames can be combined shuffle-free.  ``False`` opts out
+        of that alignment (grouped output stays in reducer/hash-partition
+        order).  Row order and values are unchanged for standalone
+        transforms, but ``False`` also opts out of input alignment-id
+        inheritance, so the result is no longer interchangeable with the
+        input frame for shuffle-free assignment.
 
     Returns
     -------
@@ -53,12 +61,15 @@ def ffill(self, limit=None, columns=None):
     2  1.0
     3  4.0
     """
-    return LiteFrameWindowTransform.for_fill("ffill", limit=limit, columns=columns)(
-        self
-    )
+    return LiteFrameWindowTransform.for_fill(
+        "ffill",
+        limit=limit,
+        columns=columns,
+        placeback=placeback,
+    )(self)
 
 
-def bfill(self, limit=None, columns=None):
+def bfill(self, limit=None, columns=None, placeback=True):
     """Backward-fill: propagate the next non-null value backward.
 
     Consecutive nulls are replaced with the next non-null value observed
@@ -72,6 +83,14 @@ def bfill(self, limit=None, columns=None):
     columns : str, list of str, or None, default None
         Column(s) to fill.  If None, all visible columns are filled.
         Non-selected columns are passed through unchanged.
+    placeback : bool, default True
+        With ``True`` (default), the output stays row-aligned with the input
+        so aligned frames can be combined shuffle-free.  ``False`` opts out
+        of that alignment (grouped output stays in reducer/hash-partition
+        order).  Row order and values are unchanged for standalone
+        transforms, but ``False`` also opts out of input alignment-id
+        inheritance, so the result is no longer interchangeable with the
+        input frame for shuffle-free assignment.
 
     Returns
     -------
@@ -96,6 +115,9 @@ def bfill(self, limit=None, columns=None):
     2  4.0
     3  4.0
     """
-    return LiteFrameWindowTransform.for_fill("bfill", limit=limit, columns=columns)(
-        self
-    )
+    return LiteFrameWindowTransform.for_fill(
+        "bfill",
+        limit=limit,
+        columns=columns,
+        placeback=placeback,
+    )(self)

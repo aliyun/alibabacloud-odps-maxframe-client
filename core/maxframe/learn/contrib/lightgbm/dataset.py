@@ -38,7 +38,9 @@ class ToLGBMDataset(Operator, TileableOperatorMixin):
     init_score = KeyField("init_score", default=None)
     group = AnyField("group", default=None)
     feature_name = ListField("feature_name", default=None)
-    categorical_feature = ListField("categorical_feature", default=None)
+    # "auto" (infer from pandas category dtypes) and None (no categorical
+    # feature) are different lightgbm values, so this is not a ListField
+    categorical_feature = AnyField("categorical_feature", default="auto")
     params = AnyField("params", default=None)
     free_raw_data = BoolField("free_raw_data", default=None)
     position = AnyField("position", default=None)
@@ -147,9 +149,8 @@ def to_lgbm_dataset(
         group=group,
         init_score=init_score,
         feature_name=None if feature_name == "auto" else feature_name,
-        categorical_feature=None
-        if categorical_feature == "auto"
-        else categorical_feature,
+        # lightgbm resolves "auto" vs None itself
+        categorical_feature=categorical_feature,
         params=params,
         free_raw_data=free_raw_data,
         position=position,

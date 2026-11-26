@@ -3,9 +3,10 @@
 Window functions
 ================
 
-Rolling and expanding window objects are returned by
-:meth:`maxframe.liteframe.LiteFrame.rolling` and
-:meth:`maxframe.liteframe.LiteFrame.expanding` respectively.
+Rolling, expanding, and exponentially weighted (EW) window objects are returned by
+:meth:`maxframe.liteframe.LiteFrame.rolling`,
+:meth:`maxframe.liteframe.LiteFrame.expanding`, and
+:meth:`maxframe.liteframe.LiteFrame.ewm` respectively.
 Call an aggregation method to produce a LiteFrame.
 
 .. currentmodule:: maxframe.liteframe.window.rolling
@@ -42,3 +43,16 @@ Expanding methods
    LiteFrameExpanding.std
    LiteFrameExpanding.var
    LiteFrameExpanding.count
+
+.. currentmodule:: maxframe.liteframe.window.ewm
+
+EWM methods
+-----------
+.. autosummary::
+   :toctree: generated/
+
+   LiteFrameEWM
+   LiteFrameEWM.agg
+   LiteFrameEWM.mean
+   LiteFrameEWM.std
+   LiteFrameEWM.var

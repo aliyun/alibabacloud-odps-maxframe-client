@@ -46,6 +46,7 @@ from maxframe.liteframe.expressions import (
     LiteFrameGe,
     LiteFrameGt,
     LiteFrameInvert,
+    LiteFrameIsInExpr,
     LiteFrameIsNA,
     LiteFrameLe,
     LiteFrameLiteral,
@@ -81,8 +82,9 @@ _MULTI_CACHE_ATTR = "_multi_cache"
 class LiteFrameExprEvaluator:
     """Evaluates LiteFrame expression trees against a pandas DataFrame."""
 
-    def __init__(self, df: pd.DataFrame):
+    def __init__(self, df: pd.DataFrame, extra_inputs: list = None):
         self._df = df
+        self._extra_inputs = extra_inputs or []
 
     def eval(self, expr: LiteFrameBaseExpr) -> Any:
         """Evaluate an expression tree and return a pandas Series or scalar."""
@@ -175,6 +177,11 @@ def _eval_tree_or(evaluator, expr):
 @_register(LiteFrameIsNA)
 def _eval_isna(evaluator, expr):
     return evaluator.eval(expr.operand).isna()
+
+
+@_register(LiteFrameIsInExpr)
+def _eval_isin(evaluator, expr):
+    return evaluator.eval(expr.operand).isin(expr.values or [])
 
 
 @_register(LiteFrameNeg)
@@ -301,7 +308,22 @@ def _eval_str_multi_expr(evaluator, expr):
     args = expr.args or ()
     kwargs = expr.kwargs or {}
     result = getattr(series.str, method)(*args, **kwargs)
-    result.columns = expr.output_names
+    if not expr.is_dynamic:
+        result.columns = expr.output_names
+        return result
+    # Dynamic: column count/names are resolved at runtime from the dtypes
+    # Series carried as an extra input.  pandas produced a RangeIndex'd
+    # DataFrame whose column count is the per-chunk max; pad with nulls
+    # (or truncate) to the global column count so every chunk produces
+    # the same schema, then rename to the resolved column names.
+    if evaluator._extra_inputs:
+        dtypes_series = evaluator._extra_inputs[0]
+        col_names = list(dtypes_series.index)
+        n_cols = len(col_names)
+        for i in range(len(result.columns), n_cols):
+            result[i] = None
+        result = result.iloc[:, :n_cols]
+        result.columns = col_names
     return result
 
 

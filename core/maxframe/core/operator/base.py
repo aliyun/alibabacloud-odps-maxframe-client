@@ -28,6 +28,7 @@ from maxframe.serialization.core import Placeholder
 from maxframe.serialization.serializables import (
     BoolField,
     DictField,
+    EnumField,
     FieldTypes,
     Float32Field,
     Int32Field,
@@ -59,6 +60,14 @@ class OperatorStage(Enum):
     reduce = 1
     combine = 2
     agg = 3
+
+
+class WorkLoadType(Enum):
+    """Computation nature of an operator's CPU-side workload (unset = GILFree)."""
+
+    GILHeavy = 0
+    GILFree = 1
+    IO = 2
 
 
 def _deserialize_fs_mount(x):
@@ -116,6 +125,10 @@ class SchedulingHint(Serializable):
     # Network configurations for isolation execution
     # Contains: public_network_whitelist, internal_network_whitelist, vpc_networklink
     network_configs = DictField("network_configs", FieldTypes.any, default=None)
+    # CPU-side workload nature (GILHeavy / GILFree / IO); unset means GILFree.
+    work_load_type = EnumField(
+        "work_load_type", WorkLoadType, FieldTypes.int8, default=None
+    )
 
     def __init__(self, *, pure_depends=None, **kwargs):
         kwargs["_pure_depends"] = pure_depends or kwargs.get("_pure_depends") or []
@@ -125,6 +138,31 @@ class SchedulingHint(Serializable):
     @lru_cache(1)
     def all_hint_names(cls):
         return list(cls._FIELDS)
+
+    def copy(self) -> "SchedulingHint":
+        """
+        Copy the hint, detaching its dict and list fields from the source.
+
+        ``Serializable.copy`` only copies field values, so containers like
+        ``fs_mount`` or ``expect_resources`` would still be shared and the
+        in-place mutations applied to a hint would leak into the source hint.
+        Lists held inside those dicts are copied as well, because merging
+        appends to them. Objects inside the containers stay shared.
+        """
+        copied = super().copy()
+        for name in self.all_hint_names:
+            value = getattr(self, name, None)
+            if isinstance(value, dict):
+                value = {
+                    key: list(item) if isinstance(item, list) else item
+                    for key, item in value.items()
+                }
+            elif isinstance(value, list):
+                value = list(value)
+            else:
+                continue
+            setattr(copied, name, value)
+        return copied
 
     def can_be_fused(self) -> bool:
         if not self.fuseable:
@@ -286,9 +324,14 @@ class Operator(Base, OperatorLogicKeyGeneratorMixin, metaclass=OperatorMetaclass
     def _parse_kwargs(cls, kwargs: Dict[str, Any]):
         extra_params = kwargs.pop("extra_params", {})
         kwargs["extra_params"] = extras = AttributeDict(extra_params)
-        kwargs["scheduling_hint"] = scheduling_hint = kwargs.get(
-            "scheduling_hint", SchedulingHint()
-        )
+        scheduling_hint = kwargs.get("scheduling_hint", SchedulingHint())
+        if scheduling_hint is None:
+            scheduling_hint = SchedulingHint()
+        else:
+            # Copy an explicitly supplied hint so flattened hint kwargs
+            # absorbed below never mutate a caller-owned SchedulingHint.
+            scheduling_hint = scheduling_hint.copy()
+        kwargs["scheduling_hint"] = scheduling_hint
         for k in set(kwargs):
             if k in cls._FIELDS:
                 continue

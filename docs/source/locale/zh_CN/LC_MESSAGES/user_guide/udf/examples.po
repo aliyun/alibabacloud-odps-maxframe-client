@@ -1,0 +1,306 @@
+# Simplified Chinese translations for the MaxFrame documentation.
+# Copyright (C) 1999-2026, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-29 17:19+0800\n"
+"PO-Revision-Date: 2026-10-29 00:00+0800\n"
+"Last-Translator: MaxFrame contributors\n"
+"Language: zh_CN\n"
+"Language-Team: Chinese (Simplified)\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/user_guide/udf/examples.rst:5
+msgid "UDF examples"
+msgstr "UDF 使用示例"
+
+#: ../../source/user_guide/udf/examples.rst:7
+msgid ""
+"The DataFrame examples below share these four records. The ``id`` index "
+"identifies the source row in the output, including when one row becomes "
+"several rows. The Tensor example creates its own array."
+msgstr ""
+"下面的 DataFrame 示例共用这四条记录。``id`` 索引用来标识原始记录，即使一行展开成多行，也能从结果中找到对应的来源。Tensor "
+"示例会单独创建数组。"
+
+#: ../../source/user_guide/udf/examples.rst:27
+msgid ""
+"Each example produces a ``result`` expression. The text block below it shows"
+" the result of ``result.execute().fetch()`` in a configured MaxFrame "
+"session. For connection settings, see :ref:`udf_complete_example`. Result "
+"row order may differ after grouping or repartitioning."
+msgstr ""
+"每个示例都会生成一个 ``result`` 表达式，下方列出在已配置的 MaxFrame 会话中执行 "
+"``result.execute().fetch()`` 后的结果。连接设置见 "
+":ref:`udf_complete_example`。分组或重新分块后，结果的行顺序可能不同。"
+
+#: ../../source/user_guide/udf/examples.rst:33
+msgid "Process individual values"
+msgstr "逐个处理值"
+
+#: ../../source/user_guide/udf/examples.rst:35
+msgid ""
+"Use this when each value can be handled independently, for example to "
+"classify amounts or convert a field using custom rules. The function below "
+"receives one amount and returns one label."
+msgstr "给金额分档、转换字段这类操作，通常只需处理当前值。下面用 ``Series.map`` 给每个金额打标签，函数每次接收一个金额，返回一个标签。"
+
+#: ../../source/user_guide/udf/examples.rst:55
+msgid ""
+"For a Python function over Series values, ``Series.apply`` is another "
+"option. Use ``DataFrame.map`` to apply a scalar-to-scalar function to every "
+"cell; ``DataFrame.applymap`` is an alias."
+msgstr ""
+"对 Series 中的值调用 Python 函数，也可以使用 ``Series.apply``。如果要对 DataFrame "
+"的每个单元格做相同的转换，可以使用 ``DataFrame.map``；``DataFrame.applymap`` 是它的别名。"
+
+#: ../../source/user_guide/udf/examples.rst:60
+msgid "Process rows or columns"
+msgstr "按行或按列处理"
+
+#: ../../source/user_guide/udf/examples.rst:62
+msgid ""
+"Use ``DataFrame.apply(axis=1)`` when the calculation needs several fields "
+"from the same record. Here customer A gets a 10 percent discount and "
+"customer B gets a 20 percent discount. The function receives one row as a "
+"pandas Series."
+msgstr ""
+"计算折后金额时，需要同时读取客户和金额两个字段，可以用 ``DataFrame.apply(axis=1)`` 按行处理。下面为客户 A 打九折、客户 "
+"B 打八折，每行数据以 pandas Series 的形式传入函数。"
+
+#: ../../source/user_guide/udf/examples.rst:85
+msgid ""
+"With ``axis=0``, the function receives one column instead. MCSQL does not "
+"support column-wise ``DataFrame.apply``, so this example explicitly selects "
+"DPE. The function returns the difference between the column's maximum and "
+"minimum values:"
+msgstr ""
+"设置 ``axis=0`` 时，函数收到的是一整列。MCSQL 不支持按列执行 ``DataFrame.apply``，因此下面的示例显式指定 "
+"DPE。函数计算这一列的最大值与最小值之差："
+
+#: ../../source/user_guide/udf/examples.rst:108
+msgid ""
+"For this simple calculation, built-in ``max`` and ``min`` are sufficient; "
+"the example shows the difference between receiving a row and receiving a "
+"column."
+msgstr "这个简单计算用内置的 ``max`` 和 ``min`` 就能完成，这里主要用来说明按行调用和按列调用的区别。"
+
+#: ../../source/user_guide/udf/examples.rst:113
+msgid "Process a batch of rows"
+msgstr "批量处理"
+
+#: ../../source/user_guide/udf/examples.rst:115
+msgid ""
+"Use ``apply_chunk`` when a library or service can process several records at"
+" once, such as batch model inference or vectorized pandas/NumPy operations. "
+"The function receives a pandas DataFrame rather than a single row."
+msgstr ""
+"如果库函数或服务支持一次处理多条记录，例如模型批量推理、pandas/NumPy 向量化计算，可以使用 "
+"``apply_chunk``。函数每次收到的是一个 pandas DataFrame，而不是单独一行。"
+
+#: ../../source/user_guide/udf/examples.rst:119
+msgid ""
+"Chunk sizes are not guaranteed to stay the same between executions, even for"
+" the same job. A UDF should handle batches of different sizes and must not "
+"depend on a particular chunk boundary."
+msgstr "即使运行的是同一个作业，不同次执行的 Chunk 大小也不保证一致。UDF 应能处理大小不同的批次，不能依赖固定的分块边界。"
+
+#: ../../source/user_guide/udf/examples.rst:150
+msgid ""
+"Keep the returned pandas index consistent with the MaxFrame declaration; see"
+" :ref:`udf_result_index` for the two ``index`` arguments."
+msgstr ""
+"函数返回的 pandas 索引需要与 MaxFrame 中的声明一致，两个 ``index`` 参数的区别见 "
+":ref:`udf_result_index`。"
+
+#: ../../source/user_guide/udf/examples.rst:153
+msgid ""
+"``batch_rows=2`` makes the four-row example run in small batches. It is a "
+"teaching value, not a recommended production batch size. Start with a batch "
+"size that fits the function's memory needs. For ungrouped ``apply_chunk``, "
+"omitting ``batch_rows`` processes each input chunk in one call in DPE; in "
+"MCSQL, the default is 1,024 rows per call. See :ref:`udf_batch_rows`."
+msgstr ""
+"``batch_rows=2`` 是为了在四行样本中演示分批调用，不是生产环境的推荐值。实际使用时，应根据函数的内存占用选择批次大小。对于不分组的 "
+"``apply_chunk``，省略 ``batch_rows`` 时，DPE 每次调用处理一个完整的输入 Chunk，MCSQL 则默认每批最多处理 "
+"1,024 行。详见 :ref:`udf_batch_rows`。"
+
+#: ../../source/user_guide/udf/examples.rst:159
+msgid ""
+"``Series.mf.apply_chunk`` works similarly but passes a pandas Series. For "
+"return type declarations and ``skip_infer``, see :ref:`udf_result_types`."
+msgstr ""
+"``Series.mf.apply_chunk`` 的用法类似，只是传入的是 pandas Series。返回类型声明和 ``skip_infer`` "
+"的用法见 :ref:`udf_result_types`。"
+
+#: ../../source/user_guide/udf/examples.rst:163
+msgid "Expand one record into several"
+msgstr "一条记录展开成多条"
+
+#: ../../source/user_guide/udf/examples.rst:165
+msgid ""
+"Use ``flatmap`` when one input record can produce zero, one, or several "
+"output records. For example, split an article into paragraphs, a video into "
+"frames, or a line of text into words. The function below receives one row "
+"and yields one output row per word."
+msgstr ""
+"拆分文章段落、提取视频帧时，一条输入可能产生多条输出，也可能没有输出。这类操作可以用 "
+"``flatmap``。下面把每行文本拆成单词，每个单词生成一条记录。"
+
+#: ../../source/user_guide/udf/examples.rst:192
+msgid ""
+"Each expanded row automatically repeats its source row index (``101, 101, "
+"102...``). For a single text column, ``Series.mf.flatmap`` can receive one "
+"text value directly. ``flatmap`` never infers output types automatically; "
+"always declare ``dtypes`` (or ``dtype`` for scalar Series output)."
+msgstr ""
+"展开后的每行会自动保留来源行的索引，因此示例中会出现 ``101, 101, 102...``。如果只处理一列文本，也可以用 "
+"``Series.mf.flatmap``，让函数直接接收一个文本值。``flatmap`` 不会自动推断输出类型，必须声明 "
+"``dtypes``；Series 输出标量时使用 ``dtype``。"
+
+#: ../../source/user_guide/udf/examples.rst:200
+msgid "Process a complete group"
+msgstr "处理一个完整分组"
+
+#: ../../source/user_guide/udf/examples.rst:202
+msgid ""
+"Use ``GroupBy.apply`` when a calculation needs all rows of each group, such "
+"as fitting a model per customer or comparing each order with that customer's"
+" total. This example calculates each order's share of the customer's "
+"spending."
+msgstr "有些计算需要一组的全部数据，比如为每个客户拟合模型，或计算每笔订单占客户总消费的比例。这时使用 ``GroupBy.apply``。下面以订单占比为例。"
+
+#: ../../source/user_guide/udf/examples.rst:208
+msgid ""
+"Pass ``prepend_index_group_keys=True`` to ``GroupBy.apply`` and grouped "
+"``apply_chunk`` to prepend group keys when ``group_keys=True``. Omitting "
+"this argument uses the current legacy index behavior; specify it explicitly "
+"for the MultiIndex shown below."
+msgstr ""
+"在 ``group_keys=True`` 时，给 ``GroupBy.apply`` 或分组后的 ``apply_chunk`` 传入 "
+"``prepend_index_group_keys=True``，会在结果索引前添加分组键。不传该参数时，仍使用当前的旧版索引行为。要得到下面的 "
+"MultiIndex，需要显式指定这个参数。"
+
+#: ../../source/user_guide/udf/examples.rst:235
+msgid ""
+"The function receives the complete group, so its denominator is the "
+"customer's total. ``prepend_index_group_keys=True`` prepends the group key "
+"``customer`` to the input index ``id`` to form a ``MultiIndex (customer, "
+"id)``; ``dtypes`` declares only the columns returned by ``order_share`` "
+"itself. For standard aggregations such as sums and means, use built-in "
+"``agg`` or ``transform`` operations."
+msgstr ""
+"函数收到的是完整分组，因此分母是该客户的总金额。``prepend_index_group_keys=True`` 会把分组键 ``customer``"
+" 加到原来的 ``id`` 索引前，形成 ``MultiIndex (customer, id)``；``dtypes`` 只需声明 "
+"``order_share`` 自身返回的列。求和、均值等标准聚合，直接使用内置的 ``agg`` 或 ``transform`` 即可。"
+
+#: ../../source/user_guide/udf/examples.rst:243
+msgid "Process batches within a group"
+msgstr "在组内分批处理"
+
+#: ../../source/user_guide/udf/examples.rst:245
+msgid ""
+"Use ``DataFrameGroupBy.mf.apply_chunk`` when rows must be grouped by a "
+"business key, but each batch can be processed independently. Each call "
+"contains rows from one group. This example applies a different discount to "
+"each customer."
+msgstr ""
+"如果数据需要先分组，而组内各批数据可以分别处理，可以使用 "
+"``DataFrameGroupBy.mf.apply_chunk``。每次传入的数据都属于同一个组。下面仍按客户分组，为不同客户使用不同的折扣。"
+
+#: ../../source/user_guide/udf/examples.rst:278
+msgid ""
+"Selecting ``customer`` after ``groupby`` makes the group key available "
+"inside the function. Each group has two rows here, and ``batch_rows=1`` "
+"splits it into two calls. This value only demonstrates multiple calls on a "
+"small sample; it is not a recommended production batch size. Results from "
+"separate batches are concatenated, not aggregated into one result per group."
+" Use ``GroupBy.apply`` when the function needs the complete group. The same "
+":ref:`group-index requirement <udf_group_index>` applies here."
+msgstr ""
+"在 ``groupby`` 后选中 ``customer``，函数内才能访问分组字段。这里每组有两行，``batch_rows=1`` "
+"会把每组分成两次调用。这个值只是为了在小样本中展示分批调用，不是生产环境的推荐值。各批结果会拼接在一起，不会自动聚合成每组一条结果。需要完整分组时应使用"
+" ``GroupBy.apply``。这里同样需要遵守 :ref:`分组索引的设置要求 <udf_group_index>`。"
+
+#: ../../source/user_guide/udf/examples.rst:287
+msgid "Transform and aggregate by key"
+msgstr "先转换，再按键聚合"
+
+#: ../../source/user_guide/udf/examples.rst:289
+msgid ""
+"Use ``DataFrame.mf.map_reduce`` to produce intermediate records and then "
+"combine records with the same key. This example splits text into words and "
+"counts each word across all rows."
+msgstr ""
+"统计词频需要先把文本拆成单词，再把相同单词的计数加起来。像这样包含转换和汇总两个阶段的计算，可以用 "
+"``DataFrame.mf.map_reduce``。"
+
+#: ../../source/user_guide/udf/examples.rst:293
+msgid "The reducer below accumulates a count over several calls:"
+msgstr "下面的 reducer 会跨多次调用累计计数："
+
+#: ../../source/user_guide/udf/examples.rst:295
+msgid ""
+"It selects ``engine=\"MCSQL\"`` because this example uses the MCSQL "
+"reducer's ``end=True`` signal for the last batch of a key."
+msgstr "这里指定 ``engine=\"MCSQL\"``，因为示例通过 MCSQL reducer 的 ``end=True`` 判断当前分组是否已到最后一批。"
+
+#: ../../source/user_guide/udf/examples.rst:297
+msgid ""
+"With ``end=False``, it adds the current batch to the total and returns an "
+"empty DataFrame with the declared columns and dtypes."
+msgstr "``end=False`` 时，累加当前批次的计数，并返回列名和类型都符合声明的空 DataFrame。"
+
+#: ../../source/user_guide/udf/examples.rst:299
+msgid ""
+"With ``end=True``, it returns the total and resets ``self.total`` to zero. "
+"The same reducer instance can then process another word."
+msgstr "``end=True`` 时，返回累计结果，并把 ``self.total`` 清零。同一个 reducer 实例随后可以继续处理下一个词。"
+
+#: ../../source/user_guide/udf/examples.rst:351
+msgid ""
+"Here ``batch_rows=2`` demonstrates batching in both stages. Use a larger "
+"value for larger data, chosen according to memory use. ``mapper_batch_rows``"
+" and ``reducer_batch_rows`` set the two stages separately. "
+"``ignore_index=True`` resets the index of the final ``map_reduce`` result."
+msgstr ""
+"``batch_rows=2`` "
+"用来演示两个阶段的分批处理。实际数据量较大时，应结合内存使用情况选择更大的值。``mapper_batch_rows`` 和 "
+"``reducer_batch_rows`` 可以分别设置两个阶段的批大小。``ignore_index=True`` 会重置 "
+"``map_reduce`` 最终结果的索引。"
+
+#: ../../source/user_guide/udf/examples.rst:356
+msgid ""
+"``mapper_index`` and ``reducer_index`` declare the index types, not the "
+"actual row labels. The mapper expands each input row into several word rows,"
+" so its index template is an empty integer index named ``id``, rather than "
+"``df.index``."
+msgstr ""
+"``mapper_index`` 和 ``reducer_index`` 声明索引类型，不指定实际的行标签。mapper "
+"会把一行文本展开成多行单词，因此用一个名为 ``id`` 的空整数索引作为模板，不能直接传入 ``df.index``。"
+
+#: ../../source/user_guide/udf/examples.rst:362
+msgid "Process array chunks"
+msgstr "按块处理多维数组"
+
+#: ../../source/user_guide/udf/examples.rst:364
+msgid ""
+"Use ``Tensor.mf.apply_chunk`` to apply NumPy or other array-processing code "
+"to each Tensor block. The function receives an array block, not a pandas "
+"object. This example clips values into the range from 0 to 1."
+msgstr ""
+"处理 Tensor 中的多维数组时，可以通过 ``Tensor.mf.apply_chunk`` 对各个数据块调用 NumPy "
+"等数组处理函数。传入的是数组块，不是 pandas 对象。下面将数值限制在 0 到 1 之间。"
+
+#: ../../source/user_guide/udf/examples.rst:385
+msgid ""
+"Each block is processed independently; a function cannot assume that it "
+"receives the entire Tensor. ``elementwise=True`` declares that each value is"
+" processed independently and the input shape is preserved."
+msgstr "每个数组块会分别处理，函数不能假设收到的是整个 Tensor。``elementwise=True`` 表示逐元素计算，并且结果保持输入的形状。"

@@ -23,6 +23,7 @@ from maxframe.codegen.spe.core import (
 )
 from maxframe.codegen.spe.liteframe.expressions import _materialize_range_columns
 from maxframe.liteframe.operators.sort import LiteFrameSort
+from maxframe.liteframe.utils import next_unselected
 
 
 @register_op_adapter(LiteFrameSort)
@@ -53,10 +54,26 @@ class LiteFrameSortAdapter(SPEOperatorAdapter):
             else:
                 is_ascending = all(ascending)
                 is_descending = not any(ascending)
-            if is_ascending:
-                result = df.nsmallest(nrows, columns=by, keep=keep_kind)
-            elif is_descending:
-                result = df.nlargest(nrows, columns=by, keep=keep_kind)
+            if is_ascending or is_descending:
+                # pandas < 2.0 drops missing keys from nsmallest/nlargest,
+                # while pandas >= 2.0 keeps them to fill up to ``nrows`` when
+                # there are fewer non-null keys. Normalize by working on a
+                # positional index (so rows can be identified unambiguously
+                # even when the frame index has duplicate labels) and padding
+                # the missing-key rows back in sort order.
+                orig_index = df.index
+                pos_df = df.reset_index(drop=True)
+                if is_ascending:
+                    result = pos_df.nsmallest(nrows, columns=by, keep=keep_kind)
+                else:
+                    result = pos_df.nlargest(nrows, columns=by, keep=keep_kind)
+                ordered_df = pos_df.sort_values(
+                    by=by, ascending=ascending, na_position=na_position, kind="stable"
+                )
+                result = LiteFrameSortAdapter._pad_short_selection(
+                    ordered_df, result, nrows
+                )
+                result.index = orig_index.take(result.index.to_numpy())
             else:
                 # Mixed sort directions: nsmallest/nlargest cannot express
                 # per-column directions, so fall back to sort + head.
@@ -64,14 +81,49 @@ class LiteFrameSortAdapter(SPEOperatorAdapter):
                     by=by, ascending=ascending, na_position=na_position
                 ).head(nrows)
             return result.sort_values(
-                by=by, ascending=ascending, na_position=na_position
+                by=by,
+                ascending=ascending,
+                na_position=na_position,
+                kind="stable",
             )
 
         # keep_kind == "all"
-        sorted_df = df.sort_values(by=by, ascending=ascending, na_position=na_position)
+        # Use kind='stable' to ensure tied rows are in original order,
+        # matching pandas keep='all' behavior.
+        sorted_df = df.sort_values(
+            by=by, ascending=ascending, na_position=na_position, kind="stable"
+        )
         return LiteFrameSortAdapter._include_all_ties(
             sorted_df, by, ascending, na_position, nrows
         )
+
+    @staticmethod
+    def _pad_short_selection(
+        ordered_df: pd.DataFrame,
+        result: pd.DataFrame,
+        nrows,
+    ) -> pd.DataFrame:
+        """Fill a short selection with the next rows in sort order.
+
+        pandas can return fewer rows than ``min(nrows, len(ordered_df))``: it
+        drops rows with missing sort keys (pandas < 2.0) and, with Arrow-backed
+        keys, returns an empty selection whenever a key column holds a missing
+        value. ``ordered_df`` is the input in sort order carrying a positional
+        (``RangeIndex``) index, so the rows the sort places first among the
+        unselected ones fill the gap, complete-key rows included, and the padded
+        rows follow the key order of the selection. Rows are addressed by their
+        original labels, which are not the sorted frame's positions.
+        """
+        target = min(nrows, len(ordered_df))
+        if len(result) >= target:
+            return result
+
+        pad_labels = next_unselected(
+            ordered_df.index.to_numpy(), result.index.to_numpy(), target - len(result)
+        )
+        if pad_labels.size == 0:
+            return result
+        return pd.concat([result, ordered_df.loc[pad_labels]])
 
     @staticmethod
     def _include_all_ties(
@@ -101,8 +153,10 @@ class LiteFrameSortAdapter(SPEOperatorAdapter):
 
         # All boundary-matching rows from the full sorted DataFrame
         all_at_boundary = sorted_df[mask]
-        # Rows in top_n that are strictly above the boundary
-        top_n_above = top_n[~mask.loc[top_n.index]]
+        # Rows in top_n that are strictly above the boundary.
+        # Use positional access (iloc) to avoid label-expansion bugs
+        # when the input index contains duplicate labels.
+        top_n_above = top_n.iloc[~mask.iloc[:nrows].values]
         # Combine: rows above boundary + all tied rows at boundary
         return pd.concat([top_n_above, all_at_boundary])
 

@@ -438,6 +438,109 @@ def _rolling_agg_block(frame, target, window_size, min_periods, center, agg_func
     return out
 
 
+def _run_ewm_agg(
+    result,
+    target,
+    groupby_params,
+    agg_func,
+    min_periods,
+    ewm_params,
+    order_by=None,
+    order_by_ascending=None,
+    window_shift=0,
+    reverse=False,
+):
+    """Execute ``ewm_agg`` via pandas.
+
+    Pandas ``ewm`` is a direct match for this operator (the DPE Cython
+    implementation is a port of the same algorithm), so SPE delegates to
+    pandas directly.  For grouped variants, use positional scatter-back
+    (same as other grouped transforms).
+
+    MF-specific params (``order_by``, ``reverse``, ``window_shift``) mirror
+    the standalone/grouped rolling and expanding paths.
+    """
+    ep = ewm_params or {}
+    com = ep.get("com", 1.0)  # default com=1 -> alpha=0.5
+    adjust = ep.get("adjust", True)
+    ignore_na = ep.get("ignore_na", False)
+    bias = ep.get("bias", False)
+    mp = min_periods if min_periods is not None else 0
+
+    def _compute_block(frame):
+        out = frame.copy()
+        for c in target:
+            ewm_obj = out[c].ewm(
+                com=com,
+                adjust=adjust,
+                ignore_na=ignore_na,
+                min_periods=mp,
+            )
+            if agg_func == "mean":
+                out[c] = ewm_obj.mean()
+            else:
+                out[c] = getattr(ewm_obj, agg_func)(bias=bias)
+        return out
+
+    def _apply_shift(frame):
+        if window_shift == 0:
+            return frame
+        eff_shift = -window_shift if reverse else window_shift
+        out = frame.copy()
+        for c in target:
+            shifted = out[c].shift(-eff_shift)
+            if eff_shift > 0:
+                shifted = shifted.ffill()
+            out[c] = shifted
+        return out
+
+    if groupby_params is not None:
+        by = groupby_params["by"]
+        by_cols = [by] if isinstance(by, str) else list(by)
+        dropna = groupby_params.get("dropna", True)
+        sort = groupby_params.get("sort", True)
+
+        # Mirror the expanding sibling: wrap the per-group compute with
+        # reverse/shift handling so grouped ewm(window_shift=...) and
+        # grouped ewm(reverse=True) do not silently drop MF semantics.
+        def _compute_ewm_group(sub):
+            if reverse:
+                sub = sub.iloc[::-1]
+            sub = _compute_block(sub)
+            sub = _apply_shift(sub)
+            if reverse:
+                sub = sub.iloc[::-1]
+            return sub
+
+        return _grouped_positional_scatter(
+            result,
+            target,
+            by_cols,
+            dropna,
+            sort,
+            order_by,
+            order_by_ascending,
+            _compute_ewm_group,
+        )
+
+    # Standalone: MF pre-processing (order_by sort, reverse) then compute
+    # then shift then post-processing (reverse back, place-back).
+    work = result
+    placeback = None
+    if order_by:
+        work, placeback = _mf_sort_and_perm(work, order_by, order_by_ascending)
+    if reverse:
+        work = work.iloc[::-1].reset_index(drop=True)
+    work = _compute_block(work)
+    work = _apply_shift(work)
+    if reverse:
+        work = work.iloc[::-1].reset_index(drop=True)
+    if placeback is not None:
+        work = work.iloc[placeback].reset_index(drop=True)
+        work.index = result.index
+    return work
+
+
 @register_op_adapter(LiteFrameWindowTransform)
 class LiteFrameWindowTransformAdapter(SPEOperatorAdapter):
     @staticmethod
@@ -462,12 +565,27 @@ class LiteFrameWindowTransformAdapter(SPEOperatorAdapter):
         reverse: bool = False,
         row_count_mode: bool = False,
         limit: Optional[int] = None,
+        ewm_params: Optional[dict] = None,
     ) -> pd.DataFrame:
         target = _get_target_cols(
             df, columns, groupby_params, hidden_columns, range_columns
         )
 
         result = df.copy()
+
+        if kind == "ewm_agg":
+            return _run_ewm_agg(
+                result,
+                target,
+                groupby_params,
+                agg_func,
+                min_periods,
+                ewm_params,
+                order_by=order_by,
+                order_by_ascending=order_by_ascending,
+                window_shift=window_shift,
+                reverse=reverse,
+            )
 
         if kind == "expanding_agg":
             out = _run_expanding_agg(
@@ -639,27 +757,29 @@ class LiteFrameWindowTransformAdapter(SPEOperatorAdapter):
         hidden_columns = getattr(op, "hidden_columns", None)
         row_count_mode = op.extra_params.get("row_count_mode", False)
 
+        tp = op.transform_params or {}
         args = self._translate_call_args(
             context,
             op.kind,
             op.groupby_params,
             periods=op.periods,
-            fill_value=op.fill_value,
+            fill_value=tp.get("fill_value"),
             columns=op.columns,
             window_size=op.window_size,
             min_periods=op.min_periods,
-            agg_func=op.agg_func,
+            agg_func=tp.get("agg_func"),
             center=op.center,
             hidden_columns=hidden_columns,
             range_columns=range_columns,
             skipna=op.skipna,
-            remask_input_nan=op.remask_input_nan,
+            remask_input_nan=tp.get("remask_input_nan", False),
             order_by=op.order_by,
             order_by_ascending=op.order_by_ascending,
             window_shift=op.window_shift,
             reverse=op.reverse,
             row_count_mode=row_count_mode,
-            limit=op.limit,
+            limit=tp.get("limit"),
+            ewm_params=op.ewm_params,
         )
         return [
             f"{res_var} = {cls_name}._run_window_transform("

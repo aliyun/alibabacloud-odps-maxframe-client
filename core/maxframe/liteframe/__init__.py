@@ -23,6 +23,7 @@ from maxframe.liteframe import (  # noqa: F401
     misc,
     missing,
     reduction,
+    reshape,
     sort,
     window,
 )
@@ -45,7 +46,7 @@ from maxframe.liteframe.missing.check import isna, isnull, notna, notnull
 
 # isort: off
 # Import accessors last to ensure all classes are fully initialized
-# before _install() attaches the CachedAccessor descriptors
+# before _install() registers the accessor descriptors
 from maxframe.liteframe import accessors  # noqa: E402
 
 # isort: on

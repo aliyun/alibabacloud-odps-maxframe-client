@@ -21,12 +21,46 @@ except ImportError:  # pragma: no cover
     pa = None
 
 try:
+    import pyarrow.types as patypes
+except ImportError:  # pragma: no cover
+    patypes = None
+
+try:
     from maxframe.lib.dtypes_extension import ArrowDtype
 except ImportError:  # pragma: no cover
     ArrowDtype = None
 
 
 _VALID_ERRORS_VALUES = frozenset({"raise", "ignore", "coerce"})
+
+
+def is_numeric_dtype(pandas_dtype):
+    """Check if a pandas dtype (Arrow-backed) is numeric.
+
+    Returns True for integers, floats, and decimals.
+    Returns False for string, boolean, binary, list, struct, temporal.
+    """
+    if hasattr(pandas_dtype, "pyarrow_dtype"):
+        arrow_type = pandas_dtype.pyarrow_dtype
+        return (
+            patypes.is_integer(arrow_type)
+            or patypes.is_floating(arrow_type)
+            or patypes.is_decimal(arrow_type)
+        )
+    # Fallback for non-Arrow dtypes
+    return pd.api.types.is_numeric_dtype(pandas_dtype)
+
+
+def is_datetime_dtype(pandas_dtype):
+    """Check if a pandas dtype (Arrow-backed) is datetime or date.
+
+    Returns True for Arrow ``timestamp`` and ``date`` types, and for
+    numpy ``datetime64`` dtypes.
+    """
+    if hasattr(pandas_dtype, "pyarrow_dtype"):
+        arrow_type = pandas_dtype.pyarrow_dtype
+        return patypes.is_timestamp(arrow_type) or patypes.is_date(arrow_type)
+    return pd.api.types.is_datetime64_any_dtype(pandas_dtype)
 
 
 def validate_errors(errors: str, allow_coerce: bool = True) -> None:
@@ -45,6 +79,36 @@ def validate_errors(errors: str, allow_coerce: bool = True) -> None:
 def normalize_col_name(name: str) -> str:
     """Normalize a column name to lowercase for case-insensitive lookups."""
     return name.lower()
+
+
+def resolve_unique_col_name(base, existing_cols):
+    """Pick a column name that doesn't collide with *existing_cols*.
+
+    Defaults to *base*; if that name already exists, appends ``_1``,
+    ``_2``, … until a free name is found.
+    """
+    if base not in existing_cols:
+        return base
+    i = 1
+    while f"{base}_{i}" in existing_cols:
+        i += 1
+    return f"{base}_{i}"
+
+
+def next_unselected(ordered, selected, count):
+    """The first ``count`` entries of ``ordered`` that are absent from ``selected``.
+
+    Shared by the SPE and DPE sort adapters: when a dtype-faithful composite-key
+    selection comes up short of ``min(nrows, rows)``, both need the rows the sort
+    places next among the unselected ones, addressed by their original
+    labels/positions.
+    """
+    ordered = np.asarray(ordered)
+    if count <= 0:
+        return ordered[:0]
+    if len(selected) > 0:
+        ordered = ordered[~np.isin(ordered, np.asarray(selected))]
+    return ordered[:count]
 
 
 def normalize_dtypes_index(dtypes):

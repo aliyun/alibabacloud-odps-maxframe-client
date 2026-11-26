@@ -1,0 +1,211 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-15 21:22+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:2
+msgid "maxframe.liteframe.window.ewm.LiteFrameEWM"
+msgstr ""
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:1 of
+msgid "Provide exponentially weighted (EW) calculations."
+msgstr "提供指数加权（EW）计算。"
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:3 of
+msgid ""
+"Returns an intermediate object whose aggregation methods (``.mean()``, "
+"``.std()``, ``.var()``) compute exponentially weighted moving statistics."
+msgstr ""
+"返回一个中间对象，其聚合方法（``.mean()``、``.std()``、``.var()``）计算"
+"指数加权移动统计量。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:6 of
+msgid "The LiteFrame to compute on."
+msgstr "要计算的 LiteFrame。"
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:8 of
+msgid ""
+"Center of mass.  Resolved from ``com``/``span``/``halflife``/ ``alpha`` "
+"via :func:`_resolve_com` at the public API boundary."
+msgstr ""
+"质心（center of mass）。通过 :func:`_resolve_com` 从 ``com``/``span``/``"
+"halflife``/``alpha`` 在公共 API 边界解析。"
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:11 of
+msgid ""
+"Minimum number of observations in the window required to produce a value "
+"(otherwise null)."
+msgstr "窗口中产生值所需的最小观测数（否则为 null）。"
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:14 of
+#, python-brace-format
+msgid ""
+"If True, use the adjusted (weighted average) form.  If False, use the "
+"recursive form (y_t = (1-α)·y_{t-1} + α·x_t)."
+msgstr "如果为 True，使用调整（加权平均）形式。如果为 False，使用递归形式（y_t = (1-α)·y_{t-1} + α·x_t）。"
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:17 of
+msgid ""
+"If False, NaN positions are treated as absolute gaps (weights decay "
+"through the gap).  If True, NaN positions are ignored (weights apply only"
+" to observed values, relative positioning)."
+msgstr ""
+"如果为 False，NaN 位置被视为绝对间隙（权重在间隙中衰减）。如果为 True，"
+"NaN 位置被忽略（权重仅应用于已观测的值，相对定位）。"
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:21 of
+msgid ""
+"If False, use unbiased variance (bias correction).  If True, use biased "
+"variance.  Only applies to ``std``/``var``."
+msgstr ""
+"如果为 False，使用无偏方差（偏差校正）。如果为 True，使用有偏方差。仅适用"
+"于 ``std``/``var``。"
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:24 of
+msgid "Column(s) to aggregate. If None, all numeric columns are aggregated."
+msgstr "要聚合的列。如果为 None，则聚合所有数值列。"
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:26 of
+msgid "Set when created from a ``groupby.ewm()`` call."
+msgstr "从 ``groupby.ewm()`` 调用创建时设置。"
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:28 of
+msgid ""
+"Column(s) that define the order in which the window expands (equivalent "
+"to ``ORDER BY`` inside a MaxCompute ``OVER()`` clause). The output row "
+"order is unchanged; each row receives the EWM computed over the rows that"
+" precede it in *order_by* order."
+msgstr ""
+"定义窗口展开顺序的列（等价于 MaxCompute ``OVER()`` 子句中的 ``ORDER BY``"
+"）。输出行顺序不变；每行接收按 *order_by* 顺序在其之前的行计算得到的 EWM "
+"值。"
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:33 of
+msgid ""
+"Sort direction for each *order_by* column. A single bool is broadcast to "
+"all columns."
+msgstr "每个 *order_by* 列的排序方向。单个布尔值会广播到所有列。"
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:36 of
+msgid ""
+"Offset the EWM leading edge by N rows. A positive value shifts the window"
+" forward (look-ahead), a negative value backward (look-back). Matches the"
+" MaxCompute ``shift`` MF-specific window parameter."
+msgstr ""
+"将 EWM 前沿偏移 N 行。正值将窗口向前移动（前瞻），负值向后移动（回溯）。"
+"匹配 MaxCompute ``shift`` MF 特定窗口参数。"
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:41 of
+msgid ""
+"Flip the EWM so the recurrence runs from the last row backward. Matches "
+"the MaxCompute ``reverse_range`` MF-specific window parameter. May be "
+"combined with ``window_shift``."
+msgstr ""
+"翻转 EWM，使递归从最后一行向后运行。匹配 MaxCompute ``reverse_range`` MF "
+"特定窗口参数。可与 ``window_shift`` 组合使用。"
+
+#: maxframe.liteframe.window.ewm.LiteFrameEWM:45 of
+msgid "If True, restore output to input frame's row order (grouped only)."
+msgstr "如果为 True，恢复输出到输入帧的行顺序（仅分组模式）。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:14
+msgid "Methods"
+msgstr "方法"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`__init__ "
+"<maxframe.liteframe.window.ewm.LiteFrameEWM.__init__>`\\ \\(liteframe\\, "
+"com\\[\\, min\\_periods\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:27:<autosummary>:1
+msgid ""
+":py:obj:`agg <maxframe.liteframe.window.ewm.LiteFrameEWM.agg>`\\ "
+"\\(func\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:27:<autosummary>:1
+msgid "Aggregate using one of the supported function names."
+msgstr "使用支持的函数名之一进行聚合。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:27:<autosummary>:1
+msgid ":py:obj:`mean <maxframe.liteframe.window.ewm.LiteFrameEWM.mean>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:27:<autosummary>:1
+msgid "Exponentially weighted moving mean."
+msgstr "指数加权移动均值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:27:<autosummary>:1
+msgid ":py:obj:`std <maxframe.liteframe.window.ewm.LiteFrameEWM.std>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:27:<autosummary>:1
+msgid "Exponentially weighted moving standard deviation."
+msgstr "指数加权移动标准差。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:27:<autosummary>:1
+msgid ":py:obj:`var <maxframe.liteframe.window.ewm.LiteFrameEWM.var>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:27:<autosummary>:1
+msgid "Exponentially weighted moving variance."
+msgstr "指数加权移动方差。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:29
+msgid "Attributes"
+msgstr "属性"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:35:<autosummary>:1
+msgid ":py:obj:`alpha <maxframe.liteframe.window.ewm.LiteFrameEWM.alpha>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:35:<autosummary>:1
+msgid "``1 / (1 + com)``."
+msgstr "``1 / (1 + com)``。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:35:<autosummary>:1
+msgid ":py:obj:`com <maxframe.liteframe.window.ewm.LiteFrameEWM.com>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:35:<autosummary>:1
+msgid "Center of mass."
+msgstr "质心。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:35:<autosummary>:1
+msgid ":py:obj:`halflife <maxframe.liteframe.window.ewm.LiteFrameEWM.halflife>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:35:<autosummary>:1
+msgid "``ln(0.5) / ln(1-alpha)``."
+msgstr "``ln(0.5) / ln(1-alpha)``。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:35:<autosummary>:1
+msgid ":py:obj:`span <maxframe.liteframe.window.ewm.LiteFrameEWM.span>`"
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.window.ewm.LiteFrameEWM.rst:35:<autosummary>:1
+msgid "``2*com + 1``."
+msgstr "``2*com + 1``。"
+

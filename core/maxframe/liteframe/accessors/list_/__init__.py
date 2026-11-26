@@ -24,20 +24,15 @@ del list_method_to_handlers
 
 def _install():
     """Install list accessor on LiteFrame and LiteFrameData."""
-    from maxframe.core import CachedAccessor
     from maxframe.liteframe.accessors.list_.accessor import ListAccessor
     from maxframe.liteframe.accessors.list_.core import list_method_to_handlers
-    from maxframe.liteframe.core import LITEFRAME_TYPE
-    from maxframe.liteframe.initializer import LiteFrame as LiteFrameInit
+    from maxframe.liteframe.core import register_liteframe_accessor
 
     for method in list_method_to_handlers:
         if not hasattr(ListAccessor, method):
             ListAccessor._register(method)
 
-    ca = CachedAccessor("list", ListAccessor)
-    for liteframe in LITEFRAME_TYPE:
-        liteframe.list = ca
-    LiteFrameInit.list = ca
+    register_liteframe_accessor("list")(ListAccessor)
 
 
 _install()

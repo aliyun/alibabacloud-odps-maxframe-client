@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from maxframe import opcodes
+from maxframe.liteframe.core import FrameMetadata
 from maxframe.liteframe.operators.core import LiteFrameOperator, LiteFrameOperatorMixin
 from maxframe.serialization.serializables import (
     AnyField,
@@ -36,9 +37,20 @@ class LiteFrameRechunk(LiteFrameOperatorMixin, LiteFrameOperator):
     normalize_rechunk_axis = staticmethod(TensorRechunk.normalize_rechunk_axis)
 
     def __call__(self, x):
+        # Rechunk repartitions rows into different chunks, breaking the
+        # row-chunking invariant alignment_id certifies.  Copy the
+        # semantic metadata (range/hidden columns) but let the fresh
+        # FrameMetadata get its own random alignment_id.
+        old_meta = x.frame_metadata
+        new_meta = None
+        if old_meta is not None:
+            new_meta = FrameMetadata(
+                range_columns=old_meta.range_columns,
+                hidden_columns=old_meta.hidden_columns,
+            )
         return self.new_liteframe(
             [x],
             shape=x.shape,
             physical_dtypes=x._physical_dtypes,
-            frame_metadata=x.frame_metadata,
+            frame_metadata=new_meta,
         )

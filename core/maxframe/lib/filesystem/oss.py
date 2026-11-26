@@ -17,7 +17,10 @@ from collections import defaultdict
 from typing import Any, Dict, Iterator, List, Tuple, Union
 
 from maxframe.lib.filesystem._oss_lib import common as oc
-from maxframe.lib.filesystem._oss_lib.common import HostEnforceType
+from maxframe.lib.filesystem._oss_lib.common import (
+    _UPLOAD_GONE_ERROR_CODES,
+    HostEnforceType,
+)
 from maxframe.lib.filesystem._oss_lib.glob import glob
 from maxframe.lib.filesystem._oss_lib.handle import OSSIOBase
 from maxframe.lib.filesystem.base import FileSystem, path_type
@@ -197,6 +200,13 @@ class OSSFileSystem(FileSystem):
         path = self._rewrite_path(path)
         parsed_path = oc.parse_osspath(path)
         oss_bucket = oc.get_oss_bucket(parsed_path)
+        # A None part means its writer was canceled by a concurrent abort
+        # (see OSSIOBase.close); completing now would publish a truncated file.
+        if any(info is None for info in parts):
+            raise RuntimeError(
+                f"Multipart upload {upload_id} of {parsed_path.key} was aborted "
+                "before completion, part data is incomplete"
+            )
         parts = [oss2.models.PartInfo(**info) for info in parts]
         oss_bucket.complete_multipart_upload(parsed_path.key, upload_id, parts)
 
@@ -207,8 +217,10 @@ class OSSFileSystem(FileSystem):
         oss_bucket = oc.get_oss_bucket(parsed_path)
         try:
             oss_bucket.abort_multipart_upload(parsed_path.key, upload_id)
-        except oss2.exceptions.NoSuchUpload:
-            pass
+        except oss2.exceptions.ServerError as ex:
+            # Concurrent aborts race; an already-gone upload is the goal.
+            if ex.code not in _UPLOAD_GONE_ERROR_CODES:
+                raise
 
     @property
     def supports_partial_overwrite(self) -> bool:

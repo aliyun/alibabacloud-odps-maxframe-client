@@ -67,10 +67,10 @@ def test_from_liteframe_adapter_selects_visible_columns():
 def test_from_liteframe_adapter_materializes_range_columns():
     """Virtual range columns are materialized before conversion."""
     df = pd.DataFrame({"a": [10, 20, 30]})
-    range_columns = {"__lf_range_index__": (0, 3, 1)}
+    range_columns = {"__mf_range_index__": (0, 3, 1)}
     arr = TensorFromLiteFrameAdapter._from_liteframe(
         df,
-        ["__lf_range_index__", "a"],
+        ["__mf_range_index__", "a"],
         np.dtype(np.int64),
         range_columns,
     )

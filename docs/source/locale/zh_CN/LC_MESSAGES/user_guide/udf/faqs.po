@@ -1,0 +1,224 @@
+# Simplified Chinese translations for the MaxFrame UDF documentation.
+# Copyright (C) 1999-2026, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.10.0.dev32+gdddd31a5f\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-29 17:19+0800\n"
+"PO-Revision-Date: 2026-10-23 12:00+0800\n"
+"Last-Translator: MaxFrame contributors\n"
+"Language: zh_CN\n"
+"Language-Team: Chinese (Simplified)\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/user_guide/udf/faqs.rst:4
+msgid "FAQs"
+msgstr "常见问题"
+
+#: ../../source/user_guide/udf/faqs.rst:6
+msgid ""
+"Start with the error message and the point at which it occurs. Errors while "
+"building an expression can happen on the client; errors after submission are"
+" reported in Logview. The cases below explain what to check and how to "
+"proceed."
+msgstr "先确认报错内容，以及错误发生在哪一步。构建表达式时的错误可能出现在客户端；提交后的执行错误可以在 Logview 中查看。下面列出常见情况和处理方法。"
+
+#: ../../source/user_guide/udf/faqs.rst:11
+msgid "Client hangs or triggers external calls while building the expression"
+msgstr "还没执行，客户端就卡住或发起了外部请求"
+
+#: ../../source/user_guide/udf/faqs.rst:13
+msgid ""
+"If calling ``apply_chunk``, ``apply``, or ``map`` loads a model, sends a "
+"request, or raises ``ValueError`` / ``KeyError`` before ``execute()``, check"
+" whether MaxFrame is inferring the result type. Inference calls the function"
+" on the client with synthetic values that may not resemble real input."
+msgstr ""
+"调用 ``apply_chunk``、``apply`` 或 ``map`` 后，如果还没运行 ``execute()`` "
+"就开始加载模型、发送请求，或出现 ``ValueError`` / "
+"``KeyError``，先检查是否触发了返回类型推断。推断会在客户端用构造的样例值调用函数，这些值可能与实际数据不同。"
+
+#: ../../source/user_guide/udf/faqs.rst:18
+msgid ""
+"Declare the result using the arguments supported by that interface. For "
+"DataFrame and Series ``apply_chunk``, a complete return annotation or "
+"explicit type arguments with ``skip_infer=True`` avoids the trial call. See "
+":ref:`udf_result_types` for the available forms. If the problem remains with"
+" inference disabled, inspect code that runs outside the UDF, such as imports"
+" or model construction."
+msgstr ""
+"可以按接口支持的方式声明返回类型。对于 DataFrame 和 Series 的 ``apply_chunk``，完整的返回类型注解，或显式类型参数配合"
+" ``skip_infer=True``，都能避免试跑。具体写法见 :ref:`udf_result_types`。关闭推断后仍有问题时，再检查 UDF"
+" 外执行的代码，例如模块导入或模型初始化。"
+
+#: ../../source/user_guide/udf/faqs.rst:26
+msgid "Why do the returned columns, types, or index not match?"
+msgstr "返回的列、类型或索引不符合预期"
+
+#: ../../source/user_guide/udf/faqs.rst:28
+msgid ""
+"For errors about column names or dtypes, run the function on a small pandas "
+"sample and compare the result with its declaration. Check the column order, "
+"each column's dtype, and the Series name where applicable. An empty branch "
+"must return the same columns and dtypes, rather than an untyped "
+"``pd.DataFrame()``."
+msgstr ""
+"遇到列名或类型相关错误时，先用少量 pandas 数据直接调用函数，再把结果与声明逐项比较：列的顺序、每列的 dtype，以及 Series 的 "
+"name 是否一致。返回空结果的分支也必须保留相同的列和类型，不能只返回没有类型信息的 ``pd.DataFrame()``。"
+
+#: ../../source/user_guide/udf/faqs.rst:34
+msgid ""
+"If a later join or assignment produces unexpected ``NaN`` values, also check"
+" the index. A new DataFrame built from arrays starts its index at zero "
+"unless one is provided. For one result row per input row, construct it with "
+"``index=batch.index``. For filtered or expanded results, follow "
+":ref:`udf_result_index`."
+msgstr ""
+"如果后续关联或赋值出现了意外的 ``NaN``，还需要检查索引。从数组新建 DataFrame 时，未指定索引就会从 0 "
+"开始编号。每条输入对应一条输出时，应传入 ``index=batch.index``；筛选或扩展行时的处理方式见 "
+":ref:`udf_result_index`。"
+
+#: ../../source/user_guide/udf/faqs.rst:41
+msgid "Why does the remote job report ModuleNotFoundError?"
+msgstr "本地可以导入包，远程却报 ModuleNotFoundError？"
+
+#: ../../source/user_guide/udf/faqs.rst:43
+msgid ""
+"Check which package is missing in Logview StdErr. Packages installed on the "
+"client are not automatically installed in the remote environment. Add the "
+"package and version with ``@with_python_requirements(...)``, or use a "
+"registered image that contains it. See :ref:`udf_config_packages`."
+msgstr ""
+"先在 Logview 的 StdErr 中确认缺少哪个包。客户端已安装的包不会自动出现在远程环境中，可以通过 "
+"``@with_python_requirements(...)`` 指定包和版本，也可以使用已包含该包的注册镜像。详见 "
+":ref:`udf_config_packages`。"
+
+#: ../../source/user_guide/udf/faqs.rst:51
+msgid "How can an OOM be resolved?"
+msgstr "任务内存不足（OOM），应该改哪里？"
+
+#: ../../source/user_guide/udf/faqs.rst:53
+msgid ""
+"First check the failed task's logs in :ref:`udf_debugging`. An OOM-related "
+"error can contain the following lines:"
+msgstr "先按 :ref:`udf_debugging` 查看失败任务的日志。与 OOM 有关的报错中可能出现以下内容："
+
+#: ../../source/user_guide/udf/faqs.rst:62
+msgid ""
+"``signal: killed`` alone does not prove an OOM. Compare the error with the "
+"task's memory usage and retry history. For MCSQL workers, see "
+":ref:`logview_fuxi_sensor`; for DPE, inspect the matching SubStep and its "
+"Sensor entry when available. Compare failed tasks with normal tasks and the "
+"largest input groups to distinguish skew from generally insufficient memory."
+msgstr ""
+"单独出现 ``signal: killed``，不能证明发生了 OOM。需要结合任务的内存用量和重试历史判断。MCSQL Worker 的查看方法见 "
+":ref:`logview_fuxi_sensor`；DPE 则查看对应 SubStep，以及可用的 Sensor "
+"入口。对比失败任务、正常任务和最大输入分组，可以帮助区分数据倾斜与普遍的内存不足。"
+
+#: ../../source/user_guide/udf/faqs.rst:68
+msgid "Choose the adjustment that matches the memory use:"
+msgstr "根据内存占用的原因选择调整方式："
+
+#: ../../source/user_guide/udf/faqs.rst:70
+msgid ""
+"**Reduce the input held by a task.** In DPE, lower the applicable read-table"
+" chunk setting or use ``rechunk`` / ``rebalance`` before the UDF. DataFrame "
+"``rechunk`` is effective only in DPE. In MCSQL, ``chunk_bytes`` sets a SQL "
+"split hint and ``chunk_size`` is ignored; SPE ignores both read-table "
+"settings. See :ref:`udf_source_chunk_settings` for the table-specific rules."
+" For grouped UDFs, smaller source chunks do not limit group size. Inspect "
+"the largest groups; see :ref:`udf_batch_rows` for grouped batching."
+msgstr ""
+"**减少任务持有的输入数据。** 在 DPE 中，调小适用的读表分块参数，或在 UDF 前执行 ``rechunk`` / "
+"``rebalance``。DataFrame 的 ``rechunk`` 只在 DPE 中生效。MCSQL 的 ``chunk_bytes`` 是 "
+"SQL 分片提示，``chunk_size`` 会被忽略；SPE 忽略这两个读表参数。不同表类型的规则见 "
+":ref:`udf_source_chunk_settings`。对于分组 "
+"UDF，缩小源数据块并不能限制单个分组的大小，还需要检查最大的分组；分组内如何分批见 :ref:`udf_batch_rows`。"
+
+#: ../../source/user_guide/udf/faqs.rst:77
+msgid ""
+"**Reduce per-call temporary memory**: Set or lower ``batch_rows`` in "
+"``apply_chunk`` or ``map_reduce`` so each Python call allocates smaller "
+"intermediate pandas/NumPy objects. Note that ``batch_rows`` alone does not "
+"shrink the task's input chunk. See :ref:`udf_batch_rows`."
+msgstr ""
+"**减少单次调用中的临时对象。** 在 ``apply_chunk`` 或 ``map_reduce`` 中设置或调小 "
+"``batch_rows``，减少每次调用产生的 pandas/NumPy 中间对象。只调小 ``batch_rows`` 不会缩小任务持有的输入 "
+"Chunk。详见 :ref:`udf_batch_rows`。"
+
+#: ../../source/user_guide/udf/faqs.rst:81
+msgid ""
+"**Check group skew and task memory.** Count rows by the grouping keys, then "
+"sort the counts to find the largest groups and compare them with typical "
+"groups. A few very large groups can cause OOM failures even when source "
+"chunks are small. If a model or a complete group still needs more memory, "
+"request it with ``@with_running_options(memory=\"16GiB\")`` (see "
+":ref:`udf_tuning_resources` and :ref:`udf_configuration_guide`)."
+msgstr ""
+"**检查分组倾斜和任务内存。** 按分组字段统计各组行数并排序，找出最大的几组，与其他组比较。即使源数据块很小，少数特别大的分组仍可能导致 "
+"OOM。如果模型或完整分组确实需要更多内存，可以通过 ``@with_running_options(memory=\"16GiB\")`` "
+"增加任务内存，详见 :ref:`udf_tuning_resources` 和 :ref:`udf_configuration_guide`。"
+
+#: ../../source/user_guide/udf/faqs.rst:88
+msgid ""
+"If most DPE CPU UDF tasks succeed and only a few run out of memory, enable "
+":ref:`elastic memory <user_guide_elastic_memory>` with ``memory_limit``. "
+"Those tasks can retry with more memory, up to the configured limit."
+msgstr ""
+"如果大部分 DPE CPU UDF 任务都能完成，只有少数任务内存不足，可以通过 ``memory_limit`` 开启 :ref:`弹性内存 "
+"<user_guide_elastic_memory>`。这些任务会申请更大的内存重试，最多增加到设置的上限。"
+
+#: ../../source/user_guide/udf/faqs.rst:95
+msgid "Why does memory not increase after setting memory_limit?"
+msgstr "设置了 memory_limit，为什么没有增加内存？"
+
+#: ../../source/user_guide/udf/faqs.rst:97
+msgid "Check the failed task in Logview, then work through the following:"
+msgstr "先在 Logview 中找到失败的任务，再按下面的顺序检查："
+
+#: ../../source/user_guide/udf/faqs.rst:99
+msgid ""
+"**Check the engine and resources.** Elastic memory applies to DPE CPU UDFs. "
+"MCSQL, SPE, and GU tasks do not use it. The SDK and DPE runtime must support"
+" the feature."
+msgstr ""
+"**确认引擎和资源类型。** 弹性内存用于 DPE CPU UDF，MCSQL、SPE 和 GU 任务不适用。MaxFrame SDK 和 DPE "
+"运行环境也都需要支持该功能。"
+
+#: ../../source/user_guide/udf/faqs.rst:102
+msgid ""
+"**Check the effective settings.** Combine the decorator with the shared "
+"defaults. ``memory_limit`` must be greater than ``memory`` to enable "
+"expansion; equal values disable it. The cluster may cap the effective limit."
+" See :ref:`udf_config_elastic_overrides` for inheritance examples."
+msgstr ""
+"**确认最终生效的配置。** 把装饰器和默认配置放在一起检查。``memory_limit`` 大于 ``memory`` "
+"才会开启扩容，两者相等时不开启。集群还可能限制实际可用的上限。默认值的继承示例见 "
+":ref:`udf_config_elastic_overrides`。"
+
+#: ../../source/user_guide/udf/faqs.rst:106
+msgid ""
+"**Check the failure type and retry history.** Only a recognized OOM "
+"increases memory. A network or other ordinary error keeps the current "
+"allocation. If the task has reached the memory limit and still runs out of "
+"memory, it fails. See :ref:`udf_elastic_memory_observation` for the Logview "
+"labels and :ref:`udf_oom` for reducing memory use."
+msgstr ""
+"**查看错误类型和重试记录。** 只有系统识别的 OOM 才会增加内存，网络等普通错误会继续使用当前内存。已经达到上限却仍然 OOM "
+"时，任务会失败。扩容标记见 :ref:`udf_elastic_memory_observation`，减少内存占用的方法见 "
+":ref:`udf_oom`。"
+
+#: ../../source/user_guide/udf/faqs.rst:111
+msgid ""
+"**Check task restrictions.** The task must allow retries. Elastic memory is "
+"unavailable with ``step.skip_task_resources=True``, concurrency limits, or "
+"gang scheduling. Platform protection rules can also stop retries before the "
+"limit is reached. See :ref:`udf_elastic_memory_limits`."
+msgstr ""
+"**检查任务限制。** 任务本身要允许重试。设置了 ``step.skip_task_resources=True``、并发限制或 Gang "
+"调度时，不能使用弹性内存。平台保护规则也可能在达到上限前停止重试，详见 :ref:`udf_elastic_memory_limits`。"

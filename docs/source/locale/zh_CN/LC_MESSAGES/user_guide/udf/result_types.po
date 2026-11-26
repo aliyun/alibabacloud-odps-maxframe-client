@@ -1,0 +1,642 @@
+# Simplified Chinese translations for the MaxFrame UDF documentation.
+# Copyright (C) 1999-2026, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.10.0.dev32+gdddd31a5f\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-29 17:19+0800\n"
+"PO-Revision-Date: 2026-10-23 12:00+0800\n"
+"Last-Translator: MaxFrame contributors\n"
+"Language: zh_CN\n"
+"Language-Team: Chinese (Simplified)\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/user_guide/udf/result_types.rst:4
+msgid "Declaring result types"
+msgstr "声明返回类型"
+
+#: ../../source/user_guide/udf/result_types.rst:7
+msgid "Why declare return types"
+msgstr "为什么要声明返回类型"
+
+#: ../../source/user_guide/udf/result_types.rst:9
+msgid ""
+"Before a job runs, MaxFrame needs the UDF result type: DataFrame, Series, or"
+" array. Its columns, dtypes, and index describe the input for later "
+"operations."
+msgstr ""
+"作业执行前，MaxFrame 需要知道 UDF 返回的是 DataFrame、Series "
+"还是数组。结果的列、数据类型和索引，决定了后续操作接收到什么输入。"
+
+#: ../../source/user_guide/udf/result_types.rst:12
+msgid ""
+"Without a return declaration, interfaces that support inference may call the"
+" function on the client with made-up sample data. Ungrouped ``apply_chunk`` "
+"normally receives one sample row; grouped functions receive sample groups. "
+"This happens before ``execute()`` and really runs the function. Model "
+"loading, file access, and external requests inside it can therefore happen "
+"on the client, or fail because the sample values or local environment are "
+"unsuitable."
+msgstr ""
+"如果没有声明返回类型，支持自动推断的接口可能会在客户端构造样例数据并调用函数。不分组的 ``apply_chunk`` "
+"通常使用一行样例，分组接口则使用样例分组。这个过程发生在 ``execute()`` "
+"之前，而且会真正执行函数。因此，函数中的模型加载、文件读取或外部请求也可能在客户端发生；样例值或本地环境不符合要求时，还可能直接报错。"
+
+#: ../../source/user_guide/udf/result_types.rst:19
+msgid ""
+"Declare the result when the function uses external services, remote files, "
+"or large models. The declaration does not convert the returned values. The "
+"actual pandas or NumPy result must match it, including branches that return "
+"no rows."
+msgstr ""
+"函数涉及外部服务、远程文件或大模型时，建议主动声明返回类型。声明不会转换实际的返回值，函数返回的 pandas 或 NumPy "
+"对象必须与声明一致，返回空结果的分支也不例外。"
+
+#: ../../source/user_guide/udf/result_types.rst:24
+msgid "Choose how to describe the result"
+msgstr "选择返回类型的声明方式"
+
+#: ../../source/user_guide/udf/result_types.rst:26
+msgid "The usual choices are:"
+msgstr "常用方式如下："
+
+#: ../../source/user_guide/udf/result_types.rst:32
+msgid "Method"
+msgstr "方式"
+
+#: ../../source/user_guide/udf/result_types.rst:33
+msgid "When to use"
+msgstr "适用情况"
+
+#: ../../source/user_guide/udf/result_types.rst:34
+msgid "Client-side trial call"
+msgstr "是否在客户端试跑"
+
+#: ../../source/user_guide/udf/result_types.rst:35
+msgid "Return type annotation"
+msgstr "返回类型注解"
+
+#: ../../source/user_guide/udf/result_types.rst:36
+msgid ""
+"The function can be edited, its return type is fixed, and the interface "
+"supports annotations."
+msgstr "函数可以修改，返回类型固定，并且所用接口支持类型注解。"
+
+#: ../../source/user_guide/udf/result_types.rst:38
+msgid ""
+"A complete annotation avoids the trial call only on interfaces that read it."
+" See the exceptions below."
+msgstr "只有支持读取返回类型注解的接口，才能凭完整注解跳过试调用。例外情况见下文。"
+
+#: ../../source/user_guide/udf/result_types.rst:40
+msgid "Explicit type arguments"
+msgstr "显式类型参数"
+
+#: ../../source/user_guide/udf/result_types.rst:41
+msgid ""
+"The function comes from a shared library, its output columns are computed "
+"dynamically, or a static type checker is used."
+msgstr "函数来自公共库、不便修改；输出列需要动态生成；或者项目使用静态类型检查。"
+
+#: ../../source/user_guide/udf/result_types.rst:43
+msgid ""
+"Complete type arguments avoid inference. ``skip_infer=True`` makes the "
+"choice explicit on interfaces that support it."
+msgstr "完整的类型参数可以避免推断。接口支持时，也可以加上 ``skip_infer=True`` 明确跳过推断。"
+
+#: ../../source/user_guide/udf/result_types.rst:45
+msgid "Automatic type inference"
+msgstr "自动类型推断"
+
+#: ../../source/user_guide/udf/result_types.rst:46
+msgid ""
+"A short experiment with a lightweight function that handles synthetic input "
+"and has no external side effects."
+msgstr "临时验证简单函数，且函数能处理构造的样例数据，不会读写外部资源或调用服务。"
+
+#: ../../source/user_guide/udf/result_types.rst:48
+msgid "The function runs locally while the expression is built."
+msgstr "构建表达式时会在本地执行函数。"
+
+#: ../../source/user_guide/udf/result_types.rst:50
+msgid ""
+"The DataFrame and Series examples below share this sample dataset, where "
+"``id`` is stored as the DataFrame ``index``:"
+msgstr "下面的 DataFrame 和 Series 示例共用这组数据，``id`` 作为 DataFrame 的 ``index``："
+
+#: ../../source/user_guide/udf/result_types.rst:69
+msgid ""
+"The output blocks show results fetched from a configured MaxFrame session. "
+"For example, ``totals_df.execute().fetch()`` runs the first example below."
+msgstr ""
+"代码下方列出了在已配置的 MaxFrame 会话中执行后的结果。例如，第一个示例可以通过 ``totals_df.execute().fetch()``"
+" 获取结果。"
+
+#: ../../source/user_guide/udf/result_types.rst:73
+msgid "1. Return type annotations"
+msgstr "1. 返回类型注解"
+
+#: ../../source/user_guide/udf/result_types.rst:75
+msgid ""
+"For DataFrame and Series ``mf.apply_chunk``, write the return type after "
+"``->``. These interfaces read a complete annotation without calling the "
+"function. Scalar annotations such as ``-> float`` also work with "
+"``Series.map``."
+msgstr ""
+"DataFrame 和 Series 的 ``mf.apply_chunk`` 可以在 ``->`` "
+"后声明返回类型。这两个接口能读取完整注解，无需试调用函数。``Series.map`` 也支持 ``-> float`` 这样的标量注解。"
+
+#: ../../source/user_guide/udf/result_types.rst:79
+msgid "Other interfaces have different rules:"
+msgstr "其他接口的规则有所不同："
+
+#: ../../source/user_guide/udf/result_types.rst:81
+msgid ""
+"``GroupBy.apply`` still makes a trial call when only a return annotation is "
+"provided. Pass explicit result type arguments to avoid it."
+msgstr "``GroupBy.apply`` 只写返回类型注解时，仍然会试调用函数。需要显式传入结果类型参数，才能避免试调用。"
+
+#: ../../source/user_guide/udf/result_types.rst:83
+msgid ""
+"``DataFrame.apply`` does not parse ``pd.DataFrame[...]`` batch annotations. "
+"Declare ``output_type`` and ``dtypes`` or ``dtype`` on the call."
+msgstr ""
+"``DataFrame.apply`` 不解析 ``pd.DataFrame[...]`` 这种批处理注解。应在调用处传入 "
+"``output_type`` 和 ``dtypes`` 或 ``dtype``。"
+
+#: ../../source/user_guide/udf/result_types.rst:85
+msgid ""
+"String annotations, including those produced by ``from __future__ import "
+"annotations``, are not resolved, as explained below."
+msgstr "字符串形式的注解不会被解析，包括 ``from __future__ import annotations`` 产生的注解，详见下文。"
+
+#: ../../source/user_guide/udf/result_types.rst:90
+msgid ""
+"With ``from __future__ import annotations``, return annotations are stored "
+"as strings. MaxFrame does not currently resolve these strings and may "
+"mistake a DataFrame result for a Series. When calling ``mf.apply_chunk`` in "
+"these modules, pass ``output_type``, ``dtypes`` / ``dtype``, and "
+"``skip_infer=True`` explicitly. See :ref:`udf_explicit_return_types` for "
+"examples."
+msgstr ""
+"使用 ``from __future__ import annotations`` 时，返回类型注解会保存为字符串。MaxFrame "
+"目前不会解析这类字符串，可能把 DataFrame 结果误识别为 Series。此时调用 ``mf.apply_chunk`` 应显式传入 "
+"``output_type``、``dtypes`` / ``dtype`` 和 ``skip_infer=True``。示例见 "
+":ref:`udf_explicit_return_types`。"
+
+#: ../../source/user_guide/udf/result_types.rst:99
+#, python-brace-format
+msgid ""
+"Subscripted annotations such as ``pd.DataFrame[{\"total\": \"float64\"}]``, "
+"``pd.DataFrame[{\"id\": \"int64\"}, {\"total\": \"float64\"}]``, and "
+"``pd.Series[\"score\": \"float64\"]`` are MaxFrame extensions to pandas type"
+" annotations. Static type checkers such as ``mypy`` or ``pyright`` may "
+"report them as invalid. :ref:`Explicit type arguments "
+"<udf_explicit_return_types>` provide an alternative compatible with these "
+"type checks."
+msgstr ""
+"``pd.DataFrame[{\"total\": \"float64\"}]``、``pd.DataFrame[{\"id\": "
+"\"int64\"}, {\"total\": \"float64\"}]`` 和 ``pd.Series[\"score\": "
+"\"float64\"]`` 这类带下标的写法，是 MaxFrame 对 pandas 类型注解的扩展。``mypy``、``pyright`` "
+"等静态类型检查工具可能将其判为无效类型。如果需要兼容这些检查，可以改用 :ref:`显式类型参数 "
+"<udf_explicit_return_types>`。"
+
+#: ../../source/user_guide/udf/result_types.rst:106
+msgid "**DataFrame result**"
+msgstr "**返回 DataFrame**"
+
+#: ../../source/user_guide/udf/result_types.rst:108
+#, python-brace-format
+msgid ""
+"Pass a single dict ``pd.DataFrame[{col: dtype, ...}]`` to declare output "
+"columns, or two dicts ``pd.DataFrame[{index_name: index_dtype}, {col: dtype,"
+" ...}]`` to declare both the output index and output columns:"
+msgstr ""
+"``pd.DataFrame[{col: dtype, ...}]`` "
+"中的一个字典用于声明输出列。需要同时声明索引时，使用两个字典：``pd.DataFrame[{index_name: index_dtype}, "
+"{col: dtype, ...}]``，分别描述索引和输出列："
+
+#: ../../source/user_guide/udf/result_types.rst:133
+msgid ""
+"With the single-dict form, pass ``index=df.index`` to ``apply_chunk`` when "
+"the function keeps all input rows in the same order. The two-dict form above"
+" also declares the index name and type."
+msgstr ""
+"只使用一个字典、且函数保留所有输入行及其顺序时，可以在 ``apply_chunk`` 上加 "
+"``index=df.index``。上面的两个字典写法则同时声明了索引的名称和类型。"
+
+#: ../../source/user_guide/udf/result_types.rst:137
+msgid "**Series result**"
+msgstr "**返回 Series**"
+
+#: ../../source/user_guide/udf/result_types.rst:153
+msgid ""
+"In ``pd.Series[\"score\": \"float64\"]``, ``\"score\"`` is the Series "
+"``name`` (not its index name, which remains ``\"id\"``) and ``\"float64\"`` "
+"is its value dtype. If both a return annotation and explicit keyword "
+"arguments are provided, the keyword arguments take precedence."
+msgstr ""
+"``pd.Series[\"score\": \"float64\"]`` 中，``\"score\"`` 是 Series 的 "
+"``name``，不是索引名；本例的索引名仍是 ``\"id\"``。``\"float64\"`` 是 Series "
+"中值的类型。同时提供类型注解和显式参数时，以显式参数为准。"
+
+#: ../../source/user_guide/udf/result_types.rst:161
+msgid "2. Explicit keyword arguments and ``skip_infer=True``"
+msgstr "2. 显式参数与 ``skip_infer=True``"
+
+#: ../../source/user_guide/udf/result_types.rst:163
+msgid ""
+"Use keyword arguments when the function signature cannot be modified or when"
+" output columns are constructed dynamically. On ``mf.apply_chunk``, set "
+"``skip_infer=True`` alongside the type arguments so MaxFrame does not run a "
+"client-side trial call (``skip_infer=True`` alone does not replace "
+"``dtypes`` or ``dtype``):"
+msgstr ""
+"函数签名不能修改，或输出列需要动态生成时，可以使用显式参数。在 ``mf.apply_chunk`` 上，将类型参数与 "
+"``skip_infer=True`` 一起设置，可以避免客户端试跑。只设置 ``skip_infer=True`` 不能替代 ``dtypes`` 或"
+" ``dtype``："
+
+#: ../../source/user_guide/udf/result_types.rst:192
+msgid ""
+"For a Series result, pass ``output_type=\"series\"``, ``dtype=\"float64\"``,"
+" ``name=\"score\"``, ``index=df.index``, and ``skip_infer=True``."
+msgstr ""
+"返回 Series 时，对应设置 "
+"``output_type=\"series\"``、``dtype=\"float64\"``、``name=\"score\"``、``index=df.index``"
+" 和 ``skip_infer=True``。"
+
+#: ../../source/user_guide/udf/result_types.rst:196
+msgid "3. Automatic type inference"
+msgstr "3. 自动类型推断"
+
+#: ../../source/user_guide/udf/result_types.rst:198
+msgid ""
+"When neither a return annotation nor explicit type arguments are given, "
+"MaxFrame calls the function on synthetic input to inspect its result:"
+msgstr "没有提供返回类型注解或显式类型参数时，MaxFrame 会用构造的样例数据调用函数，检查返回结果："
+
+#: ../../source/user_guide/udf/result_types.rst:215
+msgid ""
+"Use automatic inference only for side-effect-free functions whose output "
+"schema never depends on actual data values."
+msgstr "自动推断适合没有外部副作用、且输出结构不随数据值变化的函数。"
+
+#: ../../source/user_guide/udf/result_types.rst:221
+msgid "Keep the result index consistent"
+msgstr "保持返回结果的索引正确"
+
+#: ../../source/user_guide/udf/result_types.rst:223
+msgid "Returned pandas row labels and the MaxFrame index declaration must agree"
+msgstr "函数返回的 pandas 行标签需要与 MaxFrame 中声明的索引一致"
+
+#: ../../source/user_guide/udf/result_types.rst:223
+msgid ".. image:: ../../_static/user_guide/udf/result-index.svg"
+msgstr ""
+".. image:: ../../_static/user_guide/udf/result-index.svg\n"
+"   :alt: 函数返回的 pandas 行标签需要与 MaxFrame 中声明的索引一致"
+
+#: ../../source/user_guide/udf/result_types.rst:227
+msgid ""
+"For one output row per input row, keep the original row labels. When a UDF "
+"builds a pandas DataFrame or Series from NumPy arrays or lists, pass "
+"``index=batch.index`` inside the function. Otherwise, each batch starts its "
+"index at zero, so different batches can produce repeated labels."
+msgstr ""
+"如果每条输入记录对应一条输出记录，应保留原来的行索引。函数从 NumPy 数组或列表构造 pandas DataFrame、Series 时，需要传入 "
+"``index=batch.index``。否则，每批结果都会从 0 开始编号，不同批次之间就可能出现重复索引。"
+
+#: ../../source/user_guide/udf/result_types.rst:232
+msgid ""
+"The ``index=df.index`` argument on ``apply_chunk`` has a different purpose: "
+"it describes the result to MaxFrame before execution. It does not replace "
+"the index of the pandas object returned by the function. Use it only when "
+"all input rows and their order are preserved."
+msgstr ""
+"``apply_chunk`` 上的 ``index=df.index`` 是在执行前向 MaxFrame 描述结果，不会修改函数返回的 pandas "
+"对象的索引。只有函数保留所有输入行及其顺序时，才应使用这个声明。"
+
+#: ../../source/user_guide/udf/result_types.rst:237
+#, python-brace-format
+msgid ""
+"If the function filters, expands, or reorders rows, return the corresponding"
+" index from the function and declare its names and types. For example, "
+"``pd.DataFrame[{\"id\": \"int64\"}, {\"total\": \"float64\"}]`` declares an "
+"integer ``id`` index without claiming that every input row remains. Omitting"
+" an index declaration can make MaxFrame fall back to the input index type "
+"and emit a warning; it does not make an incorrect returned index safe."
+msgstr ""
+"如果函数会筛选、扩展或重新排序行，应在返回对象中设置对应的索引，并声明索引的名称和类型。例如，``pd.DataFrame[{\"id\": "
+"\"int64\"}, {\"total\": \"float64\"}]`` 声明整数类型的 ``id`` "
+"索引，但不表示所有输入行都会保留。省略索引声明时，MaxFrame 可能沿用输入索引的类型并给出警告；这不会自动修正函数返回的错误索引。"
+
+#: ../../source/user_guide/udf/result_types.rst:244
+msgid ""
+"For ``GroupBy.apply`` and ``DataFrameGroupBy.mf.apply_chunk``, pass "
+"``prepend_index_group_keys=True`` explicitly to use the group-index behavior"
+" in :ref:`udf_group_index`. With ``True`` and the usual ``group_keys=True``,"
+" an ``id`` index becomes a ``MultiIndex (customer, id)`` when grouping by "
+"customer. Declare only the function's own index and columns, since MaxFrame "
+"adds the group level. See :ref:`udf_group_index` for a complete example."
+msgstr ""
+"使用 ``GroupBy.apply`` 或 ``DataFrameGroupBy.mf.apply_chunk`` 时，显式传入 "
+"``prepend_index_group_keys=True``，才能使用 :ref:`udf_group_index` "
+"中的分组索引行为。在该参数和通常的 ``group_keys=True`` 配置下，按 customer 分组会将 ``id`` 索引变成 "
+"``MultiIndex (customer, id)``。声明返回类型时，只写函数自身的索引和列，分组层级由 MaxFrame 添加。完整示例见 "
+":ref:`udf_group_index`。"
+
+#: ../../source/user_guide/udf/result_types.rst:252
+msgid ""
+"For ``map_reduce``, use ``ignore_index=True`` when the final row labels do "
+"not need to be preserved. It resets the result index; it is not an argument "
+"shared by all UDF interfaces."
+msgstr ""
+"``map_reduce`` 的最终行索引不需要保留时，可以设置 ``ignore_index=True`` 重置索引。这个参数并不是所有 UDF "
+"接口都支持。"
+
+#: ../../source/user_guide/udf/result_types.rst:257
+msgid "Quick reference by UDF interface"
+msgstr "各类 UDF 的返回类型和索引"
+
+#: ../../source/user_guide/udf/result_types.rst:259
+msgid ""
+"The table below summarizes how the UDF interfaces handle return type "
+"declarations, automatic inference, and row indexes:"
+msgstr "下表汇总各类 UDF 接口的返回类型声明、自动推断和行索引规则："
+
+#: ../../source/user_guide/udf/result_types.rst:266
+msgid "Interface"
+msgstr "接口"
+
+#: ../../source/user_guide/udf/result_types.rst:267
+msgid "Return declaration"
+msgstr "返回类型声明"
+
+#: ../../source/user_guide/udf/result_types.rst:268
+msgid "Auto-inference constraints"
+msgstr "自动推断的限制"
+
+#: ../../source/user_guide/udf/result_types.rst:269
+msgid "Row ``index`` behavior"
+msgstr "行索引规则"
+
+#: ../../source/user_guide/udf/result_types.rst:270
+msgid "``Series.map`` / ``Series.apply``"
+msgstr "``Series.map`` / ``Series.apply``"
+
+#: ../../source/user_guide/udf/result_types.rst:271
+msgid ""
+"``dtype=...`` or scalar annotation ``-> float`` (``Series.map``); "
+"``output_type=\"dataframe\"`` + ``dtypes=...`` when ``Series.apply`` expands"
+" into columns."
+msgstr ""
+"``dtype=...``，或 ``Series.map`` 的标量注解 ``-> float``；``Series.apply`` 展开为多列时，使用"
+" ``output_type=\"dataframe\"`` 和 ``dtypes=...``。"
+
+#: ../../source/user_guide/udf/result_types.rst:274
+msgid ""
+"``Series.map`` **disallows** auto-inferring ``int`` return values (raises an"
+" error unless ``dtype`` or annotation is provided)."
+msgstr "``Series.map`` **不支持自动推断整数返回类型**，需要提供 ``dtype`` 或类型注解，否则会报错。"
+
+#: ../../source/user_guide/udf/result_types.rst:276
+msgid "Always inherits the input Series index."
+msgstr "沿用输入 Series 的索引。"
+
+#: ../../source/user_guide/udf/result_types.rst:277
+msgid "``DataFrame.map``"
+msgstr "``DataFrame.map``"
+
+#: ../../source/user_guide/udf/result_types.rst:278
+#, python-brace-format
+msgid "``dtypes={...}`` per column or ``dtype=...`` for all columns."
+msgstr "用 ``dtypes={...}`` 分别声明各列，或用 ``dtype=...`` 为所有列声明相同类型。"
+
+#: ../../source/user_guide/udf/result_types.rst:279
+msgid "Uses a small sample for a trial call if omitted."
+msgstr "未声明时，使用少量样例数据试跑。"
+
+#: ../../source/user_guide/udf/result_types.rst:280
+msgid "Always preserves the input DataFrame shape and index."
+msgstr "保持输入 DataFrame 的形状和索引。"
+
+#: ../../source/user_guide/udf/result_types.rst:281
+msgid "``DataFrame.apply``"
+msgstr "``DataFrame.apply``"
+
+#: ../../source/user_guide/udf/result_types.rst:282
+msgid ""
+"``output_type=\"series\"`` + ``dtype`` / ``name``, or "
+"``output_type=\"dataframe\"`` + ``dtypes``."
+msgstr ""
+"``output_type=\"series\"`` 配合 ``dtype``、``name``，或 "
+"``output_type=\"dataframe\"`` 配合 ``dtypes``。"
+
+#: ../../source/user_guide/udf/result_types.rst:284
+msgid ""
+"Infers via trial call if omitted; does not parse ``pd.DataFrame[...]`` batch"
+" annotations."
+msgstr "未声明时通过试跑推断；不解析 ``pd.DataFrame[...]`` 形式的批处理返回注解。"
+
+#: ../../source/user_guide/udf/result_types.rst:286
+msgid ""
+"With ``axis=1``, preserves the input row index. With ``axis=0``, a Series "
+"result uses column names as its index; a DataFrame result uses the index "
+"returned by the function."
+msgstr "``axis=1`` 保留输入的行索引。``axis=0`` 返回 Series 时以列名作为索引，返回 DataFrame 时使用函数返回的索引。"
+
+#: ../../source/user_guide/udf/result_types.rst:289
+msgid "``DataFrame.mf.apply_chunk`` / ``Series.mf.apply_chunk``"
+msgstr "``DataFrame.mf.apply_chunk`` / ``Series.mf.apply_chunk``"
+
+#: ../../source/user_guide/udf/result_types.rst:290
+msgid ""
+"``-> pd.DataFrame[...]`` / ``-> pd.Series[...]``, or ``output_type`` + "
+"``dtypes`` / ``dtype`` / ``name`` + ``skip_infer=True``."
+msgstr ""
+"``-> pd.DataFrame[...]`` 或 ``-> pd.Series[...]``；也可以用 "
+"``output_type``、``dtypes`` / ``dtype`` / ``name`` 配合 ``skip_infer=True``。"
+
+#: ../../source/user_guide/udf/result_types.rst:292
+msgid ""
+"Uses a one-row trial call when the result type is missing and inference is "
+"enabled."
+msgstr "缺少返回类型、且启用了推断时，使用一行样例试跑。"
+
+#: ../../source/user_guide/udf/result_types.rst:294
+msgid ""
+"Keeps each batch's returned row labels. Use ``index=batch.index`` inside the"
+" function to preserve them; the outer ``index=...`` only declares the result"
+" index to MaxFrame."
+msgstr ""
+"保留各批返回的实际行索引。函数内用 ``index=batch.index`` 保留原始索引；外层的 ``index=...`` 只向 MaxFrame"
+" 声明结果索引。"
+
+#: ../../source/user_guide/udf/result_types.rst:297
+msgid "``DataFrame.mf.flatmap`` / ``Series.mf.flatmap``"
+msgstr "``DataFrame.mf.flatmap`` / ``Series.mf.flatmap``"
+
+#: ../../source/user_guide/udf/result_types.rst:298
+#, python-brace-format
+msgid ""
+"DataFrame requires ``dtypes={...}``. Series requires ``dtypes={...}`` (rows)"
+" or ``dtype=...`` (scalars)."
+msgstr ""
+"DataFrame 必须提供 ``dtypes={...}``。Series 输出行时提供 ``dtypes={...}``，输出标量时提供 "
+"``dtype=...``。"
+
+#: ../../source/user_guide/udf/result_types.rst:300
+msgid ""
+"**Never auto-infers**; omitting ``dtypes`` / ``dtype`` raises an error "
+"immediately."
+msgstr "**不自动推断**；缺少 ``dtypes`` / ``dtype`` 时立即报错。"
+
+#: ../../source/user_guide/udf/result_types.rst:302
+msgid ""
+"Automatically repeats the source row's index label for every emitted row or "
+"value."
+msgstr "每条输出记录或值都会自动保留来源行的索引。"
+
+#: ../../source/user_guide/udf/result_types.rst:304
+msgid "``GroupBy.apply``"
+msgstr "``GroupBy.apply``"
+
+#: ../../source/user_guide/udf/result_types.rst:305
+msgid "``output_type`` + ``dtypes`` (or ``dtype`` / ``name``)."
+msgstr "``output_type`` + ``dtypes`` （或 ``dtype`` / ``name``）。"
+
+#: ../../source/user_guide/udf/result_types.rst:306
+msgid ""
+"Runs a multi-row trial call if type arguments are omitted. Return "
+"annotations alone do not avoid this call in the current implementation."
+msgstr "省略类型参数时，会用多行样本试调用。当前实现中，只写返回类型注解仍会触发试调用。"
+
+#: ../../source/user_guide/udf/result_types.rst:308
+msgid ""
+"With ``prepend_index_group_keys=True``, prepends group keys to the inner "
+"index to form a ``MultiIndex``. Declare only the function's own return "
+"columns/index."
+msgstr ""
+"``prepend_index_group_keys=True`` 会在函数返回的索引前加上分组键，形成 "
+"``MultiIndex``。只需声明函数自身返回的列和索引。"
+
+#: ../../source/user_guide/udf/result_types.rst:311
+msgid "``DataFrameGroupBy.mf.apply_chunk``"
+msgstr "``DataFrameGroupBy.mf.apply_chunk``"
+
+#: ../../source/user_guide/udf/result_types.rst:312
+msgid ""
+"``-> pd.DataFrame[...]`` / ``-> pd.Series[...]``, or explicit "
+"``output_type`` + ``dtypes`` / ``dtype``."
+msgstr ""
+"``-> pd.DataFrame[...]`` 或 ``-> pd.Series[...]``；也可以显式提供 ``output_type`` 和 "
+"``dtypes`` / ``dtype``。"
+
+#: ../../source/user_guide/udf/result_types.rst:314
+msgid "Uses sample groups when the result type is missing and inference is enabled."
+msgstr "缺少返回类型、且启用了推断时，使用样例分组试跑。"
+
+#: ../../source/user_guide/udf/result_types.rst:316
+msgid ""
+"Same ``prepend_index_group_keys=True`` rule as ``GroupBy.apply``; pass "
+"``index=batch.index`` inside the function to keep row alignment."
+msgstr ""
+"``prepend_index_group_keys=True`` 的规则与 ``GroupBy.apply`` 相同；函数内用 "
+"``index=batch.index`` 保留对应行的索引。"
+
+#: ../../source/user_guide/udf/result_types.rst:318
+msgid "``DataFrame.mf.map_reduce``"
+msgstr "``DataFrame.mf.map_reduce``"
+
+#: ../../source/user_guide/udf/result_types.rst:319
+#, python-brace-format
+msgid ""
+"``mapper_dtypes={...}`` and ``reducer_dtypes={...}`` (or stage return "
+"annotations). With ``combiner``, explicitly set ``mapper_dtypes``; the "
+"mapper's return annotation is not retained."
+msgstr ""
+"分别设置 ``mapper_dtypes={...}`` 和 ``reducer_dtypes={...}``，或为各阶段的函数添加返回类型注解。使用 "
+"``combiner`` 时，必须显式设置 ``mapper_dtypes``，mapper 的返回类型注解不会保留。"
+
+#: ../../source/user_guide/udf/result_types.rst:322
+msgid "Infers stage schemas via trial calls if omitted."
+msgstr "未声明时，通过试跑推断各阶段的输出结构。"
+
+#: ../../source/user_guide/udf/result_types.rst:323
+msgid ""
+"Use ``mapper_index`` / ``reducer_index``, or ``ignore_index=True`` to reset "
+"the final index."
+msgstr ""
+"使用 ``mapper_index`` / ``reducer_index`` 声明索引，或用 ``ignore_index=True`` "
+"重置最终结果的索引。"
+
+#: ../../source/user_guide/udf/result_types.rst:325
+msgid "``Tensor.mf.apply_chunk``"
+msgstr "``Tensor.mf.apply_chunk``"
+
+#: ../../source/user_guide/udf/result_types.rst:326
+msgid "``dtype=...`` and, when known, ``shape=...`` (or ``elementwise=True``)."
+msgstr ""
+"使用 ``dtype=...`` 声明元素类型，形状已知时提供 ``shape=...``；逐元素计算也可以使用 "
+"``elementwise=True``。"
+
+#: ../../source/user_guide/udf/result_types.rst:327
+msgid ""
+"Infers ``dtype`` from a dummy array call if omitted; does not use "
+"``skip_infer``."
+msgstr "未声明 ``dtype`` 时，用样例数组调用函数进行推断；不使用 ``skip_infer``。"
+
+#: ../../source/user_guide/udf/result_types.rst:329
+msgid "Operates on N-dimensional array blocks (no pandas index)."
+msgstr "处理多维数组块，没有 pandas 索引。"
+
+#: ../../source/user_guide/udf/result_types.rst:332
+msgid "Interface-specific declarations"
+msgstr "各接口的声明方式"
+
+#: ../../source/user_guide/udf/result_types.rst:334
+msgid ""
+"The :ref:`UDF examples <udf_examples>` show each operation and its result. "
+"Use the table above to choose the declaration. These cases need extra care:"
+msgstr ":ref:`udf_examples` 中给出了各类操作及其结果。可以按上表选择声明方式，以下情况需要特别注意："
+
+#: ../../source/user_guide/udf/result_types.rst:337
+msgid ""
+"``Series.map`` returning an integer needs ``dtype=\"int64\"`` or a scalar "
+"return annotation such as ``-> int``."
+msgstr "``Series.map`` 返回整数时，需要声明 ``dtype=\"int64\"``，或使用 ``-> int`` 这样的标量返回注解。"
+
+#: ../../source/user_guide/udf/result_types.rst:339
+msgid ""
+"``GroupBy.apply`` needs explicit type arguments to avoid a trial call, even "
+"when the same function works with annotations in grouped ``apply_chunk``."
+msgstr "``GroupBy.apply`` 需要显式类型参数才能跳过试调用，即使同一个函数的注解可以用于分组后的 ``apply_chunk``，也仍然如此。"
+
+#: ../../source/user_guide/udf/result_types.rst:341
+msgid ""
+"With a ``map_reduce`` combiner, set ``mapper_dtypes`` explicitly. The "
+"wrapper combining mapper and combiner does not retain the mapper's return "
+"annotation."
+msgstr ""
+"``map_reduce`` 使用 combiner 时，需要显式设置 ``mapper_dtypes``。组合 mapper 和 combiner "
+"的包装函数不会保留 mapper 的返回注解。"
+
+#: ../../source/user_guide/udf/result_types.rst:347
+msgid "Tensor results"
+msgstr "Tensor 结果"
+
+#: ../../source/user_guide/udf/result_types.rst:349
+msgid ""
+"For ``Tensor.mf.apply_chunk``, use ``dtype`` for the element type and "
+"``shape`` for the complete output shape when known. Tensor results have no "
+"pandas index and do not use pandas return annotations or ``skip_infer``. For"
+" an elementwise operation that preserves shape, use ``elementwise=True``; "
+"see the array example in :ref:`udf_examples`."
+msgstr ""
+"``Tensor.mf.apply_chunk`` 使用 ``dtype`` 声明元素类型，已知完整输出形状时使用 ``shape``。Tensor "
+"结果没有 pandas 索引，也不使用 pandas 返回类型注解或 ``skip_infer``。逐元素操作且形状不变时，可以设置 "
+"``elementwise=True``，数组示例见 :ref:`udf_examples`。"

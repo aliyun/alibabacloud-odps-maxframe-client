@@ -28,6 +28,7 @@ from maxframe.codegen.spe.core import (
     register_op_adapter,
 )
 from maxframe.codegen.spe.liteframe.expressions import _materialize_range_columns
+from maxframe.lib.dtypes_extension.blob import polars_to_pandas_with_blobs
 from maxframe.liteframe.functional.utils import (
     _stringify_frame_labels,
     assemble_flat_apply_output,
@@ -35,6 +36,7 @@ from maxframe.liteframe.functional.utils import (
     call_user_func,
     classify_flat_apply_result,
     make_callable_wrapper,
+    normalize_axis1_series,
     prepend_group_key_columns,
 )
 from maxframe.liteframe.operators.functional import LiteFrameFunctional
@@ -108,7 +110,7 @@ def _flatten_flat_apply_result(res, out_cols):
         return _empty()
     if _pl is not None and isinstance(res, (_pl.DataFrame, _pl.LazyFrame)):
         res = res.collect() if isinstance(res, _pl.LazyFrame) else res
-        res = res.to_pandas(use_pyarrow_extension_array=True)
+        res = polars_to_pandas_with_blobs(res)
     if isinstance(res, pd.DataFrame):
         return res
     items = list(res) if _flat_apply_is_iterable(res) else [res]
@@ -565,9 +567,9 @@ class LiteFrameFunctionalAdapter(SPEOperatorAdapter):
         operate on SPE's native frame type.
         """
         if _pl is not None and isinstance(result, _pl.DataFrame):
-            return result.to_pandas(use_pyarrow_extension_array=True)
+            return polars_to_pandas_with_blobs(result)
         if _pl is not None and isinstance(result, _pl.Series):
-            return result.to_frame().to_pandas(use_pyarrow_extension_array=True)
+            return polars_to_pandas_with_blobs(result.to_frame())
         return result
 
     @staticmethod
@@ -758,17 +760,84 @@ class LiteFrameFunctionalAdapter(SPEOperatorAdapter):
                     udf_data = LiteFrameFunctionalAdapter._to_polars_frame(udf_data)
                     # Polars has no axis=1 apply; iterate rows as single-row
                     # frames (mirrors DPE apply_polars_rowwise).
-                    rows = []
-                    for i in range(len(udf_data)):
-                        rows.append(call(udf_data.slice(i, 1)))
-                    result = pd.Series(rows)
+                    result = pd.Series(
+                        [call(udf_data.slice(i, 1)) for i in range(len(udf_data))]
+                    )
                 elif result_type is not None:
                     result = udf_data.apply(call, axis=1, result_type=result_type)
                 else:
                     result = udf_data.apply(call, axis=1)
             result = LiteFrameFunctionalAdapter._from_polars_result(result)
-            if isinstance(result, pd.Series):
-                result = result.to_frame()
+
+            # Normalize per-row results against the declared output schema
+            # (shared with the projection ``apply_row`` path).  A scalar
+            # UDF yields a Series with integer label 0; the normalizer
+            # aligns it to the declared name so ``_validate_and_align``
+            # does not raise a spurious ``OutputColumnMismatchError``.
+            def _names(i):
+                dt = (
+                    output_dtypes[i]
+                    if output_dtypes and i < len(output_dtypes)
+                    else None
+                )
+                return (
+                    list(dt.index) if dt is not None and len(dt) else None,
+                    dt.to_dict() if dt is not None and len(dt) else None,
+                )
+
+            n_outputs = n_output or 1
+            if n_outputs > 1:
+                if not isinstance(result, pd.Series) or (
+                    len(result) > 0 and not isinstance(result.iloc[0], tuple)
+                ):
+                    raise ValueError(
+                        f"apply(axis=1) declared {n_outputs} outputs, but "
+                        f"each row must return a tuple with exactly "
+                        f"{n_outputs} elements."
+                    )
+                if len(result) > 0:
+                    lengths = result.map(
+                        lambda t: len(t) if isinstance(t, tuple) else None
+                    )
+                    if (lengths != n_outputs).any():
+                        bad = result[lengths != n_outputs].iloc[0]
+                        got = (
+                            f"{len(bad)} elements"
+                            if isinstance(bad, tuple)
+                            else f"a {type(bad).__name__}"
+                        )
+                        raise ValueError(
+                            f"apply(axis=1) row UDF returned {got} for a "
+                            f"row, but {n_outputs} outputs were declared; "
+                            f"each row must return a tuple with exactly "
+                            f"{n_outputs} elements."
+                        )
+                outputs = []
+                for i in range(n_outputs):
+                    names, ddict = _names(i)
+                    if len(result) == 0:
+                        outputs.append(
+                            pd.DataFrame(columns=names) if names else pd.DataFrame()
+                        )
+                    else:
+                        elem = result.map(lambda t, i=i: t[i])
+                        out_dt = pd.Series(ddict) if ddict else None
+                        outputs.append(
+                            normalize_axis1_series(elem, out_dt, None, ddict)
+                        )
+                outputs = tuple(
+                    LiteFrameFunctionalAdapter._broadcast_hidden(
+                        o, df, hidden_columns, hidden_set
+                    )
+                    for o in outputs
+                )
+                return LiteFrameFunctionalAdapter._validate_outputs(
+                    outputs, output_dtypes, check_output_dtypes
+                )
+            names, ddict = _names(0)
+            result = normalize_axis1_series(
+                result, pd.Series(ddict) if ddict else None, result_type, ddict
+            )
             result = LiteFrameFunctionalAdapter._broadcast_hidden(
                 result, df, hidden_columns, hidden_set
             )
@@ -783,11 +852,16 @@ class LiteFrameFunctionalAdapter(SPEOperatorAdapter):
         context.register_import(__name__, from_item=cls_name)
         input_var = context.get_input_tileable_variable(op.inputs[0])
         n_output = getattr(op, "n_output", None) or 1
-        # flat_apply and groupby apply/apply_chunk can produce a tuple for
-        # multi-output; transform and non-groupby axis-0 apply produce a
-        # single frame.
-        is_multi_output_mode = op.mode == "flat_apply" or (
-            op.mode in ("apply", "apply_chunk") and op.groupby_params is not None
+        # flat_apply, groupby apply/apply_chunk, and non-groupby apply(axis=1)
+        # can produce a tuple for multi-output; transform and non-groupby
+        # axis-0 apply produce a single frame.  Non-groupby apply(axis=1)
+        # stays on LiteFrameFunctional for multi-output and skip_infer paths
+        # (single-output lowers to LiteFrameProjection), so its multi-output
+        # tuple must be unpacked here too.
+        is_multi_output_mode = (
+            op.mode == "flat_apply"
+            or (op.mode in ("apply", "apply_chunk") and op.groupby_params is not None)
+            or (op.mode == "apply" and getattr(op, "axis", 0) == 1)
         )
         multi_output = is_multi_output_mode and n_output > 1
         res_vars = [context.get_output_tileable_variable(out) for out in op.outputs]

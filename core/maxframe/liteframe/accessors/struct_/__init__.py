@@ -24,20 +24,15 @@ del struct_method_to_handlers
 
 def _install():
     """Install struct accessor on LiteFrame and LiteFrameData."""
-    from maxframe.core import CachedAccessor
     from maxframe.liteframe.accessors.struct_.accessor import StructAccessor
     from maxframe.liteframe.accessors.struct_.core import struct_method_to_handlers
-    from maxframe.liteframe.core import LITEFRAME_TYPE
-    from maxframe.liteframe.initializer import LiteFrame as LiteFrameInit
+    from maxframe.liteframe.core import register_liteframe_accessor
 
     for method in struct_method_to_handlers:
         if not hasattr(StructAccessor, method):
             StructAccessor._register(method)
 
-    ca = CachedAccessor("struct", StructAccessor)
-    for liteframe in LITEFRAME_TYPE:
-        liteframe.struct = ca
-    LiteFrameInit.struct = ca
+    register_liteframe_accessor("struct")(StructAccessor)
 
 
 _install()

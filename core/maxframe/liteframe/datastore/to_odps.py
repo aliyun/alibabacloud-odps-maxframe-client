@@ -130,9 +130,16 @@ def to_odps_table(
     elif primary_key is not None:
         primary_key = [normalize_col_name(c) for c in primary_key]
 
-    # Determine target dtypes (use physical dtypes only, not range columns)
+    # Determine target dtypes (physical dtypes only, not range columns).
+    # For a schema-dynamic LiteFrame the physical dtypes are incomplete
+    # (fixed columns only); pass dtypes=None so the DPE tiler resolves the
+    # full column set at execution time via yield-sampling on the first
+    # chunk — never here at client build time.
     if odps_types is None:
-        target_dtypes = lf._data._physical_dtypes
+        if getattr(lf, "is_schema_dynamic", False):
+            target_dtypes = None
+        else:
+            target_dtypes = lf._data._physical_dtypes
     else:
         odps_schema = OdpsSchema.from_dict(odps_types)
         target_dtypes = odps_schema_to_pandas_dtypes(

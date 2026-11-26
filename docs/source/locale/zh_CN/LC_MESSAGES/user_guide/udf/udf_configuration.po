@@ -1,0 +1,715 @@
+# Simplified Chinese translations for the MaxFrame UDF documentation.
+# Copyright (C) 1999-2026, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.0.dev1070+br.g84cb09771.d20260522\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-30 12:34+0800\n"
+"PO-Revision-Date: 2026-10-23 12:00+0800\n"
+"Last-Translator: MaxFrame contributors\n"
+"Language: zh_CN\n"
+"Language-Team: Chinese (Simplified)\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:4
+msgid "UDF configuration"
+msgstr "UDF 配置"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:6
+msgid ""
+"Use decorators from ``maxframe.udf`` when a UDF needs more memory, third-"
+"party Python packages, or access to OSS files. When multiple UDFs need the "
+"same resources, image, or network whitelists, set defaults with "
+"``maxframe.config.options``. Complete decorator signatures and parameter "
+"definitions are in the :doc:`UDF API reference <../../reference/udf>`."
+msgstr ""
+"UDF 需要更多内存、第三方 Python 包或访问 OSS 文件时，可以使用 ``maxframe.udf`` 中的装饰器。多个 UDF "
+"使用相同的资源、镜像或网络白名单时，可以通过 ``maxframe.config.options`` 设置共享默认值。装饰器的完整签名和参数定义见 "
+":doc:`UDF API 参考 <../../reference/udf>`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:15
+msgid "Engine support"
+msgstr "不同引擎的支持情况"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:17
+msgid ""
+"The following table covers the settings used in this guide. The selected "
+"engine must also support the UDF operation."
+msgstr "下表列出了本指南涉及的配置项。所选引擎还需要支持相应的 UDF 操作。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:24
+msgid "Configuration"
+msgstr "配置项"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:25
+msgid "DPE"
+msgstr "DPE"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:26
+msgid "MCSQL"
+msgstr "MCSQL"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:27
+msgid "SPE"
+msgstr "SPE"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:28
+msgid "``with_running_options``: ``cpu``, ``memory``; corresponding shared defaults"
+msgstr "``with_running_options`` 中的 ``cpu``、``memory`` 及对应的共享默认值"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:29
+msgid "Task resources"
+msgstr "任务资源"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:30
+msgid "UDF worker resources"
+msgstr "UDF Worker 资源"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:31
+msgid "Ignored"
+msgstr "不生效"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:32
+msgid "``with_running_options``: ``engine``"
+msgstr "``with_running_options``：``engine``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:33
+msgid "``\"DPE\"``"
+msgstr "``\"DPE\"``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:34
+msgid "``\"MCSQL\"``"
+msgstr "``\"MCSQL\"``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:35
+msgid "``\"SPE\"``"
+msgstr "``\"SPE\"``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:36
+msgid "``memory_limit`` in the decorator or shared defaults"
+msgstr "装饰器或共享默认值中的 ``memory_limit``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:37
+msgid "Eligible CPU UDFs"
+msgstr "符合条件的 CPU UDF"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:38
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:39
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:42
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:43
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:50
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:51
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:62
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:63
+msgid "Not supported"
+msgstr "不支持"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:40
+msgid ""
+"``gu``, ``gu_type``, ``gu_quota``; shared ``gpu`` and "
+"``session.gu_quota_name``"
+msgstr "``gu``、``gu_type``、``gu_quota``；公共配置中的 ``gpu`` 和 ``session.gu_quota_name``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:41
+msgid "GPU tasks"
+msgstr "GPU 任务"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:44
+msgid "``with_python_requirements`` (all build options); ``with_resources``"
+msgstr "``with_python_requirements`` （所有构建选项）、 ``with_resources``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:45
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:46
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:49
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:53
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:54
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:61
+msgid "Supported"
+msgstr "支持"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:47
+msgid "Not loaded"
+msgstr "不加载"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:48
+msgid "``with_fs_mount``; ``with_network_options``; ``with_image_options``"
+msgstr "``with_fs_mount``、``with_network_options``、``with_image_options``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:52
+msgid "``python_tag``"
+msgstr "``python_tag``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:55
+msgid "Remote runtime only"
+msgstr "仅远端环境"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:56
+msgid ":ref:`Memory per CPU limit <udf_config_resources>`"
+msgstr ":ref:`每个 CPU 的内存上限 <udf_config_resources>`"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:57
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:58
+msgid "Adjusts CPU requests"
+msgstr "调整 CPU 申请量"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:59
+msgid "Client validation only"
+msgstr "仅客户端校验"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:60
+msgid "``session.image_name``; public/internal whitelists in ``dpe.settings``"
+msgstr "``session.image_name``、``dpe.settings`` 中的公网和内网白名单"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:65
+msgid ""
+"Shared names in this table omit the ``options.`` prefix. "
+"``with_resource_libraries`` is an alias of ``with_resources``. Mounts, "
+"network settings, and custom images do not select DPE automatically; the "
+"examples below select it explicitly. GPU tasks need an available quota. For "
+"elastic-memory requirements, see :ref:`user_guide_elastic_memory`."
+msgstr ""
+"表中的共享配置省略了 ``options.`` 前缀。``with_resource_libraries`` 是 ``with_resources`` "
+"的别名。挂载、网络配置和自定义镜像不会自动选择 DPE，下方示例会显式指定引擎。GPU 任务需要可用的 Quota；弹性内存的使用条件见 "
+":ref:`user_guide_elastic_memory`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:71
+msgid ""
+"SPE runs UDFs in one Python process. The CPU and memory settings above do "
+"not resize that process. Packages and files must already be available in its"
+" environment; the UDF decorators do not install or load them for SPE. "
+"``python_tag`` selects the remote SPE runtime; local execution uses the "
+"current Python process. Unsupported settings do not provide the "
+"corresponding feature on that engine. Decorator and resource validation "
+"still applies before execution, so an invalid combination can raise an error"
+" even when the engine does not use the settings."
+msgstr ""
+"SPE 在一个 Python 进程内运行 UDF，上表中的 CPU 和内存配置不会改变该进程的资源。依赖包和文件需要已经存在于运行环境中，SPE "
+"不会通过这些 UDF 装饰器安装或加载它们。``python_tag`` 用于选择远端 SPE 的运行环境，本地执行使用当前 Python "
+"进程。表中的“不支持”表示对应引擎不能通过该配置提供这项功能。装饰器和资源参数仍会在执行前校验，因此即使引擎不使用某项配置，非法组合也可能先报错。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:81
+msgid "Configure one user-defined function"
+msgstr "单独配置一个 UDF"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:83
+msgid ""
+"Before passing a function that reads files or calls a service to MaxFrame, "
+"declare its result type to avoid a trial call on the client. See "
+":ref:`udf_result_types`."
+msgstr "如果函数会读取文件或请求服务，应在传给 MaxFrame 前声明结果类型，避免客户端试调用，详见 :ref:`udf_result_types`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:92
+msgid "Execution engine and resources"
+msgstr "指定执行引擎和资源"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:94
+msgid ""
+"Use ``with_running_options`` to select an engine or adjust the resources for"
+" a UDF. Both DPE and MCSQL support ``cpu`` and ``memory``. ``memory_limit``,"
+" ``gu``, ``gu_type``, and ``gu_quota`` apply only to DPE, as listed in "
+":ref:`udf_config_engine_support`."
+msgstr ""
+"``with_running_options`` 用于选择 UDF 的执行引擎或调整资源。DPE 和 MCSQL 都支持 ``cpu`` 和 "
+"``memory``；``memory_limit``、``gu``、``gu_type`` 和 ``gu_quota`` 仅用于 DPE，支持范围见 "
+":ref:`udf_config_engine_support`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:99
+msgid ""
+"DPE uses ``cpu`` and ``memory`` as resource requests for each function task."
+" MCSQL applies them to UDF worker settings and also calculates compute units"
+" (CU), using one CPU and 4 GiB of memory per CU. For example, ``cpu=2`` and "
+"``memory=\"12GiB\"`` produce a CU setting of 3."
+msgstr ""
+"DPE 按 ``cpu`` 和 ``memory`` 为每个函数任务申请资源。MCSQL 会将它们用于 UDF Worker 的资源设置，并按每 CU "
+"对应 1 个 CPU、4 GiB 内存换算计算资源单位（CU）。例如 ``cpu=2``、``memory=\"12GiB\"`` 对应的 CU 设置为"
+" 3。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:104
+msgid ""
+"Integer memory values use GiB; strings can specify units, such as "
+"``\"512MiB\"``. Use ``gu`` and ``gu_quota`` to request GPU units and select "
+"a DPE GPU quota. For a Spot GU quota, see ``gu_type`` and ``gu_quota`` in "
+":func:`maxframe.udf.with_running_options`."
+msgstr ""
+"内存参数使用整数时，单位为 GiB；也可以用字符串指定单位，例如 ``\"512MiB\"``。``gu`` 用于申请 GPU "
+"单元，``gu_quota`` 用于选择 DPE GPU Quota。Spot GU Quota 的参数见 "
+":func:`maxframe.udf.with_running_options` 中的 ``gu_type`` 和 ``gu_quota``。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:109
+msgid ""
+"Use one ``with_running_options`` decorator per UDF. An outer decorator that "
+"sets an engine or resource option replaces the inner engine and whole "
+"resource dictionary. Fields are not merged between decorators; omitted "
+"fields inherit the shared defaults. An empty decorator, or one setting only "
+"``image_name``, keeps the existing engine and resources. ``gu`` or "
+"``gu_type`` cannot be combined with ``cpu`` or ``memory``."
+msgstr ""
+"一个 UDF 使用一个 ``with_running_options`` "
+"装饰器。外层装饰器只要设置了引擎或资源参数，就会替换内层的引擎和整个资源字典，不会逐项合并；未指定的字段沿用公共默认值。空装饰器，或只设置 "
+"``image_name`` 的装饰器，会保留已有的引擎和资源配置。``gu`` 或 ``gu_type`` 不能与 "
+"``cpu``、``memory`` 同时设置。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:116
+msgid ""
+"If the requested memory per CPU exceeds "
+"``options.function.allowed_max_memory_cpu_ratio``, MaxFrame increases the "
+"CPU request before submission and emits a warning."
+msgstr ""
+"申请的内存与 CPU 数量之比超过 ``options.function.allowed_max_memory_cpu_ratio`` "
+"时，MaxFrame 会在提交任务前增加 CPU 数量，并给出警告。因此，任务最终申请的 CPU 可能比填写的数量多。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:120
+msgid ""
+"The combined example below uses ``cpu=2`` and ``memory=\"8GiB\"``. For "
+"memory sizing and CPU adjustments, see :ref:`udf_tuning_resources`."
+msgstr ""
+"下方的组合示例使用 ``cpu=2`` 和 ``memory=\"8GiB\"``。内存大小和 CPU 联动的说明见 "
+":ref:`udf_tuning_resources`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:126
+msgid "Elastic memory"
+msgstr "配置弹性内存"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:128
+msgid ""
+"``memory_limit`` sets the maximum allocation for eligible DPE CPU UDF "
+"retries after OOM. Set it above ``memory`` to enable expansion. See "
+":ref:`user_guide_elastic_memory` for examples, shared defaults, override "
+"rules, and troubleshooting."
+msgstr ""
+"``memory_limit`` 是符合条件的 DPE CPU UDF 因 OOM 重试时的内存上限，设置为大于 ``memory`` "
+"时开启扩容。示例、共享默认值、覆盖规则和排查方法见 :ref:`user_guide_elastic_memory`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:138
+msgid "Python packages"
+msgstr "安装 Python 依赖"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:140
+msgid ""
+"If a UDF imports a package that is missing from the remote environment, add "
+"it with ``with_python_requirements``. Installing the package on the client "
+"does not install it in the remote environment."
+msgstr ""
+"UDF 用到了远程环境中没有安装的 Python 包时，可以通过 ``with_python_requirements`` "
+"添加。在本地安装过的包，还需要在远程运行环境中准备好。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:144
+msgid ""
+"Before the function task runs, MaxFrame submits a PythonPack task, which "
+"builds or reuses the remote Python package environment. A matching build has"
+" the same requirement set and build options. ``prefer_binary=True`` tells "
+"PythonPack to prefer binary distributions."
+msgstr ""
+"UDF 任务运行前，MaxFrame 会提交 PythonPack 任务，构建或复用远程 Python "
+"依赖包环境。依赖要求和构建选项都相同时，可以复用已有环境。``prefer_binary=True`` 表示让 PythonPack "
+"优先使用二进制分发包。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:149
+msgid ""
+"Available wheels also depend on the remote Python ABI. See "
+":ref:`udf_config_python` for ``options.python_tag`` when diagnosing a "
+"package build or wheel compatibility failure."
+msgstr ""
+"wheel 能否使用还取决于远程环境的 Python ABI。排查依赖包构建或 wheel 兼容性问题时，可查看 "
+":ref:`udf_config_python` 中对 ``options.python_tag`` 的说明。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:158
+msgid "MaxCompute resource files"
+msgstr "读取 MaxCompute 资源文件"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:160
+msgid ""
+"Use ``with_resources`` for files such as label lists or configuration files "
+"uploaded as MaxCompute resources."
+msgstr "标签列表、配置文件等已经上传为 MaxCompute 资源时，可以通过 ``with_resources`` 让 UDF 读取这些文件。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:163
+msgid ""
+"The combined example below opens ``labels.txt`` from the function's working "
+"directory. See :func:`maxframe.udf.with_resources` for resource name "
+"formats."
+msgstr ""
+"下方的组合示例会从函数的工作目录中打开 ``labels.txt``。资源名称的格式见 "
+":func:`maxframe.udf.with_resources`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:171
+msgid "OSS files"
+msgstr "挂载 OSS 文件"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:173
+msgid ""
+"If the function or a library reads files by local path, use "
+"``with_fs_mount`` to mount an OSS path in DPE. The UDF can then read the "
+"files through the mount path. MCSQL does not support these mounts; see "
+":ref:`udf_config_engine_support`."
+msgstr ""
+"如果函数或依赖库需要按本地路径读文件，可以在 DPE 中用 ``with_fs_mount`` 挂载 OSS 路径，再通过挂载路径访问文件。MCSQL "
+"不支持这种挂载，详见 :ref:`udf_config_engine_support`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:211
+msgid ""
+"When mounting multiple OSS paths on one UDF, use the same "
+"``storage_options`` for every ``with_fs_mount`` decorator."
+msgstr "同一个 UDF 挂载多个 OSS 路径时，各个 ``with_fs_mount`` 的 ``storage_options`` 必须完全一致。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:214
+msgid ""
+"For AccessKey authentication and the full ``storage_options`` contract, see "
+":func:`maxframe.udf.with_fs_mount`."
+msgstr "AccessKey 鉴权和 ``storage_options`` 的完整要求见 :func:`maxframe.udf.with_fs_mount`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:222
+msgid "Network access"
+msgstr "访问网络服务"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:224
+msgid ""
+"When a UDF calls a remote service, configure network access with "
+"``with_network_options``. Choose the setting for the public network, Alibaba"
+" Cloud internal network, or VPC where the service is located. These settings"
+" apply to DPE only; see :ref:`udf_config_engine_support`."
+msgstr ""
+"UDF 调用远端服务时，使用 ``with_network_options`` 配置网络访问。根据服务所在的公网、阿里云内网或 VPC "
+"选择对应参数。这些配置仅适用于 DPE，支持范围见 :ref:`udf_config_engine_support`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:254
+msgid ""
+"Replace the placeholders with endpoints and a network-link name already "
+"configured for the MaxCompute project. DPE checks these settings before "
+"submitting the UDF task."
+msgstr ""
+"将示例中的占位内容替换为当前 MaxCompute 项目已经配置好的访问地址和 network link 名称。DPE 会在提交 UDF "
+"任务前检查这些配置。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:258
+msgid ""
+"If multiple ``with_network_options`` decorators are applied, their public "
+"whitelists are combined, as are their internal whitelists. A UDF can use "
+"only one VPC network link."
+msgstr ""
+"添加多个 ``with_network_options`` 时，公网白名单会合并，内网白名单也会合并。一个 UDF 只能使用一个 VPC network"
+" link。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:267
+msgid "Custom images"
+msgstr "使用自定义镜像"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:269
+msgid ""
+"Use ``with_image_options`` to run a UDF in a custom runtime image that has "
+"been registered in MaxCompute. Custom UDF images require DPE; see "
+":ref:`udf_config_engine_support`."
+msgstr ""
+"使用 ``with_image_options`` 可以让 UDF 运行在已注册到 MaxCompute 的自定义镜像中。自定义 UDF 镜像需要使用 "
+"DPE，支持范围见 :ref:`udf_config_engine_support`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:287
+msgid "Combine decorators"
+msgstr "同时使用多种配置"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:289
+msgid ""
+"Multiple decorators can be combined on one UDF. For example, the following "
+"UDF runs with the specified task resources, Pillow, and the ``labels.txt`` "
+"resource file available:"
+msgstr "一个 UDF 可以组合多个装饰器。下面同时设置任务资源、安装 Pillow，并使用 ``labels.txt`` 资源文件："
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:316
+msgid "Set shared defaults with ``options``"
+msgstr "为多个 UDF 设置默认配置"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:318
+msgid ""
+"Import ``options`` and set shared values before creating the session or the "
+"MaxFrame expressions that use them:"
+msgstr "多个 UDF 使用相同配置时，可以统一写在 ``options`` 中。这些设置需要在创建会话和相关 MaxFrame 表达式之前完成："
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:325
+msgid ""
+"See :ref:`udf_shared_options_reference` for the option names, types, and "
+"defaults. The examples below show common settings."
+msgstr "配置项名称、类型和默认值见 :ref:`udf_shared_options_reference`，下面介绍常见设置。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:331
+msgid "Python runtime"
+msgstr "Python 运行环境"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:337
+msgid ""
+"``cp311`` selects CPython 3.11; ``cp37`` selects CPython 3.7 in runtimes "
+"that provide it. These are the Python tags documented for the `built-in "
+"images <https://help.aliyun.com/en/maxcompute/built-in-images>`_. The SDK "
+"accepts a string, but the selected runtime must provide that ABI. Check the "
+"image and dependency wheels before changing it."
+msgstr ""
+"``cp311`` 表示 CPython 3.11；运行环境提供 CPython 3.7 时，可以使用 ``cp37``。这两个取值见 `内置镜像说明 "
+"<https://help.aliyun.com/en/maxcompute/built-in-images>`_。SDK "
+"接受字符串，但实际运行环境必须提供对应 ABI。修改前，应确认镜像版本和依赖包的 wheel 是否匹配。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:346
+msgid "Default task resources"
+msgstr "设置默认资源"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:355
+msgid ""
+"On DPE, each function task requests two CPUs and 8 GiB of memory by default."
+" On MCSQL, these defaults configure UDF worker resources and produce a CU "
+"setting of 2. The ``memory_limit`` and ``gpu`` fields apply only to DPE."
+msgstr ""
+"在 DPE 上，每个函数任务默认申请 2 个 CPU 和 8 GiB 内存。在 MCSQL 上，这些默认值用于 UDF Worker 的资源配置，对应的"
+" CU 设置为 2。``memory_limit`` 和 ``gpu`` 仅用于 DPE。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:359
+msgid ""
+"The shared GPU field is named ``gpu``; the decorator parameter is ``gu``. "
+"For elastic-memory defaults, see :ref:`user_guide_elastic_memory`."
+msgstr ""
+"共享配置中的 GPU 字段名为 ``gpu``，装饰器参数名为 ``gu``。弹性内存的默认配置见 "
+":ref:`user_guide_elastic_memory`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:365
+msgid "Default GPU quota and custom image"
+msgstr "设置默认 GPU Quota 和自定义镜像"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:372
+msgid ""
+"Both defaults apply to DPE UDFs. ``gu_quota_name`` is used when a function "
+"requests a GPU without setting ``gu_quota``. ``image_name`` is used when a "
+"function does not set ``with_image_options``; it does not select DPE "
+"automatically. MCSQL does not support either setting."
+msgstr ""
+"这两个默认值都用于 DPE UDF。函数申请了 GPU 但未指定 ``gu_quota`` 时，使用 ``gu_quota_name``；函数未设置 "
+"``with_image_options`` 时，使用 ``image_name``，但它不会自动选择 DPE。MCSQL 不支持这两项设置。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:378
+msgid "DPE network whitelists"
+msgstr "设置 DPE 网络白名单"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:389
+msgid ""
+"Replace the placeholders with endpoints configured for the MaxCompute "
+"project. DPE validates both lists before submitting function tasks. A VPC "
+"network link applies to one function and is configured with "
+"``with_network_options(vpc_network_link=...)``."
+msgstr ""
+"将示例中的占位地址替换为 MaxCompute 项目中已经配置好的 IP 地址或域名。DPE 会在提交 UDF 任务前检查这两份白名单。访问 VPC "
+"服务时，需要通过 ``with_network_options(vpc_network_link=...)`` 为 UDF 单独指定 VPC "
+"network link。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:397
+msgid "Override a shared default for one function"
+msgstr "为个别 UDF 调整配置"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:407
+msgid ""
+"With the shared defaults in :ref:`udf_config_default_resources`, "
+"``use_more_cpu`` uses four CPUs and inherits 8 GiB of memory."
+msgstr ""
+"使用 :ref:`udf_config_default_resources` 中的共享默认值时，``use_more_cpu`` 会使用 4 个 "
+"CPU，并继承 8 GiB 内存。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:414
+msgid "Setting"
+msgstr "配置项"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:415
+msgid "Rule"
+msgstr "生效规则"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:416
+msgid "Execution engine"
+msgstr "执行引擎"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:417
+msgid ""
+"``engine`` explicitly selects an available engine for that function, taking "
+"precedence over automatic engine selection. Without it, MaxFrame follows the"
+" job's engine settings."
+msgstr "``engine`` 为这个函数显式指定一个可用的引擎，优先于自动选引擎规则。没有指定时，按作业配置自动选择。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:420
+msgid "CPU, memory, memory limit, or GPU"
+msgstr "CPU、内存、内存上限或 GPU"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:421
+msgid ""
+"A field set by ``with_running_options`` replaces the corresponding field in "
+"``default_running_options``. Other fields are inherited."
+msgstr ""
+"``with_running_options`` 中填了哪一项，就覆盖 ``default_running_options`` "
+"中的对应项。没有填的项继续使用默认值。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:423
+msgid "GPU quota"
+msgstr "GPU Quota"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:424
+msgid "``gu_quota`` replaces ``options.session.gu_quota_name`` for that function."
+msgstr "优先使用装饰器中的 ``gu_quota``，未指定时使用 ``options.session.gu_quota_name``。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:426
+msgid "Custom image"
+msgstr "自定义镜像"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:427
+msgid ""
+"For DPE UDFs, ``with_image_options`` replaces ``options.session.image_name``"
+" for that function. Neither setting selects DPE automatically."
+msgstr ""
+"对 DPE UDF，``with_image_options`` 会覆盖 "
+"``options.session.image_name``。这两项配置都不会自动选择 DPE。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:430
+msgid "Public or internal network whitelist"
+msgstr "公网或内网白名单"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:431
+msgid ""
+"In DPE, function-level and shared whitelists are combined separately for "
+"public and internal addresses."
+msgstr "在 DPE 中，函数级白名单和共用白名单会合并，公网和内网分别合并。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:434
+msgid ""
+"Python dependencies, MaxCompute resource files, OSS mounts, and VPC network "
+"links have no shared ``options`` setting and are configured with decorators."
+msgstr ""
+"Python 依赖、MaxCompute 资源文件、OSS 挂载和 VPC network link 需要通过装饰器配置，没有对应的 "
+"``options`` 配置项。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:440
+msgid "Troubleshoot configuration problems"
+msgstr "配置后遇到问题怎么办"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:446
+msgid "Problem"
+msgstr "遇到的问题"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:447
+msgid "What to check"
+msgstr "检查方法"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:448
+msgid "An ``options`` setting does not take effect"
+msgstr "``options`` 中的配置没有生效"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:449
+msgid ""
+"Check that the setting is specified before creating the session or the "
+"relevant MaxFrame expressions. Then check whether a decorator overrides the "
+"same setting. See :ref:`udf_config_precedence`."
+msgstr ""
+"先检查是否在创建会话和相关 MaxFrame 表达式之前完成了配置，再检查 UDF 的装饰器是否覆盖了同一项配置。具体规则见 "
+":ref:`udf_config_precedence`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:452
+msgid "The task requests more CPUs than configured"
+msgstr "实际申请的 CPU 比填写的多"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:453
+msgid ""
+"Check the warning and ``options.function.allowed_max_memory_cpu_ratio``. "
+"MaxFrame increases the CPU request if the memory per CPU exceeds this limit."
+" CPU allocation may also increase during an elastic-memory retry. See "
+":ref:`udf_config_resources`."
+msgstr ""
+"检查警告信息和 ``options.function.allowed_max_memory_cpu_ratio``。每个 CPU "
+"对应的内存超过限制时，MaxFrame 会增加 CPU 请求；弹性内存重试时，CPU 也可能随内存一起增加。详见 "
+":ref:`udf_config_resources`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:457
+msgid "An elastic-memory configuration fails or has no effect"
+msgstr "弹性内存配置报错或不生效"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:458
+msgid ""
+"Check :ref:`udf_config_elastic_overrides` for inherited limits and "
+":ref:`udf_elastic_memory_not_expanding` for engine and retry restrictions."
+msgstr ""
+"继承的内存上限问题见 :ref:`udf_config_elastic_overrides`；执行引擎和重试条件的限制见 "
+":ref:`udf_elastic_memory_not_expanding`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:460
+msgid "``memory must be specified when memory_limit is set``"
+msgstr "``memory must be specified when memory_limit is set``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:461
+msgid ""
+"The merged settings have a limit but no starting memory. Set ``memory`` in "
+"the decorator or in ``options.function.default_running_options``. See "
+":ref:`udf_config_elastic_overrides`."
+msgstr ""
+"合并后的配置只有内存上限，没有初始内存。需要在装饰器或 ``options.function.default_running_options`` 中设置"
+" ``memory``，具体见 :ref:`udf_config_elastic_overrides`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:464
+msgid "``gu or gu_type can't be specified with cpu or memory``"
+msgstr "``gu or gu_type can't be specified with cpu or memory``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:465
+msgid ""
+"A GPU request is combined with a CPU or memory request. Remove ``cpu`` and "
+"``memory`` from the GPU decorator, or remove ``gu`` and ``gu_type`` to run a"
+" CPU task."
+msgstr ""
+"GPU 配置与 CPU 或内存配置同时出现。运行 GPU 任务时，从装饰器中去掉 ``cpu`` 和 ``memory``；运行 CPU 任务时，去掉 "
+"``gu`` 和 ``gu_type``。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:468
+msgid "``gu_type requires gu_quota to be specified``"
+msgstr "``gu_type requires gu_quota to be specified``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:469
+msgid ""
+"Set ``gu_quota`` in the same decorator as ``gu_type``. The shared quota "
+"default does not satisfy this decorator check. See "
+":func:`maxframe.udf.with_running_options`."
+msgstr ""
+"在设置 ``gu_type`` 的同一个装饰器中指定 ``gu_quota``。仅设置公共默认 Quota 无法通过这里的校验。参数说明见 "
+":func:`maxframe.udf.with_running_options`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:472
+msgid "A GPU quota is configured, but the task does not request a GPU"
+msgstr "设置了 GPU Quota，任务却没有申请 GPU"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:473
+msgid ""
+"Also specify a GPU count: use ``gu`` in ``with_running_options``, or ``gpu``"
+" in ``options.function.default_running_options``. A quota name alone does "
+"not request GPU resources."
+msgstr ""
+"还需要指定 GPU 数量：在 ``with_running_options`` 中填写 ``gu``，或在 "
+"``options.function.default_running_options`` 中填写 ``gpu``。只设置 Quota 名称不会申请 "
+"GPU。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:476
+msgid "The UDF cannot import a package installed on the client"
+msgstr "本地能导入 Python 包，UDF 运行时却报找不到模块"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:477
+msgid ""
+"Check whether the remote environment contains the package. Add missing "
+"packages with ``with_python_requirements``, or use a registered image that "
+"contains them. See :ref:`udf_config_packages`."
+msgstr ""
+"检查远程运行环境是否安装了这个包。缺少的包可以通过 ``with_python_requirements`` "
+"添加，也可以使用已包含这些包的注册镜像，详见 :ref:`udf_config_packages`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:480
+msgid "Network configuration validation fails"
+msgstr "提交任务时，网络配置检查未通过"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/udf_configuration.rst:481
+msgid ""
+"Check that the addresses and network-link name are configured for the "
+"current MaxCompute project. Public addresses need to be added to the "
+"whitelist through a service ticket before use. See "
+":ref:`udf_config_network`."
+msgstr ""
+"核对访问地址和 network link 名称是否已在当前 MaxCompute 项目中配置。公网地址需要提前提交工单加入白名单，详见 "
+":ref:`udf_config_network`。"

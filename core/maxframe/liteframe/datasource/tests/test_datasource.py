@@ -23,6 +23,7 @@ from odps import types as odps_types
 
 from maxframe import opcodes
 from maxframe.config import options
+from maxframe.core.operator.base import SchedulingHint, WorkLoadType
 from maxframe.lib.dtypes_extension.blob import ExternalBlobDtype
 from maxframe.liteframe.core import LITEFRAME_TYPE, RANGE_COL_NAME
 from maxframe.liteframe.datasource.from_local import from_local_df
@@ -34,11 +35,15 @@ from maxframe.liteframe.datasource.read_parquet import read_parquet
 from maxframe.liteframe.datatypes import is_blob_dtype, to_arrow_dtypes
 from maxframe.liteframe.operators.core import LiteFrameDataFormat
 from maxframe.liteframe.operators.datasource import (
+    LiteFrameDataSource,
     LiteFrameFromLocal,
+    LiteFrameFromTensor,
     LiteFrameLakeDataSource,
     LiteFrameReadLance,
     LiteFrameReadODPSTable,
 )
+from maxframe.liteframe.operators.datastore import LiteFrameDataStore
+from maxframe.liteframe.operators.functional import LiteFrameFunctional
 from maxframe.protocol import DefaultIndexType
 from maxframe.tests.utils import tn
 from maxframe.utils import wrap_arrow_dtype
@@ -83,7 +88,9 @@ def test_from_local_df(
         assert lf.frame_metadata is not None
         assert RANGE_COL_NAME in lf.frame_metadata.range_columns
     else:
-        assert lf.frame_metadata is None
+        # Metadata always present (carries alignment_id); no range cols.
+        assert lf.frame_metadata is not None
+        assert not lf.frame_metadata.range_columns
 
 
 def test_from_local_df_with_chunk_size():
@@ -138,8 +145,9 @@ def test_read_json(lines, usecols, compression):
     assert op.chunk_bytes == "64M"
     assert op.merge_small_files is True
     assert op.read_kwargs["head_bytes"] == "100k"
-    # Default: no frame_metadata with range columns
-    assert lf.frame_metadata is None
+    # Metadata always present (carries alignment_id); no range cols.
+    assert lf.frame_metadata is not None
+    assert not lf.frame_metadata.range_columns
 
 
 def test_read_parquet_new_params():
@@ -223,8 +231,9 @@ def test_read_odps_table(odps_test_table):
     assert op.table_name == odps_test_table.full_table_name
     assert op.partitions is None
     assert op.columns is None
-    # Default: no frame_metadata with range columns
-    assert lf.frame_metadata is None
+    # Metadata always present (carries alignment_id); no range cols.
+    assert lf.frame_metadata is not None
+    assert not lf.frame_metadata.range_columns
 
 
 def test_read_odps_table_with_range(odps_test_table):
@@ -458,7 +467,9 @@ def test_read_lance_creates_operator():
     assert op.asof is None
     assert op.filters is None
     assert op.with_row_address is False
-    assert lf.frame_metadata is None
+    # Metadata always present (carries alignment_id); no range cols.
+    assert lf.frame_metadata is not None
+    assert not lf.frame_metadata.range_columns
 
 
 def test_read_lance_with_row_address():
@@ -632,3 +643,94 @@ def test_to_arrow_dtypes_preserves_blob_dtype():
     result = to_arrow_dtypes(dtypes)
     assert isinstance(result["a"], ExternalBlobDtype)
     assert result["b"] == wrap_arrow_dtype(pa.int64())
+
+
+@pytest.mark.parametrize(
+    "op_cls,expected",
+    [
+        pytest.param(LiteFrameLakeDataSource, WorkLoadType.IO, id="lake"),
+        pytest.param(LiteFrameReadODPSTable, WorkLoadType.IO, id="odps_table"),
+        pytest.param(LiteFrameReadLance, WorkLoadType.IO, id="lance"),
+        pytest.param(LiteFrameFromLocal, None, id="from_local"),
+        pytest.param(LiteFrameFromTensor, None, id="from_tensor"),
+        pytest.param(LiteFrameDataSource, None, id="base"),
+    ],
+)
+def test_datasource_work_load_type_defaults(op_cls, expected):
+    """Storage-backed sources are IO; in-memory sources stay unlabelled."""
+    assert op_cls().scheduling_hint.work_load_type is expected
+
+
+def test_in_memory_source_path_stays_unlabelled():
+    """The production in-memory builder does not claim IO either."""
+    lf = from_local_df(pd.DataFrame({"a": [1, 2]}))
+    assert lf.op.scheduling_hint.work_load_type is None
+
+
+def test_datasource_explicit_work_load_type_preserved():
+    """An explicit type on the caller hint survives the IO default."""
+    hint = SchedulingHint(work_load_type=WorkLoadType.GILFree)
+    op = LiteFrameLakeDataSource(scheduling_hint=hint)
+    assert op.scheduling_hint.work_load_type is WorkLoadType.GILFree
+
+
+def test_shared_scheduling_hint_not_mutated():
+    """Constructors must not mutate a caller-supplied SchedulingHint.
+
+    Regression: source/store/functional operators used to apply their
+    work_load_type defaults in place on the caller's SchedulingHint, and
+    Operator._parse_kwargs used to absorb flattened hint kwargs into the
+    caller's hint object — so a hint shared across operators was silently
+    re-labelled, e.g. an IO default leaking into a later functional op and
+    suppressing its GILHeavy default.
+    """
+    hint = SchedulingHint()
+    src = LiteFrameLakeDataSource(scheduling_hint=hint)
+    assert src.scheduling_hint is not hint
+    assert src.scheduling_hint.work_load_type is WorkLoadType.IO
+    assert hint.work_load_type is None
+
+    store = LiteFrameDataStore(scheduling_hint=hint)
+    assert store.scheduling_hint is not hint
+    assert store.scheduling_hint.work_load_type is WorkLoadType.IO
+    assert hint.work_load_type is None
+
+    func_op = LiteFrameFunctional(
+        func=lambda x: x,
+        mode="apply_chunk",
+        axis=0,
+        input_frame_type="pandas",
+        scheduling_hint=hint,
+    )
+    assert func_op.scheduling_hint is not hint
+    assert func_op.scheduling_hint.work_load_type is WorkLoadType.GILHeavy
+    assert hint.work_load_type is None
+
+    # The private copy keeps the caller's non-default settings.
+    tuned = SchedulingHint(expect_worker="worker-1")
+    tuned_src = LiteFrameDataSource(scheduling_hint=tuned)
+    assert tuned_src.scheduling_hint is not tuned
+    assert tuned_src.scheduling_hint.expect_worker == "worker-1"
+    assert tuned.work_load_type is None
+
+    # Flattened hint kwargs must not mutate a caller-supplied hint either:
+    # Operator._parse_kwargs absorbs them into a private copy of the hint.
+    flat_hint = SchedulingHint(expect_worker="worker-1")
+    flat_src = LiteFrameDataSource(scheduling_hint=flat_hint, expect_worker="worker-2")
+    assert flat_src.scheduling_hint.expect_worker == "worker-2"
+    assert flat_hint.expect_worker == "worker-1"
+
+    flat_store = LiteFrameDataStore(scheduling_hint=flat_hint, expect_worker="worker-2")
+    assert flat_store.scheduling_hint.expect_worker == "worker-2"
+    assert flat_hint.expect_worker == "worker-1"
+
+    flat_func = LiteFrameFunctional(
+        func=lambda x: x,
+        mode="apply_chunk",
+        axis=0,
+        input_frame_type="pandas",
+        scheduling_hint=flat_hint,
+        expect_worker="worker-2",
+    )
+    assert flat_func.scheduling_hint.expect_worker == "worker-2"
+    assert flat_hint.expect_worker == "worker-1"

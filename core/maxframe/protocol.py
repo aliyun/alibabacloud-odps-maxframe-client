@@ -25,7 +25,7 @@ from maxframe.core.graph.entity import SerializableGraph
 from maxframe.errors import get_failure_info_from_exception
 from maxframe.lib import wrapped_pickle as pickle
 from maxframe.lib.tblib import pickling_support
-from maxframe.serialization import PickleContainer, RemoteException, pickle_buffers
+from maxframe.serialization import PickleContainer, RemoteException, try_pickle_buffers
 from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
@@ -372,12 +372,14 @@ class ErrorInfo(JsonSerializable):
     failure_info: Optional[dict] = AnyField("failure_info", default=None)
 
     @staticmethod
-    def _can_pickle_raw_error(exc: Exception) -> bool:
-        try:
-            pickle_buffers(exc)
-            return True
-        except Exception:
+    def _can_pickle_raw_error(exc: BaseException) -> bool:
+        # Control-flow signals (KeyboardInterrupt, SystemExit, ...) are not
+        # ``Exception``s: they must never be transported, as the receiving side
+        # re-raises the raw error data and would resurrect a signal that
+        # belongs to the process it was raised in.
+        if not isinstance(exc, Exception):
             return False
+        return try_pickle_buffers(exc) is not None
 
     @classmethod
     def from_exception(cls, exc: BaseException):
@@ -391,9 +393,8 @@ class ErrorInfo(JsonSerializable):
 
     def reraise(self):
         exc = None
-        if (
-            self.raw_error_source == ErrorSource.PYTHON
-            and self.raw_error_data is not None
+        if self.raw_error_source == ErrorSource.PYTHON and isinstance(
+            self.raw_error_data, Exception
         ):
             exc = self.raw_error_data
         else:
@@ -416,11 +417,19 @@ class ErrorInfo(JsonSerializable):
         if kw.get("raw_error_data"):
             bufs = [base64.b64decode(s) for s in kw["raw_error_data"]]
             try:
-                kw["raw_error_data"] = pickle.loads(bufs[0], buffers=bufs[1:])
+                raw_error_data = pickle.loads(bufs[0], buffers=bufs[1:])
             except Exception:
                 # both error source and data shall be None to make sure
                 # RemoteException is raised.
                 kw["raw_error_source"] = kw["raw_error_data"] = None
+            else:
+                if isinstance(raw_error_data, Exception):
+                    kw["raw_error_data"] = raw_error_data
+                else:
+                    # record written before control-flow signals were filtered:
+                    # dropping the raw data makes reraise() fall back to
+                    # RemoteException instead of resurrecting the signal.
+                    kw["raw_error_source"] = kw["raw_error_data"] = None
 
         fi = kw.pop("failure_info", None)
         obj = cls(**kw)
@@ -445,11 +454,13 @@ class ErrorInfo(JsonSerializable):
             err_data_bufs = self.raw_error_data.get_buffers()
             if not err_data_bufs:
                 ret["raw_error_source"] = None
-        elif isinstance(self.raw_error_data, BaseException):
-            try:
-                err_data_bufs = pickle_buffers(self.raw_error_data)
-            except Exception:
-                err_data_bufs = None
+        elif not isinstance(self.raw_error_data, Exception):
+            # control-flow signals are never transported
+            ret["raw_error_source"] = None
+        else:
+            # an ordinary exception: transport its pickled payload when possible
+            err_data_bufs = try_pickle_buffers(self.raw_error_data)
+            if err_data_bufs is None:
                 ret["raw_error_source"] = None
 
         if err_data_bufs:
@@ -661,6 +672,10 @@ class SubDagInfo(JsonSerializable):
         FieldTypes.reference,
         default_factory=list,
     )
+    failed_cu_usage: Optional[float] = Float64Field("failed_cu_usage", default=None)
+    cancelled_cu_usage: Optional[float] = Float64Field(
+        "cancelled_cu_usage", default=None
+    )
 
     @classmethod
     def from_json(cls, serialized: dict) -> "SubDagInfo":
@@ -695,6 +710,10 @@ class SubDagInfo(JsonSerializable):
             }
         if self.submit_instances:
             ret["submit_instances"] = [i.to_json() for i in self.submit_instances]
+        if self.failed_cu_usage is not None:
+            ret["failed_cu_usage"] = self.failed_cu_usage
+        if self.cancelled_cu_usage is not None:
+            ret["cancelled_cu_usage"] = self.cancelled_cu_usage
         return ret
 
 

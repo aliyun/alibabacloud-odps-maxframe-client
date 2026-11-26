@@ -64,7 +64,16 @@ def to_arrow_dtypes(dtypes):
             pa_type = pa.from_numpy_dtype(dtype)
             new_dtypes[col] = ArrowDtype(pa_type)
         except Exception:
-            new_dtypes[col] = dtype
+            # numpy object dtype has no direct Arrow equivalent.
+            # Map it to pa.string() — consistent with the object→string
+            # fallback in infer_dtype (lines 120-122).  Without this,
+            # empty object-dtype Series (e.g. pd.Series([], dtype="object"))
+            # propagate as polars Null columns, and str accessor methods
+            # like str.split raise SchemaError at execution time.
+            if dtype == np.dtype("O"):
+                new_dtypes[col] = wrap_arrow_dtype(pa.string())
+            else:
+                new_dtypes[col] = dtype
     return pd.Series(new_dtypes)
 
 

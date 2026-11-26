@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import operator
 from decimal import Decimal
 
@@ -21,13 +22,16 @@ import pyarrow as pa
 import pyarrow.types as patypes
 
 from maxframe import opcodes
+from maxframe.config import options
+from maxframe.core.operator import Operator
+from maxframe.lib.version import parse as parse_version
 from maxframe.liteframe.core import FrameMetadata
 from maxframe.liteframe.datatypes import (
     infer_decimal_agg_dtype,
     infer_decimal_arithmetic_dtype,
 )
 from maxframe.liteframe.operators.core import LiteFrameOperator, LiteFrameOperatorMixin
-from maxframe.liteframe.utils import normalize_col_name
+from maxframe.liteframe.utils import is_numeric_dtype, normalize_col_name
 from maxframe.serialization.serializables import (
     AnyField,
     BoolField,
@@ -39,23 +43,7 @@ from maxframe.serialization.serializables import (
 )
 from maxframe.utils import wrap_arrow_dtype
 
-
-def _is_numeric_dtype(pandas_dtype):
-    """Check if a pandas dtype (Arrow-backed) is numeric.
-
-    Returns True for integers, floats, and decimals.
-    Returns False for string, boolean, binary, list, struct, temporal.
-    """
-    if hasattr(pandas_dtype, "pyarrow_dtype"):
-        arrow_type = pandas_dtype.pyarrow_dtype
-        return (
-            patypes.is_integer(arrow_type)
-            or patypes.is_floating(arrow_type)
-            or patypes.is_decimal(arrow_type)
-        )
-    # Fallback for non-Arrow dtypes
-    return pd.api.types.is_numeric_dtype(pandas_dtype)
-
+logger = logging.getLogger(__name__)
 
 # Aggregation functions supported by the rolling_agg transform kind.
 # Polars rolling_* primitives back all of these; "count" is synthesized as a
@@ -71,6 +59,9 @@ ROLLING_AGG_FUNCS = frozenset(
 EXPANDING_AGG_FUNCS = frozenset({"sum", "mean", "min", "max", "count", "std", "var"})
 CUM_AGG_FUNCS = frozenset({"sum", "max", "min", "prod", "count"})
 
+# Aggregation functions supported by the ewm_agg transform kind.
+EWM_AGG_FUNCS = frozenset({"mean", "std", "var"})
+
 # Int32 value range bounds, used to validate ``limit`` (an Int32Field) at the
 # API boundary before field serialization — out-of-range integers otherwise
 # slip past plan-time validation and only fail deep in the DPE executor.
@@ -82,7 +73,7 @@ def _check_numeric_columns(in_dtypes, columns, kind):
     """Validate that all target columns are numeric. Raise TypeError if not."""
     non_numeric = []
     for col in columns:
-        if not _is_numeric_dtype(in_dtypes[col]):
+        if not is_numeric_dtype(in_dtypes[col]):
             non_numeric.append(f"'{col}' ({in_dtypes[col]})")
     if non_numeric:
         raise TypeError(
@@ -369,7 +360,7 @@ def _is_aggregation_kind(kind, remask_input_nan):
     therefore classified as positional/cumulative, not aggregation — matching
     pandas ``groupby.cumsum`` which *does* cumulate a numeric group key.
     """
-    if kind in ("shift", "diff", "pct_change"):
+    if kind in ("shift", "diff", "pct_change", "rank"):
         return False
     if kind == "expanding_agg":
         return not remask_input_nan
@@ -433,48 +424,55 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
     Parameters
     ----------
     kind : str
-        Transform kind: "shift", "diff", "pct_change", or "rolling_agg".
+        Transform kind: "shift", "diff", "pct_change", "rolling_agg",
+        "expanding_agg", "ffill", "bfill", or "rank".
     groupby_params : dict or None
         Grouping parameters for grouped transforms. None for whole-frame.
     periods : int
         Position offset (shift/diff/pct_change). Positive = forward,
         negative = backward.
-    fill_value : scalar or None
-        Fill value for positions introduced by shifting (shift only).
     columns : list of str or None
         Columns to transform. None = all columns. Non-selected columns
         are passed through unchanged.
     window_size : int or None
         Window size in rows (rolling_agg only).
     min_periods : int or None
-        Minimum non-null observations in a window (rolling_agg only).
-        Defaults to window_size.
+        Minimum non-null observations in a window (rolling_agg /
+        expanding_agg).  Defaults to window_size for rolling.
     center : bool
         Center the window on the current row (rolling_agg only).
-    agg_func : str or None
-        Aggregation name for rolling_agg (sum/mean/min/max/std/var/median/count).
+    skipna : bool
+        NaN handling for cumulative ops (cumsum/cummax/cummin/cumprod/
+        cumcount).  Expanding always uses True.
+    order_by / order_by_ascending : list or None
+        Columns that define the order in which the window expands.
+    window_shift : int
+        Offset the window frame by N rows.
+    reverse : bool
+        Flip an expanding window to grow from the last row backward.
+    placeback : bool
+        If True (default), output is row-aligned with the input.
+    transform_params : dict or None
+        Calculation parameters packed into a single dict.  Keys depend
+        on ``kind``: ``periods`` / ``fill_value`` (shift/diff/pct_change),
+        ``agg_func`` / ``remask_input_nan`` (expanding_agg), ``agg_func`` (rolling_agg),
+        ``method`` / ``ascending`` / ``na_option`` / ``pct`` (rank).
     """
 
     _op_type_ = opcodes.LITEFRAME_WINDOW_TRANSFORM
 
     kind = StringField("kind")
     groupby_params = DictField("groupby_params", default=None)
+
+    # Position offset for shift/diff/pct_change — sizes cross-chunk boundary
+    # rows (tiler's _neighbor_row_counts), so it is a window-shape field.
+    # positive = forward (data moves down), negative = backward (data moves up)
     periods = Int32Field("periods", default=1)
-    fill_value = AnyField("fill_value", default=None)
 
-    # ffill/bfill-only: cap on consecutive nulls filled per run.
-    # None = unlimited (simplified 1-column summary).  A positive int uses
-    # the 2-column (lastval + c) summary so the limit budget is consumed
-    # across chunk boundaries.  limit <= 0 is rejected at plan time
-    # (pandas raises ValueError: Limit must be greater than 0).
-    limit = Int32Field("limit", default=None)
     columns = ListField("columns", FieldTypes.string, default=None)
-
-    # --- Fields for future expansion (not used in stage 1) ---
 
     window_size = Int32Field("window_size", default=None)
     min_periods = Int32Field("min_periods", default=None)
-    agg_func = StringField("agg_func", default=None)
     center = BoolField("center", default=False)
     # ``skipna`` controls NaN handling for cumulative ops (cumsum/cummax/
     # cummin/cumprod/cumcount): True skips NaN in the accumulation, False
@@ -482,12 +480,6 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
     # pct_change/rolling_agg do not consume this field (pandas has no
     # ``skipna`` on those).
     skipna = BoolField("skipna", default=True)
-    # cum* masks output NaN at input-NaN positions (polars ``cum_*`` does this
-    # natively); expanding fills NaN positions with the accumulated value
-    # (``fill_null(0).cum_sum()`` etc.). ``row_count_mode`` is NOT a declared
-    # field — it rides in ``op.extra_params`` and is set as an opfunc attribute
-    # by the tiler.
-    remask_input_nan = BoolField("remask_input_nan", default=False)
 
     # --- MF-specific window fields (MaxCompute SQL semantics) ---
     #
@@ -516,9 +508,84 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
     window_shift = Int32Field("window_shift", default=0)
     reverse = BoolField("reverse", default=False)
 
+    # When True (default), the output is row-aligned with the input and
+    # inherits its alignment_id.  For standalone transforms this is a
+    # metadata-only change (row order is already preserved).  For grouped
+    # transforms the tiler inserts a LiteFramePlaceBack step that restores
+    # the source chunk layout.  When False the output keeps a fresh id
+    # (grouped output stays in reducer order).
+    placeback = BoolField("placeback", default=True)
+
+    # Calculation parameters packed into a single dict.  Keys depend on kind:
+    #   shift: "fill_value" (scalar or None)
+    #   ffill/bfill: "limit" (int, default None)
+    #   rolling_agg/expanding_agg: "agg_func" (str)
+    #   rank: "method" (str, default "average"), "ascending" (default True),
+    #         "na_option" (str, default "keep"), "pct" (bool, default False)
+    transform_params = DictField("transform_params", default=None)
+
+    # EWM-specific calculation parameters packed into a single dict.
+    # Keys: "com" (float), "adjust" (bool), "ignore_na" (bool),
+    # "bias" (bool).  Only set for kind="ewm_agg".
+    ewm_params = DictField("ewm_params", default=None)
+
+    @classmethod
+    def __serializable__(cls):
+        """Return the 2.9 legacy class when the serializer used 2.9.
+
+        ``framedriver_version`` wins; ``client_version`` is the fallback.
+        """
+        fv = options.session.framedriver_version
+        cv = options.session.client_version
+        for source, version in (("framedriver", fv), ("client", cv)):
+            if not version:
+                continue
+            try:
+                ver = parse_version(version)
+            except Exception:
+                logger.warning(
+                    "Failed to parse %s version %s", source, version, exc_info=True
+                )
+                continue
+            release = getattr(ver, "release", None)
+            if not release:
+                logger.warning(
+                    "Failed to parse %s version %s (legacy version)", source, version
+                )
+                continue
+            if release[:2] == (2, 9):
+                logger.info(
+                    "Using legacy LiteFrameWindowTransform for 2.9.x %s", source
+                )
+                return _LegacyLiteFrameWindowTransform_2_9
+            if source == "framedriver":
+                # A valid FrameDriver version decides the layout; do not fall
+                # back to the client version when it is not 2.9.
+                return None
+        logger.info(
+            "Using LiteFrameWindowTransform for client %s (framedriver %s)", cv, fv
+        )
+        return None
+
+    def _get_transform_param(self, name, default=None):
+        """Read a calculation parameter from ``transform_params``."""
+        params = self.transform_params or {}
+        return params.get(name, default)
+
+    def _inherit_alignment_id(self, inputs):
+        if self.placeback:
+            return self._inherit_single_input_alignment_id(inputs)
+        return None
+
     @classmethod
     def for_positional(
-        cls, kind, periods=1, fill_value=None, columns=None, groupby_params=None
+        cls,
+        kind,
+        periods=1,
+        fill_value=None,
+        columns=None,
+        groupby_params=None,
+        placeback=True,
     ):
         """Build an operator for a positional transform (shift/diff/pct_change).
 
@@ -531,13 +598,73 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
         return cls(
             kind=kind,
             periods=periods,
-            fill_value=fill_value,
+            transform_params={"fill_value": fill_value},
             columns=columns,
             groupby_params=groupby_params,
+            placeback=placeback,
         )
 
     @classmethod
-    def for_fill(cls, kind, limit=None, columns=None, groupby_params=None):
+    def for_rank(
+        cls,
+        method="average",
+        ascending=True,
+        na_option="keep",
+        pct=False,
+        columns=None,
+        groupby_params=None,
+        placeback=True,
+    ):
+        """Build an operator for a per-group rank transform.
+
+        Rank is a row-count-preserving *transform* (not an aggregation): it
+        replaces each value with its numerical rank (1..n). Each target
+        column is ranked independently. Output dtype is Float64 for targets
+        (matching pandas ``rank``). ``method="first"`` maps to Polars
+        ``"ordinal"``. Only ``na_option="keep"`` is supported in v1 (nulls
+        stay null).
+
+        ``groupby_params`` must be provided: rank is a **grouped-only**
+        window kind (whole-frame ranking is served by ``LiteFrame.rank``).
+        """
+        if method not in ("average", "min", "max", "first", "dense"):
+            raise ValueError(
+                f"Invalid method {method!r}, must be one of "
+                f"['average', 'min', 'max', 'first', 'dense']"
+            )
+        if na_option not in ("keep", "top", "bottom"):
+            raise ValueError(
+                f"Invalid na_option {na_option!r}, must be one of "
+                f"['keep', 'top', 'bottom']"
+            )
+        if na_option in ("top", "bottom"):
+            raise NotImplementedError(
+                f"na_option={na_option!r} is not supported in v1; "
+                f"only 'keep' is supported."
+            )
+        if groupby_params is None:
+            raise TypeError(
+                "`rank` requires groupby_params (rank is a grouped-only "
+                "window kind); use LiteFrame.rank for whole-frame ranking."
+            )
+        columns = _normalize_columns(columns)
+        return cls(
+            kind="rank",
+            transform_params={
+                "method": method,
+                "ascending": ascending,
+                "na_option": na_option,
+                "pct": pct,
+            },
+            columns=columns,
+            groupby_params=groupby_params,
+            placeback=placeback,
+        )
+
+    @classmethod
+    def for_fill(
+        cls, kind, limit=None, columns=None, groupby_params=None, placeback=True
+    ):
         """Build an operator for a forward/backward fill (ffill/bfill).
 
         ``kind`` is "ffill" or "bfill".  ffill propagates the last non-null
@@ -566,13 +693,16 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
         columns = _normalize_columns(columns)
         return cls(
             kind=kind,
-            limit=limit,
+            transform_params={"limit": limit},
             columns=columns,
             groupby_params=groupby_params,
+            placeback=placeback,
         )
 
     @classmethod
-    def for_cumulative(cls, func_name, skipna=True, columns=None, groupby_params=None):
+    def for_cumulative(
+        cls, func_name, skipna=True, columns=None, groupby_params=None, placeback=True
+    ):
         """Build an operator for a cumulative transform (cumsum/cummax/
         cummin/cumprod/cumcount).
 
@@ -586,12 +716,12 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
         agg = "count" if func_name == "cumcount" else func_name[len("cum") :]
         op = cls(
             kind="expanding_agg",
-            agg_func=agg,
+            transform_params={"agg_func": agg, "remask_input_nan": True},
             min_periods=1,
             skipna=skipna,
-            remask_input_nan=True,
             columns=columns,
             groupby_params=groupby_params,
+            placeback=placeback,
         )
         if func_name == "cumcount":
             op.extra_params["row_count_mode"] = True
@@ -608,6 +738,7 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
         order_by_ascending=True,
         window_shift=0,
         reverse=False,
+        placeback=True,
     ):
         """Build an operator for ``expanding().<func>()``.
 
@@ -618,16 +749,67 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
         order_by, order_by_ascending = _normalize_order_by(order_by, order_by_ascending)
         return cls(
             kind="expanding_agg",
-            agg_func=agg_func,
+            transform_params={"agg_func": agg_func},
             min_periods=min_periods,
             skipna=True,
-            remask_input_nan=False,
             columns=columns,
             groupby_params=groupby_params,
             order_by=order_by,
             order_by_ascending=order_by_ascending,
             window_shift=window_shift,
             reverse=reverse,
+            placeback=placeback,
+        )
+
+    @classmethod
+    def for_ewm(
+        cls,
+        func,
+        com,
+        min_periods=0,
+        *,
+        adjust=True,
+        ignore_na=False,
+        bias=False,
+        columns=None,
+        groupby_params=None,
+        order_by=None,
+        order_by_ascending=True,
+        window_shift=0,
+        reverse=False,
+        placeback=True,
+    ):
+        """Build an operator for ``ewm_agg``.
+
+        ``func`` ("mean"/"std"/"var") is stored in
+        ``transform_params["agg_func"]`` — same convention as rolling_agg and
+        expanding_agg.  EWM-specific parameters are packed into ``ewm_params``.
+        ``com`` (center of mass) is stored as the canonical decay parameter.
+        """
+        if func not in EWM_AGG_FUNCS:
+            raise ValueError(
+                f"Unsupported EWM aggregation function: {func!r}. "
+                f"Supported: {sorted(EWM_AGG_FUNCS)}"
+            )
+        columns = _normalize_columns(columns)
+        order_by, order_by_ascending = _normalize_order_by(order_by, order_by_ascending)
+        return cls(
+            kind="ewm_agg",
+            transform_params={"agg_func": func},
+            ewm_params={
+                "com": com,
+                "adjust": adjust,
+                "ignore_na": ignore_na,
+                "bias": bias,
+            },
+            min_periods=min_periods,
+            columns=columns,
+            groupby_params=groupby_params,
+            order_by=order_by,
+            order_by_ascending=order_by_ascending,
+            window_shift=window_shift,
+            reverse=reverse,
+            placeback=placeback,
         )
 
     def _infer_rolling_agg_dtypes(self, in_dtypes, target_cols):
@@ -642,7 +824,7 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
                 f"rolling requires a positive integer window_size, "
                 f"got {self.window_size!r}"
             )
-        func = self.agg_func
+        func = self._get_transform_param("agg_func")
         if func not in ROLLING_AGG_FUNCS:
             raise ValueError(
                 f"Unsupported rolling aggregation function: {func!r}. "
@@ -670,8 +852,8 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
         cumprod (polars ``cum_prod`` does not support decimal — verified on
         Polars 1.36).
         """
-        func = self.agg_func
-        if self.remask_input_nan:
+        func = self._get_transform_param("agg_func")
+        if self._get_transform_param("remask_input_nan", False):
             # cum*: validate against CUM_AGG_FUNCS
             if func not in CUM_AGG_FUNCS:
                 raise ValueError(
@@ -709,13 +891,40 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
             new_dtypes[col] = _infer_agg_dtype(in_dtypes[col], func)
         return new_dtypes
 
-    def __call__(self, liteframe):
-        # ``reverse`` is an expanding-only feature — fail fast before touching
-        # any data (it does not depend on the input schema).
-        if self.reverse and self.kind != "expanding_agg":
+    def _infer_ewm_agg_dtypes(self, in_dtypes, target_cols):
+        """Validate parameters and infer output dtypes for ``kind='ewm_agg'``.
+
+        All EWM functions (mean, std, var) produce Float64 for every target
+        column, matching pandas EWM semantics.  All require numeric input.
+        """
+        func = self._get_transform_param("agg_func")
+        if func not in EWM_AGG_FUNCS:
             raise ValueError(
-                "`reverse` is only supported for expanding windows, "
+                f"Unsupported EWM aggregation function: {func!r}. "
+                f"Supported: {sorted(EWM_AGG_FUNCS)}"
+            )
+        _check_numeric_columns(in_dtypes, target_cols, f"ewm.{func}")
+
+        new_dtypes = in_dtypes.copy()
+        for col in target_cols:
+            new_dtypes[col] = wrap_arrow_dtype(pa.float64())
+        return new_dtypes
+
+    def __call__(self, liteframe):
+        # ``reverse`` is an expanding/EWM-only feature — fail fast before
+        # touching any data (it does not depend on the input schema).
+        if self.reverse and self.kind not in ("expanding_agg", "ewm_agg"):
+            raise ValueError(
+                "`reverse` is only supported for expanding and ewm windows, "
                 f"not kind={self.kind!r}"
+            )
+        # ``rank`` is grouped-only: whole-frame ranking is served by
+        # ``LiteFrame.rank`` (PSRS), so a standalone rank window operator is
+        # rejected rather than silently ranked per chunk.
+        if self.kind == "rank" and self.groupby_params is None:
+            raise TypeError(
+                "`rank` is only supported for grouped transforms; "
+                "use LiteFrame.rank for whole-frame ranking."
             )
 
         in_dtypes = liteframe._data._physical_dtypes
@@ -773,7 +982,9 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
         # group key is a valid target for positional/cumulative transforms
         # and excluded-from-target passthrough for aggregations — see
         # ``_is_aggregation_kind`` and window.md §1 for the full contract.
-        is_agg = _is_aggregation_kind(self.kind, self.remask_input_nan)
+        is_agg = _is_aggregation_kind(
+            self.kind, self._get_transform_param("remask_input_nan", False)
+        )
         if (
             self.columns is not None
             and self.groupby_params is not None
@@ -803,10 +1014,11 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
         # Compute output dtypes
         if self.kind == "shift":
             new_dtypes = combined_dtypes.copy()
-            if self.fill_value is not None:
+            fill_value = self._get_transform_param("fill_value")
+            if fill_value is not None:
                 for col in target_cols:
                     new_dtypes[col] = _infer_shift_dtype(
-                        combined_dtypes[col], self.fill_value
+                        combined_dtypes[col], fill_value
                     )
         elif self.kind == "diff":
             _check_numeric_columns(combined_dtypes, target_cols, self.kind)
@@ -822,11 +1034,19 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
             new_dtypes = self._infer_rolling_agg_dtypes(combined_dtypes, target_cols)
         elif self.kind == "expanding_agg":
             new_dtypes = self._infer_expanding_agg_dtypes(combined_dtypes, target_cols)
+        elif self.kind == "ewm_agg":
+            new_dtypes = self._infer_ewm_agg_dtypes(combined_dtypes, target_cols)
         elif self.kind in ("ffill", "bfill"):
             # ffill/bfill copy existing values; forward_fill/backward_fill
             # are non-arithmetic, so the output dtype equals the input
             # dtype for every target (no widening, even for decimal).
             new_dtypes = combined_dtypes.copy()
+        elif self.kind == "rank":
+            # Rank returns float64 for every target column (pandas rank()
+            # always returns float64). Non-target columns keep their dtype.
+            new_dtypes = combined_dtypes.copy()
+            for col in target_cols:
+                new_dtypes[col] = wrap_arrow_dtype(pa.float64())
         else:
             raise ValueError(f"Unknown window transform kind: {self.kind}")
 
@@ -881,3 +1101,56 @@ class LiteFrameWindowTransform(LiteFrameOperatorMixin, LiteFrameOperator):
             physical_dtypes=new_dtypes,
             frame_metadata=new_metadata,
         )
+
+
+class _LegacyLiteFrameWindowTransform_2_9(Operator):
+    """Legacy 2.9 layout of ``LiteFrameWindowTransform`` for deserializing
+    requests from 2.9.x clients.
+
+    In 2.9, ``fill_value``, ``limit``, ``agg_func``, and
+    ``remask_input_nan`` were declared top-level fields.  They have since
+    been consolidated into ``transform_params``.  This class mirrors the
+    2.9 field order so the serialization framework can deserialize 2.9
+    bytes, then ``__on_deserialize__`` converts to the current operator.
+    """
+
+    _legacy_name = "LiteFrameWindowTransform"
+    _ignore_non_existing_keys = True
+
+    kind = StringField("kind")
+    groupby_params = DictField("groupby_params", default=None)
+    periods = Int32Field("periods", default=1)
+    fill_value = AnyField("fill_value", default=None)
+    limit = Int32Field("limit", default=None)
+    columns = ListField("columns", FieldTypes.string, default=None)
+    window_size = Int32Field("window_size", default=None)
+    min_periods = Int32Field("min_periods", default=None)
+    agg_func = StringField("agg_func", default=None)
+    center = BoolField("center", default=False)
+    skipna = BoolField("skipna", default=True)
+    remask_input_nan = BoolField("remask_input_nan", default=False)
+    order_by = ListField("order_by", FieldTypes.string, default=None)
+    order_by_ascending = ListField("order_by_ascending", FieldTypes.bool, default=None)
+    window_shift = Int32Field("window_shift", default=0)
+    reverse = BoolField("reverse", default=False)
+
+    def __on_deserialize__(self):
+        tp = {
+            k: getattr(self, k)
+            for k in ("fill_value", "limit", "agg_func")
+            if getattr(self, k) is not None
+        }
+        tp["remask_input_nan"] = self.remask_input_nan
+
+        target = LiteFrameWindowTransform.__new__(LiteFrameWindowTransform)
+        target_fields = type(target)._PROPS._FIELDS
+        for k, field in type(self)._PROPS._FIELDS.items():
+            if k in target_fields:
+                try:
+                    target_fields[k].set(target, field.__get__(self, k))
+                except AttributeError:
+                    continue
+        if target._outputs is None:
+            target._outputs = []
+        target.transform_params = tp
+        return target

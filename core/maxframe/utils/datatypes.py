@@ -42,14 +42,26 @@ def make_dtype(
 ):
     if dtype is None:
         return None
-    elif return_pd_dtype and (
-        (isinstance(dtype, str) and dtype == "category")
-        or pd.api.types.is_extension_array_dtype(dtype)
-    ):
-        # return string dtype directly as legacy python version
+    if return_pd_dtype and isinstance(dtype, str) and dtype == "category":
+        # return category dtype directly as legacy python version
         #  does not support ExtensionDtype
         return dtype
-    elif isinstance(dtype, str) and dtype.lower() in ("blob", "maxframe.blob"):
+    # ``is_extension_array_dtype`` may raise ImportError when the dtype
+    # string names a pyarrow-backed extension (e.g. ``"string[pyarrow]"``)
+    # and the installed pyarrow is too old to construct it.  In that case
+    # the value *is* an extension-dtype specifier — return it as-is so
+    # the legacy env (pyarrow < 10) does not crash, matching the
+    # ``"category"`` early-return above.
+    if return_pd_dtype:
+        try:
+            is_ext = pd.api.types.is_extension_array_dtype(dtype)
+        except ImportError:
+            is_ext = True
+        if is_ext:
+            # return string dtype directly as legacy python version
+            #  does not support ExtensionDtype
+            return dtype
+    if isinstance(dtype, str) and dtype.lower() in ("blob", "maxframe.blob"):
         # Handle blob type strings
         return ExternalBlobDtype()
     elif dtype is pd.Timestamp or dtype is datetime.datetime:
@@ -62,7 +74,7 @@ def make_dtype(
             if not return_pd_dtype and pd.api.types.is_extension_array_dtype(dtype):
                 ret = np.dtype(ret.type)
             return ret
-        except TypeError:
+        except (TypeError, ImportError):
             return np.dtype("O")
 
 
@@ -98,6 +110,15 @@ def to_pandas_dtype(dt):
     """
     try:
         return pd.api.types.pandas_dtype(dt)
+    except ImportError:
+        # ``string[pyarrow]`` resolves to ``StringDtype(storage="pyarrow")``,
+        # which raises ImportError when the installed pyarrow is older than 7.
+        # Fall back to the project helper, which returns a plain StringDtype
+        # where the pyarrow storage is usable and the fake arrow dtype where
+        # it is not.
+        if isinstance(dt, str) and dt.startswith("string["):
+            return wrap_arrow_dtype(pa.string())
+        raise
     except TypeError:
         pass
     if pl is not None:
@@ -398,6 +419,42 @@ def is_arrow_dtype_supported():
     return not getattr(ArrowDtype, "_is_fake", False)
 
 
+def _dtype_name(dtype) -> str:
+    """Lower-cased dtype name for Polars dtypes.
+
+    Polars exposes dtypes as bare classes on older versions and as instances on
+    newer ones, so the class name is the only common handle.
+    """
+    return (getattr(dtype, "__name__", None) or str(dtype)).lower()
+
+
+def is_integer_dtype(arr_or_dtype) -> bool:
+    """Whether a pandas, numpy or Polars dtype is integral.
+
+    pandas and numpy dtypes report ``kind``; Polars dtypes carry the same
+    information in type predicates, and the versions that expose dtypes as bare
+    classes only through the dtype name.
+    """
+    kind = getattr(arr_or_dtype, "kind", None)
+    if kind is not None:
+        return kind in ("i", "u")
+    predicate = getattr(arr_or_dtype, "is_integer", None)
+    if predicate is not None and (predicate() if callable(predicate) else predicate):
+        return True
+    return _dtype_name(arr_or_dtype).startswith(("int", "uint"))
+
+
+def is_float_dtype(arr_or_dtype) -> bool:
+    """Float counterpart of :func:`is_integer_dtype`."""
+    kind = getattr(arr_or_dtype, "kind", None)
+    if kind is not None:
+        return kind == "f"
+    predicate = getattr(arr_or_dtype, "is_float", None)
+    if predicate is not None and (predicate() if callable(predicate) else predicate):
+        return True
+    return _dtype_name(arr_or_dtype).startswith("float")
+
+
 def is_string_dtype(arr_or_dtype) -> bool:
     if isinstance(arr_or_dtype, ArrowDtype):
         return pa.types.is_string(arr_or_dtype.pyarrow_dtype)
@@ -419,12 +476,36 @@ def is_datetime64_dtype(arr_or_dtype) -> bool:
     return pd.api.types.is_datetime64_any_dtype(arr_or_dtype)
 
 
+def _nested_dtypes(dtype):
+    """Yield the nested dtypes of a container dtype (duck-typed).
+
+    Polars spells the nested types differently across versions (``inner`` for
+    List/Array, ``value_dtype`` for Map/Dict, ``fields`` for Struct), exposes
+    some of them as callables, and packages a Map's key/value pair either as
+    the value dtype or as the ``inner`` container/tuple.  Every candidate is
+    therefore inspected instead of taking the first attribute that exists.
+    """
+    for attr in ("inner", "value_dtype"):
+        child = getattr(dtype, attr, None)
+        if child is None:
+            continue
+        child = child() if callable(child) else child
+        if isinstance(child, (tuple, list)):
+            yield from child
+        else:
+            yield child
+    fields = getattr(dtype, "fields", None)
+    if fields:  # polars Struct: fields carry the dtype (or are dtypes)
+        for field in fields:
+            yield getattr(field, "dtype", field)
+
+
 def is_blob_dtype(dtype) -> bool:
     """Check whether *dtype* is (or nests) a blob column type.
 
     Recognizes the pandas-side ``ExternalBlobDtype`` and the polars-side
     blob object-container extension type, and recurses into nested
-    container dtypes — list/array element types, map value types, and
+    container dtypes — list/array element types, map key/value types, and
     struct field types — so blobs hidden inside containers are detected.
     Detection is duck-typed on the nested-type attributes (``inner`` /
     ``value_dtype`` / ``fields``) to stay compatible across polars
@@ -441,16 +522,7 @@ def is_blob_dtype(dtype) -> bool:
         # Non-polars / duck-typed dtype. SystemError from an incompatible
         # polars version must propagate, not silently disable detection.
         pass
-    inner = getattr(dtype, "inner", None)
-    if inner is not None:  # polars List / Array
-        return is_blob_dtype(inner)
-    value_dtype = getattr(dtype, "value_dtype", None)
-    if value_dtype is not None:  # polars Map / Dict
-        return is_blob_dtype(value_dtype)
-    fields = getattr(dtype, "fields", None)
-    if fields:  # polars Struct
-        return any(is_blob_dtype(getattr(f, "dtype", None)) for f in fields)
-    return False
+    return any(is_blob_dtype(child) for child in _nested_dtypes(dtype))
 
 
 def _is_string_dtype_kind(dtype):
@@ -703,6 +775,21 @@ def _validate_object_string_values(result, expected_dtype, column_name=None):
         )
 
 
+def _cast_empty_output(result, expected_dtype):
+    """Rebuild a zero-row result with the declared dtype.
+
+    pandas derives the dtype of an empty UDF result from values that do not
+    exist, so ``DataFrame.map`` on an empty frame yields ``object`` columns and
+    a declared schema can never be validated against them.  With no data the
+    declared dtype is the only truth, so materialize the empty column with it
+    instead of rejecting the result.
+    """
+    try:
+        return result.astype(expected_dtype)
+    except (TypeError, ValueError):
+        return result
+
+
 def validate_and_align_output(
     result: Union[pd.DataFrame, pd.Series],
     expected_dtypes: Union[pd.Series, np.dtype],
@@ -839,6 +926,9 @@ def validate_and_align_output(
         if expected_dtype is None:
             return result
 
+        if len(result) == 0:
+            return _cast_empty_output(result, expected_dtype)
+
         actual_dtype = result.dtype
         try:
             check_dtype_compatibility(actual_dtype, expected_dtype, result.name)
@@ -928,6 +1018,10 @@ def validate_and_align_output(
         if expected_dtype is None:
             continue
 
+        if len(result) == 0:
+            result[col] = _cast_empty_output(result[col], expected_dtype)
+            continue
+
         try:
             check_dtype_compatibility(actual_dtype, expected_dtype, col)
             _validate_object_string_values(result[col], expected_dtype, col)
@@ -1012,6 +1106,17 @@ def _pandas_dtype_to_polars(pandas_dt):
     try:
         return pl.from_pandas(pd.Series([], dtype=pandas_dt, name="__c")).dtype
     except Exception:
+        return None
+
+
+def _declared_dtype_to_polars(declared):
+    """Polars equivalent of a declared dtype for native casting, if any."""
+    expected_pa = _declared_dtype_to_arrow_type(declared)
+    if expected_pa is not None:
+        return _arrow_type_to_polars_dtype(expected_pa)
+    try:
+        return _pandas_dtype_to_polars(to_pandas_dtype(declared))
+    except TypeError:
         return None
 
 
@@ -1116,8 +1221,18 @@ def validate_and_align_polars_output(
     result_arrow = {f.name: f.type for f in result.to_arrow().schema}
     result_pl_dtypes = {c: result.schema[c] for c in expected_cols}
     cast_map = {}
+    is_empty = result.height == 0
     for col in expected_cols:
         declared = expected_dtypes[col]
+        if is_empty:
+            # A zero-row result derives its dtype from values that do not
+            # exist (a polars ``map`` over an empty frame keeps the input
+            # dtype), so the declared schema is the only truth: queue the
+            # cast instead of rejecting it.  Mirrors the pandas path.
+            target_pl = _declared_dtype_to_polars(declared)
+            if target_pl is not None:
+                cast_map[col] = target_pl
+            continue
         actual_pa = result_arrow[col]
         expected_pa = _declared_dtype_to_arrow_type(declared)
         if expected_pa is None:

@@ -115,6 +115,164 @@ def test_functional_run_apply(df_data, func, method, axis, args, check):
 
 
 # ---------------------------------------------------------------------------
+# apply(axis=1) operator-based compatibility — LiteFrameFunctional submitted
+# directly (old serialized plans / multi-output / skip_infer paths that stay on
+# the functional operator instead of lowering to LiteFrameProjection).
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.skipif(not is_arrow_dtype_supported(), reason="Arrow dtype not supported")
+@pytest.mark.parametrize(
+    "func, result_type, output_dtypes, n_output, check",
+    [
+        pytest.param(
+            lambda row: row["a"] + row["b"],
+            None,
+            [pd.Series({"s": wrap_arrow_dtype(pa.int64())})],
+            None,
+            lambda r: (
+                list(r.columns) == ["s"]
+                and r["s"].tolist() == [11, 22, 33]
+                and str(r["s"].dtype) == "int64[pyarrow]"
+            ),
+            id="scalar_single_output",
+        ),
+        pytest.param(
+            lambda row: (row["a"], row["b"]),
+            None,
+            [
+                pd.Series({"x": wrap_arrow_dtype(pa.int64())}),
+                pd.Series({"y": wrap_arrow_dtype(pa.int64())}),
+            ],
+            2,
+            lambda r: (
+                isinstance(r, tuple)
+                and len(r) == 2
+                and list(r[0].columns) == ["x"]
+                and r[0]["x"].tolist() == [1, 2, 3]
+                and list(r[1].columns) == ["y"]
+                and r[1]["y"].tolist() == [10, 20, 30]
+            ),
+            id="multi_output",
+        ),
+        pytest.param(
+            lambda row: row["a"] + row["b"],
+            None,
+            None,
+            None,
+            lambda r: (list(r.columns) == ["0"] and r["0"].tolist() == [11, 22, 33]),
+            id="skip_infer",
+        ),
+        pytest.param(
+            lambda row: {"x": row["a"], "y": row["b"]},
+            "expand",
+            [
+                pd.Series(
+                    {
+                        "x": wrap_arrow_dtype(pa.int64()),
+                        "y": wrap_arrow_dtype(pa.int64()),
+                    }
+                )
+            ],
+            None,
+            lambda r: (
+                list(r.columns) == ["x", "y"]
+                and r["x"].tolist() == [1, 2, 3]
+                and r["y"].tolist() == [10, 20, 30]
+            ),
+            id="expand",
+        ),
+    ],
+)
+def test_functional_run_apply_axis1(func, result_type, output_dtypes, n_output, check):
+    """_run_functional apply(axis=1) normalizes results to declared schema.
+
+    Covers the operator-based paths that stay on LiteFrameFunctional instead
+    of lowering to LiteFrameProjection: single-output scalar alignment (raw
+    pandas produces integer label 0), multi-output tuple splitting,
+    skip_infer (untyped), and result_type='expand'.
+    """
+    df = pd.DataFrame({"a": [1, 2, 3], "b": [10, 20, 30]})
+    result = LiteFrameFunctionalAdapter._run_functional(
+        df,
+        func,
+        "apply",
+        1,
+        (),
+        None,
+        result_type=result_type,
+        output_dtypes=output_dtypes,
+        input_frame_type="pandas",
+        n_output=n_output,
+        check_output_dtypes="raises",
+    )
+    assert check(result)
+
+
+def test_functional_apply_axis1_multi_output_tuple_length_mismatch_raises():
+    """Multi-output split validates every row's tuple length, not just row 0.
+
+    Regression (review 29664718 #4): over-long tuples silently truncated
+    (silent data loss); short tuples raised bare IndexError.  Now mirrors
+    DPE _split_row_results with a descriptive ValueError.
+    """
+    df = pd.DataFrame({"a": [1, 2], "b": [10, 20]})
+    # 2 declared outputs but row 2 returns a 3-tuple
+    with pytest.raises(ValueError, match="3 elements"):
+        LiteFrameFunctionalAdapter._run_functional(
+            df,
+            lambda row: (row["a"], row["b"], row["a"] + row["b"]),
+            "apply",
+            1,
+            (),
+            None,
+            output_dtypes=_multi_output_dtypes(),
+            input_frame_type="pandas",
+            n_output=2,
+            check_output_dtypes="raises",
+        )
+    # 2 declared outputs but row 2 returns a 1-tuple
+    with pytest.raises(ValueError, match="1 elements"):
+        LiteFrameFunctionalAdapter._run_functional(
+            df,
+            lambda row: (row["a"],) if row.name == 1 else (row["a"], row["b"]),
+            "apply",
+            1,
+            (),
+            None,
+            output_dtypes=_multi_output_dtypes(),
+            input_frame_type="pandas",
+            n_output=2,
+            check_output_dtypes="raises",
+        )
+
+
+def test_functional_apply_axis1_multi_output_codegen(make_liteframe):
+    """generate_code emits tuple-unpacking for multi-output apply(axis=1)."""
+    df = pd.DataFrame({"a": [1, 2, 3], "b": [10, 20, 30]})
+    data = make_liteframe(df)
+    results = data.apply(
+        lambda row: (row["a"], row["b"]),
+        axis=1,
+        dtypes=[{"x": int}, {"y": int}],
+    )
+    assert len(results) == 2
+    ops = [r.op for r in results]
+    assert all(op.mode == "apply" and op.axis == 1 for op in ops)
+    adapter = LiteFrameFunctionalAdapter()
+    context = SPECodeContext()
+    for op in ops:
+        code = adapter.generate_code(op, context)
+        assert len(code) == 1
+        # Multi-output emits tuple-unpacking on the LHS (e.g.
+        # ``out1, out2 = LiteFrameFunctionalAdapter._run_functional(...)``).
+        # A single-output path would be ``out = ...`` with no comma.
+        lhs = code[0].split(" = ")[0]
+        assert "," in lhs, f"expected tuple-unpacking LHS, got: {code[0]}"
+        assert "LiteFrameFunctionalAdapter._run_functional" in code[0]
+
+
+# ---------------------------------------------------------------------------
 # flat_apply — row-expanding UDF (added with the flat_apply operator)
 # ---------------------------------------------------------------------------
 

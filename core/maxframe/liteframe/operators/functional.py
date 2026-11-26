@@ -14,9 +14,12 @@
 
 from maxframe import opcodes
 from maxframe.core import OutputType
+from maxframe.core.operator.base import WorkLoadType
 from maxframe.liteframe.operators.core import LiteFrameOperator, LiteFrameOperatorMixin
+from maxframe.serialization import PickleContainer
 from maxframe.serialization.serializables import (
     AnyField,
+    BoolField,
     DictField,
     FunctionField,
     Int32Field,
@@ -24,6 +27,7 @@ from maxframe.serialization.serializables import (
     TupleField,
 )
 from maxframe.udf import BuiltinFunction, copy_func_scheduling_hints
+from maxframe.utils import find_objects
 
 
 class LiteFrameFunctional(LiteFrameOperatorMixin, LiteFrameOperator):
@@ -63,6 +67,15 @@ class LiteFrameFunctional(LiteFrameOperatorMixin, LiteFrameOperator):
     # Multiple outputs support
     n_output = Int32Field("n_output", default=None)
 
+    # When True (default), row-preserving transform modes restore the input
+    # row order and chunking (axis=0 re-split, grouped place-back) so the
+    # output inherits the input's ``alignment_id``.  When False the output
+    # keeps the cheaper single-chunk / reducer-order layout with a fresh
+    # id.  Ignored for non-row-preserving modes (apply/apply_chunk/...
+    # axis=0) and for groupby apply/apply_chunk.  apply(axis=1) is always
+    # 1:1 chunk-preserving and always inherits regardless of this flag.
+    placeback = BoolField("placeback", default=True)
+
     @property
     def output_limit(self):
         return self.n_output or 1
@@ -71,6 +84,34 @@ class LiteFrameFunctional(LiteFrameOperatorMixin, LiteFrameOperator):
         super().__init__(**kw)
         if hasattr(self, "func"):
             copy_func_scheduling_hints(self.func, self)
+        # User UDFs run GILHeavy unless copy_func_scheduling_hints set GPU.
+        # _parse_kwargs guarantees a private (fresh or copied) hint here.
+        if self.scheduling_hint.work_load_type is None and not self.scheduling_hint.gpu:
+            self.scheduling_hint.work_load_type = WorkLoadType.GILHeavy
 
     def has_custom_code(self) -> bool:
-        return not isinstance(self.func, BuiltinFunction)
+        if not isinstance(self.func, BuiltinFunction):
+            return True
+        # A user callable may still ride in ``args``/``kwargs`` behind a
+        # builtin wrapper (e.g. the ``groupby.filter`` predicate).  Plain
+        # fields carry it as a ``PickleContainer``, so it has to be detected
+        # here: the op must stay on the custom-code path, otherwise the
+        # worker neither unpacks the container nor isolates the user code.
+        for value in (self.args, self.kwargs):
+            for found in find_objects(value, types=PickleContainer, checker=callable):
+                if not isinstance(found, BuiltinFunction):
+                    return True
+        return False
+
+    def _inherit_alignment_id(self, inputs):
+        if not self.placeback:
+            return None
+        # Transform modes preserve the row count; apply(axis=1) is a 1:1
+        # per-row mapping over 1:1 chunks, so it is always row-aligned with
+        # the input and inherits regardless of the placeback flag (the flag
+        # is not exposed on the apply API).
+        if self.mode in ("transform", "transform_chunk"):
+            return self._inherit_single_input_alignment_id(inputs)
+        if self.mode == "apply" and (self.axis or 0) == 1:
+            return self._inherit_single_input_alignment_id(inputs)
+        return None

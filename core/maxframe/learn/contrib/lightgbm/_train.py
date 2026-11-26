@@ -54,7 +54,8 @@ class LGBMTrain(ObjectOperator, ObjectOperatorMixin):
     feval = FunctionField("feval", default=None)
     init_model = KeyField("init_model", default=None)
     feature_name = AnyField("feature_name", default=None)
-    categorical_feature = AnyField("categorical_feature", default=None)
+    # lightgbm.train()'s default: "auto" infers, None declares none
+    categorical_feature = AnyField("categorical_feature", default="auto")
     keep_training_booster = BoolField("keep_training_booster", default=False)
     callbacks = ListField(
         "callbacks",

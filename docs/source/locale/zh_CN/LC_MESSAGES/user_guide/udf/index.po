@@ -1,0 +1,264 @@
+# Simplified Chinese translations for the MaxFrame UDF documentation.
+# Copyright (C) 1999-2026, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.0.dev1070+br.g84cb09771.d20260522\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-30 12:10+0800\n"
+"PO-Revision-Date: 2026-10-23 12:00+0800\n"
+"Last-Translator: MaxFrame contributors\n"
+"Language: zh_CN\n"
+"Language-Team: Chinese (Simplified)\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:4
+msgid "UDF User Guide"
+msgstr "UDF 用户指南"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:6
+msgid ""
+"A user-defined function (UDF) is a Python function for cleaning data, "
+"applying business rules, or calling a model in a MaxFrame job. Functions "
+"such as ``map``, ``apply``, or ``apply_chunk`` apply the UDF to the data."
+msgstr ""
+"UDF（用户自定义函数）是用于处理数据的 Python 函数，可以用来清洗数据、处理业务规则或调用模型。写好后，通过 "
+"``map``、``apply``、``apply_chunk`` 等函数，就可以在 MaxFrame 作业中使用它。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:10
+msgid ""
+"Use built-in expressions, string methods, or aggregations for calculations "
+"they already support. Use a UDF for custom logic or calls to a third-party "
+"library."
+msgstr "内置表达式、字符串方法或聚合函数能够完成的计算，优先直接使用。需要自定义处理逻辑或调用第三方库时，再使用 UDF。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:14
+msgid ""
+"Start with :ref:`udf_quick_start`, then see :ref:`udf_select_function` and "
+":ref:`udf_examples` for other use cases."
+msgstr ""
+"可以先运行 :ref:`udf_quick_start`，再参考 :ref:`udf_select_function` 和 "
+":ref:`udf_examples` 了解其他用法。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:17
+msgid ""
+"To run a job against a MaxCompute table, follow :ref:`udf_complete_example`."
+" See :ref:`udf_configuration_guide` for resources and dependencies."
+msgstr ""
+"在 MaxCompute 表上运行的完整流程见 :ref:`udf_complete_example`，资源和依赖包的设置见 "
+":ref:`udf_configuration_guide`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:20
+msgid "For slow jobs or memory pressure, see :doc:`udf_tuning`."
+msgstr "作业较慢或内存不足时，参见 :doc:`udf_tuning`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:22
+msgid ""
+"To inspect remote logs or step through a function locally, see "
+":doc:`debugging`. For errors and incorrect results, see :doc:`faqs`."
+msgstr "查看远程日志或在本地逐步调试函数，参见 :doc:`debugging`。遇到报错或结果不对，参见 :doc:`faqs`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:28
+msgid "Quick start"
+msgstr "快速开始"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:30
+msgid ""
+"The following example converts two response-time values to numbers. The "
+"function parses the ``ms`` suffix and returns a missing value for "
+"``timeout``. Set the MaxCompute credentials, project, and endpoint in the "
+"environment variables used below before running the example."
+msgstr ""
+"下面的例子将两条响应耗时转换为数值：函数去掉 ``ms`` 后缀，将 ``timeout`` 转为缺失值。运行前，先设置代码中使用的 "
+"MaxCompute 凭证、项目和 Endpoint 环境变量。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:69
+msgid "Core concepts"
+msgstr "基本概念"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:71
+msgid ""
+"A *chunk* is one partition of a MaxFrame object. A *batch* is the rows "
+"passed to one UDF call; one chunk can be processed in several batches. An "
+"execution *task* processes data assigned by the engine and can handle one or"
+" more chunks. MaxFrame supports three execution engines: ``DPE`` "
+"(distributed Python workers), ``MCSQL`` (MaxCompute SQL execution), and "
+"``SPE`` (single-process Python execution)."
+msgstr ""
+"*chunk* 是 MaxFrame 对象的一个数据分片。*batch* 是一次 UDF 调用收到的数据，一个 chunk 可以分多批处理。执行 "
+"*task* 处理引擎分配的数据，可以包含一个或多个 chunk。MaxFrame 支持三种执行引擎：``DPE`` （分布式 Python "
+"执行）、``MCSQL`` （MaxCompute SQL 执行）和 ``SPE`` （单进程 Python 执行）。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:78
+msgid "DPE data flow from a table through chunks and tasks to UDF batches"
+msgstr "DPE 中数据从表经过分块、任务到 UDF 批次的处理过程"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:78
+msgid ".. image:: ../../_static/user_guide/udf/task-batch-model.svg"
+msgstr ""
+".. image:: ../../_static/user_guide/udf/task-batch-model.svg\n"
+"   :alt: DPE 中数据从表经过分块、任务到 UDF 批次的处理过程"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:82
+msgid ""
+"The diagram describes DPE. A chunk boundary is not part of the UDF's "
+"contract; batch sizes can change between executions. See :ref:`udf_tuning` "
+"for the settings and their engine-specific behavior."
+msgstr ""
+"图中描述的是 DPE。UDF 不应依赖固定的分块边界，同一作业每次执行时，批次大小也可能变化。相关配置和不同引擎的行为见 "
+":ref:`udf_tuning`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:89
+msgid "Choose a function"
+msgstr "选择合适的函数"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:91
+msgid "The main difference is what one function call receives and returns:"
+msgstr "选择函数时，主要看每次调用向 UDF 传入哪些数据，以及 UDF 返回什么结果。常见的用法如下："
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:97
+msgid "Input handled per call"
+msgstr "每次调用处理的输入"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:98
+msgid "Function"
+msgstr "使用函数"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:99
+msgid "Typical use"
+msgstr "适用场景"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:100
+msgid "Process one value"
+msgstr "逐个处理值"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:101
+msgid "``Series.map`` / ``Series.apply`` / ``DataFrame.map``"
+msgstr "``Series.map`` / ``Series.apply`` / ``DataFrame.map``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:102
+msgid "Clean text or convert field values."
+msgstr "清洗文本、转换字段值，或按规则对值进行分类。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:103
+msgid "Process one row or column"
+msgstr "按行或按列处理"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:104
+msgid "``DataFrame.apply``"
+msgstr "``DataFrame.apply``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:105
+msgid "Combine fields in a record, or calculate over a column."
+msgstr "结合一行的多个字段计算，或对一列做自定义处理。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:106
+msgid "Process a batch"
+msgstr "批量处理"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:107
+msgid "``DataFrame.mf.apply_chunk`` / ``Series.mf.apply_chunk``"
+msgstr "``DataFrame.mf.apply_chunk`` / ``Series.mf.apply_chunk``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:108
+msgid "Batch inference, vectorized processing, or batch requests."
+msgstr "批量推理、使用向量化计算，或批量请求外部服务。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:109
+msgid "Expand one record into several"
+msgstr "一条记录展开成多条"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:110
+msgid "``DataFrame.mf.flatmap`` / ``Series.mf.flatmap``"
+msgstr "``DataFrame.mf.flatmap`` / ``Series.mf.flatmap``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:111
+msgid "Split a document into paragraphs or a record into detail rows."
+msgstr "把文章拆成段落，或把一条记录展开成多条明细。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:112
+msgid "Process a complete group"
+msgstr "处理一个完整分组"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:113
+msgid "``GroupBy.apply``"
+msgstr "``GroupBy.apply``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:114
+msgid "Use all records for one customer or fit a model per group."
+msgstr "处理同一客户的全部记录，或按组拟合模型。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:115
+msgid "Process batches within a group"
+msgstr "在组内分批处理"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:116
+msgid "``DataFrameGroupBy.mf.apply_chunk``"
+msgstr "``DataFrameGroupBy.mf.apply_chunk``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:117
+msgid "Apply a customer-specific rule or model to batches in that group."
+msgstr "为不同客户使用不同规则或模型，再分批处理数据。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:118
+msgid "Transform, then aggregate by key"
+msgstr "转换后按键汇总"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:119
+msgid "``DataFrame.mf.map_reduce``"
+msgstr "``DataFrame.mf.map_reduce``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:120
+msgid "Define both the mapping and grouped reduction, such as word counting."
+msgstr "先转换数据，再按同一个键汇总，例如拆分文本后统计词频。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:121
+msgid "Process array chunks"
+msgstr "按块处理多维数组"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:122
+msgid "``Tensor.mf.apply_chunk``"
+msgstr "``Tensor.mf.apply_chunk``"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:123
+msgid "Apply NumPy or other numerical functions to array chunks."
+msgstr "用 NumPy 等工具处理数组中的各个数据块。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:125
+msgid ""
+"Use ``GroupBy.apply`` when the calculation needs the complete group. Use "
+"grouped ``apply_chunk`` when batches can be processed separately: a group "
+"can be passed to the function in several calls."
+msgstr ""
+"计算需要完整分组时，使用 ``GroupBy.apply``。同一分组内的数据可以分批独立处理时，使用分组后的 "
+"``apply_chunk``；一个分组可以分多次传入函数。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:129
+msgid "See :ref:`udf_examples` for a short example of each interface."
+msgstr "各接口的简单示例见 :ref:`udf_examples`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:134
+msgid "Configure the UDF environment"
+msgstr "配置 UDF 运行环境"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:136
+msgid ""
+"Use a decorator for one UDF and ``options`` for shared defaults. See "
+":doc:`udf_configuration` for engine support, common combinations, and "
+"precedence. The :doc:`UDF API reference <../../reference/udf>` lists "
+"complete signatures and parameters. See :doc:`elastic_memory` for DPE CPU "
+"UDF retries after OOM. Before running a UDF, declare its output columns, "
+"dtypes, and index as described in :ref:`udf_result_types`."
+msgstr ""
+"单个 UDF 使用装饰器配置，多个 UDF 共用的默认值通过 ``options`` 设置。引擎支持范围、常用组合和覆盖关系见 "
+":doc:`udf_configuration`。完整签名和参数见 :doc:`UDF API 参考 "
+"<../../reference/udf>`。DPE CPU UDF 在 OOM 后扩容重试的用法见 "
+":doc:`elastic_memory`。运行前还需要声明输出列、数据类型和索引，具体见 :ref:`udf_result_types`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/index.rst:144
+msgid "Next steps"
+msgstr "后续主题"

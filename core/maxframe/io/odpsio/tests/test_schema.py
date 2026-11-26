@@ -14,6 +14,7 @@
 
 import os
 from decimal import Decimal
+from types import SimpleNamespace
 
 import numpy as np
 import pandas as pd
@@ -768,19 +769,29 @@ def test_vector_types_conversion(element_type, dimension):
 
 
 @pytest.mark.parametrize(
-    "index,expected_names",
+    "index,physical_dtypes,range_columns,expected_names",
     [
         # int-string logical columns are ODPS-illegal -> sanitized _column_N
-        (["0", "1", "2"], ["_column_0", "_column_1", "_column_2"]),
+        (["0", "1", "2"], None, None, ["_column_0", "_column_1", "_column_2"]),
         # unchanged names -> None (no mapping carried)
-        (["a", "b"], None),
+        (["a", "b"], None, None, None),
         # uppercase legal name is lowercased by the sanitizer -> mapping
-        (["A", "b"], ["a", "b"]),
+        (["A", "b"], None, None, ["a", "b"]),
         # case-colliding logical names dedup with _N suffixes (mirror DataFrame path)
-        (["A", "a"], ["a_0", "a_1"]),
+        (["A", "a"], None, None, ["a_0", "a_1"]),
+        # object carries an explicit _physical_dtypes so the range-splice arm
+        # runs: the range column is dropped before sanitizing, then spliced back
+        (
+            ["__mf_range_index__", "0", "b"],
+            pd.Series([wrap_arrow_dtype(pa.int64())] * 2, index=["0", "b"]),
+            ["__mf_range_index__"],
+            ["__mf_range_index__", "_column_0", "b"],
+        ),
     ],
 )
-def test_liteframe_table_meta_table_column_names(index, expected_names):
+def test_liteframe_table_meta_table_column_names(
+    index, physical_dtypes, range_columns, expected_names
+):
     """LiteFrameTableMeta carries sanitized physical names only when changed.
 
     Int-string logical columns ("0") are ODPS-illegal and are stored under
@@ -790,7 +801,16 @@ def test_liteframe_table_meta_table_column_names(index, expected_names):
     preserves the mapping.
     """
     dtypes = pd.Series([wrap_arrow_dtype(pa.int64())] * len(index), index=index)
-    meta = build_liteframe_table_meta(_FakeLFDtypes(dtypes))
+    obj = _FakeLFDtypes(
+        dtypes,
+        physical_dtypes=physical_dtypes,
+        frame_metadata=(
+            SimpleNamespace(range_columns=range_columns)
+            if range_columns is not None
+            else None
+        ),
+    )
+    meta = build_liteframe_table_meta(obj)
     assert meta.table_column_names == expected_names
     # json round-trip preserves the mapping
     restored = type(meta).from_json(meta.to_json())
@@ -798,14 +818,19 @@ def test_liteframe_table_meta_table_column_names(index, expected_names):
     assert restored.table_column_names == meta.table_column_names
     assert list(restored.dtypes.index) == index
 
-    # helper agrees with the meta mapping, and None stays None
-    assert build_table_column_names(dtypes) == expected_names
+    # helper agrees with the meta mapping when there is no range splice;
+    # on the splice arm the meta numbers the placeholders by data-column
+    # position, so this whole-schema call is deliberately not asserted
+    if physical_dtypes is None:
+        assert build_table_column_names(dtypes) == expected_names
     assert build_table_column_names(None) is None
 
 
 class _FakeLFDtypes:
-    def __init__(self, dtypes):
+    def __init__(self, dtypes, physical_dtypes=None, frame_metadata=None):
         self.dtypes = dtypes
+        self._physical_dtypes = physical_dtypes
+        self.frame_metadata = frame_metadata
 
 
 @pytest.mark.parametrize("set_dtype_backend", ["numpy"], indirect=True)

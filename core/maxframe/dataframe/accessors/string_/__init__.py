@@ -22,17 +22,15 @@ del string_method_to_handlers
 
 
 def _install():
-    from maxframe.core import CachedAccessor
     from maxframe.dataframe.accessors.string_.accessor import StringAccessor
     from maxframe.dataframe.accessors.string_.core import string_method_to_handlers
-    from maxframe.dataframe.core import SERIES_TYPE
+    from maxframe.dataframe.core import register_series_accessor
 
     for method in string_method_to_handlers:
         if not hasattr(StringAccessor, method):
             StringAccessor._register(method)
 
-    for series in SERIES_TYPE:
-        series.str = CachedAccessor("str", StringAccessor)
+    register_series_accessor("str")(StringAccessor)
 
 
 _install()

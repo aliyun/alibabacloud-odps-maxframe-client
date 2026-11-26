@@ -190,97 +190,154 @@ def read_odps_table(
     **kw,
 ):
     """
-    Read data from a MaxCompute (ODPS) table into DataFrame.
+    Read a MaxCompute (ODPS) table into a DataFrame.
 
-    Supports specifying some columns as indexes. If not specified, RangeIndex
-    will be generated.
+    Use ``index_col`` to select index columns. Otherwise the engine generates
+    an index using the configured default strategy.
 
     Parameters
     ----------
-    table_name: Union[str, Table]
-        Name of the table to read from.
-    partitions: Union[None, str, List[str]]
-        Table partition or list of partitions to read from.
-    columns: Optional[List[str]]
-        Table columns to read from. You may also specify partition columns here.
-        If not specified, all table columns (or include partition columns if
-        `append_partitions` is True) will be included.
-    index_col: Union[None, str, List[str]]
-        Columns to be specified as indexes.
-    append_partitions: bool
-        If True, will add all partition columns as selected columns when
-        `columns` is not specified,
-    dtype_backend: {'numpy', 'pyarrow'}, default 'numpy'
-        Back-end data type applied to the resultant DataFrame (still experimental).
-    filters : Union[str, List[List[Tuple]]], default None
-        Filter expression to apply when reading data.
+    table_name : str or odps.models.Table
+        Name or object of the table to read.
+    partitions : str or list of str, optional
+        Partition specification or list of specifications to read. If omitted,
+        read all partitions.
+    columns : list of str, optional
+        Columns to read, including partition columns when needed. If omitted,
+        read all data columns except those selected as indexes.
+    index_col : str or list of str, optional
+        Columns to use as the index. These cannot also appear in ``columns``.
+    odps_entry : odps.ODPS, optional
+        Connection used to resolve and read the table. If omitted, use the
+        global ODPS connection, then the connection from environment variables.
+    string_as_binary : bool, optional
+        Whether to read string values as binary. If None, use the reader's
+        default string handling.
+    append_partitions : bool, default False
+        Include partition columns when ``columns`` is omitted. Selecting a
+        partition column explicitly also enables partition-column reading.
+    dtype_backend : {'numpy', 'pyarrow'}, optional
+        Result dtype backend. Defaults to ``options.dataframe.dtype_backend``
+        when None. This option is experimental.
+    default_index_type : {'range', 'incremental', 'chunk_range'}, optional
+        Index strategy when ``index_col`` is omitted. Defaults to
+        ``options.dataframe.default_index_type`` (``'range'`` by default).
+        With DPE, ``'range'`` produces consecutive integers starting at zero;
+        ``'incremental'`` produces increasing integers with gaps between chunks;
+        ``'chunk_range'`` restarts at zero in each chunk and can produce duplicate
+        index values. These chunk-based strategies do not control MCSQL index
+        generation.
+    filters : str or list of list of tuple, optional
+        Filter passed to the reader. A string is a SQL WHERE expression.
+        In the nested-list form, conditions in each inner list are ANDed;
+        the outer lists are ORed. For example,
+        ``[[('col1', '==', 'value'), ('col2', '>', 10)]]``.
+        Supported operators are ``==``, ``!=``, ``<``, ``>``, ``<=``, ``>=``,
+        ``in``, and ``not in``. Complete filtering is not guaranteed.
+    **kw
+        Additional read options. Common options are listed below.
 
-        - **String format**: SQL WHERE clause passed directly to StorageAPI.
-
-        - **List format**: Nested list of tuples.
-
-          Format: Inner lists are ANDed, outer lists are ORed.
-          Example: ``[[('col1', '==', 'value'), ('col2', '>', 10)]]``
-
-        Supported operators: ``==``, ``!=``, ``<``, ``>``, ``<=``, ``>=``, ``in``, ``not in``.
-
-        .. note::
-            Complete filtering is not guaranteed for this argument given
-            implementation.
+    Other Parameters
+    ----------------
+    chunk_bytes : int, optional
+        Target source bytes per input split, passed through ``**kw``. DPE uses
+        it for non-transactional tables when ``nrows`` is omitted; the default
+        is 64 MiB. MCSQL converts an explicit value to MiB with
+        ``max(1, chunk_bytes // 1024**2)`` and sets the SQL ``split_size`` hint.
+        SPE ignores this setting.
+    chunk_size : int, optional
+        Target rows per DPE input chunk for transactional tables or reads with
+        ``nrows``. Passed through ``**kw``. Defaults to ``options.chunk_size``
+        when configured, otherwise 1024 rows. MCSQL and SPE ignore this setting.
+    nrows : int, optional
+        Maximum rows to read, passed through ``**kw``. If omitted, no row limit
+        is requested.
 
     Returns
     -------
-    result: DataFrame
-        DataFrame read from MaxCompute (ODPS) table
+    DataFrame
+        Lazy DataFrame representing the selected table data.
+
+    Raises
+    ------
+    ValueError
+        If no ODPS connection is available or a requested column is missing.
+        Also raised for partition options on a non-partitioned table,
+        overlapping index and data columns, or an invalid index strategy or
+        dtype backend.
+    TypeError
+        If PyODPS cannot construct a connection from incomplete environment
+        credentials. Pass an initialized ODPS object with ``odps_entry`` to
+        avoid environment-based connection discovery.
+    odps.errors.NoSuchObject
+        If the table cannot be found or resolved through the configured catalog.
+
+    See Also
+    --------
+    DataFrame.to_odps_table : Write a DataFrame to a MaxCompute table.
+
+    Notes
+    -----
+    For input partition sizes, see :ref:`udf_source_chunk_settings`.
+    For task memory and CPU sizing, see :ref:`udf_tuning_resources`.
 
     Examples
     --------
+    These examples require a MaxCompute connection and existing tables with
+    the columns and partitions shown. Set the connection environment variables
+    before running them. Reading creates a lazy expression; execution is separate.
 
-    Before using `read_odps_table`, you need to create an ODPS entry
-    whose parameters will be stored globally in current process.
-
+    >>> import os
     >>> import maxframe.dataframe as md
+    >>> from maxframe.session import new_session
     >>> from odps import ODPS
-    >>>
-    >>> o = ODPS(...)  # Fill account information here
+    >>> o = ODPS(  # doctest: +SKIP
+    ...     os.environ["ALIBABA_CLOUD_ACCESS_KEY_ID"],
+    ...     os.environ["ALIBABA_CLOUD_ACCESS_KEY_SECRET"],
+    ...     project=os.environ["ODPS_PROJECT"],
+    ...     endpoint=os.environ["ODPS_ENDPOINT"],
+    ... )
 
-    Simply read a table by name.
+    Read a table with a target source split size of 32 MiB.
 
-    >>> df = md.read_odps_table("simple_table")
+    >>> df = md.read_odps_table(  # doctest: +SKIP
+    ...     "simple_table", odps_entry=o, chunk_bytes=32 * 1024 * 1024
+    ... )
+    >>> session = new_session(o)  # doctest: +SKIP
+    >>> try:  # doctest: +SKIP
+    ...     result = df.execute(session=session).fetch()
+    ... finally:
+    ...     session.destroy()
 
-    Read table by partition (or partitions).
+    Limit the read to 10,000 rows and request 1,000-row DPE input chunks.
 
-    >>> # Read partitioned table
-    >>> df = md.read_odps_table("partitioned_table", partitions="pt=20230101")
-    >>> # Read with multiple partitions
-    >>> df = md.read_odps_table("partitioned_table", partitions=["pt=20230101", "pt=20230102"])
+    >>> sample = md.read_odps_table(  # doctest: +SKIP
+    ...     "simple_table", odps_entry=o, nrows=10_000, chunk_size=1000
+    ... )
 
-    Read with column selection.
+    Select partitions, data columns, and an index column.
 
-    >>> df = md.read_odps_table("table_name", columns=["col1", "col2", "col3"])
+    >>> df = md.read_odps_table(  # doctest: +SKIP
+    ...     "partitioned_table", odps_entry=o,
+    ...     partitions=["pt=20230101", "pt=20230102"],
+    ...     columns=["name", "age"], index_col="id",
+    ... )
 
-    Read with columns as index.
+    Pass a SQL filter expression, or the equivalent nested-list form.
+    Complete filtering is not guaranteed.
 
-    >>> # Read with index columns
-    >>> df = md.read_odps_table("table_name", index_col="id")
-    >>> # Read with multiple index columns
-    >>> df = md.read_odps_table("table_name", index_col=["id", "timestamp"])
-
-    Read with filter condition. Note that complete filtering is not guaranteed.
-
-    >>> # Read table with string filter
-    >>> df = md.read_odps_table("source_table", filters="age > 18")
-    >>> # Read with list filter
-    >>> df = md.read_odps_table(
-    ...     "table_name",
-    ...     filters=[[('age', '>', 18), ('city', '==', 'Beijing')]]
+    >>> df = md.read_odps_table(  # doctest: +SKIP
+    ...     "source_table", odps_entry=o, filters="age > 18"
+    ... )
+    >>> df = md.read_odps_table(  # doctest: +SKIP
+    ...     "source_table", odps_entry=o, filters=[[("age", ">", 18)]]
     ... )
     """
     default_index_type = validate_default_index_type(default_index_type, **kw)
     odps_entry = odps_entry or ODPS.from_global() or ODPS.from_environments()
-    schema = options.session.default_schema or odps_entry.schema
     if odps_entry is None:
         raise ValueError("Missing odps_entry parameter")
+    schema = options.session.default_schema or odps_entry.schema
     if isinstance(table_name, Table):
         table = table_name
     else:

@@ -34,14 +34,19 @@ from maxframe.dataframe.datasource.from_tensor import (
 from maxframe.dataframe.datasource.index import from_pandas as from_pandas_index
 from maxframe.dataframe.datasource.index import from_tileable as from_tileable_index
 from maxframe.dataframe.datasource.series import from_pandas as from_pandas_series
-from maxframe.dataframe.utils import is_cudf, is_index, validate_dtype_backend
+from maxframe.dataframe.utils import (
+    check_num_partitions,
+    is_cudf,
+    is_index,
+    validate_dtype_backend,
+)
 from maxframe.lib.dtypes_extension import ArrowDtype
 from maxframe.serialization.serializables import SerializableMeta
 from maxframe.tensor import stack
 from maxframe.tensor import tensor as astensor
 from maxframe.tensor.array_utils import is_cupy
 from maxframe.tensor.core import TENSOR_TYPE
-from maxframe.utils import ceildiv, is_arrow_dtype_supported, lazy_import
+from maxframe.utils import even_chunk_sizes, is_arrow_dtype_supported, lazy_import
 
 cudf = lazy_import("cudf")
 _ARROW_SAMPLE_SIZE = 100
@@ -128,6 +133,7 @@ class DataFrame(_Frame, metaclass=InitializerMeta):
             dtype_backend or options.dataframe.dtype_backend
         )
 
+        check_num_partitions(num_partitions)
         need_repart = False
         if columns is not None and not is_list_like(columns):
             raise ValueError("columns must be a list-like object")
@@ -194,11 +200,16 @@ class DataFrame(_Frame, metaclass=InitializerMeta):
                 if dtype_backend == "pyarrow":
                     pdf = _convert_to_arrow_dtype(pdf)
             if num_partitions is not None:
-                chunk_size = ceildiv(len(pdf), num_partitions)
+                # Cut the rows to the requested count and keep the column axis a
+                # single chunk, so the layout does not depend on the row count.
+                chunk_size = {
+                    0: even_chunk_sizes(len(pdf), num_partitions),
+                    1: (len(pdf.columns),),
+                }
             df = from_pandas_df(pdf, chunk_size=chunk_size, gpu=gpu, sparse=sparse)
 
         if need_repart:
-            df = df.rebalance(num_partitions=num_partitions)
+            df = df.mf.rebalance(num_partitions=num_partitions)
         super().__init__(df.data)
 
     @classmethod
@@ -233,6 +244,7 @@ class Series(_Series, metaclass=InitializerMeta):
 
         if dtype is not None:
             dtype = pandas_dtype(dtype)
+        check_num_partitions(num_partitions)
         need_repart = False
         if isinstance(data, (TENSOR_TYPE, INDEX_TYPE)):
             if chunk_size is not None:
@@ -269,13 +281,13 @@ class Series(_Series, metaclass=InitializerMeta):
                 if dtype_backend == "pyarrow":
                     pd_series = _convert_to_arrow_dtype(pd_series)
             if num_partitions is not None:
-                chunk_size = ceildiv(len(pd_series), num_partitions)
+                chunk_size = {0: even_chunk_sizes(len(pd_series), num_partitions)}
             series = from_pandas_series(
                 pd_series, chunk_size=chunk_size, gpu=gpu, sparse=sparse
             )
 
         if need_repart:
-            series = series.rebalance(num_partitions=num_partitions)
+            series = series.mf.rebalance(num_partitions=num_partitions)
         super().__init__(series.data)
 
 
@@ -303,6 +315,7 @@ class Index(_Index, metaclass=InitializerMeta):
             dtype_backend or options.dataframe.dtype_backend
         )
 
+        check_num_partitions(num_partitions)
         need_repart = False
         if isinstance(data, INDEX_TYPE):
             if not hasattr(data, "data"):
@@ -342,7 +355,7 @@ class Index(_Index, metaclass=InitializerMeta):
                         pd_index = _convert_to_arrow_dtype(pd_index)
 
                 if num_partitions is not None:
-                    chunk_size = ceildiv(len(pd_index), num_partitions)
+                    chunk_size = {0: even_chunk_sizes(len(pd_index), num_partitions)}
                 index = from_pandas_index(
                     pd_index,
                     chunk_size=chunk_size,
@@ -352,7 +365,7 @@ class Index(_Index, metaclass=InitializerMeta):
                 )
 
         if need_repart:
-            index = index.rebalance(num_partitions=num_partitions)
+            index = index.mf.rebalance(num_partitions=num_partitions)
         super().__init__(index.data)
 
 

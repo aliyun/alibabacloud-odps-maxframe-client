@@ -35,6 +35,6 @@ from maxframe.serialization.core import (
     serialize,
     serialize_with_spawn,
 )
-from maxframe.serialization.exception import RemoteException
+from maxframe.serialization.exception import RemoteException, try_pickle_buffers
 
 del arrow, blob, exception, maxframe_objects, numpy, pandas, polars, scipy

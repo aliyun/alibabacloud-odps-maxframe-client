@@ -495,6 +495,11 @@ default_options.register_option(
 default_options.register_option(
     "session.client_version", None, validator=is_null | is_string, remote=True
 )
+# Version of the FrameDriver that serialized the DPE-bound operators.
+# Not remote: clients must not control the layout decision.
+default_options.register_option(
+    "session.framedriver_version", None, validator=is_null | is_string
+)
 # image_name: The registered image name in MaxCompute for isolation container execution
 default_options.register_option(
     "session.image_name", None, validator=is_null | is_string, remote=True

@@ -35,9 +35,33 @@ from maxframe.liteframe.expressions import (
 )
 from maxframe.liteframe.functional.type_infer import infer_output_dtypes
 from maxframe.liteframe.functional.utils import _build_scheduling_hint_from_func
-from maxframe.liteframe.reduction.compile import CompileAggResult
-from maxframe.udf import BuiltinFunction
+from maxframe.liteframe.reduction.compile import (
+    _IDX_SUFFIX,
+    _ROW_POS_COLUMN,
+    _VALUE_SUFFIX,
+    CompileAggResult,
+)
+from maxframe.udf import BuiltinFunction, builtin_function
 from maxframe.utils import wrap_arrow_dtype
+from maxframe.utils.polars import polars_supports_zero_width_height
+
+
+# Find the winning index label in a FakeArrow-backed Series without
+# casting to float64 (which would lose int64 precision near 2**53).
+# Drop NA, convert to a numpy-backed Series (preserving the original
+# dtype), then use pandas ``idxmin``/``idxmax`` — avoids both float64
+# narrowing and pyarrow-compute version differences (``pc.min``/``max``
+# are absent on older pyarrow).
+def _fake_arrow_idx_label(s, is_min, skipna):
+    """Return the index label of the min/max value in FakeArrow Series *s*."""
+    if not skipna and s.isna().any():
+        return None
+    dropped = s.dropna()
+    if len(dropped) == 0:
+        return None
+    # to_numpy preserves int64/float64/string dtypes without precision loss
+    plain = pd.Series(dropped.to_numpy(), index=dropped.index)
+    return plain.idxmin() if is_min else plain.idxmax()
 
 
 class CustomAgg:
@@ -84,6 +108,186 @@ class _SingleFuncAgg(CustomAgg):
 
     def __maxframe_tokenize__(self):
         return cloudpickle.dumps(self._func)
+
+
+class _IdxMinMaxAgg(CustomAgg):
+    """Base class for ``idxmin`` / ``idxmax`` custom aggregation.
+
+    Uses tree reduction: each map/combine stage produces ``(value, index)``
+    pairs per column.  The index is the global row position (0-based).
+    Reduction picks the winning (min/max value, first-occurrence tie) per
+    column.  The ``post`` step extracts the index columns as the result.
+
+    Row positions are carried through a ``__mf_agg_row_pos__`` column,
+    not through ``df.attrs``.  The DPE executor stamps this column via
+    ``_add_row_pos`` (with per-chunk ``iloc_offset`` to make positions
+    globally contiguous) before calling ``agg``; the SPE adapter assigns
+    ``range(len(df))``.  At combine/agg stages the positions in
+    ``__mf_agg_row_pos__`` are already global, so no offset is needed.
+
+    The ``df.attrs.get("iloc_offset", 0)`` read in ``agg()`` is an
+    inference-only fallback: it is hit only by compile-time mock type
+    inference (where no row-pos column exists) and by unit tests that
+    hand-set ``df.attrs``.  Production paths always go through the
+    column-based mechanism.
+    """
+
+    _is_min: bool
+    _name: str
+    needs_row_pos = True
+
+    def __init__(self, skipna=True):
+        super().__init__(name=self._name)
+        self.skipna = skipna
+
+    def _idx_method(self, s):
+        """Return the index label of the winning value in *s*.
+
+        On legacy stacks (pyarrow < 10), FakeArrowExtensionArray does not
+        support ``argmin``/``argmax``.  Cast to float64 was the old
+        workaround, but it loses int64 precision near 2**53.  Instead,
+        operate on the underlying pyarrow array via ``pc.min``/``pc.max``
+        (which preserves the original type) and find the first matching
+        position — no pandas dtype conversion needed.
+        """
+        from maxframe.lib.dtypes_extension._fake_arrow_dtype import FakeArrowDtype
+
+        if isinstance(s.dtype, FakeArrowDtype):
+            return _fake_arrow_idx_label(s, self._is_min, self.skipna)
+        return (
+            s.idxmin(skipna=self.skipna)
+            if self._is_min
+            else s.idxmax(skipna=self.skipna)
+        )
+
+    def agg(self, df):
+        iloc_offset = df.attrs.get("iloc_offset", 0)
+        has_row_pos = _ROW_POS_COLUMN in df.columns
+        # Use Arrow dtypes for NA-safe intermediate columns so that the
+        # type-inference mock-data builder can handle them.  Use
+        # ``wrap_arrow_dtype`` instead of ``pd.ArrowDtype`` directly so the
+        # FakeArrowDtype fallback (pandas < 1.5 / pyarrow < 10) is used on
+        # legacy stacks where ``pd.ArrowDtype`` is unavailable.
+        _idx_dt = wrap_arrow_dtype(pa.int64())
+        result = {}
+
+        # An empty chunk (e.g. produced by a filter that removes all rows
+        # from one tile) must be a *neutral element*: it contributes no
+        # candidate to the combine stage.  Returning a (NA, NA) row here
+        # would be indistinguishable from a genuine null and would poison
+        # ``skipna=False`` results.  Return an empty DataFrame with the
+        # correct column structure instead.  ``__value`` must carry the
+        # source column's dtype (bool/datetime/etc.) to satisfy the
+        # compiled schema; ``__idx`` is always int64.
+        if len(df) == 0:
+            for col in df.columns:
+                if col.endswith(_IDX_SUFFIX) or col == _ROW_POS_COLUMN:
+                    continue
+                if col.endswith(_VALUE_SUFFIX):
+                    base = col[: -len(_VALUE_SUFFIX)]
+                    val_dt = df[col].dtype
+                else:
+                    base = col
+                    val_dt = df[col].dtype
+                result[f"{base}{_VALUE_SUFFIX}"] = pd.array([], dtype=val_dt)
+                result[f"{base}{_IDX_SUFFIX}"] = pd.array([], dtype=_idx_dt)
+            return pd.DataFrame(result)
+
+        for col in df.columns:
+            if col.endswith(_IDX_SUFFIX) or col == _ROW_POS_COLUMN:
+                continue
+
+            if col.endswith(_VALUE_SUFFIX):
+                base = col[: -len(_VALUE_SUFFIX)]
+                values = df[col]
+                positions = df[f"{base}{_IDX_SUFFIX}"]
+            else:
+                base = col
+                values = df[col]
+                positions = df[_ROW_POS_COLUMN] if has_row_pos else None
+
+            # Carry the source column's dtype through the ``__value``
+            # intermediate so comparisons happen in the original dtype,
+            # not a narrowed float64.  Hardcoding float64 crashes on
+            # string/datetime columns that pandas idxmin/idxmax handles
+            # natively.  At map stage ``values.dtype`` is the source dtype;
+            # at combine/agg stage the ``__value`` column already carries
+            # the source dtype from the previous stage.
+            _val_dt = values.dtype
+
+            # For the NA case, numpy-backed dtypes (float64, int64) cannot
+            # hold pd.NA directly; coerce to the nullable Arrow/extension
+            # equivalent so the all-NA row is representable.
+            try:
+                pd.array([pd.NA], dtype=_val_dt)
+            except (TypeError, ValueError):
+                _val_dt_na = wrap_arrow_dtype(pa.float64())
+            else:
+                _val_dt_na = _val_dt
+
+            try:
+                idx_label = self._idx_method(values)
+            except (ValueError, IndexError, TypeError):
+                idx_label = None
+
+            if idx_label is None or pd.isna(idx_label):
+                result[f"{base}{_VALUE_SUFFIX}"] = pd.array([pd.NA], dtype=_val_dt_na)
+                result[f"{base}{_IDX_SUFFIX}"] = pd.array([pd.NA], dtype=_idx_dt)
+            else:
+                # idxmin/idxmax returns the index *label*, not a positional
+                # index.  Convert to positional for .iloc access.
+                local_pos = values.index.get_loc(idx_label)
+                result[f"{base}{_VALUE_SUFFIX}"] = pd.array(
+                    [values.iloc[local_pos]], dtype=_val_dt
+                )
+                if positions is not None:
+                    result[f"{base}{_IDX_SUFFIX}"] = pd.array(
+                        [positions.iloc[local_pos]], dtype=_idx_dt
+                    )
+                else:
+                    result[f"{base}{_IDX_SUFFIX}"] = pd.array(
+                        [local_pos + iloc_offset], dtype=_idx_dt
+                    )
+
+        return pd.DataFrame(result)
+
+    def post(self, df):
+        # ``__idx`` columns are nullable (NA for all-NA input).  Use
+        # ``wrap_arrow_dtype`` which returns the real ArrowDtype on modern
+        # stacks and FakeArrowDtype on legacy stacks — either way it's the
+        # same type the ``agg`` method already used, so ``astype`` is a
+        # no-op identity conversion.  Avoid ``pd.Int64Dtype()`` here:
+        # FakeArrowExtensionArray.astype(Int64Dtype) fails on legacy
+        # stacks (numpy cannot interpret the extension dtype).
+        #
+        # ``post`` is bound as ``transform_chunk`` which must preserve the
+        # input row count, so an all-empty combine output (0 rows) stays
+        # 0 rows — matching pandas behavior for a truly empty input.
+        int64_dt = wrap_arrow_dtype(pa.int64())
+        result = {}
+        for col in df.columns:
+            if col.endswith(_IDX_SUFFIX):
+                base = col[: -len(_IDX_SUFFIX)]
+                result[base] = df[col].astype(int64_dt)
+        return pd.DataFrame(result)
+
+
+@builtin_function
+class IdxMinAgg(_IdxMinMaxAgg):
+    """Custom aggregation for ``idxmin``: returns the row index of the
+    minimum value per column (first occurrence on ties)."""
+
+    _is_min = True
+    _name = "idxmin"
+
+
+@builtin_function
+class IdxMaxAgg(_IdxMinMaxAgg):
+    """Custom aggregation for ``idxmax``: returns the row index of the
+    maximum value per column (first occurrence on ties)."""
+
+    _is_min = False
+    _name = "idxmax"
 
 
 def _resolve_custom_agg(raw_func):
@@ -196,8 +400,7 @@ def _build_udf_expr(
     ``LiteFrameUDFExpr.scheduling_hint`` for color-grouping and split-op
     resource allocation, so dropping it (the prior regression) lets a
     decorated ``pre``/``post`` run without its requested CPU/memory.
-    ``_build_scheduling_hint_from_func`` returns ``None`` when the function
-    carries no running options.
+    ``_build_scheduling_hint_from_func`` returns a GILHeavy hint by default.
 
     ``func`` is stored on the expression for *execution* (it must be the
     callable the executor invokes — a ``BuiltinMethod`` for the builtin-class
@@ -329,6 +532,60 @@ def _reject_group_key_collisions(group_key_cols, hook_dtypes):
             )
 
 
+def _reject_reserved_column_names(input_dtypes):
+    """Raise if any input column name collides with idxmin/idxmax reserved
+    names.
+
+    The ``__value``/``__idx`` suffixes and the ``__mf_agg_row_pos__`` column
+    are framework-owned intermediates in the tree reduction wire format.  A
+    user column ending in ``__idx`` is silently skipped in ``agg()``;
+    a user column ending in ``__value`` is misread as an intermediate and
+    blows up with a ``KeyError``; a user column literally named
+    ``__mf_agg_row_pos__`` is overwritten by ``_add_row_pos`` in the
+    executor.  Reject all three at compile time with a clear error message.
+    """
+    reserved_exact = {_ROW_POS_COLUMN}
+    reserved_suffixes = (_VALUE_SUFFIX, _IDX_SUFFIX)
+    collisions = []
+    for col in input_dtypes.index:
+        if col in reserved_exact:
+            collisions.append(col)
+        elif col.endswith(reserved_suffixes):
+            collisions.append(col)
+    if collisions:
+        raise ValueError(
+            f"Input column name(s) {collisions} collide with idxmin/idxmax "
+            "reserved intermediate names (__mf_agg_row_pos__, *​__value, "
+            "*​__idx). Rename the column(s) to avoid silent data loss or "
+            "KeyError at execution time."
+        )
+
+
+def _reject_reserved_group_key_names(group_key_cols):
+    """Raise if any group key name collides with idxmin/idxmax reserved names.
+
+    Group keys are excluded from ``input_dtypes`` by the selection contract,
+    so ``_reject_reserved_column_names`` does not cover them.  A group key
+    named ``__mf_agg_row_pos__`` would be silently overwritten by the
+    executor's ``_add_row_pos`` stamping; ``*__value`` / ``*__idx`` keys
+    collide with the intermediate wire format.  Reject all three.
+    """
+    reserved_exact = {_ROW_POS_COLUMN}
+    reserved_suffixes = (_VALUE_SUFFIX, _IDX_SUFFIX)
+    collisions = []
+    for col in group_key_cols:
+        if col in reserved_exact:
+            collisions.append(col)
+        elif col.endswith(reserved_suffixes):
+            collisions.append(col)
+    if collisions:
+        raise ValueError(
+            f"Group key name(s) {collisions} collide with idxmin/idxmax "
+            "reserved intermediate names (__mf_agg_row_pos__, *​__value, "
+            "*​__idx). Rename the group key(s) to avoid silent data loss."
+        )
+
+
 def compile_custom_agg(op, liteframe):
     """Compile a custom agg into pre-projection, agg descriptor, and post-projection.
 
@@ -354,18 +611,18 @@ def compile_custom_agg(op, liteframe):
             input_cols = [c for c in selection if c not in group_key_cols]
         else:
             input_cols = [c for c in full_dtypes.index if c not in group_key_cols]
-        # Polars can't represent a zero-column frame with nonzero height, so
-        # explicit-empty selection + polars is unsatisfiable and would silently
-        # leak every column into the UDF.  Reject here.
+        # Without ``(N, 0)`` support, polars + explicit-empty selection is
+        # unsatisfiable and would leak every column into the UDF.
         if (
             selection is not None
             and len(input_cols) == 0
             and input_frame_type == "polars"
+            and not polars_supports_zero_width_height()
         ):
             raise ValueError(
                 "explicit-empty selection (groupby(...)[[]]) is "
-                "unsatisfiable with input_frame_type='polars': polars "
-                "cannot represent a zero-column frame with nonzero "
+                "unsatisfiable with input_frame_type='polars': this polars "
+                "build cannot represent a zero-column frame with nonzero "
                 "height. Use input_frame_type='pandas' or select at "
                 "least one column."
             )
@@ -471,6 +728,18 @@ def compile_custom_agg(op, liteframe):
                 ("post", post_output_dtypes),
             ],
         )
+    # Reject input columns whose names collide with idxmin/idxmax reserved
+    # intermediate names (*__value, *__idx, __mf_agg_row_pos__).  Only
+    # relevant for idxmin/idxmax (needs_row_pos=True); other custom aggs
+    # don't use these intermediates.
+    if getattr(custom_agg, "needs_row_pos", False):
+        _reject_reserved_column_names(input_dtypes)
+        # Group keys are excluded from ``input_dtypes`` by the selection
+        # contract, so the reserved-name check above misses them.  A group
+        # key named ``__mf_agg_row_pos__`` would be silently overwritten
+        # by the executor's row-position stamping; reject it here.
+        if group_key_cols:
+            _reject_reserved_group_key_names(group_key_cols)
 
     # --- Build pre-agg projection ---
     # Binds to the *original* hooks (pre_func), not infer_pre, so a
@@ -507,6 +776,7 @@ def compile_custom_agg(op, liteframe):
             "custom_func": custom_agg,
             "agg_output_dtypes": agg_output_dtypes,
             "input_frame_type": input_frame_type,
+            "needs_row_pos": getattr(custom_agg, "needs_row_pos", False),
         }
     ]
 
@@ -546,7 +816,12 @@ def compile_custom_agg(op, liteframe):
     else:
         output_column_names = list(out_dtypes_dict.keys())
 
-    out_shape = (np.nan if groupby_params else 1, len(out_dtypes))
+    # Whole-frame idxmin/idxmax (needs_row_pos) can produce 0 rows when
+    # all input is empty (e.g. after filtering), so the row count is only
+    # known at execution time.  Other whole-frame aggs always produce 1 row.
+    needs_row_pos = any(d.get("needs_row_pos") for d in agg_funcs)
+    row_count = np.nan if (groupby_params or needs_row_pos) else 1
+    out_shape = (row_count, len(out_dtypes))
 
     return CompileAggResult(
         agg_funcs=agg_funcs,

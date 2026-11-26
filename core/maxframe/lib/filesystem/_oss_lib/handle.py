@@ -13,9 +13,11 @@
 # limitations under the License.
 
 import io
+import logging
 from typing import Any, Optional
 
 from maxframe.lib.filesystem._oss_lib.common import (
+    _UPLOAD_GONE_ERROR_CODES,
     get_oss_bucket,
     oss_stat,
     parse_osspath,
@@ -23,6 +25,8 @@ from maxframe.lib.filesystem._oss_lib.common import (
 from maxframe.utils import lazy_import
 
 oss2 = lazy_import("oss2", placeholder=True)
+
+logger = logging.getLogger(__name__)
 
 
 class OSSIOBase(io.IOBase):
@@ -99,25 +103,28 @@ class OSSIOBase(io.IOBase):
 
         Returns an empty bytes array on EOF.
         """
-        if self._current_pos == self._get_size() or size == 0:
+        if size is None:
+            size = -1
+
+        object_size = self._get_size()
+        if self._current_pos >= object_size or size == 0:
             return b""
-        elif size < 0:
-            obj = self._bucket.get_object(
-                self._parsed_path.key, byte_range=(self._current_pos, None)
-            )
-            self._current_pos = self._get_size()
-        else:
-            obj = self._bucket.get_object(
-                self._parsed_path.key,
-                byte_range=(self._current_pos, self._current_pos + size - 1),
-            )
-            self._current_pos = self._current_pos + size
+
+        start = self._current_pos
+        end = None if size < 0 else min(start + size, object_size) - 1
+        obj = self._bucket.get_object(
+            self._parsed_path.key,
+            byte_range=(start, end),
+        )
         content = obj.read()
+        self._current_pos += len(content)
         return content
 
     def readline(self, size=-1):
         # For backwards compatibility, a (slowish) readline().
         def nreadahead():
+            if self._current_pos >= self._get_size():
+                return 0
             # Read to the beginning of the next line
             read_to = min(
                 self._get_size() - 1, self._current_pos + self._buffer_size - 1
@@ -172,13 +179,29 @@ class OSSIOBase(io.IOBase):
 
     def close(self):
         if self._multipart_buf is not None:
-            self._multipart_buf.seek(0)
-            result = self._bucket.upload_part(
-                self._parsed_path.key,
-                self._multipart_upload_id,
-                self._part_num,
-                self._multipart_buf,
-            )
+            # Clear the buffer before uploading: a repeated close (e.g. from
+            # io.IOBase.__del__) must not re-upload the same part.
+            buf = self._multipart_buf
+            self._multipart_buf = None
+            buf.seek(0)
+            try:
+                result = self._bucket.upload_part(
+                    self._parsed_path.key,
+                    self._multipart_upload_id,
+                    self._part_num,
+                    buf,
+                )
+            except oss2.exceptions.ServerError as ex:
+                # Canceled by a concurrent abort; completion rejects missing parts.
+                if ex.code in _UPLOAD_GONE_ERROR_CODES:
+                    logger.warning(
+                        "Multipart upload %s of %s is no longer available: %s",
+                        self._multipart_upload_id,
+                        self._parsed_path.key,
+                        ex,
+                    )
+                    return
+                raise
             self._part_upload_result = dict(
                 part_number=self._part_num, etag=result.etag
             )

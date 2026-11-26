@@ -19,9 +19,14 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
+from maxframe.config import option_context, options
 from maxframe.liteframe.datatypes import infer_decimal_agg_dtype
 from maxframe.liteframe.initializer import LiteFrame as LF
-from maxframe.liteframe.operators.window import LiteFrameWindowTransform
+from maxframe.liteframe.operators.window import (
+    LiteFrameWindowTransform,
+    _LegacyLiteFrameWindowTransform_2_9,
+)
+from maxframe.serialization import clear_type_cache, deserialize, serialize
 from maxframe.utils import is_arrow_dtype_supported, wrap_arrow_dtype
 
 # ---------------------------------------------------------------------------
@@ -259,7 +264,7 @@ def test_rolling_count_produces_int64():
 def test_rolling_count_allows_non_numeric():
     lf = LF({"a": [1, 2, 3], "name": ["x", "y", "z"]})
     result = lf.rolling(2).count()
-    assert result.data.op.agg_func == "count"
+    assert result.data.op._get_transform_param("agg_func") == "count"
 
 
 def test_rolling_sum_non_numeric_raises_type_error():
@@ -508,11 +513,21 @@ def test_reverse_on_rolling_raises():
 
 def test_reverse_on_non_expanding_operator_raises():
     op = LiteFrameWindowTransform(
-        kind="rolling_agg", window_size=2, agg_func="sum", reverse=True
+        kind="rolling_agg",
+        window_size=2,
+        transform_params={"agg_func": "sum"},
+        reverse=True,
     )
     lf = LF({"a": [1, 2, 3]})
     with pytest.raises(ValueError, match="expanding"):
         op(lf.data)
+
+
+def test_rank_without_groupby_raises():
+    """Rank is a grouped-only window kind; whole-frame ranking goes through
+    LiteFrame.rank (PSRS), not this operator."""
+    with pytest.raises(TypeError, match="groupby_params"):
+        LiteFrameWindowTransform.for_rank(method="average")
 
 
 # ---------------------------------------------------------------------------
@@ -570,7 +585,7 @@ def test_fill_preserves_input_dtype(method):
     assert result.dtypes["a"] == wrap_arrow_dtype(pa.int64())
     op = result.data.op
     assert op.kind == method
-    assert op.limit is None
+    assert op._get_transform_param("limit") is None
 
 
 @pytest.mark.parametrize("limit", [2, np.int64(1), np.int32(1)])
@@ -580,7 +595,7 @@ def test_fill_limit_set_on_operator(method, limit):
     operator.index to their Python int value (pandas 3.x compat)."""
     op = getattr(LF({"a": [1, 2, 3]}), method)(limit=limit).data.op
     expected = 1 if isinstance(limit, np.integer) else 2
-    assert op.limit == expected
+    assert op._get_transform_param("limit") == expected
 
 
 @pytest.mark.parametrize("limit", [0, -1, -(2**31) - 1])
@@ -642,3 +657,160 @@ def test_fill_uppercase_columns_normalized(method):
     result = getattr(lf, method)(columns="VALUE")
     op = result.data.op
     assert op.columns == ["value"]
+
+
+@pytest.mark.parametrize(
+    "client_version,legacy_kwargs,expected_tp,expected_fields,framedriver_version",
+    [
+        pytest.param(
+            "2.9.0",
+            dict(
+                kind="expanding_agg",
+                agg_func="sum",
+                remask_input_nan=True,
+                skipna=False,
+                min_periods=1,
+                columns=["a"],
+            ),
+            {"agg_func": "sum", "remask_input_nan": True},
+            {"kind": "expanding_agg", "skipna": False, "min_periods": 1},
+            None,
+            id="cumsum",
+        ),
+        pytest.param(
+            "2.9.12",
+            dict(kind="shift", periods=2, fill_value=0, columns=["a"]),
+            {"fill_value": 0, "remask_input_nan": False},
+            {"kind": "shift", "periods": 2},
+            None,
+            id="shift",
+        ),
+        pytest.param(
+            "2.9.0",
+            dict(
+                kind="rolling_agg",
+                window_size=3,
+                min_periods=2,
+                agg_func="mean",
+                center=True,
+                columns=["a", "b"],
+            ),
+            {"agg_func": "mean", "remask_input_nan": False},
+            {"kind": "rolling_agg", "window_size": 3, "center": True},
+            None,
+            id="rolling_agg",
+        ),
+        # Non-2.9 serializers must not be redirected to the legacy layout.
+        pytest.param("2.10.0", None, None, None, None, id="2.10-no-redirect"),
+        pytest.param("3.0.0", None, None, None, None, id="3.0-no-redirect"),
+        pytest.param(
+            "2.9.0.dev1",
+            dict(kind="shift", periods=2, fill_value=0, columns=["a"]),
+            {"fill_value": 0, "remask_input_nan": False},
+            {"kind": "shift", "periods": 2},
+            None,
+            id="2.9-dev-redirect",
+        ),
+        pytest.param(None, None, None, None, None, id="unset-no-redirect"),
+        # The DPE's serializer is the FrameDriver, so its version wins over
+        # the client version (including dev releases).
+        pytest.param("2.9.0", None, None, None, "2.10.0", id="framedriver-2.10-wins"),
+        pytest.param(None, None, None, None, "2.10.0", id="framedriver-2.10-only"),
+        pytest.param(
+            "2.10.0",
+            dict(kind="shift", periods=2, fill_value=0, columns=["a"]),
+            {"fill_value": 0, "remask_input_nan": False},
+            {"kind": "shift", "periods": 2},
+            "2.9.0",
+            id="framedriver-2.9-wins",
+        ),
+        pytest.param(
+            None,
+            dict(kind="shift", periods=2, fill_value=0, columns=["a"]),
+            {"fill_value": 0, "remask_input_nan": False},
+            {"kind": "shift", "periods": 2},
+            "2.9.1.dev4",
+            id="framedriver-2.9-dev",
+        ),
+        pytest.param(
+            "2.9.0",
+            dict(kind="shift", periods=2, fill_value=0, columns=["a"]),
+            {"fill_value": 0, "remask_input_nan": False},
+            {"kind": "shift", "periods": 2},
+            "not-a-version",
+            id="invalid-framedriver-falls-back",
+        ),
+    ],
+)
+def test_legacy_2_9_serialization(
+    client_version, legacy_kwargs, expected_tp, expected_fields, framedriver_version
+):
+    """2.9 layouts use the legacy adapter; newer layouts do not.
+
+    The serializer version wins: ``framedriver_version`` when set, otherwise
+    ``client_version``.
+    """
+
+    class _V29Payload(_LegacyLiteFrameWindowTransform_2_9):
+        __module__ = "maxframe.liteframe.operators.window"
+        __qualname__ = "LiteFrameWindowTransform"
+
+    old29 = _V29Payload(**(legacy_kwargs or {}))
+    header, buffers = serialize(old29)
+
+    try:
+        with option_context(
+            {
+                "session.client_version": client_version,
+                "session.framedriver_version": framedriver_version,
+            }
+        ):
+            if legacy_kwargs is None:
+                assert LiteFrameWindowTransform.__serializable__() is None
+                return
+            assert (
+                LiteFrameWindowTransform.__serializable__()
+                is _LegacyLiteFrameWindowTransform_2_9
+            )
+            clear_type_cache()
+            result = deserialize(header, buffers)
+    finally:
+        clear_type_cache()
+
+    assert type(result) is LiteFrameWindowTransform
+    assert result.transform_params == expected_tp
+    for k, v in expected_fields.items():
+        assert getattr(result, k) == v, f"field {k}"
+    assert not hasattr(result, "remask_input_nan")
+    assert not hasattr(result, "agg_func")
+    assert not hasattr(result, "fill_value")
+
+
+def test_v2_9_payload_mis_maps_without_client_version():
+    """A 2.9 payload without a serializer version is not redirected.
+
+    Documents why the ingress wraps deserialization in ``option_context``.
+    """
+
+    class _V29Payload(_LegacyLiteFrameWindowTransform_2_9):
+        __module__ = "maxframe.liteframe.operators.window"
+        __qualname__ = "LiteFrameWindowTransform"
+
+    old29 = _V29Payload(kind="shift", periods=1, fill_value=7, columns=["a"])
+    header, buffers = serialize(old29)
+
+    old_cv = options.session.client_version
+    old_fv = options.session.framedriver_version
+    try:
+        options.session.client_version = None
+        options.session.framedriver_version = None
+        assert LiteFrameWindowTransform.__serializable__() is None
+        clear_type_cache()
+        # Without the redirect, the current layout can't deserialize the 2.9
+        # payload — it raises rather than producing a silently-corrupted op.
+        with pytest.raises(Exception):
+            deserialize(header, buffers)
+    finally:
+        options.session.client_version = old_cv
+        options.session.framedriver_version = old_fv
+        clear_type_cache()

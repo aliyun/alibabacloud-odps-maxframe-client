@@ -12,15 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import inspect
 from typing import List, MutableMapping, Union
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 
 from maxframe import opcodes
+from maxframe.config import options
 from maxframe.core import EntityData, OutputType
 from maxframe.dataframe.core import SERIES_TYPE
+from maxframe.dataframe.misc.astype import _convert_dtype_backend
 from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMixin
 from maxframe.dataframe.utils import build_series
 from maxframe.serialization.serializables import AnyField, KeyField, StringField
@@ -30,7 +32,42 @@ from maxframe.udf import (
     ODPSFunction,
     copy_func_scheduling_hints,
 )
-from maxframe.utils import make_dtype, quiet_stdio
+from maxframe.utils import (
+    make_dtype,
+    make_dtypes,
+    quiet_stdio,
+    resolve_return_annotation,
+    wrap_arrow_dtype,
+)
+
+
+def _get_dtype_from_annotation(func):
+    """Return the dtype declared by a scalar return annotation, if any.
+
+    A derived dtype follows ``dataframe.dtype_backend``: it is a hint that needs
+    backend adjustment, unlike an explicit ``dtype=`` which is kept as given.
+    """
+    return_type = resolve_return_annotation(func)
+    if return_type is None:
+        return None
+    if return_type is str or return_type is np.str_:
+        # ``np.dtype(str)`` is the zero-width ``<U0`` dtype, which cannot hold
+        # the returned text, so a string dtype is derived instead.
+        return pd.StringDtype()
+    if return_type is bytes:
+        # ``np.dtype(bytes)`` is ``|S0``; declare binary explicitly so the
+        # column schema stays BINARY instead of degrading to an unknown type.
+        return wrap_arrow_dtype(pa.binary())
+    try:
+        dtype = np.dtype(return_type)
+    except (TypeError, ValueError):
+        return None
+    if dtype.itemsize == 0 or dtype == np.dtype("object"):
+        # A zero-width dtype cannot represent the result, and ``object`` says
+        # nothing about the scalar (``np.dtype(pd.Timestamp)`` is ``object``),
+        # so let inference decide instead.
+        return None
+    return _convert_dtype_backend(dtype, options.dataframe.dtype_backend)
 
 
 class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
@@ -69,11 +106,7 @@ class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
                 if self.arg.result_dtype is not None:
                     dtype = self.arg.result_dtype
             elif callable(self.arg):
-                # arg is a function, try to inspect the signature
-                sig = inspect.signature(self.arg)
-                return_type = sig.return_annotation
-                if return_type is not inspect._empty:
-                    dtype = np.dtype(return_type)
+                dtype = _get_dtype_from_annotation(self.arg)
 
         err_prefix = None
         if dtype is None and not skip_infer:
@@ -118,7 +151,6 @@ class DataFrameMap(DataFrameOperator, DataFrameOperatorMixin):
                 )
         else:
             dtype = np.int64 if dtype is int else dtype
-            dtype = make_dtype(dtype)
 
         inputs = [series]
         if isinstance(self.arg, SERIES_TYPE):
@@ -287,7 +319,9 @@ def df_map(
     Parameters
     ----------
     func : callable
-        Python function, returns a single value from a single value.
+        Python function, returns a single value from a single value. A
+        scalar return annotation, such as ``-> int``, is used as the
+        output dtype when neither ``dtypes`` nor ``dtype`` is given.
     na_action : {None, 'ignore'}, default None
         If 'ignore', propagate NaN values, without passing them to func.
     dtypes : Series, default None
@@ -358,8 +392,13 @@ def df_map(
     0   1.000000   4.494400
     1  11.262736  20.857489
     """
-    if dtypes is None and dtype is not None:
-        dtypes = pd.Series([dtype] * df.shape[1], index=df.dtypes.index)
+    if dtypes is not None:
+        dtypes = make_dtypes(dtypes)
+    else:
+        if dtype is None:
+            dtype = _get_dtype_from_annotation(func)
+        if dtype is not None:
+            dtypes = pd.Series([make_dtype(dtype)] * df.shape[1], index=df.dtypes.index)
 
     def _wrapper(row):
         return row.map(func, na_action=na_action, **kwargs)

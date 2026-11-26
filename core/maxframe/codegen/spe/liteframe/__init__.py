@@ -23,6 +23,7 @@ from maxframe.codegen.spe.liteframe import (
     merge,
     projection,
     reduction,
+    sample,
     sort,
     virtual,
     window,

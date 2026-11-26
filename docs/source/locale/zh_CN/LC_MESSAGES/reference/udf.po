@@ -1,0 +1,492 @@
+# Simplified Chinese translations for the MaxFrame documentation.
+# Copyright (C) 1999-2026, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-29 17:19+0800\n"
+"PO-Revision-Date: 2026-10-29 00:00+0800\n"
+"Last-Translator: MaxFrame contributors\n"
+"Language: zh_CN\n"
+"Language-Team: Chinese (Simplified)\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/udf.rst:4
+msgid "UDF configuration API"
+msgstr "UDF 配置 API"
+
+#: ../../source/reference/udf.rst:6
+msgid ""
+"For configuration choices and engine support, see :ref:`udf_configuration`. "
+"This reference lists decorator signatures, parameter defaults, and errors."
+msgstr "配置项的选择和执行引擎支持情况见 :ref:`udf_configuration`。本页列出装饰器签名、参数默认值和异常。"
+
+#: maxframe.udf.with_running_options:1 of
+msgid "Select the execution engine and resources for a UDF."
+msgstr "为 UDF 设置执行引擎和资源。"
+
+#: maxframe.udf.with_fs_mount maxframe.udf.with_image_options
+#: maxframe.udf.with_network_options maxframe.udf.with_python_requirements
+#: maxframe.udf.with_resources maxframe.udf.with_running_options of
+msgid "Parameters"
+msgstr "参数"
+
+#: maxframe.udf.with_running_options:3 of
+msgid ""
+"Engine name, such as ``\"DPE\"`` or ``\"MCSQL\"``. Case is ignored. If "
+"omitted, follow the job's engine selection. The engine must be available and"
+" support the operation."
+msgstr "引擎名称，例如 ``\"DPE\"`` 或 ``\"MCSQL\"``，不区分大小写。省略时沿用作业的引擎选择。该引擎需要可用，并且支持相应操作。"
+
+#: maxframe.udf.with_running_options:7 of
+msgid ""
+"Positive CPU count for each task. Omitted fields inherit "
+"``options.function.default_running_options``."
+msgstr "每个任务申请的 CPU 数量，必须大于 0。未设置的字段继承 ``options.function.default_running_options``。"
+
+#: maxframe.udf.with_running_options:10 of
+msgid ""
+"Starting memory for each task. Integers are in GiB; strings accept units "
+"such as ``\"512MiB\"`` or ``\"8GiB\"``. Omission inherits the shared "
+"default."
+msgstr "每个任务的起始内存。整数以 GiB 为单位，字符串支持 ``\"512MiB\"``、``\"8GiB\"`` 等带单位的形式。省略时继承共享默认值。"
+
+#: maxframe.udf.with_running_options:13 of
+msgid ""
+"Upper bound for elastic-memory retries of eligible DPE CPU UDFs, in the same"
+" units as ``memory``. The merged settings must contain ``memory``. Equal "
+"values disable expansion; a smaller limit is invalid. ``None`` inherits a "
+"shared limit. Cluster resources can cap the effective limit."
+msgstr ""
+"符合条件的 DPE CPU UDF 弹性重试的内存上限，单位与 ``memory`` 相同。合并后的配置必须包含 "
+"``memory``。两者相等时不扩容，上限小于起始内存时配置无效。``None`` 会继承共享上限。实际上限还受到集群资源的限制。"
+
+#: maxframe.udf.with_running_options:18 of
+msgid ""
+"Positive GPU-unit count for a DPE UDF. Cannot be combined with ``cpu`` or "
+"``memory``."
+msgstr "DPE UDF 申请的 GPU 单元数，必须大于 0，不能与 ``cpu`` 或 ``memory`` 同时设置。"
+
+#: maxframe.udf.with_running_options:21 of
+msgid ""
+"GPU quota nickname, or nicknames in usage-priority order. Omission uses "
+"``options.session.gu_quota_name``. A quota alone does not request a GPU."
+msgstr ""
+"GPU Quota 昵称，或按使用优先级排列的昵称列表。省略时使用 ``options.session.gu_quota_name``。只设置 "
+"Quota 不会申请 GPU。"
+
+#: maxframe.udf.with_running_options:24 of
+msgid ""
+"Specification for a Spot GU quota, such as ``\"gu.gu8tf-8x.spot\"``. "
+"Requires ``gu_quota`` and cannot be combined with ``cpu`` or ``memory``. The"
+" specification determines the GPU count."
+msgstr ""
+"Spot GU Quota 的规格，例如 ``\"gu.gu8tf-8x.spot\"``。需要同时设置 ``gu_quota``，不能与 "
+"``cpu`` 或 ``memory`` 同时设置。GPU 数量由规格决定。"
+
+#: maxframe.udf.with_running_options:28 of
+msgid ""
+"Additional running options. ``image_name`` delegates to "
+":func:`with_image_options` to select a registered MaxCompute image."
+msgstr "其他运行选项。其中 ``image_name`` 通过 :func:`with_image_options` 选择已在 MaxCompute 注册的镜像。"
+
+#: maxframe.udf.with_fs_mount maxframe.udf.with_image_options
+#: maxframe.udf.with_network_options maxframe.udf.with_python_requirements
+#: maxframe.udf.with_resources maxframe.udf.with_running_options of
+msgid "Returns"
+msgstr "返回值"
+
+#: maxframe.udf.with_running_options:31 of
+msgid "Decorator that attaches engine and resource settings to a callable."
+msgstr "将引擎和资源设置附加到可调用对象上的装饰器。"
+
+#: maxframe.udf.with_fs_mount maxframe.udf.with_image_options
+#: maxframe.udf.with_network_options maxframe.udf.with_python_requirements
+#: maxframe.udf.with_resources maxframe.udf.with_running_options of
+msgid "Return type"
+msgstr "返回类型"
+
+#: maxframe.udf.with_fs_mount maxframe.udf.with_image_options
+#: maxframe.udf.with_network_options maxframe.udf.with_python_requirements
+#: maxframe.udf.with_resources maxframe.udf.with_running_options of
+msgid "Raises"
+msgstr "异常"
+
+#: maxframe.udf.with_running_options:34 of
+msgid "If ``memory`` or ``memory_limit`` is not an integer or string."
+msgstr "``memory`` 或 ``memory_limit`` 既不是整数也不是字符串时抛出。"
+
+#: maxframe.udf.with_running_options:35 of
+msgid ""
+"If a numeric resource request is non-positive, ``gu_type`` has no quota,"
+"     or a GPU request is combined with CPU or memory. Invalid memory sizes "
+"or     limits also fail when the effective resource settings are collected."
+msgstr ""
+"数值资源申请不大于 0、设置了 ``gu_type`` 却没有 Quota，或 GPU 申请与 "
+"CPU、内存同时设置时抛出。收集最终资源配置时，也会校验内存值和上限是否合法。"
+
+#: maxframe.udf.with_fs_mount:19 maxframe.udf.with_image_options:14
+#: maxframe.udf.with_network_options:19 maxframe.udf.with_python_requirements:23
+#: maxframe.udf.with_resources:17 maxframe.udf.with_running_options:38 of
+msgid "Notes"
+msgstr "注意事项"
+
+#: maxframe.udf.with_running_options:39 of
+msgid ""
+"Use one decorator for all engine and resource settings. When an outer "
+"``with_running_options`` decorator specifies an engine or resource option, "
+"it replaces the inner engine and entire resource dictionary; fields are not "
+"merged between decorators. Missing fields then inherit "
+"``options.function.default_running_options`` when the operation is built. An"
+" empty decorator, or one that only sets ``image_name``, leaves the existing "
+"engine and resource settings unchanged."
+msgstr ""
+"使用一个装饰器集中设置引擎和资源。如果外层 ``with_running_options`` "
+"设置了引擎或资源参数，就会替换内层的引擎和整个资源字典，装饰器之间不会逐字段合并。缺少的字段会在构建操作时继承 "
+"``options.function.default_running_options``。空装饰器或只设置 ``image_name`` "
+"的装饰器，会保留已有的引擎和资源设置。"
+
+#: maxframe.udf.with_running_options:47 of
+msgid ""
+"CPU and memory apply to DPE and MCSQL. Elastic memory and GPU resources "
+"apply only to DPE. Resource requests do not make a Python loop parallel."
+msgstr "CPU 和内存配置适用于 DPE、MCSQL。弹性内存和 GPU 资源只适用于 DPE。申请资源不会自动让 Python 循环并行执行。"
+
+#: maxframe.udf.with_fs_mount:24 maxframe.udf.with_image_options:20
+#: maxframe.udf.with_network_options:25 maxframe.udf.with_python_requirements:28
+#: maxframe.udf.with_resources:22 maxframe.udf.with_running_options:51 of
+msgid "Examples"
+msgstr "示例"
+
+#: maxframe.udf.with_python_requirements:1 of
+msgid "Declare Python packages needed by a remote UDF."
+msgstr "声明远程 UDF 所需的 Python 包。"
+
+#: maxframe.udf.with_python_requirements:3 of
+msgid ""
+"Package requirements, optionally with version constraints, such as "
+"``\"Pillow==10.4.0\"``. Packages must support the remote Python ABI."
+msgstr "包依赖，可以包含版本限制，例如 ``\"Pillow==10.4.0\"``。包需要支持远程运行环境的 Python ABI。"
+
+#: maxframe.udf.with_python_requirements:6 of
+msgid "Rebuild the PythonPack environment instead of reusing a matching build."
+msgstr "重新构建 PythonPack 环境，不复用已有的匹配构建。"
+
+#: maxframe.udf.with_python_requirements:8 of
+msgid "Prefer binary wheels over source distributions."
+msgstr "优先使用二进制 wheel 包。"
+
+#: maxframe.udf.with_python_requirements:10 of
+msgid "Allow pre-release package versions."
+msgstr "允许使用预发布版本。"
+
+#: maxframe.udf.with_python_requirements:12 of
+msgid ""
+"Skip the wheel compatibility audit. The wheel must still be compatible with "
+"the remote runtime."
+msgstr "跳过 wheel 兼容性检查，但 wheel 本身仍需兼容远程运行环境。"
+
+#: maxframe.udf.with_python_requirements:16 of
+msgid ""
+"Decorator that attaches PythonPack requirements to a callable. Repeated "
+"decorators append requirement groups."
+msgstr "将 PythonPack 依赖附加到可调用对象上的装饰器。多次使用装饰器会追加依赖组。"
+
+#: maxframe.udf.with_python_requirements:20 of
+msgid "If a requirement contains malformed shell-style quoting."
+msgstr "依赖字符串中的 shell 风格引号不匹配时抛出。"
+
+#: maxframe.udf.with_python_requirements:24 of
+msgid ""
+"DPE and MCSQL build or reuse the package environment before running the UDF."
+" Installing a package on the client does not install it remotely."
+msgstr "DPE 和 MCSQL 会在执行 UDF 前构建或复用包环境。客户端安装了某个包，不代表远程环境也已安装。"
+
+#: maxframe.udf.with_resources:1 of
+msgid "Make MaxCompute resource files available to a UDF."
+msgstr "让 UDF 可以使用 MaxCompute 资源文件。"
+
+#: maxframe.udf.with_resources:3 of
+msgid ""
+"Names or Resource objects for files already uploaded to MaxCompute. Resource"
+" objects retain their project and schema qualification."
+msgstr "已上传到 MaxCompute 的文件资源名称或 Resource 对象。传入 Resource 对象时，会保留其项目和 schema 信息。"
+
+#: maxframe.udf.with_resources:6 of
+msgid ""
+"Wrap the callable in a MarkedFunction. If False, append to the callable's "
+"existing ``file_resources`` attribute instead."
+msgstr "是否将可调用对象包装成 MarkedFunction。为 False 时，向该对象已有的 ``file_resources`` 属性追加资源。"
+
+#: maxframe.udf.with_resources:10 of
+msgid ""
+"Decorator that adds resources and returns the decorated callable. Repeated "
+"decorators append resources."
+msgstr "添加资源并返回包装后函数的装饰器。多次使用装饰器会追加资源。"
+
+#: maxframe.udf.with_resources:14 of
+msgid ""
+"If ``use_wrapper_class=False`` and the callable has no     "
+"``file_resources`` attribute."
+msgstr "``use_wrapper_class=False``，且可调用对象没有 ``file_resources`` 属性时抛出。"
+
+#: maxframe.udf.with_resources:18 of
+msgid ""
+"DPE and MCSQL provide the files in the function's working directory. "
+"``with_resource_libraries`` is an alias of this function."
+msgstr "DPE 和 MCSQL 会将这些文件放到函数的工作目录中。``with_resource_libraries`` 是该函数的别名。"
+
+#: maxframe.udf.with_fs_mount:1 of
+msgid "Mount an OSS path for a DPE UDF."
+msgstr "为 DPE UDF 挂载 OSS 路径。"
+
+#: maxframe.udf.with_fs_mount:3 of
+msgid ""
+"OSS URI including endpoint, bucket, and optional prefix, for example ``\"oss"
+"://oss-cn-hangzhou.aliyuncs.com/bucket/models\"``."
+msgstr ""
+"OSS URI，包含 endpoint、bucket 和可选的前缀，例如 ``\"oss://oss-cn-"
+"hangzhou.aliyuncs.com/bucket/models\"``。"
+
+#: maxframe.udf.with_fs_mount:6 of
+msgid "Local path through which the UDF reads the mounted files."
+msgstr "UDF 用于读取挂载文件的本地路径。"
+
+#: maxframe.udf.with_fs_mount:8 of
+msgid ""
+"Authentication settings. Provide ``role_arn``, or both ``access_key_id`` and"
+" ``access_key_secret``. Credentials are required; the default ``None`` does "
+"not provide anonymous access."
+msgstr ""
+"鉴权配置。需要提供 ``role_arn``，或同时提供 ``access_key_id`` 和 "
+"``access_key_secret``。鉴权信息不可省略；默认值 ``None`` 不表示允许匿名访问。"
+
+#: maxframe.udf.with_fs_mount:13 of
+msgid "Decorator that appends a mount to the callable's mount settings."
+msgstr "向可调用对象追加挂载配置的装饰器。"
+
+#: maxframe.udf.with_fs_mount:16 of
+msgid ""
+"If either path is missing or is not a string, authentication is missing,"
+"     or mounts on the same callable use different ``storage_options``."
+msgstr "任一路径缺失或不是字符串、缺少鉴权信息，或同一函数的多个挂载使用不同 ``storage_options`` 时抛出。"
+
+#: maxframe.udf.with_fs_mount:20 of
+msgid ""
+"This decorator requires DPE but does not select the engine automatically. "
+"For several mounts on one function, use identical authentication settings."
+msgstr "该装饰器需要 DPE，但不会自动选择引擎。同一个函数挂载多个路径时，需要使用相同的鉴权配置。"
+
+#: maxframe.udf.with_network_options:1 of
+msgid "Configure public, internal, or VPC access for a DPE UDF."
+msgstr "为 DPE UDF 配置公网、内网或 VPC 访问。"
+
+#: maxframe.udf.with_network_options:3 of
+msgid ""
+"Name of a MaxCompute network link for a VPC service. Create it using the "
+"`Access VPC solution <https://help.aliyun.com/zh/maxcompute/user-guide"
+"/access-vpc-solution-direct-connection>`_."
+msgstr ""
+"访问 VPC 服务的 MaxCompute network link 名称。创建方法见 `访问 VPC 方案 "
+"<https://help.aliyun.com/zh/maxcompute/user-guide/access-vpc-solution-"
+"direct-connection>`_。"
+
+#: maxframe.udf.with_network_options:6 of
+msgid ""
+"Public IP addresses or domains. These must be approved for the project "
+"through a service ticket before use."
+msgstr "公网 IP 地址或域名。使用前，需要提交工单，为当前项目开通对应白名单。"
+
+#: maxframe.udf.with_network_options:9 of
+msgid ""
+"Alibaba Cloud internal IP addresses or domains, such as an OSS internal "
+"endpoint. Obtain each endpoint from the corresponding service's docs."
+msgstr "阿里云内网 IP 地址或域名，例如 OSS 内网 endpoint。具体地址应从对应服务的文档中获取。"
+
+#: maxframe.udf.with_network_options:13 of
+msgid "Decorator that attaches network settings to a callable."
+msgstr "将网络配置附加到可调用对象上的装饰器。"
+
+#: maxframe.udf.with_network_options:16 of
+msgid "If repeated decorators request different VPC network links."
+msgstr "多次使用装饰器时指定了不同的 VPC network link，会抛出此异常。"
+
+#: maxframe.udf.with_network_options:20 of
+msgid ""
+"Public whitelists are combined, as are internal whitelists, across "
+"decorators and DPE shared settings. Only one VPC link is allowed per "
+"function. The decorator does not select DPE automatically."
+msgstr ""
+"多个装饰器与 DPE 共享配置中的公网白名单会合并，内网白名单也会分别合并。每个函数只能使用一个 VPC network link。该装饰器不会自动选择"
+" DPE。"
+
+#: maxframe.udf.with_image_options:1 of
+msgid "Select a registered custom image for a DPE UDF."
+msgstr "为 DPE UDF 选择已注册的自定义镜像。"
+
+#: maxframe.udf.with_image_options:3 of
+msgid ""
+"Name of an image already registered in MaxCompute. Required despite the "
+"``None`` default in the signature."
+msgstr "已在 MaxCompute 注册的镜像名称。签名中的默认值虽然为 ``None``，实际使用时仍必须提供。"
+
+#: maxframe.udf.with_image_options:6 of
+msgid "Additional image options passed to the runtime."
+msgstr "传给运行环境的其他镜像选项。"
+
+#: maxframe.udf.with_image_options:8 of
+msgid "Decorator that attaches image settings to a callable."
+msgstr "将镜像配置附加到可调用对象上的装饰器。"
+
+#: maxframe.udf.with_image_options:11 of
+msgid "If ``image_name`` is empty or the callable already has image settings."
+msgstr "``image_name`` 为空，或该函数已经有镜像配置时抛出。"
+
+#: maxframe.udf.with_image_options:15 of
+msgid ""
+"This decorator does not select DPE automatically. Use "
+":func:`with_running_options` to select it. The function-level image replaces"
+" ``options.session.image_name``."
+msgstr ""
+"该装饰器不会自动选择 DPE，需要通过 :func:`with_running_options` 指定引擎。函数级镜像配置会覆盖 "
+"``options.session.image_name``。"
+
+#: ../../source/reference/udf.rst:28
+msgid "Shared options"
+msgstr "共享配置"
+
+#: ../../source/reference/udf.rst:30
+msgid ""
+"Set these options before creating the session and relevant expressions. See "
+":ref:`udf_config_precedence` for how decorators interact with defaults."
+msgstr "在创建会话和相关表达式前设置这些选项。装饰器与默认值之间的覆盖规则见 :ref:`udf_config_precedence`。"
+
+#: ../../source/reference/udf.rst:37
+msgid "Configuration"
+msgstr "配置项"
+
+#: ../../source/reference/udf.rst:38
+msgid "Type"
+msgstr "类型"
+
+#: ../../source/reference/udf.rst:39
+msgid "Default"
+msgstr "默认值"
+
+#: ../../source/reference/udf.rst:40
+msgid "Meaning"
+msgstr "说明"
+
+#: ../../source/reference/udf.rst:41
+msgid "``options.python_tag``"
+msgstr "``options.python_tag``"
+
+#: ../../source/reference/udf.rst:42
+msgid "``str``"
+msgstr "``str``"
+
+#: ../../source/reference/udf.rst:43
+msgid "Detected from the client interpreter"
+msgstr "根据客户端的 Python 版本确定"
+
+#: ../../source/reference/udf.rst:44
+msgid ""
+"Python ABI used by the remote runtime, for example ``\"cp311\"`` for CPython"
+" 3.11."
+msgstr "远程运行环境使用的 Python ABI 标识。例如，``\"cp311\"`` 表示 CPython 3.11。"
+
+#: ../../source/reference/udf.rst:46
+msgid "``options.function.default_running_options``"
+msgstr "``options.function.default_running_options``"
+
+#: ../../source/reference/udf.rst:47
+msgid "``dict``"
+msgstr "``dict``"
+
+#: ../../source/reference/udf.rst:48
+#, python-brace-format
+msgid "``{\"cpu\": 1, \"memory\": \"4GiB\", \"gpu\": 0}``"
+msgstr "``{\"cpu\": 1, \"memory\": \"4GiB\", \"gpu\": 0}``"
+
+#: ../../source/reference/udf.rst:49
+msgid ""
+"CPU, starting memory, and GPU defaults for each function task. An optional "
+"``memory_limit`` sets the DPE CPU UDF elastic-memory limit."
+msgstr "每个函数任务默认使用的 CPU、起始内存和 GPU。还可以用 ``memory_limit`` 设置 DPE CPU UDF 的弹性内存上限。"
+
+#: ../../source/reference/udf.rst:51
+msgid "``options.function.allowed_max_memory_cpu_ratio``"
+msgstr "``options.function.allowed_max_memory_cpu_ratio``"
+
+#: ../../source/reference/udf.rst:52
+msgid "Positive ``int`` up to 12"
+msgstr "不大于 12 的正整数 ``int``"
+
+#: ../../source/reference/udf.rst:53
+msgid "``12``"
+msgstr "``12``"
+
+#: ../../source/reference/udf.rst:54
+msgid ""
+"Maximum GiB of memory per CPU. MaxFrame increases the CPU request when a "
+"task exceeds this ratio."
+msgstr "每个 CPU 最多可配多少 GiB 内存。任务申请的内存超过这个比例时，MaxFrame 会增加 CPU 数量。"
+
+#: ../../source/reference/udf.rst:56
+msgid "``options.session.gu_quota_name``"
+msgstr "``options.session.gu_quota_name``"
+
+#: ../../source/reference/udf.rst:57 ../../source/reference/udf.rst:61
+msgid "``str`` or ``None``"
+msgstr "``str`` 或 ``None``"
+
+#: ../../source/reference/udf.rst:58 ../../source/reference/udf.rst:62
+msgid "``None``"
+msgstr "``None``"
+
+#: ../../source/reference/udf.rst:59
+msgid "Default GPU quota nickname. Setting it does not request a GPU."
+msgstr "默认使用的 GPU Quota 别名。只设置 Quota 不会申请 GPU，还需要指定 GPU 数量。"
+
+#: ../../source/reference/udf.rst:60
+msgid "``options.session.image_name``"
+msgstr "``options.session.image_name``"
+
+#: ../../source/reference/udf.rst:63
+msgid ""
+"Default registered MaxCompute image for DPE function tasks. Does not select "
+"DPE automatically."
+msgstr "DPE 函数任务默认使用的 MaxCompute 注册镜像。设置该项不会自动选择 DPE。"
+
+#: ../../source/reference/udf.rst:65
+msgid "``options.dpe.settings[\"substep.public_network_whitelist\"]``"
+msgstr "``options.dpe.settings[\"substep.public_network_whitelist\"]``"
+
+#: ../../source/reference/udf.rst:66 ../../source/reference/udf.rst:71
+msgid "``list[str]``"
+msgstr "``list[str]``"
+
+#: ../../source/reference/udf.rst:67 ../../source/reference/udf.rst:72
+msgid "Not set"
+msgstr "未设置"
+
+#: ../../source/reference/udf.rst:68
+msgid ""
+"Public IP addresses or domains requested for DPE function tasks. Submit a "
+"service ticket before use to have the entries added to the whitelist."
+msgstr "DPE 任务需要访问的公网 IP 地址或域名。使用前需要提交工单，将这些地址加入白名单。"
+
+#: ../../source/reference/udf.rst:70
+msgid "``options.dpe.settings[\"substep.internal_network_whitelist\"]``"
+msgstr "``options.dpe.settings[\"substep.internal_network_whitelist\"]``"
+
+#: ../../source/reference/udf.rst:73
+msgid ""
+"Alibaba Cloud internal IP addresses or domains requested for DPE function "
+"tasks."
+msgstr "DPE 任务需要访问的阿里云内网 IP 地址或域名。"

@@ -12,20 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""LiteFrame.apply() -- operator-based (LiteFrameFunctional) UDF application."""
+"""LiteFrame.apply() -- UDF application (projection-based for row mode)."""
 
 import numpy as np
 
 from maxframe.liteframe.core import FrameMetadata
+from maxframe.liteframe.functional.type_infer import infer_output_dtypes
 from maxframe.liteframe.functional.utils import (
     build_functional_output,
+    build_udf_projections,
+    check_hidden_output_conflict,
     create_functional_op,
     effective_groupby_input_dtypes,
     groupby_key_output_dtypes,
     merge_hidden_into_physical,
+    pop_check_output_dtypes,
     propagate_hidden_metadata,
     validate_single_output,
+    wrap_inference_func,
 )
+from maxframe.liteframe.operators.project import LiteFrameProjection
 from maxframe.tensor.utils import validate_axis
 
 
@@ -162,26 +168,53 @@ def apply(
         # apply(axis=1) preserves row count (one result per row), so hidden
         # columns can be preserved — stripped from the UDF input and
         # re-appended after execution, matching the transform-family preserve
-        # policy.  The operator input is ``self`` (with hidden columns) so the
-        # executor can re-append them; the tiler carries the hidden names onto
-        # the opfunc so the executor strips them before calling the UDF.
-        op, inferred = create_functional_op(
+        # policy.  Single-output apply(axis=1) lowers to
+        # ``LiteFrameProjection`` (row-preserving, like ``transform(axis=1)``);
+        # multi-output and ``skip_infer`` stay on the ``LiteFrameFunctional``
+        # operator.
+        #
+        # Inference runs exactly once here and is shared by all three
+        # branches.  ``wrap_inference_func(..., "apply_row", ...)`` is the
+        # same wrapper ``create_functional_op`` builds for mode="apply",
+        # axis=1, so the projection path and the functional path agree on the
+        # inferred schema.
+        infer_kwargs = dict(kwargs) if kwargs else {}
+        check_output_dtypes = pop_check_output_dtypes(infer_kwargs)
+        infer_func = wrap_inference_func(
             func,
-            mode="apply",
-            input_dtypes=self.dtypes,
+            "apply_row",
+            input_frame_type,
+            args,
+            infer_kwargs,
+            result_type=result_type,
+        )
+        inferred = infer_output_dtypes(
+            infer_func,
+            self.dtypes,
             dtypes=dtypes,
             skip_infer=skip_infer,
+            args=(),
+            kwargs={},
             input_frame_type=input_frame_type,
-            args=args,
-            kwargs=kwargs,
-            axis=axis,
-            result_type=result_type,
         )
         if inferred is None:
             # skip_infer (untyped): no known visible schema, so hidden columns
             # cannot be carried into the output.  Drop them from the UDF input.
             hidden = sorted(self._hidden_columns)
             inp = self.drop(hidden) if hidden else self
+            op, _ = create_functional_op(
+                func,
+                mode="apply",
+                input_dtypes=self.dtypes,
+                dtypes=dtypes,
+                skip_infer=skip_infer,
+                input_frame_type=input_frame_type,
+                args=args,
+                kwargs=kwargs,
+                axis=axis,
+                result_type=result_type,
+                inferred=inferred,
+            )
             return build_functional_output(op, [inp], inferred)
         if len(inferred) > 1:
             # Multi-output: apply(axis=1) preserves hidden columns, carrying
@@ -189,20 +222,43 @@ def apply(
             # per input row holds for every tuple element).  Pass the full
             # input (with hidden) plus the propagated hidden metadata so
             # build_functional_output merges hidden into each output.
+            op, _ = create_functional_op(
+                func,
+                mode="apply",
+                input_dtypes=self.dtypes,
+                dtypes=dtypes,
+                skip_infer=skip_infer,
+                input_frame_type=input_frame_type,
+                args=args,
+                kwargs=kwargs,
+                axis=axis,
+                result_type=result_type,
+                inferred=inferred,
+            )
             return build_functional_output(
                 op, [self], inferred, frame_metadata=propagate_hidden_metadata(self)
             )
+        # Single-output: expression-based projection path (mirrors
+        # ``transform(axis=1)``).  The UDF operands are the visible columns —
+        # hidden columns are excluded from the UDF input — and hidden columns
+        # are appended as pass-through projections by ``build_udf_projections``,
+        # preserving the apply(axis=1) hidden-column contract.  A hidden
+        # column declared as an output still raises
+        # (``check_hidden_output_conflict``).
         out_dtypes = inferred[0]
-        out_meta = propagate_hidden_metadata(self)
-        physical_dtypes, out_meta, n_cols = merge_hidden_into_physical(
-            self, out_dtypes, out_meta
+        check_hidden_output_conflict(self, out_dtypes)
+        projections = build_udf_projections(
+            self,
+            func,
+            "apply_row",
+            out_dtypes,
+            input_frame_type=input_frame_type,
+            check_output_dtypes=check_output_dtypes,
+            args=args,
+            kwargs=infer_kwargs,
+            result_type=result_type,
         )
-        return op.new_liteframe(
-            [self],
-            shape=(self.shape[0], n_cols),
-            physical_dtypes=physical_dtypes,
-            frame_metadata=out_meta,
-        )
+        return LiteFrameProjection(projections=projections)(self)
     else:
         # apply(axis=0): row count may change (reduction), so hidden columns
         # are dropped from the input and not carried into the output.
@@ -355,7 +411,16 @@ def groupby_apply_op(
 
 
 def groupby_transform_op(
-    self, func, mode, api_name, dtypes, skip_infer, input_frame_type, args, kwargs
+    self,
+    func,
+    mode,
+    api_name,
+    dtypes,
+    skip_infer,
+    input_frame_type,
+    args,
+    kwargs,
+    placeback=True,
 ):
     """Shared helper for groupby_transform and groupby_transform_chunk.
 
@@ -377,6 +442,7 @@ def groupby_transform_op(
         kwargs=kwargs,
         groupby_params=self.groupby_params,
         axis=0,
+        placeback=placeback,
     )
     validate_single_output(inferred, api_name)
     if inferred is None:

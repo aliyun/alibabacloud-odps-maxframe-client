@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from maxframe.core.accessor import BaseMaxFrameAccessor, CachedAccessor
+from maxframe.core.accessor import (
+    BaseMaxFrameAccessor,
+    CachedAccessor,
+    register_accessor,
+)
 from maxframe.core.base import Base, ExecutionError
 from maxframe.core.entity import (
     ENTITY_TYPE,

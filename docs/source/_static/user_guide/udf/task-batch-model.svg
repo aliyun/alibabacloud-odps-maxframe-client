@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="230" viewBox="0 0 900 230" role="img" aria-labelledby="title desc">
+<title id="title">DPE data and resource controls</title><desc id="desc">A table is divided into source chunks. Tasks process assigned chunks in batches. Chunk settings affect input, resource settings affect a task, and batch_rows limits a function call.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10" fill="#526b82"/></marker></defs>
+<rect width="900" height="230" rx="12" fill="#f7f9fc"/>
+<g font-family="Arial,sans-serif" fill="#18354e" text-anchor="middle">
+<g stroke="#b5cce0" fill="#fff"><rect x="20" y="52" width="156" height="64" rx="8"/><rect x="234" y="52" width="176" height="64" rx="8"/><rect x="468" y="52" width="176" height="64" rx="8"/><rect x="702" y="52" width="178" height="64" rx="8"/></g>
+<g font-size="19" font-weight="bold"><text x="98" y="90">Table</text><text x="322" y="90">Source chunks</text><text x="556" y="90">Task input</text><text x="791" y="80">Batch</text><text x="791" y="102" font-size="14" font-weight="normal">One Python call</text></g>
+<g stroke="#526b82" stroke-width="2" marker-end="url(#arrow)"><path d="M178 84H226"/><path d="M412 84H460"/><path d="M646 84H694"/></g>
+<g font-size="14"><text x="200" y="144">chunk_bytes / chunk_size</text><text x="440" y="168">rechunk / rebalance</text><text x="790" y="144">batch_rows</text><text x="555" y="193">Task resources: cpu, memory, memory_limit</text></g>
+<text x="450" y="28" font-size="14" fill="#526b82">DPE: partition size, task resources, and call size are separate controls</text>
+</g></svg>

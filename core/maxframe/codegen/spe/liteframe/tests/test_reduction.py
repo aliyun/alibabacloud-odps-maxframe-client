@@ -13,11 +13,14 @@
 # limitations under the License.
 
 import pandas as pd
+import pyarrow as pa
 import pytest
 
 from maxframe.codegen.spe.core import SPECodeContext
 from maxframe.codegen.spe.liteframe.reduction import LiteFrameAggAdapter
 from maxframe.liteframe.operators.reduction import LiteFrameAgg
+from maxframe.liteframe.reduction.custom_agg import CustomAgg
+from maxframe.utils.datatypes import is_arrow_dtype_supported, wrap_arrow_dtype
 
 
 def _agg(func, cols, key="agg_0"):
@@ -118,10 +121,166 @@ def test_agg_run_whole_frame_min_max():
     assert result["max_a"].iloc[0] == 3
 
 
-import pyarrow as pa
+@pytest.mark.parametrize(
+    "grouped, dropna, expected",
+    [
+        pytest.param(False, True, 2, id="whole-dropna-true"),
+        pytest.param(False, False, 3, id="whole-dropna-false"),
+        pytest.param(True, True, [1, 1], id="grouped-dropna-true"),
+        pytest.param(True, False, [2, 2], id="grouped-dropna-false"),
+    ],
+)
+def test_agg_run_nunique_dropna(grouped, dropna, expected):
+    """nunique must forward dropna kwarg in both whole-frame and grouped
+    paths (regression: was silently using pandas default dropna=True)."""
+    if grouped:
+        df = pd.DataFrame({"key": [1, 1, 2, 2], "val": [1, None, 3, None]})
+        agg_funcs = [
+            {
+                "map_func_name": "nunique",
+                "cols": ["val"],
+                "output_key": "agg_0",
+                "kwds": {"dropna": dropna},
+            }
+        ]
+        result = LiteFrameAggAdapter._run_agg(
+            df, agg_funcs, {"by": "key", "sort": True, "dropna": True}, None
+        )
+        result = result.sort_values("key").reset_index(drop=True)
+        assert list(result["val"]) == expected
+    else:
+        df = pd.DataFrame({"a": [1, 2, None]})
+        agg_funcs = [
+            {
+                "map_func_name": "nunique",
+                "cols": ["a"],
+                "output_key": "agg_0",
+                "kwds": {"dropna": dropna},
+            }
+        ]
+        result = LiteFrameAggAdapter._run_agg(df, agg_funcs, None, ["a_nunique"])
+        assert result["a_nunique"].iloc[0] == expected
 
-from maxframe.liteframe.reduction.custom_agg import CustomAgg
-from maxframe.utils.datatypes import is_arrow_dtype_supported, wrap_arrow_dtype
+
+@pytest.mark.parametrize(
+    "grouped, func_name, expected_col",
+    [
+        pytest.param(False, "quantile", "agg_0__v_quantile", id="whole-exact"),
+        pytest.param(
+            False, "quantile_sketch", "agg_0__v_quantile_sketch", id="whole-sketch"
+        ),
+        pytest.param(True, "quantile", "agg_0__v_quantile", id="grouped-exact"),
+        pytest.param(
+            True, "quantile_sketch", "agg_0__v_quantile_sketch", id="grouped-sketch"
+        ),
+    ],
+)
+def test_agg_run_quantile_prefix(grouped, func_name, expected_col):
+    """Single quantile/sketch descriptor must use prefixed column name
+    matching compile's intermediate naming in both paths (regression:
+    use_prefix was missing the quantile condition, and sketch used wrong
+    column name)."""
+    agg_funcs = [
+        {
+            "map_func_name": func_name,
+            "raw_func_name": "quantile",
+            "cols": ["v"],
+            "output_key": "agg_0",
+            "kwds": {"q": 0.5, "interpolation": "linear"},
+        }
+    ]
+    if grouped:
+        df = pd.DataFrame({"key": [1, 1, 2, 2], "v": [1.0, 2.0, 3.0, 4.0]})
+        result = LiteFrameAggAdapter._run_agg(
+            df, agg_funcs, {"by": "key", "sort": True, "dropna": True}, None
+        )
+        result = result.sort_values("key").reset_index(drop=True)
+        assert expected_col in result.columns
+        assert list(result[expected_col]) == [1.5, 3.5]
+    else:
+        df = pd.DataFrame({"v": [1.0, 2.0, 3.0, 4.0]})
+        result = LiteFrameAggAdapter._run_agg(df, agg_funcs, None, [expected_col])
+        assert expected_col in result.columns
+        assert result[expected_col].iloc[0] == 2.5
+
+
+@pytest.mark.parametrize(
+    "func_name,skipna,expected",
+    [
+        pytest.param("first", True, 1, id="first-skipna"),
+        pytest.param("first", False, None, id="first-no-skipna"),
+        pytest.param("last", True, 5, id="last-skipna"),
+        pytest.param("last", False, None, id="last-no-skipna"),
+    ],
+)
+def test_agg_run_first_last_grouped(func_name, skipna, expected):
+    """first/last per group must honor skipna.  Data [None,1,5,None] puts
+    NaN at both ends so skipna=True picks the inner value while skipna=False
+    returns NaN."""
+    df = pd.DataFrame({"key": ["a", "a", "a", "a"], "val": [None, 1, 5, None]})
+    agg_funcs = [_agg(func_name, ["val"])]
+    agg_funcs[0]["kwds"] = {"skipna": skipna}
+    groupby_params = {"by": "key", "sort": False, "dropna": True}
+    result = LiteFrameAggAdapter._run_agg(df, agg_funcs, groupby_params, None)
+    assert len(result) == 1
+    if expected is None:
+        assert pd.isna(result["val"].iloc[0])
+    else:
+        assert result["val"].iloc[0] == expected
+
+
+@pytest.mark.parametrize(
+    "func_name,expected",
+    [pytest.param("first", 3, id="first"), pytest.param("last", 2, id="last")],
+)
+def test_agg_run_first_last_whole_frame_positional(func_name, expected):
+    """first/last whole-frame on non-monotonic [3,1,5,2]: first=3, last=2
+    (not min/max), verifying position-dependent selection."""
+    df = pd.DataFrame({"val": [3, 1, 5, 2]})
+    agg_funcs = [_agg(func_name, ["val"])]
+    agg_funcs[0]["kwds"] = {"skipna": True}
+    result = LiteFrameAggAdapter._run_agg(df, agg_funcs, None, ["val"])
+    assert len(result) == 1
+    assert result["val"].iloc[0] == expected
+
+
+def test_agg_run_ohlc_grouped():
+    """ohlc per group: first/max/min/last with prefix.  Non-monotonic data
+    [3,1,5,2] verifies open=first=3, high=max=5, low=min=1, close=last=2."""
+    df = pd.DataFrame({"key": ["a", "a", "a", "a"], "val": [3, 1, 5, 2]})
+    agg_funcs = [
+        {
+            "map_func_name": "first",
+            "cols": ["val"],
+            "output_key": "agg_0",
+            "kwds": {"skipna": True},
+        },
+        {
+            "map_func_name": "max",
+            "cols": ["val"],
+            "output_key": "agg_1",
+            "kwds": {},
+        },
+        {
+            "map_func_name": "min",
+            "cols": ["val"],
+            "output_key": "agg_2",
+            "kwds": {},
+        },
+        {
+            "map_func_name": "last",
+            "cols": ["val"],
+            "output_key": "agg_3",
+            "kwds": {"skipna": True},
+        },
+    ]
+    groupby_params = {"by": "key", "sort": False, "dropna": True}
+    result = LiteFrameAggAdapter._run_agg(df, agg_funcs, groupby_params, None)
+    assert len(result) == 1
+    assert result["agg_0__val_first"].iloc[0] == 3
+    assert result["agg_1__val_max"].iloc[0] == 5
+    assert result["agg_2__val_min"].iloc[0] == 1
+    assert result["agg_3__val_last"].iloc[0] == 2
 
 
 def _run_custom_grouped(df, agg, cols, dtypes):

@@ -22,16 +22,15 @@ del datetime_method_to_handlers
 
 
 def _install():
-    from maxframe.core import CachedAccessor
     from maxframe.dataframe.accessors.datetime_.accessor import DatetimeAccessor
     from maxframe.dataframe.accessors.datetime_.core import datetime_method_to_handlers
-    from maxframe.dataframe.core import SERIES_TYPE
+    from maxframe.dataframe.core import register_series_accessor
 
     for method in datetime_method_to_handlers:
         if not hasattr(DatetimeAccessor, method):
             DatetimeAccessor._register(method)
-    for series in SERIES_TYPE:
-        series.dt = CachedAccessor("dt", DatetimeAccessor)
+
+    register_series_accessor("dt")(DatetimeAccessor)
 
 
 _install()

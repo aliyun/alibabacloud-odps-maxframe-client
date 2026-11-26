@@ -176,6 +176,28 @@ _ISIN_NOT_SCALAR_MSG = (
 )
 
 
+_ISIN_PANDAS_CONTAINER_MSG = (
+    "isin values must be a flat list of scalars; pandas Series/DataFrame "
+    "inputs are not supported (they compare by index/column alignment, "
+    "which is not implemented)"
+)
+
+
+def _normalize_isin_values(values):
+    """Normalise a flat list of scalar values; reject nested/tileable members."""
+    if isinstance(values, (str, bytes)):
+        return [values]
+    if isinstance(values, (pd.Series, pd.DataFrame)):
+        # ``list(...)`` would silently test the Series' values or the
+        # DataFrame's column labels instead of comparing by alignment.
+        raise NotImplementedError(_ISIN_PANDAS_CONTAINER_MSG)
+    values = list(values)
+    for v in values:
+        if isinstance(v, _ISIN_REJECTED_MEMBER_TYPES):
+            raise NotImplementedError(_ISIN_NOT_SCALAR_MSG)
+    return values
+
+
 class LiteFrameExpr(LiteFrameBaseExpr):
     _op_type_ = None
 
@@ -341,20 +363,13 @@ class LiteFrameExpr(LiteFrameBaseExpr):
         LiteFrameIsInExpr
             Boolean expression.
         """
-        # Reject bare tileables/expressions passed as *values*, then reject
-        # any member that is a nested container, tileable, or expression.
-        # The documented contract is a flat list of scalars; invalid members
-        # would otherwise fail much later during codegen.
+        # Reject bare dict/set/tileable/expression passed as *values* —
+        # these are not flat scalar lists and would fail later during codegen.
         if isinstance(values, (dict, set, TILEABLE_TYPE, LiteFrameBaseExpr)):
             raise NotImplementedError(_ISIN_NOT_SCALAR_MSG)
-        if isinstance(values, (str, bytes)):
-            values = [values]
-        else:
-            values = list(values)
-        for v in values:
-            if isinstance(v, _ISIN_REJECTED_MEMBER_TYPES):
-                raise NotImplementedError(_ISIN_NOT_SCALAR_MSG)
-        return LiteFrameIsInExpr(operand=self, values=values, dtype=None)
+        return LiteFrameIsInExpr(
+            operand=self, values=_normalize_isin_values(values), dtype=None
+        )
 
 
 class LiteFrameColumn(LiteFrameExpr):
@@ -931,7 +946,7 @@ class LiteFrameMultiColumnExpr(LiteFrameBaseExpr):
     # multi-column exprs it is the single source column.
     operands = ListField("operands")
     output_names = ListField("output_names")
-    dtypes = DictField("dtypes")
+    dtypes = AnyField("dtypes")
 
     def __init__(self, *args, **kwargs):
         # Backward compatibility: the input field was renamed from a single
@@ -957,11 +972,24 @@ class LiteFrameMultiColumnExpr(LiteFrameBaseExpr):
             output_names=self.output_names,
             dtypes=self.dtypes,
         )
-        # Copy subclass-specific fields if present (e.g., datetime accessor exprs)
-        for attr in ("method", "is_property"):
+        # Copy subclass-specific fields if present (e.g., datetime accessor exprs).
+        # ``args``/``kwargs`` matter for the string multi-column accessors: a
+        # bound ``str.partition``/``extract``/``split`` without its ``sep`` or
+        # ``pat`` cannot be translated at all.
+        for attr in ("method", "is_property", "args", "kwargs"):
             if hasattr(self, attr):
                 kwargs[attr] = getattr(self, attr)
         return type(self)(**kwargs)
+
+    @property
+    def is_dynamic(self) -> bool:
+        """True when the output schema is resolved at execution time.
+
+        When ``dtypes`` is a tileable (rather than a dict), the column count
+        and names are not known at build time and must be resolved from the
+        tileable input during execution.
+        """
+        return not isinstance(self.dtypes, dict)
 
 
 class LiteFrameMultiColumnSubExpr(LiteFrameExpr):
@@ -978,7 +1006,14 @@ class LiteFrameMultiColumnSubExpr(LiteFrameExpr):
     def bind(self, dtypes):
         bound_multi = self.multi_expr.bind(dtypes)
         dtype_str = bound_multi.dtypes[self.output_name]
-        dtype = to_pandas_dtype(dtype_str)
+        # A concrete dtype is already resolved: round-tripping it through
+        # pandas' string registry can turn a pyarrow-backed string dtype into
+        # StringDtype(storage="pyarrow"), which raises ImportError when
+        # pyarrow < 7 (the legacy CI legs).
+        if isinstance(dtype_str, (np.dtype, pd.api.extensions.ExtensionDtype)):
+            dtype = dtype_str
+        else:
+            dtype = to_pandas_dtype(dtype_str)
         return LiteFrameMultiColumnSubExpr(
             multi_expr=bound_multi,
             output_name=self.output_name,
@@ -990,17 +1025,22 @@ class LiteFrameUDFExpr(LiteFrameMultiColumnExpr):
     """Expression node for UDF-based column transformations.
 
     Embeds a user function (or BuiltinFunction) in a LiteFrameProjection.
-    Used for map, transform_chunk, and transform(axis=1).
+    Used for map, transform_chunk, transform(axis=1), and apply(axis=1).
     """
 
     _op_type_ = opcodes.LITEFRAME_UDF_EXPR
 
     func = FunctionField("func")
-    mode = StringField("mode")  # "map", "transform_chunk", "transform_row"
+    mode = StringField("mode")  # "map", "transform_chunk", "transform_row", "apply_row"
     args = TupleField("args", default=())
     kwargs = DictField("kwargs", default={})
     input_frame_type = StringField("input_frame_type", default=None)
     check_output_dtypes = StringField("check_output_dtypes", default="raises")
+    # apply(axis=1) only: "expand" / "reduce" / "broadcast" / None (pandas
+    # ``DataFrame.apply(func, axis=1, result_type=...)``).  Carried to the
+    # executor so the per-row runner can combine dict / list / Series results
+    # exactly as the operator-based apply(axis=1) path does.
+    result_type = AnyField("result_type", default=None)
 
     def _compute_has_custom_code(self) -> bool:
         return not isinstance(self.func, BuiltinFunction)
@@ -1033,6 +1073,7 @@ class LiteFrameUDFExpr(LiteFrameMultiColumnExpr):
             kwargs=self.kwargs,
             input_frame_type=self.input_frame_type,
             check_output_dtypes=self.check_output_dtypes,
+            result_type=self.result_type,
             scheduling_hint=self.scheduling_hint,
         )
 

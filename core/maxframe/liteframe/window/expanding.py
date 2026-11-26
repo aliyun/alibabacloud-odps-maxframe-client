@@ -51,6 +51,7 @@ class LiteFrameExpanding:
         order_by_ascending=True,
         window_shift=0,
         reverse=False,
+        placeback=True,
     ):
         # bool is a subclass of int — reject it explicitly, and require an
         # integral value (same rule as rolling).
@@ -75,6 +76,7 @@ class LiteFrameExpanding:
         self._order_by_ascending = order_by_ascending
         self._window_shift = window_shift
         self._reverse = reverse
+        self._placeback = placeback
 
     def _agg(self, func):
         """Build and apply the expanding_agg window transform operator."""
@@ -92,6 +94,7 @@ class LiteFrameExpanding:
             order_by_ascending=self._order_by_ascending,
             window_shift=self._window_shift,
             reverse=self._reverse,
+            placeback=self._placeback,
         )
         return op(self._liteframe)
 
@@ -201,6 +204,7 @@ def expanding(
     order_by_ascending=True,
     window_shift=0,
     reverse=False,
+    placeback=True,
 ):
     """Provide expanding window calculations.
 
@@ -235,6 +239,14 @@ def expanding(
         (a "narrowing" window covering ``[i, n-1]``). Matches the MaxCompute
         ``reverse_range`` MF-specific window parameter. May be combined with
         ``window_shift``: the window then covers ``[i+window_shift, n-1]``.
+    placeback : bool, default True
+        If True, restore the output to the input frame's row order and chunk
+        layout after the group-key shuffle (grouped expanding only).  If False,
+        the output stays in reducer/hash-partition order.  Row order and values
+        are unchanged for standalone (non-grouped) expanding, but ``False``
+        also opts out of input alignment-id inheritance, so the result is no
+        longer interchangeable with the input frame for shuffle-free
+        assignment.
 
     Returns
     -------
@@ -254,4 +266,5 @@ def expanding(
         order_by_ascending=order_by_ascending,
         window_shift=window_shift,
         reverse=reverse,
+        placeback=placeback,
     )

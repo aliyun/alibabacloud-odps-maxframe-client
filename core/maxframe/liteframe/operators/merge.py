@@ -20,7 +20,11 @@ from maxframe import opcodes
 from maxframe.core import OutputType
 from maxframe.core.operator import MapReduceOperator, OperatorStage
 from maxframe.liteframe.core import FrameMetadata, RangeInfo
-from maxframe.liteframe.operators.core import LiteFrameOperator, LiteFrameOperatorMixin
+from maxframe.liteframe.operators.core import (
+    LiteFrameOperator,
+    LiteFrameOperatorMixin,
+    _alignment_id_of,
+)
 from maxframe.serialization.serializables import (
     AnyField,
     DictField,
@@ -357,6 +361,17 @@ class LiteFrameConcat(LiteFrameOperatorMixin, LiteFrameOperator):
     materialize_range_cols = ListField(
         "materialize_range_cols", FieldTypes.string, default=None
     )
+
+    def _inherit_alignment_id(self, inputs):
+        # axis=1 (horizontal concat) preserves row layout; if every input
+        # shares one non-None alignment_id the output is still aligned with
+        # them and inherits it. axis=0 (stacking rows) forms a new alignment
+        # universe and always gets a fresh id.
+        if self.axis == 1 and inputs:
+            ids = [_alignment_id_of(inp) for inp in inputs]
+            if all(i is not None for i in ids) and len(set(ids)) == 1:
+                return ids[0]
+        return None
 
     def __call__(self, inputs):
         all_hidden = set()

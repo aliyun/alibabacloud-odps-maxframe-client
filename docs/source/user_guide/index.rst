@@ -9,4 +9,5 @@ User Guide
 
    general/index
    dataframe/index
+   udf/index
    /skills/index

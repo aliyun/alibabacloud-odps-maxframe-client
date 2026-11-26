@@ -17,6 +17,8 @@
 import pandas as pd
 import pytest
 
+import maxframe.utils.polars as mf_polars
+from maxframe.core.operator.base import WorkLoadType
 from maxframe.liteframe.core import LiteFrame
 from maxframe.liteframe.initializer import LiteFrame as LF
 from maxframe.liteframe.operators.project import LiteFrameProjection
@@ -31,6 +33,7 @@ from maxframe.udf import (
     with_running_options,
 )
 from maxframe.utils import deserialize_serializable, serialize_serializable
+from maxframe.utils.polars import polars_supports_zero_width_height
 
 # Module-level @builtin_function targets (need importable qualified names).
 
@@ -120,8 +123,8 @@ def _get_agg_op(result):
     return op
 
 
-def _lf(dtypes_dict):
-    return LF({col: [1, 2, 3] for col in dtypes_dict}, dtypes_dict)
+def _lf(dtypes):
+    return LF({col: [1, 2, 3] for col in dtypes}, dtypes)
 
 
 def test_custom_agg_class_basic():
@@ -556,12 +559,8 @@ def test_decorated_pre_post_propagate_scheduling_hint():
     assert post_hint.expect_resources == {"cpu": 3}
 
 
-def test_undecorated_pre_post_have_none_scheduling_hint():
-    """Complement to the decorated test: a plain (undecorated) ``pre``/
-    ``post`` compiles to ``scheduling_hint is None`` — the helper returns
-    ``None`` when no running options are present, and the compile-time
-    identity assert must accept that without raising.
-    """
+def test_undecorated_pre_post_have_gilheavy_scheduling_hint():
+    """A plain (undecorated) ``pre``/``post`` compiles with ``GILHeavy``."""
 
     class PlainAgg(CustomAgg):
         def pre(self, df):
@@ -579,7 +578,9 @@ def test_undecorated_pre_post_have_none_scheduling_hint():
     compiled = compile_agg(op, lf)
     pre_user = [p for p in compiled.custom_pre_projection if p.name != "key"]
     assert pre_user, "expected a non-key pre projection"
-    assert pre_user[0].expr.multi_expr.scheduling_hint is None
+    hint = pre_user[0].expr.multi_expr.scheduling_hint
+    assert hint is not None
+    assert hint.work_load_type is WorkLoadType.GILHeavy
 
 
 def test_builtin_class_decorated_pre_post_propagate_scheduling_hint():
@@ -621,10 +622,37 @@ def test_builtin_class_decorated_pre_post_propagate_scheduling_hint():
     ), post_hint.expect_resources
 
 
-def test_polars_explicit_empty_selection_rejected_at_compile():
-    """Regression: polars + explicit-empty selection
-    is rejected at compile time (polars can't represent a zero-column frame
-    with nonzero height)."""
+def test_polars_explicit_empty_selection_rejected_without_zero_width_support(
+    monkeypatch,
+):
+    """polars < 1.38 cannot represent the zero-column frame, so it rejects."""
+
+    class _Agg(CustomAgg):
+        def agg(self, df):
+            return df
+
+    monkeypatch.setattr(mf_polars, "_POLARS_SUPPORTS_ZERO_WIDTH_HEIGHT", False)
+
+    lf = _lf({"key": int, "value": int, "extra": int})
+    op = LiteFrameAgg(
+        raw_func=_Agg,
+        groupby_params={
+            "by": "key",
+            "sort": False,
+            "dropna": True,
+            "selection": [],
+        },
+        input_frame_type="polars",
+    )
+    with pytest.raises(ValueError, match="explicit-empty selection"):
+        compile_agg(op, lf)
+
+
+def test_polars_explicit_empty_selection_compiles_with_zero_width_support():
+    """With ``(N, 0)`` support the selection compiles and keeps the height."""
+
+    if not polars_supports_zero_width_height():  # pragma: no cover
+        pytest.skip("polars build without (N, 0) support")
 
     class _Agg(CustomAgg):
         def agg(self, df):
@@ -641,8 +669,8 @@ def test_polars_explicit_empty_selection_rejected_at_compile():
         },
         input_frame_type="polars",
     )
-    with pytest.raises(ValueError, match="explicit-empty selection"):
-        compile_agg(op, lf)
+    # Must not raise on a build that can represent ``(N, 0)``.
+    compile_agg(op, lf)
 
 
 def test_decorated_hook_annotation_survives_partial_binding():
@@ -914,3 +942,24 @@ def test_builtin_agg_survives_serialization_roundtrip(raw):
     # Worker-side reload: must not raise RecursionError.
     func = custom_func.func
     assert func is not None
+
+
+def test_reserved_group_key_name_rejected_at_compile():
+    """Regression: a group key named ``__mf_agg_row_pos__`` is excluded
+    from ``input_dtypes`` by the selection contract, so the existing
+    ``_reject_reserved_column_names`` misses it.  The executor's
+    ``_add_row_pos`` would silently overwrite it; reject at compile."""
+    from maxframe.liteframe.reduction.custom_agg import IdxMinAgg
+
+    lf = _lf({"__mf_agg_row_pos__": int, "a": int})
+    op = LiteFrameAgg(
+        raw_func=IdxMinAgg(),
+        groupby_params={
+            "by": "__mf_agg_row_pos__",
+            "sort": False,
+            "dropna": True,
+        },
+        input_frame_type="pandas",
+    )
+    with pytest.raises(ValueError, match=r"Group key name\(s\)"):
+        compile_agg(op, lf)

@@ -188,8 +188,8 @@ class SplitHandler(StrMultiColumnHandler):
     * ``expand=True, n>0``: ``n+1`` string columns, statically known.
     * ``expand=True, n<=0`` (including the default ``-1`` and ``0``):
       pandas treats ``n<=0`` as unlimited, so the column count depends on
-      the runtime data.  Reject at graph-build time rather than silently
-      degrading to a single list column that fails (or misleads) downstream.
+      the runtime data.  Returns ``None`` to signal the accessor that a
+      dynamic (schema-dynamic) path is needed.
     """
 
     @staticmethod
@@ -198,13 +198,13 @@ class SplitHandler(StrMultiColumnHandler):
         if not expand:
             return {}
         n = kwargs.get("n", -1)
+        # pandas treats n=None as unlimited (same as n=-1). Normalize so
+        # the n <= 0 check doesn't raise TypeError on None.
+        if n is None:
+            n = -1
         if n <= 0:
-            raise ValueError(
-                f"{method}(expand=True, n={n}) is not supported: the output "
-                f"column count depends on the data and cannot be determined "
-                f"at build time. Use expand=True with n>0, or expand=False "
-                f"for a list-of-string column."
-            )
+            # Dynamic path: column count is data-dependent
+            return None
         return {i: _STR_DTYPE for i in range(n + 1)}
 
 

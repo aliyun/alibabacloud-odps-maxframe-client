@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
 from collections import OrderedDict
 
 import numpy as np
@@ -204,6 +205,72 @@ def test_groupby_apply():
     assert applied.shape == (np.nan,)
     assert applied.op._op_type_ == opcodes.APPLY
     assert applied.op.output_types[0] == OutputType.series
+
+
+@pytest.mark.parametrize("prepend_index_group_keys", [True, False])
+@pytest.mark.parametrize(
+    "selection, annotation, output_type",
+    [
+        (
+            ["amount"],
+            pd.DataFrame[{"id": "int64"}, {"amount": "float64"}],
+            OutputType.dataframe,
+        ),
+        (
+            "amount",
+            pd.Series[("id", "int64"), ("amount", "float64")],
+            OutputType.series,
+        ),
+    ],
+    ids=["dataframe", "series"],
+)
+def test_groupby_apply_return_annotation(
+    selection, annotation, output_type, prepend_index_group_keys
+):
+    pdf = pd.DataFrame(
+        {"customer": ["A", "B"], "amount": [10.0, 20.0]},
+        index=pd.Index([101, 102], name="id"),
+    )
+    calls = []
+
+    def annotated(group):
+        calls.append(len(group))
+        return group
+
+    annotated.__annotations__["return"] = annotation
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", TypeInferWarning)
+        applied = (
+            md.DataFrame(pdf)
+            .groupby("customer")[selection]
+            .apply(annotated, prepend_index_group_keys=prepend_index_group_keys)
+        )
+
+    assert calls == []
+    assert applied.op.output_types[0] == output_type
+    if output_type == OutputType.series:
+        assert applied.dtype == np.dtype("float64")
+        assert applied.name == "amount"
+    else:
+        pd.testing.assert_series_equal(applied.dtypes, pdf[["amount"]].dtypes)
+    expected_names = ["customer", "id"] if prepend_index_group_keys else ["id"]
+    assert list(applied.index_value.names) == expected_names
+
+
+def test_groupby_apply_with_numpy_ufunc():
+    pdf = pd.DataFrame({"g": ["a", "a", "b", "b"], "x": [1, 2, 3, 4]})
+    mdf = md.DataFrame(pdf, chunk_size=2)
+
+    # A ufunc UDF consumes whole groups, so the annotation-aware inference
+    # must not classify the GroupBy op as elementwise just because
+    # unwrap_function() reaches the ufunc through `__wrapped__`.
+    with pytest.warns(TypeInferWarning, match="Inferring return type"):
+        applied = mdf.groupby("g")[["x"]].apply(np.sqrt)
+
+    assert applied.op._op_type_ == opcodes.APPLY
+    assert applied.op.output_types[0] == OutputType.dataframe
+    assert applied.dtypes.to_dict() == {"x": np.dtype("float64")}
+    assert applied.shape == (np.nan, 1)
 
 
 def test_groupby_apply_chunk_with_dtypes():

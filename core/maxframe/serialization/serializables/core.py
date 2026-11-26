@@ -59,6 +59,8 @@ class SerializableMeta(type):
 
 
 class Serializable(metaclass=SerializableMeta):
+    """Base class for serializable objects."""
+
     __slots__ = ("__weakref__",)
 
     _cache_primitive_serial = False

@@ -307,6 +307,9 @@ class LGBMScikitLearnBase:
                         valid_init_score,
                         valid_group,
                         params,
+                        # the validation set must carry the same value as the
+                        # training set: lightgbm compares it in set_reference()
+                        categorical_feature=categorical_feature,
                     )
                 valid_sets.append(valid_set)
 

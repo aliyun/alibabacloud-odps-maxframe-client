@@ -25,14 +25,12 @@ del datetime_method_to_handlers
 
 def _install():
     """Install dt accessor on LiteFrame and LiteFrameData."""
-    from maxframe.core import CachedAccessor
     from maxframe.liteframe.accessors.datetime_.accessor import DatetimeAccessor
     from maxframe.liteframe.accessors.datetime_.core import (
         datetime_method_to_handlers,
         datetime_multi_method_to_handlers,
     )
-    from maxframe.liteframe.core import LITEFRAME_TYPE
-    from maxframe.liteframe.initializer import LiteFrame as LiteFrameInit
+    from maxframe.liteframe.core import register_liteframe_accessor
 
     # Register all single-column handler methods to accessor class
     for method in datetime_method_to_handlers:
@@ -44,11 +42,7 @@ def _install():
         if not hasattr(DatetimeAccessor, method):
             DatetimeAccessor._register_multi(method)
 
-    # Attach .dt accessor to core LiteFrame/LiteFrameData and the initializer
-    ca = CachedAccessor("dt", DatetimeAccessor)
-    for liteframe in LITEFRAME_TYPE:
-        liteframe.dt = ca
-    LiteFrameInit.dt = ca
+    register_liteframe_accessor("dt")(DatetimeAccessor)
 
 
 _install()

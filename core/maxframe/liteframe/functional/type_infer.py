@@ -23,7 +23,7 @@ Provides:
 
 import datetime
 import inspect
-from typing import List, Optional, get_type_hints
+from typing import List, Optional
 
 import numpy as np
 import pandas as pd
@@ -53,7 +53,12 @@ except ImportError:  # pragma: no cover
     SolidBlob = None
     is_polars_blob_type = None
     pandas_to_polars_with_blobs = None
-from maxframe.utils import make_dtypes, unwrap_function, wrap_arrow_dtype
+from maxframe.utils import (
+    make_dtypes,
+    resolve_return_annotation,
+    unwrap_function,
+    wrap_arrow_dtype,
+)
 
 
 class LiteFrameType:
@@ -287,25 +292,38 @@ def _get_pa_type(dtype):
 def _get_return_annotation(func):
     """Get the return type annotation from a function, handling MarkedFunction.
 
-    Follows ``functools.wraps`` / inference-wrapper chains (via
-    ``unwrap_function``) back to the user's original callable so type-hint
-    names resolve against the user's own module globals, not the wrapper's.
+    Delegates to ``resolve_return_annotation`` after unwrapping
+    ``MarkedFunction`` so the UDF's own annotations are read rather than the
+    wrapper's.
     """
-    # Descend through partial/__wrapped__ (a bound CustomAgg hook arrives
-    # as functools.partial(MarkedFunction, instance)) — inspect.unwrap
-    # alone does not cross partial, so use unwrap_function.
     actual_func = unwrap_function(func)
     if isinstance(actual_func, MarkedFunction):
         actual_func = actual_func.func
-    if isinstance(actual_func, type):
-        # Callable class: check __call__ method
-        actual_func = actual_func.__call__
+    return resolve_return_annotation(actual_func)
 
+
+def infer_scalar_dtype_from_annotation(func):
+    """Return the dtype declared by a scalar return annotation, if any.
+
+    Element-wise ``map`` UDFs return one scalar per input value, so a simple
+    annotation such as ``-> int`` declares the output dtype directly.
+    DataFrame-shaped ``LiteFrame[...]`` and tuple annotations are not scalar
+    and are ignored here.
+    """
+    annotation = _get_return_annotation(func)
+    if annotation is None or annotation is type(None):
+        return None
+    if isinstance(annotation, LiteFrameType):
+        return None
+    if (
+        isinstance(annotation, tuple)
+        or getattr(annotation, "__origin__", None) is tuple
+    ):
+        return None
     try:
-        hints = get_type_hints(actual_func)
+        return _normalize_to_arrow_dtype(annotation)
     except Exception:
         return None
-    return hints.get("return", None)
 
 
 def infer_output_dtypes(

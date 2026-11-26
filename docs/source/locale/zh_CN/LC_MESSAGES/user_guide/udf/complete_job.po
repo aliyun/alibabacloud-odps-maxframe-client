@@ -1,0 +1,114 @@
+# Simplified Chinese translations for the MaxFrame documentation.
+# Copyright (C) 1999-2026, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-30 12:10+0800\n"
+"PO-Revision-Date: 2026-10-29 00:00+0800\n"
+"Last-Translator: MaxFrame contributors\n"
+"Language: zh_CN\n"
+"Language-Team: Chinese (Simplified)\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/complete_job.rst:5
+msgid "A complete apply_chunk job"
+msgstr "完整作业示例"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/complete_job.rst:7
+msgid ""
+"This example reads application logs from ``source_table``, with ``id`` as "
+"the DataFrame index. The UDF extracts fields and flags slow requests in "
+"batches. The job writes the result to ``target_table`` and reads back a few "
+"rows."
+msgstr ""
+"这个例子从 ``source_table`` 读取应用日志，以 ``id`` 作为 DataFrame 索引。UDF "
+"分批提取字段并标记慢请求，作业将结果写入 ``target_table``，再读回几行查看。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/complete_job.rst:11
+msgid ""
+"Before running the example, set the MaxCompute credentials, project, and "
+"endpoint in the environment variables used below. Replace the source and "
+"target table names with the actual names."
+msgstr "运行前，先设置代码中使用的 MaxCompute 凭证、项目和 Endpoint 环境变量，并将源表、目标表替换为实际表名。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/complete_job.rst:15
+msgid ""
+"The source table must contain ``id`` and ``raw_log`` columns. ``id`` "
+"identifies each record, and ``raw_log`` contains the log text. For example, "
+"the illustrative input ``id=101`` and ``raw_log=\"[INFO] latency=800ms\"`` "
+"produces ``level=\"INFO\"``, ``latency_ms=800.0``, and ``is_slow=True``, "
+"with ``101`` kept as the row index."
+msgstr ""
+"源表需要包含 ``id`` 和 ``raw_log`` 两列：``id`` 用于标识记录，``raw_log`` 保存日志文本。例如，示意输入 "
+"``id=101``、``raw_log=\"[INFO] latency=800ms\"`` 对应的输出是 "
+"``level=\"INFO\"``、``latency_ms=800.0``、``is_slow=True``，行索引仍为 ``101``。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/complete_job.rst:21
+msgid ""
+"The example uses ``overwrite=True``, which replaces existing data in "
+"``target_table``, and ``index=True`` so the ``id`` index is written as a "
+"column."
+msgstr ""
+"示例使用 ``overwrite=True``，会覆盖 ``target_table`` 中的已有数据；``index=True`` 会把 ``id``"
+" 索引作为一列写入。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/complete_job.rst:76
+msgid ""
+"If the source contains only the illustrative record above, the read-back "
+"result is:"
+msgstr "如果源表中只有上面的示例记录，读回的结果为："
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/complete_job.rst:85
+msgid "When adapting this example, check these settings:"
+msgstr "使用这段代码时，需要留意几项设置："
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/complete_job.rst:87
+msgid ""
+"``odps_entry=o`` supplies the connection when reading each table. "
+"``o.to_global()`` sets the PyODPS default used by ``to_odps_table``. "
+"Creating a MaxFrame session does not set that default."
+msgstr ""
+"``odps_entry=o`` 显式指定读表所用的连接。``o.to_global()`` 设置 ``to_odps_table`` 使用的 "
+"PyODPS 默认连接；创建 MaxFrame 会话不会自动设置这个默认值。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/complete_job.rst:91
+msgid ""
+"``new_session(o)`` creates the MaxFrame session, and "
+"``get_logview_address()`` returns the Logview link for checking progress and"
+" errors."
+msgstr ""
+"``new_session(o)`` 创建 MaxFrame 会话，``get_logview_address()`` 获取 Logview "
+"链接，方便查看进度和错误。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/complete_job.rst:95
+msgid ""
+"``@with_running_options(cpu=2, memory=\"8GiB\")`` requests 2 CPUs and 8 GiB "
+"of memory for each task running the function while following the job's "
+"default execution engine. Adjust these values for the workload; see "
+":ref:`udf_tuning_resources`."
+msgstr ""
+"``@with_running_options(cpu=2, memory=\"8GiB\")`` 为每个运行该函数的任务申请 2 个 CPU 和 8 "
+"GiB 内存，执行引擎沿用作业默认设置。这些值需要按实际计算调整，选值方法见 :ref:`udf_tuning_resources`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/complete_job.rst:100
+msgid ""
+"The return annotation declares the output columns and dtypes. The function "
+"preserves the input ``id`` index; see :ref:`udf_result_index`."
+msgstr "返回类型注解声明了输出列和数据类型。函数保留了输入的 ``id`` 索引，索引的声明方法见 :ref:`udf_result_index`。"
+
+#: ../../../../../../../maxframe/docs/source/user_guide/udf/complete_job.rst:103
+msgid ""
+"Reading the table and calling ``apply_chunk`` build the calculation. "
+"Executing ``to_odps_table`` submits the calculation and table write. The "
+"final read checks up to five saved rows; ``fetch()`` returns them as a "
+"pandas DataFrame. Row order is not guaranteed."
+msgstr ""
+"读表和调用 ``apply_chunk`` 只构建计算过程。对 ``to_odps_table`` 调用 ``execute`` "
+"才会提交计算并写表。最后一次读取用于检查已保存的数据，最多返回五行；``fetch()`` 将它们取回为 pandas "
+"DataFrame。结果的行顺序不固定。"

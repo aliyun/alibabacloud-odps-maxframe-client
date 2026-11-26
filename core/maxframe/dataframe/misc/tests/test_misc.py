@@ -14,9 +14,11 @@
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 import pytest
 
 from maxframe import opcodes, options
+from maxframe.config import option_context
 from maxframe.core import OutputType
 from maxframe.dataframe import DataFrame
 from maxframe.dataframe import eval as maxframe_eval
@@ -32,8 +34,12 @@ from maxframe.dataframe.datasource.dataframe import from_pandas as from_pandas_d
 from maxframe.dataframe.datasource.index import from_pandas as from_pandas_index
 from maxframe.dataframe.datasource.series import from_pandas as from_pandas_series
 from maxframe.dataframe.misc import astype, cut
+from maxframe.dataframe.misc.astype import _convert_dtype_backend
+from maxframe.io.odpsio.schema import pandas_to_odps_schema
 from maxframe.tensor.core import TENSOR_TYPE
-from maxframe.udf import ODPSFunction, with_running_options
+from maxframe.tests.utils import require_arrow_dtype
+from maxframe.udf import BuiltinFunction, ODPSFunction, with_running_options
+from maxframe.utils import wrap_arrow_dtype
 
 
 def test_dataframe_apply():
@@ -197,6 +203,50 @@ def test_series_apply():
     with pytest.raises(TypeError):
         # dtypes not provided
         series.apply(lambda x: x.tolist(), output_type="dataframe")
+
+
+def _scale_by_logical_name(obj, factor):
+    """The extension guide's helper call, with its declared return contract."""
+    return obj.apply(
+        BuiltinFunction(func_name="myapp#scale"),
+        args=(factor,),
+        output_type="series",
+        dtype="float64",
+        skip_infer=True,
+    )
+
+
+@pytest.mark.parametrize(
+    "make_obj",
+    [
+        pytest.param(
+            lambda: from_pandas_series(pd.Series([1, 2], name="s")), id="series"
+        ),
+        pytest.param(
+            lambda: from_pandas_df(pd.DataFrame({"a": [1, 2]})), id="dataframe"
+        ),
+    ],
+)
+def test_apply_logical_name_builtin_without_body(make_obj):
+    """The guide's helper example builds the graph without its body.
+
+    The public API references a helper implemented in a closed-source backend by
+    logical name (``namespace#name``), whose body is registered only in the
+    backend processes, and declares the return contract at the call.  Closure
+    checks and scheduling-hint discovery probe the callable while the graph is
+    built, and no inference can run without a body; both receivers the documented
+    method accepts are covered here.
+    """
+    assert "myapp#scale" not in BuiltinFunction._registered
+
+    result = _scale_by_logical_name(make_obj(), 2)
+
+    # output type and dtype come from the declared contract, not from inference
+    assert result.op.output_types[0] == OutputType.series
+    assert result.dtype == np.dtype("float64")
+    # the graph carries the name only: no body was resolved on the client
+    assert result.op.func.func_name == "myapp#scale"
+    assert getattr(result.op.func, "_func", None) is None
 
 
 def test_transform():
@@ -661,3 +711,128 @@ def test_map_with_functions():
     mapped = series.map(odps_func)
     assert isinstance(mapped.op.arg, ODPSFunction)
     assert mapped.dtype == np.dtype("float64")
+
+
+def test_dataframe_map_with_scalar_annotation():
+    raw = pd.DataFrame({"a": [1, 2], "b": [3.0, 4.0]})
+    df = from_pandas_df(raw, chunk_size=2)
+    calls = []
+
+    def fn(val) -> int:
+        calls.append(val)
+        return int(val)
+
+    mapped = df.map(fn)
+    assert calls == []
+    assert mapped.dtypes.to_dict() == {
+        "a": np.dtype("int64"),
+        "b": np.dtype("int64"),
+    }
+
+    mapped = df.map(fn, dtype="float64")
+    assert calls == []
+    assert mapped.dtypes.to_dict() == {
+        "a": np.dtype("float64"),
+        "b": np.dtype("float64"),
+    }
+
+
+@require_arrow_dtype
+def test_dataframe_map_with_scalar_annotation_arrow_backend():
+    # ``dataframe.dtype_backend='pyarrow'`` needs pandas>=1.5 with a usable
+    # ArrowDtype (pyarrow>=7), so this part runs in its own guarded test.
+    raw = pd.DataFrame({"a": [1, 2], "b": [3.0, 4.0]})
+    df = from_pandas_df(raw, chunk_size=2)
+    series = from_pandas_series(raw["a"], chunk_size=2)
+
+    def fn(val) -> int:
+        return int(val)
+
+    with option_context({"dataframe.dtype_backend": "pyarrow"}):
+        arrow_df = df.map(fn)
+        arrow_series = series.map(fn)
+    arrow_int = pd.ArrowDtype(pa.int64())
+    assert arrow_df.dtypes.to_dict() == {"a": arrow_int, "b": arrow_int}
+    assert arrow_series.dtype == arrow_int
+
+
+@require_arrow_dtype
+def test_dataframe_map_backend_applies_to_annotations_only():
+    raw = pd.DataFrame({"x": [1, 2]})
+    df = from_pandas_df(raw, chunk_size=2)
+
+    def fn(val) -> int:
+        return int(val)
+
+    with option_context({"dataframe.dtype_backend": "pyarrow"}):
+        annotated = df.map(fn)
+        explicit = df.map(fn, dtype="int64")
+
+    assert annotated.dtypes.to_dict() == {"x": wrap_arrow_dtype(pa.int64())}
+    # an explicit dtype keeps the value the caller passed
+    assert explicit.dtypes.to_dict() == {"x": np.dtype("int64")}
+
+
+@pytest.mark.parametrize(
+    "annotation, convert, expected_dtype, odps_type",
+    [
+        (str, lambda val: "value-" + str(val), pd.StringDtype(), "string"),
+        (
+            bytes,
+            lambda val: ("value-" + str(val)).encode(),
+            wrap_arrow_dtype(pa.binary()),
+            "binary",
+        ),
+        (pd.Timestamp, lambda val: pd.Timestamp("2020-01-01"), None, "timestamp"),
+        ("int64", int, np.dtype("int64"), "bigint"),
+    ],
+    ids=["str", "bytes", "timestamp", "dtype-name"],
+)
+def test_dataframe_map_annotation_dtype(annotation, convert, expected_dtype, odps_type):
+    """A scalar annotation declares a dtype that the ODPS schema can carry.
+
+    ``str`` and ``bytes`` cannot be expressed by plain NumPy dtypes, ``object``
+    (e.g. ``pd.Timestamp``) carries no information, and a string annotation may
+    name a dtype rather than an object in the UDF's namespace.
+    """
+    raw = pd.DataFrame({"x": [1, 2]})
+    df = from_pandas_df(raw, chunk_size=2)
+
+    def fn(val):
+        return convert(val)
+
+    fn.__annotations__["return"] = annotation
+
+    mapped = df.map(fn)
+    if expected_dtype is not None:
+        assert mapped.dtypes.to_dict() == {"x": expected_dtype}
+        series = from_pandas_series(raw["x"], chunk_size=2).map(fn)
+        assert series.dtype == expected_dtype
+    schema, _ = pandas_to_odps_schema(mapped, unknown_as_string=True)
+    assert str(schema.columns[-1].type).lower() == odps_type
+
+
+def test_map_keeps_numpy_dtype_when_arrow_dtype_unusable(monkeypatch):
+    # pandas raises ImportError when pyarrow is too old to build an
+    # ArrowDtype, so the declared dtype must stay NumPy.
+    monkeypatch.setitem(
+        _convert_dtype_backend.__globals__, "is_arrow_dtype_supported", lambda: False
+    )
+    assert _convert_dtype_backend(np.dtype("int64"), "pyarrow") == np.dtype("int64")
+
+
+def test_dataframe_map_with_postponed_annotation():
+    # ``from __future__ import annotations`` leaves the return annotation as a
+    # string, so it must be resolved in the UDF's namespace before use.
+    raw = pd.DataFrame({"x": [1, 2]})
+    df = from_pandas_df(raw, chunk_size=2)
+    calls = []
+
+    def fn(val) -> "np.int64":
+        calls.append(val)
+        return np.int64(val)
+
+    for skip_infer in (False, True):
+        mapped = df.map(fn, skip_infer=skip_infer)
+        assert calls == []
+        assert mapped.dtypes.to_dict() == {"x": np.dtype("int64")}

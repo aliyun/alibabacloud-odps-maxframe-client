@@ -26,6 +26,7 @@ from odps import types as odps_types
 from odps.errors import ODPSError
 
 from maxframe import tensor as mt
+from maxframe.config import option_context
 from maxframe.core import OutputType
 from maxframe.core.operator import estimate_size
 from maxframe.dataframe import read_odps_query, read_odps_table
@@ -58,6 +59,14 @@ from maxframe.tests.utils import tn
 from maxframe.utils import lazy_import
 
 ray = lazy_import("ray")
+
+
+def test_read_odps_table_without_connection(monkeypatch):
+    monkeypatch.setattr(ODPS, "from_global", lambda: None)
+    monkeypatch.setattr(ODPS, "from_environments", lambda: None)
+    with option_context({"session.default_schema": None}):
+        with pytest.raises(ValueError, match="Missing odps_entry parameter"):
+            read_odps_table("missing_connection_table")
 
 
 def test_from_pandas_dataframe():

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import numpy as np
 import pandas as pd
 import pyarrow as pa
 
@@ -20,6 +21,7 @@ from maxframe.liteframe.core import FrameMetadata
 from maxframe.liteframe.operators.core import LiteFrameOperator, LiteFrameOperatorMixin
 from maxframe.serialization.serializables import (
     AnyField,
+    BoolField,
     FieldTypes,
     Int64Field,
     ListField,
@@ -74,8 +76,20 @@ class LiteFrameSort(LiteFrameOperatorMixin, LiteFrameOperator):
             hidden_columns=hidden_columns,
         )
         n_rows = liteframe.shape[0]
-        # Apply nrows limit if set by head pushdown optimization
-        if (
+        # Apply nrows limit if set by head pushdown optimization.
+        # For keep_kind='all', the output may exceed nrows (all tied rows
+        # are included), so the exact row count is unknown until execution.
+        # For multi-column keep='first'/'last', pandas SelectNFrame can
+        # return more or fewer than nrows depending on composite key ties,
+        # so the row count is also unknown. Use np.nan (the project's
+        # unknown-size sentinel) to avoid publishing incorrect shape
+        # metadata to downstream tiling.
+        if self.nrows is not None and (
+            self.keep_kind == "all"
+            or (self.keep_kind in ("first", "last") and len(self.by) > 1)
+        ):
+            n_rows = np.nan
+        elif (
             self.nrows is not None
             and n_rows is not None
             and not (isinstance(n_rows, float) and n_rows != n_rows)
@@ -83,6 +97,88 @@ class LiteFrameSort(LiteFrameOperatorMixin, LiteFrameOperator):
             n_rows = min(int(n_rows), self.nrows)
         shape = (n_rows, len(new_dtypes))
 
+        return self.new_liteframe(
+            [liteframe],
+            shape=shape,
+            physical_dtypes=new_dtypes,
+            frame_metadata=new_metadata,
+        )
+
+
+class LiteFrameRank(LiteFrameOperatorMixin, LiteFrameOperator):
+    _op_type_ = opcodes.RANK
+
+    method = StringField("method", default="average")
+    numeric_only = BoolField("numeric_only", default=False)
+    na_option = StringField("na_option", default="keep")
+    ascending = AnyField("ascending", default=True)
+    pct = BoolField("pct", default=False)
+    hidden_columns = ListField("hidden_columns", FieldTypes.string, default=None)
+
+    def _inherit_alignment_id(self, inputs):
+        # Rank preserves the input row layout (it replaces values in place
+        # and does not reorder rows); its PSRS tiling always ends with a
+        # place_back step restoring the source chunk layout, so the output
+        # stays row-aligned with its input.
+        return self._inherit_single_input_alignment_id(inputs)
+
+    def __call__(self, liteframe):
+        in_dtypes = liteframe._data._physical_dtypes
+        in_metadata = liteframe.frame_metadata
+
+        # Target columns are resolved in the API (honoring ``numeric_only``)
+        # and carried in extra_params; default to all physical columns.
+        # Use ``in`` check (not ``or``) so an explicit empty list (all-string
+        # frame with numeric_only=True) is preserved — ``[] or fallback``
+        # would wrongly restore every physical column as a rank target.
+        if "by" in self.extra_params:
+            by = self.extra_params["by"]
+        else:
+            by = list(in_dtypes.index)
+
+        # Rank preserves the input row layout (it replaces values in place,
+        # it does not reorder rows). Virtual range columns are therefore
+        # preserved unless they are rank targets (materialized by the tiler).
+        #
+        # Hidden columns: the rank value itself does not carry hidden columns
+        # through the multi-chunk PSRS path. The PSRS pipeline (map →
+        # local_rank → place_back → projection) reconstructs frames containing
+        # only routing columns and rank values. Hidden columns remain in the
+        # source frame; they will be attached back to the rank result once
+        # place_back is enhanced to reconstruct the full original frame (not
+        # just routing + rank values). The single-chunk path does pass hidden
+        # columns through (see LiteFrameRankExecutor). The hidden_columns
+        # field is declared in metadata so the physical schema matches, but
+        # the PSRS executor does not yet materialize them in multi-chunk.
+        rank_dtype = wrap_arrow_dtype(pa.float64())
+        new_dtypes = pd.Series([rank_dtype] * len(by), index=list(by), dtype=object)
+
+        hidden_columns = None
+        if in_metadata is not None and in_metadata.hidden_columns:
+            hidden_columns = in_metadata.hidden_columns
+            self.hidden_columns = hidden_columns
+            hidden_dtypes = in_dtypes[
+                [c for c in hidden_columns if c in in_dtypes.index]
+            ]
+            new_dtypes = pd.concat([new_dtypes, hidden_dtypes])
+
+        # Range columns that are not rank targets stay virtual; targets are
+        # materialized by the tiler. Standalone rank preserves row order, so
+        # non-target range columns remain valid.
+        input_range_columns = (
+            in_metadata.range_columns
+            if in_metadata and in_metadata.range_columns
+            else {}
+        )
+        new_range_columns = {
+            k: v for k, v in input_range_columns.items() if k not in by
+        }
+        new_metadata = FrameMetadata(
+            range_columns=new_range_columns,
+            hidden_columns=hidden_columns,
+        )
+        n_rows = liteframe.shape[0]
+        shape = (n_rows, len(new_dtypes) + len(new_range_columns))
         return self.new_liteframe(
             [liteframe],
             shape=shape,

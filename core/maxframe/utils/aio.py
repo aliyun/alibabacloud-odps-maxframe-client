@@ -18,6 +18,7 @@ import concurrent.futures
 import contextvars
 import functools
 import itertools
+import logging
 import sys
 import time
 from typing import Awaitable, Callable, Optional, Tuple, Type, TypeVar, Union
@@ -32,11 +33,29 @@ _PrimitiveType = TypeVar("_PrimitiveType")
 _ToThreadRetType = TypeVar("_ToThreadRetType")
 _RetryRetType = TypeVar("_RetryRetType")
 
+logger = logging.getLogger(__name__)
+
 
 async def wait_http_response(
-    url: str, *, request_timeout: TimeoutType = None, interval_timeout=10.0, **kwargs
+    url: str,
+    *,
+    request_timeout: TimeoutType = None,
+    interval_timeout=10.0,
+    retry_status_codes: Tuple[int, ...] = (),
+    retry_delay: float = 5.0,
+    max_status_retries: int = 12,
+    **kwargs,
 ) -> httpclient.HTTPResponse:
+    """Wait for a response, retrying timeouts and selected HTTP status codes.
+
+    Status-code retries and their delays share the original request_timeout
+    budget. With request_timeout=None, no total deadline is imposed, but
+    status-code retries are limited to max_status_retries additional attempts.
+    Request timeouts do not consume this limit.
+    """
     start_time = time.time()
+    status_retries = 0
+    last_status_error = None
     while request_timeout is None or time.time() - start_time < request_timeout:
         if request_timeout is not None:
             timeout_left = min(
@@ -52,7 +71,43 @@ async def wait_http_response(
             )
         except HTTPTimeoutError:
             pass
-    raise TimeoutError
+        except httpclient.HTTPClientError as ex:
+            if ex.code not in retry_status_codes:
+                raise
+            last_status_error = ex
+            delay = retry_delay
+            remaining = None
+            if request_timeout is not None:
+                remaining = request_timeout - (time.time() - start_time)
+                if remaining <= 0:
+                    break
+                delay = min(delay, remaining)
+            elif status_retries >= max_status_retries:
+                logger.warning(
+                    "HTTP status retry limit reached: url=%s, status=%s, retries=%s",
+                    url,
+                    ex.code,
+                    status_retries,
+                )
+                raise
+            status_retries += 1
+            log = logger.warning if status_retries == 1 else logger.debug
+            log(
+                "Retrying HTTP request: url=%s, status=%s, retry=%s, "
+                "delay=%s, remaining_timeout=%s",
+                url,
+                ex.code,
+                status_retries,
+                delay,
+                remaining,
+            )
+            await asyncio.sleep(delay)
+    # Keep TimeoutError so outer HTTP retries cannot restart the exhausted budget.
+    last_status = last_status_error.code if last_status_error is not None else None
+    raise TimeoutError(
+        f"HTTP request timed out: url={url}, request_timeout={request_timeout}, "
+        f"last_status={last_status}, status_retries={status_retries}"
+    ) from last_status_error
 
 
 def create_sync_primitive(

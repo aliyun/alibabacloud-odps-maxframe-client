@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1156+br.gf69dcec42\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-07 15:09+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.quantile.rst:2
+msgid "maxframe.liteframe.LiteFrame.quantile"
+msgstr ""
+
+#: maxframe.liteframe.reduction.quantile.quantile:1 of
+msgid "Return values at the given quantile for each column."
+msgstr "返回每列在给定分位数处的值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.quantile.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.reduction.quantile.quantile:3 of
+#, python-brace-format
+msgid ""
+"Quantile(s) to compute, in the range ``[0, 1]``.  A scalar keeps original"
+" column names; a list produces wide columns named ``{col}_q{pct}`` (e.g. "
+"``a_q50`` for q=0.5)."
+msgstr ""
+"要计算的分位数，取值范围为 ``[0, 1]``。标量保持原始列名；列表会生成名为 `"
+"`{col}_q{pct}`` 的宽列（例如 q=0.5 时为 ``a_q50``）。"
+
+#: maxframe.liteframe.reduction.quantile.quantile:7 of
+msgid "Interpolation method when the quantile lies between two data points."
+msgstr "当分位数位于两个数据点之间时的插值方法。"
+
+#: maxframe.liteframe.reduction.quantile.quantile:9 of
+msgid ""
+"If ``True``, silently exclude non-numeric columns.  If ``False``, raise "
+"``TypeError`` on non-numeric columns."
+msgstr ""
+"如果为 ``True``，静默排除非数值列。如果为 ``False``，遇到非数值列时抛出 `"
+"`TypeError``。"
+
+#: maxframe.liteframe.reduction.quantile.quantile:12 of
+msgid ""
+"If ``True``, use an approximate grid-summary sketch on the distributed "
+"path (rank error ~1%).  NaNs are excluded in both modes; ±inf are kept "
+"as valid order statistics in both modes."
+msgstr ""
+"如果为 ``True``，在分布式路径上使用近似的网格摘要草图（排名误差约 1%）。"
+"两种模式下均排除 NaN；±inf 在两种模式下均保留为有效的顺序统计量。"
+
+#: maxframe.liteframe.reduction.quantile.quantile:16 of
+msgid "Execution strategy for grouped/multi-chunk aggregation."
+msgstr "分组/多分块聚合的执行策略。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.quantile.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.reduction.quantile.quantile:19 of
+msgid ""
+"One-row frame (whole-frame) or one-row-per-group frame with quantile "
+"values per column."
+msgstr "单行帧（全帧）或每组一行的帧，包含每列的分位数值。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.quantile.rst
+msgid "返回类型"
+msgstr ""
+

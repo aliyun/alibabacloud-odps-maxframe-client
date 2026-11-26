@@ -42,13 +42,21 @@ class TensorRechunk(TensorOperator, TensorOperatorMixin):
 
     @staticmethod
     def validate_rebalance_args(factor, num_partitions):
-        """Validate that exactly one of ``factor`` / ``num_partitions`` is set."""
+        """Validate the rebalance arguments.
+
+        Exactly one of ``factor`` / ``num_partitions`` must be set, and a
+        partition count must be positive -- a non-positive count cannot be
+        honoured, and silently clamping it would turn invalid input into a
+        single chunk.
+        """
         if num_partitions is None and factor is None:
             raise ValueError("Need to specify num_partitions or factor")
         if num_partitions is not None and factor is not None:
             raise ValueError(
                 "num_partitions and factor cannot be specified at the same time"
             )
+        if num_partitions is not None and num_partitions < 1:
+            raise ValueError("num_partitions must be at least 1")
 
     @staticmethod
     def normalize_rechunk_axis(axis, chunk_size, validate_axis, *validate_args):

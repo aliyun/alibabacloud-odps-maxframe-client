@@ -45,10 +45,10 @@ try:
 except ImportError:  # pragma: no cover
     pl = None
 
-from maxframe.core.operator.base import SchedulingHint
+from maxframe.core.operator.base import SchedulingHint, WorkLoadType
 from maxframe.liteframe.functional.type_infer import _normalize_to_arrow_dtype
 from maxframe.udf import discover_marked_functions
-from maxframe.utils import unwrap_function
+from maxframe.utils import to_pandas_dtype, unwrap_function
 
 
 def pop_check_output_dtypes(kwargs):
@@ -79,11 +79,11 @@ def _build_scheduling_hint_from_func(func):
     as a ``MarkedFunction``.  The projection tiler reads
     ``LiteFrameUDFExpr.scheduling_hint`` for color-grouping, so the hint must
     be set on the expression for the splitter to see incompatible running
-    options.  Returns ``None`` when the function has no running options.
+    options.  Returns ``SchedulingHint(work_load_type=GILHeavy)`` by default.
     """
     marked_funcs = discover_marked_functions(func)
     if not marked_funcs:
-        return None
+        return SchedulingHint(work_load_type=WorkLoadType.GILHeavy)
     mf = marked_funcs[0]
     has_options = any(
         (
@@ -95,9 +95,10 @@ def _build_scheduling_hint_from_func(func):
         )
     )
     if not has_options:
-        return None
+        return SchedulingHint(work_load_type=WorkLoadType.GILHeavy)
     return SchedulingHint(
         gpu=mf.gpu or None,
+        work_load_type=None if mf.gpu else WorkLoadType.GILHeavy,
         expect_engine=mf.expect_engine or None,
         expect_resources=dict(mf.expect_resources) if mf.expect_resources else None,
         fs_mount=list(mf.fs_mount) if mf.fs_mount else None,
@@ -106,7 +107,15 @@ def _build_scheduling_hint_from_func(func):
 
 
 def build_udf_projections(
-    lf, func, mode, out_dtypes, input_frame_type, check_output_dtypes, args, kwargs
+    lf,
+    func,
+    mode,
+    out_dtypes,
+    input_frame_type,
+    check_output_dtypes,
+    args,
+    kwargs,
+    result_type=None,
 ):
     """Build ``LiteFrameProjection`` projections for expression-based UDFs.
 
@@ -116,9 +125,13 @@ def build_udf_projections(
     produces columns absent from the input schema) and as the column set
     the executor selects before calling the UDF.
 
-    For ``transform_chunk`` / ``transform_row`` we pass all input columns
-    because the UDF may reference any of them.  For ``map`` (handled in
-    ``map.py``), each per-column UDF only needs its own column.
+    For ``transform_chunk`` / ``transform_row`` / ``apply_row`` we pass all
+    input columns because the UDF may reference any of them.  For ``map``
+    (handled in ``map.py``), each per-column UDF only needs its own column.
+    ``result_type`` is carried onto the ``LiteFrameUDFExpr`` for
+    ``apply_row`` (``apply(axis=1, result_type=...)``) so the executor can
+    combine per-row dict / list / Series results exactly as pandas does; it
+    is ignored by the transform modes.
     """
     output_names = list(out_dtypes.index)
     dtypes = dict(out_dtypes)
@@ -141,6 +154,7 @@ def build_udf_projections(
         check_output_dtypes=check_output_dtypes,
         args=args,
         kwargs=kwargs,
+        result_type=result_type,
         scheduling_hint=scheduling_hint,
     )
 
@@ -618,8 +632,10 @@ def wrap_inference_func(
       invokes the UDF on the whole mock frame and normalizes the result via
       :func:`_normalize_result_to_frame`, mirroring the executor's
       ``_normalize_group_result``.
-    - anything else (e.g. ``"transform_chunk"`` / ``"apply_chunk"``): the UDF
-      receives the whole frame; no wrapping is needed beyond invocation.
+    - anything else (e.g. ``"transform_chunk"`` / ``"apply_chunk"``): inference
+      invokes the UDF on the whole mock frame; no wrapping is needed beyond
+      invocation (``transform_chunk`` itself runs per sub-chunk at execution
+      time).
 
     Callable-class UDFs are instantiated and closed here (on both success and
     failure paths).
@@ -750,8 +766,9 @@ def wrap_inference_func(
             return _stringify_frame_labels(frame)
 
     else:
-        # Whole-frame contract (transform_chunk / apply_chunk): the UDF
-        # already receives the whole frame.
+        # Whole-frame inference (apply_chunk / transform_chunk): schema
+        # inference invokes the UDF once on the mock frame; transform_chunk
+        # runs per sub-chunk at execution time.
         def wrapper(mock_df):
             return _invoke_udf_once(underlying, mock_df, args, kwargs)
 
@@ -770,6 +787,11 @@ def wrap_inference_func(
 # --- Operator-based UDF helpers (LiteFrameFunctional) ---
 
 
+# Sentinel distinguishing "caller did not precompute inference" from a
+# legitimate ``None`` (skip_infer) result.
+_INFER_MISSING = object()
+
+
 def create_functional_op(
     func,
     *,
@@ -783,6 +805,8 @@ def create_functional_op(
     axis=None,
     groupby_params=None,
     result_type=None,
+    inferred=_INFER_MISSING,
+    placeback=True,
 ):
     """Infer dtypes and build a :class:`LiteFrameFunctional` operator.
 
@@ -794,6 +818,11 @@ def create_functional_op(
     mock inference respects the mode's execution contract (per-column,
     per-row, or whole-frame).  ``infer_output_dtypes`` itself stays
     mode-agnostic.
+
+    ``inferred`` may be passed in to reuse a precomputed inference result
+    (e.g. ``apply(axis=1)`` runs inference once and then branches between the
+    functional and projection paths); when omitted, inference runs here as
+    before.
     """
     kwargs = dict(kwargs) if kwargs else {}
     check_output_dtypes = pop_check_output_dtypes(kwargs)
@@ -815,18 +844,19 @@ def create_functional_op(
     else:
         infer_mode = "chunk"
 
-    infer_func = wrap_inference_func(
-        func, infer_mode, input_frame_type, args, kwargs, result_type=result_type
-    )
-    inferred = infer_output_dtypes(
-        infer_func,
-        input_dtypes,
-        dtypes=dtypes,
-        skip_infer=skip_infer,
-        args=(),
-        kwargs={},
-        input_frame_type=input_frame_type,
-    )
+    if inferred is _INFER_MISSING:
+        infer_func = wrap_inference_func(
+            func, infer_mode, input_frame_type, args, kwargs, result_type=result_type
+        )
+        inferred = infer_output_dtypes(
+            infer_func,
+            input_dtypes,
+            dtypes=dtypes,
+            skip_infer=skip_infer,
+            args=(),
+            kwargs={},
+            input_frame_type=input_frame_type,
+        )
     op = LiteFrameFunctional(
         func=func,
         mode=mode,
@@ -838,6 +868,7 @@ def create_functional_op(
         args=args,
         kwargs=kwargs if kwargs else None,
         result_type=result_type,
+        placeback=placeback,
     )
     return op, inferred
 
@@ -1135,6 +1166,31 @@ def prepend_group_key_columns(frames, group_df, declared_dtypes, by_cols):
     return prepended
 
 
+def check_hidden_output_conflict(liteframe, visible_dtypes):
+    """Raise when a hidden column is declared as a visible output column.
+
+    Hidden columns are stripped from UDF inputs and carried through to the
+    output automatically (preserve policy), so a UDF can never produce one;
+    naming a hidden column as an output (via ``dtypes`` or a return
+    annotation) is a contract error.  Shared by
+    :func:`merge_hidden_into_physical` and the ``apply(axis=1)`` projection
+    path so both functional and expression-based lowering reject the same
+    misuse.
+    """
+    conflict = [
+        h for h in sorted(liteframe._hidden_columns) if h in visible_dtypes.index
+    ]
+    if conflict:
+        raise ValueError(
+            f"hidden column(s) {conflict} cannot be declared as output "
+            f"column(s) via `dtypes` or a return annotation: apply(axis=1) / "
+            f"transform strip hidden columns from the UDF input and carry "
+            f"them through to the output automatically. To let the UDF "
+            f"produce a column, include it as a visible input column "
+            f"(e.g. lf[col]) instead of naming it in the output schema."
+        )
+
+
 def merge_hidden_into_physical(liteframe, visible_dtypes, frame_metadata):
     """Carry preserved hidden columns into ``physical_dtypes``.
 
@@ -1168,16 +1224,7 @@ def merge_hidden_into_physical(liteframe, visible_dtypes, frame_metadata):
     # annotation) is a contract error: the UDF cannot produce it (hidden
     # columns are stripped from its input), and hidden columns are carried
     # through automatically regardless of the output schema.
-    conflict = [h for h in hidden if h in visible_dtypes.index]
-    if conflict:
-        raise ValueError(
-            f"hidden column(s) {conflict} cannot be declared as output "
-            f"column(s) via `dtypes` or a return annotation: apply(axis=1) / "
-            f"transform strip hidden columns from the UDF input and carry "
-            f"them through to the output automatically. To let the UDF "
-            f"produce a column, include it as a visible input column "
-            f"(e.g. lf[col]) instead of naming it in the output schema."
-        )
+    check_hidden_output_conflict(liteframe, visible_dtypes)
 
     in_physical = liteframe._physical_dtypes
     hidden_dtypes = in_physical[in_physical.index.isin(hidden)]
@@ -1224,14 +1271,22 @@ def build_functional_output(op, inputs, inferred, frame_metadata=None):
             frame_metadata=out_meta,
         )
     else:
-        # Multiple outputs -- each output gets its own FrameMetadata copy
-        # to avoid shared mutable state across outputs.  Hidden columns are
-        # carried into each output's physical_dtypes (consistently with the
+        # Multiple outputs: each gets its own FrameMetadata (fresh random
+        # alignment_id) to avoid shared mutable state and false alignment
+        # between independent UDF results.  Hidden columns are carried
+        # into each output's physical_dtypes (consistent with the
         # single-output path and the project operator).
         kws = []
         for out_dtypes in inferred:
             physical_dtypes, out_meta, n_cols = merge_hidden_into_physical(
                 in_lf, out_dtypes, frame_metadata
+            )
+            # merge_hidden_into_physical may return the shared
+            # frame_metadata or None; copy the semantic content
+            # into a fresh object either way.
+            out_meta = FrameMetadata(
+                range_columns=out_meta.range_columns if out_meta else None,
+                hidden_columns=out_meta.hidden_columns if out_meta else None,
             )
             kws.append(
                 dict(
@@ -1321,3 +1376,286 @@ def call_user_func(func, data, args, kwargs):
         return result
     else:
         return func(data, *args, **kwargs)
+
+
+def apply_polars_rowwise(call, df):
+    """Apply ``call`` to each row as a single-row ``polars.DataFrame``.
+
+    Implements the documented polars row-mode contract: each row is passed to
+    the UDF as a single-row ``polars.DataFrame`` (not a ``pandas.Series``).
+    Returns a ``pandas.Series`` of per-row results shaped like
+    ``pandas.DataFrame.apply(func, axis=1)`` so downstream normalization is
+    uniform across frame types.  A single-row ``polars.DataFrame`` returned by
+    the UDF is coerced to a ``dict`` so the pandas-style dict normalization
+    handles it.
+    """
+    if len(df) == 0:
+        return pd.Series([], dtype=object)
+    results = []
+    for i in range(len(df)):
+        r = call(df.slice(i, 1))
+        if isinstance(r, pl.DataFrame):
+            # Single-row polars result -> dict for uniform normalization.
+            r = dict(r.row(0, named=True)) if len(r) == 1 else r
+        elif isinstance(r, pl.Series):
+            # A pl.Series result is positionally aligned to the declared
+            # output columns by normalize_rowwise_series, so convert it to a
+            # positional pd.Series (RangeIndex).  Without this, the raw
+            # pl.Series is stored as an opaque object inside the pandas
+            # Series and later fails with ArrowInvalid.
+            r = pd.Series(r.to_numpy())
+        results.append(r)
+    return pd.Series(results)
+
+
+def normalize_rowwise_series(
+    result, output_names, context, dtypes=None, strict_keys=False, result_type=None
+):
+    """Normalize a per-row UDF result (a 1-D ``pd.Series`` of objects) into a
+    ``pd.DataFrame`` whose columns match the declared output names.
+
+    Both ``DataFrame.apply(func, axis=1)`` and the ``transform_row``
+    projection mode produce a 1-D ``pd.Series`` whose elements are per-row
+    UDF results (a scalar, ``dict``, or ``pd.Series``).  This helper aligns
+    the per-row results to the declared schema:
+
+    * ``dict`` and *named* ``pd.Series`` results are aligned by key / index
+      label (not by position) so user data is never silently swapped when the
+      key order differs from the declared output order.  A plain ``RangeIndex``
+      Series is treated as positional.
+    * By default, mismatched dict keys / labels are NaN-filled or dropped
+      via ``reindex``, mirroring ``pandas.DataFrame.apply(func, axis=1)``
+      which takes the union of per-row indices and fills gaps with ``NaN``.
+      Type mismatches (e.g. a scalar result in a row where others returned
+      dicts) still raise.  When ``strict_keys=True``, dict keys that do not
+      match the declared output names raise ``ValueError`` instead.
+    """
+    out_cols = list(output_names) if output_names is not None else None
+
+    if len(result) == 0:
+        if dtypes and out_cols:
+            return pd.DataFrame(
+                {
+                    col: pd.Series(dtype=to_pandas_dtype(dtypes.get(col)))
+                    for col in out_cols
+                }
+            )
+        return pd.DataFrame(columns=out_cols) if out_cols else pd.DataFrame()
+
+    first = result.iloc[0]
+    if isinstance(first, dict):
+        expand_dicts = strict_keys or result_type in ("expand", "broadcast")
+        if out_cols is not None:
+            expected_keys = set(out_cols)
+            for idx, d in result.items():
+                if not isinstance(d, dict):
+                    raise ValueError(
+                        f"{context} returned a {type(d).__name__} for row "
+                        f"{idx} but earlier rows returned dicts; all rows "
+                        f"must return the same type"
+                    )
+                if strict_keys and set(d.keys()) != expected_keys:
+                    keys_str = ", ".join(repr(k) for k in sorted(d.keys()))
+                    raise ValueError(
+                        f"{context} returned dict keys [{keys_str}] for row "
+                        f"{idx}; keys must match output names {out_cols}"
+                    )
+        if not expand_dicts:
+            result = result.to_frame()
+            if out_cols is not None:
+                if len(out_cols) != 1:
+                    raise ValueError(
+                        f"{context} returned dicts with result_type=None "
+                        f"(default), which keeps results as a single object "
+                        f"column, but {len(out_cols)} output columns were "
+                        f"declared: {out_cols}. Use result_type='expand' to "
+                        f"expand dict keys into columns."
+                    )
+                result.columns = [out_cols[0]]
+            return result
+        result = pd.DataFrame(result.tolist(), index=result.index)
+        if out_cols is not None:
+            result = result.reindex(columns=out_cols)
+    elif isinstance(first, pd.Series):
+        if out_cols is not None:
+            for idx, s in result.items():
+                if not isinstance(s, pd.Series):
+                    raise ValueError(
+                        f"{context} returned a {type(s).__name__} for row "
+                        f"{idx} but earlier rows returned Series; all rows "
+                        f"must return the same type"
+                    )
+                if strict_keys:
+                    s_labels = list(s.index)
+                    if s_labels == list(range(len(s))):
+                        if len(s) != len(out_cols):
+                            raise ValueError(
+                                f"{context} returned a Series of length "
+                                f"{len(s)} for row {idx}; transform requires "
+                                f"exactly {len(out_cols)} elements to match "
+                                f"output columns {out_cols}"
+                            )
+                    elif s_labels != out_cols:
+                        raise ValueError(
+                            f"{context} returned a Series with labels "
+                            f"{s_labels} for row {idx}; transform requires "
+                            f"labels to exactly match output columns "
+                            f"{out_cols}"
+                        )
+            result = pd.DataFrame(result.tolist(), index=result.index)
+            if list(first.index) == list(range(len(first))):
+                result = result.reindex(columns=range(len(out_cols)))
+                result.columns = out_cols
+            else:
+                result = result.reindex(columns=out_cols)
+        else:
+            result = pd.DataFrame(result.tolist(), index=result.index)
+    else:
+        result = result.to_frame()
+        if out_cols is not None:
+            if len(out_cols) != 1:
+                raise ValueError(
+                    f"{context} returned a scalar but {len(out_cols)} output "
+                    f"columns were declared: {out_cols}"
+                )
+            result.columns = [out_cols[0]]
+    if dtypes and out_cols:
+        for col in out_cols:
+            target = dtypes.get(col)
+            if target is not None and col in result.columns:
+                try:
+                    result[col] = result[col].astype(target)
+                except (ValueError, TypeError):
+                    pass
+    return result
+
+
+def build_broadcast_frame(row_results, input_cols):
+    """Build a ``result_type='broadcast'`` frame from collected per-row results.
+
+    Mirrors pandas broadcast semantics (each row's result is broadcast to the
+    input columns) but constructs the frame from the per-row UDF results
+    instead of pandas' single-row fast path.  The fast path reuses the input
+    chunk's dtype, which truncates scalars (e.g. ``3.5 -> 3``) on small
+    integer chunks; building from the actual result values infers the dtype
+    correctly so the output is chunk-independent.  The UDF input is left
+    untouched so the callable observes the real (uncast) rows.
+    """
+    input_cols = list(input_cols)
+    if len(row_results) == 0:
+        return pd.DataFrame(columns=input_cols)
+    # When the UDF returns a pd.Series per row, pandas auto-combines them
+    # into a DataFrame (not a Series).  Handle that directly: a positional
+    # (RangeIndex) DataFrame is renamed to input cols; a named-label
+    # DataFrame is reindexed to input cols (NaN-fill/drop as needed).
+    if isinstance(row_results, pd.DataFrame):
+        cols = list(row_results.columns)
+        if len(cols) != len(input_cols):
+            raise ValueError(
+                f"apply(axis=1, result_type='broadcast') requires "
+                f"results with {len(input_cols)} elements to match input "
+                f"columns, got {len(cols)}"
+            )
+        if cols == list(range(len(cols))):
+            row_results.columns = input_cols
+        else:
+            row_results = row_results.reindex(columns=input_cols)
+        return row_results
+    first = row_results.iloc[0]
+    if not isinstance(first, (list, tuple, pd.Series)):
+        return pd.DataFrame(
+            {c: row_results.values for c in input_cols}, index=row_results.index
+        )
+    df = pd.DataFrame(row_results.tolist(), index=row_results.index)
+    if len(df.columns) != len(input_cols):
+        raise ValueError(
+            f"apply(axis=1, result_type='broadcast') requires "
+            f"results with {len(input_cols)} elements to match input "
+            f"columns, got {len(df.columns)}"
+        )
+    df.columns = input_cols
+    return df
+
+
+def apply_result_type_polars(result, udf_data, result_type):
+    """Simulate pandas ``result_type`` for polars per-row results.
+
+    ``apply_polars_rowwise`` always returns a ``pd.Series`` of per-row
+    results (like pandas default).  When ``result_type`` is set, convert
+    the Series to the shape pandas would produce so downstream
+    normalization is uniform.
+    """
+    if result_type is None:
+        return result
+
+    if result_type == "broadcast":
+        return build_broadcast_frame(result, udf_data.columns)
+
+    if len(result) == 0:
+        return result
+
+    first = result.iloc[0]
+
+    if result_type == "expand":
+        if isinstance(first, (dict, list, tuple, pd.Series)):
+            return pd.DataFrame(result.tolist(), index=result.index)
+        return result
+
+    if result_type == "reduce":
+        # pandas expands Series results to a DataFrame even under 'reduce'
+        # (only dict / list-like results stay a single object column).
+        # Mirror that so the polars path matches the pandas path; otherwise
+        # a Series result would be stored as a single column of Series
+        # objects, which polars cannot materialize (ArrowInvalid).
+        if isinstance(first, pd.Series):
+            return pd.DataFrame(result.tolist(), index=result.index)
+        return result
+
+    return result
+
+
+def normalize_axis1_series(result, out_dtypes, result_type=None, dtypes=None):
+    """Normalize a per-row apply(axis=1) result into a DataFrame.
+
+    Dict results and named Series results are aligned by key/index labels
+    (not by position); only positional or unnamed results are assigned by
+    output order.  Mismatched keys/labels are NaN-filled (reindex).
+    """
+    out_cols = (
+        list(out_dtypes.index) if out_dtypes is not None and len(out_dtypes) else None
+    )
+
+    if result_type == "reduce":
+        if isinstance(result, pd.Series):
+            result = result.to_frame()
+            if out_cols is not None and len(out_cols) == 1:
+                result.columns = [out_cols[0]]
+            return result
+
+    if isinstance(result, pd.Series):
+        return normalize_rowwise_series(
+            result,
+            out_cols,
+            "apply(axis=1) row UDF",
+            result_type=result_type,
+            dtypes=dtypes,
+        )
+
+    if isinstance(result, pd.DataFrame) and out_cols:
+        if len(result) == 0:
+            if dtypes:
+                return pd.DataFrame(
+                    {
+                        col: pd.Series(dtype=pd.api.types.pandas_dtype(dtypes.get(col)))
+                        for col in out_cols
+                    }
+                )
+            return pd.DataFrame(columns=out_cols)
+        cols = list(result.columns)
+        if cols == list(range(len(cols))):
+            result = result.reindex(columns=range(len(out_cols)))
+            result.columns = out_cols
+        else:
+            result = result.reindex(columns=out_cols)
+
+    return result

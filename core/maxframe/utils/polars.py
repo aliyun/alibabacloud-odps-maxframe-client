@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
+import threading
+import weakref
+
 try:
     import polars as pl
 except ImportError:
@@ -140,3 +144,108 @@ else:
 
     def is_polars_object_container_type(dtype):
         return False
+
+
+# ---------------------------------------------------------------------------
+# Per-frame lock for Polars calls that take the frame's own internal lock
+# ---------------------------------------------------------------------------
+# Calling ``to_pandas()`` on one Polars frame from several threads at once
+# deadlocks inside Polars: the frame's native lock and the GIL invert, so the
+# call never returns (bug #87341179).  That native lock is per frame
+# *instance*, not global, so serialising callers per frame is sufficient:
+# unrelated frames keep converting in parallel, and no Polars version gate is
+# needed.
+#
+# Frames (DataFrame, LazyFrame, Series) are unhashable, so neither they nor
+# ``weakref.ref`` of them can key a dict.  The registry is keyed by
+# ``id(frame)`` instead, and every entry carries a weak reference to its frame:
+# the entry goes away with the frame, and a lookup accepts an entry only while
+# its frame reference is still the live object, so an id reused by the
+# allocator can never hand a new frame a dead frame's lock.
+_FRAME_LOCKS = {}  # id(frame) -> (weak ref to frame, threading.RLock)
+_FRAME_LOCKS_GUARD = threading.RLock()  # also taken from weakref callbacks
+
+
+def _forget_frame_lock(key, ref):
+    """Weakref callback: drop ``ref``'s entry once its frame is gone.
+
+    Only the callback of the entry stored under ``key`` may delete it: a frame
+    that reuses ``key`` after the fact must keep its own entry.
+    """
+    with _FRAME_LOCKS_GUARD:
+        if _FRAME_LOCKS.get(key, (None,))[0] is ref:
+            del _FRAME_LOCKS[key]
+
+
+def polars_frame_lock(frame):
+    """Return the lock serialising frame-level Polars calls on ``frame``.
+
+    Callers that can run concurrently on the *same* frame object - for example
+    chunk threads converting one shared frame with ``to_pandas()`` - must hold
+    this lock while inside Polars.  Callers on different frames receive
+    different locks and never block each other.  The lock is reentrant, so a
+    guarded call may itself call another guarded call.
+
+    Use it directly as a context manager::
+
+        with polars_frame_lock(pl_df):
+            pl_df.to_pandas()
+    """
+    key = id(frame)
+    with _FRAME_LOCKS_GUARD:
+        entry = _FRAME_LOCKS.get(key)
+        if entry is not None and entry[0]() is frame:
+            return entry[1]
+
+        lock = threading.RLock()
+        ref = weakref.ref(frame, functools.partial(_forget_frame_lock, key))
+        _FRAME_LOCKS[key] = (ref, lock)
+        return lock
+
+
+# ---------------------------------------------------------------------------
+# Zero-column frames that carry a height -- the ``(N, 0)`` shape
+# ---------------------------------------------------------------------------
+# ``pl.DataFrame(schema={}, height=n)`` (polars >= 1.38.0) has no columns but
+# reports ``n`` rows, which is how an all-virtual chunk result carries its row
+# count.  ``height=`` is documented as unstable, so the version floor below is
+# confirmed by a one-time probe instead of trusted alone.
+_POLARS_ZERO_WIDTH_HEIGHT_MIN = (1, 38)
+
+
+def _probe_zero_width_height() -> bool:
+    if pl is None:
+        return False
+    try:
+        version = tuple(int(x) for x in pl.__version__.split(".")[:2])
+    except (AttributeError, ValueError):  # pragma: no cover - odd build
+        return False
+    if version < _POLARS_ZERO_WIDTH_HEIGHT_MIN:
+        return False
+    try:
+        frame = pl.DataFrame(schema={}, height=1)
+    except (TypeError, ValueError):  # pragma: no cover - version/probe drift
+        return False
+    return frame.height == 1 and frame.width == 0
+
+
+#: Probed once; tests monkeypatch it to exercise the legacy branch.
+_POLARS_SUPPORTS_ZERO_WIDTH_HEIGHT = _probe_zero_width_height()
+
+
+def polars_supports_zero_width_height() -> bool:
+    """Whether a zero-column frame can carry a height (polars >= 1.38, probed).
+
+    When False, a ``(N, 0)`` result cannot keep its row count.
+    """
+    return _POLARS_SUPPORTS_ZERO_WIDTH_HEIGHT
+
+
+def zero_width_frame(height=None) -> "pl.DataFrame":
+    """A zero-column frame of ``height`` rows, or the empty frame if unsupported.
+
+    Without support the returned frame is 0-row whatever ``height`` is.
+    """
+    if height and polars_supports_zero_width_height():
+        return pl.DataFrame(schema={}, height=height)
+    return pl.DataFrame()

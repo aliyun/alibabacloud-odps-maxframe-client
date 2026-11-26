@@ -20,7 +20,7 @@ from maxframe.dataframe.groupby.rolling import RollingGroupby
 
 
 def _install():
-    from maxframe.core import CachedAccessor
+    from maxframe.core.accessor import register_accessor
     from maxframe.dataframe.core import (
         DATAFRAME_GROUPBY_TYPE,
         DATAFRAME_TYPE,
@@ -107,8 +107,7 @@ def _install():
 
     for cls in DATAFRAME_GROUPBY_TYPE:
         setattr(cls, "__getitem__", df_groupby_getitem)
-        if DataFrameGroupByMaxFrameAccessor._api_count:
-            cls.mf = CachedAccessor("mf", DataFrameGroupByMaxFrameAccessor)
+    register_accessor("mf", DATAFRAME_GROUPBY_TYPE)(DataFrameGroupByMaxFrameAccessor)
 
 
 _install()

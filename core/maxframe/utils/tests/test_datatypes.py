@@ -13,11 +13,17 @@
 # limitations under the License.
 
 import warnings
+from decimal import Decimal
 
 import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pytest
+
+try:
+    import polars as pl
+except ImportError:  # pragma: no cover
+    pl = None
 
 from maxframe.errors import OutputColumnMismatchError, OutputDtypeMismatchError
 from maxframe.lib.dtypes_extension import ArrowBlobType, ArrowDtype, ExternalBlobDtype
@@ -27,9 +33,12 @@ from maxframe.utils.datatypes import (
     is_arrow_dtype_supported,
     is_bool_dtype,
     is_datetime64_dtype,
+    is_float_dtype,
+    is_integer_dtype,
     is_string_dtype,
     make_dtype,
     make_dtypes,
+    to_pandas_dtype,
     validate_and_align_output,
     wrap_arrow_dtype,
 )
@@ -192,6 +201,7 @@ def test_is_datetime64_dtype(input_dtype, expected):
         (pd.BooleanDtype(), pd.BooleanDtype()),
         ("category", "category"),
         ("string", "string"),
+        ("string[pyarrow]", "string[pyarrow]"),
         (pd.Timestamp, np.dtype("datetime64[ns]")),
         (pd.Timedelta, np.dtype("timedelta64[ns]")),
     ],
@@ -199,6 +209,32 @@ def test_is_datetime64_dtype(input_dtype, expected):
 def test_make_dtype(input_dtype, expected):
     result = make_dtype(input_dtype)
     assert result == expected
+
+
+def test_make_dtype_import_error_fallback(monkeypatch):
+    """make_dtype returns the string as-is when is_extension_array_dtype raises
+    ImportError (happens with old pyarrow + 'string[pyarrow]' input).
+
+    This pins the ImportError fix — the 'string[pyarrow]' parametrization
+    above passes with the OLD code too when pyarrow >= 10, so it doesn't
+    pin the fix.  This test monkeypatches is_extension_array_dtype to
+    raise ImportError and asserts the fallback path.
+    """
+    import maxframe.utils.datatypes as dt_mod
+
+    original = pd.api.types.is_extension_array_dtype
+
+    def _raise_import_error(_):
+        raise ImportError("pyarrow is too old")
+
+    monkeypatch.setattr(
+        dt_mod.pd.api.types, "is_extension_array_dtype", _raise_import_error
+    )
+    try:
+        result = make_dtype("string[pyarrow]", return_pd_dtype=True)
+        assert result == "string[pyarrow]"
+    finally:
+        monkeypatch.setattr(dt_mod.pd.api.types, "is_extension_array_dtype", original)
 
 
 def test_wrap_arrow_dtype():
@@ -451,12 +487,6 @@ def test_validate_and_align_output_str_column_collision(mode):
         )
 
 
-try:
-    import polars as pl
-except ImportError:
-    pl = None
-
-
 @pytest.mark.skipif(pl is None, reason="polars not installed")
 def test_validate_polars_string_result_declared_numpy_int_raises():
     """Regression: a polars String result declared
@@ -558,8 +588,6 @@ def test_validate_polars_lossy_decimal_cast_rejected():
     Decimal precision/scale has no faithful NumPy representation, so only an
     exact parameter match is compatible.
     """
-    from decimal import Decimal
-
     result = pl.DataFrame(
         {"x": pl.Series([Decimal("1.25"), Decimal("9.99")], dtype=pl.Decimal(10, 2))}
     )
@@ -575,8 +603,6 @@ def test_validate_polars_decimal_to_object_lossless():
     of being rejected by the Decimal guard (which only fires when BOTH
     sides are Decimal with unequal parameters).
     """
-    from decimal import Decimal
-
     result = pl.DataFrame({"x": pl.Series([Decimal("1.25")], dtype=pl.Decimal(10, 2))})
     declared = pd.Series({"x": np.dtype("O")})
     out = validate_and_align_output(result, declared, "raises", True)
@@ -640,3 +666,99 @@ def test_validate_pandas_duplicate_label_after_normalization_rejected(mode):
     expected = pd.Series({"0": np.dtype("int64")})
     with pytest.raises(OutputColumnMismatchError, match="Duplicate column labels"):
         validate_and_align_output(result, expected, mode, normalize_str_columns=True)
+
+
+def _dtype_cases():
+    """Dtype cases for the kind helpers.
+
+    Only shapes this environment can build are included: real ArrowDtype needs
+    pyarrow >= 7, and polars may be absent, so neither may be instantiated while
+    the module is imported.
+    """
+    cases = [
+        pytest.param(np.dtype("int32"), True, False, id="numpy_int"),
+        pytest.param(np.dtype("float32"), False, True, id="numpy_float"),
+        pytest.param(np.dtype("bool"), False, False, id="numpy_bool"),
+        pytest.param(pd.Int64Dtype(), True, False, id="pandas_nullable_int"),
+        pytest.param(pd.Float64Dtype(), False, True, id="pandas_nullable_float"),
+    ]
+    if is_arrow_dtype_supported():
+        cases += [
+            pytest.param(pd.ArrowDtype(pa.int64()), True, False, id="arrow_int"),
+            pytest.param(pd.ArrowDtype(pa.float64()), False, True, id="arrow_float"),
+        ]
+    # older Polars exposes dtypes as bare classes without type predicates
+    cases += [
+        pytest.param(type("Int64", (), {}), True, False, id="legacy_polars_int"),
+        pytest.param(type("Float64", (), {}), False, True, id="legacy_polars_float"),
+        pytest.param(type("Utf8", (), {}), False, False, id="legacy_polars_string"),
+    ]
+    if pl is not None:
+        cases += [
+            pytest.param(pl.Int64, True, False, id="polars_int"),
+            pytest.param(pl.Float64, False, True, id="polars_float"),
+        ]
+        # older Polars spells the string dtype Utf8
+        string_dtype = getattr(pl, "String", None)
+        if string_dtype is None:
+            string_dtype = getattr(pl, "Utf8", None)
+        if string_dtype is not None:
+            cases.append(pytest.param(string_dtype, False, False, id="polars_string"))
+    return cases
+
+
+def test_to_pandas_dtype_falls_back_for_arrow_string_without_pyarrow_support(
+    monkeypatch,
+):
+    """pyarrow<7 raises ImportError for the pyarrow-backed StringDtype.
+
+    ``string[pyarrow]`` reaches ``to_pandas_dtype`` because the string
+    accessors store their multi-column dtypes as strings; resolving it must not
+    depend on the local pyarrow version.
+    """
+    seen = []
+
+    def _raise_import_error(dtype):
+        seen.append(dtype)
+        raise ImportError("pyarrow>=7.0.0 is required for PyArrow backed StringArray.")
+
+    monkeypatch.setattr(pd.api.types, "pandas_dtype", _raise_import_error)
+
+    result = to_pandas_dtype("string[pyarrow]")
+
+    assert seen == ["string[pyarrow]"]
+    assert "string" in str(result)
+
+
+@pytest.mark.parametrize("dtype,integer,floating", _dtype_cases())
+def test_integer_and_float_dtype_helpers(dtype, integer, floating):
+    """The kind helpers cover numpy/pandas dtypes and both Polars shapes: older
+    Polars exposes dtypes as bare classes with no type predicates, so the dtype
+    name is the only handle."""
+    assert is_integer_dtype(dtype) is integer
+    assert is_float_dtype(dtype) is floating
+
+
+def test_validate_and_align_output_empty_result_uses_declared_dtype():
+    """A zero-row result carries no dtype of its own, so the schema wins.
+
+    ``DataFrame.map`` over an empty frame yields ``object`` columns, so a
+    declared dtype used to reject every empty chunk.
+    """
+    expected = pd.Series({"a": np.dtype("int64")})
+    empty_df = pd.DataFrame({"a": pd.Series([], dtype=object)})
+    result = validate_and_align_output(empty_df, expected, check_output_dtypes="raises")
+    assert result["a"].dtype == np.dtype("int64")
+    assert result.shape == (0, 1)
+
+    empty_series = pd.Series([], dtype=object, name="a")
+    result = validate_and_align_output(
+        empty_series, np.dtype("int64"), check_output_dtypes="raises"
+    )
+    assert result.dtype == np.dtype("int64")
+
+    non_empty_df = pd.DataFrame({"a": [2, 35]})
+    result = validate_and_align_output(
+        non_empty_df, expected, check_output_dtypes="raises"
+    )
+    assert result["a"].tolist() == [2, 35]

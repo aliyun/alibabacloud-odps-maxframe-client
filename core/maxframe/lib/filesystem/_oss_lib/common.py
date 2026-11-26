@@ -29,6 +29,10 @@ logger = logging.getLogger(__name__)
 # OSS api time out
 _oss_time_out = 10
 
+# A multipart upload that another writer aborted first: close() treats it as
+# a canceled write, and abort_multipart_upload treats it as already done.
+_UPLOAD_GONE_ERROR_CODES = ("NoSuchUpload", "StaleUpload")
+
 _ip_regex = re.compile(r"^([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})")
 
 

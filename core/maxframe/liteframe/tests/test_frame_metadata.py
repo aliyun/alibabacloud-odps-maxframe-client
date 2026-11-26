@@ -32,6 +32,7 @@ from maxframe.liteframe.core import (
     LiteFrame,
     LiteFrameData,
     LiteFrameResult,
+    build_frame_from_ranges,
 )
 from maxframe.liteframe.datasource.from_local import from_local_df
 from maxframe.liteframe.expressions import LiteFrameColumn, col
@@ -42,6 +43,7 @@ from maxframe.liteframe.operators.indexing import LiteFrameIlocGetItem
 from maxframe.liteframe.operators.project import LiteFrameProjection
 from maxframe.protocol import DefaultIndexType
 from maxframe.utils import wrap_arrow_dtype
+from maxframe.utils.polars import polars_supports_zero_width_height, zero_width_frame
 
 try:
     import polars as pl
@@ -84,7 +86,9 @@ def test_from_local_range_behavior(
         assert ri.stop == 3
         assert ri.step == 1
     else:
-        assert lf.frame_metadata is None
+        # Metadata always present (carries alignment_id); no range cols.
+        assert lf.frame_metadata is not None
+        assert not lf.frame_metadata.range_columns
         assert RANGE_COL_NAME not in lf.dtypes.index
 
     if expect_index_in_columns:
@@ -194,8 +198,9 @@ def test_projection_shape_with_range_column_materialized():
     assert result.shape == (10, 2)
     # _physical_dtypes contains both as physical
     assert list(result._physical_dtypes.index) == ["a", RANGE_COL_NAME]
-    # No range columns in metadata
-    assert result.frame_metadata is None or result.frame_metadata.range_columns is None
+    # Metadata always present (carries alignment_id); no range cols.
+    assert result.frame_metadata is not None
+    assert not result.frame_metadata.range_columns
 
 
 @pytest.mark.parametrize(
@@ -556,3 +561,49 @@ def test_to_pandas_materializes_virtual_range():
         out = lf.to_pandas()
 
     assert out["r"].tolist() == [2, 4, 6]
+
+
+# ---------------------------------------------------------------------------
+# Zero-width ``(N, 0)`` chunk results
+# ---------------------------------------------------------------------------
+
+
+def test_build_frame_from_ranges_carries_height():
+    if not polars_supports_zero_width_height():  # pragma: no cover
+        pytest.skip("polars build without (N, 0) support")
+    assert build_frame_from_ranges({}, 4).shape == (4, 0)
+    # With range columns the height is implied by them.
+    assert build_frame_from_ranges({"r": range(2, 8, 2)}).shape == (3, 1)
+
+
+def test_result_shape_and_materialize():
+    if not polars_supports_zero_width_height():  # pragma: no cover
+        pytest.skip("polars build without (N, 0) support")
+    carrier = LiteFrameResult(
+        _frame=zero_width_frame(3), range_columns={"r": (5, 8, 1)}
+    )
+    assert carrier.is_virtual_only
+    assert carrier.shape == (3, 1)
+    assert carrier.materialize()["r"].to_list() == [5, 6, 7]
+
+    physical = LiteFrameResult(
+        _frame=pl.DataFrame({"a": [1, 2, 3]}), range_columns={"r": (0, 3, 1)}
+    )
+    assert not physical.is_virtual_only
+    assert physical.shape == (3, 2)
+    # Virtual columns stay out of a physical-backed frame.
+    assert physical.materialize().columns == ["a"]
+
+    # Nothing to rebuild: the carried row count must survive materialize().
+    zero_col = LiteFrameResult(_frame=zero_width_frame(4))
+    assert not zero_col.is_virtual_only
+    assert zero_col.shape == (4, 0)
+    assert zero_col.materialize().shape == (4, 0)
+
+
+def test_result_shape_on_legacy_virtual_result():
+    """``_frame=None`` results (older workers) still resolve their height."""
+    legacy = LiteFrameResult(_frame=None, range_columns={"r": (2, 8, 2)})
+    assert legacy.is_virtual_only
+    assert legacy.shape == (3, 1)
+    assert legacy.materialize().shape == (3, 1)

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
 import json
 import pickle
 import time
@@ -26,13 +27,15 @@ from maxframe.protocol import (
     DagInfo,
     DisplayMessage,
     ErrorInfo,
+    ErrorSource,
     ExecutionStatus,
     ODPSTableResultInfo,
     ODPSVolumeResultInfo,
     ResultInfo,
     SessionInfo,
+    SubDagInfo,
 )
-from maxframe.serialization import RemoteException
+from maxframe.serialization import RemoteException, pickle_buffers
 from maxframe.utils import deserialize_serializable, serialize_serializable
 
 
@@ -118,13 +121,75 @@ def test_error_info_from_exception_drops_unpickleable_raw_error():
 
     assert err_info.raw_error_data is None
     assert err_info.raw_error_source is None
-    assert err_info.error_messages == ["ERR_DATA"]
+    assert err_info.error_messages == [
+        f"{GeneratorHoldingException.__name__}: ERR_DATA"
+    ]
     assert err_info.error_tracebacks[0]
 
     restored = pickle.loads(pickle.dumps(err_info))
     assert restored.raw_error_data is None
     assert restored.raw_error_source is None
     with pytest.raises(RemoteException, match="ERR_DATA"):
+        restored.reraise()
+
+
+_FAILURES = [RuntimeError, KeyboardInterrupt, SystemExit]
+
+
+def _failing_reduce(raised):
+    class FailingReduce(Exception):
+        def __reduce__(self):
+            raise raised("failing __reduce__")
+
+    return FailingReduce
+
+
+@pytest.mark.parametrize("raised", _FAILURES)
+def test_error_info_from_exception_degrades_or_propagates(raised):
+    exc_type = _failing_reduce(raised)
+
+    if issubclass(raised, Exception):
+        err_info = ErrorInfo.from_exception(exc_type("payload"))
+        assert err_info.raw_error_source is None
+        assert err_info.raw_error_data is None
+        assert err_info.error_messages == ["FailingReduce: payload"]
+        with pytest.raises(RemoteException, match="payload"):
+            err_info.reraise()
+    else:
+        # a system error raised while probing must propagate, never be swallowed
+        with pytest.raises(raised):
+            ErrorInfo.from_exception(exc_type("payload"))
+
+
+@pytest.mark.parametrize("raised", _FAILURES)
+def test_error_info_to_json_degrades_or_propagates(raised):
+    exc_type = _failing_reduce(raised)
+    err_info = ErrorInfo(["payload"], [[]], ErrorSource.PYTHON, exc_type("payload"))
+
+    if issubclass(raised, Exception):
+        payload = err_info.to_json()
+        assert payload["raw_error_source"] is None
+        assert "raw_error_data" not in payload
+    else:
+        with pytest.raises(raised):
+            err_info.to_json()
+
+
+def test_error_info_transports_ordinary_raw_error():
+    # the branch handling ordinary exceptions is the one that pickles the
+    # payload: without it the client would only see a RemoteException
+    try:
+        raise ValueError("ERR_DATA")
+    except ValueError as ex:
+        err_info = ErrorInfo.from_exception(ex)
+
+    payload = err_info.to_json()
+    assert payload["raw_error_source"] == ErrorSource.PYTHON.value
+    assert "raw_error_data" in payload
+
+    restored = ErrorInfo.from_json(_json_round_trip(payload))
+    assert isinstance(restored.raw_error_data, ValueError)
+    with pytest.raises(ValueError):
         restored.reraise()
 
 
@@ -146,6 +211,45 @@ def test_error_info_fallback_json_serialize():
 
         with pytest.raises(RemoteException):
             deserial_err_info.reraise()
+
+
+@pytest.mark.parametrize("exc_type", [KeyboardInterrupt, SystemExit])
+def test_error_info_drops_control_flow_signals(exc_type):
+    err_info = ErrorInfo.from_exception(exc_type())
+
+    # signals are never recorded as raw error data, so the transported
+    # error_info cannot resurrect them on the receiving side
+    assert err_info.raw_error_source is None
+    assert err_info.raw_error_data is None
+    assert err_info.error_messages == [f"{exc_type.__name__}: "]
+    with pytest.raises(RemoteException):
+        err_info.reraise()
+
+    # a record written before signals were filtered still carries the pickled
+    # signal: serialization and deserialization must both drop it
+    legacy = ErrorInfo(
+        error_messages=[str(exc_type())],
+        error_tracebacks=[],
+        raw_error_source=ErrorSource.PYTHON,
+        raw_error_data=exc_type(),
+    )
+    legacy_json = legacy.to_json()
+    assert legacy_json["raw_error_source"] is None
+    assert "raw_error_data" not in legacy_json
+
+    # an in-memory record carrying the signal must not raise it either
+    with pytest.raises(RemoteException):
+        legacy.reraise()
+
+    legacy_json["raw_error_source"] = ErrorSource.PYTHON.value
+    legacy_json["raw_error_data"] = [
+        base64.b64encode(buf).decode() for buf in pickle_buffers(exc_type())
+    ]
+    restored = ErrorInfo.from_json(_json_round_trip(legacy_json))
+    assert restored.raw_error_source is None
+    assert restored.raw_error_data is None
+    with pytest.raises(RemoteException):
+        restored.reraise()
 
 
 def test_failure_info_roundtrip():
@@ -209,7 +313,9 @@ def test_failure_info_roundtrip():
     }
 
 
-def test_dag_info_json_serialize():
+@pytest.mark.parametrize("failed_cu_usage", [6.0, 0.0, None])
+@pytest.mark.parametrize("cancelled_cu_usage", [8.0, None])
+def test_dag_info_json_serialize(failed_cu_usage, cancelled_cu_usage):
     try:
         raise ValueError("ERR_DATA")
     except ValueError as ex:
@@ -224,10 +330,29 @@ def test_dag_info_json_serialize():
         },
         error_info=err_info,
         display_messages=[DisplayMessage(message="warning_message", level="warning")],
+        subdag_infos={
+            "subdag": SubDagInfo(
+                subdag_id="subdag",
+                status=ExecutionStatus.FAILED,
+                failed_cu_usage=failed_cu_usage,
+                cancelled_cu_usage=cancelled_cu_usage,
+            )
+        },
     )
     json_info = info.to_json()
     json_info["non_existing_field"] = "non_existing"
     deserial_info = DagInfo.from_json(_json_round_trip(json_info))
+    assert deserial_info.subdag_infos["subdag"].failed_cu_usage == failed_cu_usage
+    assert deserial_info.subdag_infos["subdag"].cancelled_cu_usage == cancelled_cu_usage
+    binary_info = deserialize_serializable(serialize_serializable(info))
+    assert binary_info.subdag_infos["subdag"].failed_cu_usage == failed_cu_usage
+    assert binary_info.subdag_infos["subdag"].cancelled_cu_usage == cancelled_cu_usage
+    assert ("failed_cu_usage" in json_info["subdag_infos"]["subdag"]) == (
+        failed_cu_usage is not None
+    )
+    assert ("cancelled_cu_usage" in json_info["subdag_infos"]["subdag"]) == (
+        cancelled_cu_usage is not None
+    )
     assert deserial_info.session_id == info.session_id
     assert deserial_info.dag_id == info.dag_id
     assert deserial_info.status == info.status

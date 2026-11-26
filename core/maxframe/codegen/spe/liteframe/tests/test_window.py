@@ -28,6 +28,7 @@ def test_window_adapter_code_generation(make_liteframe):
     op = LiteFrameWindowTransform(
         kind="shift",
         periods=1,
+        transform_params={"fill_value": None},
         columns=["a", "b"],
     )
     out = op(data)
@@ -148,7 +149,7 @@ def test_window_shift_excludes_virtual_range_column():
     standalone (non-grouped) transforms.
     """
     df = pd.DataFrame({"a": [10, 20, 30], "b": [1, 2, 3]})
-    range_columns = {"__lf_range_index__": (0, 3, 1)}
+    range_columns = {"__mf_range_index__": (0, 3, 1)}
     result = LiteFrameWindowTransformAdapter._run_window_transform(
         df,
         kind="shift",
@@ -166,7 +167,7 @@ def test_window_shift_excludes_virtual_range_column():
 def test_window_shift_partial_columns_with_range():
     """Shifting a subset of columns preserves the others and the range col."""
     df = pd.DataFrame({"a": [10, 20, 30], "b": [1, 2, 3]})
-    range_columns = {"__lf_range_index__": (0, 3, 1)}
+    range_columns = {"__mf_range_index__": (0, 3, 1)}
     result = LiteFrameWindowTransformAdapter._run_window_transform(
         df,
         kind="shift",
@@ -409,7 +410,7 @@ def test_window_fill_excludes_range_column():
         df,
         "ffill",
         None,
-        range_columns={"__lf_range_index__": (0, 2, 1)},
+        range_columns={"__mf_range_index__": (0, 2, 1)},
     )
     assert list(result.columns) == ["a"]
     assert result["a"].tolist() == [1.0, 1.0]
@@ -533,6 +534,121 @@ def test_grouped_expanding_duplicate_index_scatter():
     )
     assert result["v"].tolist() == [1.0, 10.0, 4.0]
     assert result.index.tolist() == [0, 0, 1]
+
+
+# ---------------------------------------------------------------------------
+# EWM (exponentially weighted moving) tests
+# ---------------------------------------------------------------------------
+
+_EWM_DEFAULTS = {"adjust": True, "ignore_na": False, "bias": False}
+
+
+def _run_ewm(df, func, alpha=0.5, min_periods=0, groupby_params=None, **extra):
+    """Thin wrapper around the SPE adapter for EWM tests."""
+    com = (1 - alpha) / alpha
+    ewm_params = {"com": com, **_EWM_DEFAULTS}
+    # Pop MF params and columns from extra so they go to _run_window_transform,
+    # not ewm_params.
+    passthrough = {}
+    for k in ("order_by", "order_by_ascending", "window_shift", "reverse", "columns"):
+        if k in extra:
+            passthrough[k] = extra.pop(k)
+    # bias is an ewm_param, not an MF param
+    for k in list(extra):
+        if k in _EWM_DEFAULTS:
+            ewm_params[k] = extra.pop(k)
+    return LiteFrameWindowTransformAdapter._run_window_transform(
+        df,
+        kind="ewm_agg",
+        groupby_params=groupby_params,
+        agg_func=func,
+        min_periods=min_periods,
+        ewm_params=ewm_params,
+        **passthrough,
+    )
+
+
+@pytest.mark.parametrize("func", ["mean", "std", "var"])
+@pytest.mark.parametrize("adjust", [True, False])
+def test_ewm_run_standalone(func, adjust):
+    """Standalone EWM matches pandas for all adjust combos."""
+    df = pd.DataFrame({"a": [1.0, 2.0, 3.0, 4.0, 5.0]})
+    result = _run_ewm(df, func, adjust=adjust)
+    expected = getattr(df.ewm(alpha=0.5, adjust=adjust), func)()
+    pd.testing.assert_frame_equal(result, expected)
+
+
+def test_ewm_run_standalone_nulls():
+    """Standalone EWM mean with nulls matches pandas."""
+    df = pd.DataFrame({"a": [1.0, np.nan, 3.0, np.nan, 5.0]})
+    result = _run_ewm(df, "mean", alpha=0.3)
+    expected = df.ewm(alpha=0.3, adjust=True, ignore_na=False).mean()
+    pd.testing.assert_frame_equal(result, expected)
+
+
+@pytest.mark.parametrize("bias", [True, False])
+def test_ewm_run_bias(bias):
+    """EWM std with bias=True vs bias=False."""
+    df = pd.DataFrame({"a": [1.0, 2.0, 3.0, 4.0, 5.0]})
+    result = _run_ewm(df, "std", bias=bias)
+    expected = df.ewm(alpha=0.5).std(bias=bias)
+    pd.testing.assert_frame_equal(result, expected)
+
+
+def test_ewm_run_min_periods():
+    """EWM mean with min_periods masks early positions."""
+    df = pd.DataFrame({"a": [1.0, 2.0, 3.0]})
+    result = _run_ewm(df, "mean", min_periods=2)
+    expected = df.ewm(alpha=0.5, min_periods=2).mean()
+    pd.testing.assert_frame_equal(result, expected)
+
+
+def test_ewm_run_grouped():
+    """Grouped EWM mean matches pandas groupby transform."""
+    df = pd.DataFrame(
+        {
+            "key": ["a", "b", "a", "b", "a", "b"],
+            "val": [1.0, 10.0, 2.0, 20.0, 3.0, 30.0],
+        }
+    )
+    result = _run_ewm(df, "mean", groupby_params={"by": "key", "dropna": True})
+    expected_val = df.groupby("key")["val"].transform(lambda s: s.ewm(alpha=0.5).mean())
+    assert result["val"].tolist() == expected_val.tolist()
+
+
+def test_ewm_run_order_by():
+    """Standalone EWM with order_by: sort → compute → place-back."""
+    df = pd.DataFrame({"a": [10.0, 20.0, 30.0, 40.0, 50.0], "ord": [3, 1, 4, 1, 5]})
+    result = _run_ewm(df, "mean", alpha=0.5, columns=["a"], order_by=["ord"])
+    # Sort by ord (stable), compute EWM, then scatter back to original order.
+    perm = (
+        df[["ord"]].reset_index().sort_values("ord", kind="mergesort")["index"].values
+    )
+    sorted_df = df.iloc[perm].reset_index(drop=True)
+    ewm_sorted = sorted_df[["a"]].ewm(alpha=0.5, adjust=True).mean()
+    # Place back: inverse permutation
+    inv = np.empty(len(perm), dtype=int)
+    inv[perm] = np.arange(len(perm))
+    expected = df.copy()
+    expected.loc[:, "a"] = ewm_sorted.iloc[inv]["a"].values
+    pd.testing.assert_frame_equal(result, expected)
+
+
+@pytest.mark.parametrize("shift", [0, 1])
+def test_ewm_run_reverse(shift):
+    """EWM reverse (with optional window_shift): reverse → EWM → shift → reverse."""
+    df = pd.DataFrame({"a": [1.0, 2.0, 3.0, 4.0, 5.0]})
+    kwargs = {"reverse": True}
+    if shift:
+        kwargs["window_shift"] = shift
+    result = _run_ewm(df, "mean", alpha=0.5, **kwargs)
+    raw_rev = df[::-1].ewm(alpha=0.5, adjust=True).mean()
+    if shift:
+        expected = raw_rev.shift(shift)[::-1]
+    else:
+        expected = raw_rev[::-1]
+    expected.index = df.index
+    pd.testing.assert_frame_equal(result, expected)
 
 
 def test_expanding_window_shift_min_periods_gt_1_positive():

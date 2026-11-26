@@ -17,7 +17,7 @@ import operator
 import weakref
 from collections.abc import Iterable
 from io import StringIO
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Callable, Dict, List, Tuple, Type, TypeVar, Union
 
 import numpy as np
 import pandas as pd
@@ -32,6 +32,7 @@ from maxframe.core import (
     is_build_mode,
     register_output_types,
 )
+from maxframe.core.accessor import register_accessor
 from maxframe.core.entity.utils import fill_chunk_slices, refresh_tileable_shape
 from maxframe.dataframe.typing_ import DataFrameType, IndexType, SeriesType
 from maxframe.dataframe.utils import (
@@ -68,6 +69,8 @@ from maxframe.utils import (
     prevent_called_from_pandas,
     tokenize,
 )
+
+T = TypeVar("T")
 
 _df_with_iteritems = pd_release_version[:2] < (2, 0)
 
@@ -633,7 +636,7 @@ class _BatchedFetcher:
 
 
 class IndexData(HasShapeTileableData, _ToPandasMixin):
-    __slots__ = ()
+    __slots__ = ("_accessors",)
     type_name = "Index"
 
     # optional field
@@ -665,6 +668,7 @@ class IndexData(HasShapeTileableData, _ToPandasMixin):
             _index_value=index_value,
             **kw,
         )
+        self._accessors = dict()
 
     @property
     def params(self) -> Dict[str, Any]:
@@ -1492,7 +1496,6 @@ class BaseDataFrameData(HasShapeTileableData, _ToPandasMixin):
 
     def __on_deserialize__(self):
         super().__on_deserialize__()
-        self._accessors = dict()
         self._dtypes_value = None
         self._dtypes_dict = None
 
@@ -2429,6 +2432,137 @@ class DataFrameIndexTypeMixin:
             self.default_index_type = (
                 DefaultIndexType.range if self.default_index_type else None
             )
+
+
+def register_dataframe_accessor(
+    name: str, override: bool = False
+) -> Callable[[Type[T]], Type[T]]:
+    """
+    Register a custom accessor on DataFrame objects.
+
+    Parameters
+    ----------
+    name : str
+        Name the accessor is registered under. Must be a valid identifier that
+        does not start with an underscore. Registering a name that is already
+        registered for DataFrames raises ``AttributeError`` unless ``override``
+        is True.
+    override : bool, default False
+        Replace an accessor previously registered under the same name; a
+        warning is issued when an existing accessor is replaced. Attributes
+        owned by MaxFrame itself cannot be overridden.
+
+    Returns
+    -------
+    callable
+        A class decorator that installs the accessor and returns the class
+        unchanged.
+
+    See Also
+    --------
+    register_accessor : Register a custom accessor on arbitrary tileable classes.
+
+    Examples
+    --------
+    >>> import maxframe.dataframe as md
+    >>> from maxframe.dataframe.api.extensions import register_dataframe_accessor
+    >>> @register_dataframe_accessor("geo")
+    ... class GeoAccessor:
+    ...     def __init__(self, obj):
+    ...         self.obj = obj
+    ...
+    ...     def total_area(self):
+    ...         return self.obj["area"].sum()
+    """
+    return register_accessor(name, DATAFRAME_TYPE, override)
+
+
+def register_series_accessor(
+    name: str, override: bool = False
+) -> Callable[[Type[T]], Type[T]]:
+    """
+    Register a custom accessor on Series objects.
+
+    Parameters
+    ----------
+    name : str
+        Name the accessor is registered under. Must be a valid identifier that
+        does not start with an underscore. Registering a name that is already
+        registered for Series raises ``AttributeError`` unless ``override`` is
+        True.
+    override : bool, default False
+        Replace an accessor previously registered under the same name; a
+        warning is issued when an existing accessor is replaced. Attributes
+        owned by MaxFrame itself cannot be overridden.
+
+    Returns
+    -------
+    callable
+        A class decorator that installs the accessor and returns the class
+        unchanged.
+
+    See Also
+    --------
+    register_accessor : Register a custom accessor on arbitrary tileable classes.
+
+    Examples
+    --------
+    >>> import maxframe.dataframe as md
+    >>> from maxframe.dataframe.api.extensions import register_series_accessor
+    >>> @register_series_accessor("smooth")
+    ... class SmoothAccessor:
+    ...     def __init__(self, obj):
+    ...         if obj.dtype.kind != "f":
+    ...             raise AttributeError("smooth only supports float series")
+    ...         self.obj = obj
+    ...
+    ...     def mean(self, window=3):
+    ...         return self.obj.rolling(window).mean()
+    """
+    return register_accessor(name, SERIES_TYPE, override)
+
+
+def register_index_accessor(
+    name: str, override: bool = False
+) -> Callable[[Type[T]], Type[T]]:
+    """
+    Register a custom accessor on Index objects.
+
+    Parameters
+    ----------
+    name : str
+        Name the accessor is registered under. Must be a valid identifier that
+        does not start with an underscore. Registering a name that is already
+        registered for indexes raises ``AttributeError`` unless ``override`` is
+        True.
+    override : bool, default False
+        Replace an accessor previously registered under the same name; a
+        warning is issued when an existing accessor is replaced. Attributes
+        owned by MaxFrame itself cannot be overridden.
+
+    Returns
+    -------
+    callable
+        A class decorator that installs the accessor and returns the class
+        unchanged.
+
+    See Also
+    --------
+    register_accessor : Register a custom accessor on arbitrary tileable classes.
+
+    Examples
+    --------
+    >>> import maxframe.dataframe as md
+    >>> from maxframe.dataframe.api.extensions import register_index_accessor
+    >>> @register_index_accessor("period")
+    ... class PeriodAccessor:
+    ...     def __init__(self, obj):
+    ...         self.obj = obj
+    ...
+    ...     def is_month_start(self):
+    ...         return self.obj.day == 1
+    """
+    return register_accessor(name, INDEX_TYPE, override)
 
 
 INDEX_TYPE = (Index, IndexData)

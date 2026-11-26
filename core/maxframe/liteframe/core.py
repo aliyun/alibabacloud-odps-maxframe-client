@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Dict
+import random
+from typing import Callable, Dict, Type, TypeVar
 
 import pandas as pd
 import pyarrow as pa
@@ -29,6 +30,7 @@ from maxframe.core import (
     is_build_mode,
     register_output_types,
 )
+from maxframe.core.accessor import register_accessor
 from maxframe.core.entity.executable import _ExecuteAndFetchMixin
 from maxframe.core.entity.utils import fill_chunk_slices, refresh_tileable_shape
 from maxframe.lib.compat import cached_property
@@ -47,33 +49,76 @@ from maxframe.serialization.serializables import (
     SeriesField,
 )
 from maxframe.tensor.datasource.from_liteframe import from_liteframe
-from maxframe.utils import wrap_arrow_dtype
+from maxframe.utils import tokenize, wrap_arrow_dtype
 from maxframe.utils.polars import (
     has_pl_object_type,
     pl_get_ext_type_metadata,
     pl_get_ext_type_name_and_storage,
     pl_make_ext_or_object_dtype,
+    zero_width_frame,
 )
 
-RANGE_COL_NAME = "__lf_range_index__"
+T = TypeVar("T")
+
+RANGE_COL_NAME = "__mf_range_index__"
 
 
-def build_frame_from_ranges(range_columns_as_ranges):
+def _random_alignment_id() -> int:
+    """Generate a random non-negative int64 alignment id.
+
+    Used as the ``default_factory`` for :class:`FrameMetadata.alignment_id`
+    so that unspecified ids are random (never ``None``) by construction.
+    Collision probability is negligible; no global registry is needed.
+    """
+    return random.SystemRandom().getrandbits(63)
+
+
+def drop_alignment_id(tileable):
+    """Replace a liteframe tileable's ``alignment_id`` with a fresh random id.
+
+    Used by row-preserving APIs that are 1:1 chunk-preserving by construction
+    (``transform(axis=1)``, ``transform_chunk``) to honour ``placeback=False``:
+    the output is still row-aligned with the input, but a fresh id makes it
+    *not* combinable with the source via the shuffle-free aligned path.
+    """
+    data = getattr(tileable, "_data", None)
+    if data is None:
+        data = getattr(tileable, "data", None)
+    if data is None:
+        return
+    md = data.frame_metadata
+    if md is None:
+        md = FrameMetadata()
+        data.frame_metadata = md
+    md.alignment_id = _random_alignment_id()
+
+
+def _is_zero_width(frame) -> bool:
+    """Whether a polars frame has no column at all (height irrelevant)."""
+    if pl is not None and isinstance(frame, pl.LazyFrame):
+        return frame.collect_schema().len() == 0
+    return len(frame.columns) == 0
+
+
+def build_frame_from_ranges(range_columns_as_ranges, height=None):
     """Build a polars DataFrame from virtual range column metadata.
 
     Parameters
     ----------
     range_columns_as_ranges : dict[str, range]
         Mapping from column name to Python ``range`` object.
+    height : int, optional
+        Row count of a zero-column result.  Only kept on builds with
+        ``(N, 0)`` support; otherwise the frame is empty.
 
     Returns
     -------
     pl.DataFrame
-        A DataFrame with one Int64 column per range entry. Empty if
-        ``range_columns_as_ranges`` is falsy.
+        One Int64 column per range entry, else a zero-column frame of
+        ``height`` rows.
     """
     if not range_columns_as_ranges:
-        return pl.DataFrame()
+        return zero_width_frame(height)
     data = {}
     for name, rng in range_columns_as_ranges.items():
         # Build from a Python list rather than ``pl.int_range`` (added in
@@ -101,14 +146,30 @@ class FrameMetadata(Serializable):
         default=None,
     )
 
+    # Identity (not semantic content): two frames with the same non-None
+    # alignment_id are row-aligned and may be combined by column concat
+    # without a shuffle/join. Excluded from key/tokenize calculation via
+    # __maxframe_tokenize__ so random ids do not break graph dedup.
+    alignment_id = Int64Field(
+        "alignment_id",
+        default_factory=_random_alignment_id,
+    )
+
+    def __maxframe_tokenize__(self):
+        # Exclude alignment_id (random identity) from the frame key: only
+        # the semantic content (range/hidden columns) participates, so two
+        # identical graph constructions keep equal keys despite distinct ids.
+        return tokenize(type(self).__name__, self.range_columns, self.hidden_columns)
+
 
 class LiteFrameResult(Serializable):
     """Result of a LiteFrame chunk computation.
 
     ``_frame`` holds the physical Polars frame (DataFrame or LazyFrame).
-    When all output columns are virtual range columns (no physical data),
-    ``_frame`` is ``None`` — the frame is materialized on demand from
-    ``range_columns`` by :meth:`materialize`.
+    When every output column is virtual, ``_frame`` is a zero-column frame
+    carrying the row count (``(N, 0)``, polars >= 1.38) and ``range_columns``
+    holds the virtual metadata; :meth:`materialize` expands them on demand.
+    ``_frame`` is ``None`` only on legacy builds or from older workers.
 
     Parameters
     ----------
@@ -138,6 +199,39 @@ class LiteFrameResult(Serializable):
             return {}
         return {k: range(v[0], v[1], v[2]) for k, v in self.range_columns.items()}
 
+    @property
+    def shape(self) -> "tuple[int | None, int]":
+        """Logical ``(n_rows, n_cols)`` of this chunk result.
+
+        ``n_cols`` counts the virtual range columns, matching the plan-side
+        logical width.  ``n_rows`` is ``None`` for a LazyFrame of unknown
+        height -- resolve it from the plan then.
+        """
+        n_range = len(self.range_columns or ())
+        frame = self._frame
+        if frame is None:
+            ranges = self.range_columns_as_ranges
+            if not ranges:
+                return (0, 0)
+            return (len(next(iter(ranges.values()))), len(ranges))
+        if pl is not None and isinstance(frame, pl.LazyFrame):
+            width = frame.collect_schema().len()
+            if width == 0 and self.range_columns:
+                # Virtual-only result: the ranges carry the row count.
+                ranges = self.range_columns_as_ranges
+                return (len(next(iter(ranges.values()))), n_range)
+            return (None, width + n_range)
+        return (frame.height, frame.width + n_range)
+
+    @property
+    def is_virtual_only(self) -> bool:
+        """Whether every column is a virtual range column."""
+        if self._frame is None:
+            return True
+        if not self.range_columns:
+            return False
+        return _is_zero_width(self._frame)
+
     def get(self) -> "pl.DataFrame | pl.LazyFrame | None":
         """Get the polars object for computation.
 
@@ -150,13 +244,24 @@ class LiteFrameResult(Serializable):
     def materialize(self) -> "pl.DataFrame | pl.LazyFrame":
         """Return a physical polars frame, materializing from range_columns if needed.
 
-        When ``_frame`` is ``None``, builds a DataFrame from the virtual
-        range columns. This is used by consumers that need a concrete
-        polars object (e.g. to_odps, to_pandas, filter, sort).
+        A frame with no column at all (``_frame`` is ``None`` or a ``(N, 0)``
+        carrier) is rebuilt from the virtual range columns.  Results with
+        physical columns are returned as-is.
         """
-        if self._frame is not None:
-            return self._frame
-        return build_frame_from_ranges(self.range_columns_as_ranges)
+        frame = self._frame
+        if frame is None:
+            return build_frame_from_ranges(self.range_columns_as_ranges)
+        if _is_zero_width(frame):
+            if self.range_columns:
+                return build_frame_from_ranges(self.range_columns_as_ranges)
+            # Genuine zero-column result: keep the carried row count.
+            height = (
+                frame.collect().height
+                if isinstance(frame, pl.LazyFrame)
+                else frame.height
+            )
+            return build_frame_from_ranges({}, height)
+        return frame
 
     def consolidate(self) -> "pl.DataFrame | None":
         """Collect LazyFrame to DataFrame in-place and return it.
@@ -253,7 +358,6 @@ class LiteFrameData(HasShapeTileableData):
 
     def __on_deserialize__(self):
         super().__on_deserialize__()
-        self._accessors = dict()
         self.__dict__.pop("dtypes", None)
         self.__dict__.pop("columns", None)
 
@@ -303,6 +407,13 @@ class LiteFrameData(HasShapeTileableData):
         if self.frame_metadata and self.frame_metadata.hidden_columns:
             return set(self.frame_metadata.hidden_columns)
         return set()
+
+    @property
+    def is_schema_dynamic(self) -> bool:
+        """True when the output column schema cannot be known until execution."""
+        return len(self.inputs) > 1 and getattr(
+            self.op, "_supports_dynamic_schema", False
+        )
 
     @params.setter
     def params(self, new_params):
@@ -495,8 +606,19 @@ class LiteFrame(LiteFrameToPandasMixin, HasShapeTileable):
     def _hidden_columns(self):
         return self._data._hidden_columns
 
+    @property
+    def is_schema_dynamic(self) -> bool:
+        """True when the output column schema cannot be known until execution."""
+        return self._data.is_schema_dynamic
+
     def __hash__(self):
         return super().__hash__()
+
+    def _iloc_rows(self, row_slice):
+        """Apply a row-only iloc slice, deferring the operator import to avoid circularity."""
+        from maxframe.liteframe.operators.indexing import LiteFrameIlocGetItem
+
+        return LiteFrameIlocGetItem(indexes=[row_slice, slice(None)])(self)
 
     def head(self, n=5):
         """Return the first ``n`` rows.
@@ -521,10 +643,34 @@ class LiteFrame(LiteFrameToPandasMixin, HasShapeTileable):
         1  2
         2  3
         """
-        from maxframe.liteframe.operators.indexing import LiteFrameIlocGetItem
+        return self._iloc_rows(slice(0, int(n)))
 
-        op = LiteFrameIlocGetItem(indexes=[slice(0, int(n)), slice(None)])
-        return op(self)
+    def tail(self, n=5):
+        """Return the last ``n`` rows.
+
+        Parameters
+        ----------
+        n : int, default 5
+            Number of rows to select.
+
+        Returns
+        -------
+        LiteFrame
+            A new LiteFrame containing the last ``n`` rows.
+
+        Examples
+        --------
+        >>> import maxframe.liteframe as mlf
+        >>> lf = mlf.LiteFrame({'a': [1, 2, 3, 4, 5]})
+        >>> lf.tail(3).execute()
+           a
+        2  3
+        3  4
+        4  5
+        """
+        n = int(n)
+        # slice(-0, None) == slice(0, None) == all rows, so n==0 needs special handling
+        return self._iloc_rows(slice(0, 0) if n == 0 else slice(-n, None))
 
     def to_tensor(self, dtype=None):
         """Convert the LiteFrame to a MaxFrame tensor.
@@ -571,6 +717,51 @@ class LiteFrame(LiteFrameToPandasMixin, HasShapeTileable):
         LiteFrame.to_tensor : Convert the LiteFrame to a MaxFrame tensor.
         """
         return self.to_tensor()
+
+
+def register_liteframe_accessor(
+    name: str, override: bool = False
+) -> Callable[[Type[T]], Type[T]]:
+    """
+    Register a custom accessor on LiteFrame objects.
+
+    Parameters
+    ----------
+    name : str
+        Name the accessor is registered under. Must be a valid identifier that
+        does not start with an underscore. Registering a name that is already
+        registered for LiteFrames raises ``AttributeError`` unless ``override``
+        is True.
+    override : bool, default False
+        Replace an accessor previously registered under the same name; a
+        warning is issued when an existing accessor is replaced. Attributes
+        owned by MaxFrame itself cannot be overridden.
+
+    Returns
+    -------
+    callable
+        A class decorator that installs the accessor and returns the class
+        unchanged.
+
+    See Also
+    --------
+    register_accessor : Register a custom accessor on arbitrary tileable classes.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> from maxframe.liteframe.api.extensions import register_liteframe_accessor
+    >>> @register_liteframe_accessor("geo")
+    ... class GeoAccessor:
+    ...     def __init__(self, obj):
+    ...         if "geometry" not in obj.columns:
+    ...             raise AttributeError("no geometry column")
+    ...         self.obj = obj
+    ...
+    ...     def total_area(self):
+    ...         return self.obj["area"].sum()
+    """
+    return register_accessor(name, LITEFRAME_TYPE, override)
 
 
 LITEFRAME_TYPE = (LiteFrame, LiteFrameData)

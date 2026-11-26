@@ -19,6 +19,7 @@ Function application
    LiteFrameGroupBy.transform
    LiteFrameGroupBy.transform_chunk
    LiteFrameGroupBy.agg
+   LiteFrameGroupBy.filter
 
 Computations / descriptive stats
 --------------------------------
@@ -27,20 +28,27 @@ Computations / descriptive stats
 
    LiteFrameGroupBy.all
    LiteFrameGroupBy.any
+   LiteFrameGroupBy.corr
    LiteFrameGroupBy.count
+   LiteFrameGroupBy.cov
    LiteFrameGroupBy.cumcount
    LiteFrameGroupBy.cummax
    LiteFrameGroupBy.cummin
    LiteFrameGroupBy.cumprod
    LiteFrameGroupBy.cumsum
+   LiteFrameGroupBy.idxmax
+   LiteFrameGroupBy.idxmin
+   LiteFrameGroupBy.describe
    LiteFrameGroupBy.max
    LiteFrameGroupBy.mean
    LiteFrameGroupBy.median
    LiteFrameGroupBy.min
    LiteFrameGroupBy.nunique
    LiteFrameGroupBy.prod
+   LiteFrameGroupBy.quantile
    LiteFrameGroupBy.rolling
    LiteFrameGroupBy.expanding
+   LiteFrameGroupBy.ewm
    LiteFrameGroupBy.sem
    LiteFrameGroupBy.size
    LiteFrameGroupBy.skew
@@ -48,6 +56,8 @@ Computations / descriptive stats
    LiteFrameGroupBy.std
    LiteFrameGroupBy.sum
    LiteFrameGroupBy.var
+   LiteFrameGroupBy.value_counts
+   LiteFrameGroupBy.sample
 
 Window transforms
 -----------------

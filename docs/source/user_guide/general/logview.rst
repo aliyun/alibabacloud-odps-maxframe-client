@@ -1,14 +1,14 @@
 .. _user_guide_logview:
 
 View MaxFrame jobs with Logview
------------------------------------
+===============================
 
 Logview is a tool that records and displays the execution status of
 MaxCompute jobs. It has been adapted for MaxFrame. This page describes
 how to use Logview to inspect MaxFrame job execution information.
 
 Overview
-~~~~~~~~
+--------
 
 Logview has been adapted for MaxFrame and supports the following
 capabilities:
@@ -21,40 +21,39 @@ capabilities:
   each sub-instance.
 
 For general information about Logview, refer to
-`Use Logview 2.0 to view job information <https://help.aliyun.com/zh/maxcompute/user-guide/use-logview-v2-0-to-view-job-information>`_.
+`Use Logview 2.0 to view job information <https://www.alibabacloud.com/help/en/maxcompute/use-logview-v2-0-to-view-job-information>`_.
 This page focuses on viewing MaxFrame job information.
 
 MaxFrame Logview entrance
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 
-After you create a session with ``session = new_session(...)``, the
-system automatically generates a URL that starts with
+Creating a session with ``session = new_session(...)`` generates a URL
+that starts with
 ``https://logview.aliyun.com/logview``.
 
-* When you submit MaxFrame jobs from DataWorks, click the URL directly to
+* For MaxFrame jobs submitted from DataWorks, click the URL directly to
   open the MaxFrame Logview UI.
-* When you submit MaxFrame jobs from a local environment, call
+* For MaxFrame jobs submitted from a local environment, call
   ``session.get_logview_address()`` to print the URL, then copy it into
-  your browser.
+  a browser.
 
-The MaxFrame Logview UI looks as follows:
-
-.. image:: https://help-static-aliyun-doc.aliyuncs.com/assets/img/zh-CN/2174659171/p815673.png
-   :alt: MaxFrame Logview overview UI
-   :width: 100%
+The page has a title and feature area at the top, **Basic Info** on the left,
+and a **DAG List** on the right. Open a DAG's **Detail** entry to inspect its
+Sub DAGs.
 
 .. csv-table::
-   :header: "Number", "Area"
+   :header: "Location", "Area"
 
-   "①", "Title and feature area. See `Title and feature area`_."
-   "②", "Basic Info. See `Basic Info <https://help.aliyun.com/zh/maxcompute/user-guide/use-logview-v2-0-to-view-job-information#section-cpk-fnd-egg>`_."
-   "③", "DAG list. See `DAG list`_."
+   "Top", "Title and feature area. See :ref:`logview_title_features`."
+   "Left", "Basic Info. See `Basic Info <https://www.alibabacloud.com/help/en/maxcompute/use-logview-v2-0-to-view-job-information>`_."
+   "Right", "DAG list. See :ref:`logview_dag_list`."
+
+.. _logview_title_features:
 
 Title and feature area
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
-The title and feature area shows the unique job ID generated when you
-submit the job, plus the custom job name. The following operations are
+The title and feature area shows the generated job ID and custom job name. The following operations are
 also available.
 
 .. list-table::
@@ -63,16 +62,16 @@ also available.
 
    * - Icon
      - Function
-   * - .. image:: https://help-static-aliyun-doc.aliyuncs.com/assets/img/zh-CN/2174659171/p815674.png
+   * - .. image:: ../../_static/user_guide/logview/copy-url.jpg
           :alt: Copy URL icon
      - Get the MaxFrame Logview URL.
-   * - .. image:: https://help-static-aliyun-doc.aliyuncs.com/assets/img/zh-CN/2174659171/p815675.png
+   * - .. image:: ../../_static/user_guide/logview/save-details.jpg
           :alt: Save details icon
      - Save the job details file to the local device.
-   * - .. image:: https://help-static-aliyun-doc.aliyuncs.com/assets/img/zh-CN/2174659171/p815684.png
+   * - .. image:: ../../_static/user_guide/logview/stop-job.jpg
           :alt: Stop process icon
      - Stop the current job process.
-   * - .. image:: https://help-static-aliyun-doc.aliyuncs.com/assets/img/zh-CN/2174659171/p815677.png
+   * - .. image:: ../../_static/user_guide/logview/open-details.jpg
           :alt: Open local Logview_detail.txt icon
      - Open the locally saved ``Logview_detail.txt`` file.
    * - Job list icon
@@ -81,8 +80,10 @@ also available.
      - Enable or disable auto refresh. When enabled, the page refreshes
        every 10 seconds.
 
+.. _logview_dag_list:
+
 DAG list
-~~~~~~~~
+--------
 
 The DAG list is sorted by the order in which ``execute()`` was called, in
 descending order. The most recently submitted job appears first. The
@@ -109,22 +110,24 @@ columns are described below.
 * **Cancelled**: The DAG has been cancelled.
 
 Sub DAG details
-~~~~~~~~~~~~~~~
+---------------
 
 The Sub DAG details page contains the following four areas:
 
 .. csv-table::
    :header: "Number", "Area"
 
-   "①", "Sub DAG Graph. See `Sub DAG Graph`_."
-   "②", "Sub DAG list. See `Sub DAG list`_."
-   "③", "Instance list of the Sub DAG. See `Instance list`_."
-   "④", "Basic Info of the Sub DAG. See `Basic Info <https://help.aliyun.com/zh/maxcompute/user-guide/use-logview-v2-0-to-view-job-information#section-cpk-fnd-egg>`_."
+   "①", "Sub DAG Graph. See :ref:`logview_subdag_graph`."
+   "②", "Sub DAG list. See :ref:`logview_subdag_list`."
+   "③", "Instance list of the Sub DAG. See :ref:`logview_instance_list`."
+   "④", "Basic Info of the Sub DAG. See `Basic Info <https://www.alibabacloud.com/help/en/maxcompute/use-logview-v2-0-to-view-job-information>`_."
+
+.. _logview_subdag_graph:
 
 Sub DAG Graph
-^^^^^^^^^^^^^
+~~~~~~~~~~~~~
 
-The Sub DAG Graph helps you quickly understand the current DAG.
+The Sub DAG Graph shows the structure of the current DAG.
 
 .. csv-table::
    :header: "Number", "Description"
@@ -151,8 +154,10 @@ The Sub DAG Graph helps you quickly understand the current DAG.
 * ``OP 1``: Number of operators contained in the current Sub DAG.
   Double-click the node to view the operator graph.
 
+.. _logview_subdag_list:
+
 Sub DAG list
-^^^^^^^^^^^^
+~~~~~~~~~~~~
 
 This list shows the runtime information of all Sub DAGs in the current
 DAG, sorted by time.
@@ -169,10 +174,31 @@ DAG, sorted by time.
    "Duration", "Sub DAG runtime."
    "Timeline", "Timeline preview that shows the start order and time consumption."
 
-Instance list
-^^^^^^^^^^^^^
+.. _logview_instance_list:
 
-This list shows the ODPS instance jobs related to the Sub DAG.
+Instance list
+~~~~~~~~~~~~~
+
+For MCSQL, this list contains the ODPS SQL jobs related to the Sub DAG. Open
+the relevant job with its **Detail** icon. In that job's Logview, select the
+task under **Fuxi Jobs** and open **StdOut** or **StdErr** in **Fuxi Instance
+of Fuxi Task**. **StdOut** shows text printed by the UDF, and **StdErr**
+shows errors and warnings.
+
+.. image:: ../../_static/user_guide/udf/mcsql-subdag-entry.jpg
+   :alt: SQL instance Detail entry highlighted in the user Logview
+   :width: 100%
+
+For DPE, find the ``DPE SubDAG instance`` row in **Instance of Sub DAG** and
+click its **Detail** icon. This opens the DPE details in a new tab. Select
+the Step containing the UDF, then open **StdOut** or **StdErr** on the
+relevant row in its **SubSteps** list.
+
+.. image:: ../../_static/user_guide/udf/dpe-subdag-entry.jpg
+   :alt: DPE SubDAG instance Detail entry highlighted in the user Logview
+   :width: 100%
+
+For both paths with screenshots, see :ref:`udf_debugging`.
 
 .. csv-table::
    :header: "Column", "Description"
@@ -196,14 +222,23 @@ This list shows the ODPS instance jobs related to the Sub DAG.
 * **Unknown_terminated**: The job has finished, but it is not known whether
   it succeeded or failed.
 
-Fuxi Sensor
-^^^^^^^^^^^
+.. _logview_fuxi_sensor:
 
-Fuxi Sensor is the full-dimension resource view of a MaxFrame job. You can
-use Fuxi Sensor to view the actual CPU and memory consumption of every
-Fuxi instance. It is an essential tool for diagnosing job issues and
-analyzing job runtime quality. For example, Fuxi Sensor helps with the
-following scenarios:
+Fuxi Sensor
+~~~~~~~~~~~
+
+Fuxi Sensor shows actual CPU and memory use for Fuxi instances. In the SQL
+job's Logview, open the relevant task under **Fuxi Jobs**, then its worker's
+**Sensor** entry. Availability depends on the region and runtime.
+
+DPE uses a separate **SubSteps** view. Open **Sensor** on the UDF task's row;
+see :ref:`udf_debugging_dpe`. Its **Resource Basic Metrics** section shows
+``mem_plan`` and ``mem_usage``; **Mem Metrics** separates RSS and page cache.
+Check the task ID and time range to identify the attempt being measured.
+An elastic-memory allocation label does not report measured usage. A sample
+from the DPE user Logview is shown in :ref:`udf_elastic_memory_observation`.
+
+Use the charts to:
 
 * Determine the actual amount of memory used when a job runs out of
   memory.
@@ -223,22 +258,22 @@ following scenarios:
     and actual memory usage (``mem_usage``).
 
 Use cases
-~~~~~~~~~
+---------
 
 View the longest-running stage
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Timeline column in the DAG list, Sub DAG list, and Instance list lets
-you quickly find the longest-running DAG, Sub DAG, or Instance at the
-current level.
+The DAG list, Sub DAG list, and Instance list each have a **Timeline** column.
+Use it to compare execution times and find the longest-running entry at that
+level.
 
 .. note::
 
-   When the list is long and paginated, sort the Duration column in
-   descending order to find the longest-running entries quickly.
+   Sorting **Duration** in descending order places the longest-running
+   entries first, including when the list spans multiple pages.
 
 View the cause of an execution failure
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When a DAG fails or the client returns an exception, follow these steps
 in MaxFrame Logview:
@@ -252,7 +287,7 @@ in MaxFrame Logview:
    the icon in the **Detail** column to find the failed instance.
 
 View operators contained in a Sub DAG
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There are two ways to view the operators contained in a Sub DAG:
 
@@ -268,7 +303,7 @@ There are two ways to view the operators contained in a Sub DAG:
      new operator with the same functionality but better performance.
 
 View table data
-^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~
 
 **View the data flow structure**
 
@@ -296,7 +331,7 @@ Click any operator graph or any ODPS Table node in the Sub DAG Graph to
 view the table structure.
 
 View job details
-^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~
 
 On the DAG details page, click the icon in the **Detail** column of the
 Instance list to view the job details.

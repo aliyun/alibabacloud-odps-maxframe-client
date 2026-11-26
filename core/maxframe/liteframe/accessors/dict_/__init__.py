@@ -24,20 +24,15 @@ del dict_method_to_handlers
 
 def _install():
     """Install dict accessor on LiteFrame and LiteFrameData."""
-    from maxframe.core import CachedAccessor
     from maxframe.liteframe.accessors.dict_.accessor import DictAccessor
     from maxframe.liteframe.accessors.dict_.core import dict_method_to_handlers
-    from maxframe.liteframe.core import LITEFRAME_TYPE
-    from maxframe.liteframe.initializer import LiteFrame as LiteFrameInit
+    from maxframe.liteframe.core import register_liteframe_accessor
 
     for method in dict_method_to_handlers:
         if not hasattr(DictAccessor, method):
             DictAccessor._register(method)
 
-    ca = CachedAccessor("dict", DictAccessor)
-    for liteframe in LITEFRAME_TYPE:
-        liteframe.dict = ca
-    LiteFrameInit.dict = ca
+    register_liteframe_accessor("dict")(DictAccessor)
 
 
 _install()

@@ -39,19 +39,11 @@ from maxframe.dataframe.multimodal.url import (
 
 
 def _install():
-    from maxframe.core import CachedAccessor
-    from maxframe.dataframe.core import SERIES_TYPE
+    from maxframe.dataframe.core import register_series_accessor
 
-    # Register accessors to Series types
-    if UrlAccessor._api_count:
-        for t in SERIES_TYPE:
-            t.url = CachedAccessor("url", UrlAccessor)
-    if ImageAccessor._api_count:
-        for t in SERIES_TYPE:
-            t.image = CachedAccessor("image", ImageAccessor)
-    if AudioAccessor._api_count:
-        for t in SERIES_TYPE:
-            t.audio = CachedAccessor("audio", AudioAccessor)
+    register_series_accessor("url")(UrlAccessor)
+    register_series_accessor("image")(ImageAccessor)
+    register_series_accessor("audio")(AudioAccessor)
 
 
 _install()

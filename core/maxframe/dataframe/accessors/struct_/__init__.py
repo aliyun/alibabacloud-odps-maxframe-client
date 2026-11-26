@@ -16,11 +16,10 @@ from maxframe.dataframe.accessors.struct_.core import SeriesStructMethod
 
 
 def _install():
-    from maxframe.core import CachedAccessor
     from maxframe.dataframe.accessors.struct_.accessor import StructAccessor
     from maxframe.dataframe.accessors.struct_.dtypes import struct_dtypes
     from maxframe.dataframe.accessors.struct_.field import struct_field
-    from maxframe.dataframe.core import SERIES_TYPE
+    from maxframe.dataframe.core import register_series_accessor
 
     struct_method_to_handlers = {
         "dtypes": struct_dtypes,
@@ -31,8 +30,7 @@ def _install():
     for name, handler in struct_method_to_handlers.items():
         StructAccessor._register(name, handler, is_property=name in property_names)
 
-    for series in SERIES_TYPE:
-        series.struct = CachedAccessor("struct", StructAccessor)
+    register_series_accessor("struct")(StructAccessor)
 
 
 _install()
