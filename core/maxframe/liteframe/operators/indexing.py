@@ -173,10 +173,12 @@ class LiteFrameIlocGetItem(LiteFrameHeadTailOptimizedMixin, LiteFrameOperator):
                                 new_start = None
                             else:
                                 new_start = rc_info.start + start * rc_step
+                            # An empty slice is a zero-length range at its start.
+                            planned_stop = max(start, stop)
                             if rc_info.start is None or rc_info.stop is None:
                                 new_stop = None
                             else:
-                                new_stop = rc_info.start + stop * rc_step
+                                new_stop = rc_info.start + planned_stop * rc_step
                             new_range_cols[rc_name] = RangeInfo(
                                 start=new_start,
                                 stop=new_stop,

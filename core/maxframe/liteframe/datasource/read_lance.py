@@ -121,7 +121,12 @@ def read_lance(
         )
         lf = from_local_df(local_df)
         if with_row_address:
-            lf._data.frame_metadata = FrameMetadata(hidden_columns=["_rowaddr"])
+            # Read-time metadata tweak (adding the _rowaddr hidden column)
+            # is row-preserving; keep the source alignment id.
+            lf._data.frame_metadata = FrameMetadata(
+                hidden_columns=["_rowaddr"],
+                alignment_id=lf._data.frame_metadata.alignment_id,
+            )
         return lf
 
     dtypes = pd.Series(dtype=object)

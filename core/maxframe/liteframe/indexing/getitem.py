@@ -137,6 +137,11 @@ def liteframe_getitem(lf, key):
         order; boolean filtering preserves the relative order of surviving
         rows.
 
+    Raises
+    ------
+    KeyError
+        If a named column is not found or the key type is unsupported.
+
     See Also
     --------
     LiteFrame.select : Explicit column selection.

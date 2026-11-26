@@ -141,6 +141,19 @@ class BuiltinFunction(Serializable):
 
     func_name = StringField("func_name", default=None)
 
+    # func_name -> callable, for functions that cannot be imported by name.
+    _registered: Dict[str, Callable] = {}
+
+    @classmethod
+    def register_function_body(cls, func_name: str, func: Callable) -> None:
+        """Register *func* under *func_name*.
+
+        A registered callable is resolved directly, without importing the
+        name, and takes precedence over the import mechanism.  Registering
+        is optional: an unregistered reference keeps resolving by import.
+        """
+        cls._registered[func_name] = func
+
     def __init__(self, func: Optional[Callable] = None, **kw):
         self._func = func
         if func is not None:
@@ -161,7 +174,11 @@ class BuiltinFunction(Serializable):
     def func(self):
         if getattr(self, "_func", None) is None:
             assert isinstance(self.func_name, str)
-            self._func = load_member(self.func_name, type(self)).func
+            registered = type(self)._registered.get(self.func_name)
+            if registered is not None:
+                self._func = registered
+            else:
+                self._func = load_member(self.func_name, type(self)).func
         return self._func
 
     @property
@@ -174,6 +191,20 @@ class BuiltinFunction(Serializable):
     def __getattr__(self, item):
         if item.startswith("_") and not item.endswith("_"):
             return super().__getattribute__(item)
+        if item.startswith("__") and item.endswith("__"):
+            # Dunder probes (``__wrapped__``, ``__closure__``, ``__globals__``,
+            # ``__code__``) come from callable inspection -- closure entity
+            # checks, scheduling-hint discovery, ``unwrap_function`` -- which runs
+            # on the client while the graph is built.  A body-absent logical
+            # reference must answer them as absent instead of importing
+            # ``func_name``: the body usually lives in a private backend module
+            # that is not importable there, and the graph only needs the
+            # explicitly given output metadata.
+            body = getattr(self, "_func", None)
+            if body is None:
+                body = type(self)._registered.get(self.func_name)
+            if body is None:
+                raise AttributeError(item)
         attr = getattr(self.func, item)
         # Wrap callable methods as BuiltinMethod only for a
         # builtin-decorated *class*: BuiltinMethod.func reloads+instantiates
@@ -213,11 +244,12 @@ class BuiltinMethod(BuiltinFunction):
 
     @property
     def func(self):
-        # Reload the @builtin_function-decorated class by name.  The module
-        # attribute IS a BuiltinFunction after decoration, so restrict_type
-        # is BuiltinFunction.
-        bf_cls = load_member(self.func_name, BuiltinFunction)
-        cls = bf_cls.func  # the original class
+        # Resolve the @builtin_function-decorated class through the same path
+        # as BuiltinFunction.func so a class registered only via
+        # register_function_body is found before falling back to import.
+        # BuiltinFunction (not type(self)) is used deliberately: this
+        # property overrides BuiltinFunction.func, so recursing would loop.
+        cls = BuiltinFunction(func_name=self.func_name).func
         instance = cls()  # instantiate
         return getattr(instance, self.method_name)  # bound method
 
@@ -383,6 +415,45 @@ class ODPSFunction(Serializable):
 def with_resources(
     *resources: Union[str, ODPSResourceObj], use_wrapper_class: bool = True
 ):
+    """
+    Make MaxCompute resource files available to a UDF.
+
+    Parameters
+    ----------
+    *resources : str or odps.models.Resource
+        Names or Resource objects for files already uploaded to MaxCompute.
+        Resource objects retain their project and schema qualification.
+    use_wrapper_class : bool, default True
+        Wrap the callable in a MarkedFunction. If False, append to the callable's
+        existing ``file_resources`` attribute instead.
+
+    Returns
+    -------
+    callable
+        Decorator that adds resources and returns the decorated callable.
+        Repeated decorators append resources.
+
+    Raises
+    ------
+    AttributeError
+        If ``use_wrapper_class=False`` and the callable has no
+        ``file_resources`` attribute.
+
+    Notes
+    -----
+    DPE and MCSQL provide the files in the function's working directory.
+    ``with_resource_libraries`` is an alias of this function.
+
+    Examples
+    --------
+    >>> from maxframe.udf import with_resources
+    >>> @with_resources("labels.txt")
+    ... def label_count(batch):
+    ...     with open("labels.txt", encoding="utf-8") as stream:
+    ...         count = sum(1 for line in stream)
+    ...     return batch.assign(label_count=count)
+    """
+
     def res_to_str(res: Union[str, ODPSResourceObj]) -> str:
         if isinstance(res, str):
             return res
@@ -414,6 +485,51 @@ def with_python_requirements(
     pre_release: bool = False,
     no_audit_wheel: bool = False,
 ):
+    """
+    Declare Python packages needed by a remote UDF.
+
+    Parameters
+    ----------
+    *requirements : str
+        Package requirements, optionally with version constraints, such as
+        ``"Pillow==10.4.0"``. Packages must support the remote Python ABI.
+    force_rebuild : bool, default False
+        Rebuild the PythonPack environment instead of reusing a matching build.
+    prefer_binary : bool, default False
+        Prefer binary wheels over source distributions.
+    pre_release : bool, default False
+        Allow pre-release package versions.
+    no_audit_wheel : bool, default False
+        Skip the wheel compatibility audit. The wheel must still be compatible
+        with the remote runtime.
+
+    Returns
+    -------
+    callable
+        Decorator that attaches PythonPack requirements to a callable.
+        Repeated decorators append requirement groups.
+
+    Raises
+    ------
+    ValueError
+        If a requirement contains malformed shell-style quoting.
+
+    Notes
+    -----
+    DPE and MCSQL build or reuse the package environment before running the UDF.
+    Installing a package on the client does not install it remotely.
+
+    Examples
+    --------
+    >>> from maxframe.udf import with_python_requirements
+    >>> @with_python_requirements("Pillow==10.4.0", prefer_binary=True)
+    ... def image_widths(batch):
+    ...     from io import BytesIO
+    ...     from PIL import Image
+    ...     return batch.assign(
+    ...         width=[Image.open(BytesIO(raw)).width for raw in batch["image_bytes"]]
+    ...     )
+    """
     result_req = []
     for req in requirements:
         result_req.extend(shlex.split(req))
@@ -446,40 +562,82 @@ def with_running_options(
     **kwargs,
 ):
     """
-    Set running options for the UDF.
+    Select the execution engine and resources for a UDF.
 
     Parameters
     ----------
-    engine: Optional[str]
-        The engine to run the UDF.
-    cpu: Optional[int]
-        The CPU to run the UDF.
-    memory: Optional[Union[str, int]]
-        The memory to run the UDF. If it is an int, it is in GB.
-        If it is a str, it is in the format of "10GiB", "30MiB", etc.
-    memory_limit: Optional[Union[str, int]]
-        The memory upper bound for elastic-memory retries of a DPE CPU UDF.
-        The effective running options must also contain ``memory``. A limit
-        smaller than the effective memory is invalid, while an equal limit
-        does not enable elastic-memory retry. After a recognized out-of-memory
-        failure, DPE retries the UDF with more memory up to the effective upper
-        bound, which may be capped by the memory available in the cluster. If
-        it is an int, it is in GB. If it is a str, it is in the format of
-        "10GiB", "30MiB", etc.
-    gu: Optional[int]
-        The GU number to run the UDF.
-    gu_quota: Optional[Union[str, List[str]]]
-        The GU quota nicknames to run the UDF. The order is the priority of the usage.
-    gu_type: Optional[str]
-        The GU specification type for Spot GU quota
-        (e.g. "gu.gu8tf-8x.spot").
-        Required for Spot quota; must be used together with ``gu_quota``.
-        When set, the UDF is marked as GPU-based and the actual GPU count is
-        resolved from this specification.
-    image_name: Optional[str]
-        The registered image name in MaxCompute to use for running the UDF.
-    kwargs
-        Other running options.
+    engine : str, optional
+        Engine name, such as ``"DPE"`` or ``"MCSQL"``. Case is ignored.
+        If omitted, follow the job's engine selection. The engine must be
+        available and support the operation.
+    cpu : int, optional
+        Positive CPU count for each task. Omitted fields inherit
+        ``options.function.default_running_options``.
+    memory : int or str, optional
+        Starting memory for each task. Integers are in GiB; strings accept units
+        such as ``"512MiB"`` or ``"8GiB"``. Omission inherits the shared default.
+    memory_limit : int or str, optional
+        Upper bound for elastic-memory retries of eligible DPE CPU UDFs, in the
+        same units as ``memory``. The merged settings must contain ``memory``.
+        Equal values disable expansion; a smaller limit is invalid. ``None``
+        inherits a shared limit. Cluster resources can cap the effective limit.
+    gu : int, optional
+        Positive GPU-unit count for a DPE UDF. Cannot be combined with ``cpu``
+        or ``memory``.
+    gu_quota : str or list of str, optional
+        GPU quota nickname, or nicknames in usage-priority order. Omission uses
+        ``options.session.gu_quota_name``. A quota alone does not request a GPU.
+    gu_type : str, optional
+        Specification for a Spot GU quota, such as ``"gu.gu8tf-8x.spot"``.
+        Requires ``gu_quota`` and cannot be combined with ``cpu`` or ``memory``.
+        The specification determines the GPU count.
+    **kwargs
+        Additional running options. ``image_name`` delegates to
+        :func:`with_image_options` to select a registered MaxCompute image.
+
+    Returns
+    -------
+    callable
+        Decorator that attaches engine and resource settings to a callable.
+
+    Raises
+    ------
+    TypeError
+        If ``memory`` or ``memory_limit`` is not an integer or string.
+    ValueError
+        If a numeric resource request is non-positive, ``gu_type`` has no quota,
+        or a GPU request is combined with CPU or memory. Invalid memory sizes or
+        limits also fail when the effective resource settings are collected.
+
+    Notes
+    -----
+    Use one decorator for all engine and resource settings. When an outer
+    ``with_running_options`` decorator specifies an engine or resource option,
+    it replaces the inner engine and entire resource dictionary; fields are
+    not merged between decorators. Missing fields then inherit
+    ``options.function.default_running_options`` when the operation is built.
+    An empty decorator, or one that only sets ``image_name``, leaves the
+    existing engine and resource settings unchanged.
+
+    CPU and memory apply to DPE and MCSQL. Elastic memory and GPU resources apply
+    only to DPE. Resource requests do not make a Python loop parallel.
+
+    Examples
+    --------
+    >>> import maxframe.dataframe as md
+    >>> from maxframe.udf import with_running_options
+    >>> @with_running_options(engine="DPE", cpu=2, memory="8GiB")
+    ... def double(batch):
+    ...     return batch.assign(value=batch["value"] * 2)
+    >>> df = md.DataFrame({"value": [1, 2]})
+    >>> result = df.mf.apply_chunk(
+    ...     double, output_type="dataframe", dtypes={"value": "int64"},
+    ...     index=df.index, skip_infer=True,
+    ... )
+    >>> result.execute().fetch()  # doctest: +SKIP
+       value
+    0      2
+    1      4
     """
     engine = engine.upper() if engine else None
     resources = kwargs.copy()
@@ -550,15 +708,40 @@ def with_image_options(
     **kwargs,
 ):
     """
-    Set image options for the UDF.
-    The image must be registered in MaxCompute beforehand.
+    Select a registered custom image for a DPE UDF.
 
     Parameters
     ----------
-    image_name: Optional[str]
-        The registered image name in MaxCompute to use for running the UDF.
-    kwargs
-        Other image options.
+    image_name : str
+        Name of an image already registered in MaxCompute. Required despite
+        the ``None`` default in the signature.
+    **kwargs
+        Additional image options passed to the runtime.
+
+    Returns
+    -------
+    callable
+        Decorator that attaches image settings to a callable.
+
+    Raises
+    ------
+    ValueError
+        If ``image_name`` is empty or the callable already has image settings.
+
+    Notes
+    -----
+    This decorator does not select DPE automatically. Use
+    :func:`with_running_options` to select it. The function-level image replaces
+    ``options.session.image_name``.
+
+    Examples
+    --------
+    >>> from maxframe.udf import with_image_options, with_running_options
+    >>> @with_running_options(engine="DPE")
+    ... @with_image_options("registered_image_name")
+    ... def score(batch):
+    ...     import custom_scoring_pkg
+    ...     return batch.assign(score=custom_scoring_pkg.score_batch(batch["text"]))
     """
     if not image_name:
         raise ValueError("image_name is required")
@@ -590,32 +773,44 @@ def with_network_options(
     internal_whitelist: Optional[List[str]] = None,
 ):
     """
-    Decorator function to add network whitelist options to UDF functions.
-
-    This function is used to specify a list of network addresses that are
-    allowed for the UDF function to access.
+    Configure public, internal, or VPC access for a DPE UDF.
 
     Parameters
     ----------
-    vpc_network_link: Optional[str]
-        When accessing services under Alibaba Cloud VPC network, such as RDS or self-built services, please refer to
-        [https://help.aliyun.com/zh/maxcompute/user-guide/access-vpc-solution-direct-connection](The Access VPC Solution)
-        to create network link, and set the network link id to this parameter.
-
-    public_whitelist : List[str]
-        Variable number of public network address strings, which can be IP addresses, domains, etc.
-
-    internal_whitelist : List[str]
-        Variable number of private network address strings, which can be IP addresses, domains, etc.
-        It should be noted that these internal network addresses refer to the internal addresses of
-        Alibaba Cloud products, which need to be queried in the product manuals.
-        For example, OSS internal address oss-cn-hangzhou-internal.aliyuncs.com.
+    vpc_network_link : str, optional
+        Name of a MaxCompute network link for a VPC service. Create it using the
+        `Access VPC solution <https://help.aliyun.com/zh/maxcompute/user-guide/access-vpc-solution-direct-connection>`_.
+    public_whitelist : list of str, optional
+        Public IP addresses or domains. These must be approved for the project
+        through a service ticket before use.
+    internal_whitelist : list of str, optional
+        Alibaba Cloud internal IP addresses or domains, such as an OSS internal
+        endpoint. Obtain each endpoint from the corresponding service's docs.
 
     Returns
     -------
-    func_wrapper : Callable
-        Returns a decorator function that wraps the target function and
-        adds network whitelist configuration.
+    callable
+        Decorator that attaches network settings to a callable.
+
+    Raises
+    ------
+    ValueError
+        If repeated decorators request different VPC network links.
+
+    Notes
+    -----
+    Public whitelists are combined, as are internal whitelists, across decorators
+    and DPE shared settings. Only one VPC link is allowed per function.
+    The decorator does not select DPE automatically.
+
+    Examples
+    --------
+    >>> from maxframe.udf import with_network_options, with_running_options
+    >>> @with_running_options(engine="DPE")
+    ... @with_network_options(vpc_network_link="configured_network_link")
+    ... def score(batch):
+    ...     import scoring_client
+    ...     return batch.assign(score=scoring_client.score_batch(batch["text"]))
     """
 
     def func_wrapper(func):
@@ -670,6 +865,50 @@ def with_fs_mount(
     mount_path: str,
     storage_options: StorageOptions = None,
 ):
+    """
+    Mount an OSS path for a DPE UDF.
+
+    Parameters
+    ----------
+    path : str
+        OSS URI including endpoint, bucket, and optional prefix, for example
+        ``"oss://oss-cn-hangzhou.aliyuncs.com/bucket/models"``.
+    mount_path : str
+        Local path through which the UDF reads the mounted files.
+    storage_options : dict
+        Authentication settings. Provide ``role_arn``, or both
+        ``access_key_id`` and ``access_key_secret``. Credentials are required;
+        the default ``None`` does not provide anonymous access.
+
+    Returns
+    -------
+    callable
+        Decorator that appends a mount to the callable's mount settings.
+
+    Raises
+    ------
+    ValueError
+        If either path is missing or is not a string, authentication is missing,
+        or mounts on the same callable use different ``storage_options``.
+
+    Notes
+    -----
+    This decorator requires DPE but does not select the engine automatically.
+    For several mounts on one function, use identical authentication settings.
+
+    Examples
+    --------
+    >>> from pathlib import Path
+    >>> from maxframe.udf import with_fs_mount, with_running_options
+    >>> @with_running_options(engine="DPE")
+    ... @with_fs_mount(
+    ...     "oss://oss-cn-hangzhou.aliyuncs.com/bucket/models", "/mnt/models",
+    ...     storage_options={"role_arn": "acs:ram::<account-id>:role/<role-name>"},
+    ... )
+    ... def model_size(batch):
+    ...     size = Path("/mnt/models/model.bin").stat().st_size
+    ...     return batch.assign(model_bytes=size)
+    """
     mount_options = FsMountOptions(
         path=path,
         mount_path=mount_path,

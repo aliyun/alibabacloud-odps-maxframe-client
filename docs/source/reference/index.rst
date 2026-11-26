@@ -10,3 +10,5 @@ API reference
    dataframe/index
    liteframe/index
    learn/index
+   extensions
+   udf

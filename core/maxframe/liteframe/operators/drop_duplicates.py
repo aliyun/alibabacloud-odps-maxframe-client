@@ -195,3 +195,22 @@ class LiteFrameDropDuplicates(MapReduceOperator, LiteFrameOperatorMixin):
         if len(results) == 1:
             return results[0]
         return results
+
+    def _inherit_alignment_id(self, inputs):
+        # Per-output, keyed off the return_mask / return_value flags: the
+        # mask output is 1:1 row-preserving (and, for the tree method, the
+        # tiler restores the input chunking) so it inherits; the value
+        # output removes rows and always gets a fresh id.  __call__ rejects
+        # return_mask and return_value both True, so in practice exactly one
+        # output exists; the per-output list keeps the rule correct if
+        # dual-output mode is ever enabled (order matches the kws in
+        # __call__: mask first, then value).
+        src_id = self._inherit_single_input_alignment_id(inputs)
+        inherited = []
+        if self.return_mask:
+            inherited.append(src_id)
+        if self.return_value:
+            inherited.append(None)
+        if len(inherited) == 1:
+            return inherited[0]
+        return inherited

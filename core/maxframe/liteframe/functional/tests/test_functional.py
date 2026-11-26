@@ -30,7 +30,12 @@ from maxframe.lib.dtypes_extension.blob import (
 from maxframe.lib.version import parse as parse_version
 from maxframe.liteframe import LiteFrame
 from maxframe.liteframe.core import FrameMetadata
-from maxframe.liteframe.expressions import LiteFrameColumn, LiteFrameUDFExpr, NamedExpr
+from maxframe.liteframe.expressions import (
+    LiteFrameColumn,
+    LiteFrameMultiColumnSubExpr,
+    LiteFrameUDFExpr,
+    NamedExpr,
+)
 from maxframe.liteframe.functional.apply import apply
 from maxframe.liteframe.functional.apply_chunk import apply_chunk
 from maxframe.liteframe.functional.flat_apply import flat_apply
@@ -294,12 +299,12 @@ def test_liteframe_projection_udf_has_custom_code():
 # ---------------------------------------------------------------------------
 
 
-def _make_liteframe(dtypes_dict):
+def _make_liteframe(dtypes):
     """Helper: create a LiteFrame tileable from a dtypes dict."""
     dtypes = pd.Series(
         {
             k: wrap_arrow_dtype(pa.from_numpy_dtype(v)) if isinstance(v, type) else v
-            for k, v in dtypes_dict.items()
+            for k, v in dtypes.items()
         }
     )
     op = LiteFrameDataSource()
@@ -311,12 +316,12 @@ def _make_liteframe(dtypes_dict):
     )
 
 
-def _make_liteframe_with_hidden(dtypes_dict, hidden_names):
+def _make_liteframe_with_hidden(dtypes, hidden_names):
     """Helper: create a LiteFrame whose physical_dtypes includes hidden columns."""
     dtypes = pd.Series(
         {
             k: wrap_arrow_dtype(pa.from_numpy_dtype(v)) if isinstance(v, type) else v
-            for k, v in dtypes_dict.items()
+            for k, v in dtypes.items()
         }
     )
     op = LiteFrameDataSource()
@@ -357,6 +362,60 @@ def test_map_creates_projection(dtypes):
     assert isinstance(result.op, LiteFrameProjection)
     assert list(result.dtypes.index) == list(dtypes.keys())
     assert result.shape == lf.shape
+
+
+@pytest.mark.parametrize(
+    "annotation, convert, expected",
+    [
+        (int, int, pa.int64()),
+        (float, float, pa.float64()),
+        (bool, bool, pa.bool_()),
+        (str, str, pa.string()),
+    ],
+)
+def test_map_scalar_annotation(annotation, convert, expected):
+    """map() uses a scalar return annotation as the output dtype."""
+    lf = _make_liteframe({"a": wrap_arrow_dtype(pa.int64())})
+    calls = []
+
+    def func(value) -> annotation:
+        calls.append(value)
+        return convert(value)
+
+    result = map_(lf, func)
+    assert calls == []
+    assert result.dtypes["a"] == wrap_arrow_dtype(expected)
+
+
+def test_map_scalar_annotation_on_callable_instance():
+    """A callable instance declares its output via the bound __call__."""
+    lf = _make_liteframe({"a": wrap_arrow_dtype(pa.int64())})
+    calls = []
+
+    class Func:
+        def __call__(self, value) -> str:
+            calls.append(value)
+            return "v" + str(value)
+
+    for skip_infer in (False, True):
+        result = map_(lf, Func(), skip_infer=skip_infer)
+        assert result.dtypes["a"] == wrap_arrow_dtype(pa.string())
+    assert calls == []
+
+
+def test_map_scalar_annotation_with_unresolvable_input_hint():
+    """An unresolvable input annotation must not hide the return annotation."""
+    lf = _make_liteframe({"a": wrap_arrow_dtype(pa.int64())})
+    calls = []
+
+    def func(value: "MissingInput") -> str:  # noqa: F821
+        calls.append(value)
+        return "v" + str(value)
+
+    for skip_infer in (False, True):
+        result = map_(lf, func, skip_infer=skip_infer)
+        assert result.dtypes["a"] == wrap_arrow_dtype(pa.string())
+    assert calls == []
 
 
 @skip_no_arrow_dtype
@@ -402,6 +461,136 @@ def test_apply_creates_op(api_func, mode):
     result = api_func(lf, lambda df: df, dtypes={"a": int})
     assert isinstance(result.op, LiteFrameFunctional)
     assert result.op.mode == mode
+
+
+def _projection_udf_expr(op):
+    """Extract the unique embedded UDF expr from a LiteFrameProjection op."""
+    udf_exprs = []
+    for proj in op.projections:
+        expr = proj.expr if isinstance(proj, NamedExpr) else proj
+        if isinstance(expr, LiteFrameMultiColumnSubExpr):
+            udf_exprs.append(expr.multi_expr)
+        elif hasattr(expr, "mode"):
+            udf_exprs.append(expr)
+    # Multi-column outputs share a single UDF expr across NamedExprs.
+    unique = {id(e) for e in udf_exprs}
+    assert len(unique) == 1, f"expected one unique UDF expr, got {len(unique)}"
+    return udf_exprs[0]
+
+
+@skip_no_arrow_dtype
+def test_apply_axis1_single_output_creates_projection():
+    """apply(axis=1) with a single declared output lowers to a
+    LiteFrameProjection with a mode='apply_row' UDF expression."""
+    lf = _make_liteframe(
+        {"a": wrap_arrow_dtype(pa.int64()), "b": wrap_arrow_dtype(pa.int64())}
+    )
+    result = apply(lf, lambda row: row["a"] + row["b"], axis=1, dtypes={"s": int})
+    assert isinstance(result.op, LiteFrameProjection)
+    udf_expr = _projection_udf_expr(result.op)
+    assert udf_expr.mode == "apply_row"
+    assert udf_expr.output_names == ["s"]
+    assert udf_expr.result_type is None
+    assert [c.name for c in udf_expr.operands] == ["a", "b"]
+
+
+@skip_no_arrow_dtype
+def test_apply_axis1_multi_output_stays_functional():
+    """apply(axis=1) with multiple declared outputs keeps LiteFrameFunctional."""
+    lf = _make_liteframe(
+        {"a": wrap_arrow_dtype(pa.int64()), "b": wrap_arrow_dtype(pa.int64())}
+    )
+    results = apply(
+        lf,
+        lambda row: (row["a"], row["b"]),
+        axis=1,
+        dtypes=[{"x": int}, {"y": int}],
+    )
+    assert len(results) == 2
+    assert all(isinstance(r.op, LiteFrameFunctional) for r in results)
+    assert all(r.op.mode == "apply" for r in results)
+
+
+@skip_no_arrow_dtype
+def test_apply_axis1_skip_infer_stays_functional():
+    """apply(axis=1, skip_infer=True) without an explicit schema keeps
+    LiteFrameFunctional (the schema is unknown until execution)."""
+    lf = _make_liteframe({"a": wrap_arrow_dtype(pa.int64())})
+    result = apply(
+        lf,
+        lambda row: {"x": row["a"]},
+        axis=1,
+        skip_infer=True,
+    )
+    assert isinstance(result.op, LiteFrameFunctional)
+    assert result.op.mode == "apply"
+    # With an explicit dtypes declaration, inference resolves from the
+    # declaration alone (dtypes take priority over skip_infer), so the
+    # single-output path still lowers to a projection.
+    projected = apply(
+        lf,
+        lambda row: {"x": row["a"]},
+        axis=1,
+        dtypes={"x": int},
+        skip_infer=True,
+    )
+    assert isinstance(projected.op, LiteFrameProjection)
+
+
+@skip_no_arrow_dtype
+@pytest.mark.parametrize("result_type", ["expand", "reduce", "broadcast"])
+def test_apply_axis1_result_type_carried(result_type):
+    """apply(axis=1) result_type is carried onto the apply_row UDF expr."""
+    lf = _make_liteframe(
+        {"a": wrap_arrow_dtype(pa.int64()), "b": wrap_arrow_dtype(pa.int64())}
+    )
+    result = apply(
+        lf,
+        lambda row: {"x": row["a"], "y": row["b"]},
+        axis=1,
+        result_type=result_type,
+    )
+    assert isinstance(result.op, LiteFrameProjection)
+    udf_expr = _projection_udf_expr(result.op)
+    assert udf_expr.mode == "apply_row"
+    assert udf_expr.result_type == result_type
+
+
+@skip_no_arrow_dtype
+def test_apply_axis1_carries_hidden_columns():
+    """apply(axis=1) single-output: hidden columns are excluded from the UDF
+    input and appended as pass-through projections to the output."""
+    lf = _make_liteframe_with_hidden(
+        {"a": wrap_arrow_dtype(pa.int64()), "h": wrap_arrow_dtype(pa.int64())}, ["h"]
+    )
+    result = apply(lf, lambda row: row["a"] * 2, axis=1, dtypes={"x": int})
+    assert isinstance(result.op, LiteFrameProjection)
+    udf_expr = _projection_udf_expr(result.op)
+    # hidden column not part of the UDF input
+    assert [c.name for c in udf_expr.operands] == ["a"]
+    # visible output first, hidden pass-through appended
+    names = [proj.name for proj in result.op.projections]
+    assert names == ["x", "h"]
+
+
+@skip_no_arrow_dtype
+def test_apply_axis1_hidden_declared_as_output_raises():
+    """Declaring a hidden column as an output (via dtypes or a return
+    annotation) raises: hidden columns are stripped from the UDF input and
+    cannot be produced by it."""
+    lf = _make_liteframe_with_hidden(
+        {"a": wrap_arrow_dtype(pa.int64()), "h": wrap_arrow_dtype(pa.int64())}, ["h"]
+    )
+    with pytest.raises(ValueError, match="hidden column"):
+        apply(
+            lf,
+            lambda row: row["a"],
+            axis=1,
+            dtypes={"h": int},
+            skip_infer=True,
+        )
+    # the annotation-declared case is exercised end-to-end in the DPE tests
+    # (test_apply_axis1_hidden_column_declared_as_output_raises)
 
 
 def test_apply_chunk_multiple_outputs():
@@ -478,7 +667,7 @@ def test_transform_apis_reject_multi_output_dtypes(api_name, multi_dtypes):
 
 @skip_no_arrow_dtype
 @pytest.mark.parametrize(
-    "dtypes_dict, hidden, call, expected_visible",
+    "dtypes, hidden, call, expected_visible",
     [
         # Expression-based UDFs preserve hidden columns via the projection
         # operator's pass-through (_append_hidden_projections).
@@ -535,7 +724,7 @@ def test_transform_apis_reject_multi_output_dtypes(api_name, multi_dtypes):
         ),
     ],
 )
-def test_preserves_hidden_columns(dtypes_dict, hidden, call, expected_visible):
+def test_preserves_hidden_columns(dtypes, hidden, call, expected_visible):
     """UDF APIs preserve hidden columns into physical_dtypes + metadata.
 
     Every preserve-policy UDF (expression-based ``map`` / ``transform_chunk``
@@ -544,7 +733,7 @@ def test_preserves_hidden_columns(dtypes_dict, hidden, call, expected_visible):
     hidden column physical-but-hidden so the visible schema stays consistent
     and ``dtypes.drop(hidden)`` does not raise.
     """
-    lf = _make_liteframe_with_hidden(dtypes_dict, hidden_names=hidden)
+    lf = _make_liteframe_with_hidden(dtypes, hidden_names=hidden)
     assert "_hc" in lf._physical_dtypes.index
 
     result = call(lf)
@@ -912,7 +1101,7 @@ def test_groupby_getitem_selection():
 
 @skip_no_arrow_dtype
 @pytest.mark.parametrize(
-    "dtypes_dict, hidden, call, expected_visible",
+    "dtypes, hidden, call, expected_visible",
     [
         pytest.param(
             {
@@ -951,7 +1140,7 @@ def test_groupby_getitem_selection():
         ),
     ],
 )
-def test_transform_carries_hidden_columns(dtypes_dict, hidden, call, expected_visible):
+def test_transform_carries_hidden_columns(dtypes, hidden, call, expected_visible):
     """transform-style APIs carry hidden columns into physical_dtypes.
 
     Regression: hidden columns were preserved in frame_metadata but absent
@@ -959,7 +1148,7 @@ def test_transform_carries_hidden_columns(dtypes_dict, hidden, call, expected_vi
     dropping hidden names.  Hidden columns must be present in physical_dtypes
     and tracked in metadata so the visible schema stays consistent.
     """
-    lf = _make_liteframe_with_hidden(dtypes_dict, hidden_names=hidden)
+    lf = _make_liteframe_with_hidden(dtypes, hidden_names=hidden)
     assert "_hc" in lf._physical_dtypes.index
 
     result = call(lf)

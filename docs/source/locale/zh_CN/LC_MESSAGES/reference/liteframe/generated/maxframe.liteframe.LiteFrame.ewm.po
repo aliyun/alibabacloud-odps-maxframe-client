@@ -1,0 +1,225 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-15 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.ewm.rst:2
+msgid "maxframe.liteframe.LiteFrame.ewm"
+msgstr ""
+
+#: maxframe.liteframe.window.ewm.ewm:1 of
+msgid "Provide exponentially weighted (EW) calculations."
+msgstr "提供指数加权（EW）计算。"
+
+#: maxframe.liteframe.window.ewm.ewm:3 of
+msgid ""
+"Returns a :class:`LiteFrameEWM` object whose aggregation methods "
+"(``.mean()``, ``.std()``, ``.var()``) compute exponentially weighted "
+"moving statistics."
+msgstr ""
+"返回一个 :class:`LiteFrameEWM` 对象，其聚合方法（``.mean()``、``.std()``"
+"、``.var()``）计算指数加权移动统计量。"
+
+#: maxframe.liteframe.window.ewm.ewm:7 of
+msgid ""
+"Exactly one of ``com``, ``span``, ``halflife``, or ``alpha`` must be "
+"provided to specify the smoothing factor."
+msgstr ""
+"必须提供 ``com``、``span``、``halflife`` 或 ``alpha`` 中的一个来指定平滑"
+"因子。"
+
+#: maxframe.liteframe.window.ewm.ewm of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.window.ewm.ewm:10 of
+msgid "Specify decay in terms of center of mass: ``alpha = 1 / (1 + com)``."
+msgstr "以质心方式指定衰减：``alpha = 1 / (1 + com)``。"
+
+#: maxframe.liteframe.window.ewm.ewm:12 of
+msgid "Specify decay in terms of span (N-day EMA): ``alpha = 2 / (span + 1)``."
+msgstr "以跨度方式指定衰减（N日 EMA）：``alpha = 2 / (span + 1)``。"
+
+#: maxframe.liteframe.window.ewm.ewm:15 of
+msgid ""
+"Specify decay in terms of half-life: ``alpha = 1 - exp(ln(0.5) / "
+"halflife)``."
+msgstr "以半衰期方式指定衰减：``alpha = 1 - exp(ln(0.5) / halflife)``。"
+
+#: maxframe.liteframe.window.ewm.ewm:18 of
+msgid "Specify smoothing factor directly: ``0 < alpha <= 1``."
+msgstr "直接指定平滑因子：``0 < alpha <= 1``。"
+
+#: maxframe.liteframe.window.ewm.ewm:20 of
+msgid ""
+"Minimum number of observations in the window required to produce a value "
+"(otherwise null)."
+msgstr "窗口中产生值所需的最小观测数（否则为 null）。"
+
+#: maxframe.liteframe.window.ewm.ewm:23 of
+#, python-brace-format
+msgid ""
+"If True, use the adjusted (weighted average) form.  If False, use the "
+"recursive form (y_t = (1-α)·y_{t-1} + α·x_t)."
+msgstr "如果为 True，使用调整（加权平均）形式。如果为 False，使用递归形式（y_t = (1-α)·y_{t-1} + α·x_t）。"
+
+#: maxframe.liteframe.window.ewm.ewm:26 of
+msgid ""
+"If False, NaN positions are treated as absolute gaps (weights decay "
+"through the gap).  If True, NaN positions are ignored (weights apply only"
+" to observed values, relative positioning)."
+msgstr ""
+"如果为 False，NaN 位置被视为绝对间隙（权重在间隙中衰减）。如果为 True，"
+"NaN 位置被忽略（权重仅应用于已观测的值，相对定位）。"
+
+#: maxframe.liteframe.window.ewm.ewm:30 of
+msgid ""
+"If False, use unbiased variance (bias correction).  If True, use biased "
+"variance.  Only applies to ``std``/``var``."
+msgstr ""
+"如果为 False，使用无偏方差（偏差校正）。如果为 True，使用有偏方差。仅适用"
+"于 ``std``/``var``。"
+
+#: maxframe.liteframe.window.ewm.ewm:33 of
+msgid "Column(s) to aggregate. If None, all numeric columns are aggregated."
+msgstr "要聚合的列。如果为 None，则聚合所有数值列。"
+
+#: maxframe.liteframe.window.ewm.ewm:35 of
+msgid ""
+"Column(s) that define the order in which the window expands (equivalent "
+"to ``ORDER BY`` inside a MaxCompute ``OVER()`` clause). The output row "
+"order is unchanged; each row receives the EWM computed over the rows that"
+" precede it in *order_by* order."
+msgstr ""
+"定义窗口展开顺序的列（等价于 MaxCompute ``OVER()`` 子句中的 "
+"``ORDER BY``）。输出行顺序不变；每行接收按 *order_by* 顺序在其之前"
+"的行计算得到的 EWM 值。"
+
+#: maxframe.liteframe.window.ewm.ewm:40 of
+msgid ""
+"Sort direction for each *order_by* column. A single bool is broadcast to "
+"all columns."
+msgstr "每个 *order_by* 列的排序方向。单个布尔值会广播到所有列。"
+
+#: maxframe.liteframe.window.ewm.ewm:43 of
+msgid ""
+"Offset the EWM leading edge by N rows. A positive value shifts the window"
+" forward (look-ahead), a negative value backward (look-back). Matches the"
+" MaxCompute ``shift`` MF-specific window parameter."
+msgstr ""
+"将 EWM 前沿偏移 N 行。正值将窗口向前移动（前瞻），负值向后移动（回溯）。"
+"匹配 MaxCompute ``shift`` MF 特定窗口参数。"
+
+#: maxframe.liteframe.window.ewm.ewm:48 of
+msgid ""
+"Flip the EWM so the recurrence runs from the last row backward (a "
+"\"narrowing\" window). Matches the MaxCompute ``reverse_range`` MF-"
+"specific window parameter. May be combined with ``window_shift``: the "
+"window then covers ``[i + window_shift, n-1]``."
+msgstr ""
+"翻转 EWM，使递归从最后一行向后运行（"收缩"窗口）。匹配 MaxCompute "
+"``reverse_range`` MF 特定窗口参数。可与 ``window_shift`` 组合使用："
+"此时窗口覆盖 ``[i + window_shift, n-1]``。"
+
+#: maxframe.liteframe.window.ewm.ewm:54 of
+msgid ""
+"If True, restore the output to the input frame's row order and chunk "
+"layout after the group-key shuffle (grouped EWM only).  If False, the "
+"output stays in reducer/hash-partition order."
+msgstr ""
+"如果为 True，在分组键重排后恢复输出到输入帧的行顺序和块布局（仅分组EWM）"
+"。如果为 False，输出保持在 reducer/哈希分区顺序。"
+
+#: maxframe.liteframe.window.ewm.ewm of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.window.ewm.ewm:59 of
+msgid "Intermediate object; call an aggregation method to produce a LiteFrame."
+msgstr "中间对象；调用聚合方法以生成 LiteFrame。"
+
+#: maxframe.liteframe.window.ewm.ewm of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.window.ewm.ewm:65 of
+msgid ":py:obj:`rolling`"
+msgstr ""
+
+#: maxframe.liteframe.window.ewm.ewm:66 of
+msgid "Provide rolling-window calculations."
+msgstr "提供滚动窗口计算。"
+
+#: maxframe.liteframe.window.ewm.ewm:68 of
+msgid ":py:obj:`expanding`"
+msgstr ""
+
+#: maxframe.liteframe.window.ewm.ewm:69 of
+msgid "Provide expanding-window calculations."
+msgstr "提供扩展窗口计算。"
+
+#: maxframe.liteframe.window.ewm.ewm:72 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.liteframe.window.ewm.ewm:73 of
+msgid ""
+"With ``adjust=True`` (default), the EW mean at position *t* is a weighted"
+" average of all observations up to *t*, where the weight for observation "
+"*i* is proportional to ``(1 - alpha)^(t - i)``.  Earlier observations "
+"receive exponentially decaying weights."
+msgstr ""
+"当 ``adjust=True``（默认值）时，位置 *t* 处的 EW 均值是截至 *t* 的所有"
+"观测值的加权平均，其中观测值 *i* 的权重与 ``(1 - alpha)^(t - i)`` 成正比"
+"。较早的观测值获得指数衰减的权重。"
+
+#: maxframe.liteframe.window.ewm.ewm:78 of
+#, python-brace-format
+msgid ""
+"With ``adjust=False``, the EW mean is computed recursively: ``y_0 = x_0``"
+", ``y_t = (1 - α)·y_{t-1} + α·x_t``.  This requires less memory but "
+"weights differ slightly from the adjusted form for the first few "
+"observations."
+msgstr ""
+"当 ``adjust=False`` 时，EW 均值以递归方式计算：``y_0 = x_0``，``y_t = (1 "
+"- α)·y_{t-1} + α·x_t``。这需要更少的内存，但前几个观测值的权重与调整"
+"形式略有不同。"
+
+#: maxframe.liteframe.window.ewm.ewm:83 of
+msgid ""
+"For ``std`` and ``var``, the unbiased estimator (``bias=False``) applies "
+"a bias correction factor derived from the sum of weights, similar to the "
+"``ddof=1`` correction in sample variance.  Set ``bias=True`` to skip this"
+" correction."
+msgstr ""
+"对于 ``std`` 和 ``var``，无偏估计量（``bias=False``）应用一个由权重之和"
+"导出的偏差校正因子，类似于样本方差中的 ``ddof=1`` 校正。设置 ``bias=True`"
+"` 可跳过此校正。"
+
+#: maxframe.liteframe.window.ewm.ewm:88 of
+msgid ""
+"See the `pandas EWM documentation "
+"<https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.ewm.html>`_"
+" for the mathematical background on ``adjust``, ``ignore_na``, and "
+"``bias``."
+msgstr ""
+"有关 ``adjust``、``ignore_na`` 和 ``bias`` 的数学背景，请参阅 `pandas EWM"
+" 文档 <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.ewm."
+"html>`_。"
+

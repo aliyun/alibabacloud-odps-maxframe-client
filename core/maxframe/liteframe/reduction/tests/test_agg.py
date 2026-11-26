@@ -12,11 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pandas as pd
 import pyarrow as pa
 import pytest
 
 from maxframe.liteframe.core import LiteFrame
-from maxframe.liteframe.expressions import LiteFrameColumn, LiteFramePow, NamedExpr
+from maxframe.liteframe.expressions import (
+    LiteFrameColumn,
+    LiteFrameLiteral,
+    LiteFramePow,
+    LiteFrameWhere,
+    NamedExpr,
+)
 from maxframe.liteframe.initializer import LiteFrame as LF
 from maxframe.liteframe.operators.project import LiteFrameProjection
 from maxframe.liteframe.operators.reduction import LiteFrameAgg
@@ -28,7 +35,7 @@ from maxframe.liteframe.reduction.compile import (
     _resolve_callable_names,
     compile_agg,
 )
-from maxframe.utils import wrap_arrow_dtype
+from maxframe.utils import is_arrow_dtype_supported, wrap_arrow_dtype
 
 
 def _get_agg_op(result):
@@ -213,7 +220,6 @@ def test_groupby_multi_key():
         "skew",
         "kurt",
         "nunique",
-        "median",
     ],
 )
 def test_shortcut_methods_create_agg_op(func):
@@ -224,6 +230,21 @@ def test_shortcut_methods_create_agg_op(func):
     agg_op = _get_agg_op(result)
     assert isinstance(agg_op, LiteFrameAgg)
     assert agg_op.raw_func == func
+
+
+def test_median_delegates_to_quantile():
+    """median() delegates to quantile(0.5) via the agg compilation path."""
+    lf = LF({"a": [1.0, 2.0, 3.0], "b": [4.0, 5.0, 6.0]})
+    result = lf.median()
+    assert isinstance(result, LiteFrame)
+    assert list(result.columns) == ["a", "b"]
+
+    # Verify median actually delegates to quantile(0.5, linear) in the
+    # compiled agg descriptor — not just that the result has the right shape.
+    agg_op = _get_agg_op(result)
+    assert agg_op.raw_func == AggCall(
+        "quantile", q=0.5, interpolation="linear", approx=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -541,3 +562,135 @@ def test_infer_output_column_names_callables(raw_func, expected_columns):
     func_dict, func_rename = _normalize_func(raw_func)
     cols = _infer_output_column_names(func_dict, func_rename, ["a", "b"], None)
     assert cols == expected_columns
+
+
+# --- min_count tests ---
+
+
+@pytest.mark.parametrize("func_name", ["sum", "prod"])
+def test_min_count_default_no_projection(func_name):
+    """Default min_count does not trigger projection."""
+    lf = LF({"a": [1, 2, 3], "b": [4.0, 5.0, 6.0]})
+    result = getattr(lf, func_name)()
+    assert isinstance(result.data.op, LiteFrameAgg)
+    assert not isinstance(result.data.op, LiteFrameProjection)
+
+
+@pytest.mark.parametrize(
+    "func_name,min_count",
+    [("sum", 3), ("prod", 2)],
+)
+def test_min_count_positive_triggers_projection(func_name, min_count):
+    """Positive min_count triggers projection with func + count + Where(None)."""
+    lf = LF({"a": [1, 2, 3], "b": [4.0, 5.0, 6.0]})
+    result = getattr(lf, func_name)(min_count=min_count)
+    assert isinstance(result.data.op, LiteFrameProjection)
+    agg_op = _get_agg_op(result)
+    func_names = {d["map_func_name"] for d in agg_op.agg_funcs}
+    assert func_name in func_names
+    assert "count" in func_names
+    a_proj = next(p for p in result.data.op.projections if p.name == "a")
+    assert isinstance(a_proj.expr, LiteFrameWhere)
+    assert isinstance(a_proj.expr.false_value, LiteFrameLiteral)
+    assert a_proj.expr.false_value.value is None
+
+
+@pytest.mark.skipif(not is_arrow_dtype_supported(), reason="Arrow dtype not supported")
+@pytest.mark.parametrize(
+    "data,expected_dtype",
+    [([1, 2, 3], pa.int64()), ([1.0, 2.0, 3.0], pa.float64())],
+)
+def test_min_count_preserves_dtype(data, expected_dtype):
+    """sum(min_count=3) preserves the aggregated dtype."""
+    lf = LF({"a": data})
+    result = lf.sum(min_count=3)
+    assert result.dtypes["a"] == wrap_arrow_dtype(expected_dtype)
+
+
+@pytest.mark.skipif(not is_arrow_dtype_supported(), reason="Arrow dtype not supported")
+@pytest.mark.parametrize(
+    "pa_dtype,expected",
+    [
+        (pa.int8(), pa.int64()),
+        (pa.int32(), pa.int64()),
+        (pa.float32(), pa.float64()),
+        (pa.bool_(), pa.int64()),
+    ],
+)
+def test_min_count_widens_narrow_dtype(pa_dtype, expected):
+    """sum(min_count=3) widens narrow types (int8/int32/float32/bool)
+    to match the unguarded aggregation's output dtype."""
+    s = pd.Series([1, 2, 3], dtype=wrap_arrow_dtype(pa_dtype))
+    lf = LF({"a": s})
+    unguarded = lf.sum()
+    guarded = lf.sum(min_count=3)
+    assert guarded.dtypes["a"] == unguarded.dtypes["a"]
+    assert guarded.dtypes["a"] == wrap_arrow_dtype(expected)
+
+
+@pytest.mark.parametrize("via", ["method", "agg"])
+def test_min_count_registers_count_intermediate(via):
+    """sum(min_count=3) registers count as an intermediate,
+    whether called via .sum() or .agg(AggCall(...))."""
+    lf = LF({"a": [1.0, 2.0, 3.0]})
+    if via == "method":
+        result = lf.sum(min_count=3)
+    else:
+        result = lf.agg(AggCall("sum", min_count=3))
+    agg_op = _get_agg_op(result)
+    assert "count" in {d["map_func_name"] for d in agg_op.agg_funcs}
+    assert "sum" in {d["map_func_name"] for d in agg_op.agg_funcs}
+
+
+def test_min_count_shares_count_with_mean():
+    """sum(min_count=3) and mean share the count intermediate (not duplicated)."""
+    lf = LF({"a": [1.0, 2.0, 3.0]})
+    result = lf.agg({"a": [AggCall("sum", min_count=3), "mean"]})
+    agg_op = _get_agg_op(result)
+    counts = [d for d in agg_op.agg_funcs if d["map_func_name"] == "count"]
+    assert len(counts) == 1  # shared, not duplicated
+
+
+@pytest.mark.parametrize("func_name", ["min", "max", "first", "last"])
+def test_whole_frame_min_max_min_count_raises(func_name):
+    """Whole-frame min/max/first/last with min_count>=2 raises TypeError."""
+    lf = LF({"a": [1, 2, 3]})
+    with pytest.raises(TypeError, match="does not support min_count"):
+        lf.agg(AggCall(func_name, min_count=2))
+
+
+@pytest.mark.parametrize("func_name", ["min", "max"])
+def test_min_count_one_noop_for_min_max(func_name):
+    """min_count=1 is a no-op for min/max (already null for all-null),
+    so no projection or TypeError — just regular aggregation."""
+    lf = LF({"a": [1, 2, 3]})
+    result = lf.agg(AggCall(func_name, min_count=1))
+    assert isinstance(result.data.op, LiteFrameAgg)
+    assert not isinstance(result.data.op, LiteFrameProjection)
+
+
+@pytest.mark.parametrize("func_name,min_count", [("sum", -5), ("min", -2)])
+def test_min_count_negative_is_no_guard(func_name, min_count):
+    """Negative min_count is treated as no guard, matching pandas."""
+    lf = LF({"a": [1, 2, 3]})
+    result = lf.agg(AggCall(func_name, min_count=min_count))
+    assert isinstance(result.data.op, LiteFrameAgg)
+    assert not isinstance(result.data.op, LiteFrameProjection)
+
+
+@pytest.mark.parametrize("func_name", ["any", "all", "mean", "count", "size"])
+def test_min_count_unsupported_function_raises(func_name):
+    """min_count on functions outside _MIN_COUNT_FUNCS raises ValueError."""
+    lf = LF({"a": [1, 2, 3]})
+    with pytest.raises(ValueError, match="min_count is not supported"):
+        lf.agg(AggCall(func_name, min_count=2))
+
+
+def test_infer_output_column_names_groupby_collision():
+    """When a generated agg output name collides with a group key column,
+    the collision is resolved by suffixing (e.g. a_count -> a_count_1)
+    so the projection/rename step does not produce duplicate columns."""
+    func_dict, _ = _normalize_func(["count", "mean"])
+    groupby_params = {"by": "a_count"}
+    cols = _infer_output_column_names(func_dict, None, ["a"], groupby_params)
+    assert cols == ["a_count", "a_count_1", "a_mean"]

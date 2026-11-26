@@ -12,8 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime as dt
+
+import numpy as np
+import pandas as pd
+import pyarrow as pa
 import pytest
 
+from maxframe.codegen.spe.liteframe.expressions import LiteFrameExprEvaluator
 from maxframe.liteframe.core import LiteFrame
 from maxframe.liteframe.expressions import (
     LiteFrameAdd,
@@ -40,6 +46,7 @@ from maxframe.liteframe.operators.indexing import (
     LiteFrameIlocSetItem,
 )
 from maxframe.liteframe.operators.project import LiteFrameProjection
+from maxframe.utils import is_arrow_dtype_supported, wrap_arrow_dtype
 
 
 def test_getitem_single_column():
@@ -219,8 +226,6 @@ def test_setitem_self_derived_column_not_double_inlined():
     (``astype(astype(col("price")))``), crashing with
     ``InvalidOperationError: expected String type, got: f64``.
     """
-    import numpy as np
-
     lf = LF({"price": ["$1", "$2", "$3"]})
     lf["price"] = lf["price"].str.replace(r"[\$]", "", regex=True).astype(float)
     lf["log_price"] = np.log(lf["price"])
@@ -955,8 +960,289 @@ def test_rename_alias_preserved(op, expected):
             lambda cols: cols == ["a", "value", "c"],
             id="setitem_keeps_alias",
         ),
+        # setitem with rank() exercises the aligned-setitem path after rename
+        pytest.param(
+            lambda: (lambda r: (r.__setitem__("a", r["a"].rank()), list(r.columns))[1])(
+                LF({"a": [1, 2], "b": [2, 1]}).rename(columns={"b": "value"})
+            ),
+            lambda cols: cols == ["value", "a"],
+            id="setitem_rank",
+        ),
     ],
 )
 def test_rename_alias_regression_oracles(setup, expected):
     """Branch-specific regression oracles for rename alias preservation (#86799306)."""
     assert expected(setup())
+
+
+# ---------------------------------------------------------------------------
+# tail / filter / select_dtypes / isin tests
+# ---------------------------------------------------------------------------
+
+
+def _eval_result(result, pdf):
+    """Evaluate a LiteFrame projection result against *pdf* via the SPE evaluator."""
+    evaluator = LiteFrameExprEvaluator(pdf)
+    out = {}
+    for proj in result.data.op.projections:
+        expr = proj.expr if hasattr(proj, "expr") else proj
+        out[proj.name] = evaluator.eval(expr)
+    return pd.DataFrame(out)
+
+
+@pytest.mark.parametrize(
+    "n,expected_rows",
+    [(3, 3), (5, 5), (0, 0), (10, None), (-1, 9), (-2, 8), (-10, 0), (-11, 0)],
+    ids=[
+        "tail_3",
+        "tail_default",
+        "tail_zero",
+        "more_than_rows",
+        "tail_negative_one",
+        "tail_negative_two",
+        "tail_negative_rows",
+        "beyond_negative_rows",
+    ],
+)
+def test_tail(n, expected_rows):
+    """``tail(n)`` with negative n keeps all rows except the first |n| (pandas)."""
+    result = LF({"a": list(range(10)), "b": list(range(10, 20))}).tail(n)
+    assert isinstance(result, LiteFrame)
+    if expected_rows is None:
+        # Row count may be unknown (np.nan) when n exceeds the frame height.
+        assert result.shape[0] is np.nan or result.shape[0] == 10
+    else:
+        assert result.shape[0] == expected_rows
+    op = result.data.op
+    assert isinstance(op, LiteFrameIlocGetItem)
+    assert op.indexes[0] == (slice(0, 0) if n == 0 else slice(-n, None))
+    assert op.indexes[1] == slice(None)
+
+
+@pytest.mark.parametrize(
+    "data,kwargs,expected",
+    [
+        pytest.param(
+            {"aa": [1], "ab": [2], "cc": [3]},
+            {"items": ["aa", "cc"]},
+            ["aa", "cc"],
+            id="items",
+        ),
+        pytest.param(
+            {"aa": [1], "ab": [2], "cc": [3]}, {"like": "a"}, ["aa", "ab"], id="like"
+        ),
+        pytest.param(
+            {"aa": [1], "ab": [2], "cc": [3]}, {"regex": "^a"}, ["aa", "ab"], id="regex"
+        ),
+        pytest.param({"a": [1], "b": [2]}, {"items": ["zzz"]}, [], id="no_matches"),
+        pytest.param(
+            {"a": [1], "b": [2]}, {"items": ["a", "zzz"]}, ["a"], id="unknown_ignored"
+        ),
+        pytest.param(
+            {"a": [1], "b": [2], "c": [3]},
+            {"items": ["c", "a"]},
+            ["c", "a"],
+            id="items_order",
+        ),
+    ],
+)
+def test_filter(data, kwargs, expected):
+    pdf = pd.DataFrame(data)
+    result = LF(pdf).filter(**kwargs)
+    assert list(result.columns) == expected
+    if expected:
+        assert list(_eval_result(result, pdf).columns) == expected
+
+
+@pytest.mark.parametrize(
+    "kwargs",
+    [
+        pytest.param({}, id="no_selector"),
+        pytest.param({"items": ["a"], "like": "a"}, id="two_selectors"),
+    ],
+)
+def test_filter_raises(kwargs):
+    with pytest.raises(TypeError):
+        LF({"a": [1]}).filter(**kwargs)
+
+
+@pytest.mark.parametrize(
+    "kwargs,expected",
+    [
+        pytest.param({"include": "number"}, ["a", "b"], id="include_number"),
+        pytest.param({"include": "int"}, ["a"], id="include_int"),
+        pytest.param({"include": "float"}, ["b"], id="include_float"),
+        pytest.param({"include": "integer"}, ["a"], id="integer"),
+        pytest.param({"include": "floating"}, ["b"], id="floating"),
+        pytest.param({"include": "datetime64"}, ["d"], id="datetime64"),
+        pytest.param({"include": int}, ["a"], id="builtin_int"),
+        pytest.param({"include": float}, ["b"], id="builtin_float"),
+        pytest.param({"exclude": "number"}, ["c", "d"], id="exclude_number"),
+        pytest.param({"include": ["int", "float"]}, ["a", "b"], id="include_list"),
+        pytest.param(
+            {"include": "number", "exclude": "int"}, ["b"], id="include_exclude"
+        ),
+        pytest.param({"include": "timedelta64"}, [], id="no_match"),
+    ],
+)
+def test_select_dtypes(kwargs, expected):
+    pdf = pd.DataFrame(
+        {
+            "a": [1, 2],
+            "b": [1.0, 2.0],
+            "c": ["x", "y"],
+            "d": pd.to_datetime(["2020-01-01", "2020-01-02"]),
+        }
+    )
+    result = LF(pdf).select_dtypes(**kwargs)
+    assert list(result.columns) == expected
+    if expected:
+        assert list(_eval_result(result, pdf).columns) == expected
+
+
+@pytest.mark.parametrize(
+    "kwargs,exc",
+    [
+        pytest.param({}, ValueError, id="no_include_exclude"),
+        pytest.param({"include": "bogus"}, TypeError, id="unknown_spec"),
+        pytest.param(
+            {"include": np.int64, "exclude": int}, ValueError, id="numpy_overlap"
+        ),
+        pytest.param(
+            {"include": "number", "exclude": np.number}, ValueError, id="alias_overlap"
+        ),
+    ],
+)
+def test_select_dtypes_raises(kwargs, exc):
+    with pytest.raises(exc):
+        LF({"a": [1]}).select_dtypes(**kwargs)
+
+
+_NUMPY_WIDTH_DF = pd.DataFrame(
+    {"i32": np.array([1], dtype=np.int32), "i64": np.array([1], dtype=np.int64)}
+)
+
+
+@pytest.mark.parametrize(
+    "pdf,include,expected",
+    [
+        pytest.param(
+            pd.DataFrame({"a": [1, 2], "t": pd.to_timedelta([1, 2], unit="D")}),
+            "int",
+            ["a"],
+            id="timedelta_not_integer",
+        ),
+        pytest.param(_NUMPY_WIDTH_DF, np.int32, ["i32"], id="exact_int32"),
+        pytest.param(_NUMPY_WIDTH_DF, np.int64, ["i64"], id="exact_int64"),
+    ],
+)
+def test_select_dtypes_dtype_specific(pdf, include, expected):
+    """Alias/numpy specs match exactly what pandas matches."""
+    assert list(LF(pdf).select_dtypes(include=include).columns) == expected
+
+
+_TIME32_DF = pd.DataFrame(
+    {
+        "t": pd.Series([dt.time(0, 0, 1)], dtype=wrap_arrow_dtype(pa.time32("s"))),
+        "n": [1],
+    }
+)
+_TZ_DF = pd.DataFrame(
+    {
+        "d": pd.Series(
+            [pd.Timestamp("2020-01-01", tz="UTC")],
+            dtype=wrap_arrow_dtype(pa.timestamp("us", tz="UTC")),
+        ),
+        "n": [1],
+    }
+)
+
+
+@pytest.mark.parametrize(
+    "pdf,kwargs,expected",
+    [
+        pytest.param(_TIME32_DF, {"include": "object"}, ["t"], id="time_object"),
+        pytest.param(
+            _TIME32_DF, {"exclude": "object"}, ["n"], id="time_exclude_object"
+        ),
+        pytest.param(
+            _TIME32_DF, {"include": "datetime64"}, [], id="time_not_datetime64"
+        ),
+    ],
+)
+def test_select_dtypes_time_family(pdf, kwargs, expected):
+    """An Arrow time column probes as object (pandas has no numpy time dtype)."""
+    assert list(LF(pdf).select_dtypes(**kwargs).columns) == expected
+
+
+@pytest.mark.parametrize(
+    "kwargs,expected_native,expected_legacy",
+    [
+        pytest.param({"include": "datetime64"}, ["d"], [], id="include_datetime64"),
+        pytest.param(
+            {"exclude": "datetime64"}, ["n"], ["d", "n"], id="exclude_datetime64"
+        ),
+        pytest.param({"include": "datetimetz"}, [], ["d"], id="include_datetimetz"),
+        pytest.param({"include": "object"}, [], [], id="include_object"),
+    ],
+)
+def test_select_dtypes_tz_aware_family(kwargs, expected_native, expected_legacy):
+    """A tz-aware column keeps pandas' family: a native Arrow dtype reads as
+    datetime64, a FakeArrowDtype (probed as ``pd.DatetimeTZDtype``) as datetimetz."""
+    expected = expected_native if is_arrow_dtype_supported() else expected_legacy
+    assert list(LF(_TZ_DF).select_dtypes(**kwargs).columns) == expected
+
+
+def test_filter_items_listlike_and_dedup():
+    """filter accepts pd.Index/np.ndarray and deduplicates (pandas)."""
+    pdf = pd.DataFrame({"a": [1], "b": [2], "c": [3]})
+    assert list(LF(pdf).filter(items=pd.Index(["c", "a"])).columns) == ["c", "a"]
+    assert list(LF(pdf).filter(items=np.array(["b", "a"])).columns) == ["b", "a"]
+    assert list(LF(pdf).filter(items=["a", "a", "b"]).columns) == ["a", "b"]
+
+
+@pytest.mark.parametrize(
+    "data,values,expected_cols",
+    [
+        pytest.param({"a": [1, 2, 3], "b": [4, 5, 6]}, [1, 4], ["a", "b"], id="list"),
+        pytest.param(
+            {"a": [1, 2, 3], "b": [4, 5, 6]}, {"a": [1, 2]}, ["a", "b"], id="dict"
+        ),
+        pytest.param({"a": ["x", "y", "z"]}, "x", ["a"], id="single_string"),
+    ],
+)
+def test_isin(data, values, expected_cols):
+    pdf = pd.DataFrame(data)
+    result = LF(pdf).isin(values)
+    assert isinstance(result, LiteFrame)
+    assert list(result.columns) == expected_cols
+    assert all(result.dtypes[c].kind == "b" for c in result.dtypes.index)
+    assert isinstance(result.data.op, LiteFrameProjection)
+    evaluated = _eval_result(result, pdf)
+    check_values = (
+        values["a"]
+        if isinstance(values, dict)
+        else ([values] if isinstance(values, str) else values)
+    )
+    expected_a = pdf["a"].isin(check_values)
+    assert evaluated["a"].tolist() == expected_a.tolist()
+
+
+@pytest.mark.parametrize(
+    "values",
+    [
+        pytest.param([[1, 2], [3]], id="nested_list"),
+        pytest.param("tileable", id="tileable"),
+        # pandas containers compare by index/column alignment; a plain
+        # ``list(...)`` would silently test the Series' values or the
+        # DataFrame's column labels instead.
+        pytest.param(pd.Series([1, 2], index=["x", "y"]), id="pandas_series"),
+        pytest.param(pd.DataFrame({"a": [1]}), id="pandas_frame"),
+        pytest.param({"a": pd.Series([1], index=["absent"])}, id="dict_of_series"),
+    ],
+)
+def test_isin_rejects_invalid_values(values):
+    """isin rejects nested/tileable values and pandas Series/DataFrame inputs."""
+    lf = LF({"a": [1, 2, 3]})
+    with pytest.raises(NotImplementedError):
+        lf.isin(lf if isinstance(values, str) else values)

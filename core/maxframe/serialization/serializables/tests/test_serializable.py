@@ -149,6 +149,11 @@ class MySerializable(Serializable):
     _no_default_val = Float64Field("no_default_val", default=no_default)
 
 
+class _NewSerializableOp(Serializable):
+    _id = IdentityField("id")
+    _old_val = Int64Field("old_val", default=100)
+
+
 @pytest.mark.parametrize("set_is_ci", [False, True], indirect=True)
 @switch_unpickle(forbidden=False)
 def test_serializable(set_is_ci):
@@ -313,3 +318,54 @@ def test_fields_errors(set_is_ci):
 
     with pytest.raises(AttributeError):
         del my_serializeble._oneof_val
+
+
+@switch_unpickle
+def test_serializable_hook():
+    """Test __serializable__ hook for legacy-client compatibility.
+
+    Pattern: OperatorCls.__serializable__ returns _LegacyOperatorCls ->
+    bytes deserialized with _LegacyOperatorCls ->
+    _LegacyOperatorCls.__on_deserialize__ returns correct OperatorCls.
+    """
+    global _NewSerializableOp, _LegacySerializableOp
+
+    clear_type_cache()
+    old_cls = _NewSerializableOp
+
+    try:
+        # Simulate a legacy client that serializes the "old" layout.
+        class _NewSerializableOp(Serializable):
+            _id = IdentityField("id")
+            _old_val = Int64Field("old_val", default=100)
+
+        legacy_obj = _NewSerializableOp(_id="hook_id", _old_val=42)
+        header, buffers = serialize(legacy_obj)
+
+        # Now "upgrade" to a new layout with the hook.
+        class _LegacySerializableOp(Serializable):
+            _id = IdentityField("id")
+            _old_val = Int64Field("old_val", default=100)
+            _legacy_name = "_NewSerializableOp"
+
+            def __on_deserialize__(self):
+                return _NewSerializableOp(_id=self._id, _new_val=str(self._old_val))
+
+        class _NewSerializableOp(Serializable):
+            _id = IdentityField("id")
+            _new_val = StringField("new_val", default="default")
+
+            @classmethod
+            def __serializable__(cls):
+                return _LegacySerializableOp
+
+        clear_type_cache()
+        result = deserialize(header, buffers)
+
+        assert type(result) is _NewSerializableOp
+        assert result._id == "hook_id"
+        assert result._new_val == "42"
+    finally:
+        _NewSerializableOp = old_cls
+        _LegacySerializableOp = None
+        clear_type_cache()

@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Alibaba Group Holding Ltd.
+# Copyright 1999-2026 Alibaba Group Holding Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,11 +27,18 @@ from pandas.api.extensions import (
 )
 
 from maxframe.lib.dtypes_extension.dtypes import ArrowDtype
+from maxframe.lib.version import parse as parse_version
 from maxframe.utils import tokenize
 from maxframe.utils.polars import (
     PolarsObjectContainerType,
     is_polars_object_container_type,
+    polars_frame_lock,
 )
+
+# polars to_pandas(use_pyarrow_extension_array=True) requires pyarrow>=8.0;
+# older pyarrow raises ModuleUpgradeRequiredError.  Used to gate the flag
+# so the executor works under the py311-legacy (pyarrow<8) environment.
+_PYARROW_GE_8 = parse_version(pa.__version__) >= parse_version("8.0.0")
 
 try:
     import polars as pl
@@ -154,24 +161,36 @@ def ensure_blob_value(v):
 
     - None → None
     - AbstractExternalBlob → as-is
-    - str → SolidBlob(v.encode("utf-8"))
-    - bytes/bytearray → SolidBlob(bytes(v))
-    - else → SolidBlob(bytes(v))
+    - str → new_blob(v.encode("utf-8"))
+    - bytes/bytearray → new_blob(bytes(v))
+    - else → new_blob(bytes(v))
     """
     if v is None:
         return None
     if isinstance(v, AbstractExternalBlob):
         return v
     if isinstance(v, str):
-        return SolidBlob(v.encode("utf-8"))
+        return new_blob(v.encode("utf-8"))
     if isinstance(v, (bytes, bytearray)):
-        return SolidBlob(bytes(v))
-    return SolidBlob(bytes(v))
+        return new_blob(bytes(v))
+    return new_blob(bytes(v))
+
+
+# Environment hook for ``new_blob``.
+# The runtime backend installs a factory via :func:`set_blob_factory`
+# to make ``new_blob`` return an env-appropriate blob instead of
+# the default in-memory :class:`SolidBlob`.
+_blob_factory = None
+
+
+def set_blob_factory(factory):
+    global _blob_factory
+    _blob_factory = factory
 
 
 def new_blob(content: Optional[bytes] = None):
-    # todo this function currently maps directly to SolidBlob. It should
-    #  provide appropriate instance base on running envs.
+    if _blob_factory is not None:
+        return _blob_factory(content)
     return SolidBlob(content)
 
 
@@ -413,14 +432,26 @@ def polars_to_pandas_with_blobs(pl_df):
     ``AbstractExternalBlob`` objects) are wrapped in
     ``ExternalBlobExtensionArray`` so callers receive proper blob dtype
     values with the ``open()`` API.  Non-blob columns convert normally.
+
+    Conversions of one frame are serialised through
+    :func:`~maxframe.utils.polars.polars_frame_lock`, because concurrent
+    ``to_pandas()`` on a shared frame deadlocks inside Polars (bug #87341179);
+    frames that are not shared are unaffected.
     """
+    with polars_frame_lock(pl_df):
+        return _polars_to_pandas_with_blobs(pl_df)
+
+
+def _polars_to_pandas_with_blobs(pl_df):
+    """Convert ``pl_df`` to pandas; the caller must hold the frame lock."""
+    _ext_arr = {"use_pyarrow_extension_array": _PYARROW_GE_8}
     blob_cols = [c for c in pl_df.columns if is_polars_blob_type(pl_df[c].dtype)]
     if not blob_cols:
-        return pl_df.to_pandas(use_pyarrow_extension_array=True)
+        return pl_df.to_pandas(**_ext_arr)
 
     non_blob_cols = [c for c in pl_df.columns if c not in blob_cols]
     if non_blob_cols:
-        pdf = pl_df.select(non_blob_cols).to_pandas(use_pyarrow_extension_array=True)
+        pdf = pl_df.select(non_blob_cols).to_pandas(**_ext_arr)
     else:
         pdf = pd.DataFrame(index=range(len(pl_df)))
 
@@ -451,12 +482,18 @@ def pandas_to_polars_with_blobs(pdf):
 
     non_blob_col_names = [c for c in pdf.columns if c not in blob_series]
     non_blob_pdf = pdf[non_blob_col_names] if non_blob_col_names else None
+    blob_items = list(blob_series.items())
     if non_blob_pdf is not None and len(non_blob_pdf.columns) > 0:
         result = pl.from_pandas(non_blob_pdf)
+    elif blob_items:
+        # No non-blob columns: a bare pl.DataFrame() has height 0, so seed the
+        # frame with a blob series to establish the row count.
+        _, series = blob_items.pop(0)
+        result = pl.DataFrame([series])
     else:
         result = pl.DataFrame()
 
-    for name, series in blob_series.items():
+    for _, series in blob_items:
         result = result.with_columns(series)
 
     return result.select(list(pdf.columns))

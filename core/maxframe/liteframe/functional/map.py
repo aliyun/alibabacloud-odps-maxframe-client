@@ -23,8 +23,12 @@ from maxframe.liteframe.functional.type_infer import (
     _get_pa_type,
     _normalize_to_arrow_dtype,
     build_mock_value,
+    infer_scalar_dtype_from_annotation,
 )
-from maxframe.liteframe.functional.utils import call_user_func
+from maxframe.liteframe.functional.utils import (
+    _build_scheduling_hint_from_func,
+    call_user_func,
+)
 from maxframe.liteframe.operators.project import (
     LiteFrameProjection,
     _append_hidden_projections,
@@ -33,20 +37,53 @@ from maxframe.liteframe.operators.project import (
 logger = logging.getLogger(__name__)
 
 
+def _infer_map_col_dtypes(liteframe, func, args, kwargs):
+    """Infer map output dtypes by calling func on one mock value per column."""
+    col_dtypes = {}
+    for col_name, col_dtype in liteframe.dtypes.items():
+        try:
+            pa_type = _get_pa_type(col_dtype)
+            mock_val = build_mock_value(pa_type)
+
+            result_val = call_user_func(func, mock_val, args, kwargs)
+            if result_val is None:
+                col_dtypes[col_name] = col_dtype
+            elif isinstance(result_val, str):
+                # pd.Series on a string yields a non-arrow StringDtype;
+                # use pa.string() directly for arrow consistency.
+                col_dtypes[col_name] = _normalize_to_arrow_dtype(str)
+            else:
+                col_dtypes[col_name] = _normalize_to_arrow_dtype(
+                    pd.Series([result_val]).dtype
+                )
+        except Exception as exc:
+            logger.debug(
+                "map() dtype inference failed for column %r with %s: %s; "
+                "falling back to input dtype %s",
+                col_name,
+                type(exc).__name__,
+                exc,
+                col_dtype,
+            )
+            col_dtypes[col_name] = col_dtype
+    return col_dtypes
+
+
 def map_(
     self, func, *, na_action=None, dtype=None, skip_infer=False, args=(), **kwargs
 ):
     """Apply func element-wise to every value in the LiteFrame.
 
     Each cell is transformed independently by ``func``; the output has the
-    same shape and column names as the input.  Output dtypes are inferred
-    by mocking ``func`` on a sample value per column unless ``dtype`` is
-    supplied or ``skip_infer`` is set.
+    same shape and column names as the input.  Output dtypes come from
+    ``dtype``, a scalar return annotation such as ``-> int``, or mock
+    inference on a sample value per column.
 
     Parameters
     ----------
     func : callable or callable class
-        Function to apply to each element.
+        Function to apply to each element. A scalar return annotation is
+        used as the output dtype when ``dtype`` is omitted.
 
         If ``func`` is a class, it is instantiated once per chunk,
         ``__call__`` is invoked per element, and ``close()`` (if
@@ -54,9 +91,10 @@ def map_(
     na_action : str, optional
         If 'ignore', null values are propagated without calling func.
     dtype : dtype, optional
-        Output dtype applied to all columns.
+        Output dtype applied to all columns. Overrides a return annotation.
     skip_infer : bool
-        If True, skip mock inference when dtype is not provided.
+        If True, skip mock inference when neither dtype nor a return
+        annotation is provided.
     args : tuple
         Positional arguments forwarded to func.
     **kwargs
@@ -104,37 +142,14 @@ def map_(
     if dtype is not None:
         resolved_dtype = _normalize_to_arrow_dtype(dtype)
         col_dtypes = {col: resolved_dtype for col in self.dtypes.index}
-    elif not skip_infer:
-        # Mock inference: apply func to a single value from each column
-        col_dtypes = {}
-        for col_name, col_dtype in self.dtypes.items():
-            try:
-                pa_type = _get_pa_type(col_dtype)
-                mock_val = build_mock_value(pa_type)
-
-                result_val = call_user_func(func, mock_val, args, kwargs)
-                if result_val is None:
-                    col_dtypes[col_name] = col_dtype
-                elif isinstance(result_val, str):
-                    # pd.Series on a string yields a non-arrow StringDtype;
-                    # use pa.string() directly for arrow consistency.
-                    col_dtypes[col_name] = _normalize_to_arrow_dtype(str)
-                else:
-                    col_dtypes[col_name] = _normalize_to_arrow_dtype(
-                        pd.Series([result_val]).dtype
-                    )
-            except Exception as exc:
-                logger.debug(
-                    "map() dtype inference failed for column %r with %s: %s; "
-                    "falling back to input dtype %s",
-                    col_name,
-                    type(exc).__name__,
-                    exc,
-                    col_dtype,
-                )
-                col_dtypes[col_name] = col_dtype
     else:
-        col_dtypes = dict(self.dtypes)
+        annotated_dtype = infer_scalar_dtype_from_annotation(func)
+        if annotated_dtype is not None:
+            col_dtypes = {col: annotated_dtype for col in self.dtypes.index}
+        elif skip_infer:
+            col_dtypes = dict(self.dtypes)
+        else:
+            col_dtypes = _infer_map_col_dtypes(self, func, args, kwargs)
 
     # Build projections
     projections = []
@@ -150,6 +165,7 @@ def map_(
             check_output_dtypes=check_output_dtype,
             args=args,
             kwargs=kwargs,
+            scheduling_hint=_build_scheduling_hint_from_func(func),
         )
         projections.append(NamedExpr(name=col_name, expr=udf_expr, dtype=out_dtype))
 

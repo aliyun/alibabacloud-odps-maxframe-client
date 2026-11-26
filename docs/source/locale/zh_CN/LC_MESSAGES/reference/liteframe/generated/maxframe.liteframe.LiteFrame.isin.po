@@ -1,0 +1,59 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-02 15:16+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.LiteFrame.isin.rst:2
+msgid "maxframe.liteframe.LiteFrame.isin"
+msgstr ""
+
+#: maxframe.liteframe.indexing.isin.isin:1 of
+msgid "Return a boolean LiteFrame showing whether each element is in *values*."
+msgstr "返回一个布尔 LiteFrame，表示每个元素是否存在于 *values* 中。"
+
+#: maxframe.liteframe.indexing.isin.isin:0 of
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.indexing.isin.isin:3 of
+msgid ""
+"If an iterable, the same membership test is applied to every column.  If "
+"a dict, ``{column_name: values}`` applies a per-column membership test; "
+"columns not present in the dict are all ``False``."
+msgstr ""
+"如果是可迭代对象，则对每一列应用相同的成员测试。如果是字典，``{column_"
+"name: values}`` 会对每一列应用各自的成员测试；字典中不存在的列全部为 ``"
+"False``。"
+
+#: maxframe.liteframe.indexing.isin.isin:0 of
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.indexing.isin.isin:8 of
+msgid "Boolean LiteFrame with the same shape (visible columns only)."
+msgstr "形状相同的布尔 LiteFrame（仅包含可见列）。"
+
+#: maxframe.liteframe.indexing.isin.isin:0 of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.indexing.isin.isin:12 of
+msgid "示例"
+msgstr ""
+

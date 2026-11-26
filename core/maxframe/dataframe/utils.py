@@ -1288,6 +1288,12 @@ def wrap_notimplemented_exception(func):
     return wrapper
 
 
+def check_num_partitions(num_partitions):
+    """Check that a supplied partition count is at least one."""
+    if num_partitions is not None and num_partitions < 1:
+        raise ValueError("num_partitions must be at least 1")
+
+
 def validate_axis(axis, tileable=None):
     if axis == "index":
         axis = 0

@@ -63,6 +63,7 @@ class LiteFrameRolling:
         order_by=None,
         order_by_ascending=True,
         window_shift=0,
+        placeback=True,
     ):
         # bool is a subclass of int — reject it explicitly so True/False are
         # not silently accepted as window sizes.
@@ -100,6 +101,7 @@ class LiteFrameRolling:
         self._order_by = order_by
         self._order_by_ascending = order_by_ascending
         self._window_shift = window_shift
+        self._placeback = placeback
 
     def _agg(self, func):
         """Build and apply the rolling_agg window transform operator."""
@@ -111,12 +113,13 @@ class LiteFrameRolling:
             window_size=self._window,
             min_periods=self._min_periods,
             center=self._center,
-            agg_func=func,
+            transform_params={"agg_func": func},
             columns=self._columns,
             groupby_params=self._groupby_params,
             order_by=order_by,
             order_by_ascending=order_by_ascending,
             window_shift=self._window_shift,
+            placeback=self._placeback,
         )
         return op(self._liteframe)
 
@@ -235,6 +238,7 @@ def rolling(
     order_by=None,
     order_by_ascending=True,
     window_shift=0,
+    placeback=True,
 ):
     """Provide rolling-window calculations.
 
@@ -269,6 +273,13 @@ def rolling(
         Offset the window frame by N rows. A positive value shifts the window
         forward (toward later rows), a negative value backward. Matches the
         MaxCompute ``shift`` MF-specific window parameter.
+    placeback : bool, default True
+        If True, restore the output to the input frame's row order and chunk
+        layout after the group-key shuffle (grouped rolling only).  If False,
+        the output stays in reducer/hash-partition order.  Row order and values
+        are unchanged for standalone (non-grouped) rolling, but ``False`` also
+        opts out of input alignment-id inheritance, so the result is no longer
+        interchangeable with the input frame for shuffle-free assignment.
 
     Returns
     -------
@@ -298,4 +309,5 @@ def rolling(
         order_by=order_by,
         order_by_ascending=order_by_ascending,
         window_shift=window_shift,
+        placeback=placeback,
     )

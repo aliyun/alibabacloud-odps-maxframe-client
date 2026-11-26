@@ -21,7 +21,7 @@ import types
 import warnings
 import weakref
 from contextlib import contextmanager
-from typing import Callable, ContextManager, Iterator, Optional
+from typing import Callable, ContextManager, Iterator, Optional, get_type_hints
 
 from maxframe.utils._utils_c import tokenize
 
@@ -389,6 +389,38 @@ def unwrap_function(func, stop_predicate: Callable = None):
         else:
             break
     return unwrapped_func
+
+
+def resolve_return_annotation(func):
+    """Return the declared return annotation of a UDF, resolved when possible.
+
+    Follows ``functools.partial`` / ``__wrapped__`` chains and reads the
+    annotation from a callable class or a callable instance (where it lives on
+    ``__call__``).  Stringified annotations, produced by
+    ``from __future__ import annotations`` or by quoting, are resolved in the
+    callable's own namespace; when the other hints are unresolvable the return
+    annotation is still read on its own.  A string that names no resolvable
+    object is returned as-is, so callers can still read it as a dtype name
+    (e.g. ``-> "int64"``).  Returns ``None`` when the UDF declares no return
+    type.
+    """
+    target = unwrap_function(func)
+    if isinstance(target, type):
+        target = target.__call__
+    elif not inspect.isroutine(target) and callable(target):
+        target = target.__call__
+
+    try:
+        return get_type_hints(target).get("return", None)
+    except Exception:
+        raw = getattr(target, "__annotations__", {}).get("return", None)
+        if not isinstance(raw, str):
+            return raw
+        try:
+            return eval(raw, getattr(target, "__globals__", None) or {})  # noqa: S307
+        except Exception:
+            # not a name in the UDF's namespace; it may still be a dtype name
+            return raw
 
 
 _func_token_cache = weakref.WeakKeyDictionary()

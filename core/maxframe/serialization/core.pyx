@@ -441,7 +441,15 @@ cdef class PickleContainer:
     cpdef get(self):
         if not unpickle_allowed:
             raise ValueError("Unpickle not allowed in this environment")
-        return unpickle_buffers(self.buffers)
+        try:
+            return unpickle_buffers(self.buffers)
+        except Exception as ex:
+            if self.class_name is None:
+                raise
+            raise ValueError(
+                f"Failed to unpickle {self.class_name}, "
+                f"{type(ex).__name__}: {ex}"
+            ) from ex
 
     cpdef int buffer_size(self):
         cdef int size = 0

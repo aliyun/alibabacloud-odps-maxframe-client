@@ -28,11 +28,17 @@ from maxframe.liteframe.datatypes import (
     is_decimal_dtype,
 )
 from maxframe.liteframe.expressions import (
+    LiteFrameAnd,
     LiteFrameColumn,
+    LiteFrameInvert,
+    LiteFrameIsNA,
     LiteFrameLiteral,
+    LiteFrameMul,
     LiteFramePow,
+    LiteFrameWhere,
     NamedExpr,
 )
+from maxframe.liteframe.utils import is_datetime_dtype, resolve_unique_col_name
 from maxframe.utils import wrap_arrow_dtype
 
 logger = logging.getLogger(__name__)
@@ -62,12 +68,22 @@ _COMBINE_FUNC_MAP = {
     "sum_sq": "sum",
     "sum_cube": "sum",
     "sum_fourth": "sum",
+    "sum_xy": "sum",
+    "sum_x_pair": "sum",
+    "sum_y_pair": "sum",
+    "sum_x_pair_sq": "sum",
+    "sum_y_pair_sq": "sum",
+    "count_pair": "sum",
 }
 
 # Functions that can be directly re-aggregated across chunks:
 # combine/agg stages use the same (or mapped via _COMBINE_FUNC_MAP) function.
+#
+# NOTE: "first" and "last" are position-dependent, unlike the other entries.
+# The reduction framework must preserve per-group row order through both
+# tree and shuffle (hash-partition) reduction for these to be correct.
 _DIRECTLY_DECOMPOSABLE_FUNCS = frozenset(
-    {"sum", "min", "max", "count", "size", "prod", "all", "any"}
+    {"sum", "min", "max", "count", "size", "prod", "all", "any", "first", "last"}
 )
 
 # Decomposition recipes: derived function -> list of required primitives.
@@ -85,7 +101,50 @@ _DECOMPOSITION_RECIPES = {
 # Functions that CANNOT be pre-aggregated across chunks.
 # Tree reduction cannot be used for these; the map/combine stages must
 # pass raw data through and only the final agg stage computes the result.
-_NON_DECOMPOSABLE_FUNCS = frozenset({"median", "nunique"})
+_NON_DECOMPOSABLE_FUNCS = frozenset({"median", "nunique", "quantile"})
+_QUANTILE_PRESERVING_INTERP = frozenset({"lower", "higher", "nearest"})
+_SKETCH_MAP_FUNC = "quantile_sketch"
+
+# Functions that support a min_count guard (where-guard on count).
+_MIN_COUNT_FUNCS = frozenset({"sum", "prod", "min", "max", "first", "last"})
+
+# min_count=1 is a no-op for these because the count of non-null values
+# is 0 if and only if all values are null, in which case the unguarded
+# result is already null — independent of skipna.
+_MIN_COUNT_ONE_NOOP = frozenset({"min", "max", "first", "last"})
+
+
+def _reject_unsupported_min_count(func, func_name):
+    """Raise ValueError when min_count is explicitly requested on a
+    function outside _MIN_COUNT_FUNCS.
+    """
+    mc = getattr(func, "kwds", {}).get("min_count", 0)
+    if mc > 0 and func_name not in _MIN_COUNT_FUNCS:
+        raise ValueError(
+            f"min_count is not supported for {func_name}(); "
+            f"supported functions: {sorted(_MIN_COUNT_FUNCS)}"
+        )
+
+
+def _effective_min_count(func, func_name):
+    """Return effective min_count (0 if it doesn't affect the result).
+
+    Negative values are treated as no guard, matching pandas.
+    """
+    mc = getattr(func, "kwds", {}).get("min_count", 0)
+    if mc <= 0:
+        return 0
+    if func_name in _MIN_COUNT_ONE_NOOP and mc == 1:
+        return 0
+    return mc
+
+
+def _skipna_of(func):
+    """Return skipna kwarg (default True) for first/last."""
+    return getattr(func, "kwds", {}).get("skipna", True)
+
+
+_SKETCH_AGG_FUNC = "quantile_sketch_merge"
 
 
 class CompileAggResult(NamedTuple):
@@ -111,6 +170,25 @@ _POWER_SUM_EXPONENTS = {
     "sum_fourth": 4,
 }
 
+# Cross-product primitive: sum of element-wise product of two columns.
+# Pre-agg projection uses LiteFrameMul instead of LiteFramePow.
+_CROSS_PRODUCT_PRIMITIVE = "sum_xy"
+
+# Pairwise mask primitives: computed over the both-non-null observation set.
+# sum_x_pair = sum(col_x * mask), sum_y_pair = sum(col_y * mask),
+# count_pair = sum(mask).  Used in cov/corr reconstruction so that
+# sum_x, sum_y, and n all use the same pairwise-complete observation set
+# as sum_xy (which null-propagates via LiteFrameMul), matching pandas.
+_PAIRWISE_MASK_PRIMITIVES = frozenset(
+    {
+        "sum_x_pair",
+        "sum_y_pair",
+        "sum_x_pair_sq",
+        "sum_y_pair_sq",
+        "count_pair",
+    }
+)
+
 
 def _is_numeric_dtype(dt):
     """Check if a dtype is numeric, handling ArrowDtype from both pandas and maxframe."""
@@ -127,6 +205,23 @@ def _is_numeric_dtype(dt):
         return False
 
 
+def _check_pairwise_in_list(funcs):
+    """Raise a targeted error if cov/corr appear in a list/dict agg.
+
+    Pairwise functions produce N×N matrix output and cannot be composed
+    with per-column aggregations.  Without this check, they fall through
+    to ``_FUNC_TO_POLARS`` and raise a misleading "Unknown aggregation
+    function: cov".
+    """
+    pairwise = [f for f in funcs if f in ("cov", "corr")]
+    if pairwise:
+        raise ValueError(
+            f"{', '.join(repr(f) for f in pairwise)} are pairwise functions "
+            f"that produce N×N matrix output; call lf.cov() or lf.corr() "
+            f"directly instead of agg()"
+        )
+
+
 def _normalize_func(raw_func):
     """Normalize raw_func into a standard form.
 
@@ -140,6 +235,19 @@ def _normalize_func(raw_func):
         func_dict = OrderedDict()
         func_rename = None
         return func_dict, func_rename
+
+    # Pairwise functions (cov/corr) are only valid as bare-string
+    # calls: lf.cov(), lf.corr().  They cannot be composed in a list
+    # or dict agg (lf.agg(['cov','sum'])) because they produce N×N
+    # matrix output, not per-column scalars.  Raise a clear error rather
+    # than falling through to "Unknown aggregation function: cov".
+    if isinstance(raw_func, list):
+        _check_pairwise_in_list(raw_func)
+    elif isinstance(raw_func, dict):
+        for _col, funcs in raw_func.items():
+            _check_pairwise_in_list(
+                funcs if isinstance(funcs, (list, tuple)) else [funcs]
+            )
 
     func_dict = OrderedDict()
     func_rename = None
@@ -258,7 +366,26 @@ def _infer_output_column_names(func_dict, func_rename, columns, groupby_params):
     # Check if any column has multiple funcs
     has_multiple = any(len(funcs) > 1 for funcs in func_dict.values())
 
+    def _str_func_name(tc, func, funcs_list):
+        suffix = getattr(func, "kwds", {}).get("output_suffix")
+        if suffix:
+            return f"{tc}_{suffix}"
+        if has_multiple or len(funcs_list) > 1:
+            return f"{tc}_{func}"
+        return tc
+
     output_cols = list(group_key_cols)
+    # Track all names in use (group keys + generated output cols) to
+    # resolve collisions: a generated name like "a_count" (from col "a"
+    # + func "count") can collide with a group key named "a_count", which
+    # would cause a polars DuplicateError at the projection/rename step.
+    used_names = set(group_key_cols)
+
+    def _emit(name):
+        """Append *name* to output_cols, resolving collisions with used names."""
+        resolved = resolve_unique_col_name(name, used_names)
+        output_cols.append(resolved)
+        used_names.add(resolved)
 
     # When col is None (apply to all columns), we iterate column-first then
     # func-first to match pandas convention. For specific columns, we keep
@@ -283,48 +410,42 @@ def _infer_output_column_names(func_dict, func_rename, columns, groupby_params):
             for tc in target_cols:
                 for i, func in enumerate(funcs):
                     if func_rename and rename_idx < len(func_rename):
-                        output_cols.append(func_rename[rename_idx])
+                        _emit(func_rename[rename_idx])
                         rename_idx += 1
                     elif isinstance(func, str) and func == "size":
                         if not size_emitted:
-                            output_cols.append("size")
+                            _emit("size")
                             size_emitted = True
                     elif isinstance(func, str):
-                        if has_multiple or len(funcs) > 1:
-                            output_cols.append(f"{tc}_{func}")
-                        else:
-                            output_cols.append(tc)
+                        _emit(_str_func_name(tc, func, funcs))
                     else:
-                        # Callable
                         func_name = callable_names[i]
-                        if has_multiple or len(funcs) > 1:
-                            output_cols.append(f"{tc}_{func_name}")
-                        else:
-                            output_cols.append(tc)
+                        _emit(
+                            f"{tc}_{func_name}"
+                            if (has_multiple or len(funcs) > 1)
+                            else tc
+                        )
         else:
             # Single target column or single func: natural func-first order
             for i, func in enumerate(funcs):
                 if func_rename and rename_idx < len(func_rename):
                     # Named aggregation -- use the provided name
-                    output_cols.append(func_rename[rename_idx])
+                    _emit(func_rename[rename_idx])
                     rename_idx += 1
                 elif isinstance(func, str) and func == "size":
                     # size is frame-level; pandas names the result "size".
-                    output_cols.append("size")
+                    _emit("size")
                 elif isinstance(func, str):
                     for tc in target_cols:
-                        if has_multiple or len(funcs) > 1:
-                            output_cols.append(f"{tc}_{func}")
-                        else:
-                            output_cols.append(tc)
+                        _emit(_str_func_name(tc, func, funcs))
                 else:
-                    # Callable
                     func_name = callable_names[i]
                     for tc in target_cols:
-                        if has_multiple or len(funcs) > 1:
-                            output_cols.append(f"{tc}_{func_name}")
-                        else:
-                            output_cols.append(tc)
+                        _emit(
+                            f"{tc}_{func_name}"
+                            if (has_multiple or len(funcs) > 1)
+                            else tc
+                        )
 
     return output_cols
 
@@ -358,9 +479,10 @@ def _build_agg_funcs(func_dict, columns, groupby_params):
     projection_needed = False
     direct_requests = {}  # (func_name, col) -> count
 
-    def _register_primitive(primitive, col):
+    def _register_primitive(primitive, col, kwds=None, reg_key=None):
         """Register a (primitive, col) pair, deduplicating across calls."""
-        reg_key = (primitive, col)
+        kwds = kwds or {}
+        reg_key = reg_key or (primitive, col)
         if reg_key in registry:
             return
         agg_func = _COMBINE_FUNC_MAP.get(primitive, primitive)
@@ -371,7 +493,7 @@ def _build_agg_funcs(func_dict, columns, groupby_params):
             "agg_func_name": agg_func,
             "cols": [col],
             "output_key": output_key,
-            "kwds": {},
+            "kwds": dict(kwds),
         }
         # Power-sum primitives get a pre_agg_col pointing to a projected column
         if primitive in _POWER_SUM_EXPONENTS:
@@ -385,6 +507,7 @@ def _build_agg_funcs(func_dict, columns, groupby_params):
 
         for func in funcs:
             func_name = _resolve_func_name(func)
+            _reject_unsupported_min_count(func, func_name)
 
             if func_name in _DECOMPOSITION_RECIPES:
                 projection_needed = True
@@ -393,7 +516,31 @@ def _build_agg_funcs(func_dict, columns, groupby_params):
                         _register_primitive(primitive, tc)
 
             elif func_name in _DIRECTLY_DECOMPOSABLE_FUNCS:
-                if func_name == "size":
+                # min_count guard: register func + count companion, force
+                # projection so a where-guard can null insufficient groups.
+                min_count = _effective_min_count(func, func_name)
+                if min_count > 0:
+                    if func_name in _MIN_COUNT_ONE_NOOP and not groupby_params:
+                        raise TypeError(
+                            f"{func_name}() does not support min_count "
+                            f"for whole-frame aggregation. Use "
+                            f"groupby().{func_name}(min_count=...) for "
+                            f"per-group min_count guard."
+                        )
+                    for tc in target_cols:
+                        if func_name in ("first", "last"):
+                            skipna = _skipna_of(func)
+                            _register_primitive(
+                                func_name,
+                                tc,
+                                kwds={"skipna": skipna},
+                                reg_key=(func_name, tc, skipna),
+                            )
+                        else:
+                            _register_primitive(func_name, tc)
+                        _register_primitive("count", tc)
+                    projection_needed = True
+                elif func_name == "size":
                     # size is frame-level (one count per group / whole frame),
                     # not per-column. Register a single descriptor carrying
                     # all target columns so the executor emits one pl.len()
@@ -414,6 +561,17 @@ def _build_agg_funcs(func_dict, columns, groupby_params):
                         )
                         registry[(func_name, None)] = output_key
                         key_counter[0] += 1
+                elif func_name in ("first", "last"):
+                    # Dedup by (func_name, col, skipna) so first(True) and
+                    # first(False) on the same column produce separate
+                    # descriptors.
+                    skipna = _skipna_of(func)
+                    for tc in target_cols:
+                        rk = (func_name, tc, skipna)
+                        direct_requests[rk] = direct_requests.get(rk, 0) + 1
+                        _register_primitive(
+                            func_name, tc, kwds={"skipna": skipna}, reg_key=rk
+                        )
                 else:
                     for tc in target_cols:
                         direct_requests[(func_name, tc)] = (
@@ -424,17 +582,21 @@ def _build_agg_funcs(func_dict, columns, groupby_params):
             elif func_name in _NON_DECOMPOSABLE_FUNCS or callable(func):
                 output_key = f"agg_{key_counter[0]}"
                 kwds = getattr(func, "kwds", {})
-                agg_funcs.append(
-                    {
-                        "raw_func_name": func_name,
-                        "map_func_name": func_name,
-                        "agg_func_name": func_name,
-                        "cols": target_cols,
-                        "output_key": output_key,
-                        "kwds": dict(kwds),
-                        "passthrough": True,
-                    }
-                )
+                desc = {
+                    "raw_func_name": func_name,
+                    "map_func_name": func_name,
+                    "agg_func_name": func_name,
+                    "cols": target_cols,
+                    "output_key": output_key,
+                    "kwds": dict(kwds),
+                    "passthrough": True,
+                }
+                if func_name == "quantile" and kwds.get("approx"):
+                    desc["map_func_name"] = _SKETCH_MAP_FUNC
+                    desc["agg_func_name"] = _SKETCH_AGG_FUNC
+                    desc["passthrough"] = False
+                    desc["sketch"] = True
+                agg_funcs.append(desc)
                 key_counter[0] += 1
 
             else:
@@ -442,6 +604,27 @@ def _build_agg_funcs(func_dict, columns, groupby_params):
 
     if any(count > 1 for count in direct_requests.values()):
         projection_needed = True
+
+    if any(d.get("raw_func_name") == "quantile" for d in agg_funcs):
+        projection_needed = True
+
+    # When multiple directly-decomposable funcs are applied to multiple
+    # columns (e.g. agg(["first", "last"])), the descriptor order
+    # (func-first) differs from the output-column-name order (column-first).
+    # The positional rename in _rename_columns would mismatch, so force a
+    # projection (which renames by intermediate name, not position).
+    if not projection_needed:
+        for col, funcs in func_dict.items():
+            target_cols = list(columns) if col is None else [col]
+            if col is None and len(target_cols) > 1 and len(funcs) > 1:
+                # Only needed if all funcs are directly decomposable (no
+                # recipes, no passthrough, no quantile — those already
+                # trigger projection above).
+                if all(
+                    _resolve_func_name(f) in _DIRECTLY_DECOMPOSABLE_FUNCS for f in funcs
+                ):
+                    projection_needed = True
+                    break
 
     return agg_funcs, projection_needed, registry
 
@@ -461,6 +644,9 @@ _FIXED_DTYPE_FUNCS = {
     "count": wrap_arrow_dtype(pa.int64()),
 }
 
+# Functions that preserve the input column's dtype.
+_DTYPE_PRESERVING_FUNCS = frozenset({"min", "max", "first", "last"})
+
 # Map Python scalar types to arrow dtypes for scalar result inference.
 _PYTHON_TYPE_TO_ARROW = {
     int: pa.int64(),
@@ -479,6 +665,8 @@ def _infer_func_dtype(func_name, input_dtype):
     """
     if func_name in _FIXED_DTYPE_FUNCS:
         return _FIXED_DTYPE_FUNCS[func_name]
+    if func_name in _DTYPE_PRESERVING_FUNCS:
+        return input_dtype
 
     # Run a mock aggregation on a single-column empty Series
     try:
@@ -560,6 +748,20 @@ def _infer_dtype_for_pair(func, target_col, input_dtypes):
 
     if func == "size":
         return _FIXED_DTYPE_FUNCS["size"]
+
+    func_name = func if isinstance(func, str) else _get_callable_name(func)
+
+    # first/last select a value, no type conversion — output dtype = input dtype.
+    # Short-circuit before _infer_func_dtype, which would call pd.Series.first()
+    # (a deprecated time-based method, not an aggregation).
+    if func_name in ("first", "last"):
+        return input_dtypes.get(target_col, wrap_arrow_dtype(pa.float64()))
+
+    if func_name == "quantile":
+        kwds = getattr(func, "kwds", {})
+        interp = kwds.get("interpolation", "linear")
+        col_dtype = input_dtypes.get(target_col, wrap_arrow_dtype(pa.float64()))
+        return _quantile_output_dtype(interp, col_dtype)
 
     col_dtype = input_dtypes.get(target_col, wrap_arrow_dtype(pa.float64()))
     return _infer_func_dtype(func, col_dtype)
@@ -648,6 +850,15 @@ def _size_intermediate_name(output_key_prefix: str = "") -> str:
     return f"{output_key_prefix}__size__"
 
 
+# --- idxmin/idxmax reserved intermediate column names ---
+# These are cross-engine wire constants (DPE executor, SPE adapter,
+# custom_agg.py, tests). A typo in any one copy breaks another engine
+# silently. Keep them centralized here as the single owner.
+_ROW_POS_COLUMN = "__mf_agg_row_pos__"
+_VALUE_SUFFIX = "__value"
+_IDX_SUFFIX = "__idx"
+
+
 def _build_projection_exprs(
     func_dict,
     columns,
@@ -683,36 +894,67 @@ def _build_projection_exprs(
         gk_dtype = input_dtypes.get(gk) if hasattr(input_dtypes, "get") else None
         projection_exprs.append(LiteFrameColumn(name=gk, dtype=gk_dtype).rename(gk))
 
-    # Build lookup for passthrough (func_name, col) -> output_key
+    # Build lookup for passthrough (func_name, col, suffix, kwds_sig)
+    # -> output_key.  The kwds signature distinguishes non-decomposable
+    # calls with different arguments (e.g. two quantile aggregations on
+    # the same column with different q values), so each maps to its own
+    # intermediate column.
+    def _kwds_sig(kwds):
+        """Build a hashable signature from the kwargs that distinguish
+        distinct non-decomposable aggregation calls."""
+        if not kwds:
+            return ()
+        # Only include kwargs that affect the result (not output_suffix,
+        # which is handled separately).  Stable sorted ordering.
+        return tuple(sorted((k, v) for k, v in kwds.items() if k != "output_suffix"))
+
     passthrough_lookup = {}
     for desc in agg_funcs:
-        if desc.get("passthrough"):
+        if desc.get("passthrough") or desc.get("sketch"):
             for c in desc["cols"]:
-                passthrough_lookup[(desc["raw_func_name"], c)] = desc["output_key"]
+                kwds = desc.get("kwds", {})
+                suffix = kwds.get("output_suffix")
+                sig = _kwds_sig(kwds)
+                passthrough_lookup[(desc["raw_func_name"], c, suffix, sig)] = desc[
+                    "output_key"
+                ]
 
-    def _inter_name(primitive, col):
+    def _inter_name(primitive, col, skipna=None):
         """Get the intermediate column name for a (primitive, col) pair."""
-        output_key = registry[(primitive, col)]
+        if skipna is not None:
+            output_key = registry[(primitive, col, skipna)]
+        else:
+            output_key = registry[(primitive, col)]
         return f"{output_key}__{col}_{primitive}"
 
     def _ref(primitive, col):
         """Create a LiteFrameColumn referencing an intermediate."""
         return LiteFrameColumn(name=_inter_name(primitive, col), dtype=None)
 
-    def _recipe_expr(func_name, col):
+    def _recipe_expr(func_name, col, ddof=1):
         """Build arithmetic expression for a recipe-based function."""
         s = _ref("sum", col)
         c = _ref("count", col)
         one = LiteFrameLiteral(value=1, dtype=None)
         two = LiteFrameLiteral(value=2, dtype=None)
         three = LiteFrameLiteral(value=3, dtype=None)
+        ddof_lit = LiteFrameLiteral(value=ddof, dtype=None)
+        _float64 = wrap_arrow_dtype(pa.float64())
+        _nan = LiteFrameLiteral(value=float("nan"), dtype=_float64)
 
         if func_name == "mean":
             return s / c
         elif func_name in ("var", "std", "sem"):
             sq = _ref("sum_sq", col)
-            # variance = (sum_sq - sum^2/count) / (count - 1)
-            variance = (sq - s**two / c) / (c - one)
+            # variance = (sum_sq - sum^2/count) / (count - ddof)
+            # Guard n <= ddof: pandas returns NaN, not a negative value.
+            raw_var = (sq - s**two / c) / (c - ddof_lit)
+            variance = LiteFrameWhere(
+                condition=c > ddof_lit,
+                true_value=raw_var,
+                false_value=_nan,
+                dtype=_float64,
+            )
             if func_name == "var":
                 return variance
             elif func_name == "std":
@@ -781,6 +1023,7 @@ def _build_projection_exprs(
                 func_name = getattr(func, "__name__", repr(func))
             else:
                 func_name = str(func)
+            _reject_unsupported_min_count(func, func_name)
 
             if func_name == "size":
                 if size_projection_emitted:
@@ -802,19 +1045,55 @@ def _build_projection_exprs(
             out_name_idx += 1
 
             if func_name in _DECOMPOSITION_RECIPES:
-                expr = _recipe_expr(func_name, tc)
+                ddof = getattr(func, "kwds", {}).get("ddof", 1)
+                expr = _recipe_expr(func_name, tc, ddof=ddof)
                 projection_exprs.append(expr.rename(out_name))
             elif func_name in _DIRECTLY_DECOMPOSABLE_FUNCS:
-                inter_name = _inter_name(func_name, tc)
-                projection_exprs.append(
-                    LiteFrameColumn(name=inter_name, dtype=None).rename(out_name)
-                )
+                min_count = _effective_min_count(func, func_name)
+                if min_count > 0:
+                    # where(count >= min_count, func_result, None).
+                    # dtype=None on all branches lets bind() infer the
+                    # widest common type — fixes both decimal truncation
+                    # and integer widening (int8 sum → int64) when
+                    # _widen_decimal_agg_dtypes or _infer_func_dtype
+                    # widens the true_value's intermediate column.
+                    if func_name in ("first", "last"):
+                        true_value = LiteFrameColumn(
+                            name=_inter_name(func_name, tc, skipna=_skipna_of(func)),
+                            dtype=None,
+                        )
+                    else:
+                        true_value = _ref(func_name, tc)
+                    expr = LiteFrameWhere(
+                        condition=_ref("count", tc)
+                        >= LiteFrameLiteral(value=min_count, dtype=None),
+                        true_value=true_value,
+                        false_value=LiteFrameLiteral(value=None, dtype=None),
+                        dtype=None,
+                    )
+                    projection_exprs.append(expr.rename(out_name))
+                elif func_name in ("first", "last"):
+                    inter_name = _inter_name(func_name, tc, skipna=_skipna_of(func))
+                    projection_exprs.append(
+                        LiteFrameColumn(name=inter_name, dtype=None).rename(out_name)
+                    )
+                else:
+                    inter_name = _inter_name(func_name, tc)
+                    projection_exprs.append(
+                        LiteFrameColumn(name=inter_name, dtype=None).rename(out_name)
+                    )
             elif func_name in _NON_DECOMPOSABLE_FUNCS or callable(func):
-                # Passthrough: include in projection as a column reference
-                # so it is not silently dropped when recipe-based functions
-                # are present.
-                output_key = passthrough_lookup[(func_name, tc)]
-                inter_name = f"{output_key}__{tc}_{func_name}"
+                func_kwds = getattr(func, "kwds", {})
+                sig = _kwds_sig(func_kwds)
+                output_key = passthrough_lookup[
+                    (func_name, tc, func_kwds.get("output_suffix"), sig)
+                ]
+                map_func = (
+                    _SKETCH_MAP_FUNC
+                    if (func_name == "quantile" and func_kwds.get("approx"))
+                    else func_name
+                )
+                inter_name = f"{output_key}__{tc}_{map_func}"
                 projection_exprs.append(
                     LiteFrameColumn(name=inter_name, dtype=None).rename(out_name)
                 )
@@ -823,46 +1102,431 @@ def _build_projection_exprs(
 
 
 def _build_pre_agg_projection_exprs(agg_funcs, input_dtypes):
-    """Build LiteFrameProjection expressions for pre-aggregation power transformations.
+    """Build LiteFrameProjection expressions for pre-aggregation transforms.
 
     For each power-sum primitive (sum_sq, sum_cube, sum_fourth), creates a
     NamedExpr that applies LiteFramePow(col, exponent) with float64 dtype
     to avoid integer overflow.
 
-    Returns a list of NamedExpr objects, or empty list if no power-sum
+    For each cross-product primitive (sum_xy), creates a NamedExpr that
+    applies LiteFrameMul(col_x, col_y) with float64 dtype.  The column
+    pair is read from desc["pair"] (a (col_x, col_y) tuple) — never
+    round-tripped through a string encoding.
+
+    For pairwise mask primitives (sum_x_pair, sum_y_pair, count_pair),
+    creates a NamedExpr that multiplies the column by a both-non-null
+    mask (1.0 where both columns are non-null, 0.0 otherwise), so that
+    the sum uses the same pairwise-complete observation set as sum_xy.
+
+    Returns a list of NamedExpr objects, or empty list if no pre-agg
     primitives are present.
     """
     float64_dtype = wrap_arrow_dtype(pa.float64())
+    one_lit = LiteFrameLiteral(value=1.0, dtype=float64_dtype)
+    zero_lit = LiteFrameLiteral(value=0.0, dtype=float64_dtype)
     pre_agg_exprs = []
 
     for desc in agg_funcs:
         primitive = desc["raw_func_name"]
-        if primitive not in _POWER_SUM_EXPONENTS:
-            continue
-        col = desc["cols"][0]
-        exponent = _POWER_SUM_EXPONENTS[primitive]
-        pre_agg_col = desc["pre_agg_col"]
+        if primitive in _POWER_SUM_EXPONENTS:
+            col = desc["cols"][0]
+            exponent = _POWER_SUM_EXPONENTS[primitive]
+            pre_agg_col = desc["pre_agg_col"]
 
-        col_expr = LiteFrameColumn(name=col, dtype=float64_dtype)
-        lit_expr = LiteFrameLiteral(value=exponent, dtype=float64_dtype)
-        pow_expr = LiteFramePow(left=col_expr, right=lit_expr, dtype=float64_dtype)
-        named = NamedExpr(name=pre_agg_col, expr=pow_expr, dtype=float64_dtype)
-        pre_agg_exprs.append(named)
+            col_expr = LiteFrameColumn(name=col, dtype=float64_dtype)
+            lit_expr = LiteFrameLiteral(value=exponent, dtype=float64_dtype)
+            pow_expr = LiteFramePow(left=col_expr, right=lit_expr, dtype=float64_dtype)
+            named = NamedExpr(name=pre_agg_col, expr=pow_expr, dtype=float64_dtype)
+            pre_agg_exprs.append(named)
+
+        elif primitive == _CROSS_PRODUCT_PRIMITIVE:
+            col_x, col_y = desc["pair"]
+            pre_agg_col = desc["pre_agg_col"]
+
+            left = LiteFrameColumn(name=col_x, dtype=float64_dtype)
+            right = LiteFrameColumn(name=col_y, dtype=float64_dtype)
+            mul_expr = LiteFrameMul(left=left, right=right, dtype=float64_dtype)
+            named = NamedExpr(name=pre_agg_col, expr=mul_expr, dtype=float64_dtype)
+            pre_agg_exprs.append(named)
+
+        elif primitive in _PAIRWISE_MASK_PRIMITIVES:
+            col_x, col_y = desc["pair"]
+            pre_agg_col = desc["pre_agg_col"]
+
+            # both-non-null mask: 1.0 where both ci and cj are non-null,
+            # 0.0 otherwise.  col * mask null-propagates on col, so
+            # sum(col * mask) = sum(col) over both-non-null rows — the
+            # same observation set as sum_xy (which also null-propagates).
+            col_x_not_null = LiteFrameInvert(
+                operand=LiteFrameIsNA(operand=LiteFrameColumn(name=col_x, dtype=None)),
+                dtype=wrap_arrow_dtype(pa.bool_()),
+            )
+            col_y_not_null = LiteFrameInvert(
+                operand=LiteFrameIsNA(operand=LiteFrameColumn(name=col_y, dtype=None)),
+                dtype=wrap_arrow_dtype(pa.bool_()),
+            )
+            mask = LiteFrameWhere(
+                condition=LiteFrameAnd(
+                    left=col_x_not_null,
+                    right=col_y_not_null,
+                    dtype=wrap_arrow_dtype(pa.bool_()),
+                ),
+                true_value=one_lit,
+                false_value=zero_lit,
+                dtype=float64_dtype,
+            )
+            if primitive == "count_pair":
+                expr = mask
+            elif primitive in ("sum_x_pair_sq", "sum_y_pair_sq"):
+                col = col_y if primitive.endswith("y_pair_sq") else col_x
+                col_expr = LiteFrameColumn(name=col, dtype=float64_dtype)
+                sq_expr = LiteFramePow(
+                    left=col_expr,
+                    right=LiteFrameLiteral(value=2, dtype=float64_dtype),
+                    dtype=float64_dtype,
+                )
+                expr = LiteFrameMul(left=sq_expr, right=mask, dtype=float64_dtype)
+            else:
+                col = col_y if primitive == "sum_y_pair" else col_x
+                col_expr = LiteFrameColumn(name=col, dtype=float64_dtype)
+                expr = LiteFrameMul(left=col_expr, right=mask, dtype=float64_dtype)
+            named = NamedExpr(name=pre_agg_col, expr=expr, dtype=float64_dtype)
+            pre_agg_exprs.append(named)
 
     return pre_agg_exprs
+
+
+def _quantile_output_dtype(interp, input_dtype):
+    """Pandas-rationale dtype: float64 for linear/midpoint, input dtype
+    preserved for lower/higher/nearest. Decimal -> float64 always.
+    Datetime/date -> input dtype preserved (the executor produces
+    timestamps, not floats, for temporal quantile)."""
+    if is_decimal_dtype(input_dtype):
+        return wrap_arrow_dtype(pa.float64())
+    if interp in _QUANTILE_PRESERVING_INTERP or is_datetime_dtype(input_dtype):
+        return input_dtype
+    return wrap_arrow_dtype(pa.float64())
+
+
+def _build_pairwise_projection_exprs(
+    func_name,
+    pairs,
+    pair_keys,
+    registry,
+    groupby_params,
+    input_dtypes,
+    ddof,
+    min_periods,
+):
+    """Build LiteFrameExpr projection expressions for pairwise cov/corr.
+
+    Each pair (ci, cj) produces one output column.  Diagonal pairs
+    (ci == cj) yield var(ci) for cov, or literal 1.0 for corr.
+
+    For off-diagonal pairs, sum_x/sum_y/n are drawn from pairwise mask
+    primitives (sum_x_pair, sum_y_pair, count_pair) so that all four
+    terms use the same both-non-null observation set as sum_xy —
+    matching pandas' pairwise-complete covariance/correlation.
+    """
+    float64_dtype = wrap_arrow_dtype(pa.float64())
+    two = LiteFrameLiteral(value=2, dtype=None)
+    ddof_lit = LiteFrameLiteral(value=ddof, dtype=None)
+    nan_lit = LiteFrameLiteral(value=float("nan"), dtype=float64_dtype)
+
+    projection_exprs = []
+
+    # Pass through group keys
+    if groupby_params:
+        by = groupby_params["by"]
+        group_keys = [by] if isinstance(by, str) else list(by)
+        for gk in group_keys:
+            gk_dtype = input_dtypes.get(gk)
+            projection_exprs.append(LiteFrameColumn(name=gk, dtype=gk_dtype).rename(gk))
+
+    def _inter_name(primitive, col):
+        """Get the intermediate column name for a (primitive, col) pair."""
+        output_key = registry[primitive][col]
+        return f"{output_key}__{col}_{primitive}"
+
+    def _ref(primitive, col_key):
+        """Create a LiteFrameColumn referencing an intermediate."""
+        output_key = registry[primitive][col_key]
+        return LiteFrameColumn(name=f"{output_key}__{col_key}_{primitive}", dtype=None)
+
+    for ci, cj in pairs:
+        out_name = (
+            f"{ci}__{cj}__{func_name}"
+            if ci == cj
+            else f"{pair_keys[(ci, cj)]}__{func_name}"
+        )
+
+        if ci == cj:
+            # Diagonal: per-column stats are pairwise-consistent
+            # (sum_sq and count both skip nulls in the same column).
+            s_i = _ref("sum", ci)
+            n = _ref("count", ci)
+            if func_name == "cov":
+                sq = _ref("sum_sq", ci)
+                raw_var = (sq - s_i**two / n) / (n - ddof_lit)
+                # Guard n <= ddof: pandas returns NaN, not negative.
+                expr = LiteFrameWhere(
+                    condition=n > ddof_lit,
+                    true_value=raw_var,
+                    false_value=nan_lit,
+                    dtype=float64_dtype,
+                )
+            else:
+                # corr diagonal: var/var.  Yields 1.0 when variance
+                # is positive, NaN when variance is zero (constant
+                # column) or n <= ddof — matching pandas, which
+                # returns NaN for undefined correlation.
+                sq = _ref("sum_sq", ci)
+                raw_var = (sq - s_i**two / n) / (n - ddof_lit)
+                var_i = LiteFrameWhere(
+                    condition=n > ddof_lit,
+                    true_value=raw_var,
+                    false_value=nan_lit,
+                    dtype=float64_dtype,
+                )
+                expr = var_i / var_i
+        else:
+            # Off-diagonal: use pairwise mask primitives so sum_x,
+            # sum_y, and n all use the same both-non-null observation
+            # set as sum_xy (which null-propagates via LiteFrameMul).
+            pair_key = pair_keys[(ci, cj)]
+            s_xy = _ref("sum_xy", pair_key)
+            s_i = _ref("sum_x_pair", pair_key)
+            s_j = _ref("sum_y_pair", pair_key)
+            n = _ref("count_pair", pair_key)
+            raw_cov = (s_xy - s_i * s_j / n) / (n - ddof_lit)
+            # Guard n <= ddof: pandas returns NaN, not negative.
+            cov = LiteFrameWhere(
+                condition=n > ddof_lit,
+                true_value=raw_cov,
+                false_value=nan_lit,
+                dtype=float64_dtype,
+            )
+
+            if func_name == "cov":
+                expr = cov
+            else:
+                # corr: cov / (std_i * std_j).  The std_i/std_j here
+                # use the same pairwise mask, so they reflect the
+                # spread of ci over both-non-null rows — matching
+                # pandas' pairwise-complete correlation.
+                sq_i = _ref("sum_x_pair_sq", pair_key)
+                sq_j = _ref("sum_y_pair_sq", pair_key)
+                raw_var_i = (sq_i - s_i**two / n) / (n - ddof_lit)
+                raw_var_j = (sq_j - s_j**two / n) / (n - ddof_lit)
+                var_i = LiteFrameWhere(
+                    condition=n > ddof_lit,
+                    true_value=raw_var_i,
+                    false_value=nan_lit,
+                    dtype=float64_dtype,
+                )
+                var_j = LiteFrameWhere(
+                    condition=n > ddof_lit,
+                    true_value=raw_var_j,
+                    false_value=nan_lit,
+                    dtype=float64_dtype,
+                )
+                expr = cov / (var_i.sqrt() * var_j.sqrt())
+
+        if min_periods is not None:
+            condition = n >= LiteFrameLiteral(value=min_periods, dtype=None)
+            expr = LiteFrameWhere(
+                condition=condition,
+                true_value=expr,
+                false_value=nan_lit,
+                dtype=float64_dtype,
+            )
+
+        projection_exprs.append(expr.rename(out_name))
+
+    return projection_exprs
+
+
+def _compile_pairwise_agg(op, liteframe):
+    """Compile a pairwise (cov/corr) aggregation.
+
+    Builds primitives for all unique column pairs (including diagonal),
+    plus a post-agg projection that reconstructs the final values.
+    ``ddof`` and ``min_periods`` are carried via ``AggCall.kwds``.
+    """
+    func_name = op.raw_func
+    kwds = getattr(op.raw_func, "kwds", {})
+    ddof = kwds.get("ddof", 1)
+    min_periods = kwds.get("min_periods", None)
+    numeric_only = kwds.get("numeric_only", False)
+    groupby_params = op.groupby_params
+    input_dtypes = liteframe.dtypes
+    all_input_dtypes = input_dtypes
+
+    # Determine target columns: all columns excluding group keys and
+    # respecting the groupby selection (if any).
+    group_key_cols = []
+    if groupby_params:
+        by = groupby_params["by"]
+        group_key_cols = [by] if isinstance(by, str) else list(by)
+    selection = groupby_params.get("selection") if groupby_params else None
+    all_target_cols = [c for c in input_dtypes.index if c not in group_key_cols]
+    if selection is not None:
+        sel_set = set(selection)
+        all_target_cols = [c for c in all_target_cols if c in sel_set]
+
+    # Enforce numeric_only invariant at the pairwise boundary:
+    #   True  → silently exclude non-numeric columns.
+    #   False → reject non-numeric target columns (pandas 2.0+ contract).
+    non_numeric = [c for c in all_target_cols if not _is_numeric_dtype(input_dtypes[c])]
+    if non_numeric and not numeric_only:
+        raise TypeError(
+            f"{func_name}() requires numeric columns, got non-numeric: {non_numeric}"
+        )
+
+    numeric_cols = [c for c in all_target_cols if _is_numeric_dtype(input_dtypes[c])]
+    if not numeric_cols:
+        raise ValueError(f"No numeric columns available for {func_name}()")
+
+    # Sort so frame column order matches the lexicographic ordering used
+    # by _pairwise_matrix_expand's lo/hi lookup — preventing KeyError on
+    # frames whose numeric columns are not already sorted (e.g. ['b','a']).
+    numeric_cols = sorted(numeric_cols)
+
+    # Generate all unique pairs (i <= j), including diagonal (i == j)
+    pairs = [
+        (numeric_cols[i], numeric_cols[j])
+        for i in range(len(numeric_cols))
+        for j in range(i, len(numeric_cols))
+    ]
+
+    # Register primitives with deduplication
+    agg_funcs = []
+    registry = {}  # primitive -> {col_or_pair -> output_key}
+    key_counter = [0]
+    pair_counter = [0]
+    pair_keys = {}  # (ci, cj) -> pair_key string
+
+    def _register(primitive, col_key, pair=None):
+        prim_registry = registry.setdefault(primitive, {})
+        if col_key in prim_registry:
+            return prim_registry[col_key]
+        output_key = f"agg_{key_counter[0]}"
+        agg_func = _COMBINE_FUNC_MAP.get(primitive, primitive)
+        desc = {
+            "raw_func_name": primitive,
+            "map_func_name": primitive,
+            "agg_func_name": agg_func,
+            "cols": [col_key],
+            "output_key": output_key,
+            "kwds": {},
+        }
+        if primitive in _POWER_SUM_EXPONENTS:
+            desc["pre_agg_col"] = f"{output_key}__{col_key}_{primitive}_input"
+        elif primitive == _CROSS_PRODUCT_PRIMITIVE:
+            desc["pre_agg_col"] = f"{output_key}__{col_key}_{primitive}_input"
+            desc["pair"] = pair  # (col_x, col_y) tuple — no string round-trip
+        elif primitive in _PAIRWISE_MASK_PRIMITIVES:
+            desc["pre_agg_col"] = f"{output_key}__{col_key}_{primitive}_input"
+            desc["pair"] = pair  # (col_x, col_y) tuple — no string round-trip
+        agg_funcs.append(desc)
+        prim_registry[col_key] = output_key
+        key_counter[0] += 1
+        return output_key
+
+    for ci, cj in pairs:
+        _register("sum", ci)
+        _register("sum", cj)
+        _register("count", ci)
+        if func_name == "corr":
+            _register("sum_sq", ci)
+            _register("sum_sq", cj)
+        if ci == cj:
+            # Diagonal: sum_xy(A,A) == sum_sq(A) — reuse sum_sq
+            if func_name == "cov":
+                _register("sum_sq", ci)
+        else:
+            # Use a unique pair index as the routing key — never derive
+            # identity from joined user column names, which collide when
+            # names contain the join separator (e.g. pairs (a, b__c) and
+            # (a__b, c) both flatten to "a__b__c").  The (ci, cj) tuple
+            # is stored structurally in desc["pair"] for expansion.
+            pair_key = f"pair_{pair_counter[0]}"
+            pair_keys[(ci, cj)] = pair_key
+            pair_counter[0] += 1
+            _register("sum_xy", pair_key, pair=(ci, cj))
+            # Pairwise mask primitives: all use the same both-non-null
+            # observation set as sum_xy, matching pandas' pairwise-complete
+            # covariance/correlation.
+            _register("sum_x_pair", pair_key, pair=(ci, cj))
+            _register("sum_y_pair", pair_key, pair=(ci, cj))
+            _register("count_pair", pair_key, pair=(ci, cj))
+            if func_name == "corr":
+                _register("sum_x_pair_sq", pair_key, pair=(ci, cj))
+                _register("sum_y_pair_sq", pair_key, pair=(ci, cj))
+
+    # Build post-agg projection expressions
+    projection_exprs = _build_pairwise_projection_exprs(
+        func_name,
+        pairs,
+        pair_keys,
+        registry,
+        groupby_params,
+        input_dtypes,
+        ddof,
+        min_periods,
+    )
+
+    # Build pre-agg projection exprs (for sum_sq, sum_xy, and mask primitives)
+    pre_agg_projection_exprs = _build_pre_agg_projection_exprs(agg_funcs, input_dtypes)
+
+    # Build intermediate output names and dtypes — use __ joiner to avoid
+    # name collisions when column names contain underscores (C3 fix).
+
+    agg_output_columns = [
+        (
+            f"{ci}__{cj}__{func_name}"
+            if ci == cj
+            else f"{pair_keys[(ci, cj)]}__{func_name}"
+        )
+        for ci, cj in pairs
+    ]
+    float64_dtype = wrap_arrow_dtype(pa.float64())
+    agg_output_dtypes_map = {col: float64_dtype for col in agg_output_columns}
+    agg_output_dtypes = pd.Series(agg_output_dtypes_map)
+
+    # Build final output dtypes (group keys + projection output)
+    out_dtypes_dict = OrderedDict()
+    for gk in group_key_cols:
+        out_dtypes_dict[gk] = all_input_dtypes.get(gk, wrap_arrow_dtype(pa.string()))
+    for col_name in agg_output_columns:
+        out_dtypes_dict[col_name] = float64_dtype
+    out_dtypes = pd.Series(out_dtypes_dict)
+
+    out_shape = (np.nan if groupby_params else 1, len(out_dtypes))
+
+    return CompileAggResult(
+        agg_funcs=agg_funcs,
+        agg_output_columns=agg_output_columns,
+        output_column_names=None,  # projection handles naming
+        agg_output_dtypes=agg_output_dtypes,
+        out_dtypes=out_dtypes,
+        out_shape=out_shape,
+        projection_exprs=projection_exprs,
+        pre_agg_projection_exprs=pre_agg_projection_exprs,
+    )
 
 
 def compile_agg(op, liteframe):
     """Compile aggregation: normalize func, build agg_funcs, compute output info.
 
-    Returns a CompileAggResult namedtuple with fields:
+    Parameters
+    ----------
     - agg_funcs: list of agg descriptors
     - agg_output_columns: column names from raw agg output
     - output_column_names: final output column names (with suffix rules)
     - agg_output_dtypes: dtypes for each agg output column
     - out_dtypes: pd.Series of final output dtypes
     - out_shape: tuple (n_rows, n_cols)
-    - projection_exprs: list of NamedExpr for post-agg projection (or empty)
     - pre_agg_projection_exprs: list of NamedExpr for pre-agg power transforms (or empty)
     """
     raw_func = op.raw_func
@@ -875,6 +1539,31 @@ def compile_agg(op, liteframe):
 
     if raw_func is not None and (callable(raw_func) or isinstance(raw_func, CustomAgg)):
         return compile_custom_agg(op, liteframe)
+
+    # Pairwise aggregation (cov, corr) — only via AggCall (from
+    # lf.cov()/lf.corr() or groupby().cov()/groupby().corr()).  Bare
+    # string agg("cov")/agg("corr") must not enter the pairwise
+    # compiler, which would leak internal projection fields.
+    # One API, one output layout: direct callers to the right method.
+    if (
+        isinstance(raw_func, str)
+        and not isinstance(raw_func, AggCall)
+        and raw_func in ("cov", "corr")
+    ):
+        if groupby_params:
+            raise ValueError(
+                f"agg({raw_func!r}) is a pairwise function that produces "
+                f"an N×N matrix; call groupby().{raw_func}() directly for "
+                f"a predictable output layout"
+            )
+        raise ValueError(
+            f"agg({raw_func!r}) is a pairwise function that produces "
+            f"an N×N matrix; call lf.{raw_func}() directly for a "
+            f"predictable output layout"
+        )
+    if isinstance(raw_func, AggCall) and raw_func in ("cov", "corr"):
+        return _compile_pairwise_agg(op, liteframe)
+
     numeric_only = op.numeric_only
 
     # Compute group key columns (before filtering)

@@ -467,9 +467,13 @@ PSRS_CONCAT_PIVOT = 2041
 PSRS_SHUFFLE = 2042
 PSRS_ALIGN = 2043
 PSRS_RANK_SHUFFLE = 2044
+# pure place back: reassemble shuffled rows by source chunk id / row id cols
+PLACE_BACK = 2045
 # partition
 CALC_PARTITIONS_INFO = 2046
 PARTITION_MERGED = 2047
+# rank: per-chunk global-rank projection applied after the place back
+RANK_PROJECTION = 2048
 
 # dataframe sort
 SORT_VALUES = 2050
@@ -552,7 +556,7 @@ LOGISTIC_REGRESSION_FIT = 2270
 XGBOOST_TRAIN = 3001
 XGBOOST_PREDICT = 3002
 TO_DMATRIX = 3003
-START_TRACKER = 3004
+START_TRACKER = 3004  # reserved placeholder: no operator dispatches it any more
 
 # LightGBM
 LGBM_TRAIN = 3020

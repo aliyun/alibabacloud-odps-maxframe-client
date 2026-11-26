@@ -26,14 +26,12 @@ del str_multi_method_to_handlers
 
 def _install():
     """Install str accessor on LiteFrame and LiteFrameData."""
-    from maxframe.core import CachedAccessor
     from maxframe.liteframe.accessors.string_.accessor import StringAccessor
     from maxframe.liteframe.accessors.string_.core import (
         str_method_to_handlers,
         str_multi_method_to_handlers,
     )
-    from maxframe.liteframe.core import LITEFRAME_TYPE
-    from maxframe.liteframe.initializer import LiteFrame as LiteFrameInit
+    from maxframe.liteframe.core import register_liteframe_accessor
 
     # Register all single-column handler methods to accessor class
     for method in str_method_to_handlers:
@@ -45,11 +43,7 @@ def _install():
         if not hasattr(StringAccessor, method):
             StringAccessor._register_multi(method)
 
-    # Attach .str accessor to core LiteFrame/LiteFrameData and the initializer
-    ca = CachedAccessor("str", StringAccessor)
-    for liteframe in LITEFRAME_TYPE:
-        liteframe.str = ca
-    LiteFrameInit.str = ca
+    register_liteframe_accessor("str")(StringAccessor)
 
 
 _install()

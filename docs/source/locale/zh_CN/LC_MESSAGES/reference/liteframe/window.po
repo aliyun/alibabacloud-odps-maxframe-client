@@ -25,13 +25,16 @@ msgstr "窗口函数"
 
 #: ../../source/reference/liteframe/window.rst:6
 msgid ""
-"Rolling and expanding window objects are returned by "
-":meth:`maxframe.liteframe.LiteFrame.rolling` and "
-":meth:`maxframe.liteframe.LiteFrame.expanding` respectively. Call an "
+"Rolling, expanding, and exponentially weighted (EW) window objects are "
+"returned by :meth:`maxframe.liteframe.LiteFrame.rolling`, "
+":meth:`maxframe.liteframe.LiteFrame.expanding`, and "
+":meth:`maxframe.liteframe.LiteFrame.ewm` respectively. Call an "
 "aggregation method to produce a LiteFrame."
 msgstr ""
-"滚动和扩展窗口对象分别由 :meth:`maxframe.liteframe.LiteFrame.rolling` 和 "
-":meth:`maxframe.liteframe.LiteFrame.expanding` 返回。调用聚合方法来生成 "
+"滚动、扩展和指数加权（EW）窗口对象分别由 "
+":meth:`maxframe.liteframe.LiteFrame.rolling`、"
+":meth:`maxframe.liteframe.LiteFrame.expanding` 和 "
+":meth:`maxframe.liteframe.LiteFrame.ewm` 返回。调用聚合方法来生成 "
 "LiteFrame。"
 
 #: ../../source/reference/liteframe/window.rst:17:<autosummary>:1
@@ -55,10 +58,6 @@ msgid ""
 "<maxframe.liteframe.window.rolling.LiteFrameRolling.agg>`\\ \\(func\\)"
 msgstr ""
 
-#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
-#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
-msgid "Aggregate using one of the supported function names."
-msgstr "使用支持的函数名之一进行聚合。"
 
 #: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
 msgid ""
@@ -231,4 +230,60 @@ msgstr ""
 #: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
 msgid "Expanding count of non-null observations."
 msgstr "扩展非空观测计数。"
+
+#: ../../source/reference/liteframe/window.rst:49
+msgid "EWM methods"
+msgstr "EWM 方法"
+
+#: ../../source/reference/liteframe/window.rst:57:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameEWM <maxframe.liteframe.window.ewm.LiteFrameEWM>`\\ "
+"\\(liteframe\\, alpha\\[\\, min\\_periods\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:57:<autosummary>:1
+msgid "Provide exponentially weighted (EW) calculations."
+msgstr "提供指数加权（EW）计算。"
+
+#: ../../source/reference/liteframe/window.rst:57:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameEWM.agg "
+"<maxframe.liteframe.window.ewm.LiteFrameEWM.agg>`\\ \\(func\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:32:<autosummary>:1
+#: ../../source/reference/liteframe/window.rst:48:<autosummary>:1
+#: ../../source/reference/liteframe/window.rst:57:<autosummary>:1
+msgid "Aggregate using one of the supported function names."
+msgstr "使用支持的函数名之一进行聚合。"
+
+#: ../../source/reference/liteframe/window.rst:57:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameEWM.mean "
+"<maxframe.liteframe.window.ewm.LiteFrameEWM.mean>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:57:<autosummary>:1
+msgid "Exponentially weighted moving mean."
+msgstr "指数加权移动均值。"
+
+#: ../../source/reference/liteframe/window.rst:57:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameEWM.std "
+"<maxframe.liteframe.window.ewm.LiteFrameEWM.std>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:57:<autosummary>:1
+msgid "Exponentially weighted moving standard deviation."
+msgstr "指数加权移动标准差。"
+
+#: ../../source/reference/liteframe/window.rst:57:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameEWM.var "
+"<maxframe.liteframe.window.ewm.LiteFrameEWM.var>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/window.rst:57:<autosummary>:1
+msgid "Exponentially weighted moving variance."
+msgstr "指数加权移动方差。"
 

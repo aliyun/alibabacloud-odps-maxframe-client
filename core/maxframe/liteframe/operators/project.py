@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import numpy as np
 import pandas as pd
 
 from maxframe import opcodes
@@ -26,6 +27,7 @@ from maxframe.liteframe.expressions import (
     LiteFrameBaseExpr,
     LiteFrameColumn,
     LiteFrameExpr,
+    LiteFrameMultiColumnExpr,
     LiteFrameMultiColumnSubExpr,
     LiteFrameUDFExpr,
     NamedExpr,
@@ -66,20 +68,57 @@ def _projection_dtype(proj):
     raise ValueError(f"Cannot extract dtype from projection: {type(proj)}")
 
 
+def _unwrap_named(proj):
+    """Return the inner expression of a projection, unwrapping NamedExpr."""
+    return proj.expr if isinstance(proj, NamedExpr) else proj
+
+
+def _get_udf_expr(proj):
+    """Extract LiteFrameUDFExpr from a projection if it references one.
+
+    map() wraps LiteFrameUDFExpr directly in NamedExpr.
+    transform_chunk/transform wraps via LiteFrameMultiColumnSubExpr.
+    """
+    expr = _unwrap_named(proj)
+    if isinstance(expr, LiteFrameUDFExpr):
+        return expr
+    if isinstance(expr, LiteFrameMultiColumnSubExpr) and isinstance(
+        expr.multi_expr, LiteFrameUDFExpr
+    ):
+        return expr.multi_expr
+    return None
+
+
 def _append_hidden_projections(lf, projections):
     """Append hidden column pass-through expressions to projections.
 
     Use this when building a LiteFrameProjection that should preserve hidden columns.
     Hidden columns already referenced in projections (e.g. explicitly selected)
     are skipped to avoid duplicates.
+
+    Returns the names of the hidden columns actually appended (i.e. those not
+    already present as a projection output), so callers can record which
+    outputs are hidden carriers.
     """
+    appended = []
     if lf._hidden_columns:
-        existing_names = {_projection_name(p) for p in projections}
+        # Build existing_names only from projections that carry a single
+        # output name (NamedExpr / LiteFrameColumn / renamed exprs).  Bare
+        # multi-column expressions (e.g. dynamic str.split) have no single
+        # name and must not trigger _projection_name, which would raise.
+        existing_names = {
+            _projection_name(p)
+            for p in projections
+            if isinstance(p, (NamedExpr, LiteFrameColumn))
+            or (isinstance(p, LiteFrameExpr) and hasattr(p, "name"))
+        }
         for hc in sorted(lf._hidden_columns):
             if hc not in existing_names:
                 projections.append(
                     LiteFrameColumn(name=hc, dtype=lf._physical_dtypes[hc])
                 )
+                appended.append(hc)
+    return appended
 
 
 def iter_projection_udf_funcs(projections):
@@ -104,6 +143,7 @@ def iter_projection_udf_funcs(projections):
 class LiteFrameProjection(LiteFrameOperatorMixin, LiteFrameOperator):
     _op_type_ = opcodes.LITEFRAME_PROJECTION
     _output_type_ = OutputType.liteframe
+    _supports_dynamic_schema = True
 
     projections = ListField("projections")
     # Per-projection result of range-affine analysis. Keyed by projection
@@ -124,7 +164,66 @@ class LiteFrameProjection(LiteFrameOperatorMixin, LiteFrameOperator):
             if isinstance(p, LiteFrameBaseExpr)
         )
 
-    def __call__(self, liteframe):
+    def check_inputs(self, inputs):
+        # Only validate the data input (inputs[0]); extra inputs
+        # (inputs[1:]) are runtime-resolved dependencies (e.g. a dtypes
+        # Object tileable) that are executed as part of the graph and may
+        # not have been executed yet at build time.
+        if inputs:
+            super().check_inputs(inputs[:1])
+
+    def _inherit_alignment_id(self, inputs):
+        # Projection only renames/reorders/computes columns; it never
+        # changes row order or partitioning, so the output stays
+        # row-aligned with its (single) data input.
+        return self._inherit_single_input_alignment_id(inputs)
+
+    def __call__(self, liteframe, *extra_inputs):
+        # Dynamic projections carry extra tileable inputs (e.g. a runtime
+        # dtypes object).  When the caller passes them explicitly they are
+        # used directly; otherwise the projection is static.
+        if extra_inputs:
+            return self._call_dynamic(liteframe, extra_inputs)
+        # ---- static branch (unchanged) ----
+        return self._call_static(liteframe)
+
+    def _call_dynamic(self, liteframe, extra_inputs):
+        """Dynamic branch: output schema resolved at execution time."""
+        inputs = [liteframe, *extra_inputs]
+        # Derive output dtypes for fixed (non-dynamic) projections only
+        out_dtypes = pd.Series(dtype=object)
+        for p in self.projections:
+            inner = _unwrap_named(p)
+            if isinstance(inner, LiteFrameMultiColumnExpr) and inner.is_dynamic:
+                continue  # dynamic columns — not in build-time dtypes
+            out_dtypes[_projection_name(p)] = _projection_dtype(p)
+
+        # Hidden columns that pass through to the output remain hidden,
+        # using the same intersection logic as the static branch so that
+        # sinks (e.g. to_odps_table) can still recognize and drop them.
+        input_metadata = liteframe.frame_metadata
+        remaining_hidden = (
+            set(input_metadata.hidden_columns) & set(out_dtypes.index)
+            if input_metadata and input_metadata.hidden_columns
+            else set()
+        )
+        out_frame_metadata = (
+            FrameMetadata(
+                hidden_columns=list(remaining_hidden) if remaining_hidden else None
+            )
+            if remaining_hidden
+            else None
+        )
+
+        shape = (liteframe.shape[0], np.nan)
+        return self.new_liteframe(
+            inputs,
+            shape=shape,
+            physical_dtypes=out_dtypes,
+            frame_metadata=out_frame_metadata,
+        )
+
+    def _call_static(self, liteframe):
         input_metadata = liteframe.frame_metadata
 
         # Bind any projections whose dtype is still None (unbound) against

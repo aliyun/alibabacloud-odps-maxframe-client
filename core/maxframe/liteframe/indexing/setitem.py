@@ -21,6 +21,7 @@ from maxframe.liteframe.arithmetic.core import (
     _extract_projection_exprs,
     _resolve_named_expr,
     _rewrite_column_refs,
+    _root_source_key,
 )
 from maxframe.liteframe.core import LITEFRAME_TYPE, LiteFrameData
 from maxframe.liteframe.expressions import (
@@ -29,8 +30,50 @@ from maxframe.liteframe.expressions import (
     LiteFrameLiteral,
     NamedExpr,
 )
+from maxframe.liteframe.operators.core import _alignment_id_of
+from maxframe.liteframe.operators.merge import LiteFrameConcat
 from maxframe.liteframe.operators.project import LiteFrameProjection
 from maxframe.liteframe.utils import normalize_col_name
+
+
+def _is_aligned(left, right):
+    """True iff *left* and *right* are row-aligned (same non-None alignment_id)."""
+    left_id = _alignment_id_of(left)
+    right_id = _alignment_id_of(right)
+    return left_id is not None and right_id is not None and left_id == right_id
+
+
+def _build_aligned_setitem(lf, value, key):
+    """Attach a single-column aligned *value* to *lf* as column *key*.
+
+    Uses a shuffle-free horizontal concat: rename the value's column to
+    *key* (a projection, which also drops the value's virtual range
+    columns so they do not collide with *lf*'s), drop *key* from *lf*
+    when it already exists, then ``concat(axis=1)``. The result stays
+    row-aligned with *lf* (concat axis=1 inherits the shared id).
+    """
+    value_col = value.columns[0]
+    value_dtype = value.dtypes[value_col]
+    # Rename the value's single column to *key*; projecting also drops
+    # the value's virtual range columns (they duplicate lf's).
+    rename_proj = LiteFrameProjection(
+        projections=[
+            NamedExpr(name=key, expr=LiteFrameColumn(name=value_col, dtype=value_dtype))
+        ]
+    )
+    value_renamed = rename_proj(value)
+
+    # Drop an existing *key* column from lf so concat(axis=1) sees no
+    # duplicated physical column names across inputs.
+    if key in lf.columns:
+        lf_projections = [
+            _resolve_named_expr(lf, c, lf.dtypes[c]) for c in lf.columns if c != key
+        ]
+        lf_part = _build_fused_projection(lf, lf_projections)
+    else:
+        lf_part = lf
+
+    return LiteFrameConcat(axis=1)([lf_part, value_renamed])
 
 
 def liteframe_setitem(lf, key, value):
@@ -74,13 +117,35 @@ def liteframe_setitem(lf, key, value):
 
     # Unwrap a single-column LiteFrame projection into its LiteFrameExpr,
     # so that lf["c"] = lf["a"] + 1 preserves the operation graph.
+    # Only unwrap when the projection shares lf's root source (a same-frame
+    # expression re-derivable from the source). A single-column projection
+    # rooted at a different frame (e.g. a rank result) is foreign: it is
+    # attached via the aligned-concat path below instead of being turned
+    # into a (wrong) column reference against lf.
     from_liteframe_projection = (
         isinstance(value, LITEFRAME_TYPE)
         and isinstance(value.op, LiteFrameProjection)
         and len(value.op.projections) == 1
+        and _root_source_key(value) == _root_source_key(lf)
     )
     if from_liteframe_projection:
         value = value.op.projections[0]
+
+    # When *value* is a single-column LiteFrame that is row-aligned with
+    # *lf* (same alignment_id), attach it with a shuffle-free horizontal
+    # concat instead of a column reference / join. This is how a rank
+    # result is set back onto its source frame: lf["rank"] = lf.rank(...).
+    if (
+        isinstance(value, LITEFRAME_TYPE)
+        and not from_liteframe_projection
+        and len(value.columns) == 1
+        and _is_aligned(lf, value)
+    ):
+        result = _build_aligned_setitem(lf, value, key)
+        lf._data.detach(lf)
+        lf._data = result.data
+        result.data.attach(lf)
+        return
 
     if isinstance(value, LiteFrameExpr):
         # Bind to resolve dtypes; if already a NamedExpr, use its inner expr
@@ -104,8 +169,33 @@ def liteframe_setitem(lf, key, value):
                 f"Cannot setitem a LiteFrame with {len(value.columns)} columns "
                 f"to a single column '{key}'"
             )
-        col_name = value.columns[0]
-        expr = LiteFrameColumn(name=col_name, dtype=value.dtypes[col_name])
+        if isinstance(value.op, LiteFrameProjection):
+            # A foreign-rooted projection (e.g. lf.rechunk(...)["a"] + 1)
+            # whose expression was not unwrapped above (different root
+            # source, not aligned). Extract the inner expression and
+            # rewrite its column refs through lf's projection so the
+            # fused projection below is self-contained. This preserves
+            # the operation graph (the +1) instead of silently
+            # substituting a bare column reference.
+            inner = value.op.projections[0]
+            if isinstance(inner, NamedExpr):
+                inner = inner.expr
+            expr = inner.bind(lf.dtypes)
+            existing = _extract_projection_exprs(lf)
+            expr = _rewrite_column_refs(expr, existing)
+        else:
+            # Non-projection LiteFrame not row-aligned with *lf*: a bare
+            # column reference into *lf* would silently bind *key* to itself
+            # if col_name == key (discarding the UDF result).  Raise so the
+            # caller re-aligns (placeback=True or manual re-split) first.
+            col_name = value.columns[0]
+            if col_name == key:
+                raise ValueError(
+                    f"Cannot assign unaligned LiteFrame column '{col_name}' "
+                    f"to '{key}': different alignment_id. Use placeback=True "
+                    f"or re-split/concat before assignment."
+                )
+            expr = LiteFrameColumn(name=col_name, dtype=value.dtypes[col_name])
     else:
         # Scalar or other value — infer dtype from the value itself
         dtype = pd.Series([value]).dtype

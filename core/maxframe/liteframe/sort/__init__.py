@@ -15,10 +15,15 @@
 
 def _install():
     from maxframe.liteframe.core import LITEFRAME_TYPE
+    from maxframe.liteframe.sort.nlargest_nsmallest import nlargest, nsmallest
+    from maxframe.liteframe.sort.rank import rank
     from maxframe.liteframe.sort.sort import sort
 
     for cls in LITEFRAME_TYPE:
         setattr(cls, "sort", sort)
+        setattr(cls, "rank", rank)
+        setattr(cls, "nlargest", nlargest)
+        setattr(cls, "nsmallest", nsmallest)
 
 
 _install()

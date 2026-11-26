@@ -34,6 +34,7 @@ Attributes and underlying data
 
    LiteFrame.dtypes
    LiteFrame.ndim
+   LiteFrame.select_dtypes
    LiteFrame.shape
    LiteFrame.values
 
@@ -54,6 +55,8 @@ Indexing, iteration
    LiteFrame.eval
    LiteFrame.query
    LiteFrame.head
+   LiteFrame.tail
+   LiteFrame.isin
    LiteFrame.iloc
 
 Binary operator functions
@@ -94,6 +97,7 @@ Function application, GroupBy & window
    LiteFrame.apply
    LiteFrame.apply_chunk
    LiteFrame.expanding
+   LiteFrame.ewm
    LiteFrame.flat_apply
    LiteFrame.groupby
    LiteFrame.map
@@ -114,12 +118,17 @@ Computations / descriptive stats
    LiteFrame.where
    LiteFrame.any
    LiteFrame.clip
+   LiteFrame.corr
    LiteFrame.count
+   LiteFrame.cov
    LiteFrame.cummax
    LiteFrame.cummin
    LiteFrame.cumprod
    LiteFrame.cumsum
+   LiteFrame.describe
    LiteFrame.diff
+   LiteFrame.idxmax
+   LiteFrame.idxmin
    LiteFrame.kurt
    LiteFrame.max
    LiteFrame.mean
@@ -128,6 +137,7 @@ Computations / descriptive stats
    LiteFrame.nunique
    LiteFrame.pct_change
    LiteFrame.prod
+   LiteFrame.quantile
    LiteFrame.round
    LiteFrame.sem
    LiteFrame.size
@@ -135,6 +145,7 @@ Computations / descriptive stats
    LiteFrame.std
    LiteFrame.sum
    LiteFrame.var
+   LiteFrame.value_counts
 
 Reindexing / selection / label manipulation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -147,8 +158,10 @@ Reindexing / selection / label manipulation
    LiteFrame.drop
    LiteFrame.drop_duplicates
    LiteFrame.duplicated
+   LiteFrame.filter
    LiteFrame.rename
    LiteFrame.select
+   LiteFrame.sample
 
 Missing data handling
 ~~~~~~~~~~~~~~~~~~~~~
@@ -169,9 +182,14 @@ Reshaping, sorting
    :toctree: generated/
 
    LiteFrame.explode
+   LiteFrame.melt
+   LiteFrame.pivot
+   LiteFrame.pivot_table
    LiteFrame.rebalance
    LiteFrame.rechunk
    LiteFrame.sort
+   LiteFrame.nlargest
+   LiteFrame.nsmallest
 
 Combining / joining / merging
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

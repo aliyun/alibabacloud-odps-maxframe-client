@@ -78,4 +78,3 @@ msgstr ""
 
 msgid "Video pipeline: frame extraction -> labeling -> embedding"
 msgstr "视频处理全流程：抽帧 → 打标 → 向量化"
-

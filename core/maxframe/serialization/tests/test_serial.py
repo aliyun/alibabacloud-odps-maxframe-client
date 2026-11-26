@@ -12,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
 import datetime
 import decimal
 import enum
+import logging
 import re
 import threading
+import traceback
 from collections import OrderedDict, defaultdict
 from typing import Any, Dict, List, NamedTuple
 
@@ -74,8 +77,14 @@ from maxframe.serialization import (
     deserialize,
     serialize,
     serialize_with_spawn,
+    try_pickle_buffers,
 )
-from maxframe.serialization.core import DtypeSerializer, ListSerializer, Placeholder
+from maxframe.serialization.core import (
+    DtypeSerializer,
+    ListSerializer,
+    Placeholder,
+    pickle_buffers,
+)
 from maxframe.tests.utils import require_cudf, require_cupy
 from maxframe.utils import lazy_import, no_default
 
@@ -547,6 +556,10 @@ class PickleWithError:
         return f"PickleWithError({self.val})"
 
 
+class CustomBaseException(BaseException):
+    """A control-flow signal which is neither an Exception nor a stdlib signal."""
+
+
 class UnpickleWithError:
     def __getstate__(self):
         return (None,)
@@ -568,6 +581,7 @@ def test_exceptions():
     with switch_unpickle(forbidden=True):
         deserial = deserialize(*serialize(exc))
         assert isinstance(deserial, RemoteException)
+        assert deserial.messages == [f"{type(exc).__name__}: {exc}"]
 
     with switch_unpickle(forbidden=False):
         deserial_val = deserial.get()
@@ -585,6 +599,128 @@ def test_exceptions():
         deserial = deserialize(*serialize(exc))
         assert isinstance(deserial, ValueError)
         assert deserial.args[0] == str(exc_data)
+
+
+@pytest.mark.parametrize(
+    "exc_type", [KeyboardInterrupt, SystemExit, GeneratorExit, CustomBaseException]
+)
+def test_non_reraisable_exception(exc_type):
+    remote_exc = RemoteException.from_exception(exc_type())
+
+    # payload of control-flow errors is not pickled,
+    # so the client raises RemoteException itself
+    assert remote_exc.get_buffers() == []
+    assert remote_exc.get() is remote_exc
+    assert remote_exc.messages == [f"{exc_type.__name__}: "]
+
+    deserial = deserialize(*serialize(remote_exc))
+    assert isinstance(deserial, RemoteException)
+    assert deserial.get() is deserial
+
+
+def test_legacy_signal_buffers_fall_back_to_remote_exception():
+    # a record written before signals were filtered still carries the pickled
+    # signal: neither get() nor a serialize round trip may return it
+    legacy = RemoteException(["legacy"], [[]], pickle_buffers(SystemExit("stop")))
+
+    got = legacy.get()
+    assert isinstance(got, RemoteException)
+    assert got is legacy
+
+    deserial = deserialize(*serialize(legacy))
+    assert isinstance(deserial, RemoteException)
+    assert deserial is not legacy
+    assert deserial.get() is deserial
+
+
+# each failure kind is exercised twice: with an ordinary failure the record
+# degrades, with a control-flow signal it must not be swallowed
+_FAILURES = [RuntimeError, KeyboardInterrupt, SystemExit]
+
+
+def _expect_error(raised):
+    if issubclass(raised, Exception):
+        return contextlib.nullcontext()
+    return pytest.raises(raised)
+
+
+@pytest.mark.parametrize("raised", _FAILURES)
+def test_failing_message_format(raised):
+    class FailingStr:
+        def __str__(self):
+            raise raised("failing __str__")
+
+    with _expect_error(raised):
+        remote_exc = RemoteException.from_exception(SystemExit(FailingStr()))
+
+        # the same formatting runs over every exception of the cause chain
+        try:
+            try:
+                raise SystemExit(FailingStr())
+            except BaseException as inner:
+                raise ValueError("outer") from inner
+        except BaseException as outer:
+            chained_exc = RemoteException.from_exception(outer)
+
+    if issubclass(raised, Exception):
+        assert remote_exc.messages == ["SystemExit"]
+        assert remote_exc.get_buffers() == []
+        assert chained_exc.messages == ["ValueError: outer", "SystemExit"]
+        assert len(chained_exc.tracebacks) == 2
+
+
+@pytest.mark.parametrize("raised", _FAILURES)
+def test_failing_log_handler(raised):
+    class FailingHandler(logging.Handler):
+        def emit(self, record):
+            raise raised("failing logging handler")
+
+    class FailingStr:
+        def __str__(self):
+            raise RuntimeError("hostile __str__")
+
+    exc_logger = logging.getLogger("maxframe.serialization.exception")
+    handler = FailingHandler()
+    exc_logger.addHandler(handler)
+    try:
+        with _expect_error(raised):
+            remote_exc = RemoteException.from_exception(SystemExit(FailingStr()))
+    finally:
+        exc_logger.removeHandler(handler)
+
+    if issubclass(raised, Exception):
+        assert remote_exc.messages == ["SystemExit"]
+        assert remote_exc.get_buffers() == []
+
+
+@pytest.mark.parametrize("raised", _FAILURES)
+def test_failing_pickle_probe(raised):
+    class FailingReduce(Exception):
+        def __reduce__(self):
+            raise raised("failing __reduce__")
+
+    with _expect_error(raised):
+        assert try_pickle_buffers(FailingReduce()) is None
+        remote_exc = RemoteException.from_exception(FailingReduce())
+
+    if issubclass(raised, Exception):
+        assert remote_exc.messages == ["FailingReduce: "]
+        assert remote_exc.get_buffers() == []
+        assert remote_exc.get() is remote_exc
+
+
+@pytest.mark.parametrize("raised", _FAILURES)
+def test_failing_traceback_format(raised):
+    def failing_format_tb(tb, limit=None):
+        raise raised("failing format_tb")
+
+    with mock.patch.object(traceback, "format_tb", failing_format_tb):
+        with _expect_error(raised):
+            remote_exc = RemoteException.from_exception(SystemExit("x"))
+
+    if issubclass(raised, Exception):
+        assert remote_exc.messages == ["SystemExit: x"]
+        assert remote_exc.tracebacks == [[]]
 
 
 class MockSerializerForErrors(ListSerializer):
@@ -650,6 +786,25 @@ def test_deserial_errors():
         # so we need to register ListSerializer again to make the
         # deserializers correct.
         ListSerializer.register(list)
+
+
+def test_deserial_pickle_error_message():
+    expected = f"{UnpickleWithError.__module__}.{UnpickleWithError.__qualname__}"
+    with switch_unpickle(forbidden=False):
+        with pytest.raises(ValueError) as exc_info:
+            deserialize(*serialize(UnpickleWithError()))
+    assert expected in str(exc_info.value)
+
+
+def test_pickle_container_get_error_message():
+    expected = f"{UnpickleWithError.__module__}.{UnpickleWithError.__qualname__}"
+    with switch_unpickle(forbidden=True):
+        container = deserialize(*serialize(UnpickleWithError()))
+    assert isinstance(container, PickleContainer)
+    with switch_unpickle(forbidden=False):
+        with pytest.raises(ValueError) as exc_info:
+            container.get()
+    assert expected in str(exc_info.value)
 
 
 class MockSerializerForSpawn(ListSerializer):

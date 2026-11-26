@@ -16,11 +16,153 @@ import asyncio
 import functools
 import time
 from concurrent.futures import ThreadPoolExecutor
+from types import SimpleNamespace
 
+import mock
 import pytest
+from tornado.httpclient import HTTPClientError
+from tornado.simple_httpclient import HTTPTimeoutError
 
 from maxframe import utils
+from maxframe.config import options
 from maxframe.lib.wrapped_pickle import is_unpickle_forbidden, switch_unpickle
+from maxframe.utils import aio as aio_module
+
+
+@pytest.fixture
+def http_mock(monkeypatch):
+    state = SimpleNamespace(now=0.0, delays=[], fetch=mock.AsyncMock())
+
+    async def sleep(delay):
+        state.delays.append(delay)
+        state.now += delay
+
+    monkeypatch.setattr(aio_module, "time", SimpleNamespace(time=lambda: state.now))
+    monkeypatch.setattr(
+        aio_module,
+        "asyncio",
+        SimpleNamespace(sleep=sleep, iscoroutinefunction=asyncio.iscoroutinefunction),
+    )
+    monkeypatch.setattr(
+        aio_module.httpclient,
+        "AsyncHTTPClient",
+        lambda: SimpleNamespace(fetch=state.fetch),
+    )
+    return state
+
+
+async def test_http_errors_share_original_timeout_budget(http_mock):
+    last_error = HTTPClientError(502)
+
+    async def request(*args, **kwargs):
+        if http_mock.now < 50:
+            http_mock.now += kwargs["request_timeout"]
+            raise HTTPTimeoutError("request timed out")
+        http_mock.now += 5  # The HTTP error arrives 55s after the helper was entered.
+        raise last_error
+
+    http_mock.fetch.side_effect = request
+    # The outer retry catches HTTPClientError, not the helper's TimeoutError.
+    with pytest.raises(TimeoutError) as exc:
+        await utils.call_with_retry(
+            utils.wait_http_response,
+            "http://service/request",
+            request_timeout=60,
+            retry_status_codes=(404, 502),
+            max_status_retries=0,
+            retry_times=1,
+            exc_type=HTTPClientError,
+        )
+    assert http_mock.fetch.await_count == 6
+    assert http_mock.now == 60
+    assert http_mock.delays == [5]
+    assert exc.value.__cause__ is last_error
+    assert "url=http://service/request" in str(exc.value)
+    assert "last_status=502" in str(exc.value)
+    assert "status_retries=1" in str(exc.value)
+
+
+async def test_wait_without_budget_retries_same_request(http_mock):
+    response = object()
+    results = iter(
+        [
+            (0, HTTPClientError(502)),
+            (20, HTTPTimeoutError("request timed out")),
+            (20, HTTPTimeoutError("request timed out")),
+            (20, HTTPClientError(404)),
+            (0, response),
+        ]
+    )
+
+    async def request(*args, **kwargs):
+        elapsed, result = next(results)
+        http_mock.now += elapsed
+        if isinstance(result, Exception):
+            raise result
+        return result
+
+    http_mock.fetch.side_effect = request
+    result = await utils.wait_http_response(
+        "http://service/request",
+        method="POST",
+        body=b"payload",
+        headers={"Host": "original-host"},
+        retry_status_codes=(404, 502),
+        max_status_retries=2,
+    )
+    assert result is response
+    assert http_mock.now == 70
+    assert http_mock.delays == [5, 5]
+    expected_call = mock.call(
+        "http://service/request",
+        request_timeout=None,
+        method="POST",
+        body=b"payload",
+        headers={"Host": "original-host"},
+    )
+    assert http_mock.fetch.await_args_list == [expected_call] * 5
+
+
+async def test_wait_without_budget_limits_status_retries(http_mock):
+    last_error = HTTPClientError(502)
+    http_mock.fetch.side_effect = [HTTPClientError(404), HTTPClientError(502)] * 6 + [
+        last_error
+    ]
+
+    with pytest.raises(HTTPClientError) as exc:
+        await utils.wait_http_response(
+            "http://service/request", retry_status_codes=(404, 502)
+        )
+
+    assert exc.value is last_error
+    assert http_mock.fetch.await_count == 13
+    assert http_mock.delays == [5] * 12
+
+
+async def test_other_http_errors_use_outer_retry(http_mock):
+    response = object()
+    http_mock.fetch.side_effect = [HTTPClientError(502), HTTPClientError(500), response]
+
+    result = await utils.call_with_retry(
+        utils.wait_http_response,
+        "http://service/request",
+        request_timeout=60,
+        retry_status_codes=(404, 502),
+        retry_times=1,
+        exc_type=HTTPClientError,
+    )
+    assert result is response
+    assert http_mock.fetch.await_count == 3
+    assert http_mock.delays == [5, options.retry_delay]
+
+
+async def test_http_errors_are_not_retried_by_default(http_mock):
+    http_mock.fetch.side_effect = HTTPClientError(404)
+    with pytest.raises(HTTPClientError) as exc:
+        await utils.wait_http_response("http://service/request", request_timeout=60)
+    assert exc.value.code == 404
+    assert http_mock.fetch.await_count == 1
+    assert not http_mock.delays
 
 
 @pytest.mark.parametrize("use_async", [False, True])

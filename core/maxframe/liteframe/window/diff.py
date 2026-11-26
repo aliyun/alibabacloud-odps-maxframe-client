@@ -15,7 +15,7 @@
 from maxframe.liteframe.operators.window import LiteFrameWindowTransform
 
 
-def diff(self, periods=1, columns=None):
+def diff(self, periods=1, columns=None, placeback=True):
     """Compute ``x[i] - x[i-periods]`` for each row.
 
     First ``periods`` rows (for positive periods) or last ``|periods|``
@@ -28,6 +28,14 @@ def diff(self, periods=1, columns=None):
     columns : str, list of str, or None, default None
         Column(s) to diff.  If None, all columns are diffed.
         Non-selected columns are passed through unchanged.
+    placeback : bool, default True
+        With ``True`` (default), the output stays row-aligned with the input
+        so aligned frames can be combined shuffle-free.  ``False`` opts out
+        of that alignment (grouped output stays in reducer/hash-partition
+        order).  Row order and values are unchanged for standalone
+        transforms, but ``False`` also opts out of input alignment-id
+        inheritance, so the result is no longer interchangeable with the
+        input frame for shuffle-free assignment.
 
     Returns
     -------
@@ -57,5 +65,8 @@ def diff(self, periods=1, columns=None):
     3  3.0
     """
     return LiteFrameWindowTransform.for_positional(
-        "diff", periods=periods, columns=columns
+        "diff",
+        periods=periods,
+        columns=columns,
+        placeback=placeback,
     )(self)

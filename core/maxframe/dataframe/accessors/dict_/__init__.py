@@ -16,7 +16,6 @@ from maxframe.dataframe.accessors.dict_.core import SeriesDictMethod
 
 
 def _install():
-    from maxframe.core import CachedAccessor
     from maxframe.dataframe.accessors.dict_.accessor import DictAccessor
     from maxframe.dataframe.accessors.dict_.contains import series_dict_contains
     from maxframe.dataframe.accessors.dict_.getitem import (
@@ -26,7 +25,7 @@ def _install():
     from maxframe.dataframe.accessors.dict_.length import series_dict_length
     from maxframe.dataframe.accessors.dict_.remove import series_dict_remove
     from maxframe.dataframe.accessors.dict_.setitem import series_dict_setitem
-    from maxframe.dataframe.core import SERIES_TYPE
+    from maxframe.dataframe.core import register_series_accessor
 
     dict_method_to_handlers = {
         "__getitem__": series_dict_getitem_with_key_error,
@@ -40,8 +39,7 @@ def _install():
     for name, handler in dict_method_to_handlers.items():
         DictAccessor._register(name, handler)
 
-    for series in SERIES_TYPE:
-        series.dict = CachedAccessor("dict", DictAccessor)
+    register_series_accessor("dict")(DictAccessor)
 
 
 _install()

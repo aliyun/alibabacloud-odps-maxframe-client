@@ -18,6 +18,8 @@ import shutil
 from setuptools import Extension, setup
 
 pack_root = os.path.dirname(os.path.abspath(__file__))
+rel_repo_root = ".."
+repo_root = os.path.abspath(os.path.join(pack_root, rel_repo_root))
 
 # load cythonize_all and guess_version_by_tag_and_branch from _setup_utils.py
 with open(os.path.join(pack_root, "_setup_utils.py"), "r") as cy_src:
@@ -46,10 +48,10 @@ extensions = cythonize_all_pyx(pack_root, ext_include_source_map) + [
 
 long_description = None
 readme_files = [
-    f"{pack_root}/../README.rst",
-    f"{pack_root}/../README.md",
-    f"{pack_root}/README.rst",
-    f"{pack_root}/README.md",
+    os.path.join(repo_root, "README.rst"),
+    os.path.join(repo_root, "README.md"),
+    os.path.join(pack_root, "README.rst"),
+    os.path.join(pack_root, "README.md"),
 ]
 for readme_file in readme_files:
     if os.path.exists(readme_file):
@@ -61,11 +63,14 @@ for readme_file in readme_files:
 setup_options = dict(
     long_description=long_description or "",
     ext_modules=extensions,
-    use_scm_version=make_scm_version(".."),
+    use_scm_version=make_scm_version(rel_repo_root),
 )
 try:
-    if os.path.exists(f"{pack_root}/../README.rst"):
-        shutil.copy(f"{pack_root}/../README.rst", f"{pack_root}/README.rst")
+    if os.path.exists(os.path.join(repo_root, "README.rst")):
+        shutil.copy(
+            os.path.join(repo_root, "README.rst"),
+            os.path.join(pack_root, "README.rst"),
+        )
     setup(**setup_options)
 finally:
     if os.path.exists(f"{pack_root}/README.rst"):

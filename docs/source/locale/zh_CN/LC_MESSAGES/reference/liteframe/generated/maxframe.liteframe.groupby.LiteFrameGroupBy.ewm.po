@@ -1,0 +1,129 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-15 14:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.ewm.rst:2
+msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.ewm"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:1 of
+msgid "Provide exponentially weighted (EW) calculations within each group."
+msgstr "在每个组内提供指数加权（EW）计算。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.ewm.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:3 of
+msgid "Center of mass: ``alpha = 1 / (1 + com)``."
+msgstr "质心：``alpha = 1 / (1 + com)``。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:5 of
+msgid "Span: ``alpha = 2 / (span + 1)``."
+msgstr "跨度：``alpha = 2 / (span + 1)``。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:7 of
+msgid "Half-life: ``alpha = 1 - exp(ln(0.5) / halflife)``."
+msgstr "半衰期：``alpha = 1 - exp(ln(0.5) / halflife)``。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:9 of
+msgid "Smoothing factor directly: ``0 < alpha <= 1``."
+msgstr "直接指定平滑因子：``0 < alpha <= 1``。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:11 of
+msgid "Minimum observations in the window to produce a value."
+msgstr "窗口中产生值所需的最小观测数。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:13 of
+msgid "Adjusted (weighted average) vs recursive form."
+msgstr "调整（加权平均）形式 vs 递归形式。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:15 of
+msgid "Ignore NaN positions (relative) vs absolute positioning."
+msgstr "忽略 NaN 位置（相对定位）vs 绝对定位。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:17 of
+msgid "Biased vs unbiased variance (std/var only)."
+msgstr "有偏 vs 无偏方差（仅 std/var）。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:19 of
+msgid "Column(s) to aggregate. If None, all non-group-key columns."
+msgstr "要聚合的列。如果为 None，则为所有非分组键列。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:21 of
+msgid ""
+"Column(s) that define the order in which the window expands within each "
+"group (equivalent to ``ORDER BY`` inside a MaxCompute ``OVER()`` clause)."
+msgstr ""
+"定义每个组内窗口展开顺序的列（等价于 MaxCompute ``OVER()`` 子句中的 "
+"``ORDER BY``）。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:25 of
+msgid "Sort direction for each *order_by* column."
+msgstr "每个 *order_by* 列的排序方向。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:27 of
+msgid "Offset the EWM leading edge by N rows."
+msgstr "将 EWM 前沿偏移 N 行。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:29 of
+msgid "Flip the EWM to run from the last row backward within each group."
+msgstr "翻转 EWM，在每个组内从最后一行向后运行。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:31 of
+msgid "If True, restore output to input frame's row order after shuffle."
+msgstr "如果为 True，在重排后恢复输出到输入帧的行顺序。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.ewm.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:34 of
+msgid "Intermediate object; call an aggregation method to produce a LiteFrame."
+msgstr "中间对象；调用聚合方法以生成 LiteFrame。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.ewm.rst
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:39 of
+msgid "备注"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:40 of
+msgid ""
+"See :meth:`LiteFrame.ewm <maxframe.liteframe.LiteFrame.ewm>` for the "
+"mathematical details on ``adjust``, ``ignore_na``, and ``bias``."
+msgstr ""
+"有关 ``adjust``、``ignore_na`` 和 ``bias`` 的数学细节，请参阅 :meth:`"
+"LiteFrame.ewm <maxframe.liteframe.LiteFrame.ewm>`。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.ewm:44 of
+msgid ""
+"With ``placeback=True`` (the default), the output is aligned with the "
+"input frame — row order and chunk layout are restored after the group-key"
+" shuffle.  With ``placeback=False`` the output stays in reducer/hash-"
+"partition order and is **not** aligned with the input. Row count is "
+"always preserved."
+msgstr ""
+"当 ``placeback=True``（默认值）时，输出与输入帧对齐——行顺序和块布局在分组"
+"键重排后恢复。当 ``placeback=False`` 时，输出保持在 reducer/哈希分区顺序"
+"，并且与输入**不**对齐。行数始终保留。"
+

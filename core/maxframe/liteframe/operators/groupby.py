@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import numpy as np
+import pandas as pd
+import pyarrow as pa
 
 from maxframe import opcodes
 from maxframe.core import OutputType
@@ -20,6 +22,34 @@ from maxframe.core.operator import OperatorStage
 from maxframe.liteframe.core import FrameMetadata
 from maxframe.liteframe.operators.core import LiteFrameOperator, LiteFrameOperatorMixin
 from maxframe.serialization.serializables import DictField, Int32Field, ReferenceField
+from maxframe.utils import wrap_arrow_dtype
+
+# Fixed module-level constants for the routing columns attached by the
+# groupby map executor when placeback is requested.  Both the tiler and
+# the map executor reference these directly -- no names are passed
+# through extra_params.  If a future conflict arises (a user column
+# named ``__mf_gb_ci__``) the constants can be made conflict-free via
+# ``_make_unique_col_name`` later.
+_GB_CI_COL = "__mf_gb_ci__"  # groupby source-chunk id
+_GB_RI_COL = "__mf_gb_ri__"  # groupby per-chunk row id
+
+
+def _routing_dtypes(base_dtypes: pd.Series) -> pd.Series:
+    """Append the two Int64 routing columns to a dtype series.
+
+    When ``base_dtypes`` is ``None`` (unknown output schema, e.g.
+    ``skip_infer=True``), only the routing columns are returned — the
+    real output columns are resolved at execution time.
+    """
+    int64_dt = wrap_arrow_dtype(pa.int64())
+    if base_dtypes is None:
+        return pd.Series({_GB_CI_COL: int64_dt, _GB_RI_COL: int64_dt})
+    return pd.concat(
+        [
+            base_dtypes,
+            pd.Series({_GB_CI_COL: int64_dt, _GB_RI_COL: int64_dt}),
+        ]
+    )
 
 
 class LiteFrameGroupByOp(LiteFrameOperatorMixin, LiteFrameOperator):
@@ -37,17 +67,41 @@ class LiteFrameGroupByOp(LiteFrameOperatorMixin, LiteFrameOperator):
     index_shuffle_size = Int32Field("index_shuffle_size", default=None)
 
     def __call__(self, liteframe):
-        hidden_columns = None
-        if liteframe.frame_metadata and liteframe.frame_metadata.hidden_columns:
-            hidden_columns = liteframe.frame_metadata.hidden_columns
+        existing_hidden = list(
+            getattr(liteframe.frame_metadata, "hidden_columns", None) or []
+        )
+        # Preserve input order and append routing columns deterministically
+        # so FrameMetadata.__maxframe_tokenize__ produces stable keys across
+        # processes (set ordering is hash-seed-dependent).
+        hidden = list(existing_hidden)
 
-        frame_metadata = None
-        if hidden_columns:
-            frame_metadata = FrameMetadata(hidden_columns=hidden_columns)
+        if self.extra_params.get("placeback", False):
+            # Plan-time collision check: a user column sharing a routing
+            # name would be silently overwritten and then dropped.  Raise
+            # rather than lose data.
+            user_cols = set(liteframe._physical_dtypes.index)
+            collisions = user_cols & {_GB_CI_COL, _GB_RI_COL}
+            if collisions:
+                raise ValueError(
+                    f"Grouped place-back reserves internal column names "
+                    f"{_GB_CI_COL!r} and {_GB_RI_COL!r}, but the input "
+                    f"frame already has column(s): {sorted(collisions)}. "
+                    f"Please rename the conflicting column(s)."
+                )
+            phys = _routing_dtypes(liteframe._physical_dtypes)
+            for rc in (_GB_CI_COL, _GB_RI_COL):
+                if rc not in hidden:
+                    hidden.append(rc)
+            n_cols = liteframe.shape[1] + 2
+        else:
+            phys = liteframe._physical_dtypes
+            n_cols = liteframe.shape[1]
+
+        frame_metadata = FrameMetadata(hidden_columns=hidden) if hidden else None
 
         return self.new_liteframe(
             [liteframe],
-            shape=(np.nan, liteframe.shape[1]),
-            physical_dtypes=liteframe._physical_dtypes,
+            shape=(np.nan, n_cols),
+            physical_dtypes=phys,
             frame_metadata=frame_metadata,
         )

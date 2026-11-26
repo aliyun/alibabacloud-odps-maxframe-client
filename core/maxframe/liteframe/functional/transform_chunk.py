@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""LiteFrame.transform_chunk() -- per-block UDF (expression-based)."""
+"""LiteFrame.transform_chunk() -- per-sub-chunk UDF (expression-based)."""
 
+from maxframe.liteframe.core import drop_alignment_id
 from maxframe.liteframe.functional.apply import groupby_transform_op
 from maxframe.liteframe.functional.type_infer import infer_output_dtypes
 from maxframe.liteframe.functional.utils import (
@@ -32,23 +33,30 @@ def transform_chunk(
     dtypes=None,
     skip_infer=False,
     args=(),
+    placeback=True,
     **kwargs
 ):
-    """Apply func per execution block (chunk). Output must have same row count.
+    """Apply func per sub-chunk (execution fragment). Output must have same row count.
 
     Unlike ``apply_chunk``, the output row count must match the input
-    (transform semantics).  The function receives a DataFrame chunk and
-    must return a DataFrame with the same number of rows.
+    (transform semantics).  ``func`` receives one *sub-chunk* — the execution
+    fragment the engine hands it — and must return a DataFrame with the same
+    number of rows.
+
+    Sub-chunk boundaries are implementation-defined (a parquet row group, a
+    file, ...) and finer under streaming, so ``func`` must be fragment-local:
+    anything that observes all rows at once (``cum_sum``, ``rank``, head/tail
+    slices) restarts inside every sub-chunk.  LiteFrame's own window functions
+    (``cumsum``, ``rank``, ...) carry their boundary-handoff strategy; calling
+    such logic inside ``func`` means accepting that the boundaries may not be
+    the ones you want.  Use ``apply_chunk`` for explicit whole-chunk semantics.
 
     Parameters
     ----------
     func : callable or callable class
-        Function taking a DataFrame chunk and returning a DataFrame with
-        the same number of rows.
-
-        If ``func`` is a class, it is instantiated once per chunk and
-        ``close()`` (if defined) is always called at the end of the
-        chunk.
+        Function taking one sub-chunk and returning a DataFrame with the same
+        number of rows; invoked once per sub-chunk.  A callable class is
+        instantiated and closed per sub-chunk and receives ``end=True``.
     input_frame_type : {"pandas", "polars"}, default "pandas"
         Frame type passed to ``func``.
     dtypes : dict or pd.Series, optional
@@ -59,12 +67,18 @@ def transform_chunk(
         Extra positional arguments forwarded to ``func``.
     **kwargs
         Extra keyword arguments forwarded to ``func``.
+    placeback : bool, default True
+        ``transform_chunk`` is a 1:1 per-sub-chunk projection and is always
+        row-aligned with the input.  When True (default) the output
+        inherits the input's ``alignment_id`` (usable for aligned column
+        assignment / horizontal concat without a shuffle).  When False the
+        output keeps a fresh alignment id (metadata-only; no layout change).
 
     Returns
     -------
     LiteFrame
         Lazy LiteFrame with the same row count as the input, where each
-        value is the per-chunk transform result.  Call ``.execute()`` to
+        value is the per-sub-chunk transform result.  Call ``.execute()`` to
         materialize.
 
     See Also
@@ -77,7 +91,7 @@ def transform_chunk(
     >>> import maxframe.liteframe as mlf
     >>> lf = mlf.LiteFrame({'a': [1, 2, 3], 'b': [10, 20, 30]})
 
-    Scale every column within each chunk by a constant (row count
+    Scale every column within each sub-chunk by a constant (row count
     preserved):
 
     >>> result = lf.transform_chunk(lambda df: df * 2)
@@ -123,7 +137,12 @@ def transform_chunk(
         kwargs=kwargs,
     )
     proj_op = LiteFrameProjection(projections=projections)
-    return proj_op(self)
+    result = proj_op(self)
+    if not placeback:
+        # transform_chunk is 1:1 chunk-preserving by construction; the flag
+        # only controls alignment_id inheritance (no layout work to skip).
+        drop_alignment_id(result)
+    return result
 
 
 def groupby_transform_chunk(
@@ -134,23 +153,22 @@ def groupby_transform_chunk(
     skip_infer=False,
     input_frame_type="pandas",
     args=(),
+    placeback=True,
     **kwargs
 ):
-    """GroupBy.transform_chunk() -- per-group-chunk transform.
+    """GroupBy.transform_chunk() -- per-group-sub-chunk transform.
 
     Applies ``func`` to each group's execution chunk independently.  As with
     the ungrouped ``transform_chunk``, the output row count must match the
-    input (transform semantics).
+    input and ``func`` sees one sub-chunk of one group, so it must be
+    fragment-local as well.
 
     Parameters
     ----------
     func : callable or callable class
-        Function taking a per-group DataFrame chunk and returning a
-        DataFrame with the same number of rows.
-
-        If ``func`` is a class, it is instantiated once per group and
-        ``close()`` (if defined) is always called at the end of each
-        group.
+        Function taking a per-group sub-chunk and returning a DataFrame with
+        the same number of rows.  A callable class is instantiated and
+        closed once per call.
     dtypes : dict or pd.Series, optional
         Expected output dtypes.
     skip_infer : bool, default False
@@ -161,6 +179,11 @@ def groupby_transform_chunk(
         Extra positional arguments forwarded to ``func``.
     **kwargs
         Extra keyword arguments forwarded to ``func``.
+    placeback : bool, default True
+        When True (default) the per-group-chunk result is restored to the
+        input row order and chunking and inherits the input's
+        ``alignment_id``.  When False the output stays in reducer order
+        with a fresh alignment id.
 
     Returns
     -------
@@ -200,4 +223,5 @@ def groupby_transform_chunk(
         input_frame_type,
         args,
         kwargs,
+        placeback=placeback,
     )

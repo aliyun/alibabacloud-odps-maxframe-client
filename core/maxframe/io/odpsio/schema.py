@@ -622,11 +622,34 @@ def build_table_column_name(
     return col_name
 
 
+def finalize_table_column_names(sanitized: list) -> list:
+    """Apply collision disambiguation to a list of sanitized column names.
+
+    When two source names sanitize to the same ODPS name, append ``_{N}``
+    suffixes to duplicates.  Shared by ``build_dataframe_table_meta`` and
+    the executor's source-to-target name mapping.
+    """
+    col_to_count = defaultdict(int)
+    for s in sanitized:
+        col_to_count[s] += 1
+    col_to_idx = defaultdict(int)
+    final = []
+    for s in sanitized:
+        if col_to_count[s] > 1:
+            candidate = f"{s}_{col_to_idx[s]}"
+            col_to_idx[s] += 1
+            while candidate in col_to_count:
+                candidate = f"{s}_{col_to_idx[s]}"
+                col_to_idx[s] += 1
+            final.append(candidate)
+        else:
+            final.append(s)
+    return final
+
+
 def build_dataframe_table_meta(
     df_obj: Any, ignore_index: bool = False, session_id: str = None
 ) -> DataFrameTableMeta:
-    col_to_count = defaultdict(lambda: 0)
-    col_to_idx = defaultdict(lambda: 0)
     pd_col_to_col_name = dict()
     if isinstance(df_obj, (DATAFRAME_TYPE, pd.DataFrame)):
         obj_type = OutputType.dataframe
@@ -669,25 +692,11 @@ def build_dataframe_table_meta(
     sql_columns = [None] * len(pd_dtypes)
     pd_col_names = pd_dtypes.index
     if obj_type == OutputType.series and df_obj.name is None:
-        # use special table column name for series
         pd_col_names = ["_data"]
     for idx, col in enumerate(pd_col_names):
-        sql_columns[idx] = col_name = build_table_column_name(
-            idx, col, pd_col_to_col_name
-        )
-        col_to_count[col_name] += 1
+        sql_columns[idx] = build_table_column_name(idx, col, pd_col_to_col_name)
 
-    final_sql_columns = []
-    for col in sql_columns:
-        if col_to_count[col] > 1:
-            col_name = f"{col}_{col_to_idx[col]}"
-            col_to_idx[col] += 1
-            while col_name in col_to_count:
-                col_name = f"{col}_{col_to_idx[col]}"
-                col_to_idx[col] += 1
-            final_sql_columns.append(col_name)
-        else:
-            final_sql_columns.append(col)
+    final_sql_columns = finalize_table_column_names(sql_columns)
 
     if hasattr(index_obj, "index_value"):
         pd_index_val = index_obj.index_value.to_pandas()
@@ -758,7 +767,26 @@ def build_liteframe_table_meta(
     # names are unchanged from the logical names the field stays ``None``;
     # otherwise it is a positional mapping ``table_column_names[i] ->
     # dtypes.index[i]`` so reads can restore the logical names.
-    table_column_names = build_table_column_names(dtypes)
+    physical_dtypes = getattr(liteframe_obj, "_physical_dtypes", None)
+    if dtypes is None:
+        table_column_names = None
+    elif physical_dtypes is None:
+        table_column_names = build_table_column_names(dtypes)
+    else:
+        # ``dtypes`` is the logical schema: the physical data columns with the
+        # range columns prepended.  Sanitize the data columns and splice the
+        # table names back, leaving the range columns untouched.
+        frame_metadata = getattr(liteframe_obj, "frame_metadata", None)
+        range_columns = (
+            set(frame_metadata.range_columns or ()) if frame_metadata else ()
+        )
+        data_dtypes = dtypes.drop([col for col in dtypes.index if col in range_columns])
+        name_by_column = dict(
+            zip(data_dtypes.index, build_table_column_names(data_dtypes) or ())
+        )
+        table_column_names = [name_by_column.get(col, col) for col in dtypes.index]
+        if table_column_names == list(dtypes.index):
+            table_column_names = None
 
     return LiteFrameTableMeta(
         table_name=table_name,

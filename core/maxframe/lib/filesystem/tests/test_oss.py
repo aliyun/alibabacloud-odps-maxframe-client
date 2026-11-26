@@ -14,6 +14,7 @@
 
 import os
 import time
+from contextlib import nullcontext
 from io import BytesIO
 
 import mock
@@ -21,6 +22,7 @@ import pytest
 
 from maxframe.lib.filesystem import oss
 from maxframe.lib.filesystem._oss_lib import glob as og
+from maxframe.lib.filesystem._oss_lib import handle as oss_handle
 from maxframe.lib.filesystem._oss_lib.common import (
     OSSFileEntry,
     _rewrite_internal_endpoint,
@@ -50,6 +52,9 @@ class MockObject:
     def __init__(self, obj_dict, key, byte_range):
         self._stream = BytesIO(obj_dict[key].encode("utf8"))
         self._byte_range = byte_range
+        start, end = byte_range
+        assert 0 <= start < self._stream.getbuffer().nbytes
+        assert end is None or start <= end
 
     def read(self):
         self._stream.seek(self._byte_range[0])
@@ -200,11 +205,27 @@ def test_oss_filesystem(fake_obj_iter, fake_oss_bucket):
             f.seek(1, 3)
         f.seek(0)
         assert f.read() == b"id1,id2,id3\n1,2,3\n"
+        f.seek(-2, 2)
+        assert f.read(10) == b"3\n"
+        assert f.seek(0, 1) == 18
+        assert f.read(1) == b""
+        f.seek(0)
+        assert f.read(None) == b"id1,id2,id3\n1,2,3\n"
+        with mock.patch.object(
+            f._bucket, "get_object", wraps=f._bucket.get_object
+        ) as get_object:
+            assert f.read(1) == b""
+            assert f.readline() == b""
+            get_object.assert_not_called()
         f.seek(0)
         assert f.readline(2) == b"id"
         f.seek(0)
         with pytest.raises(TypeError):
             f.readline("2")
+
+    with fs.open(oss_path_join(fake_dir_path, "file1.csv")) as f:
+        assert f.readline() == b"2"
+        assert f.readline() == b""
 
     fe = OSSFileEntry(fake_file_path)
     assert fe.path == fake_file_path
@@ -233,3 +254,61 @@ def test_host_rewrite():
     assert "1.2.3.4" == _rewrite_internal_endpoint(
         "1.2.3.4", HostEnforceType.force_internal
     )
+
+
+_UPLOAD_ERROR_CASES = [
+    ("NoSuchUpload", False),
+    ("StaleUpload", False),
+    ("AccessDenied", True),
+]
+
+
+@pytest.mark.parametrize("code, raises", _UPLOAD_ERROR_CASES)
+def test_oss_upload_part_error_handling(code, raises):
+    from oss2.exceptions import ServerError
+
+    bucket = mock.Mock()
+    bucket.upload_part.side_effect = ServerError(409, {}, b"", {"Code": code})
+    with mock.patch.object(oss_handle, "get_oss_bucket", return_value=bucket):
+        writer = oss_handle.OSSIOBase("oss://ak:sk@ep/bucket/obj", "wb", "uid", 1)
+        writer.write(b"data")
+        with pytest.raises(ServerError) if raises else nullcontext():
+            writer.close()
+    if not raises:
+        assert writer.part_upload_result is None
+
+
+def test_oss_close_is_idempotent():
+    bucket = mock.Mock()
+    bucket.upload_part.return_value = mock.Mock(etag="etag")
+    with mock.patch.object(oss_handle, "get_oss_bucket", return_value=bucket):
+        writer = oss_handle.OSSIOBase("oss://ak:sk@ep/bucket/obj", "wb", "uid", 1)
+        writer.write(b"data")
+        writer.close()
+        # io.IOBase.__del__ may call close() again after a with-block.
+        writer.close()
+    assert bucket.upload_part.call_count == 1
+    assert writer.part_upload_result == dict(part_number=1, etag="etag")
+
+
+def test_oss_complete_multipart_upload_rejects_missing_parts():
+    fs = oss.OSSFileSystem(access_key_id="ak", access_key_secret="sk")
+
+    with pytest.raises(RuntimeError, match="aborted before completion"):
+        fs.complete_multipart_upload(
+            "oss://ep/bucket/obj", "uid", [dict(part_number=1, etag="etag"), None]
+        )
+
+
+@pytest.mark.parametrize("code, raises", _UPLOAD_ERROR_CASES)
+def test_oss_abort_multipart_upload_error_handling(code, raises):
+    from oss2.exceptions import ServerError
+
+    bucket = mock.Mock()
+    bucket.abort_multipart_upload.side_effect = ServerError(
+        409, {}, b"", {"Code": code}
+    )
+    fs = oss.OSSFileSystem(access_key_id="ak", access_key_secret="sk")
+    with mock.patch.object(oss.oc, "get_oss_bucket", return_value=bucket):
+        with pytest.raises(ServerError) if raises else nullcontext():
+            fs.abort_multipart_upload("oss://ep/bucket/obj", "uid")

@@ -1,169 +1,225 @@
-# SOME DESCRIPTIVE TITLE.
+# Simplified Chinese translations for read_odps_table.
 # Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
 # This file is distributed under the same license as the maxframe package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: maxframe 0.1.0.dev782+ga821cedf9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-05 10:34+0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2026-10-30 12:10+0800\n"
+"PO-Revision-Date: 2026-10-23 12:00+0800\n"
+"Last-Translator: MaxFrame contributors\n"
 "Language: zh_CN\n"
-"Language-Team: zh_CN <LL@li.org>\n"
+"Language-Team: Chinese (Simplified)\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
-#: ../../source/reference/dataframe/generated/maxframe.dataframe.read_odps_table.rst:2
+#: ../../../../../../../maxframe/docs/source/reference/dataframe/generated/maxframe.dataframe.read_odps_table.rst:2
 msgid "maxframe.dataframe.read\\_odps\\_table"
-msgstr ""
+msgstr "maxframe.dataframe.read\\_odps\\_table"
 
 #: maxframe.dataframe.datasource.read_odps_table.read_odps_table:1 of
-msgid "Read data from a MaxCompute (ODPS) table into DataFrame."
-msgstr "从 MaxCompute (ODPS) 表中读取数据到 DataFrame。"
+msgid "Read a MaxCompute (ODPS) table into a DataFrame."
+msgstr "将 MaxCompute（ODPS）表读为 DataFrame。"
 
 #: maxframe.dataframe.datasource.read_odps_table.read_odps_table:3 of
 msgid ""
-"Supports specifying some columns as indexes. If not specified, RangeIndex"
-" will be generated."
-msgstr "支持将某些列指定为索引。如果未指定，将生成 RangeIndex。"
+"Use ``index_col`` to select index columns. Otherwise the engine generates an"
+" index using the configured default strategy."
+msgstr "通过 ``index_col`` 选择索引列。不指定时，由引擎按配置的默认策略生成索引。"
 
 #: maxframe.dataframe.datasource.read_odps_table.read_odps_table of
-msgid "参数"
-msgstr ""
+msgid "Parameters"
+msgstr "参数"
 
 #: maxframe.dataframe.datasource.read_odps_table.read_odps_table:6 of
-msgid "Name of the table to read from."
-msgstr "要读取的表名。"
+msgid "Name or object of the table to read."
+msgstr "待读取表的名称或 Table 对象。"
 
 #: maxframe.dataframe.datasource.read_odps_table.read_odps_table:8 of
-msgid "Table partition or list of partitions to read from."
-msgstr "要读取的表分区或分区列表。"
-
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:10 of
 msgid ""
-"Table columns to read from. You may also specify partition columns here. "
-"If not specified, all table columns (or include partition columns if "
-"`append_partitions` is True) will be included."
-msgstr ""
-"要读取的表列。您也可以在此处指定分区列。如果未指定，将包含所有表列（或者"
-"如果 `append_partitions` 为 True，则包含分区列）。"
+"Partition specification or list of specifications to read. If omitted, read "
+"all partitions."
+msgstr "要读取的分区表达式或分区表达式列表，省略时读取所有分区。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:11 of
+msgid ""
+"Columns to read, including partition columns when needed. If omitted, read "
+"all data columns except those selected as indexes."
+msgstr "要读取的列，必要时可以包含分区列。省略时读取所有数据列，但不包含已选为索引的列。"
 
 #: maxframe.dataframe.datasource.read_odps_table.read_odps_table:14 of
-msgid "Columns to be specified as indexes."
-msgstr "指定为索引的列。"
+msgid "Columns to use as the index. These cannot also appear in ``columns``."
+msgstr "用作索引的列，不能同时出现在 ``columns`` 中。"
 
 #: maxframe.dataframe.datasource.read_odps_table.read_odps_table:16 of
 msgid ""
-"If True, will add all partition columns as selected columns when "
-"`columns` is not specified,"
-msgstr "如果为 True，当未指定 `columns` 时，将添加所有分区列作为选定列，"
+"Connection used to resolve and read the table. If omitted, use the global "
+"ODPS connection, then the connection from environment variables."
+msgstr "用于查找和读取表的 ODPS 连接。省略时先使用全局 ODPS 连接，再尝试从环境变量中读取连接配置。"
 
 #: maxframe.dataframe.datasource.read_odps_table.read_odps_table:19 of
 msgid ""
-"Back-end data type applied to the resultant DataFrame (still "
-"experimental)."
-msgstr "应用于结果 DataFrame 的后端数据类型（仍处于实验阶段）。"
+"Whether to read string values as binary. If None, use the reader's default "
+"string handling."
+msgstr "是否将字符串值读为二进制。为 None 时，使用读取器默认的字符串处理方式。"
 
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:21 of
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:22 of
 msgid ""
-"Filter expression to apply when reading data.  - **String format**: SQL "
-"WHERE clause passed directly to StorageAPI.  - **List format**: Nested "
-"list of tuples.    Format: Inner lists are ANDed, outer lists are ORed."
-"   Example: ``[[('col1', '==', 'value'), ('col2', '>', 10)]]``  Supported"
-" operators: ``==``, ``!=``, ``<``, ``>``, ``<=``, ``>=``, ``in``, ``not "
-"in``.  .. note::     Complete filtering is not guaranteed for this "
-"argument given     implementation."
-msgstr ""
-"读取数据时应用的过滤表达式。  - **字符串格式**: 直接传递给 StorageAPI 的 "
-"SQL WHERE 子句。  - **列表格式**: 嵌套的元组列表。    格式: 内部列表使用 "
-"AND 连接，外部列表使用 OR 连接。   示例: ``[[('col1', '==', 'value'), ('"
-"col2', '>', 10)]]``  支持的操作符: ``==``, ``!=``, ``<``, ``>``, ``<=``, "
-"``>=``, ``in``, ``not in``。  .. note::     给定实现，不能保证此参数的"
-"完整过滤功能。"
-
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:21 of
-msgid "Filter expression to apply when reading data."
-msgstr "读取数据时应用的过滤表达式。"
-
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:23 of
-msgid "**String format**: SQL WHERE clause passed directly to StorageAPI."
-msgstr "**字符串格式**：直接传递给 StorageAPI 的 SQL WHERE 子句。"
+"Include partition columns when ``columns`` is omitted. Selecting a partition"
+" column explicitly also enables partition-column reading."
+msgstr "未指定 ``columns`` 时是否包含分区列。显式选择分区列，也会启用分区列读取。"
 
 #: maxframe.dataframe.datasource.read_odps_table.read_odps_table:25 of
-msgid "**List format**: Nested list of tuples."
-msgstr "**列表格式**：嵌套的元组列表。"
-
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:27 of
 msgid ""
-"Format: Inner lists are ANDed, outer lists are ORed. Example: "
-"``[[('col1', '==', 'value'), ('col2', '>', 10)]]``"
+"Result dtype backend. Defaults to ``options.dataframe.dtype_backend`` when "
+"None. This option is experimental."
+msgstr "结果的数据类型后端。为 None 时，使用 ``options.dataframe.dtype_backend``。该选项仍为实验功能。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:28 of
+msgid ""
+"Index strategy when ``index_col`` is omitted. Defaults to "
+"``options.dataframe.default_index_type`` (``'range'`` by default). With DPE,"
+" ``'range'`` produces consecutive integers starting at zero; "
+"``'incremental'`` produces increasing integers with gaps between chunks; "
+"``'chunk_range'`` restarts at zero in each chunk and can produce duplicate "
+"index values. These chunk-based strategies do not control MCSQL index "
+"generation."
 msgstr ""
-"格式：内部列表使用 AND 连接，外部列表使用 OR 连接。示例：``[[('col1', '=="
-"', 'value'), ('col2', '>', 10)]]``"
+"未指定 ``index_col`` 时使用的索引策略。默认采用 "
+"``options.dataframe.default_index_type``，其默认值为 ``'range'``。在 DPE "
+"中，``'range'`` 生成从 0 开始的连续整数；``'incremental'`` 生成递增整数，但不同 Chunk "
+"之间存在间隔；``'chunk_range'`` 在每个 Chunk 中从 0 重新计数，因此可能出现重复索引。这些基于 Chunk 的策略不控制 "
+"MCSQL 的索引生成。"
 
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:30 of
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:36 of
 msgid ""
-"Supported operators: ``==``, ``!=``, ``<``, ``>``, ``<=``, ``>=``, "
-"``in``, ``not in``."
+"Filter passed to the reader. A string is a SQL WHERE expression. In the "
+"nested-list form, conditions in each inner list are ANDed; the outer lists "
+"are ORed. For example, ``[[('col1', '==', 'value'), ('col2', '>', 10)]]``. "
+"Supported operators are ``==``, ``!=``, ``<``, ``>``, ``<=``, ``>=``, "
+"``in``, and ``not in``. Complete filtering is not guaranteed."
 msgstr ""
-"支持的操作符：``==``, ``!=``, ``<``, ``>``, ``<=``, ``>=``, ``in``, ``not"
-" in``。"
+"传给读取器的过滤条件。字符串形式为 SQL WHERE 表达式；嵌套列表中，内层各条件按 AND 组合，外层各列表按 OR 组合，例如 ``[[ "
+"('col1', '==', 'value'), ('col2', '>', 10) ]]``。支持 "
+"``==``、``!=``、``<``、``>``、``<=``、``>=``、``in`` 和 ``not in``。该参数不保证完成所有过滤。"
 
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:33 of
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:43 of
+msgid "Additional read options. Common options are listed below."
+msgstr "其他读取选项，常用选项列在下方。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:45 of
 msgid ""
-"Complete filtering is not guaranteed for this argument given "
-"implementation."
-msgstr "由于实现原因，不能保证此参数的完整过滤功能。"
+"Target source bytes per input split, passed through ``**kw``. DPE uses it "
+"for non-transactional tables when ``nrows`` is omitted; the default is 64 "
+"MiB. MCSQL converts an explicit value to MiB with ``max(1, chunk_bytes // "
+"1024**2)`` and sets the SQL ``split_size`` hint. SPE ignores this setting."
+msgstr ""
+"每个输入分片期望读取的源数据字节数，通过 ``**kw`` 传入。DPE 在非事务表、且未设置 ``nrows`` 时使用，默认值为 64 "
+"MiB。MCSQL 将显式值按 ``max(1, chunk_bytes // 1024**2)`` 换算为 MiB，写入 SQL 的 "
+"``split_size`` hint。SPE 忽略此设置。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:51 of
+msgid ""
+"Target rows per DPE input chunk for transactional tables or reads with "
+"``nrows``. Passed through ``**kw``. Defaults to ``options.chunk_size`` when "
+"configured, otherwise 1024 rows. MCSQL and SPE ignore this setting."
+msgstr ""
+"事务表或设置了 ``nrows`` 时，DPE 每个输入 Chunk 的目标行数，通过 ``**kw`` 传入。配置了 "
+"``options.chunk_size`` 时使用该值，否则默认 1024 行。MCSQL 和 SPE 忽略此设置。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:55 of
+msgid ""
+"Maximum rows to read, passed through ``**kw``. If omitted, no row limit is "
+"requested."
+msgstr "最多读取的行数，通过 ``**kw`` 传入。省略时不设置行数上限。"
 
 #: maxframe.dataframe.datasource.read_odps_table.read_odps_table of
-msgid "返回"
-msgstr ""
+msgid "Returns"
+msgstr "返回值"
 
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:37 of
-msgid "**result** -- DataFrame read from MaxCompute (ODPS) table"
-msgstr "**result** -- 从 MaxCompute (ODPS) 表中读取的 DataFrame"
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:59 of
+msgid "Lazy DataFrame representing the selected table data."
+msgstr "表示所选表数据的惰性 DataFrame。"
 
 #: maxframe.dataframe.datasource.read_odps_table.read_odps_table of
-msgid "返回类型"
-msgstr ""
+msgid "Return type"
+msgstr "返回类型"
 
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:41 of
-msgid "示例"
-msgstr ""
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table of
+msgid "Raises"
+msgstr "异常"
 
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:42 of
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:62 of
 msgid ""
-"Before using `read_odps_table`, you need to create an ODPS entry whose "
-"parameters will be stored globally in current process."
+"If no ODPS connection is available or a requested column is missing.     "
+"Also raised for partition options on a non-partitioned table,     "
+"overlapping index and data columns, or an invalid index strategy or     "
+"dtype backend."
+msgstr "没有可用的 ODPS 连接，或请求的列不存在。对非分区表指定分区参数、索引列与数据列重叠、索引策略或 dtype 后端无效时，也会抛出此异常。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:63 of
+msgid ""
+"If PyODPS cannot construct a connection from incomplete environment     "
+"credentials. Pass an initialized ODPS object with ``odps_entry`` to     "
+"avoid environment-based connection discovery."
 msgstr ""
-"在使用 `read_odps_table` 之前，您需要创建一个 ODPS 条目，其参数将在当前"
-"进程中全局存储。"
+"环境变量中的凭证不完整，导致 PyODPS 无法创建连接。可以通过 ``odps_entry`` 显式传入已初始化的 ODPS "
+"对象，避免从环境变量中查找连接。"
 
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:50 of
-msgid "Simply read a table by name."
-msgstr "简单地按名称读取表。"
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:64 of
+msgid "If the table cannot be found or resolved through the configured catalog."
+msgstr "找不到表，且无法通过配置的目录解析该表时抛出。"
 
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:54 of
-msgid "Read table by partition (or partitions)."
-msgstr "按分区（或多个分区）读取表。"
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:68 of
+msgid ":py:obj:`DataFrame.to_odps_table`"
+msgstr ":py:obj:`DataFrame.to_odps_table`"
 
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:61 of
-msgid "Read with column selection."
-msgstr "带列选择的读取。"
-
-#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:65 of
-msgid "Read with columns as index."
-msgstr "将列作为索引进行读取。"
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:69 of
+msgid "Write a DataFrame to a MaxCompute table."
+msgstr "将 DataFrame 写入 MaxCompute 表。"
 
 #: maxframe.dataframe.datasource.read_odps_table.read_odps_table:72 of
-msgid ""
-"Read with filter condition. Note that complete filtering is not "
-"guaranteed."
-msgstr "带过滤条件的读取。注意不能保证完整的过滤功能。"
+msgid "Notes"
+msgstr "说明"
 
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:73 of
+msgid ""
+"For input partition sizes, see :ref:`udf_source_chunk_settings`. For task "
+"memory and CPU sizing, see :ref:`udf_tuning_resources`."
+msgstr ""
+"输入分片大小的设置见 :ref:`udf_source_chunk_settings`，任务内存和 CPU 的选值方法见 "
+":ref:`udf_tuning_resources`。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:77 of
+msgid "Examples"
+msgstr "示例"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:78 of
+msgid ""
+"These examples require a MaxCompute connection and existing tables with the "
+"columns and partitions shown. Set the connection environment variables "
+"before running them. Reading creates a lazy expression; execution is "
+"separate."
+msgstr "这些示例需要 MaxCompute 连接，以及包含示例列和分区的已有表。运行前先设置连接环境变量。读表操作只构建惰性表达式，执行需要单独发起。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:93 of
+msgid "Read a table with a target source split size of 32 MiB."
+msgstr "读取表，将源数据分片的目标大小设为 32 MiB。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:104 of
+msgid "Limit the read to 10,000 rows and request 1,000-row DPE input chunks."
+msgstr "最多读取 10,000 行，并将 DPE 输入 Chunk 的目标行数设为 1,000。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:110 of
+msgid "Select partitions, data columns, and an index column."
+msgstr "选择分区、数据列和索引列。"
+
+#: maxframe.dataframe.datasource.read_odps_table.read_odps_table:118 of
+msgid ""
+"Pass a SQL filter expression, or the equivalent nested-list form. Complete "
+"filtering is not guaranteed."
+msgstr "传入 SQL 过滤表达式，或等价的嵌套列表。该参数不保证完成所有过滤。"

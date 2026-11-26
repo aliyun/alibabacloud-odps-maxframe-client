@@ -178,10 +178,11 @@ class MaxFrameInstanceCaller(MaxFrameServiceCaller):
                 inst_ids.append(t.op.extra_params.pop("explain_instance"))
         if inst_ids:
             new_settings = new_settings or {}
-            dag_settings = new_settings["dag.settings"] = (
-                new_settings.get("dag.settings") or {}
-            )
+            # dag.settings is applied as a whole, not key by key; copy so the
+            # instance ids do not leak into the global options
+            dag_settings = dict(options.dag.settings)
             dag_settings["client.explain_instances"] = ",".join(inst_ids)
+            new_settings["dag.settings"] = dag_settings
         return new_settings
 
     def _parse_instance_result_error(self):

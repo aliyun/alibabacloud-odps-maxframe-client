@@ -230,12 +230,16 @@ def _needs_materialize_range_cols(lf):
     return False
 
 
-def _build_fused_projection(lf, projections):
+def _build_fused_projection(lf, projections, extra_inputs=()):
     """Create a LiteFrameProjection rooted at the source of *lf*.
 
     Appends hidden column pass-throughs from *lf*, then builds and executes
     a LiteFrameProjection whose input is the root source of *lf* so that
     fused expression trees resolve correctly.
+
+    *extra_inputs* are additional tileable dependencies (e.g. a runtime
+    dtypes object for schema-dynamic projections) passed as extra inputs
+    to the projection operator.
 
     The analyzer in ``__call__`` runs on the fused expression tree to
     populate ``range_analysis``. If any predecessor in the chain requires
@@ -243,9 +247,11 @@ def _build_fused_projection(lf, projections):
     condition.
     """
     _append_hidden_projections(lf, projections)
+    # ``_append_hidden_projections`` already added the pass-throughs to
+    # ``projections``; nothing else needs to know which of them were hidden.
     op = LiteFrameProjection(projections=projections)
     root_source = _root_source_lf(lf)
-    return op(LiteFrame(root_source))
+    return op(LiteFrame(root_source), *extra_inputs)
 
 
 def _build_binary_projection(lf, expr_class, other, reverse=False, **kwargs):

@@ -22,6 +22,13 @@ from maxframe.lib.dtypes_extension import ArrowDtype
 from maxframe.tests.utils import require_arrow_dtype
 
 
+@pytest.mark.parametrize("initializer", [DataFrame, Series, Index])
+@pytest.mark.parametrize("num_partitions", [0, -1])
+def test_constructor_invalid_num_partitions(initializer, num_partitions):
+    with pytest.raises(ValueError, match="^num_partitions must be at least 1$"):
+        initializer([1], num_partitions=num_partitions)
+
+
 def test_read_pandas():
     df_data = pd.DataFrame([["a", 1], ["b", 2]], columns=["a", "b"])
     assert isinstance(read_pandas(df_data), DATAFRAME_TYPE)

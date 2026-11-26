@@ -1,0 +1,95 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1158+br.gef674e9f\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-12 10:39+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.value_counts.rst:2
+msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.value\\_counts"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.value_counts:1 of
+msgid "Return value counts within each group."
+msgstr "返回每个组内的值计数。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.value_counts:3 of
+msgid ""
+"Groups by the outer groupby key(s) and the value column(s), producing one"
+" row per (group_key, value) combination with a count."
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.value_counts.rst
+msgid "参数"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.value_counts:6 of
+#, fuzzy
+msgid ""
+"Value column(s) to count.  If None, all non-key columns (intersected with"
+" the groupby's column selection when set)."
+msgstr "要计数的值列。如果为 None，使用所有非键列。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.value_counts:9 of
+msgid "If True, return proportions (normalized within each group)."
+msgstr "如果为 True，返回比例（在每个组内归一化）。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.value_counts:11 of
+msgid "Sort by group keys then count/proportion."
+msgstr "按分组键然后按计数/比例排序。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.value_counts:13 of
+msgid "Sort order for the count/proportion within each group."
+msgstr "每个组内计数/比例的排序顺序。"
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.value_counts:15 of
+msgid ""
+"Exclude null-value-key rows.  This composes independently with the outer "
+"groupby's ``dropna``: the outer controls null *group* keys, this controls"
+" null *value* keys."
+msgstr ""
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.value_counts.rst
+msgid "返回"
+msgstr ""
+
+#: maxframe.liteframe.groupby.core.LiteFrameGroupBy.value_counts:20 of
+msgid ""
+"Frame with group keys, value column(s), and a ``\"count\"`` or "
+"``\"proportion\"`` column."
+msgstr "包含分组键、值列和 ``\"count\"`` 或 ``\"proportion\"`` 列的帧。"
+
+#: ../../source/reference/liteframe/generated/maxframe.liteframe.groupby.LiteFrameGroupBy.value_counts.rst
+msgid "返回类型"
+msgstr ""
+
+#~ msgid "maxframe.liteframe.groupby.LiteFrameGroupBy.value_counts"
+#~ msgstr ""
+
+#~ msgid "Exclude null-key rows."
+#~ msgstr "排除键为空的行。"
+
+#~ msgid ""
+#~ "Exclude null-value-key rows.  This "
+#~ "composes independently with the outer "
+#~ "groupby's ``dropna``: the outer controls "
+#~ "null *group* keys (pre-filtered before"
+#~ " counting), this controls null *value* "
+#~ "keys (applied during the combined "
+#~ "groupby)."
+#~ msgstr ""
+

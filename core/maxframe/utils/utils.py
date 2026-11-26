@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 import contextlib
 import copy
 import dataclasses
@@ -32,6 +33,7 @@ import tempfile
 import warnings
 from collections.abc import Hashable, Mapping
 from contextlib import contextmanager
+from types import TracebackType
 from typing import (
     Any,
     Callable,
@@ -172,6 +174,36 @@ def calc_nsplits(chunk_idx_to_shape: Dict[Tuple[int], Tuple[int]]) -> Tuple[Tupl
                 splits.append(shape[i])
         tileable_nsplits.append(tuple(splits))
     return tuple(tileable_nsplits)
+
+
+def even_chunk_sizes(size: int, n_chunks: int) -> Tuple[int, ...]:
+    """
+    Split ``size`` elements into ``n_chunks`` near-equal chunk sizes.
+
+    Sizes differ by at most one element and the larger chunks come first.
+    ``n_chunks`` is clamped to ``size`` so that asking for more chunks than
+    elements degrades to one element per chunk instead of producing empty
+    chunks. A non-positive ``size`` is treated as 0 and yields a single empty
+    chunk.
+
+    Parameters
+    ----------
+    size : int
+        Number of elements to split.
+    n_chunks : int
+        Requested number of chunks.
+
+    Returns
+    -------
+    tuple of int
+        Size of each chunk, summing to ``max(size, 0)``.
+    """
+    size = int(size)
+    if size <= 0:
+        return (0,)
+    n_chunks = min(max(int(n_chunks), 1), size)
+    chunk_size, remainder = divmod(size, n_chunks)
+    return (chunk_size + 1,) * remainder + (chunk_size,) * (n_chunks - remainder)
 
 
 def copy_tileables(tileables: List[TileableType], **kwargs):
@@ -812,6 +844,64 @@ def combine_error_message_and_traceback(
     for msg, tb in zip(messages, tracebacks):
         tbs.append("".join([msg + "\n"] + tb))
     return "\nCaused by:\n".join(tbs)
+
+
+# lazily populated on first use, as ``maxframe.serialization.exception`` imports
+# this module, hence a module-level import would be circular
+_remote_exception_cls = None
+
+
+def safe_exc_info() -> (
+    Tuple[
+        Optional[Type[BaseException]], Optional[BaseException], Optional[TracebackType]
+    ]
+):
+    """
+    Get the exception info of the current handled exception like
+    :func:`sys.exc_info`, but with control-flow signals filtered out.
+
+    Every ``BaseException`` which is not an ``Exception`` is a control-flow
+    signal of the running process (``KeyboardInterrupt``, ``SystemExit``,
+    ``GeneratorExit``, custom ``BaseException`` subclasses) and must never be
+    transported or re-raised from a recorded exception, as the record may be
+    re-raised in a different frame, task or process. When such an exception is
+    being handled, a :class:`~maxframe.serialization.exception.RemoteException`
+    carrying its messages and tracebacks is returned instead.
+
+    ``asyncio.CancelledError`` is the exception: it is a cooperative
+    cancellation signal that callers legitimately re-raise to mark work as
+    cancelled, so it is returned unchanged, as are ordinary ``Exception``s.
+
+    The original traceback information is preserved: the formatted traceback of
+    each exception in the chain is kept in ``RemoteException.tracebacks``, and
+    the original traceback object is attached to the returned exception, thus
+    also returned as the third element, so that it can still be logged or
+    displayed locally.
+
+    Returns
+    -------
+    tuple
+        ``(exc_type, exc_value, exc_traceback)`` in the same form as
+        :func:`sys.exc_info`.
+    """
+    global _remote_exception_cls
+
+    exc_type, exc_value, exc_tb = sys.exc_info()
+    if (
+        exc_value is not None
+        and not isinstance(exc_value, Exception)
+        and not isinstance(exc_value, asyncio.CancelledError)
+    ):
+        if _remote_exception_cls is None:
+            from maxframe.serialization.exception import RemoteException
+
+            _remote_exception_cls = RemoteException
+        return (
+            _remote_exception_cls,
+            _remote_exception_cls.from_exception(exc_value).with_traceback(exc_tb),
+            exc_tb,
+        )
+    return exc_type, exc_value, exc_tb
 
 
 def generate_unique_id(byte_len: int) -> Generator[str, None, None]:

@@ -15,6 +15,7 @@
 import base64
 import json
 import os
+from types import SimpleNamespace
 
 import mock
 import msgpack
@@ -138,6 +139,42 @@ def test_collect_explain_instances():
     inst = odps_entry.get_instance(inst_id)
     assert "explain" in inst.get_sql_query().lower()
     tb.drop()
+
+
+def _dag_with_explain_instances(*inst_ids):
+    return [
+        SimpleNamespace(op=SimpleNamespace(extra_params={"explain_instance": inst_id}))
+        for inst_id in inst_ids
+    ]
+
+
+@pytest.mark.parametrize("diff_has_dag_settings", [False, True])
+def test_collect_explain_instances_preserves_dag_settings(diff_has_dag_settings):
+    user_switches = {"codegen.groupby_first_value_allowed": "true"}
+    with option_context({"dag.settings": user_switches.copy()}):
+        new_settings = (
+            {"dag.settings": options.dag.settings} if diff_has_dag_settings else {}
+        )
+        settings = MaxFrameInstanceCaller._collect_explain_instances(
+            _dag_with_explain_instances("inst_1", "inst_2"), new_settings
+        )
+        assert settings["dag.settings"] == {
+            **user_switches,
+            "client.explain_instances": "inst_1,inst_2",
+        }
+        # leaking the id into the live options would make every later dag
+        # re-upload a stale one
+        assert "client.explain_instances" not in options.dag.settings
+
+
+def test_collect_explain_instances_without_explain():
+    dag = [SimpleNamespace(op=SimpleNamespace(extra_params={}))]
+    assert MaxFrameInstanceCaller._collect_explain_instances(dag) is None
+    new_settings = {"session.table_lifecycle": 1}
+    assert MaxFrameInstanceCaller._collect_explain_instances(dag, new_settings) == {
+        "session.table_lifecycle": 1
+    }
+    assert dag[0].op.extra_params == {}
 
 
 def test_deserial_task_info_result():

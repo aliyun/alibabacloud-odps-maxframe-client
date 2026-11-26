@@ -16,26 +16,26 @@
 def _install():
     import pandas as pd
 
-    from maxframe.core import CachedAccessor
     from maxframe.dataframe.accessors.plotting.core import (
         DataFramePlotAccessor,
         PlotAccessor,
         SeriesPlotAccessor,
     )
-    from maxframe.dataframe.core import DATAFRAME_TYPE, SERIES_TYPE
+    from maxframe.dataframe.core import (
+        register_dataframe_accessor,
+        register_series_accessor,
+    )
     from maxframe.utils import adapt_docstring
 
-    for t in DATAFRAME_TYPE:
-        t.plot = CachedAccessor("plot", DataFramePlotAccessor)
     for method in dir(pd.DataFrame.plot):
         if not method.startswith("_"):
             DataFramePlotAccessor._register(method)
+    register_dataframe_accessor("plot")(DataFramePlotAccessor)
 
-    for t in SERIES_TYPE:
-        t.plot = CachedAccessor("plot", SeriesPlotAccessor)
     for method in dir(pd.Series.plot):
         if not method.startswith("_"):
             SeriesPlotAccessor._register(method)
+    register_series_accessor("plot")(SeriesPlotAccessor)
 
     PlotAccessor.__doc__ = adapt_docstring(pd.DataFrame.plot.__doc__)
 

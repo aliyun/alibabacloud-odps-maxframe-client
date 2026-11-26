@@ -23,6 +23,7 @@ from maxframe.codegen.spe.core import (
 from maxframe.learn.contrib.lightgbm._predict import LGBMPredict
 from maxframe.learn.contrib.lightgbm._train import LGBMTrain
 from maxframe.learn.contrib.lightgbm.dataset import ToLGBMDataset
+from maxframe.lib.version import parse as parse_version
 from maxframe.typing_ import OperatorType
 
 
@@ -33,6 +34,35 @@ class _LightGBMAdapter(SPEOperatorAdapter):
         context.register_import("lightgbm")
         context.register_import("pandas", "pd")
         context.register_import("numpy", "np")
+
+    @classmethod
+    def append_categorical_feature(cls, op, context, args_str: str) -> str:
+        # emit even when None: lightgbm reads None as "no categorical feature",
+        # so dropping it would silently fall back to "auto"
+        arg = "categorical_feature=" + cls.translate_var(
+            context, op.categorical_feature
+        )
+        return f"{args_str}, {arg}" if args_str else arg
+
+    @classmethod
+    def append_feature_name(cls, op, context, args_str: str) -> str:
+        # None is "let the Dataset decide", so it stays omitted; "auto" and an
+        # explicit list are real values and must be forwarded
+        if op.feature_name is None:
+            return args_str
+        arg = "feature_name=" + cls.translate_var(context, op.feature_name)
+        return f"{args_str}, {arg}" if args_str else arg
+
+    @classmethod
+    def _train_accepts_categorical_feature(cls) -> bool:
+        # >= 4.6 dropped feature_name and categorical_feature from train(); the
+        # Dataset values are then authoritative (same gate as the DPE executor)
+        from maxframe.learn.contrib.lightgbm import core as lgbm_core
+
+        lgbm_mod = lgbm_core.lightgbm  # None when lightgbm is not installed
+        if lgbm_mod is None:
+            return True
+        return parse_version(lgbm_mod.__version__).release[:2] < (4, 6)
 
 
 @register_op_adapter(ToLGBMDataset)
@@ -48,7 +78,6 @@ class ToLGBMDatasetAdapter(_LightGBMAdapter):
             "init_score",
             "group",
             "feature_name",
-            "categorical_feature",
             "params",
             "free_raw_data",
             "position",
@@ -59,6 +88,7 @@ class ToLGBMDatasetAdapter(_LightGBMAdapter):
             skip_none=True,
             kw_keys=call_args,
         )
+        args_str = self.append_categorical_feature(op, context, args_str)
         return [f"{res_var_name} = lightgbm.Dataset({args_str})"]
 
 
@@ -97,11 +127,8 @@ class LGBMTrainAdapter(_LightGBMAdapter):
             "valid_names",
             "feval",
             "init_model",
-            "feature_name",
-            "categorical_feature",
             "keep_training_booster",
             "tree_learner",
-            "timeout",
             "callbacks",
         )
         codes = list()
@@ -111,6 +138,9 @@ class LGBMTrainAdapter(_LightGBMAdapter):
             skip_none=True,
             kw_keys=call_kwargs,
         )
+        if self._train_accepts_categorical_feature():
+            args_str = self.append_feature_name(op, context, args_str)
+            args_str = self.append_categorical_feature(op, context, args_str)
         if op.has_evals_result:
             evals_result_var = context.get_output_tileable_variable(op.outputs[1])
             codes.extend(

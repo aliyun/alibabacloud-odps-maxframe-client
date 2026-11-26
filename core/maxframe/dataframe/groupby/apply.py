@@ -96,12 +96,18 @@ class GroupByApply(
         dtype=None,
         name=None,
         index=None,
+        elementwise: bool = None,
         prepend_index_group_keys=True,
     ) -> InferredDataFrameMeta:
         def infer_func(groupby_obj):
             args = copy_if_possible(self.args)
             kwds = copy_if_possible(self.kwds)
             return groupby_obj.apply(self.func, *args, **kwds)
+
+        # Set __wrapped__ so unwrap_function(infer_func) reaches self.func,
+        # allowing infer_dataframe_return_value to read the UDF's return
+        # annotation instead of calling it on mock groups.
+        infer_func.__wrapped__ = self.func
 
         output_type = self.output_types[0] if self.output_types else None
         inferred_meta = infer_dataframe_return_value(
@@ -111,6 +117,7 @@ class GroupByApply(
             dtype=dtype,
             name=name,
             index=index,
+            elementwise=elementwise,
             output_type=output_type,
             prepend_index_group_keys=prepend_index_group_keys,
         )
@@ -119,6 +126,8 @@ class GroupByApply(
             if not self.output_types and inferred_meta.output_type
             else self.output_types
         )
+        # elementwise used to decide shape
+        inferred_meta.elementwise = elementwise or inferred_meta.elementwise
         self.maybe_agg = inferred_meta.maybe_agg
         return inferred_meta
 
@@ -144,6 +153,10 @@ class GroupByApply(
             dtype=dtype,
             name=name,
             index=index,
+            # A groupby UDF takes a whole group, so it is never elementwise.
+            # Passing it explicitly keeps `unwrap_function(infer_func)` from
+            # classifying a ufunc UDF (e.g. np.sqrt) as elementwise.
+            elementwise=False,
             prepend_index_group_keys=prepend_index_group_keys,
         )
         inferred_meta.check_absence("output_type", "dtypes", "dtype")
@@ -268,6 +281,15 @@ def groupby_apply(
       specified.
     * For Series output, you need to specify ``dtype`` and ``name`` of
       output Series.
+
+    If ``func`` declares a return type annotation, the output metadata is
+    derived from the annotation and ``func`` is not applied on a mock grouped
+    object. Such an annotation is an explicit declaration of the output,
+    equivalent to ``output_type`` / ``dtypes``: a container annotation like
+    ``Series[...]`` or ``DataFrame[...]`` describes what a single group
+    returns, not the type produced by combining the groups, and it is not
+    checked against the combined result. Pass ``output_type`` / ``dtypes``
+    whenever the combined result must be pinned.
     """
     if not prepend_index_group_keys:
         warn_prepend_index_group_keys(in_groupby)

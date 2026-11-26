@@ -1,0 +1,77 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 1999-2025, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.8.1.dev1157+br.g8460249a4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-10 19:58+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/reference/generated/maxframe.dataframe.api.extensions.register_index_accessor.rst:2
+msgid "maxframe.dataframe.api.extensions.register\\_index\\_accessor"
+msgstr ""
+
+#: maxframe.dataframe.core.register_index_accessor:1 of
+msgid "Register a custom accessor on Index objects."
+msgstr "在 Index 对象上注册自定义访问器。"
+
+#: maxframe.dataframe.core.register_index_accessor of
+msgid "参数"
+msgstr ""
+
+#: maxframe.dataframe.core.register_index_accessor:3 of
+msgid ""
+"Name the accessor is registered under. Must be a valid identifier that "
+"does not start with an underscore. Registering a name that is already "
+"registered for indexes raises ``AttributeError`` unless ``override`` is "
+"True."
+msgstr ""
+"访问器注册使用的名称。必须是以下划线以外的合法标识符。注册已注册的名称会"
+"引发 ``AttributeError``，除非 ``override`` 为 True。"
+
+#: maxframe.dataframe.core.register_index_accessor:8 of
+msgid ""
+"Replace an accessor previously registered under the same name; a warning "
+"is issued when an existing accessor is replaced. Attributes owned by "
+"MaxFrame itself cannot be overridden."
+msgstr ""
+"替换此前以相同名称注册的访问器；替换现有访问器时会发出警告。MaxFrame 自身"
+"拥有的属性无法被覆盖。"
+
+#: maxframe.dataframe.core.register_index_accessor of
+msgid "返回"
+msgstr ""
+
+#: maxframe.dataframe.core.register_index_accessor:13 of
+msgid ""
+"A class decorator that installs the accessor and returns the class "
+"unchanged."
+msgstr "类装饰器，用于安装该访问器并原样返回该类。"
+
+#: maxframe.dataframe.core.register_index_accessor of
+msgid "返回类型"
+msgstr ""
+
+#: maxframe.dataframe.core.register_index_accessor:19 of
+msgid ":py:obj:`register_accessor`"
+msgstr ""
+
+#: maxframe.dataframe.core.register_index_accessor:20 of
+msgid "Register a custom accessor on arbitrary tileable classes."
+msgstr "在任意 tileable 类上注册自定义访问器。"
+
+#: maxframe.dataframe.core.register_index_accessor:23 of
+msgid "示例"
+msgstr ""

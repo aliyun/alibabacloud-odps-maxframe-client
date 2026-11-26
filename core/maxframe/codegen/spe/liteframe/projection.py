@@ -33,7 +33,13 @@ from maxframe.liteframe.expressions import (
     LiteFrameUDFExpr,
     NamedExpr,
 )
-from maxframe.liteframe.functional.utils import make_callable_wrapper
+from maxframe.liteframe.functional.utils import (
+    apply_polars_rowwise,
+    apply_result_type_polars,
+    build_broadcast_frame,
+    make_callable_wrapper,
+    normalize_axis1_series,
+)
 from maxframe.liteframe.operators.project import LiteFrameProjection, _projection_name
 from maxframe.utils import validate_and_align_output
 
@@ -85,7 +91,7 @@ def _udf_input_data(udf_expr: LiteFrameUDFExpr, df: pd.DataFrame):
 
 
 def _normalize_rowwise_result(
-    result: pd.Series, output_names: list, dtypes_dict: Optional[dict] = None
+    result: pd.Series, output_names: list, dtypes: Optional[dict] = None
 ) -> pd.DataFrame:
     """Normalize a 1-D ``pd.Series`` of per-row UDF results into a DataFrame.
 
@@ -100,12 +106,10 @@ def _normalize_rowwise_result(
     """
     out_cols = list(output_names) if output_names else None
     if len(result) == 0:
-        if dtypes_dict and out_cols:
+        if dtypes and out_cols:
             return pd.DataFrame(
                 {
-                    col: pd.Series(
-                        dtype=pd.api.types.pandas_dtype(dtypes_dict.get(col))
-                    )
+                    col: pd.Series(dtype=pd.api.types.pandas_dtype(dtypes.get(col)))
                     for col in out_cols
                 }
             )
@@ -138,13 +142,11 @@ def _udf_expected_dtypes(udf_expr: LiteFrameUDFExpr) -> Optional[pd.Series]:
     Returns ``None`` when no dtypes are declared (skips validation), matching
     ``validate_and_align_output``'s ``expected_dtypes=None`` pass-through.
     """
-    dtypes_dict = getattr(udf_expr, "dtypes", None)
+    dtypes = getattr(udf_expr, "dtypes", None)
     output_names = list(udf_expr.output_names or [])
-    if not dtypes_dict or not output_names:
+    if not dtypes or not output_names:
         return None
-    return pd.Series(
-        {n: pd.api.types.pandas_dtype(dtypes_dict[n]) for n in output_names}
-    )
+    return pd.Series({n: pd.api.types.pandas_dtype(dtypes[n]) for n in output_names})
 
 
 def _validate_udf_output(udf_expr: LiteFrameUDFExpr, result) -> pd.DataFrame:
@@ -241,6 +243,33 @@ def _run_udf(udf_expr: LiteFrameUDFExpr, df: pd.DataFrame) -> pd.DataFrame:
         )
         return _validate_udf_output(udf_expr, normalized)
 
+    if mode == "apply_row":
+        # Per-row apply (``apply(axis=1)`` single output).  ``result_type``
+        # honors pandas result_type semantics natively (pandas is the SPE
+        # execution backend), except for ``"broadcast"``: pandas' native
+        # broadcast inherits the integer input chunk's dtype and truncates
+        # float scalars (3.5 -> 3), so the broadcast frame is built from the
+        # actual per-row values instead (mirrors the DPE apply_row runner),
+        # making the output dtype independent of chunking.  Polars results
+        # use ``apply_polars_rowwise`` (shared with DPE) so per-row
+        # ``pl.DataFrame`` / ``pl.Series`` coercions are identical.
+        result_type = getattr(udf_expr, "result_type", None)
+        dtypes_dict = getattr(udf_expr, "dtypes", None)
+        with make_callable_wrapper(func, args, kwargs) as call:
+            if udf_expr.input_frame_type == "polars":
+                raw = apply_polars_rowwise(call, input_data)
+                raw = apply_result_type_polars(raw, input_data, result_type)
+            elif result_type == "broadcast":
+                row_results = input_data.apply(call, axis=1)
+                raw = build_broadcast_frame(row_results, input_data.columns)
+            elif result_type is not None:
+                raw = input_data.apply(call, axis=1, result_type=result_type)
+            else:
+                raw = input_data.apply(call, axis=1)
+        out_dtypes = pd.Series(dtypes_dict) if dtypes_dict else None
+        normalized = normalize_axis1_series(raw, out_dtypes, result_type, dtypes_dict)
+        return _validate_udf_output(udf_expr, normalized)
+
     raise ValueError(f"Unknown UDF mode: {mode!r}")
 
 
@@ -292,6 +321,7 @@ class LiteFrameProjectionAdapter(SPEOperatorAdapter):
         virtual_range_names: set,
         need_materialize: bool,
         in_range_columns: dict = None,
+        extra_inputs: list = None,
     ) -> pd.DataFrame:
         work_df = df
 
@@ -310,6 +340,10 @@ class LiteFrameProjectionAdapter(SPEOperatorAdapter):
         udf_results = {}  # id(udf_expr) -> pd.DataFrame
         input_cols = set(work_df.columns)
         for proj in projections:
+            # Bare multi-column exprs (e.g. schema-dynamic str.split) carry
+            # no single output name and aren't UDFs — defer to the 2nd pass.
+            if isinstance(proj, LiteFrameMultiColumnExpr):
+                continue
             proj_name = _projection_name(proj)
             if proj_name in virtual_range_names:
                 continue
@@ -332,10 +366,21 @@ class LiteFrameProjectionAdapter(SPEOperatorAdapter):
                 work_df = work_df.assign(**{proj_name: udf_outputs[proj_name]})
 
         # Second pass: assemble output columns in projection order.
-        evaluator = LiteFrameExprEvaluator(work_df)
+        # Dynamic split alignment (pad/truncate to global column count) is
+        # handled inside the split's own eval handler, not here.
+        evaluator = LiteFrameExprEvaluator(work_df, extra_inputs=extra_inputs)
         result_cols = {}
 
         for proj in projections:
+            # Bare multi-column expressions (e.g. schema-dynamic str.split)
+            # carry no single output name and cannot be resolved by
+            # _projection_name — handle them directly.  The split's own
+            # eval handler aligns its output to the resolved dtypes.
+            if isinstance(proj, LiteFrameMultiColumnExpr):
+                result_df = evaluator.eval(proj)
+                for name in result_df.columns:
+                    result_cols[name] = result_df[name]
+                continue
             proj_name = _projection_name(proj)
             if proj_name in virtual_range_names:
                 # Stays virtual — not part of the physical output frame.
@@ -348,10 +393,6 @@ class LiteFrameProjectionAdapter(SPEOperatorAdapter):
                 result_cols[proj.name] = val
             elif isinstance(proj, LiteFrameColumn):
                 result_cols[proj.name] = work_df[proj.name]
-            elif isinstance(proj, LiteFrameMultiColumnExpr):
-                result_df = evaluator.eval(proj)
-                for name in proj.output_names:
-                    result_cols[name] = result_df[name]
             elif isinstance(proj, LiteFrameExpr):
                 name = getattr(proj, "name", None)
                 if name is None:
@@ -362,6 +403,16 @@ class LiteFrameProjectionAdapter(SPEOperatorAdapter):
             else:
                 raise ValueError(f"Unsupported projection type: {type(proj)}")
 
+        # When all projection results are scalars (e.g. all-literal
+        # projections on a 0-column frame), pd.DataFrame refuses to
+        # construct without an index.  Broadcast to the input row count
+        # to satisfy the "row count preserved from input" contract.
+        if not result_cols:
+            return pd.DataFrame(index=range(len(work_df)))
+        if not any(
+            isinstance(v, (pd.Series, pd.DataFrame)) for v in result_cols.values()
+        ):
+            return pd.DataFrame(result_cols, index=range(len(work_df)))
         return pd.DataFrame(result_cols)
 
     def generate_code(self, op, context: SPECodeContext) -> List[str]:
@@ -379,6 +430,16 @@ class LiteFrameProjectionAdapter(SPEOperatorAdapter):
         virtual_var = context.register_operator_constants(virtual_range_names)
         range_cols_var = context.register_operator_constants(in_range_columns)
         args = proj_args + [virtual_var, repr(need_materialize), range_cols_var]
+
+        # Dynamic projections carry extra tileable inputs (e.g. a runtime
+        # dtypes Series) used to resolve the output column schema.  Pass
+        # them through so _run_projection can splice the dynamic columns.
+        if len(op.inputs) > 1:
+            extra_vars = [
+                context.get_input_tileable_variable(inp) for inp in op.inputs[1:]
+            ]
+            args.append("[" + ", ".join(extra_vars) + "]")
+
         return [
             f"{res_var} = {cls_name}._run_projection({input_var}, {', '.join(args)})"
         ]

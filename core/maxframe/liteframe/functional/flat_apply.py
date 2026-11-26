@@ -55,12 +55,12 @@ def _normalize_subset(subset, visible_cols):
     dupes = sorted({c for c in subset if subset.count(c) > 1})
     if dupes:
         raise ValueError(
-            f"flat_apply subset columns must be unique after normalization; "
+            f"subset columns must be unique after normalization; "
             f"duplicates: {dupes}"
         )
     if missing:
         raise KeyError(
-            f"flat_apply subset column(s) {missing} not found in visible "
+            f"subset column(s) {missing} not found in visible "
             f"columns {list(visible_cols)}"
         )
     return subset

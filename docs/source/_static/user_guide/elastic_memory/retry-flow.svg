@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="360" viewBox="0 0 1000 360" role="img" aria-labelledby="title desc">
+  <title id="title">OOM and ordinary retries with a 4 GiB start and 16 GiB limit</title>
+  <desc id="desc">OOM increases memory from 4 GiB to 8 GiB to 16 GiB. OOM at the 16 GiB limit fails the task. A retryable network error leads to an ordinary retry at 16 GiB. That retry succeeds if the computation completes, or fails if it runs out of memory at the limit. Success at any attempt ends the task.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10" fill="#526b82"/></marker>
+  </defs>
+  <rect width="1000" height="360" rx="12" fill="#f7f9fc"/>
+  <g font-family="Arial,sans-serif" fill="#18354e" text-anchor="middle">
+    <text x="500" y="30" font-size="18">Starting memory: 4 GiB · Limit: 16 GiB</text>
+    <g stroke="#b5cce0" fill="#fff">
+      <rect x="25" y="65" width="160" height="64" rx="8"/>
+      <rect x="260" y="65" width="160" height="64" rx="8"/>
+      <rect x="495" y="65" width="160" height="64" rx="8"/>
+      <rect x="495" y="225" width="160" height="64" rx="8"/>
+      <rect x="805" y="65" width="170" height="64" rx="8" fill="#fff0ef" stroke="#e9b1ac"/>
+      <rect x="805" y="225" width="170" height="64" rx="8" fill="#eef8f2" stroke="#a3cbb3"/>
+    </g>
+    <g font-size="22" font-weight="bold">
+      <text x="105" y="105">4 GiB</text><text x="340" y="105">8 GiB</text><text x="575" y="105">16 GiB</text>
+      <text x="575" y="264">16 GiB</text>
+      <text x="890" y="105" fill="#9e3933">Failed</text>
+      <text x="890" y="265" fill="#2f6847">Succeeded</text>
+    </g>
+    <g stroke="#526b82" stroke-width="2" fill="none" marker-end="url(#arrow)">
+      <path d="M188 97H251"/><path d="M423 97H486"/><path d="M658 97H796"/>
+      <path d="M575 132V216"/>
+      <path d="M658 257H796"/>
+      <path d="M658 241H710V155H890V132"/>
+    </g>
+    <g font-size="15">
+      <text x="222" y="79">OOM</text><text x="457" y="79">OOM</text>
+      <text x="728" y="78">OOM at limit</text>
+      <text x="405" y="164">Retryable network error</text>
+      <text x="405" y="188">Ordinary retry available</text>
+      <text x="805" y="178">OOM at limit</text>
+      <text x="732" y="283">Completed</text>
+      <text x="237" y="246" fill="#3f705a">Success at any attempt</text>
+      <text x="237" y="270" fill="#3f705a">ends the task.</text>
+    </g>
+    <text x="500" y="320" font-size="14" fill="#526b82">Ordinary retries keep the current memory and follow the ordinary retry limit.</text>
+    <text x="500" y="343" font-size="14" fill="#526b82">OOM retries do not consume the ordinary retry count.</text>
+  </g>
+</svg>

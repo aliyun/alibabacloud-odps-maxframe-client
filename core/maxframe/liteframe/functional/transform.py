@@ -17,6 +17,7 @@ LiteFrame.transform() -- axis=0 (operator-based, default)
 or axis=1 (expression-based).
 """
 
+from maxframe.liteframe.core import drop_alignment_id
 from maxframe.liteframe.functional.apply import groupby_transform_op
 from maxframe.liteframe.functional.type_infer import infer_output_dtypes
 from maxframe.liteframe.functional.utils import (
@@ -41,6 +42,7 @@ def transform(
     dtypes=None,
     skip_infer=False,
     args=(),
+    placeback=True,
     **kwargs
 ):
     """Transform per column (axis=0, default) or per row (axis=1).
@@ -80,6 +82,27 @@ def transform(
         Extra positional arguments forwarded to ``func``.
     **kwargs
         Extra keyword arguments forwarded to ``func``.
+    placeback : bool, default True
+        When True (default) the output is re-chunked back to the input row
+        chunking (``axis=0``) so it stays row-aligned with the input and
+        inherits its ``alignment_id`` (usable for aligned column assignment
+        / horizontal concat without a shuffle).  When False the output
+        keeps the single-chunk concat layout with a fresh alignment id.
+        ``axis=1`` is always row-aligned by construction (1:1 per-row
+        projection); ``placeback=False`` is a metadata-only opt-out that
+        drops the inherited ``alignment_id`` so the result is no longer
+        combinable with the source without a shuffle.
+
+        .. note::
+           ``placeback`` is keyword-only (before ``**kwargs``), so a UDF
+           argument named ``placeback`` is not forwarded to ``func``.
+           For grouped transforms, ``placeback`` runs the place-back stage
+           even when ``skip_infer=True``: routing columns carry exact row
+           positions (independent of the output schema), and the tiler
+           passes ``physical_dtypes=None`` through as ``np.nan`` column
+           dims so the executor resolves the schema at runtime. The
+           ``alignment_id`` is honestly inherited because the place-back
+           restores the input row layout.
 
     Returns
     -------
@@ -91,7 +114,7 @@ def transform(
     See Also
     --------
     apply : Apply a function per column or per row.
-    transform_chunk : Transform per execution chunk.
+    transform_chunk : Transform per sub-chunk (execution fragment).
     map : Apply a function element-wise.
 
     Examples
@@ -157,7 +180,14 @@ def transform(
             kwargs=kwargs,
         )
         proj_op = LiteFrameProjection(projections=projections)
-        return proj_op(self)
+        result = proj_op(self)
+        if not placeback:
+            # axis=1 is always row-aligned (1:1 projection over 1:1
+            # chunks); placeback=False only drops the inherited
+            # alignment_id so the result is no longer combinable with the
+            # source without a shuffle.
+            drop_alignment_id(result)
+        return result
     else:
         # Operator-based: per-column transform (needs block concat)
         op, inferred = create_functional_op(
@@ -170,6 +200,7 @@ def transform(
             args=args,
             kwargs=kwargs,
             axis=0,
+            placeback=placeback,
         )
         validate_single_output(inferred, "transform(axis=0)")
         out_dtypes = inferred[0] if inferred else self.dtypes
@@ -193,14 +224,16 @@ def groupby_transform(
     skip_infer=False,
     input_frame_type="pandas",
     args=(),
+    placeback=True,
     **kwargs
 ):
     """GroupBy.transform() -- per-group column transform.
 
     Applies ``func`` to each group independently and returns a LiteFrame
-    with the same row count as the input (transform semantics).  The output
-    row order follows reducer/hash-partition order and is not aligned with
-    the input frame.
+    with the same row count as the input (transform semantics).  With
+    ``placeback=True`` (default) the output is restored to the input row
+    order and chunking.  With ``placeback=False`` the output stays in
+    reducer/hash-partition order and is not aligned with the input frame.
 
     Parameters
     ----------
@@ -224,6 +257,12 @@ def groupby_transform(
         Extra positional arguments forwarded to ``func``.
     **kwargs
         Extra keyword arguments forwarded to ``func``.
+    placeback : bool, default True
+        When True (default) the per-group result is restored to the input
+        row order and chunking and inherits the input's ``alignment_id``
+        (usable for aligned column assignment / horizontal concat without
+        a shuffle).  When False the output stays in reducer order with a
+        fresh alignment id.
 
     Returns
     -------
@@ -235,7 +274,7 @@ def groupby_transform(
     See Also
     --------
     groupby_apply : Apply a function to each group as a whole frame.
-    groupby_transform_chunk : Per-group-chunk transform.
+    groupby_transform_chunk : Per-group sub-chunk transform.
 
     Examples
     --------
@@ -263,4 +302,5 @@ def groupby_transform(
         input_frame_type,
         args,
         kwargs,
+        placeback=placeback,
     )

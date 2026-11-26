@@ -25,6 +25,7 @@ from threading import Thread
 from typing import Dict, List, Optional, Set, Tuple
 
 import pytest
+from mock import patch
 from odps import ODPS
 from tornado import netutil
 
@@ -66,6 +67,17 @@ def bind_unused_port(
     )[0]
     port = sock.getsockname()[1]
     return sock, port
+
+
+@contextlib.contextmanager
+def reset_extension_hooks():
+    """Isolate the process-wide state of ``register_extension_hooks_once``."""
+    import maxframe.extension as extension
+
+    with patch.object(extension, "_registered_hook_groups", set()), patch.object(
+        extension, "_hook_group_states", {}
+    ), patch.object(extension, "_completed_hooks", set()):
+        yield
 
 
 def tn(s, limit=128):

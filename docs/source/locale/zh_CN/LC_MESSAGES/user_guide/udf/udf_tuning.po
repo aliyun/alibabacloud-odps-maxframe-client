@@ -1,0 +1,715 @@
+# Simplified Chinese translations for the MaxFrame UDF documentation.
+# Copyright (C) 1999-2026, The Alibaba Group Holding Ltd.
+# This file is distributed under the same license as the maxframe package.
+msgid ""
+msgstr ""
+"Project-Id-Version: maxframe 2.10.0.dev32+gdddd31a5f\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-29 17:19+0800\n"
+"PO-Revision-Date: 2026-10-23 12:00+0800\n"
+"Last-Translator: MaxFrame contributors\n"
+"Language: zh_CN\n"
+"Language-Team: Chinese (Simplified)\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:4
+msgid "Tuning UDF workloads"
+msgstr "调优 UDF 作业"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:6
+msgid ""
+"When a UDF job is slow or runs out of memory, tune the input partitions, "
+"batch size, and task resources separately."
+msgstr "UDF 作业运行慢或内存不足时，分别调整输入分区、批次大小和任务资源。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:9
+msgid "In DPE, input data and function calls are divided as follows:"
+msgstr "在 DPE 中，输入数据和函数调用按下面的方式划分："
+
+#: ../../source/user_guide/udf/udf_tuning.rst:11
+msgid "Parameters controlling source chunks, task resources, and UDF batches in DPE"
+msgstr "DPE 中分别控制源数据分块、任务资源和 UDF 批次的参数"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:11
+msgid ".. image:: ../../_static/user_guide/udf/task-batch-model.svg"
+msgstr ""
+".. image:: ../../_static/user_guide/udf/task-batch-model.svg\n"
+"   :alt: DPE 中分别控制源数据分块、任务资源和 UDF 批次的参数"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:15
+msgid ""
+"Chunk settings control the input assigned to tasks and can affect "
+"parallelism. ``with_running_options`` requests resources for each UDF task. "
+"``batch_rows`` limits one function call, which can reduce its temporary "
+"objects, but does not remove the input already held by the task. A model "
+"loaded in the task also continues to occupy memory between calls."
+msgstr ""
+"Chunk 相关参数控制分配给任务的输入，也会影响可并行处理的工作量。``with_running_options`` 为每个 UDF "
+"任务申请资源。``batch_rows`` "
+"限制一次函数调用的数据量，可以减少调用过程中的临时对象，但不会释放任务已经持有的输入数据。任务中加载的模型也会在多次调用之间继续占用内存。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:21
+msgid ""
+"Chunk sizes are not guaranteed to be consistent between executions of the "
+"same job. Choose settings according to memory use and observed performance; "
+"do not rely on a previous run's chunk boundaries for correct results."
+msgstr "同一个作业多次执行时，Chunk 大小也不保证一致。应根据内存占用和实际运行情况调整参数，计算结果不能依赖上一次运行的分块边界。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:25
+msgid ""
+"The diagram describes DPE. SQL execution has different partitioning rules; "
+"the table below lists which settings each engine supports."
+msgstr "上图描述的是 DPE。SQL 执行采用不同的分区规则，后文会分别说明各引擎支持的设置。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:29
+msgid "Choose the next adjustment"
+msgstr "根据瓶颈选择下一步调整"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:31
+msgid ""
+"First identify the expensive or failed UDF task in :ref:`udf_debugging`. "
+"Then choose the control that matches the symptom:"
+msgstr "先按 :ref:`udf_debugging` 找到耗时较长或失败的 UDF 任务，再根据现象选择调整项："
+
+#: ../../source/user_guide/udf/udf_tuning.rst:38
+msgid "Symptom"
+msgstr "现象"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:39
+msgid "Check"
+msgstr "检查什么"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:40
+msgid "Adjust first"
+msgstr "优先调整"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:41
+msgid "Limitation"
+msgstr "注意事项"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:42
+msgid "Memory grows with task input"
+msgstr "输入越大，任务的内存用量越高"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:43
+msgid "Input rows/bytes and largest groups"
+msgstr "输入行数、字节数和最大的分组"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:44
+msgid "Source chunks or repartitioning"
+msgstr "读表分块或重新分区"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:45
+msgid "Smaller source chunks do not split a complete group."
+msgstr "缩小源数据分块不会拆开一个完整分组。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:46
+msgid "Temporary objects fill memory during a batch"
+msgstr "处理一个批次时，临时对象占满内存"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:47
+msgid "Per-call input and intermediate objects"
+msgstr "每次调用的输入和中间对象"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:48
+msgid "``batch_rows``"
+msgstr "``batch_rows``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:49
+msgid "Does not remove task input or a loaded model."
+msgstr "不会移除任务已持有的输入或已加载的模型。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:50
+msgid "A few tasks exceed normal memory use"
+msgstr "只有少数任务的内存需求高于正常水平"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:51
+msgid "Failed attempt and retry history"
+msgstr "失败记录和重试历史"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:52
+msgid "DPE elastic memory"
+msgstr "DPE 弹性内存"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:53
+msgid "Cannot fix a leak or exceed the configured limit."
+msgstr "无法解决内存泄漏，也不能超过设置的上限。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:54
+msgid "Most tasks need more memory"
+msgstr "大多数任务都需要更多内存"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:55
+msgid "Typical peak and persistent model size"
+msgstr "通常的峰值和常驻模型大小"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:56
+msgid "Starting ``memory`` or input size"
+msgstr "起始 ``memory`` 或输入大小"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:57
+msgid "Repeated OOM retries waste time and resources."
+msgstr "反复 OOM 和重试会浪费时间与资源。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:58
+msgid "CPU limits throughput"
+msgstr "CPU 成为吞吐瓶颈"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:59
+msgid "CPU use and available parallel tasks"
+msgstr "CPU 用量和可并行的任务数"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:60
+msgid "Partitions or per-task ``cpu``"
+msgstr "分区数或每个任务的 ``cpu``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:61
+msgid "More CPUs do not parallelize a Python loop automatically."
+msgstr "增加 CPU 不会自动让 Python 循环并行执行。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:63
+msgid ""
+"For MCSQL Fuxi workers, compare ``mem_usage`` with ``mem_plan`` in "
+":ref:`logview_fuxi_sensor`. For DPE, use the relevant SubStep's Sensor entry"
+" when available, and correlate its attempt with StdOut/StdErr. A missing "
+"Sensor chart is not evidence of low memory use."
+msgstr ""
+"MCSQL 的 Fuxi Worker 可以在 :ref:`logview_fuxi_sensor` 中对比 ``mem_usage`` 和 "
+"``mem_plan``。DPE 则从对应 SubStep 的 Sensor 入口查看，并结合 StdOut/StdErr 确认对应的尝试。没有 "
+"Sensor 曲线，不能说明内存用量低。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:68
+msgid ""
+"Use representative data to compare normal tasks with the largest tasks. "
+"Leave room for input data, models, temporary objects, and output. Change one"
+" setting at a time, then compare peak memory, duration, and resource usage. "
+"An OOM-killed process's final sample can miss its peak; do not size memory "
+"from that sample alone."
+msgstr ""
+"用有代表性的数据，对比普通任务和最大任务的用量，为输入、模型、临时对象和输出留出空间。每次调整一个配置，再比较内存峰值、耗时和资源用量。进程因 OOM "
+"被终止前的最后一个采样点可能没有记录到峰值，不能只根据这个点设置内存。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:74
+msgid ""
+"The controls below apply to different interfaces from "
+":ref:`udf_select_function`:"
+msgstr "不同参数适用于 :ref:`udf_select_function` 中的不同接口："
+
+#: ../../source/user_guide/udf/udf_tuning.rst:81
+msgid "What to adjust"
+msgstr "调整什么"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:82
+msgid "Example"
+msgstr "设置示例"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:83
+msgid "Effect"
+msgstr "作用"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:84
+msgid "Byte-based table splits"
+msgstr "按字节拆分表数据"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:85
+msgid "``md.read_odps_table(..., chunk_bytes=16 * 1024**2)``"
+msgstr "``md.read_odps_table(..., chunk_bytes=16 * 1024**2)``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:86
+msgid ""
+"In DPE, targets source chunks by bytes. In MCSQL, sets the SQL "
+"``split_size`` hint. SPE ignores this parameter."
+msgstr "在 DPE 中，按字节设置源数据 chunk 的目标大小；在 MCSQL 中，设置 SQL 的 ``split_size`` 提示；SPE 忽略此参数。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:88
+msgid "Row-based table splits"
+msgstr "按行数拆分表数据"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:89
+msgid "``md.read_odps_table(..., chunk_size=256)``"
+msgstr "``md.read_odps_table(..., chunk_size=256)``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:90
+msgid ""
+"In DPE, targets rows per source chunk for transactional tables or reads with"
+" ``nrows``. MCSQL and SPE ignore this parameter."
+msgstr "在 DPE 中，为事务表或设置了 ``nrows`` 的读取指定每个源数据 chunk 的目标行数；MCSQL 和 SPE 忽略此参数。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:92
+msgid "Rows per existing chunk"
+msgstr "每个数据块的行数"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:93
+#, python-brace-format
+msgid "``df.rechunk({0: 1000})``"
+msgstr "``df.rechunk({0: 1000})``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:94
+msgid ""
+"Sets the target number of rows per chunk. For DataFrame and Series, this is "
+"effective only in DPE."
+msgstr "设置每个 chunk 的目标行数。``rechunk`` 对 DataFrame 和 Series 的调整仅在 DPE 中生效。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:96
+msgid "Number of existing chunks"
+msgstr "数据块的数量"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:97
+msgid "``df.mf.rebalance(num_partitions=10)`` or ``df.mf.rebalance(factor=2.0)``"
+msgstr "``df.mf.rebalance(num_partitions=10)`` 或 ``df.mf.rebalance(factor=2.0)``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:99
+msgid "Uses an upper limit of ten chunks, or targets twice the current chunk count."
+msgstr "最多分成 10 个 chunk，或将目标数量设为当前的两倍。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:101
+msgid "Rows passed to one batch UDF call"
+msgstr "批处理 UDF 一次接收的行数"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:102
+msgid "``batch_rows=1000``"
+msgstr "``batch_rows=1000``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:103
+msgid ""
+"Limits each batch call without changing the input chunks. Supported by "
+"DataFrame, Series, and DataFrameGroupBy ``mf.apply_chunk``, and DataFrame "
+"``mf.map_reduce``."
+msgstr ""
+"限制每次批处理调用的行数，不改变输入 Chunk。DataFrame、Series 和 DataFrameGroupBy 的 "
+"``mf.apply_chunk``，以及 DataFrame 的 ``mf.map_reduce`` 都支持。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:106
+msgid "Resources for one UDF task"
+msgstr "单个 UDF 任务的资源"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:107
+msgid "``@with_running_options(cpu=2, memory=\"8GiB\")``"
+msgstr "``@with_running_options(cpu=2, memory=\"8GiB\")``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:108
+msgid "Requests CPU and memory for each task, independently of its call count."
+msgstr "为每个任务申请 CPU 和内存，与任务调用函数的次数无关。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:109
+msgid "Memory limit for OOM retries"
+msgstr "OOM 重试时的内存上限"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:110
+msgid "``@with_running_options(memory=\"4GiB\", memory_limit=\"16GiB\")``"
+msgstr "``@with_running_options(memory=\"4GiB\", memory_limit=\"16GiB\")``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:111
+msgid ""
+"For eligible DPE CPU UDF tasks, starts at 4 GiB and allows OOM retries with "
+"up to 16 GiB. Does not change input chunks or batch sizes."
+msgstr "符合条件的 DPE CPU UDF 任务从 4 GiB 开始，OOM 后最多增加到 16 GiB 重试，不改变输入 Chunk 或批次大小。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:117
+msgid "Request resources with with_running_options"
+msgstr "使用 with_running_options 调整任务资源"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:119
+msgid ""
+"Import ``with_running_options`` from ``maxframe.udf`` and place "
+"``@with_running_options(...)`` before the UDF definition, before building "
+"the MaxFrame expression that uses it. Resources are requested by each task "
+"running the function."
+msgstr ""
+"从 ``maxframe.udf`` 导入 ``with_running_options``，在 UDF 定义前加上 "
+"``@with_running_options(...)``，然后再构建使用该函数的 MaxFrame 表达式。执行该函数的每个任务都会申请相应的资源。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:124
+msgid ""
+"The following example extracts latency values from log messages in batches. "
+"Each task running ``parse_latency`` requests two CPUs and 8 GiB of memory, "
+"while each function call receives at most 1,000 rows:"
+msgstr ""
+"下面的示例批量提取日志中的响应时间。运行 ``parse_latency`` 的每个任务申请 2 个 CPU 和 8 GiB 内存，每次函数调用最多接收"
+" 1,000 行："
+
+#: ../../source/user_guide/udf/udf_tuning.rst:151
+msgid ""
+"``cpu=2`` requests two CPUs per task. ``memory=\"8GiB\"`` requests 8 GiB per"
+" task; an integer such as ``memory=8`` also means GiB. These values are "
+"example requests, not recommended defaults for every UDF. Account for the "
+"input data, loaded models, intermediate objects, and output data when "
+"choosing memory."
+msgstr ""
+"``cpu=2`` 表示每个任务申请 2 个 CPU。``memory=\"8GiB\"`` 表示每个任务申请 8 GiB 内存；使用整数，例如 "
+"``memory=8``，单位同样是 GiB。这些数值只是示例，并非所有 UDF "
+"都应使用的默认配置。选择内存大小时，需要考虑输入数据、加载的模型、中间对象和输出数据的占用。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:156
+msgid ""
+"With the default ``options.function.allowed_max_memory_cpu_ratio=12``, the "
+"CPU request is raised when memory exceeds 12 GiB per CPU. The adjusted count"
+" is ``ceil(memory_GiB / 12)`` when that is larger than the requested count. "
+"For example, ``cpu=1`` with 16 GiB or 24 GiB is adjusted to two CPUs."
+msgstr ""
+"默认 ``options.function.allowed_max_memory_cpu_ratio=12``，即每个 CPU 最多对应 12 GiB "
+"内存。超过这个比例时，CPU 申请量会上调到 ``ceil(memory_GiB / 12)``。例如，``cpu=1`` 配合 16 GiB 或 24"
+" GiB 内存时，都会上调到 2 个 CPU。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:161
+msgid ""
+"MCSQL calculates its CU setting separately: ``max(cpu, ceil(memory_GiB / 4),"
+" 1)``. Thus the two examples request 4 and 6 CU respectively, not 2 CU. This"
+" is a resource setting, not an estimate of the final bill. Compare actual "
+"duration and quota usage after adjusting it."
+msgstr ""
+"MCSQL 另行计算 CU：``max(cpu, ceil(memory_GiB / 4), 1)``。所以上面两个例子分别设置为 4 CU 和 6 "
+"CU。这是资源设置，不能直接据此推算最终费用；调整后还需要比较实际耗时和 Quota 使用情况。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:166
+msgid ""
+"If most tasks fit in the starting memory and only a few need more, add "
+"``memory_limit`` to the same decorator. Eligible DPE CPU UDF tasks can then "
+"retry after an OOM with more memory. See :ref:`udf_config_elastic_memory` "
+"for the configuration. If most tasks already need more memory, raise "
+"``memory`` or reduce their input instead of repeatedly paying the retry "
+"cost."
+msgstr ""
+"如果大多数任务用起始内存就能完成，只有少数任务需要更多，可以在同一个装饰器中加上 ``memory_limit``，让符合条件的 DPE CPU UDF"
+" 在 OOM 后增加内存重试，配置方法见 :ref:`udf_config_elastic_memory`。如果大多数任务的内存都不够，应直接调大 "
+"``memory`` 或减少输入量，避免大部分任务都先失败再重试。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:172
+msgid ""
+"Attach ``with_running_options`` to the callable passed to ``map``, "
+"``apply``, ``flatmap``, ``GroupBy.apply``, or DataFrame, Series, grouped, "
+"and Tensor ``apply_chunk``. For example, configure the function passed to "
+"``Series.map`` in the same way:"
+msgstr ""
+"适用接口包括 ``map``、``apply``、``flatmap``、``GroupBy.apply``，以及 "
+"DataFrame、Series、分组对象和 Tensor 的 ``apply_chunk``。在传给这些接口的函数上添加 "
+"``with_running_options`` 装饰器。例如，传给 ``Series.map`` 的函数可以这样配置："
+
+#: ../../source/user_guide/udf/udf_tuning.rst:191
+msgid ""
+"Here the function still receives one value per call. The CPU and memory "
+"requests apply to the task running those calls, not to each value. Raising "
+"``cpu`` does not automatically parallelize a Python loop; extra CPUs help "
+"only when the computation can use them, for example through a parallel "
+"library."
+msgstr ""
+"函数每次仍然只接收一个值，CPU 和内存是分配给执行这些调用的任务的，并不是每个值各占一份资源。提高 ``cpu`` 不会自动让 Python "
+"循环并行执行；只有函数本身能使用多个 CPU，例如调用并行计算库时，增加 CPU 才可能加速。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:196
+msgid ""
+"Without ``engine``, MaxFrame follows the job's engine selection. To select "
+"DPE for one UDF, pass ``engine=\"DPE\"`` in ``with_running_options``. MCSQL "
+"also maps CPU and memory requests to its UDF worker settings; do not assume "
+"its SQL tasks have DPE chunk semantics."
+msgstr ""
+"不指定 ``engine`` 时，MaxFrame 沿用作业的引擎选择。要为某个 UDF 指定 DPE，可以在 "
+"``with_running_options`` 中设置 ``engine=\"DPE\"``。MCSQL 也会将 CPU 和内存设置应用到 UDF "
+"Worker，但 SQL 任务的数据划分方式与 DPE 不同。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:202
+msgid ""
+"For ``map_reduce`` without a combiner, decorate the mapper and reducer "
+"separately to configure their stages. With a combiner, use shared defaults "
+"from :ref:`udf_config_default_resources` for the combined mapper stage; its "
+"resources cannot be reliably set with the mapper or combiner decorator "
+"alone."
+msgstr ""
+"``map_reduce`` 不使用 combiner 时，可以分别为 mapper 和 reducer 添加装饰器，配置各阶段的资源。使用 "
+"combiner 时，mapper 的组合阶段应使用 :ref:`udf_config_default_resources` 中的共享默认资源；只在 "
+"mapper 或 combiner 上添加装饰器，不能保证该阶段按预期申请资源。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:207
+msgid ""
+"Use one ``with_running_options`` decorator per UDF, combining the engine and"
+" resource settings in that decorator. Stacking it can lose the inner "
+"settings. A field omitted from the decorator inherits its shared default. "
+"For shared settings, GPU requests, and memory-per-CPU constraints, see "
+":ref:`udf_config_resources`, :ref:`udf_config_default_resources`, and "
+":ref:`udf_config_precedence` rather than copying every configuration into "
+"the UDF."
+msgstr ""
+"每个 UDF 只使用一个 ``with_running_options`` "
+"装饰器，在其中合并引擎和资源设置。叠加使用可能导致内层设置丢失。装饰器未指定的字段继承共享默认值。共享配置、GPU 申请和内存与 CPU 比例限制分别见"
+" :ref:`udf_config_resources`、:ref:`udf_config_default_resources` 和 "
+":ref:`udf_config_precedence`，不必在每个 UDF 上重复整套配置。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:218
+msgid "Set chunks when reading a table"
+msgstr "读表时调整数据块大小"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:220
+msgid ""
+"Set ``chunk_bytes`` and ``chunk_size`` in "
+":func:`maxframe.dataframe.read_odps_table` to adjust source chunks for "
+"subsequent ``map``, ``apply``, ``flatmap``, or ``apply_chunk`` operations. "
+"Replace the table names below with tables that have ``id`` and ``raw_log`` "
+"columns."
+msgstr ""
+"可以在 :func:`maxframe.dataframe.read_odps_table` 中设置 ``chunk_bytes`` 或 "
+"``chunk_size``，调整后续 ``map``、``apply``、``flatmap``、``apply_chunk`` "
+"的输入分块。下面的表名需要替换为实际包含 ``id`` 和 ``raw_log`` 列的表。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:225
+msgid "Their behavior depends on the execution engine:"
+msgstr "这两个参数的行为取决于执行引擎："
+
+#: ../../source/user_guide/udf/udf_tuning.rst:227
+msgid ""
+"DPE uses ``chunk_bytes`` for non-transactional tables read without "
+"``nrows``. Its default target is 64 MiB."
+msgstr "DPE 读取非事务表且未设置 ``nrows`` 时使用 ``chunk_bytes``，默认目标大小为 64 MiB。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:229
+msgid ""
+"DPE uses ``chunk_size`` for transactional tables or reads with ``nrows``. "
+"Its default is ``options.chunk_size`` when configured, otherwise 1,024 rows."
+msgstr ""
+"DPE 读取事务表或设置了 ``nrows`` 时使用 ``chunk_size``。配置了 ``options.chunk_size`` "
+"时默认使用该值，否则默认为 1,024 行。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:231
+msgid ""
+"MCSQL converts an explicitly set ``chunk_bytes`` value to a SQL "
+"``split_size`` hint and ignores ``chunk_size``."
+msgstr "MCSQL 会将显式设置的 ``chunk_bytes`` 转换为 SQL 的 ``split_size`` 提示，并忽略 ``chunk_size``。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:233
+msgid "SPE ignores both parameters."
+msgstr "SPE 忽略这两个参数。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:235
+msgid ""
+"The following examples reuse ``parse_latency`` from the resource example. "
+"This DPE example requests a smaller 16 MiB source chunk:"
+msgstr "下面的例子继续使用资源配置示例中的 ``parse_latency``。这个 DPE 例子将源数据分块调小到 16 MiB："
+
+#: ../../source/user_guide/udf/udf_tuning.rst:251
+msgid ""
+"``chunk_bytes`` sets a target size for source chunks; the actual sizes and "
+"number of chunks may vary. A 16 MiB source chunk does not mean the pandas "
+"object received by the function uses 16 MiB of memory."
+msgstr ""
+"``chunk_bytes`` 设置源数据分块的目标大小，实际的分块大小和数量可能有所不同。源数据 Chunk 为 16 MiB，并不代表函数收到的 "
+"pandas 对象只占用 16 MiB 内存。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:255
+msgid ""
+"For a transactional table or a read limited by ``nrows``, this DPE example "
+"reduces the target row count to 256:"
+msgstr "对于事务表或受 ``nrows`` 限制的读取，下面的 DPE 示例将目标行数调小到 256："
+
+#: ../../source/user_guide/udf/udf_tuning.rst:271
+msgid ""
+"If later operations repartition the DataFrame, downstream UDFs use the data "
+"produced by those operations. Grouping can bring rows with the same key "
+"together again, so smaller source chunks do not bound the size of a group."
+msgstr "如果后续操作重新分区，下游 UDF 使用的就是这些操作产生的数据。分组会再次汇集相同键的行，因此减小源数据 chunk 并不能限制单个组的大小。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:276
+msgid "Adjust existing chunks"
+msgstr "调整已有数据块"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:278
+msgid ""
+"To change the number of rows per chunk, use ``rechunk``. The adjustment is "
+"not specific to ``apply_chunk``; this example uses a scalar UDF on a table "
+"with a ``value`` column:"
+msgstr ""
+"要调整每个 Chunk 的行数，可以使用 ``rechunk``。这个操作并不限于 ``apply_chunk``，下面用逐值处理的 UDF "
+"为例，输入表需要包含 ``value`` 列："
+
+#: ../../source/user_guide/udf/udf_tuning.rst:295
+msgid ""
+"Here ``0`` selects the row axis and ``1000`` is the target row count. "
+"DataFrame and Series ``rechunk`` is currently effective only in DPE."
+msgstr ""
+"``0`` 表示按行调整，``1000`` 表示每个 chunk 的目标行数。DataFrame 和 Series 的 ``rechunk`` 目前仅在"
+" DPE 中生效。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:298
+msgid "To change the number of chunks, use ``rebalance``:"
+msgstr "用 ``rebalance`` 调整 chunk 的数量："
+
+#: ../../source/user_guide/udf/udf_tuning.rst:305
+msgid "``num_partitions=10`` produces at most ten chunks."
+msgstr "``num_partitions=10``：最多分成 10 个 chunk。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:306
+msgid ""
+"``factor=2.0`` targets twice the current chunk count; ``factor=0.5`` targets"
+" half. DPE rounds the target to the nearest integer and keeps at least one "
+"chunk."
+msgstr ""
+"``factor=2.0`` 将目标数量设为当前的两倍，``factor=0.5`` 则设为一半。DPE 会取最接近的整数，且至少保留 1 个 "
+"chunk。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:310
+msgid ""
+"Do not specify ``num_partitions`` and ``factor`` together. These examples "
+"use the default ``axis=0``, which adjusts row chunks."
+msgstr "``num_partitions`` 和 ``factor`` 只能选一个。这里使用默认的 ``axis=0``，调整的是行方向上的 chunk。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:313
+msgid ""
+"Both operations reorganize the data and add execution overhead. Choose "
+"``rechunk`` for rows per chunk or ``rebalance`` for the chunk count, and "
+"make the adjustment once before the UDF operation that needs it. More "
+"partitions can expose more work for DPE to schedule, but do not guarantee "
+"more concurrent tasks: available resources and the execution plan also "
+"matter."
+msgstr ""
+"这两个操作都会重新组织数据，增加执行开销。按行数调整时选择 ``rechunk``，按 chunk 数量调整时选择 "
+"``rebalance``，通常在需要调优的 UDF 操作之前调整一次即可。更多分区可以给 DPE "
+"提供更多可调度的工作，但不保证会有更多任务同时运行：实际并行度还取决于可用资源和执行计划。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:322
+msgid "Set the size of one function call"
+msgstr "调整函数每次处理的行数"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:324
+msgid ""
+"For DataFrame and Series ``apply_chunk``, use ``batch_rows`` to limit the "
+"number of rows passed to each Python call:"
+msgstr ""
+"DataFrame 和 Series 的 ``apply_chunk`` 可以通过 ``batch_rows`` 限制每次 Python "
+"函数调用接收的行数："
+
+#: ../../source/user_guide/udf/udf_tuning.rst:338
+msgid ""
+"If a DPE input chunk contains 2,500 rows, this example calls "
+"``parse_latency`` three times with 1,000, 1,000, and 500 rows. Reducing "
+"``batch_rows`` can reduce temporary memory inside each call without changing"
+" the input chunk or creating more tasks."
+msgstr ""
+"如果 DPE 中的一个输入 Chunk 有 2,500 行，上例会调用三次 ``parse_latency``，分别传入 1,000、1,000 和 "
+"500 行。减小 ``batch_rows`` 可以减少每次调用中的临时对象，但不会改变输入 Chunk，也不会增加任务数。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:343
+msgid ""
+"When ``batch_rows`` is omitted for ungrouped ``apply_chunk``, DPE passes "
+"each input chunk to the function in one call. MCSQL uses batches of up to "
+"1,024 rows by default."
+msgstr ""
+"对于不分组的 ``apply_chunk``，省略 ``batch_rows`` 时，DPE 每次调用传入一个完整的输入 Chunk；MCSQL "
+"默认每批最多传入 1,024 行。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:347
+msgid "Choose batching controls according to the interface:"
+msgstr "根据接口选择批次调优方式："
+
+#: ../../source/user_guide/udf/udf_tuning.rst:353
+msgid "Interface"
+msgstr "接口"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:354
+msgid "Call size and tuning"
+msgstr "一次调用的数据量和调优方式"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:355
+msgid "``map``, ordinary ``apply``, and ``flatmap``"
+msgstr "``map``、普通 ``apply`` 和 ``flatmap``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:356
+msgid ""
+"The UDF receives one value or row, or the column selected by ``axis``. These"
+" interfaces do not expose a ``batch_rows`` control. Tune task resources and "
+"input partitions instead; for a library that accepts batches, consider "
+"``apply_chunk``."
+msgstr ""
+"UDF 接收一个值、一行，或由 ``axis`` 选择的一列。这些接口没有 ``batch_rows`` "
+"控制项，应调整任务资源和输入分区；如果使用的库支持批处理，可以考虑 ``apply_chunk``。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:360
+msgid "DataFrame / Series ``mf.apply_chunk``"
+msgstr "DataFrame / Series ``mf.apply_chunk``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:361
+msgid ""
+"Use ``batch_rows`` for rows per call, independently of source chunks and "
+"task resources."
+msgstr "用 ``batch_rows`` 调整函数每次接收的行数，它独立于源数据 chunk 和任务资源。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:363
+msgid "``DataFrameGroupBy.mf.apply_chunk``"
+msgstr "``DataFrameGroupBy.mf.apply_chunk``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:364
+msgid ""
+"Use ``batch_rows`` to set the maximum rows per call within a group. In DPE, "
+"the task receives the group data before calling the function in batches."
+msgstr "用 ``batch_rows`` 设置组内每次调用的最大行数。在 DPE 中，任务先接收组数据，再分批调用函数。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:367
+msgid "``DataFrame.mf.map_reduce``"
+msgstr "``DataFrame.mf.map_reduce``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:368
+msgid ""
+"``batch_rows`` applies to both stages. Use ``mapper_batch_rows`` and "
+"``reducer_batch_rows`` to tune their call sizes separately."
+msgstr ""
+"``batch_rows`` 同时用于两个阶段；使用 ``mapper_batch_rows`` 和 ``reducer_batch_rows`` "
+"可以分别调整 mapper 和 reducer 每次接收的行数。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:370
+msgid "``GroupBy.apply``"
+msgstr "``GroupBy.apply``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:371
+msgid ""
+"The function receives the entire group; there is no ``batch_rows`` control. "
+"Input rechunking does not split one group into independent groups."
+msgstr "函数接收完整的一组，没有 ``batch_rows`` 控制项。对输入重新分块不会把一个组拆成可独立计算的多个组。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:374
+msgid "``Tensor.mf.apply_chunk``"
+msgstr "``Tensor.mf.apply_chunk``"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:375
+msgid ""
+"The function receives one input Tensor chunk; there is no ``batch_rows`` "
+"control. Adjust Tensor chunks instead."
+msgstr "函数接收一个输入 Tensor chunk，没有 ``batch_rows`` 控制项；应调整 Tensor 的数据块。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:378
+msgid ""
+"For ``map_reduce``, the common ``batch_rows`` default is 1,024. A stage-"
+"specific value overrides it; leaving ``mapper_batch_rows`` or "
+"``reducer_batch_rows`` as ``None`` inherits the common value rather than "
+"disabling batching. The word-count example in :ref:`udf_examples` "
+"demonstrates mapper and reducer calls, including the MCSQL reducer's final-"
+"batch ``end=True`` protocol. Preserve that protocol when changing reducer "
+"batch sizes."
+msgstr ""
+"``map_reduce`` 共享的 ``batch_rows`` 默认值为 1,024。某个阶段显式指定行数后会覆盖该值；将 "
+"``mapper_batch_rows`` 或 ``reducer_batch_rows`` 保留为 ``None`` "
+"表示继承共享值，而不是禁用分批。:ref:`udf_examples` 中的词频统计示例展示了 mapper 和 reducer 调用，包括 MCSQL"
+" reducer 在最后一个批次使用 ``end=True`` 的协议。调整 reducer 批次行数时需要保留该协议。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:385
+msgid ""
+"For ``df.groupby(...).mf.apply_chunk``, a group may arrive in several "
+"batches. If the calculation needs every row of a group at once, use "
+"``GroupBy.apply``. In DPE, reducing the grouped batch size can reduce per-"
+"call temporary objects, but does not eliminate the memory occupied by the "
+"group data. A very large group can still exhaust memory; check group sizes "
+"rather than assuming that smaller source chunks or batches fix skew."
+msgstr ""
+"``df.groupby(...).mf.apply_chunk`` 可能将同一组数据分批传入。如果计算需要一次拿到整组数据，应使用 "
+"``GroupBy.apply``。在 DPE "
+"中，减小组内的批次大小可以减少每次调用中临时对象的内存占用，但不会消除组数据本身的内存占用。非常大的组仍可能导致内存不足；应检查各组大小，而不是假设减小源数据"
+" chunk 或批次就能解决数据倾斜。"
+
+#: ../../source/user_guide/udf/udf_tuning.rst:392
+msgid ""
+"For ``Tensor.mf.apply_chunk``, set ``chunk_size`` when creating a Tensor, or"
+" use ``t.rechunk(...)``. The function is called once per input Tensor chunk."
+" Preserve the array semantics when changing chunk boundaries."
+msgstr ""
+"对于 ``Tensor.mf.apply_chunk``，可以在创建 Tensor 时设置 ``chunk_size``，或使用 "
+"``t.rechunk(...)``。每个输入 Tensor chunk 调用一次函数，调整 chunk 边界时需要保持数组计算的语义。"

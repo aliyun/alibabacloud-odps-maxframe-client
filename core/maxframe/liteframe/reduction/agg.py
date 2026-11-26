@@ -14,6 +14,7 @@
 
 from maxframe.liteframe.operators.reduction import LiteFrameAgg
 from maxframe.liteframe.reduction.compile import AggCall
+from maxframe.liteframe.reduction.custom_agg import IdxMaxAgg, IdxMinAgg
 
 
 def agg(
@@ -84,7 +85,7 @@ def agg(
     return op(self)
 
 
-def sum(self, method="auto", numeric_only=None, **kw):
+def sum(self, method="auto", numeric_only=None, min_count=0, **kw):
     """Return the sum of each column.
 
     Parameters
@@ -93,6 +94,10 @@ def sum(self, method="auto", numeric_only=None, **kw):
         Execution strategy. ``'auto'`` selects based on data size.
     numeric_only : bool, optional
         When True, restrict to numeric columns. By default None.
+    min_count : int, default 0
+        The required number of valid (non-null) values to perform the
+        operation.  If fewer than ``min_count`` non-null values are
+        present, the result is null.
     **kw
         Additional keyword arguments forwarded to the reduction.
 
@@ -110,7 +115,12 @@ def sum(self, method="auto", numeric_only=None, **kw):
        a   b
     0  6  15
     """
-    return self.agg("sum", method=method, numeric_only=numeric_only, **kw)
+    return self.agg(
+        AggCall("sum", min_count=min_count),
+        method=method,
+        numeric_only=numeric_only,
+        **kw,
+    )
 
 
 def mean(self, method="auto", numeric_only=None, **kw):
@@ -142,7 +152,7 @@ def mean(self, method="auto", numeric_only=None, **kw):
     return self.agg("mean", method=method, numeric_only=numeric_only, **kw)
 
 
-def min(self, method="auto", numeric_only=None, **kw):
+def min(self, method="auto", numeric_only=None, min_count=-1, **kw):
     """Return the minimum of each column.
 
     Parameters
@@ -151,6 +161,11 @@ def min(self, method="auto", numeric_only=None, **kw):
         Execution strategy. ``'auto'`` selects based on data size.
     numeric_only : bool, optional
         When True, restrict to numeric columns. By default None.
+    min_count : int, default -1
+        The required number of valid (non-null) values to perform the
+        operation.  If fewer than ``min_count`` non-null values are
+        present, the result is null.  The default ``-1`` means no guard.
+        Whole-frame min_count >= 2 raises TypeError — use groupby instead.
     **kw
         Additional keyword arguments forwarded to the reduction.
 
@@ -168,10 +183,15 @@ def min(self, method="auto", numeric_only=None, **kw):
        a  b
     0  1  4
     """
-    return self.agg("min", method=method, numeric_only=numeric_only, **kw)
+    return self.agg(
+        AggCall("min", min_count=min_count),
+        method=method,
+        numeric_only=numeric_only,
+        **kw,
+    )
 
 
-def max(self, method="auto", numeric_only=None, **kw):
+def max(self, method="auto", numeric_only=None, min_count=-1, **kw):
     """Return the maximum of each column.
 
     Parameters
@@ -180,6 +200,11 @@ def max(self, method="auto", numeric_only=None, **kw):
         Execution strategy. ``'auto'`` selects based on data size.
     numeric_only : bool, optional
         When True, restrict to numeric columns. By default None.
+    min_count : int, default -1
+        The required number of valid (non-null) values to perform the
+        operation.  If fewer than ``min_count`` non-null values are
+        present, the result is null.  The default ``-1`` means no guard.
+        Whole-frame min_count >= 2 raises TypeError — use groupby instead.
     **kw
         Additional keyword arguments forwarded to the reduction.
 
@@ -197,10 +222,15 @@ def max(self, method="auto", numeric_only=None, **kw):
        a  b
     0  3  6
     """
-    return self.agg("max", method=method, numeric_only=numeric_only, **kw)
+    return self.agg(
+        AggCall("max", min_count=min_count),
+        method=method,
+        numeric_only=numeric_only,
+        **kw,
+    )
 
 
-def prod(self, method="auto", numeric_only=None, **kw):
+def prod(self, method="auto", numeric_only=None, min_count=0, **kw):
     """Return the product of each column.
 
     Parameters
@@ -209,6 +239,10 @@ def prod(self, method="auto", numeric_only=None, **kw):
         Execution strategy. ``'auto'`` selects based on data size.
     numeric_only : bool, optional
         When True, restrict to numeric columns. By default None.
+    min_count : int, default 0
+        The required number of valid (non-null) values to perform the
+        operation.  If fewer than ``min_count`` non-null values are
+        present, the result is null.
     **kw
         Additional keyword arguments forwarded to the reduction.
 
@@ -226,7 +260,12 @@ def prod(self, method="auto", numeric_only=None, **kw):
        a   b
     0  6  120
     """
-    return self.agg("prod", method=method, numeric_only=numeric_only, **kw)
+    return self.agg(
+        AggCall("prod", min_count=min_count),
+        method=method,
+        numeric_only=numeric_only,
+        **kw,
+    )
 
 
 def count(self, method="auto", **kw):
@@ -285,8 +324,8 @@ def size(self, method="auto", **kw):
     return self.agg("size", method=method, **kw)
 
 
-def var(self, method="auto", numeric_only=None, **kw):
-    """Return the unbiased variance of each column.
+def var(self, method="auto", numeric_only=None, ddof=1, **kw):
+    """Return the variance of each column.
 
     Parameters
     ----------
@@ -294,6 +333,9 @@ def var(self, method="auto", numeric_only=None, **kw):
         Execution strategy. ``'auto'`` selects based on data size.
     numeric_only : bool, optional
         When True, restrict to numeric columns. By default None.
+    ddof : int, default 1
+        Delta degrees of freedom.  The divisor is ``n - ddof`` where
+        ``n`` is the number of non-null elements.
     **kw
         Additional keyword arguments forwarded to the reduction.
 
@@ -311,11 +353,16 @@ def var(self, method="auto", numeric_only=None, **kw):
          a    b
     0  1.0  1.0
     """
-    return self.agg("var", method=method, numeric_only=numeric_only, **kw)
+    return self.agg(
+        AggCall("var", ddof=ddof),
+        method=method,
+        numeric_only=numeric_only,
+        **kw,
+    )
 
 
-def std(self, method="auto", numeric_only=None, **kw):
-    """Return the sample standard deviation of each column.
+def std(self, method="auto", numeric_only=None, ddof=1, **kw):
+    """Return the standard deviation of each column.
 
     Parameters
     ----------
@@ -323,6 +370,9 @@ def std(self, method="auto", numeric_only=None, **kw):
         Execution strategy. ``'auto'`` selects based on data size.
     numeric_only : bool, optional
         When True, restrict to numeric columns. By default None.
+    ddof : int, default 1
+        Delta degrees of freedom.  The divisor is ``n - ddof`` where
+        ``n`` is the number of non-null elements.
     **kw
         Additional keyword arguments forwarded to the reduction.
 
@@ -340,10 +390,15 @@ def std(self, method="auto", numeric_only=None, **kw):
              a           b
     0  1.000000    1.000000
     """
-    return self.agg("std", method=method, numeric_only=numeric_only, **kw)
+    return self.agg(
+        AggCall("std", ddof=ddof),
+        method=method,
+        numeric_only=numeric_only,
+        **kw,
+    )
 
 
-def sem(self, method="auto", numeric_only=None, **kw):
+def sem(self, method="auto", numeric_only=None, ddof=1, **kw):
     """Return the standard error of the mean of each column.
 
     Parameters
@@ -352,6 +407,9 @@ def sem(self, method="auto", numeric_only=None, **kw):
         Execution strategy. ``'auto'`` selects based on data size.
     numeric_only : bool, optional
         When True, restrict to numeric columns. By default None.
+    ddof : int, default 1
+        Delta degrees of freedom.  The divisor is ``n - ddof`` where
+        ``n`` is the number of non-null elements.
     **kw
         Additional keyword arguments forwarded to the reduction.
 
@@ -369,7 +427,12 @@ def sem(self, method="auto", numeric_only=None, **kw):
              a           b
     0  0.577350    0.577350
     """
-    return self.agg("sem", method=method, numeric_only=numeric_only, **kw)
+    return self.agg(
+        AggCall("sem", ddof=ddof),
+        method=method,
+        numeric_only=numeric_only,
+        **kw,
+    )
 
 
 def skew(self, method="auto", numeric_only=None, **kw):
@@ -466,33 +529,71 @@ def nunique(self, method="auto", numeric_only=None, dropna=True, **kw):
     )
 
 
-def median(self, method="auto", numeric_only=None, **kw):
-    """Return the median of each column.
+def idxmin(self, method="auto", skipna=True, **kw):
+    """Return the row index of the minimum value in each column.
+
+    The index is the 0-based integer row position in the original frame
+    (range-index value).  Ties are broken by first occurrence.
 
     Parameters
     ----------
     method : {'auto', 'tree', 'shuffle'}, default 'auto'
-        Execution strategy. ``'auto'`` selects based on data size.
-    numeric_only : bool, optional
-        When True, restrict to numeric columns. By default None.
+        Execution strategy.  ``'auto'`` selects based on data size.
+    skipna : bool, default True
+        Exclude NA/null values. If False, and any value is NA, the
+        result is NA.
     **kw
         Additional keyword arguments forwarded to the reduction.
 
     Returns
     -------
     LiteFrame
-        Single-row LiteFrame of per-column medians.
+        Single-row LiteFrame of per-column minimum-value row indices,
+        or an empty LiteFrame if the input has no rows.
 
     Examples
     --------
     >>> import maxframe.liteframe as mlf
-    >>> lf = mlf.LiteFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
-    >>> result = lf.median()
+    >>> lf = mlf.LiteFrame({'a': [3, 1, 2], 'b': [6, 5, 4]})
+    >>> result = lf.idxmin()
     >>> result.execute()
-         a    b
-    0  2.0  5.0
+       a  b
+    0  1  2
     """
-    return self.agg("median", method=method, numeric_only=numeric_only, **kw)
+    return self.agg(IdxMinAgg(skipna=skipna), method=method, **kw)
+
+
+def idxmax(self, method="auto", skipna=True, **kw):
+    """Return the row index of the maximum value in each column.
+
+    The index is the 0-based integer row position in the original frame
+    (range-index value).  Ties are broken by first occurrence.
+
+    Parameters
+    ----------
+    method : {'auto', 'tree', 'shuffle'}, default 'auto'
+        Execution strategy.  ``'auto'`` selects based on data size.
+    skipna : bool, default True
+        Exclude NA/null values. If False, and any value is NA, the
+        result is NA.
+    **kw
+        Additional keyword arguments forwarded to the reduction.
+
+    Returns
+    LiteFrame
+        Single-row LiteFrame of per-column maximum-value row indices,
+        or an empty LiteFrame if the input has no rows.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'a': [3, 1, 2], 'b': [6, 5, 4]})
+    >>> result = lf.idxmax()
+    >>> result.execute()
+       a  b
+    0  0  0
+    """
+    return self.agg(IdxMaxAgg(skipna=skipna), method=method, **kw)
 
 
 def all(self, method="auto", numeric_only=None, **kw):

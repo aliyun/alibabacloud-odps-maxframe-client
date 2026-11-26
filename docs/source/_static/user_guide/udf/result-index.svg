@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="240" viewBox="0 0 900 240" role="img" aria-labelledby="title desc">
+<title id="title">Two index declarations</title><desc id="desc">The pandas result contains actual row labels. The MaxFrame index argument describes the result before execution. The declaration does not rewrite returned pandas labels.</desc>
+<rect width="900" height="240" rx="12" fill="#f7f9fc"/>
+<g font-family="Arial,sans-serif" fill="#18354e">
+<rect x="20" y="20" width="405" height="164" rx="9" fill="#fff" stroke="#b5cce0"/><rect x="475" y="20" width="405" height="164" rx="9" fill="#fff" stroke="#b5cce0"/>
+<g font-size="19" font-weight="bold"><text x="42" y="52">Inside the UDF</text><text x="497" y="52">At the MaxFrame call</text></g>
+<g font-family="monospace" font-size="17"><text x="42" y="87">pd.DataFrame(...,</text><text x="42" y="112">    index=batch.index)</text><text x="497" y="87">df.mf.apply_chunk(func,</text><text x="497" y="112">    index=df.index)</text></g>
+<g font-size="15"><text x="42" y="149">Returns actual row labels: 101, 102, ...</text><text x="497" y="149">Declares unchanged rows and index</text><text x="450" y="217" text-anchor="middle">The declaration must match the returned labels; it does not change them.</text></g>
+</g></svg>

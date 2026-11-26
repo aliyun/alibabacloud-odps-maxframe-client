@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
+
 import numpy as np
 import pandas as pd
+import pyarrow as pa
 
 from maxframe.liteframe.arithmetic.core import (
     _build_fused_projection,
@@ -23,6 +26,7 @@ from maxframe.liteframe.arithmetic.core import (
     _root_source_lf,
 )
 from maxframe.liteframe.core import LITEFRAME_TYPE, FrameMetadata, LiteFrame
+from maxframe.liteframe.datatypes import _to_numpy_dtype
 from maxframe.liteframe.expressions import (
     LiteFrameColumn,
     LiteFrameExpr,
@@ -51,13 +55,13 @@ def _promote_hidden_in_metadata(result, promoted):
     old_meta = result._data.frame_metadata
     new_hidden = [h for h in (old_meta.hidden_columns or []) if h not in promoted]
     new_hidden = new_hidden or None
-    if old_meta.range_columns or new_hidden:
-        result._data.frame_metadata = FrameMetadata(
-            range_columns=old_meta.range_columns,
-            hidden_columns=new_hidden,
-        )
-    else:
-        result._data.frame_metadata = None
+    # Promoting a hidden column to visible is row-preserving;
+    # keep the alignment id so downstream checks still hold.
+    result._data.frame_metadata = FrameMetadata(
+        range_columns=old_meta.range_columns,
+        hidden_columns=new_hidden,
+        alignment_id=old_meta.alignment_id,
+    )
     result._data.__dict__.pop("dtypes", None)
     result._data.__dict__.pop("columns", None)
 
@@ -70,6 +74,175 @@ def select(lf, columns):
     promoted = {c for c in columns if c in lf._hidden_columns}
     _promote_hidden_in_metadata(result, promoted)
     return result
+
+
+def filter(lf, items=None, like=None, regex=None):
+    """Subset columns based on column labels.
+
+    Parameters
+    ----------
+    items : list-like
+        Keep columns whose names are in *items*.
+    like : str
+        Keep columns whose names contain *like*.
+    regex : str
+        Keep columns whose names match *regex*.
+
+    Returns
+    -------
+    LiteFrame
+        LiteFrame with only the matching columns, preserving row order.
+
+    Raises
+    ------
+    TypeError
+        If not exactly one of *items*, *like*, or *regex* is given, or if
+        *items* is not list-like.
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'aa': [1], 'ab': [2], 'cc': [3]})
+    >>> lf.filter(like='a').execute()
+       aa  ab
+    0   1   2
+    >>> lf.filter(regex='^a').execute()
+       aa  ab
+    0   1   2
+    """
+    count = sum(x is not None for x in (items, like, regex))
+    if count != 1:
+        raise TypeError("Must pass exactly one of 'items', 'like', or 'regex'")
+
+    columns = list(lf.columns)
+
+    if items is not None:
+        if not pd.api.types.is_list_like(items):
+            raise TypeError(f"items must be a list-like, got {type(items).__name__}")
+        items = [
+            normalize_col_name(item) if isinstance(item, str) else item
+            for item in items
+        ]
+        # De-duplicate preserving first-occurrence order (pandas behavior:
+        # filter(items=['a','a','b']) → ['a','b']).  Match in items order,
+        # ignoring non-string and absent labels.
+        columns_set = set(columns)
+        matched = [
+            c for c in dict.fromkeys(items) if isinstance(c, str) and c in columns_set
+        ]
+    elif like is not None:
+        matched = [c for c in columns if like in c]
+    else:
+        pattern = re.compile(regex)
+        matched = [c for c in columns if pattern.search(c)]
+
+    return select(lf, matched)
+
+
+def _is_arrow_string_dtype(dtype):
+    """True for a pyarrow-backed string/large_string dtype (native or fake)."""
+    pa_type = getattr(dtype, "pyarrow_dtype", None)
+    return pa_type is not None and (
+        pa.types.is_string(pa_type) or pa.types.is_large_string(pa_type)
+    )
+
+
+def _probe_dtype_for_select(dtype):
+    """Return a dtype usable in a pandas Series for ``select_dtypes``.
+
+    Prefer the native pandas/Arrow extension dtype: pandas' dtype-family
+    matching then sees the real type, so ``large_string[pyarrow]`` matches
+    ``include='string'`` instead of being classified as ``object`` after a
+    numpy conversion.  A ``FakeArrowDtype`` (pyarrow < 7) reports a generic
+    extension kind for its nested type, so pandas' family matching misses
+    ``include='int'``/``'float'``/``'datetime64'``; those columns are probed
+    through the equivalent native dtype instead, which carries the right
+    family:
+
+    * timestamps -> ``datetime64[unit]``; a tz-aware fake timestamp probes as
+      ``pd.DatetimeTZDtype`` (pandas classifies it under ``'datetimetz'``),
+    * time-of-day -> ``object`` (pandas exposes no numpy time dtype),
+    * everything else -> its numpy equivalent (string/large_string keep the
+      arrow dtype so ``include='string'`` still matches).
+    """
+    pa_type = getattr(dtype, "pyarrow_dtype", None)
+    if getattr(dtype, "_is_fake", False) and pa_type is not None:
+        if _is_arrow_string_dtype(dtype):
+            return dtype
+        if pa.types.is_timestamp(pa_type):
+            if pa_type.tz is not None:
+                # pandas < 2 accepts only ns-unit tz-aware dtypes; the unit is
+                # irrelevant for dtype-family matching.
+                try:
+                    return pd.DatetimeTZDtype(unit=pa_type.unit, tz=pa_type.tz)
+                except ValueError:
+                    return pd.DatetimeTZDtype(unit="ns", tz=pa_type.tz)
+            return np.dtype(f"datetime64[{pa_type.unit}]")
+        if pa.types.is_time(pa_type):
+            return np.dtype("O")
+        return _to_numpy_dtype(dtype)
+    try:
+        pd.Series(dtype=dtype)
+        return dtype
+    except (TypeError, ValueError):
+        return _to_numpy_dtype(dtype)
+
+
+def select_dtypes(lf, include=None, exclude=None):
+    """Subset columns based on their dtype.
+
+    Parameters
+    ----------
+    include : scalar or list-like
+        Dtype kind(s) to include.  Accepts string aliases (``"number"``,
+        ``"integer"``, ``"floating"``, ``"int"``, ``"float"``, ``"bool"``,
+        ``"datetime"``, ``"datetime64"``, ``"timedelta"``, ``"object"``,
+        ``"string"``, ``"category"``), numpy types (``np.int64``), builtin
+        types (``int``, ``float``), or ``np.dtype`` instances.
+    exclude : scalar or list-like
+        Dtype kind(s) to exclude.  Same spec forms as *include*.
+
+    Returns
+    -------
+    LiteFrame
+        LiteFrame with only the matching columns, preserving row order.
+
+    Raises
+    ------
+    ValueError
+        If neither *include* nor *exclude* is specified.
+    TypeError
+        On unsupported dtype specifications (per pandas).
+
+    Examples
+    --------
+    >>> import maxframe.liteframe as mlf
+    >>> lf = mlf.LiteFrame({'a': [1, 2], 'b': [1.0, 2.0], 'c': ['x', 'y']})
+    >>> lf.select_dtypes(include='number').execute()
+       a    b
+    0  1  1.0
+    1  2  2.0
+    """
+    # Build a zero-row DataFrame with the same dtypes and delegate to
+    # pandas select_dtypes for all normalization, matching, and overlap
+    # validation.  This avoids reimplementing pandas' dtype-family
+    # algorithm and guarantees identical behavior including extension
+    # dtypes, Arrow-backed dtypes, and StringDtype special cases.
+    #
+    # Each column uses its native dtype so pandas classifies it as the real
+    # type (e.g. ``large_string[pyarrow]`` matches ``include='string'``,
+    # not ``object``).  ``_probe_dtype_for_select`` only falls back to the
+    # numpy equivalent when pandas cannot build a Series from the dtype.
+    test_df = pd.DataFrame(
+        {
+            col: pd.Series(dtype=_probe_dtype_for_select(dtype))
+            for col, dtype in lf.dtypes.items()
+        }
+    )
+    test_df = test_df.select_dtypes(include=include, exclude=exclude)
+    matched = test_df.dtypes.index.tolist()
+
+    return select(lf, matched)
 
 
 def select_expr(lf, *exprs):
@@ -141,6 +314,13 @@ def select_dispatch(self, *args):
     LiteFrame
         LiteFrame containing only the selected columns, preserving row
         order.
+
+    Raises
+    ------
+    KeyError
+        If a named column is not found.
+    ValueError
+        If two selected columns resolve to the same output name.
     """
     if args and isinstance(args[0], LiteFrameExpr):
         return select_expr(self, *args)
@@ -171,6 +351,11 @@ def drop(lf, columns, errors="raise"):
     -------
     LiteFrame
         LiteFrame with the specified columns removed.
+
+    Raises
+    ------
+    KeyError
+        If a named column is unknown and *errors* is ``"raise"``.
 
     See Also
     --------
@@ -211,7 +396,9 @@ def drop(lf, columns, errors="raise"):
         projections.append(LiteFrameColumn(name=hc, dtype=lf._physical_dtypes[hc]))
 
     # Build projection directly — hidden columns already handled above,
-    # so we bypass _build_fused_projection which would re-add all hidden columns.
+    # so we bypass _build_fused_projection which would re-add all hidden
+    # columns.  The surviving pass-throughs are ordinary projections; the
+    # fetch drops them because the output metadata still marks them hidden.
     op = LiteFrameProjection(projections=projections)
     root_source = _root_source_lf(lf)
     return op(LiteFrame(root_source))

@@ -642,6 +642,8 @@ cdef class SerializableSerializer(Serializer):
         cdef dict cls_to_non_prim_key_dict
         cdef object ret
         cdef SerializableProps props
+        cdef object serializable_hook
+        cdef object redirect_class
 
         # Cache Serializable class to avoid repeated imports
         if _Serializable_class is None:
@@ -649,6 +651,22 @@ cdef class SerializableSerializer(Serializer):
             _Serializable_class = Serializable
 
         obj_class = load_type(obj_class_name, _Serializable_class)
+        # Check __serializable__ hook: if defined on the class, redirect
+        # deserialization to the returned Serializable subclass.  This enables
+        # legacy-client compatibility when the operator layout changes — the
+        # hook is a classmethod that returns a legacy class whose field layout
+        # matches the serialized bytes; that legacy class's __on_deserialize__
+        # can then convert to the current class.
+        serializable_hook = getattr(obj_class, "__serializable__", None)
+        if serializable_hook is not None:
+            redirect_class = serializable_hook()
+            if (
+                redirect_class is not None
+                and redirect_class is not obj_class
+                and isinstance(redirect_class, type)
+                and issubclass(redirect_class, _Serializable_class)
+            ):
+                obj_class = redirect_class
 
         if type(primitives) is not list:
             primitives = load_msgpack_with_extensions(primitives)

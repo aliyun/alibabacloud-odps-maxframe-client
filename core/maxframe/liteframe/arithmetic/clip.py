@@ -25,6 +25,7 @@ from maxframe.liteframe.arithmetic.core import (
 )
 from maxframe.liteframe.core import LITEFRAME_TYPE
 from maxframe.liteframe.expressions import (
+    LiteFrameAstype,
     LiteFrameBaseExpr,
     LiteFrameGt,
     LiteFrameLiteral,
@@ -37,6 +38,26 @@ from maxframe.liteframe.expressions import (
     _promote_numpy_dtypes,
 )
 from maxframe.utils import wrap_arrow_dtype
+
+
+def _widen_int_dtype(col_np, value):
+    """Smallest integer dtype that holds the column's range and *value*.
+
+    ``np.result_type`` cannot answer this: under NEP 50 (numpy 2) a Python
+    int is a weak scalar, so ``np.result_type(np.int8, 1000)`` stays ``int8``
+    and the bound silently overflows.  The column's signedness is kept unless
+    *value* forces a signed type.
+    """
+    info = np.iinfo(col_np)
+    low = min(int(info.min), int(value))
+    high = max(int(info.max), int(value))
+    signed = not np.issubdtype(col_np, np.unsignedinteger) or low < 0
+    for bits in (8, 16, 32, 64):
+        candidate = np.dtype("%s%d" % ("int" if signed else "uint", bits))
+        cand_info = np.iinfo(candidate)
+        if cand_info.min <= low and high <= cand_info.max:
+            return candidate
+    return np.dtype("int64" if signed else "uint64")
 
 
 def _clip_expr(col_ref, col_dtype, lower, upper):
@@ -106,13 +127,10 @@ def _clip_expr(col_ref, col_dtype, lower, upper):
                 else:
                     val = bound.value
                     if not (np.iinfo(col_np).min <= val <= np.iinfo(col_np).max):
-                        # np.result_type preserves the column's
-                        # signedness: uint8 + 1000 → uint16 (not int16),
-                        # and uint8 + -5 → int16 (negative forces signed).
-                        # The original min_scalar_type(probe) trick
-                        # always returned signed dtypes, dropping
-                        # unsignedness (review follow-up).
-                        result_np = np.result_type(col_np, val)
+                        # Widen to the smallest type that fits both the
+                        # column and the bound, preserving unsignedness
+                        # (uint8 + 1000 → uint16, uint8 + -5 → int16).
+                        result_np = _widen_int_dtype(col_np, val)
                         result_dtype = wrap_arrow_dtype(pa.from_numpy_dtype(result_np))
             elif pa.types.is_floating(bound_pa):
                 # float col + float scalar: keep the column dtype only
@@ -136,12 +154,20 @@ def _clip_expr(col_ref, col_dtype, lower, upper):
         # Both bounds were NaN (treated as absent) — return the column
         # unchanged (pandas: clip(lower=nan) is a no-op).
         return col_ref
+    # Evaluate in the promoted dtype: a Python scalar bound is a *weak*
+    # scalar under NEP 50, so ``where(cond, 1e40, float32_col)`` would stay
+    # float32 and overflow to inf before the metadata dtype is applied.
+    value_ref = col_ref
+    if result_dtype != col_dtype:
+        value_ref = LiteFrameAstype(
+            operand=col_ref, dtype=result_dtype, target_dtype=result_dtype
+        )
     if lower is not None and upper is not None:
         # where(col < lower, lower, where(col > upper, upper, col))
         inner = LiteFrameWhere(
             condition=LiteFrameGt(left=col_ref, right=upper, dtype=_BOOL),
             true_value=upper,
-            false_value=col_ref,
+            false_value=value_ref,
             dtype=result_dtype,
         )
         return LiteFrameWhere(
@@ -155,7 +181,7 @@ def _clip_expr(col_ref, col_dtype, lower, upper):
         return LiteFrameWhere(
             condition=LiteFrameLt(left=col_ref, right=lower, dtype=_BOOL),
             true_value=lower,
-            false_value=col_ref,
+            false_value=value_ref,
             dtype=result_dtype,
         )
     # upper is not None

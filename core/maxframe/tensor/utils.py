@@ -353,7 +353,7 @@ def calc_object_length(obj, size=None):
 
 
 def slice_split(
-    index: Union[int, slice], sizes: List[int]
+    index: Union[int, slice], sizes: List[int], keep_empty_position: bool = False
 ) -> Dict[int, Union[int, slice]]:
     """Split a single-dimension index across chunks.
 
@@ -368,6 +368,9 @@ def slice_split(
         Negative integers are resolved relative to the total size.
     sizes : List[int]
         Lengths of each chunk along this dimension, in order.
+    keep_empty_position : bool
+        Attribute an empty slice to the chunk containing the empty position
+        and keep the chunk-local offset (default: chunk 0 at offset 0).
 
     Returns
     -------
@@ -401,6 +404,7 @@ def slice_split(
 
     assert isinstance(index, slice)
     start, stop, step = index.indices(size)
+    empty_pos = start if step > 0 else stop
 
     slice_all = slice(None)
 
@@ -444,7 +448,15 @@ def slice_split(
             d[k] = slice(None, None, None)
 
     if not d:  # special case x[:0]
-        d[0] = slice(0, 0, 1)
+        if not keep_empty_position:
+            d[0] = slice(0, 0, 1)
+        else:
+            # Range-column callers (LiteFrame) need the empty slice's
+            # absolute offset, so keep the chunk that holds the position.
+            bounds = np.cumsum(sizes)
+            i = int(np.searchsorted(bounds, empty_pos))
+            local = int(empty_pos - (bounds[i - 1] if i else 0))
+            d[i] = slice(local, local, step)
 
     return d
 

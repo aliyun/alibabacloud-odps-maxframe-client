@@ -16,7 +16,7 @@ import logging
 from collections.abc import Iterable
 from enum import Enum
 from operator import attrgetter
-from typing import Any, Dict
+from typing import Any, Callable, Dict, Type, TypeVar
 
 import numpy as np
 
@@ -28,6 +28,7 @@ from maxframe.core import (
     is_build_mode,
     register_output_types,
 )
+from maxframe.core.accessor import register_accessor
 from maxframe.core.entity.utils import fill_chunk_slices, refresh_tileable_shape
 from maxframe.serialization.serializables import (
     AnyField,
@@ -37,6 +38,8 @@ from maxframe.serialization.serializables import (
 )
 from maxframe.tensor.utils import fetch_corner_data, get_chunk_slices
 from maxframe.utils import make_dtype
+
+T = TypeVar("T")
 
 logger = logging.getLogger(__name__)
 
@@ -589,6 +592,51 @@ class flatiter(object):
 
 class Indexes(Serializable):
     indexes = AnyField("indexes")
+
+
+def register_tensor_accessor(
+    name: str, override: bool = False
+) -> Callable[[Type[T]], Type[T]]:
+    """
+    Register a custom accessor on Tensor objects.
+
+    Parameters
+    ----------
+    name : str
+        Name the accessor is registered under. Must be a valid identifier that
+        does not start with an underscore. Registering a name that is already
+        registered for tensors raises ``AttributeError`` unless ``override`` is
+        True.
+    override : bool, default False
+        Replace an accessor previously registered under the same name; a
+        warning is issued when an existing accessor is replaced. Attributes
+        owned by MaxFrame itself cannot be overridden.
+
+    Returns
+    -------
+    callable
+        A class decorator that installs the accessor and returns the class
+        unchanged.
+
+    See Also
+    --------
+    register_accessor : Register a custom accessor on arbitrary tileable classes.
+
+    Examples
+    --------
+    >>> import maxframe.tensor as mt
+    >>> from maxframe.tensor.api.extensions import register_tensor_accessor
+    >>> @register_tensor_accessor("signal")
+    ... class SignalAccessor:
+    ...     def __init__(self, obj):
+    ...         if obj.ndim != 1:
+    ...             raise AttributeError("signal only supports 1-d tensors")
+    ...         self.obj = obj
+    ...
+    ...     def energy(self):
+    ...         return (self.obj ** 2).sum()
+    """
+    return register_accessor(name, TENSOR_TYPE, override)
 
 
 TENSOR_TYPE = (Tensor, TensorData)

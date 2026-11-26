@@ -17,6 +17,7 @@ def _install():
     from maxframe.liteframe.core import LITEFRAME_TYPE
     from maxframe.liteframe.window.cumulative import cummax, cummin, cumprod, cumsum
     from maxframe.liteframe.window.diff import diff
+    from maxframe.liteframe.window.ewm import ewm
     from maxframe.liteframe.window.expanding import expanding
     from maxframe.liteframe.window.fill import bfill, ffill
     from maxframe.liteframe.window.pct_change import pct_change
@@ -33,6 +34,7 @@ def _install():
         setattr(cls, "cummin", cummin)
         setattr(cls, "cumprod", cumprod)
         setattr(cls, "expanding", expanding)
+        setattr(cls, "ewm", ewm)
         setattr(cls, "ffill", ffill)
         setattr(cls, "bfill", bfill)
 

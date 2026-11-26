@@ -12,21 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from maxframe.core import CachedAccessor
 from maxframe.tensor.extensions.accessor import TensorMaxFrameAccessor
 from maxframe.tensor.extensions.apply_chunk import apply_chunk
 from maxframe.tensor.rechunk.rechunk import rebalance
 
 
 def _install():
-    from maxframe.tensor.core import TENSOR_TYPE
+    from maxframe.tensor.core import register_tensor_accessor
 
     TensorMaxFrameAccessor._register("apply_chunk", apply_chunk)
     TensorMaxFrameAccessor._register("rebalance", rebalance)
 
-    if TensorMaxFrameAccessor._api_count:
-        for t in TENSOR_TYPE:
-            t.mf = CachedAccessor("mf", TensorMaxFrameAccessor)
+    register_tensor_accessor("mf")(TensorMaxFrameAccessor)
 
 
 _install()

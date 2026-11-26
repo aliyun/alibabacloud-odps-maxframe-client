@@ -16,14 +16,13 @@ from maxframe.dataframe.accessors.list_.core import SeriesListMethod
 
 
 def _install():
-    from maxframe.core import CachedAccessor
     from maxframe.dataframe.accessors.list_.accessor import ListAccessor
     from maxframe.dataframe.accessors.list_.getitem import (
         series_list_getitem,
         series_list_getitem_with_index_error,
     )
     from maxframe.dataframe.accessors.list_.length import series_list_length
-    from maxframe.dataframe.core import SERIES_TYPE
+    from maxframe.dataframe.core import register_series_accessor
 
     list_method_to_handlers = {
         "__getitem__": series_list_getitem_with_index_error,
@@ -34,8 +33,7 @@ def _install():
     for name, handler in list_method_to_handlers.items():
         ListAccessor._register(name, handler)
 
-    for series in SERIES_TYPE:
-        series.list = CachedAccessor("list", ListAccessor)
+    register_series_accessor("list")(ListAccessor)
 
 
 _install()

@@ -23,7 +23,7 @@ from maxframe.dataframe.operators import DataFrameOperator, DataFrameOperatorMix
 from maxframe.dataframe.utils import build_empty_df, build_empty_series, parse_index
 from maxframe.io.odpsio.schema import pandas_dtype_to_arrow_type
 from maxframe.serialization.serializables import AnyField, ListField, StringField
-from maxframe.utils import make_dtypes, pd_release_version
+from maxframe.utils import is_arrow_dtype_supported, make_dtypes, pd_release_version
 
 _simple_dtypes = {
     np.dtype(t)
@@ -51,6 +51,11 @@ def _convert_dtype_backend(dtype, dtype_backend):
     if is_dict_like(dtype):
         return {k: _convert_dtype_backend(v, dtype_backend) for k, v in dtype.items()}
     elif dtype_backend != "pyarrow" or dtype not in _simple_dtypes:
+        return dtype
+    if not is_arrow_dtype_supported():
+        # pyarrow is too old to build an ArrowDtype (pandas raises
+        # ``ImportError`` from the constructor), so keep the NumPy dtype
+        # rather than failing graph construction.
         return dtype
     return pd.ArrowDtype(pandas_dtype_to_arrow_type(dtype))
 

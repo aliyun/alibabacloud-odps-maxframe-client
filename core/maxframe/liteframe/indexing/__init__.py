@@ -17,13 +17,17 @@ def _install():
     from maxframe.liteframe.core import LITEFRAME_TYPE
     from maxframe.liteframe.indexing.getitem import liteframe_getitem
     from maxframe.liteframe.indexing.iloc import LiteFrameIloc
+    from maxframe.liteframe.indexing.isin import isin
+    from maxframe.liteframe.indexing.sample import sample
     from maxframe.liteframe.indexing.select import (
         add_prefix,
         add_suffix,
         assign,
         drop,
+        filter,
         rename,
         select_dispatch,
+        select_dtypes,
     )
     from maxframe.liteframe.indexing.setitem import liteframe_setitem
 
@@ -36,7 +40,11 @@ def _install():
         setattr(cls, "add_prefix", add_prefix)
         setattr(cls, "add_suffix", add_suffix)
         setattr(cls, "assign", assign)
+        setattr(cls, "filter", filter)
+        setattr(cls, "select_dtypes", select_dtypes)
+        setattr(cls, "isin", isin)
         setattr(cls, "iloc", property(fget=lambda self: LiteFrameIloc(self)))
+        setattr(cls, "sample", sample)
 
 
 _install()

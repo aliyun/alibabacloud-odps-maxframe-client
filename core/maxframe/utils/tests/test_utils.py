@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 import json
 import os
 import shutil
@@ -26,10 +27,12 @@ import pyarrow as pa
 import pytest
 
 from maxframe import utils
+from maxframe.serialization import RemoteException
 from maxframe.utils.datatypes import is_arrow_dtype_supported, wrap_arrow_dtype
 from maxframe.utils.utils import (
     get_storage_api_endpoint,
     parse_size_to_megabytes,
+    safe_exc_info,
     validate_and_adjust_resource_ratio,
 )
 
@@ -405,3 +408,72 @@ def test_get_storage_api_endpoint_various_endpoints(
 
     result = get_storage_api_endpoint()
     assert result == expected
+
+
+def test_safe_exc_info_without_exception():
+    assert safe_exc_info() == (None, None, None)
+
+
+def test_safe_exc_info_returns_raw_exception():
+    try:
+        raise ValueError("val")
+    except ValueError:
+        exc_type, exc_value, exc_tb = safe_exc_info()
+    assert exc_type is ValueError
+    assert isinstance(exc_value, ValueError)
+    assert exc_tb is not None
+
+
+def test_safe_exc_info_keeps_cancellation():
+    # CancelledError is re-raised by DPE callers to mark work as cancelled,
+    # so it must survive the filter unchanged.
+    try:
+        raise asyncio.CancelledError()
+    except BaseException as ex:
+        got_type, got_value, got_tb = safe_exc_info()
+        original_tb = ex.__traceback__
+    assert got_type is asyncio.CancelledError
+    assert isinstance(got_value, asyncio.CancelledError)
+    assert got_tb is original_tb
+
+
+class _CustomSignal(BaseException):
+    pass
+
+
+class _HostileStr:
+    def __str__(self):
+        raise RuntimeError("hostile __str__")
+
+
+@pytest.mark.parametrize(
+    "exc_type", [KeyboardInterrupt, SystemExit, GeneratorExit, _CustomSignal]
+)
+def test_safe_exc_info_filters_control_signals(exc_type):
+    try:
+        raise exc_type()
+    except BaseException as ex:
+        original_tb = ex.__traceback__
+        got_type, got_value, got_tb = safe_exc_info()
+
+    assert got_type is RemoteException
+    assert isinstance(got_value, RemoteException)
+    assert got_value.get_buffers() == []
+    assert got_value.messages == [f"{exc_type.__name__}: "]
+    # original traceback is kept, both formatted and as the traceback object
+    assert got_value.tracebacks[0]
+    assert got_tb is original_tb
+    assert got_value.__traceback__ is original_tb
+
+
+def test_safe_exc_info_survives_hostile_message():
+    # a signal whose __str__ raises must still be recorded, not propagated
+    try:
+        raise SystemExit(_HostileStr())
+    except BaseException:
+        got_type, got_value, got_tb = safe_exc_info()
+
+    assert got_type is RemoteException
+    assert isinstance(got_value, RemoteException)
+    assert got_value.messages == ["SystemExit"]
+    assert got_value.get_buffers() == []

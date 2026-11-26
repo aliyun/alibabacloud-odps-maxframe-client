@@ -1,20 +1,35 @@
+import contextlib
 import copy
 import pickle
+import threading
+import time
 
 import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pytest
 
-from maxframe.lib.dtypes_extension import ArrowDtype
+from maxframe.lib.dtypes_extension import ArrowDtype, blob
 from maxframe.lib.dtypes_extension.blob import (
     ArrowBlobType,
     ExternalBlobDtype,
     SolidBlob,
+    make_polars_blob_type,
+    polars_to_pandas_with_blobs,
 )
 from maxframe.lib.version import parse as parse_version
 from maxframe.lib.wrapped_pickle import switch_unpickle
 from maxframe.utils import deserialize_serializable, serialize_serializable, tokenize
+
+try:
+    import polars as pl
+except ImportError:  # pragma: no cover - polars is a hard test dependency
+    pl = None
+
+requires_polars = pytest.mark.skipif(
+    pl is None or not hasattr(pl, "BaseExtension"),
+    reason="need polars with BaseExtension support",
+)
 
 
 @switch_unpickle
@@ -126,3 +141,100 @@ def test_blob_null_conversion():
         with restored[0].open("rb") as reader:
             assert reader.read() == b"abcd"
         assert restored[1] is None
+
+
+# ---------------------------------------------------------------------------
+# Concurrent conversion of one shared Polars frame (bug #87341179)
+# ---------------------------------------------------------------------------
+# ``to_pandas()`` on a frame from several threads deadlocks inside Polars - the
+# deadlock depends on the Polars build and the frame shape, so it cannot be
+# asserted on directly.  Its precondition is pinned down instead: the
+# conversion body of one frame never runs in two threads at once.
+
+_ROWS = 50
+_THREADS = 4
+_ITERS = 10
+
+
+def _make_polars_blob_frame():
+    """A Polars frame with regular columns plus a blob column."""
+    return pl.DataFrame(
+        {
+            "int_col": list(range(_ROWS)),
+            "str_col": ["s%d" % (i % 10) for i in range(_ROWS)],
+            "blob_col": pl.Series(
+                "blob_col",
+                [SolidBlob(b"blob-%d" % i) for i in range(_ROWS)],
+                dtype=make_polars_blob_type(),
+            ),
+        }
+    )
+
+
+def _convert_in_threads(frame):
+    """Convert ``frame`` from several threads, returning every converted frame."""
+    pdfs = []
+
+    def worker():
+        pdfs.extend(polars_to_pandas_with_blobs(frame) for _ in range(_ITERS))
+
+    workers = [threading.Thread(target=worker) for _ in range(_THREADS)]
+    for worker_thread in workers:
+        worker_thread.start()
+    for worker_thread in workers:
+        worker_thread.join()
+
+    return pdfs
+
+
+@requires_polars
+@pytest.mark.parametrize("serialised", [True, False], ids=["locked", "unlocked"])
+def test_shared_frame_conversions_are_serialised(monkeypatch, serialised):
+    """The conversion body must never run in two threads at once for one frame.
+
+    ``unlocked`` replaces the frame lock with a no-op, which is the pre-fix
+    behaviour: the detector must report an overlap then, otherwise the clean
+    ``locked`` run over the same detector would prove nothing.
+    """
+    convert = blob._polars_to_pandas_with_blobs  # captured before it is wrapped
+    state_lock = threading.Lock()
+    active = []
+    overlaps = []
+
+    def convert_with_detector(pl_df):
+        with state_lock:
+            if active:
+                overlaps.append(1)
+            active.append(1)
+        try:
+            time.sleep(0.002)  # widen the window in which an overlap is visible
+            return convert(pl_df)
+        finally:
+            with state_lock:
+                active.pop()
+
+    monkeypatch.setattr(blob, "_polars_to_pandas_with_blobs", convert_with_detector)
+    if not serialised:
+        monkeypatch.setattr(
+            blob, "polars_frame_lock", lambda frame: contextlib.nullcontext()
+        )
+
+    pdfs = _convert_in_threads(_make_polars_blob_frame())
+
+    assert len(pdfs) == _THREADS * _ITERS
+    assert bool(overlaps) is not serialised
+
+
+@requires_polars
+def test_concurrent_conversion_matches_serial_result():
+    """Concurrency must not change the converted frame, blob column included."""
+    frame = _make_polars_blob_frame()
+    expected = polars_to_pandas_with_blobs(frame)
+
+    pdfs = _convert_in_threads(frame)
+
+    assert len(pdfs) == _THREADS * _ITERS
+    for pdf in pdfs:
+        assert pdf["int_col"].tolist() == expected["int_col"].tolist()
+        assert pdf["blob_col"].tolist() == expected["blob_col"].tolist()
+        assert pdf["blob_col"].dtype == expected["blob_col"].dtype

@@ -76,6 +76,10 @@ class LiteFrameAgg(LiteFrameOperatorMixin, LiteFrameOperator):
     use_inf_as_na = BoolField("use_inf_as_na", default=False)
     chunk_store_limit = Int64Field("chunk_store_limit", default=None)
     size_recorder_name = StringField("size_recorder_name", default=None)
+    # Per-chunk row offset for idxmin/idxmax is carried via OpFunction kwds
+    # (opfunc.iloc_offset), not as a serialized operator field. The tiler
+    # sets it on the OpFunction and the executor reads it back with
+    # getattr(opfunc, "iloc_offset", None).
     # Frame type for custom agg functions (pandas/polars)
     input_frame_type = StringField("input_frame_type", default="pandas")
 
@@ -105,6 +109,9 @@ class LiteFrameAgg(LiteFrameOperatorMixin, LiteFrameOperator):
 
     def __call__(self, liteframe):
         from maxframe.liteframe.reduction.compile import (
+            _SKETCH_MAP_FUNC,
+            _infer_func_dtype,
+            _quantile_output_dtype,
             _size_intermediate_name,
             compile_agg,
         )
@@ -181,25 +188,37 @@ class LiteFrameAgg(LiteFrameOperatorMixin, LiteFrameOperator):
             for desc in compiled.agg_funcs:
                 prim = desc["map_func_name"]
                 if prim == "size":
-                    # frame-level: one column regardless of target columns.
                     inter_col_name = _size_intermediate_name(f"{desc['output_key']}__")
                     inter_dtypes_dict[inter_col_name] = wrap_arrow_dtype(pa.int64())
                     continue
-                col = desc["cols"][0]
-                inter_col_name = f"{desc['output_key']}__{col}_{prim}"
-                if prim == "count":
-                    inter_dtypes_dict[inter_col_name] = wrap_arrow_dtype(pa.int64())
-                elif prim in ("sum_sq", "sum_cube", "sum_fourth"):
-                    # Power-sum intermediates: the pre-agg projection already
-                    # produced float64 columns, so sum produces float64.
-                    inter_dtypes_dict[inter_col_name] = wrap_arrow_dtype(pa.float64())
-                else:
-                    # Preserve input column dtype for sum, min, max, prod, etc.
-                    # to avoid precision loss (e.g. int64 > 2^53 loses
-                    # precision in float64).
-                    inter_dtypes_dict[inter_col_name] = liteframe.dtypes.get(
-                        col, wrap_arrow_dtype(pa.float64())
-                    )
+                for col in desc["cols"]:
+                    inter_col_name = f"{desc['output_key']}__{col}_{prim}"
+                    if prim == "count":
+                        inter_dtypes_dict[inter_col_name] = wrap_arrow_dtype(pa.int64())
+                    elif prim in ("sum_sq", "sum_cube", "sum_fourth", "sum_xy"):
+                        inter_dtypes_dict[inter_col_name] = wrap_arrow_dtype(
+                            pa.float64()
+                        )
+                    elif prim == "quantile":
+                        kwds = desc.get("kwds", {})
+                        interp = kwds.get("interpolation", "linear")
+                        input_dt = liteframe.dtypes.get(
+                            col, wrap_arrow_dtype(pa.float64())
+                        )
+                        inter_dtypes_dict[inter_col_name] = _quantile_output_dtype(
+                            interp, input_dt
+                        )
+                    elif prim == _SKETCH_MAP_FUNC:
+                        inter_dtypes_dict[inter_col_name] = wrap_arrow_dtype(
+                            pa.float64()
+                        )
+                    else:
+                        input_dt = liteframe.dtypes.get(
+                            col, wrap_arrow_dtype(pa.float64())
+                        )
+                        inter_dtypes_dict[inter_col_name] = _infer_func_dtype(
+                            prim, input_dt
+                        )
 
             inter_dtypes = pd.Series(inter_dtypes_dict)
             inter_shape = (compiled.out_shape[0], len(inter_dtypes))

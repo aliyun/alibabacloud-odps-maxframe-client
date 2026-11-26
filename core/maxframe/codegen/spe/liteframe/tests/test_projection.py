@@ -16,6 +16,11 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
+try:
+    import polars as pl
+except ImportError:  # pragma: no cover
+    pl = None
+
 from maxframe.codegen.spe.core import SPECodeContext, SPECodeGenerator
 from maxframe.codegen.spe.liteframe.projection import (
     LiteFrameProjectionAdapter,
@@ -23,6 +28,7 @@ from maxframe.codegen.spe.liteframe.projection import (
     _resolve_range_state,
     _run_udf,
 )
+from maxframe.liteframe import LiteFrame
 from maxframe.liteframe.datasource.from_local import from_local_df
 from maxframe.liteframe.expressions import (
     LiteFrameAdd,
@@ -31,6 +37,7 @@ from maxframe.liteframe.expressions import (
     LiteFrameUDFExpr,
     NamedExpr,
 )
+from maxframe.liteframe.functional.apply import apply
 from maxframe.liteframe.functional.map import map_
 from maxframe.liteframe.functional.transform import transform
 from maxframe.liteframe.functional.transform_chunk import transform_chunk
@@ -38,7 +45,7 @@ from maxframe.liteframe.operators.project import LiteFrameProjection
 from maxframe.protocol import DefaultIndexType
 from maxframe.utils import wrap_arrow_dtype
 
-RANGE_COL_NAME = "__lf_range_index__"
+RANGE_COL_NAME = "__mf_range_index__"
 
 
 def test_projection_adapter_column_select(make_liteframe):
@@ -88,6 +95,19 @@ def test_projection_run_projection_with_expression():
     expected = df["a"] + df["b"]
     expected.name = "c"
     pd.testing.assert_series_equal(result["c"], expected)
+
+
+def test_projection_run_projection_empty_projections_preserves_rows():
+    """A projection set yielding no columns still carries the input height.
+
+    Regression: a bare ``pd.DataFrame({})`` collapses to (0, 0), so a
+    zero-column projection silently dropped every input row.
+    """
+    df = pd.DataFrame({"a": [1, 2, 3]})
+
+    result = LiteFrameProjectionAdapter._run_projection(df, [], set(), False, None)
+
+    assert result.shape == (3, 0)
 
 
 def test_projection_drops_passthrough_range_column(make_liteframe):
@@ -174,6 +194,41 @@ def test_projection_map_udf():
     assert result["b"].tolist() == [20, 40, 60]
 
 
+@pytest.mark.parametrize("kind", ["callable-instance", "unresolvable-input-hint"])
+def test_projection_map_scalar_annotation_executes(kind):
+    """map() honours a resolvable return annotation and executes correctly."""
+    calls = []
+
+    if kind == "callable-instance":
+
+        class Func:
+            def __call__(self, value) -> str:
+                calls.append(value)
+                return "v" + str(value)
+
+        func = Func()
+    else:
+
+        def unresolvable(value: "MissingInput") -> str:  # noqa: F821
+            calls.append(value)
+            return "v" + str(value)
+
+        func = unresolvable
+
+    lf = from_local_df(pd.DataFrame({"a": [1, 2]}))
+    res = map_(lf, func)
+    assert calls == []
+    assert res.dtypes["a"] == wrap_arrow_dtype(pa.string())
+
+    dag = res.build_graph()
+    g = SPECodeGenerator("s1").generate(dag)
+    lv = g.constants.copy()
+    lv["running"] = True
+    exec(g.code, {}, lv)
+    out_key = list(g.output_key_to_variables.values())[0]
+    assert lv[out_key]["a"].tolist() == ["v1", "v2"]
+
+
 def test_projection_transform_chunk_udf():
     """transform_chunk UDF adds a column, preserving row count."""
     df = pd.DataFrame({"a": [1, 2, 3], "b": [10, 20, 30]})
@@ -208,6 +263,198 @@ def test_projection_transform_row_udf():
     out_key = list(g.output_key_to_variables.values())[0]
     result = lv[out_key]
     assert result["c"].tolist() == [11, 22, 33]
+
+
+def _run_spe_apply_row(lf, **apply_kwargs):
+    """Build, generate, and exec an apply(axis=1) projection; return the result."""
+    res = apply(lf, axis=1, **apply_kwargs)
+    assert isinstance(res.op, LiteFrameProjection)
+    dag = res.build_graph()
+    g = SPECodeGenerator("s1").generate(dag)
+    lv = g.constants.copy()
+    lv["running"] = True
+    exec(g.code, {}, lv)
+    out_key = list(g.output_key_to_variables.values())[0]
+    return lv[out_key]
+
+
+@pytest.mark.parametrize(
+    "func, dtypes, result_type, expected_cols, check",
+    [
+        pytest.param(
+            lambda row: row["a"] + row["b"],
+            pd.Series({"s": wrap_arrow_dtype(pa.int64())}),
+            None,
+            ["s"],
+            lambda r: r["s"].tolist() == [11, 22, 33],
+            id="scalar",
+        ),
+        pytest.param(
+            lambda row: {"v": row["a"] * 2},
+            pd.Series({"out": object}),
+            None,
+            ["out"],
+            lambda r: [d["v"] for d in r["out"].tolist()] == [2, 4, 6],
+            id="dict_default",
+        ),
+        pytest.param(
+            lambda row: {"x": row["a"] * 2, "y": row["b"] + 1},
+            pd.Series(
+                {"x": wrap_arrow_dtype(pa.int64()), "y": wrap_arrow_dtype(pa.int64())}
+            ),
+            "expand",
+            ["x", "y"],
+            lambda r: r["x"].tolist() == [2, 4, 6] and r["y"].tolist() == [11, 21, 31],
+            id="expand",
+        ),
+        pytest.param(
+            lambda row: {"v": row["a"]},
+            pd.Series({"out": object}),
+            "reduce",
+            ["out"],
+            lambda r: [d["v"] for d in r["out"].tolist()] == [1, 2, 3],
+            id="reduce",
+        ),
+    ],
+)
+def test_projection_apply_row_result_type(
+    func, dtypes, result_type, expected_cols, check
+):
+    """apply(axis=1) single-output projection result_type matrix."""
+    df = pd.DataFrame({"a": [1, 2, 3], "b": [10, 20, 30]})
+    result = _run_spe_apply_row(
+        from_local_df(df), func=func, dtypes=dtypes, result_type=result_type
+    )
+    assert result.columns.tolist() == expected_cols
+    assert check(result)
+
+
+def test_projection_apply_row_broadcast_preserves_float_scalars():
+    """apply(axis=1, result_type='broadcast') preserves float scalars on an
+    integer input chunk (pandas' native broadcast would truncate 1.5 -> 1)."""
+    df = pd.DataFrame({"a": [1, 2, 3], "b": [10, 20, 30]})
+    result = _run_spe_apply_row(
+        from_local_df(df),
+        func=lambda row: row["a"] * 1.5,
+        dtypes=pd.Series(
+            {"a": wrap_arrow_dtype(pa.float64()), "b": wrap_arrow_dtype(pa.float64())}
+        ),
+        result_type="broadcast",
+    )
+    assert result.columns.tolist() == ["a", "b"]
+    assert result["a"].tolist() == [1.5, 3.0, 4.5]
+    assert result["b"].tolist() == [1.5, 3.0, 4.5]
+
+
+def test_projection_apply_row_key_mismatch_nan_filled():
+    """apply(axis=1) is non-strict: a row missing a declared dict key is
+    NaN-filled rather than rejected (unlike transform_row)."""
+
+    def udf(row):
+        if row["a"] < 3:
+            return {"x": row["a"], "y": row["b"]}
+        return {"x": row["a"]}
+
+    df = pd.DataFrame({"a": [1, 2, 3], "b": [10, 20, 30]})
+    result = _run_spe_apply_row(
+        from_local_df(df),
+        func=udf,
+        dtypes=pd.Series(
+            {"x": wrap_arrow_dtype(pa.float64()), "y": wrap_arrow_dtype(pa.float64())}
+        ),
+        result_type="expand",
+    )
+    assert result.columns.tolist() == ["x", "y"]
+    assert result["x"].tolist() == [1.0, 2.0, 3.0]
+    assert result["y"].tolist()[:2] == [10.0, 20.0]
+    assert pd.isna(result["y"].iloc[2])
+
+
+@pytest.mark.parametrize(
+    "func, result_type, input_frame_type, expected_a, expected_b",
+    [
+        pytest.param(
+            lambda row: [row["a"] * 2, row["b"] * 2],
+            "broadcast",
+            None,
+            [2, 4, 6],
+            [20, 40, 60],
+            id="list_broadcast",
+        ),
+        pytest.param(
+            lambda row: pd.Series([row["a"] * 2, row["b"] * 2]),
+            "broadcast",
+            None,
+            [2, 4, 6],
+            [20, 40, 60],
+            id="positional_series_broadcast",
+        ),
+        pytest.param(
+            lambda row: pd.Series({"a": row["a"] * 2, "b": row["b"] * 2}),
+            "broadcast",
+            None,
+            [2, 4, 6],
+            [20, 40, 60],
+            id="named_series_broadcast",
+        ),
+        pytest.param(
+            lambda row: pl.Series(row.row(0)),
+            "broadcast",
+            "polars",
+            [1, 2, 3],
+            [10, 20, 30],
+            id="polars_series_coerced",
+            marks=pytest.mark.skipif(pl is None, reason="polars not installed"),
+        ),
+        pytest.param(
+            lambda row: row,
+            "expand",
+            "polars",
+            [1, 2, 3],
+            [10, 20, 30],
+            id="polars_dataframe_coerced_to_dict",
+            marks=pytest.mark.skipif(pl is None, reason="polars not installed"),
+        ),
+    ],
+)
+def test_projection_apply_row_broadcast_and_polars_coercion(
+    func, result_type, input_frame_type, expected_a, expected_b
+):
+    """result_type='broadcast' result shapes + polars pl.Series/pl.DataFrame
+    per-row coercions (mirroring DPE's apply_polars_rowwise).
+
+    Covers: list/tuple positional split, positional/named pd.Series broadcast
+    (pandas auto-combines to DataFrame), polars pl.Series -> pd.Series coercion,
+    and polars pl.DataFrame -> dict coercion under expand.
+    """
+    df = pd.DataFrame({"a": [1, 2, 3], "b": [10, 20, 30]})
+    kwargs = dict(
+        func=func,
+        dtypes=pd.Series(
+            {"a": wrap_arrow_dtype(pa.int64()), "b": wrap_arrow_dtype(pa.int64())}
+        ),
+        result_type=result_type,
+    )
+    if input_frame_type:
+        kwargs["input_frame_type"] = input_frame_type
+    result = _run_spe_apply_row(from_local_df(df), **kwargs)
+    assert result.columns.tolist() == ["a", "b"]
+    assert result["a"].tolist() == expected_a
+    assert result["b"].tolist() == expected_b
+
+
+def test_projection_apply_row_broadcast_list_length_mismatch_raises():
+    """result_type='broadcast' raises on list length != input column count."""
+    df = pd.DataFrame({"a": [1, 2], "b": [10, 20]})
+    with pytest.raises(ValueError, match="requires results with 2 elements"):
+        _run_spe_apply_row(
+            from_local_df(df),
+            func=lambda row: [row["a"] * 2],  # 1 element, 2 input columns
+            dtypes=pd.Series(
+                {"a": wrap_arrow_dtype(pa.int64()), "b": wrap_arrow_dtype(pa.int64())}
+            ),
+            result_type="broadcast",
+        )
 
 
 def test_projection_transform_chunk_row_count_mismatch():
@@ -318,8 +565,6 @@ def test_transform_row_dict_arbitrary_schema():
 
 def test_transform_axis1_public_arbitrary_schema():
     """transform(axis=1) with two inputs and one output column."""
-    from maxframe.liteframe import LiteFrame
-
     lf = LiteFrame({"a": [1, 2], "b": [3, 4]})
     op = lf.transform(
         lambda row: {"ab": row["a"] + row["b"]}, axis=1, dtypes={"ab": int}
@@ -563,4 +808,47 @@ def test_projection_datetime_multi_column(method, expected_cols):
     expected = raw() if callable(raw) else raw
     result = _run_accessor_projection(lf_result, df)
     assert list(result.columns) == expected_cols
+    pd.testing.assert_frame_equal(result, expected)
+
+
+@pytest.mark.parametrize(
+    ("data", "expected_cols"),
+    [
+        pytest.param(["a_b_c", "d_e", "f"], ["0", "1", "2"], id="local_matches_global"),
+        pytest.param(["a_b", "c_d"], ["0", "1", "2"], id="pads_to_global_max"),
+        pytest.param(["a_b_c_d", "e_f_g"], ["0", "1", "2"], id="truncates_excess"),
+    ],
+)
+def test_projection_str_dynamic_split(data, expected_cols):
+    """Dynamic split(expand=True, n<=0) produces N string columns discovered
+    at execution time.  Per-chunk results are padded (shorter) or truncated
+    (longer) to the global column count from the dtypes Series, so every
+    chunk produces the same schema.
+
+    The global max is simulated as 3 columns via the extra dtypes input;
+    ``pads_to_global_max`` feeds 2-field rows (→ null third col), and
+    ``truncates_excess`` feeds 4-field rows (→ fourth field dropped).
+    """
+    df = pd.DataFrame({"s": data})
+    lf = from_local_df(df)
+    lf_result = lf.str.split("_", expand=True, n=-1)
+    op = lf_result._data.op
+    assert lf_result.is_schema_dynamic
+    assert len(op.inputs) == 2
+
+    # The extra input resolves to a pd.Series of dtypes; simulate a 3-col
+    # global schema.
+    dtypes_series = pd.Series({str(i): "string" for i in range(len(expected_cols))})
+
+    result = LiteFrameProjectionAdapter._run_projection(
+        df, op.projections, set(), False, {}, [dtypes_series]
+    )
+    assert list(result.columns) == expected_cols
+    # Build expected: pandas split, then pad shorter chunks / truncate excess
+    # to the global column count (the simulated dtypes Series width).
+    expected = df["s"].str.split("_", expand=True, n=-1)
+    for i in range(len(expected.columns), len(expected_cols)):
+        expected[i] = None
+    expected = expected.iloc[:, : len(expected_cols)]
+    expected.columns = expected_cols
     pd.testing.assert_frame_equal(result, expected)

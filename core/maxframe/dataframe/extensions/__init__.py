@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from maxframe.core import CachedAccessor
 from maxframe.dataframe.extensions.accessor import (
     DataFrameMaxFrameAccessor,
     IndexMaxFrameAccessor,
@@ -36,7 +35,11 @@ from maxframe.dataframe.misc.rechunk import rebalance
 
 
 def _install():
-    from maxframe.dataframe.core import DATAFRAME_TYPE, INDEX_TYPE, SERIES_TYPE
+    from maxframe.dataframe.core import (
+        register_dataframe_accessor,
+        register_index_accessor,
+        register_series_accessor,
+    )
 
     DataFrameMaxFrameAccessor._register("apply_chunk", df_apply_chunk)
     DataFrameMaxFrameAccessor._register("cartesian_chunk", cartesian_chunk)
@@ -56,15 +59,9 @@ def _install():
 
     IndexMaxFrameAccessor._register("rebalance", rebalance)
 
-    if DataFrameMaxFrameAccessor._api_count:
-        for t in DATAFRAME_TYPE:
-            t.mf = CachedAccessor("mf", DataFrameMaxFrameAccessor)
-    if SeriesMaxFrameAccessor._api_count:
-        for t in SERIES_TYPE:
-            t.mf = CachedAccessor("mf", SeriesMaxFrameAccessor)
-    if IndexMaxFrameAccessor._api_count:
-        for t in INDEX_TYPE:
-            t.mf = CachedAccessor("mf", IndexMaxFrameAccessor)
+    register_dataframe_accessor("mf")(DataFrameMaxFrameAccessor)
+    register_series_accessor("mf")(SeriesMaxFrameAccessor)
+    register_index_accessor("mf")(IndexMaxFrameAccessor)
 
 
 _install()

@@ -15,6 +15,7 @@
 import numpy as np
 
 from maxframe import opcodes
+from maxframe.core.operator.base import WorkLoadType
 from maxframe.liteframe.core import RANGE_COL_NAME, FrameMetadata, RangeInfo
 from maxframe.liteframe.operators.core import (
     LiteFrameDataFormat,
@@ -39,6 +40,11 @@ from maxframe.serialization.serializables import (
 
 class LiteFrameDataSource(LiteFrameOperatorMixin, LiteFrameOperator):
     __slots__ = ()
+
+    # No work_load_type default here: storage-backed subclasses apply IO in
+    # their own __init__, while in-memory sources (from_local / from_tensor)
+    # stay unlabelled instead of claiming IO (slot dispatch maps unset to
+    # GILFree).
 
     dtypes = SeriesField("dtypes")
     nrows = Int64Field("nrows", default=None)
@@ -131,6 +137,12 @@ class LiteFrameLakeDataSource(LiteFrameColumnPruneMixin, LiteFrameDataSource):
 
     _op_type_ = opcodes.LITEFRAME_LAKE_DATA_SOURCE
 
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        # _parse_kwargs guarantees a private (fresh or copied) hint here.
+        if self.scheduling_hint.work_load_type is None:
+            self.scheduling_hint.work_load_type = WorkLoadType.IO
+
     path = AnyField("path")
     storage_options = DictField("storage_options", default=None)
     read_kwargs = DictField("read_kwargs", default=None)
@@ -199,6 +211,12 @@ class LiteFrameLakeDataSource(LiteFrameColumnPruneMixin, LiteFrameDataSource):
 
 class LiteFrameReadODPSTable(LiteFrameColumnPruneMixin, LiteFrameDataSource):
     _op_type_ = opcodes.READ_ODPS_TABLE
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        # _parse_kwargs guarantees a private (fresh or copied) hint here.
+        if self.scheduling_hint.work_load_type is None:
+            self.scheduling_hint.work_load_type = WorkLoadType.IO
 
     table_name = StringField("table_name")
     partitions = ListField("partitions", default=None)

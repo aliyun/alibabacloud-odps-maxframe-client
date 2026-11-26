@@ -104,6 +104,17 @@ msgstr ""
 msgid "Aggregate the grouped LiteFrame using one or more functions."
 msgstr "使用一个或多个函数聚合分组后的 LiteFrame。"
 
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.filter "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.filter>`\\ \\(func\\, "
+"dropna\\=True\\, \\*args\\, \\*\\*kwargs\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:22:<autosummary>:1
+msgid "Filter groups by a predicate function."
+msgstr "根据谓词函数筛选分组。"
+
 #: ../../source/reference/liteframe/groupby.rst:24
 msgid "Computations / descriptive stats"
 msgstr "计算/描述性统计"
@@ -195,6 +206,48 @@ msgstr "每组内的累积和。"
 
 #: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
 msgid ""
+":py:obj:`LiteFrameGroupBy.idxmax "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.idxmax>`\\ \\(\\[skipna\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the row index of the maximum value in each group."
+msgstr "计算每组最大值的行索引。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.idxmin "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.idxmin>`\\ \\(\\[skipna\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute the row index of the minimum value in each group."
+msgstr "计算每组最小值的行索引。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.corr "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.corr>`\\ \\(\\[ddof\\,"
+"numeric_only\\, min_periods\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute pairwise correlation matrix per group."
+msgstr "计算每组的成对相关系数矩阵。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.cov "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.cov>`\\ \\(\\[ddof\\,"
+"numeric_only\\, min_periods\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Compute pairwise covariance matrix per group."
+msgstr "计算每组的成对协方差矩阵。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
 ":py:obj:`LiteFrameGroupBy.max "
 "<maxframe.liteframe.groupby.LiteFrameGroupBy.max>`\\ \\(\\*\\*kw\\)"
 msgstr ""
@@ -278,6 +331,17 @@ msgstr "在每组内提供扩展窗口计算。"
 
 #: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
 msgid ""
+":py:obj:`LiteFrameGroupBy.ewm "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.ewm>`\\ \\(\\[com\\, span\\,"
+" halflife\\, alpha\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Provide exponentially weighted (EW) calculations within each group."
+msgstr "在每个组内提供指数加权（EW）计算。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
 ":py:obj:`LiteFrameGroupBy.sem "
 "<maxframe.liteframe.groupby.LiteFrameGroupBy.sem>`\\ \\(\\*\\*kw\\)"
 msgstr ""
@@ -346,6 +410,39 @@ msgstr ""
 msgid "Compute the variance of each group."
 msgstr "计算每组的方差。"
 
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.describe "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.describe>`\\ "
+"\\(\\[percentiles\\, numeric\\_only\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Generate descriptive statistics per group."
+msgstr "为每个组生成描述性统计。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.value_counts "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.value_counts>`\\ "
+"\\(\\[subset\\, normalize\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Return value counts within each group."
+msgstr "返回每个组内的值计数。"
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid ""
+":py:obj:`LiteFrameGroupBy.sample "
+"<maxframe.liteframe.groupby.LiteFrameGroupBy.sample>`\\ \\(\\[n\\, frac\\, "
+"replace\\, ...\\]\\)"
+msgstr ""
+
+#: ../../source/reference/liteframe/groupby.rst:51:<autosummary>:1
+msgid "Return a random sample of rows from each group."
+msgstr "从每个组中随机采样行。"
+
 #: ../../source/reference/liteframe/groupby.rst:53
 msgid "Window transforms"
 msgstr "窗口变换"
@@ -404,4 +501,3 @@ msgstr ""
 #: ../../source/reference/liteframe/groupby.rst:61:<autosummary>:1
 msgid "Backward-fill within each group."
 msgstr "在每组内向后填充。"
-
